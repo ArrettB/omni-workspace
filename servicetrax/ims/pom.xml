@@ -47,13 +47,16 @@
 		<developerConnection>scm:svn:http://svn.apexit.com/svn/servicetrax/trunk/</developerConnection>
 	</scm>
 	<repositories>
+                <!--
 		<repository>
 			<id>dynamic_repo</id>
 			<name>ApexIT Central Repository</name>
 			<url>http://maven.apexit.com/repository/</url>
 		</repository>
+                -->
 	</repositories>
 	<distributionManagement>
+                <!--
 		<repository>
 			<id>dynamic_repo_file_deploy</id>
 			<name>ApexIT Repository</name>
@@ -61,6 +64,7 @@
 				file:////bentley/home/maven/tomcat/webapps/ROOT/repository
 			</url>
 		</repository>
+                -->
 	</distributionManagement>
 	<ciManagement>
 		<system>continuum</system>

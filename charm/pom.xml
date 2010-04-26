@@ -9,8 +9,10 @@
 	<url>http://charm.apexit.com</url>
 	<modules>
 		<module>charm-core</module>
+                <!--
 		<module>charm-examples</module>
 		<module>charm-sandbox</module>
+                -->
 	</modules>
 	<properties>
 		<spring.version>2.5.6</spring.version>

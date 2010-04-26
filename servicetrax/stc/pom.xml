@@ -51,18 +51,22 @@
 		<developerConnection>scm:svn:http://svn.apexit.com/svn/servicetrax/trunk/</developerConnection>
 	</scm>
 	<repositories>
+                <!--
 		<repository>
 			<id>dynamic_repo</id>
 			<name>Dynamic Central Repository</name>
 			<url>http://maven.apexit.com/repository/</url>
 		</repository>
+                -->
 	</repositories>
 	<distributionManagement>
+                <!--
 		<repository>
 			<id>dynamic_repo_file_deploy</id>
 			<name>ApexIT Repository</name>
 			<url>file:////bentley/home/maven/tomcat/webapps/ROOT/repository</url>
 		</repository>
+                -->
 	</distributionManagement>
 	<ciManagement>
 		<system>continuum</system>
@@ -219,7 +223,7 @@
 					<dependency>
 						<groupId>com.dynamic.charm</groupId>
 						<artifactId>charm-core</artifactId>
-						<version>0.9</version>
+	                                        <version>1.6-SNAPSHOT</version>
 					</dependency>
 
 
@@ -375,7 +379,7 @@
 		<dependency>
 			<groupId>com.dynamic.charm</groupId>
 			<artifactId>charm-core</artifactId>
-			<version>0.4.9</version>
+                        <version>1.6-SNAPSHOT</version>
 		</dependency>
 		<!-- Commons -->
 		<dependency>
