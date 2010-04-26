@@ -11,7 +11,7 @@
 	<parent>
 		<artifactId>charm-parent</artifactId>
 		<groupId>com.dynamic.charm</groupId>
-		<version>2.1</version>
+		<version>2.3</version>
 	</parent>
 
 	<ciManagement>
@@ -91,7 +91,7 @@
 					<dependency>
 						<groupId>com.dynamic.charm</groupId>
 						<artifactId>charm-core</artifactId>
-						<version>1.2</version>
+						<version>1.6-SNAPSHOT</version>
 					</dependency>
 				</dependencies>
 				<executions>
@@ -131,7 +131,7 @@
 		<dependency>
 			<groupId>com.dynamic.charm</groupId>
 			<artifactId>charm-core</artifactId>
-			<version>1.2</version>
+			<version>1.6-SNAPSHOT</version>
 		</dependency>
 		
 		<!-- Servlet, JSP, and JSTL -->
@@ -159,12 +159,14 @@
 		</dependency>
 				
 		<!-- Oracle JDBC Driver -->
+                <!--
 		<dependency>
 			<groupId>oracle</groupId>
 			<artifactId>ojdbc14</artifactId>
 			<version>10.2.0.3</version>
 			<scope>runtime</scope>
 		</dependency>
+                -->
 				
 		<!-- Display Tag - Tables -->
 		<dependency>
@@ -193,9 +195,10 @@
 		</dependency>
 	
 		<dependency>
-			<groupId>json-lib</groupId>
+			<groupId>net.sf.json-lib</groupId>
 			<artifactId>json-lib</artifactId>
 			<version>2.2.1</version>
+                        <classifier>jdk15</classifier>
 		</dependency>
 		
 	</dependencies>
