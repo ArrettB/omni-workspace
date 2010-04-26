@@ -31,12 +31,14 @@
 	</ciManagement>	
 	
 	<repositories>
+                <!--
 		<repository>
 			<id>dynamic_repo</id>
 			<name>ApexIT Central Repository</name>
 			<url>http://maven.apexit.com/repository/</url>
 			<layout>default</layout>
 		</repository>
+                -->
 		<repository>
 			<id>ibiblio</id>
 			<name>Ibiblio Central Repository</name>
@@ -46,6 +48,7 @@
 	</repositories>
 	
 	<distributionManagement>
+                <!--
 		<repository>
 			<id>dynamic_repo_file_deploy</id>
 			<name>Dynamic Repository</name>
@@ -57,6 +60,7 @@
 			<id>website</id>
 			<url>file:////bentley/home/maven/tomcat/webapps/ROOT/site</url>
 		</site>
+                -->
 	</distributionManagement>	
 
 	<dependencies>

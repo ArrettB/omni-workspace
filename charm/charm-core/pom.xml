@@ -59,16 +59,19 @@
 	</issueManagement>
 	
 	<repositories>
+            <!--
 		<repository>
 			<id>apex_central</id>
 			<name>ApexIT Central Repository</name>
-			<url>http://maven.apexit.com/repository/</url>
+			<url>http://maven.apexit.com/r.epository/</url>
 			<layout>default</layout>
 		</repository>
+                -->
 	</repositories>
 	
 	
 	<distributionManagement>
+                <!--
 		<repository>
 			<id>dynamic_repo_file_deploy</id>
 			<name>ApexIT Repository</name>
@@ -79,6 +82,7 @@
 			<id>website</id>
 			<url>file:////bentley/home/maven/tomcat/webapps/ROOT/charm</url>
 		</site>
+                -->
 	</distributionManagement>
 	
 	<dependencies>
