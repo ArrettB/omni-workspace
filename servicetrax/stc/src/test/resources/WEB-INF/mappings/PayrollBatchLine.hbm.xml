@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.PayrollBatchLine" table="PAYROLL_BATCH_LINES" schema="dbo" catalog="">
+        <id name="serviceLineId" type="java.lang.Long">
+            <column name="SERVICE_LINE_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="serviceLine" class="com.dynamic.servicetrax.orm.ServiceLine" update="false" insert="false" fetch="select">
+            <column name="SERVICE_LINE_ID" precision="18" scale="0" not-null="true" unique="true" />
+        </many-to-one>
+        <property name="intBatchId" type="long">
+            <column name="INT_BATCH_ID" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="payrollQty" type="big_decimal">
+            <column name="PAYROLL_QTY" precision="18" />
+        </property>
+        <property name="payrollRate" type="big_decimal">
+            <column name="PAYROLL_RATE" precision="18" />
+        </property>
+        <property name="payrollTotal" type="big_decimal">
+            <column name="PAYROLL_TOTAL" precision="18" />
+        </property>
+        <property name="extItemId" type="string">
+            <column name="EXT_ITEM_ID" length="30" />
+        </property>
+        <property name="extEmployeeId" type="string">
+            <column name="EXT_EMPLOYEE_ID" length="15" />
+        </property>
+        <property name="extPayCode" type="string">
+            <column name="EXT_PAY_CODE" length="7" />
+        </property>
+    </class>
+</hibernate-mapping>

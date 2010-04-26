@@ -1,0 +1,47 @@
+<!--#EMBED template="embeds/header.html" -->
+
+<script language="JavaScript">
+<!--
+function choose()
+{
+	window.opener.focus();
+	if (window.opener.{!p:form!}.{!p:field!})
+	{
+		if( window.opener.{!p:form!}.{!p:field!}.type == 'select-one' )
+		{
+			window.opener.{!p:form!}.customer_name.value = display;
+			returnDroplistOption('{!p:form!}','{!p:field!}', display, custnmbr);
+		}
+		else
+		{//must be text field
+			window.opener.{!p:form!}.{!p:field!}.value = ext_customer_id;
+			window.opener.{!p:form!}.{!p:field!}_text.value = display;
+	 		window.opener.{!p:form!}.customer_name.value = display;
+		}
+
+      if( !(price_level_id == "") && !(window.opener.{!p:form!}.ext_price_level_id_text === undefined ) )
+      {
+         window.opener.{!p:form!}.ext_price_level_id.value = price_level_id;
+         window.opener.{!p:form!}.ext_price_level_id_text.value = price_level_id;
+      }
+	}
+	if (window.opener.{!p:form!}.{!p:field!}_text)
+		window.opener.{!p:form!}.{!p:field!}_text.value = display;
+
+	document.body.onunload = null;
+	window.setTimeout(5000);
+	window.opener.redisplaySmartForm();
+}
+
+window.focus(); //in case window is already open, then focus on window
+
+// -->
+</script>
+</head>
+
+<!--#CHOOSERTABLE name="choose" query="<?p:query?>"  resourceName="<?s:org_resource?>" -->
+	<!--#CHOOSERCOLUMN title="<?p:title?>" name="display" width="100%" filter="<?p:value?>" nowrap -->
+<!--#/CHOOSERTABLE -->
+
+
+<!--#EMBED template="embeds/footer.html" -->

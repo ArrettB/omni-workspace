@@ -1,0 +1,37 @@
+<!--#EMBED template="embeds/header.html" -->
+
+<!---
+	This template is no longer in use
+--->
+
+<body class="chad">
+
+	<table width=100%>
+		<!--#IF defined="<?s:rights.job/req_edit.view?>"-->
+			<tr><td class="Label">Show <a href="{!s:showPage!}nav/nav_req_list.html">Jobs & Requisitions</a></td></tr>
+			<tr><td><HR></td></tr>
+		<!--#/IF-->
+	</table>
+
+   <!--#SMARTTABLE class="SmartTable" name="jobs_v"
+	   query="SELECT jv.job_id, jv.job_no, jv.job_type_name, jv.job_status_type_name, jv.dealer_name, jv.customer_name, jv.job_name, jv.date_created
+   			FROM jobs_v jv
+   			WHERE organization_id=<?s:org_id.toPStmtString()?>
+			ORDER BY job_no"
+   -->
+	<!--#CHECKSECURITY right="rights.job/job_edit.view"-->
+     <!--#SMARTCOLUMN name="job_no" sort="job_no" title="Job#" width="5%" align="center" href="<?s:action?>setupSession/main.html?job_id=<?r:jobs_v:job_id?>&loc=job_edit" target="_top"-->
+	<!--#ELSE-->
+     <!--#SMARTCOLUMN name="job_no" sort="job_no" title="Job#" width="5%" align="center" -->
+	<!--#/CHECKSECURITY-->
+     <!--#SMARTCOLUMN name="dealer_name" sort="dealer_name" title="Dealer" width="10%"-->
+     <!--#SMARTCOLUMN name="customer_name" sort="customer_name" title="Customer" width="10%"-->
+     <!--#SMARTCOLUMN name="job_name" sort="job_name" title="Job Name" width="10%"-->
+     <!--#SMARTCOLUMN name="job_type_name" sort="job_type_name" title="Job Type" width="5%" -->
+     <!--#SMARTCOLUMN name="job_status_type_name" sort="job_status_type_name" title="Status" width="7%" -->
+     <!--#SMARTCOLUMN name="date_created" sort="date_created" title="Date Created" width="7%" format="date" -->
+   <!--#/SMARTTABLE -->
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

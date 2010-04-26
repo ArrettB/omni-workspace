@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ShowPlanXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0" Build="9.00.3054.00" xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan">
+  <BatchSequence>
+    <Batch>
+      <Statements>
+        <StmtSimple StatementCompId="1" StatementEstRows="11.6735" StatementId="1" StatementOptmLevel="FULL" StatementOptmEarlyAbortReason="GoodEnoughPlanFound" StatementSubTreeCost="0.0498508" StatementText="SELECT [col_sequence] FROM [custom_cust_columns] [c] WHERE [c].[customer_id]=@1 ORDER BY [col_sequence] ASC" StatementType="SELECT">
+          <StatementSetOptions ANSI_NULLS="false" ANSI_PADDING="false" ANSI_WARNINGS="false" ARITHABORT="true" CONCAT_NULL_YIELDS_NULL="false" NUMERIC_ROUNDABORT="false" QUOTED_IDENTIFIER="false" />
+          <QueryPlan DegreeOfParallelism="1" MemoryGrant="128" CachedPlanSize="23" CompileTime="20" CompileCPU="1" CompileMemory="208">
+            <RelOp AvgRowSize="11" EstimateCPU="0.000164571" EstimateIO="0.0112613" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="11.6735" LogicalOp="Sort" NodeId="0" Parallel="false" PhysicalOp="Sort" EstimatedTotalSubtreeCost="0.0498508">
+              <OutputList>
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOM_CUST_COLUMNS]" Alias="[c]" Column="COL_SEQUENCE" />
+              </OutputList>
+              <MemoryFractions Input="1" Output="1" />
+              <RunTimeInformation>
+                <RunTimeCountersPerThread Thread="0" ActualRebinds="1" ActualRewinds="0" ActualRows="10" ActualEndOfScans="1" ActualExecutions="1" />
+              </RunTimeInformation>
+              <Sort Distinct="false">
+                <OrderBy>
+                  <OrderByColumn Ascending="true">
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOM_CUST_COLUMNS]" Alias="[c]" Column="COL_SEQUENCE" />
+                  </OrderByColumn>
+                </OrderBy>
+                <RelOp AvgRowSize="11" EstimateCPU="4.87954E-05" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="11.6735" LogicalOp="Inner Join" NodeId="1" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.038425">
+                  <OutputList>
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOM_CUST_COLUMNS]" Alias="[c]" Column="COL_SEQUENCE" />
+                  </OutputList>
+                  <RunTimeInformation>
+                    <RunTimeCountersPerThread Thread="0" ActualRows="10" ActualEndOfScans="1" ActualExecutions="1" />
+                  </RunTimeInformation>
+                  <NestedLoops Optimized="false">
+                    <OuterReferences>
+                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOM_CUST_COLUMNS]" Alias="[c]" Column="CUSTOM_CUST_COL_ID" />
+                    </OuterReferences>
+                    <RelOp AvgRowSize="16" EstimateCPU="0.000169841" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="11.6735" LogicalOp="Index Seek" NodeId="2" Parallel="false" PhysicalOp="Index Seek" EstimatedTotalSubtreeCost="0.00329484">
+                      <OutputList>
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOM_CUST_COLUMNS]" Alias="[c]" Column="CUSTOM_CUST_COL_ID" />
+                      </OutputList>
+                      <RunTimeInformation>
+                        <RunTimeCountersPerThread Thread="0" ActualRows="10" ActualEndOfScans="1" ActualExecutions="1" />
+                      </RunTimeInformation>
+                      <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                        <DefinedValues>
+                          <DefinedValue>
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOM_CUST_COLUMNS]" Alias="[c]" Column="CUSTOM_CUST_COL_ID" />
+                          </DefinedValue>
+                        </DefinedValues>
+                        <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOM_CUST_COLUMNS]" Index="[IX_CCC_CUSTOMER]" Alias="[c]" />
+                        <SeekPredicates>
+                          <SeekPredicate>
+                            <Prefix ScanType="EQ">
+                              <RangeColumns>
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOM_CUST_COLUMNS]" Alias="[c]" Column="CUSTOMER_ID" />
+                              </RangeColumns>
+                              <RangeExpressions>
+                                <ScalarOperator ScalarString="(711.)">
+                                  <Const ConstValue="(711.)" />
+                                </ScalarOperator>
+                              </RangeExpressions>
+                            </Prefix>
+                          </SeekPredicate>
+                        </SeekPredicates>
+                      </IndexScan>
+                    </RelOp>
+                    <RelOp AvgRowSize="11" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="10.6735" EstimateRewinds="0" EstimateRows="1" LogicalOp="Clustered Index Seek" NodeId="4" Parallel="false" PhysicalOp="Clustered Index Seek" EstimatedTotalSubtreeCost="0.0350813">
+                      <OutputList>
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOM_CUST_COLUMNS]" Alias="[c]" Column="COL_SEQUENCE" />
+                      </OutputList>
+                      <RunTimeInformation>
+                        <RunTimeCountersPerThread Thread="0" ActualRows="10" ActualEndOfScans="0" ActualExecutions="10" />
+                      </RunTimeInformation>
+                      <IndexScan Lookup="true" Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                        <DefinedValues>
+                          <DefinedValue>
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOM_CUST_COLUMNS]" Alias="[c]" Column="COL_SEQUENCE" />
+                          </DefinedValue>
+                        </DefinedValues>
+                        <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOM_CUST_COLUMNS]" Index="[PK_CUSTOM_CUST_COLUMNS]" Alias="[c]" TableReferenceId="-1" />
+                        <SeekPredicates>
+                          <SeekPredicate>
+                            <Prefix ScanType="EQ">
+                              <RangeColumns>
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOM_CUST_COLUMNS]" Alias="[c]" Column="CUSTOM_CUST_COL_ID" />
+                              </RangeColumns>
+                              <RangeExpressions>
+                                <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[CUSTOM_CUST_COLUMNS].[CUSTOM_CUST_COL_ID] as [c].[CUSTOM_CUST_COL_ID]">
+                                  <Identifier>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOM_CUST_COLUMNS]" Alias="[c]" Column="CUSTOM_CUST_COL_ID" />
+                                  </Identifier>
+                                </ScalarOperator>
+                              </RangeExpressions>
+                            </Prefix>
+                          </SeekPredicate>
+                        </SeekPredicates>
+                      </IndexScan>
+                    </RelOp>
+                  </NestedLoops>
+                </RelOp>
+              </Sort>
+            </RelOp>
+            <ParameterList>
+              <ColumnReference Column="@1" ParameterCompiledValue="(711)" ParameterRuntimeValue="(711)" />
+            </ParameterList>
+          </QueryPlan>
+        </StmtSimple>
+      </Statements>
+    </Batch>
+  </BatchSequence>
+</ShowPlanXML>

@@ -1,0 +1,286 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<body class="BodyTag" onLoad="">
+
+<span class="Label">View Workorder Detail:</span>
+<span class="">Please choose the Workorder to View or Update</span>
+
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="wdv" var="mainQuery"
+		query="select
+	wo.project_id,
+	wo.request_id,	
+	wo.project_no,
+	wo.request_no,
+	wo.workorder_no,
+	c.ext_dealer_id,
+	c.dealer_name,
+	wo.customer_id,
+	c.customer_name,
+	wo.job_location_name,
+	wo.floor_number,
+	wo.cust_col_1,
+	wo.cust_col_2,
+	wo.cust_col_3,
+	wo.cust_col_4,
+	wo.cust_col_5,
+	wo.cust_col_6,
+	wo.cust_col_7,
+	wo.cust_col_8,
+	wo.cust_col_9,
+	wo.cust_col_10,
+	wo.customer_contact_name,
+	wo.description
+from
+	customers c join
+(select
+	r.request_id,
+	r.project_id,
+	p.project_no,
+	r.request_no,
+	convert(varchar, p.project_no) + '-' + convert(varchar, r.request_no) workorder_no,
+	c.customer_id,
+	jl.job_location_name,
+	fl.name floor_number,
+	r.cust_col_1,
+	r.cust_col_2,
+	r.cust_col_3,
+	r.cust_col_4,
+	r.cust_col_5,
+	r.cust_col_6,
+	r.cust_col_7,
+	r.cust_col_8,
+	r.cust_col_9,
+	r.cust_col_10,
+	cn.contact_name customer_contact_name,
+	r.description,
+	rt.sequence_no
+from
+	requests r
+	join projects p on
+		p.project_id = r.project_id
+	join customers c on
+		c.customer_id = p.customer_id
+	join lookups rt on
+		rt.lookup_id = r.request_type_id
+	join lookups rs on
+		rs.lookup_id = r.request_status_type_id
+	left join job_locations jl on
+		r.job_location_id = jl.job_location_id
+	left join lookups fl on
+		r.floor_number_type_id = fl.lookup_id
+	left join contacts cn on
+		r.customer_contact_id = cn.contact_id
+	join (
+		select
+			max(version_no) version_no,
+			p.project_id,
+			p.project_no,
+			r.request_no
+		from
+			projects p
+			left join requests r on
+				p.project_id = r.project_id
+		group by
+			p.project_id,
+			p.project_no,
+			r.request_no) mv on
+		p.project_id = mv.project_id
+		and r.request_no = mv.request_no
+		and r.version_no = mv.version_no
+where
+	c.organization_id = <?s:org_id.toPStmtString()?>
+	and rt.code = 'workorder'
+	and rs.code <> 'closed') wo on
+	c.customer_id = wo.customer_id
+order by
+	wo.project_no desc,
+	wo.request_no desc,
+	wo.sequence_no"
+
+-->
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="wdv" var="customerQuery"
+		query="select
+	c.customer_name id,
+	c.customer_name
+from
+requests r
+	join projects p on
+		p.project_id = r.project_id
+	join customers c on
+		c.customer_id = p.customer_id
+	join lookups rt on
+		rt.lookup_id = r.request_type_id
+	join lookups rs on
+		rs.lookup_id = r.request_status_type_id
+where
+	c.organization_id = <?s:org_id.toPStmtString()?>
+	and rt.code = 'workorder'
+	and rs.code <> 'closed'
+group by
+	c.customer_name
+order by
+	c.customer_name"
+
+-->
+
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="wdv" var="dealerQuery"
+		query="select
+	c.ext_dealer_id,
+	c.dealer_name
+from
+requests r
+	join projects p on
+		p.project_id = r.project_id
+	join customers c on
+		c.customer_id = p.customer_id
+	join lookups rt on
+		rt.lookup_id = r.request_type_id
+	join lookups rs on
+		rs.lookup_id = r.request_status_type_id
+where
+	c.organization_id = <?s:org_id.toPStmtString()?>
+	and rt.code = 'workorder'
+	and rs.code <> 'closed'
+group by
+	c.ext_dealer_id,
+	c.dealer_name
+order by
+	c.dealer_name"
+
+-->
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="wdv" var="jobLocationQuery"
+		query="select
+	jl.job_location_name id,
+	jl.job_location_name
+from
+requests r
+	join projects p on
+		p.project_id = r.project_id
+	join customers c on
+		c.customer_id = p.customer_id
+	join lookups rt on
+		rt.lookup_id = r.request_type_id
+	join lookups rs on
+		rs.lookup_id = r.request_status_type_id
+	join job_locations jl on
+		r.job_location_id = jl.job_location_id
+where
+	c.organization_id = <?s:org_id.toPStmtString()?>
+	and rt.code = 'workorder'
+	and rs.code <> 'closed'
+group by
+	jl.job_location_name
+order by
+	jl.job_location_name"
+
+-->
+
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="wdv" var="customerContactQuery"
+		query="select
+	cn.contact_name id,
+	cn.contact_name customer_contact_name
+from
+requests r
+	join projects p on
+		p.project_id = r.project_id
+	join customers c on
+		c.customer_id = p.customer_id
+	join contacts cn on
+		r.customer_contact_id = cn.contact_id
+	join lookups rt on
+		rt.lookup_id = r.request_type_id
+	join lookups rs on
+		rs.lookup_id = r.request_status_type_id
+where
+	c.organization_id = <?s:org_id.toPStmtString()?>
+	and rt.code = 'workorder'
+	and rs.code <> 'closed'
+group by
+	cn.contact_name
+order by
+	cn.contact_name"
+
+-->
+
+
+<!--#SMARTTABLE name="wo_detail"
+		class="SmartTable"
+		query="<?d:mainQuery?>"
+	-->
+
+	<!--#SMARTCOLUMN name="workorder_no" sort="workorder_no" title="Workorder#" align="center" width="10%" href="<?s:action?>setProjectDatum?project_id=<?r:wo_detail:project_id?>&templateName=enet/proj/pf_main.html&request_id=<?r:wo_detail:request_id?>&loc=wo_create" target="_top" filter="a_workorder_no:workorder_no like '%'+<?p:a_workorder_no.toPStmtString()?>+'%'" nowrap -->
+	<!--#SMARTCOLUMN name="customer_name" sort="customer_name" title="Customer" width="150"
+		filter="customer_name:customer_name" filterQuery="<?d:customerQuery?>" filterQuick="true"
+		value="<INPUT TYPE='text' name='desc' value='<?r:wo_detail:customer_name.replaceString('\'','&#39;')?>' readonly='true' class='smartTableDisplay' size='30'>"
+	-->
+	<!--SMARTCOLUMN name="request_status_type_name" sort="request_status_type_name" title="Status" width="10%"
+ 		filter="a_request_status_type_name:request_status_type_name" filterQuery="SELECT lookup_name id, lookup_name FROM workorder_status_types_v" filterQuick="true"
+	-->
+	<!--#SMARTCOLUMN name="job_location_name" sort="job_location_name" title="Job&nbsp;Location" width="10%"
+		filter="a_job_location_name:job_location_name" filterQuery="<?d:jobLocationQuery?>" filterQuick="true"
+	-->
+	<!--#SMARTCOLUMN name="floor_number" sort="floor_number" title="Floor" width="10%" filter="a_floor_number:floor_number" value="<?r:wo_detail:floor_number.isNull('None')?>" align="center" -->
+	<!--#SMARTCOLUMN name="description" sort="description" title="Description" width="150" filter="a_description:description like '%'+<?p:a_description.toPStmtString()?>+'%'"
+		value="<INPUT TYPE='text' name='desc' value='<?r:wo_detail:description.replaceString('\'','&#39;')?>' readonly='true' class='smartTableDisplay' size='30'>"
+	-->
+<!--#IF evaluate="<?d:rowid?>" lessthan="1" -->
+		<!--#SQLLOOP query="SELECT number col_sequence FROM numbers WHERE number between 1 and 10 ORDER BY number" name="col" -->
+
+
+			<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="wdv" var="customColQuery"
+			query="SELECT r.cust_col_<?r:col:col_sequence?> id
+	,r.cust_col_<?r:col:col_sequence?>
+FROM requests r
+	JOIN projects p ON
+		p.project_id = r.project_id
+	JOIN customers c ON
+		c.customer_id = p.customer_id
+	JOIN lookups rt ON
+		rt.lookup_id = r.request_type_id
+	JOIN lookups rs ON
+		rs.lookup_id = r.request_status_type_id
+WHERE
+	c.organization_id = <?s:org_id.toPStmtString()?>
+	AND rt.code = 'workorder'
+	AND rs.code <> 'closed'
+	AND r.cust_col_<?r:col:col_sequence?> IS NOT NULL
+GROUP BY
+	r.cust_col_<?r:col:col_sequence?>
+ORDER BY
+	r.cust_col_<?r:col:col_sequence?>"
+
+			-->
+
+			<!--#SMARTCOLUMN name="cust_col_<?r:col:col_sequence?>" sort="cust_col_<?r:col:col_sequence?>" title="Custom<?r:col:col_sequence?>" width="5%"
+				filter="a_cust_col_<?r:col:col_sequence?>:cust_col_<?r:col:col_sequence?>" filterQuery="<?d:customColQuery?>" filterQuick="true"
+			-->
+
+
+		<!--#/SQLLOOP-->
+	<!--#ELSE-->
+		<!--#SQLLOOP query="SELECT col_sequence FROM custom_cust_columns c WHERE c.customer_id = <?r:wo_detail:customer_id.toPStmtString()?> ORDER BY col_sequence" name="cust_col" -->
+			<!--#SMARTCOLUMN name="cust_col_<?r:cust_col:col_sequence?>" sort="cust_col_<?r:cust_col:col_sequence?>" width="5%" filter="a_cust_col_<?r:cust_col:col_sequence?>:cust_col_<?r:cust_col:col_sequence?>" -->
+		<!--#/SQLLOOP-->
+<!--#/IF-->
+	<!--#SMARTCOLUMN name="customer_contact_name" sort="customer_contact_name" title="Customer Contact" nowrap width="10%"
+		filter="a_customer_contact_name:customer_contact_name" filterQuery="<?d:customerContactQuery?>" filterQuick="true"
+	-->
+<!--#IF evaluate="<?s:rights.enet/proj/multidealer.view?>" compare="true" --><!-- Show only if user can see multiple dealers -->
+	<!--#SMARTCOLUMN name="dealer_name" sort="dealer_name" title="Dealer" width="5%" align="center"
+		filter="dealer_name:dealer_name" filterQuery="<?d:dealerQuery?>" filterQuick="true"
+	-->
+<!--#ELSEIF evaluate="<?s:rights.enet/proj/non_a_m_dealers.view?>" compare="true" --><!-- Show only if user can see non a_m dealers -->
+	<!--#SMARTCOLUMN name="dealer_name" sort="dealer_name" title="Dealer" width="5%" align="center"
+		filter="dealer_name:dealer_name" filterQuery="<?d:dealerQuery?>" filterQuick="true"
+	-->
+<!--#/IF-->
+
+<!--#/SMARTTABLE -->
+
+<!--#EMBED template="enet/embeds/footer.html" -->
+

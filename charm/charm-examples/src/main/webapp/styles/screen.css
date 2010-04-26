@@ -1,0 +1,424 @@
+body{
+	background-color: #FFFFFF;
+	margin: 10 10 10 10;
+	padding: 0 0 0 0;
+}
+
+
+h1, h2, h3, h4, h5, h6, p, strong, div, form, acronym, label, table, td, th, span, a, hr, code, pre, hr {
+	background-repeat: no-repeat;
+	font-size: 1em;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+a, a:visited, a:hover {
+	color: #666666;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+images{
+	border: none;
+}
+
+hr {
+	clear: both;
+	color: #000000;
+	height: 1px;
+}
+
+dt {
+	font-weight: bold;
+}
+
+.clear {
+	clear: both;
+}
+
+h1 {
+	font-size: 2em;
+}
+
+h1 a{
+	color: #000000;
+}
+
+div#header {
+	background-color: #FFEEAA;
+	border-bottom: 1px solid #000000;
+	border-top: 1px solid #000000;
+	margin: 10px 5% 20px 5%;
+	padding: 20px 10px 30px 15px;
+}
+
+div#header ul{
+	margin: 10px 0 0 0;
+}
+
+div#header ul li{
+	float: left;
+	font-weight: bold;
+	list-style-type: none;
+	padding: 0 10px 0 0;
+}
+
+div#header ul li a{
+	border-left: 1px solid #FF0000;
+	color: #FF0000;
+	display: block;
+	padding-left: 5px;
+}
+
+div#header ul li a:hover{
+	border-left: 1px solid #000000;
+}
+
+h2 {
+	font-size: 1.2em;
+	margin: 10px 0 10px 0;
+}
+
+h2 {
+	font-size: 1.1em;
+	margin: 10px 0 5px 0;
+}
+
+p {
+	margin: 0 0 10px 0;
+}
+
+acronym {
+	border-bottom: 1px dashed #000000;
+	cursor: help;
+}
+
+div#body {
+	border: 1px dashed #666666;
+	margin: 0 5% 20px 5%;
+	padding: 20px 20px 20px 20px;
+}
+
+div#validxhtml {
+	background-color: #EEEEEE;
+	border: 1px dotted #999999;
+	float: right;
+	margin: 5px;
+	padding: 2px;
+	text-align: center;
+	width: 100px;
+}
+
+div#footer {
+	border-top: 1px solid #666666;
+	padding: 5px 5px 5px 5px;
+	text-align: right;
+}
+
+div#footer span {
+	float: left;
+}
+
+/*.changed {
+	background-color: #EEEE00;
+	border: 1px solid #CCCCCC;
+	margin: 10px;
+	padding: 10px;
+}
+
+*/
+ul#stylelist {
+	margin: 0 0 30px 0;
+}
+
+ul#stylelist li {
+	background-color: #EEEEEE;
+	border: 1px solid #CCCCCC;
+	float: left;
+	list-style-type: none;
+	margin-right: 2px;
+	padding: 2px;
+	width: 100px;
+}
+
+table {
+	border: 1px solid #666666;
+	margin: 20px 0 20px 0;
+	width: 80%;
+}
+
+th, td {
+	padding: 2px 4px 2px 4px;
+	text-align: left;
+	vertical-align: top;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+}
+
+thead tr {
+	background-color: #FFCC00;
+}
+
+th.sorted {
+	background-color: #FFA500;
+}
+
+th a, th a:visited {
+	color: #000000;
+}
+
+th a:hover {
+	color: #000000;
+	text-decoration: underline;
+}
+
+th.sorted a, th.sortable a {
+	background-position: right;
+	display: block;
+	width: 100%;
+}
+
+th.sortable a {
+	background-image: url(../images/arrow_off.png);
+}
+
+th.order1 a {
+	background-image: url(../images/arrow_down.png);
+}
+
+th.order2 a {
+	background-image: url(../images/arrow_up.png);
+}
+
+tr.odd {
+	background-color: #EDEDED;
+}
+
+ tr.even {
+	background-color: #F5F5F5;
+}
+
+ul#showsource {
+	background-color: #EEEEEE;
+	border: 1px dotted #999999;
+	float: right;
+	list-style-type: none;
+	margin: 5px;
+	padding: 2px 4px 2px 4px;
+	width: 100px;
+}
+
+/* test styles */
+table.its thead tr {
+	background-color: #6699CC;
+}
+
+table.its tr.even {
+	background-color: #DDEEFF;
+}
+
+table.mars thead tr {
+	background-color: #99CC99;
+}
+
+table.mars tr.even {
+	background-color: #CCCCBB;
+}
+
+table.mars tr.odd {
+	background-color: #EEEECC;
+}
+
+table.simple thead tr {
+	background-color: #EEEEEE;
+}
+
+table.simple tr.even {
+	background-color: #FFFFFF;
+}
+
+table.simple {
+	border: 1px solid #CCCCCC;
+	border-collapse: collapse;
+}
+
+table.simple td,table.simple th{
+	border: 1px solid #CCCCCC;
+}
+
+table.nocol tbody td,table.nocol tbody th{
+	border-left: none;
+	border-right: none;
+}
+
+table.report td, table.report th{
+	font: menu;
+}
+
+table.report th{
+	background: buttonface;
+	border-color: threedhighlight threedshadow threedshadow threedhighlight;
+	border-style: solid;
+	border-width: 1px;
+	cursor: hand;
+}
+
+table.report idcol {
+	background: buttonface;
+}
+
+table.report tr.even{
+	background-color: #339999;
+}
+
+table.report tbody {
+	height: 100px;
+	overflow: auto;
+}
+
+table.report {
+	height: 120px;
+	overflow: auto;
+}
+
+table.report tbody tr{
+	height: 10px;
+}
+
+table.mark td.tablecellerror {
+	background-color: #DD0000;
+	color: #FFFFFF;
+}
+
+table.sublist {
+	margin: 0 0 0 0;
+	width: 100%;
+}
+
+table.sublist td, table.sublist th {
+	width: 50%;
+}
+
+div.exportlinks {
+	background-color: #EEEEEE;
+	border: 1px dotted #999999;
+	margin: -10px 0 10px 0;
+	padding: 2px 4px 2px 4px;
+	width: 79%;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 10px;	
+}
+
+span.export {
+	cursor: pointer;
+	display: inline;
+	display: inline-block;
+	padding: 0 4px 1px 20px;
+font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 10px;	
+}
+
+span.excel {
+	background-image: url(../images/ico_file_excel.png);
+}
+
+span.csv {
+	background-image: url(../images/ico_file_csv.png);
+}
+
+span.xml {
+	background-image: url(../images/ico_file_xml.png);
+}
+
+span.pdf {
+	background-image: url(../images/ico_file_pdf.png);
+}
+
+span.pagebanner {
+	background-color: #EEEEEE;
+	border: 1px dotted #999999;
+	border-bottom: none;
+	display: block;
+	margin-top: 10px;
+	padding: 2px 4px 2px 4px;
+	width: 79%;
+}
+
+span.pagelinks {
+	background-color: #EEEEEE;
+	border: 1px dotted #999999;
+	border-top: none;
+	display: block;
+	margin-bottom: -5px;
+	padding: 2px 4px 2px 4px;
+	width: 79%;
+}
+
+table.simple td.textred {
+	color: #BB1111;
+}
+
+
+div.formRow, div.mandatoryFormRow, div.errorFormRow {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 11px;	
+}
+
+span.control input{
+	margin-left: 1em;
+	text-align: left;
+	width: 250px;
+}
+
+span.control textarea{
+	margin-left: 1em;
+	text-align: left;
+	width: 250px;
+}
+
+div.formRow label.label {
+	float: left;
+	text-align: right;
+	width: 100px;
+}
+
+
+div.mandatoryFormRow label {
+	float: left;
+	text-align: right;
+	width: 100px;
+	color: #191970;
+	font-weight: bold;
+}
+
+.form {
+	background-color: #F5F5F5;
+	border: 1px solid #333333;
+	margin: 0px;
+	padding: 5px;
+	height: auto;
+	width: 400px;;
+}
+
+.form input,textarea
+{
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	
+}
+
+div.errorFormRow {
+	
+	text-align: left;
+	color: red;
+	margin-left: 110px;
+	font-weight: bold;
+
+}
+

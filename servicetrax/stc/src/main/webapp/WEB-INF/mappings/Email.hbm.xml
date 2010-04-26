@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.Email" table="EMAILS" schema="dbo" catalog="">
+        <id name="emailId" type="java.lang.Long">
+            <column name="EMAIL_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <property name="projectId" type="java.lang.Long">
+            <column name="PROJECT_ID" precision="18" scale="0" />
+        </property>
+        <property name="requestId" type="java.lang.Long">
+            <column name="REQUEST_ID" precision="18" scale="0" />
+        </property>
+        <property name="quoteId" type="java.lang.Long">
+            <column name="QUOTE_ID" precision="18" scale="0" />
+        </property>
+        <property name="emailSentFlag" type="string">
+            <column name="EMAIL_SENT_FLAG" length="1" not-null="true" />
+        </property>
+        <property name="fromEmail" type="string">
+            <column name="FROM_EMAIL" length="100" />
+        </property>
+        <property name="toContactId" type="java.lang.Long">
+            <column name="TO_CONTACT_ID" precision="18" scale="0" />
+        </property>
+        <property name="toEmail" type="string">
+            <column name="TO_EMAIL" length="100" />
+        </property>
+        <property name="subject" type="string">
+            <column name="SUBJECT" length="100" />
+        </property>
+        <property name="body" type="string">
+            <column name="BODY" length="2000" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="createdBy" type="long">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <property name="modifiedBy" type="java.lang.Long">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </property>
+    </class>
+</hibernate-mapping>

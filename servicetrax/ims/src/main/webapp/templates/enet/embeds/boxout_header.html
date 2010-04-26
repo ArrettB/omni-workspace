@@ -1,0 +1,45 @@
+<!-- BOXOUT TABLE HEADER BEGIN-->
+<!-- Parameters: bo_title, bo_width = length after title, bo_left_side = length before letters, switcher = set for switchview functionality -->
+<table border="{!p:bo_border.isNull('0')!}" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+	<td align="center" width="2">
+	</td>
+	<td width="{!p:bo_left_side.isNull('20')!}" height="6">
+	</td>
+	<td rowspan="3" align="center" valign="middle" class="HeaderLabel" style="padding-left:3;padding-right:3;">
+		{!p:bo_title!}&nbsp;
+	<!--#IF defined="<?p:switcher?>" -->
+		<a onclick="switchView({!p:switcher.toJavaScriptString()!});"><img id="{!p:switcher!}_img" src="/ims/images/arrow_down.gif" height="8" width="8"  alt="Show hidden values"></a>
+	<!--#/IF -->
+	</td>
+	<td width="{!p:bo_width.isNull('800')!}" height="6">
+	</td>
+	<td align="center" width="2">
+	</td>
+</tr>
+<tr>
+	<td bgcolor="gray" rowspan="2" align="center" width="2">
+	</td>
+	<td bgcolor="gray" width="20" height="2" valign="top">
+	</td>
+	<td bgcolor="gray" width="100" height="2">
+	</td>
+	<td bgcolor="gray" rowspan="2" align="center" width="2">
+	</td>
+</tr>
+<tr>
+	<td width="20" height="6">
+	</td>
+	<td width="100" height="6">
+	</td>
+</tr>
+<tr>
+	<td bgcolor="gray" align="center" width="2">
+	</td>
+	<td colspan="3" align="center" style="padding-left:5;padding-right:5;">
+		<table cellpadding="0" cellspacing="0" border="{!p:bo_border.isNull('0')!}" width="100%">
+			<tr>
+				<td width="5">
+				</td>
+				<td align="left">
+<!-- BOXOUT TABLE HEADER END-->

@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.Job" table="JOBS" schema="dbo" catalog="">
+        <id name="jobId" type="java.lang.Long">
+            <column name="JOB_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="userByBillingUserId" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="BILLING_USER_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="resource" class="com.dynamic.servicetrax.orm.Resource" fetch="select">
+            <column name="FOREMAN_RESOURCE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="project" class="com.dynamic.servicetrax.orm.Project" fetch="select">
+            <column name="PROJECT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByJobStatusTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="JOB_STATUS_TYPE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="customer" class="com.dynamic.servicetrax.orm.Customer" fetch="select">
+            <column name="CUSTOMER_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="userByModifiedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="userByCreatedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="lookupByJobTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="JOB_TYPE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="jobNo" type="java.lang.Long">
+            <column name="JOB_NO" precision="18" scale="0" />
+        </property>
+        <property name="jobName" type="string">
+            <column name="JOB_NAME" length="100" />
+        </property>
+        <property name="extPriceLevelId" type="string">
+            <column name="EXT_PRICE_LEVEL_ID" length="11" />
+        </property>
+        <property name="watchFlag" type="string">
+            <column name="WATCH_FLAG" length="1" />
+        </property>
+        <property name="viewScheduleFlag" type="string">
+            <column name="VIEW_SCHEDULE_FLAG" length="1" not-null="true" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <property name="spreadsheetBillingFlag" type="string">
+            <column name="SPREADSHEET_BILLING_FLAG" length="1" not-null="true" />
+        </property>
+        <set name="services" inverse="true">
+            <key>
+                <column name="JOB_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Service" />
+        </set>
+        <set name="jobItemRates" inverse="true">
+            <key>
+                <column name="JOB_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.JobItemRate" />
+        </set>
+        <set name="resourceEstimates" inverse="true">
+            <key>
+                <column name="JOB_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ResourceEstimate" />
+        </set>
+        <set name="jobDistributions" inverse="true">
+            <key>
+                <column name="JOB_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.JobDistribution" />
+        </set>
+        <set name="schResources" inverse="true">
+            <key>
+                <column name="JOB_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.SchResource" />
+        </set>
+        <set name="trackings" inverse="true">
+            <key>
+                <column name="JOB_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Tracking" />
+        </set>
+        <set name="invoices" inverse="true">
+            <key>
+                <column name="JOB_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Invoice" />
+        </set>
+    </class>
+</hibernate-mapping>

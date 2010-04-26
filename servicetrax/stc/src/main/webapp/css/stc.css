@@ -1,0 +1,312 @@
+body
+{
+	font-family: 	Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size:12px;
+}
+
+div.auto_complete {
+	background: #EFEFEF;
+	font-size: 12px;
+}
+
+div.auto_complete .autoMajor {
+	font-weight: bold;
+}
+
+div.auto_complete .autoMinor {
+	font-size: 10px;
+	vertical-align: text-bottom;
+}
+
+div.auto_complete ul {
+	border: 1px solid #888888;
+	list-style-type: none;
+	margin: 0px;
+	padding: 0;
+	width: 100%;
+}
+
+div.auto_complete ul li {
+	margin: 0;
+	padding: 3px;
+	border-bottom: 1px solid #888888;
+}
+
+div.auto_complete ul li.selected {
+	background-color: #FFFFBB;
+}
+
+div.auto_complete ul strong.highlight {
+	color: #880000;
+	margin: 0;
+	padding: 0;
+}
+
+table.formTable {
+	background-color: #F7F9FB;
+	border: 1px solid #7B9EBD;
+}
+
+td.control
+{
+	width:200px;
+}
+
+td.labelSmall {
+	color: #000000;
+	font-weight: normal;
+}
+
+td.label {
+	color: #000000;
+	width:100px;
+	font-weight: normal;
+}
+
+label.label {
+	color: #000000;
+	font-weight: normal;
+}
+
+.autoSecondary {
+	font-weight: normal;
+	font-style: italic;
+	text-align: right;
+	margin-left: 20px;
+	width: 100%;
+}
+
+.recordsTable {
+	border: 1px solid #7B9EBD;
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.recordsTable tbody td {
+	font-family: Arial;
+	font-size: 1em;
+	text-align: left;
+}
+
+.recordsTable tbody tr.even {
+	background-color: #FFFFFF;
+}
+
+.recordsTable tbody tr.odd {
+	background-color: #FFFFFF;
+}
+
+.recordsTable tbody td.header {
+	background-color: #F7F9FB;
+	border: 1px solid #7B9EBD;
+	border-collapse: separate;
+	text-align: center;
+}
+
+.recordsTable tbody tr.selected {
+	background: #7B9EBD;
+}
+
+.recordsTable tbody tr.warn {
+	background: #FFFFBB;
+}
+
+.recordsTable tbody tr.selected:hover {
+	background-color: #7B9EBD;
+	border: 1px solid #000000;
+}
+
+.recordsTable tbody tr.static {
+	font-style: italic;
+}
+
+.recordsTable tbody tr.static:hover {
+	background-color: #FFFFFF;
+}
+
+.recordsTable tbody tr:hover,.recordsTable tbody tr:hover {
+	background: #A3BDD3;
+}
+
+.recordsTable tfoot td {
+	border-top: 1px solid #7B9EBD;
+	background-color: #F7F9FB;
+	font-weight: bold;
+	font-size: 1em;
+	text-align: left;
+}
+
+.recordsTable thead th {
+	background-color: #F7F9FB;
+	font-size: 1em;
+	font-weight: bold;
+	text-align: left;
+	border-bottom: 1px solid #7B9EBD;
+}
+
+td.controlMessage {
+	font-size: 1em;
+	font-style: italic;
+	width: 50%;
+	text-align: left;
+}
+
+#message {
+	color: black;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	font-weight: bold;
+	font-style: italic;
+}
+
+#title {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+#warn {
+	background: #FFFFBB;
+	border: 1px dashed #7B9EBD;
+	margin-top: 30px;
+	width: 100%;
+	font-weight: bold;
+	padding: 5px;
+}
+
+.auditInfo {
+	background-color: #F7F9FB;
+	width: 100%;
+	font-size: .8em;
+	border-top: 1px solid #7B9EBD;
+	padding-top: .5em;
+	margin-bottom: .5em;
+}
+
+
+.formContainer
+{
+	background-color: #F7F9FB;
+	border: 1px solid #7B9EBD;
+}
+
+
+.formContainer input[type="text"], .formContainer select {
+	display: block;
+	width: 20em;
+	float: left;
+	margin-bottom:1em;
+}
+
+.small{
+	width: 10em;
+}
+
+.formContainer textarea {
+	display: block;
+	float: left;
+	margin-bottom:1em;
+}
+
+
+.formContainer label {
+	display: block;
+	text-align: right;
+	width: 10em;
+	float: left;
+	padding-right: 1em;	
+	padding-top:.5em;
+}
+
+
+
+.formContainer br 
+{
+	clear: left;
+}
+
+.formContainer label .mandatory
+{
+	color:red;
+}
+v
+table.bodytable tr.even {
+	background-color: #F5F5F5;
+}
+
+table.bodytable tr.odd {
+	background-color: #EDEDED;
+}
+table.reportParamTable
+{
+	border: 1px solid #888888;
+	margin: 5px 0px 10px 0;
+	background: #F5F5F5;
+}
+
+table.reportParamTable tr td.label{
+	width: 150px;
+	padding-top:1px;
+	padding-bottom:1px;
+	font-weight:bold;
+	background: #EDEDED;
+border-right: 1px solid #888888;
+}
+
+table.reportParamTable tr td.control{
+	width: 240px;
+	padding-top:1px;
+	padding-bottom:1px;
+	
+}
+
+th.reportParamHead{
+	font-size: 14px;
+	border-bottom: 1px solid #888888; 
+	background-color:#E1E8D8;
+	text-align:left;
+}
+
+
+table.reportParamTable tr td.control input[type="text"]{
+	width: 180px;
+}
+table.reportParamTable tr td.control select{
+	width: 180px;
+}
+
+div.itemList
+{
+	margin: 5px 0px 10px 0;
+	background: #EFEFEF;
+	width:200px;
+}
+
+
+div.itemList ul {
+	border: 1px solid #888888;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+
+div.itemList ul li {
+	margin: 0;
+	padding: 3px;
+
+}
+
+div.itemList ul li a:hover{
+	margin: 0;
+	padding: 3px;
+	color:#000080;
+
+}
+
+div.itemList ul li a{
+	margin: 0;
+	padding: 3px;
+	color:black;
+	width:100%;
+	text-decoration: none;
+}

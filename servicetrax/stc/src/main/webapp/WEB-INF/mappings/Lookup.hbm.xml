@@ -1,0 +1,801 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.Lookup" table="LOOKUPS" schema="dbo" catalog="">
+        <id name="lookupId" type="java.lang.Long">
+            <column name="LOOKUP_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="lookup" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="PARENT_LOOKUP_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupType" class="com.dynamic.servicetrax.orm.LookupType" fetch="select">
+            <column name="LOOKUP_TYPE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="code" type="string">
+            <column name="CODE" length="30" not-null="true" />
+        </property>
+        <property name="name" type="string">
+            <column name="NAME" length="100" not-null="true" />
+        </property>
+        <property name="sequenceNo" type="long">
+            <column name="SEQUENCE_NO" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="activeFlag" type="string">
+            <column name="ACTIVE_FLAG" length="1" not-null="true" />
+        </property>
+        <property name="updatableFlag" type="string">
+            <column name="UPDATABLE_FLAG" length="1" not-null="true" />
+        </property>
+        <property name="extId" type="string">
+            <column name="EXT_ID" length="50" />
+        </property>
+        <property name="attribute1" type="string">
+            <column name="ATTRIBUTE1" length="100" />
+        </property>
+        <property name="attribute2" type="string">
+            <column name="ATTRIBUTE2" length="100" />
+        </property>
+        <property name="attribute3" type="string">
+            <column name="ATTRIBUTE3" length="100" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="createdBy" type="long">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <property name="modifiedBy" type="java.lang.Long">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </property>
+        <set name="jobLocationsForFloorProtectionTypeId" inverse="true">
+            <key>
+                <column name="FLOOR_PROTECTION_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.JobLocation" />
+        </set>
+        <set name="requestsForActivityTypeId2" inverse="true">
+            <key>
+                <column name="ACTIVITY_TYPE_ID2" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForActivityCatTypeId9" inverse="true">
+            <key>
+                <column name="ACTIVITY_CAT_TYPE_ID9" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForActivityTypeId7" inverse="true">
+            <key>
+                <column name="ACTIVITY_TYPE_ID7" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="jobLocationsForDoorwayProtTypeId" inverse="true">
+            <key>
+                <column name="DOORWAY_PROT_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.JobLocation" />
+        </set>
+        <set name="requestsForAccountTypeId" inverse="true">
+            <key>
+                <column name="ACCOUNT_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForWallMountTypeId" inverse="true">
+            <key>
+                <column name="WALL_MOUNT_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForCoordPhoneDataTypeId" inverse="true">
+            <key>
+                <column name="COORD_PHONE_DATA_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForPhasedInstallTypeId" inverse="true">
+            <key>
+                <column name="PHASED_INSTALL_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForSecFurnLineTypeId" inverse="true">
+            <key>
+                <column name="SEC_FURN_LINE_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="punchlistIssuesForRootCauseId" inverse="true">
+            <key>
+                <column name="ROOT_CAUSE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.PunchlistIssue" />
+        </set>
+        <set name="requestsForFurnSpecTypeId" inverse="true">
+            <key>
+                <column name="FURN_SPEC_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="usersForUserTypeId" inverse="true">
+            <key>
+                <column name="USER_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.User" />
+        </set>
+        <set name="projectsForProjectStatusTypeId" inverse="true">
+            <key>
+                <column name="PROJECT_STATUS_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Project" />
+        </set>
+        <set name="servicesForServStatusTypeId" inverse="true">
+            <key>
+                <column name="SERV_STATUS_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Service" />
+        </set>
+        <set name="requestsForLevelTypeId" inverse="true">
+            <key>
+                <column name="LEVEL_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="serviceTasksForSubActTypeId" inverse="true">
+            <key>
+                <column name="SUB_ACT_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ServiceTask" />
+        </set>
+        <set name="servicesForSecFurnLineTypeId" inverse="true">
+            <key>
+                <column name="SEC_FURN_LINE_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Service" />
+        </set>
+        <set name="requestsForNewSiteTypeId" inverse="true">
+            <key>
+                <column name="NEW_SITE_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="servicesForPunchlistTypeId" inverse="true">
+            <key>
+                <column name="PUNCHLIST_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Service" />
+        </set>
+        <set name="requestsForActivityTypeId9" inverse="true">
+            <key>
+                <column name="ACTIVITY_TYPE_ID9" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForCaseFurnTypeId" inverse="true">
+            <key>
+                <column name="CASE_FURN_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="serviceLines" inverse="true">
+            <key>
+                <column name="OVERRIDE_REASON" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ServiceLine" />
+        </set>
+        <set name="requestsForCoordWallCovrTypeId" inverse="true">
+            <key>
+                <column name="COORD_WALL_COVR_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="jobsForJobStatusTypeId" inverse="true">
+            <key>
+                <column name="JOB_STATUS_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Job" />
+        </set>
+        <set name="requestsForApprovalReqTypeId" inverse="true">
+            <key>
+                <column name="APPROVAL_REQ_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="quotesForQuoteStatusTypeId" inverse="true">
+            <key>
+                <column name="QUOTE_STATUS_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Quote" />
+        </set>
+        <set name="requestsForActivityTypeId5" inverse="true">
+            <key>
+                <column name="ACTIVITY_TYPE_ID5" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForWarehouseFeeTypeId" inverse="true">
+            <key>
+                <column name="WAREHOUSE_FEE_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForUnionLaborReqTypeId" inverse="true">
+            <key>
+                <column name="UNION_LABOR_REQ_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="invoicesForInvoiceFormatTypeId" inverse="true">
+            <key>
+                <column name="INVOICE_FORMAT_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Invoice" />
+        </set>
+        <set name="schResourcesForDateTypeId" inverse="true">
+            <key>
+                <column name="DATE_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.SchResource" />
+        </set>
+        <set name="servicesForPriFurnTypeId" inverse="true">
+            <key>
+                <column name="PRI_FURN_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Service" />
+        </set>
+        <set name="requestsForActivityCatTypeId1" inverse="true">
+            <key>
+                <column name="ACTIVITY_CAT_TYPE_ID1" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="invoiceLines" inverse="true">
+            <key>
+                <column name="INVOICE_LINE_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.InvoiceLine" />
+        </set>
+        <set name="requestsForActivityTypeId10" inverse="true">
+            <key>
+                <column name="ACTIVITY_TYPE_ID10" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForPunchlistItemTypeId" inverse="true">
+            <key>
+                <column name="PUNCHLIST_ITEM_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="usersForEmploymentTypeId" inverse="true">
+            <key>
+                <column name="EMPLOYMENT_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.User" />
+        </set>
+        <set name="requestsForDumpsterTypeId" inverse="true">
+            <key>
+                <column name="DUMPSTER_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="jobLocationsForLocationTypeId" inverse="true">
+            <key>
+                <column name="LOCATION_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.JobLocation" />
+        </set>
+        <set name="itemsForJobTypeId" inverse="true">
+            <key>
+                <column name="JOB_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Item" />
+        </set>
+        <set name="requestsForCoordMoverTypeId" inverse="true">
+            <key>
+                <column name="COORD_MOVER_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForFurnPlanTypeId" inverse="true">
+            <key>
+                <column name="FURN_PLAN_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForWalkboardTypeId" inverse="true">
+            <key>
+                <column name="WALKBOARD_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="jobLocationsForWallProtectionTypeId" inverse="true">
+            <key>
+                <column name="WALL_PROTECTION_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.JobLocation" />
+        </set>
+        <set name="contactsForContStatusTypeId" inverse="true">
+            <key>
+                <column name="CONT_STATUS_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Contact" />
+        </set>
+        <set name="requestsForCoordFloorCovrTypeId" inverse="true">
+            <key>
+                <column name="COORD_FLOOR_COVR_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="itemsForItemStatusTypeId" inverse="true">
+            <key>
+                <column name="ITEM_STATUS_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Item" />
+        </set>
+        <set name="quotesForQuoteTypeId" inverse="true">
+            <key>
+                <column name="QUOTE_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Quote" />
+        </set>
+        <set name="requestsForPriFurnLineTypeId" inverse="true">
+            <key>
+                <column name="PRI_FURN_LINE_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForCostToVendTypeId" inverse="true">
+            <key>
+                <column name="COST_TO_VEND_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="invoicesForInvoiceTypeId" inverse="true">
+            <key>
+                <column name="INVOICE_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Invoice" />
+        </set>
+        <set name="requestsForSiteVisitReqTypeId" inverse="true">
+            <key>
+                <column name="SITE_VISIT_REQ_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForCaseFurnLineTypeId" inverse="true">
+            <key>
+                <column name="CASE_FURN_LINE_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForRequestTypeId" inverse="true">
+            <key>
+                <column name="REQUEST_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForScheduleTypeId" inverse="true">
+            <key>
+                <column name="SCHEDULE_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="jobLocationsForSemiAccessTypeId" inverse="true">
+            <key>
+                <column name="SEMI_ACCESS_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.JobLocation" />
+        </set>
+        <set name="requestsForQuoteTypeId" inverse="true">
+            <key>
+                <column name="QUOTE_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="servicesForBillingTypeId" inverse="true">
+            <key>
+                <column name="BILLING_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Service" />
+        </set>
+        <set name="requestsForCostToJobTypeId" inverse="true">
+            <key>
+                <column name="COST_TO_JOB_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="trackingsForOldStatusId" inverse="true">
+            <key>
+                <column name="OLD_STATUS_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Tracking" />
+        </set>
+        <set name="servicesForSecFurnTypeId" inverse="true">
+            <key>
+                <column name="SEC_FURN_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Service" />
+        </set>
+        <set name="jobLocationsForDockReservReqTypeId" inverse="true">
+            <key>
+                <column name="DOCK_RESERV_REQ_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.JobLocation" />
+        </set>
+        <set name="punchlistIssuesForStatusId" inverse="true">
+            <key>
+                <column name="STATUS_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.PunchlistIssue" />
+        </set>
+        <set name="contactGroups" inverse="true">
+            <key>
+                <column name="CONTACT_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ContactGroup" />
+        </set>
+        <set name="requestsForCoordElectricalTypeId" inverse="true">
+            <key>
+                <column name="COORD_ELECTRICAL_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForActivityCatTypeId3" inverse="true">
+            <key>
+                <column name="ACTIVITY_CAT_TYPE_ID3" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="jobsForJobTypeId" inverse="true">
+            <key>
+                <column name="JOB_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Job" />
+        </set>
+        <set name="requestsForDeliveryTypeId" inverse="true">
+            <key>
+                <column name="DELIVERY_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForSecFurnTypeId" inverse="true">
+            <key>
+                <column name="SEC_FURN_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="servicesForPriFurnLineTypeId" inverse="true">
+            <key>
+                <column name="PRI_FURN_LINE_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Service" />
+        </set>
+        <set name="servicesForServiceTypeId" inverse="true">
+            <key>
+                <column name="SERVICE_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Service" />
+        </set>
+        <set name="quotesForRequestTypeId" inverse="true">
+            <key>
+                <column name="REQUEST_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Quote" />
+        </set>
+        <set name="requestsForActivityCatTypeId6" inverse="true">
+            <key>
+                <column name="ACTIVITY_CAT_TYPE_ID6" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="jobItemRates" inverse="true">
+            <key>
+                <column name="UOM_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.JobItemRate" />
+        </set>
+        <set name="projectsForProjectTypeId" inverse="true">
+            <key>
+                <column name="PROJECT_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Project" />
+        </set>
+        <set name="payrollBatches" inverse="true">
+            <key>
+                <column name="PAYROLL_BATCH_STATUS_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.PayrollBatch" />
+        </set>
+        <set name="invoiceTrackings" inverse="true">
+            <key>
+                <column name="INVOICE_TRACKING_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.InvoiceTracking" />
+        </set>
+        <set name="schResourcesForReasonTypeId" inverse="true">
+            <key>
+                <column name="REASON_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.SchResource" />
+        </set>
+        <set name="jobLocationsForElevatorAvailTypeId" inverse="true">
+            <key>
+                <column name="ELEVATOR_AVAIL_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.JobLocation" />
+        </set>
+        <set name="requestsForActivityCatTypeId4" inverse="true">
+            <key>
+                <column name="ACTIVITY_CAT_TYPE_ID4" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForRegularHoursTypeId" inverse="true">
+            <key>
+                <column name="REGULAR_HOURS_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForWorkstationTypicalTypeId" inverse="true">
+            <key>
+                <column name="WORKSTATION_TYPICAL_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForProdDispId" inverse="true">
+            <key>
+                <column name="PROD_DISP_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForActivityCatTypeId2" inverse="true">
+            <key>
+                <column name="ACTIVITY_CAT_TYPE_ID2" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForPriFurnTypeId" inverse="true">
+            <key>
+                <column name="PRI_FURN_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="jobLocationsForStairCarryTypeId" inverse="true">
+            <key>
+                <column name="STAIR_CARRY_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.JobLocation" />
+        </set>
+        <set name="lookups" inverse="true">
+            <key>
+                <column name="PARENT_LOOKUP_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Lookup" />
+        </set>
+        <set name="serviceTasksForModifiedBy" inverse="true">
+            <key>
+                <column name="MODIFIED_BY" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ServiceTask" />
+        </set>
+        <set name="jobLocationsForElevatorReservReqTypeId" inverse="true">
+            <key>
+                <column name="ELEVATOR_RESERV_REQ_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.JobLocation" />
+        </set>
+        <set name="requestsForCostToCustTypeId" inverse="true">
+            <key>
+                <column name="COST_TO_CUST_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForActivityTypeId8" inverse="true">
+            <key>
+                <column name="ACTIVITY_TYPE_ID8" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="servicesForWoodProductTypeId" inverse="true">
+            <key>
+                <column name="WOOD_PRODUCT_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Service" />
+        </set>
+        <set name="servicesForScheduleTypeId" inverse="true">
+            <key>
+                <column name="SCHEDULE_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Service" />
+        </set>
+        <set name="requestsForWoodProductTypeId" inverse="true">
+            <key>
+                <column name="WOOD_PRODUCT_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForActivityTypeId1" inverse="true">
+            <key>
+                <column name="ACTIVITY_TYPE_ID1" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="jobLocationsForSecurityTypeId" inverse="true">
+            <key>
+                <column name="SECURITY_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.JobLocation" />
+        </set>
+        <set name="requestsForActivityTypeId6" inverse="true">
+            <key>
+                <column name="ACTIVITY_TYPE_ID6" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForDurationTimeUomTypeId" inverse="true">
+            <key>
+                <column name="DURATION_TIME_UOM_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForEveningHoursTypeId" inverse="true">
+            <key>
+                <column name="EVENING_HOURS_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForStagingAreaTypeId" inverse="true">
+            <key>
+                <column name="STAGING_AREA_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="serviceTasksForPhaseTypeId" inverse="true">
+            <key>
+                <column name="PHASE_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ServiceTask" />
+        </set>
+        <set name="requestsForFloorNumberTypeId" inverse="true">
+            <key>
+                <column name="FLOOR_NUMBER_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="jobLocationsForLoadingDockTypeId" inverse="true">
+            <key>
+                <column name="LOADING_DOCK_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.JobLocation" />
+        </set>
+        <set name="userJobTypes" inverse="true">
+            <key>
+                <column name="LOOKUP_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.UserJobType" />
+        </set>
+        <set name="requestsForActivityCatTypeId5" inverse="true">
+            <key>
+                <column name="ACTIVITY_CAT_TYPE_ID5" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForRequestStatusTypeId" inverse="true">
+            <key>
+                <column name="REQUEST_STATUS_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="servicesForDeliveryTypeId" inverse="true">
+            <key>
+                <column name="DELIVERY_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Service" />
+        </set>
+        <set name="trackingsForTrackingTypeId" inverse="true">
+            <key>
+                <column name="TRACKING_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Tracking" />
+        </set>
+        <set name="requestsForActivityTypeId4" inverse="true">
+            <key>
+                <column name="ACTIVITY_TYPE_ID4" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="invoicesForBillingTypeId" inverse="true">
+            <key>
+                <column name="BILLING_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Invoice" />
+        </set>
+        <set name="requestsForOccupiedSiteTypeId" inverse="true">
+            <key>
+                <column name="OCCUPIED_SITE_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="trackingsForNewStatusId" inverse="true">
+            <key>
+                <column name="NEW_STATUS_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Tracking" />
+        </set>
+        <set name="jobLocationsForMultiLevelTypeId" inverse="true">
+            <key>
+                <column name="MULTI_LEVEL_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.JobLocation" />
+        </set>
+        <set name="requestsForWeekendHoursTypeId" inverse="true">
+            <key>
+                <column name="WEEKEND_HOURS_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForActivityTypeId3" inverse="true">
+            <key>
+                <column name="ACTIVITY_TYPE_ID3" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="schResourcesForReportToTypeId" inverse="true">
+            <key>
+                <column name="REPORT_TO_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.SchResource" />
+        </set>
+        <set name="requestsForPriorityTypeId" inverse="true">
+            <key>
+                <column name="PRIORITY_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForActivityCatTypeId10" inverse="true">
+            <key>
+                <column name="ACTIVITY_CAT_TYPE_ID10" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="requestsForActivityCatTypeId8" inverse="true">
+            <key>
+                <column name="ACTIVITY_CAT_TYPE_ID8" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="contactsForContactTypeId" inverse="true">
+            <key>
+                <column name="CONTACT_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Contact" />
+        </set>
+        <set name="itemsForItemTypeId" inverse="true">
+            <key>
+                <column name="ITEM_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Item" />
+        </set>
+        <set name="requestsForActivityCatTypeId7" inverse="true">
+            <key>
+                <column name="ACTIVITY_CAT_TYPE_ID7" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="schResourcesForResStatusTypeId" inverse="true">
+            <key>
+                <column name="RES_STATUS_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.SchResource" />
+        </set>
+    </class>
+</hibernate-mapping>

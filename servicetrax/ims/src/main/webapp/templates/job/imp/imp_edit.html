@@ -1,0 +1,124 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: imp_edit.html, 1, 8/2/2005 3:04:57 PM, Greg Case$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.job/imp/imp_edit.view?>"-->
+<body class="BodyTag"
+   <!--#IF evaluate="<?p:contact_id?>" compare="" -->
+      onLoad="focusFirstField();"
+   <!--#ELSE-->
+      onLoad="setFormEdit('n');"
+   <!--#/IF-->
+>
+
+
+<span class="HeaderLabel">Imported Job Detail</span>
+
+   <!--#SMARTFORM name="job/imp/imp_edit" table="jobs_imported_v" key="job_import_id"
+               buttons="Save,Cancel" security="rights"
+               preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+   -->
+
+
+   <table width="100%">
+   <tr><td>                      <!-- Location Info -->
+      <table width="95%">
+         <tr>
+            <td class="Label"><!--#SMARTFIELD title="Job#:" div="</td><td>" name="job_no" --></td>
+            <td class="Label"><!--#SMARTFIELD title="Office:" div="</td><td>" name="office" --></td>
+            <td>&nbsp;</td><td>&nbsp;</td>
+            <td>&nbsp;</td><td>&nbsp;</td>
+         </tr>
+         <tr>
+            <td class="Label"><!--#SMARTFIELD title="Bill To:" div="</td><td>" name="Bill To" --></td>
+            <td class="Label"><!--#SMARTFIELD title="Bill To Contact:" div="</td><td>" name="dealer_contact" --></td>
+            <td class="Label"><!--#SMARTFIELD title="Contact Name:" div="</td><td>" name="ws_contact_name" --></td>
+            <td class="Label"><!--#SMARTFIELD title="Contact Phone:" div="</td><td>" name="ws_contact_phone" --></td>
+         </tr>
+         <tr>
+            <td colspan="6"><BR></td>
+         </tr>
+         <tr>
+            <td class="HeaderLabel" colspan="2">Work Site</td>
+            <td class="HeaderLabel" colspan="6">Purchase Order</td>
+         </tr>
+         <tr>
+            <td class="Label"><!--#SMARTFIELD title="Customer Name:" div="</td><td>" name="work_site_cust_name" --></td>
+            <td class="Label"><!--#SMARTFIELD title="PO#:" div="</td><td>" name="po_no" --></td>
+            <td class="Label"><!--#SMARTFIELD title="PO Line#:" div="</td><td>" name="po_line_no" --></td>
+            <td>&nbsp;</td><td>&nbsp;</td>
+         </tr>
+         <tr>
+            <td class="Label"><!--#SMARTFIELD title="Address1:" div="</td><td>" name="ws_address1" --></td>
+            <td class="Label"><!--#SMARTFIELD title="PO Line Qty:" div="</td><td>" name="po_line_qty" --></td>
+            <td class="Label"><!--#SMARTFIELD title="Unit Price:" div="</td><td>" name="unit_price" type="money" --></td>
+            <td class="Label"><!--#SMARTFIELD title="Extended Price:" div="</td><td>" name="extended_price" type="money" --></td>
+         </tr>
+         <tr>
+            <td class="Label"><!--#SMARTFIELD title="Address2:" div="</td><td>" name="ws_address2" --></td>
+            <td class="Label"><!--#SMARTFIELD title="Date Released:" div="</td><td>" name="date_released" type="datetime" --></td>
+            <td class="Label"><!--#SMARTFIELD title="Est. Start Date:" div="</td><td>" name="est_start_date" type="date" --></td>
+            <td class="Label"><!--#SMARTFIELD title="Est. Start Time:" div="</td><td>" name="est_start_time" type="time" --></td>
+         </tr>
+         <tr>
+            <td class="Label"><!--#SMARTFIELD title="Address3:" div="</td><td>" name="ws_address3" --></td>
+            <td>&nbsp;</td><td>&nbsp;</td>
+            <td>&nbsp;</td><td>&nbsp;</td>
+            <td>&nbsp;</td><td>&nbsp;</td>
+         </tr>
+         <tr>
+            <td class="HeaderLabel" colspan="4">Special Instructions</td>
+            <td class="Label"><!--#SMARTFIELD title="Warehouse Code:" div="</td><td>" name="warehouse_code" --></td>
+         </tr>
+         <tr>
+            <td class="Label" colspan="4" rowspan="2">
+               <!--#SMARTFIELD title="" name="special_instr" type="textarea" cols="50" rows="3" -->
+            </td>
+             <td class="Label"><!--#SMARTFIELD title="Delivery Code:" div="</td><td>" name="delivery_code" --></td>
+         </tr>
+         <tr>
+            <td class="Label"><!--#SMARTFIELD title="Charge Code:" div="</td><td>" name="charge_code" --></td>
+         </tr>
+         <tr>
+            <td class="HeaderLabel" colspan="4">Product Setup Description:</td>
+            <td class="Label"><!--#SMARTFIELD title="Punchlist Code:" div="</td><td>" name="punchlist_code" --></td>
+         </tr>
+         <tr>
+            <td class="Label" colspan="4" rowspan="6">
+               <!--#SMARTFIELD title="" name="product_setup_desc" type="textarea" cols="50" rows="6" -->
+            </td>
+            <td class="Label"><!--#SMARTFIELD title="Wood Product:" div="</td><td>" name="wood_product_flag" --></td>
+         </tr>
+         <tr>
+            <td class="Label"><!--#SMARTFIELD title="Blueprint Location:" div="</td><td>" name="blueprint_location" --></td>
+         </tr>
+         <tr>
+            <td>&nbsp;</td><td>&nbsp;</td>
+         </tr>
+         <tr>
+            <td>&nbsp;</td><td>&nbsp;</td>
+         </tr>
+         <tr>
+            <td>&nbsp;</td><td>&nbsp;</td>
+         </tr>
+         <tr>
+            <td>&nbsp;</td><td>&nbsp;</td>
+         </tr>
+         <tr>
+            <td class="HeaderLabel" colspan="8">Original Text</td>
+         </tr>
+         <tr>
+            <td class="Label" colspan="8" rowspan="6">
+               <!--#SMARTFIELD title="" name="text_to_parse" type="textarea" cols="100" rows="6" -->
+            </td>
+         </tr>
+
+     </table>
+  </td></tr>
+  </table>
+
+<!--#/SMARTFORM -->
+
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

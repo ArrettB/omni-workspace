@@ -1,0 +1,112 @@
+#set ($alias = $table.destinationClassName) 
+#set ($pkCol = $table.pkColumn) 
+
+#macro(paramRef $ref)param.$ref#end
+
+<%@ include file="/WEB-INF/jsp/include.jsp" %>
+
+<html>
+<head><title><fmt:message key="${alias}_detail.title"/></title></head>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/main.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/extremecomponents.css">
+
+<body>
+
+
+<form:form name="detail" redisplayView="${table.destinationClassName}_listing.html" dependentCaches="${table.destinationClassName}">
+
+	<form:audit auditRef="audit" auditUserId="" />
+	<form:domain domainRef="${alias}" 
+		auditRef="audit"
+		domainName="${table.package}.${table.destinationClassName}"
+		identifier="${#paramRef($pkCol.variableName)}" 
+		commitOrder="1" />
+	
+	<tr>
+		<td class="error"><form:errors/></td>
+	</tr>
+	<tr>
+		<td>
+			<table class="formTable" cellspacing="1" cellpadding="0" border="0">
+				<tr>
+					<td colspan="2" class="tableHeader"><spring:message code="${alias}_detail.heading"/></td>
+				</tr>
+
+
+#foreach( $column in $table.notKeyColumns )
+				 <tr>
+					<td class="formLabel"><spring:message code="${alias}_detail.${column.variableName}.label" /></td>
+					<td class="formField"><form:text domainRef="${alias}" property="${column.variableName}" required="true" /></td>
+				</tr>
+#end
+
+
+#foreach($relationshipRole in $table.notPrimaryKeyRoles)
+#if ($table.getCardinalityValue($relationshipRole) == "many-to-one" && $relationshipRole.enabled)
+#set( $target = $relationshipRole.getTarget($plugin))
+#foreach( $column in $target.notKeyColumns )
+#if( ${column.variableName} == "name")
+				 <tr>
+					<td class="formLabel">$target.destinationClassName</td>
+					<td class="formField">
+						<form:chooser 
+						      domainRef="${alias}"
+						      property="${table.getVariableName($relationshipRole)}"
+						      chooserURL=""
+						      chooserWidth=""
+						      chooserHeight=""
+						      optionValue="${target.pkColumn.variableName}"
+						      optionLabel="${column.variableName}"
+						      queryService="queryService"
+						      queryName="${target.destinationClassName}_all"
+						      readonly="true"
+						      style="background-color:#DCDCDC"/>
+					</td>
+				</tr>
+
+#end
+#end
+#end
+#end
+
+			</table>
+
+
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div id="strutsButtons">
+				<form:save styleClass="button" name="Save" value="Save" view="groups.tile"/>
+				<form:delete styleClass="button" name="Delete" value="Delete" view="groups.tile"/> 
+				<form:cancel styleClass="button" name="Cancel" value="Cancel" view="groups.tile"/>
+			</div>
+		</td>
+	</tr>
+</table>
+
+</form:form> 
+
+Related tables:
+<ul>
+#foreach($relationshipRole in $table.notPrimaryKeyRoles)
+#if ($table.getCardinalityValue($relationshipRole) == "one-to-many" && $relationshipRole.enabled)
+
+#set( $one2one = $relationshipRole.relation.one2One )
+#set( $many2many = $relationshipRole.relation.many2Many )
+#set( $bidirectional = $relationshipRole.relation.bidirectional )
+#set( $target = $relationshipRole.getTarget($plugin))
+
+  <c:url value="${target.destinationClassName}_listing_q.html" var="foo">
+   <c:param name="queryName" value="${table.getVariableName($relationshipRole)}From${table.destinationClassName}"/>   	
+   <c:param name="fk" value="${#paramRef($pkCol.variableName)}"/>   	
+ </c:url>
+ 
+ <li><a href="<c:out value="${foo}"/>">${target.destinationClassName}</a></li>
+
+#end
+#end
+</ul>
+
+</body>
+</html>    

@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.LookupType" table="LOOKUP_TYPES" schema="dbo" catalog="">
+        <id name="lookupTypeId" type="java.lang.Long">
+            <column name="LOOKUP_TYPE_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="lookupType" class="com.dynamic.servicetrax.orm.LookupType" fetch="select">
+            <column name="PARENT_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="userByModifiedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="userByCreatedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="code" type="string">
+            <column name="CODE" length="30" />
+        </property>
+        <property name="name" type="string">
+            <column name="NAME" length="100" />
+        </property>
+        <property name="activeFlag" type="string">
+            <column name="ACTIVE_FLAG" length="1" not-null="true" />
+        </property>
+        <property name="updatableFlag" type="string">
+            <column name="UPDATABLE_FLAG" length="1" not-null="true" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <set name="lookupTypes" inverse="true">
+            <key>
+                <column name="PARENT_TYPE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.LookupType" />
+        </set>
+        <set name="lookups" inverse="true">
+            <key>
+                <column name="LOOKUP_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Lookup" />
+        </set>
+    </class>
+</hibernate-mapping>

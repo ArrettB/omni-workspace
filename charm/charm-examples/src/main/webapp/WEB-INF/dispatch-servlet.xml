@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+	
+	<bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		
+		<property name="interceptors">
+			<list>
+				<ref bean="contextInterceptor"/>
+				<ref bean="requestInterceptor"/>
+				<ref bean="openSessionInViewInterceptor"/>
+			</list>
+		</property>
+		<property name="mappings">
+			<props>
+				<prop key="/**/*.html">viewController</prop>
+				<prop key="/**/*.form">formController</prop>
+				<prop key="/**/guess.form">guessController</prop>
+				<!-- <prop key="/**/logout.go">logoutController</prop>  -->
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="contextInterceptor" class="com.dynamic.charm.web.interceptor.ContextHolderInterceptor">
+	</bean>
+	
+	<bean id="requestInterceptor" class="com.dynamic.charm.web.interceptor.RequestInterceptor">
+	</bean>
+	
+	<bean id="viewController" class="com.dynamic.charm.web.controller.UrlFilenameViewController"/>
+	
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+		<property name="prefix" value="/WEB-INF/jsp/"/>
+		<property name="suffix" value=".jsp"/>
+	</bean>
+	
+	<bean id="hibernateProcessor" class="com.dynamic.charm.web.form.controller.HibernateProcessor">
+		<property name="hibernateService" ref="hibernateService"/>
+	</bean>
+	
+	<bean id="auditProcessor" class="com.dynamic.charm.web.form.controller.AuditProcessor">
+		<property name="securityService" ref="securityService"/>
+		<property name="dateCreatedProperty" value="dateCreated"/>
+		<property name="createdByProperty" value="createdBy"/>
+		<property name="dateModifiedProperty" value="dateModified"/>
+		<property name="modifiedByProperty" value="modifiedBy"/>
+	</bean>
+	
+	<bean id="formController" class="com.dynamic.charm.web.form.controller.FormController">
+		<property name="invalidFormView">
+			<value>bad_form</value>
+		</property>
+		<property name="processorList">
+			<list>
+				<ref bean="auditProcessor"/>
+				<ref bean="hibernateProcessor"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="guessController" class="com.dynamic.charm.examples.web.controller.GuessController">
+		<property name="successView" value="guess_good" />
+		<property name="formView" value="guess" />
+		<property name="min" value="1" />
+		<property name="max" value="40" />
+	</bean>
+	
+	<bean id="rowDecorator" class="com.dynamic.charm.web.form.tag.decorator.RowDecoratorWithLabel">
+		<property name="rowCss" value="formRow"/>
+		<property name="errorCss" value="errorFieldRow"/>
+		<property name="mandatoryRowCss" value="mandatoryFormRow"/>
+		<property name="labelCss" value="label"/>
+		<property name="inputCss" value="control"/>
+	</bean>
+	
+	<bean id="rowDecoratorDate" class="com.dynamic.charm.web.form.tag.decorator.RowDecoratorWithLabel">
+		<property name="rowCss" value="formRow"/>
+		<property name="errorCss" value="errorFieldRow"/>
+		<property name="mandatoryRowCss" value="mandatoryFormRow"/>
+		<property name="labelCss" value="label"/>
+		<property name="inputCss" value="date"/>
+	</bean>
+	
+	<bean id="defaultDecorator" class="com.dynamic.charm.web.form.tag.decorator.DivDecorator">
+		<property name="divCss" value="formRow"/>
+		<property name="errorCss" value="errorFieldRow"/>
+		<property name="mandatoryDivCss" value="mandatoryFormRow"/>
+		<property name="labelCss" value="label"/>
+		<property name="inputCss" value="control"/>
+	</bean>
+	
+	<bean id="defaultDecoratorDate" class="com.dynamic.charm.web.form.tag.decorator.DivDecorator">
+		<property name="divCss" value="formRow"/>
+		<property name="errorCss" value="errorFieldRow"/>
+		<property name="mandatoryDivCss" value="mandatoryFormRow"/>
+		<property name="labelCss" value="label"/>
+		<property name="inputCss" value="date"/>
+	</bean>
+
+	<bean id="divDecorator" class="com.dynamic.charm.web.form.tag.decorator.DivDecorator">
+		<property name="divCss" value="formRow"/>
+		<property name="errorCss" value="errorFieldRow" />
+		<property name="mandatoryDivCss" value="mandatoryFormRow" />
+		<property name="labelCss" value="label" />
+		<property name="inputCss" value="control" />
+	</bean>
+	
+	<bean id="paraDecorator" class="com.dynamic.charm.web.form.tag.decorator.ParagraphDecorator">
+		<property name="errorClass" value="error"/>
+		<property name="mandatoryClass" value="mandatory"/>
+	</bean>
+	
+	
+</beans>

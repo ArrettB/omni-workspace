@@ -1,0 +1,70 @@
+<!--#EMBED template="pocket/embeds/header.html" title="Req/Project Site"-->
+
+<!--#EMBED template="pocket/embeds/title_bar.html" title="Req/Project Site"-->
+
+<!--#EMBED template="embeds/spacer_table.html" spacer_height="5"-->
+
+
+<!--#SQLLOOP
+     name="detail"
+     query="SELECT delivery_by, plan_name, wall_mount, dock_time, elev_time
+			  FROM pkt_services_v
+			  WHERE service_id = <?p:service_id.toPStmtString()?>"
+	 alternator1="#FFFFFF:#DCDCDC"
+-->
+
+
+<table cellspacing="2" cellpadding="0" width="100%">
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Delivery By</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana">{!r:detail:delivery_by!}</font>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Plan?</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana">{!r:detail:plan_name!}</font>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Wall Mount</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana">{!r:detail:wall_mount!}</font>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Dock Time</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana">{!r:detail:dock_time.datetime!}</font>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Elev Time</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana">{!r:detail:elev_time.datetime!}</font>
+		</td>
+	</tr>
+</table>
+<!--#/SQLLOOP-->
+
+<table cellspacing="2" cellpadding="0" width="100%">
+	<!--#EMBED template="embeds/spacer_row.html" spacer_height="10"-->
+	<tr>
+		<td align="center">
+			<font color="#000000" size="-2" face="Verdana"><b><a href="{!s:showPage!}pocket/project_list.html?job_id={!p:job_id!}&dest_template={!p:dest_template!}">Req List</a></b></font>
+		</td>
+	</tr>
+</table>
+
+<!--#EMBED template="pocket/embeds/footer.html"-->

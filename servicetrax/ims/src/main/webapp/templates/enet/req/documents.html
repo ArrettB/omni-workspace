@@ -1,0 +1,100 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<body>
+  <table>
+	<tr>
+	  <td valign="top">
+<!--#IF  evaluate="<?s:request_type_code?>" compare="quote_request"-->
+		<!--#SMARTTABLE name="attachedDocuments"
+	 	                query="SELECT DISTINCT rd.request_document_id,
+	 	                              rd.name,
+	 	                              u.full_name created_by,
+	 	                              rd.date_created
+			 	                 FROM request_documents rd,
+			 	                      users u
+				                WHERE (rd.request_id = <?s:request_id.toPStmtInt()?> OR
+				                       rd.request_id IN (SELECT request_id FROM requests
+				                                          WHERE project_id=<?s:project_id.toPStmtInt()?>
+				                                            AND request_no=<?s:request_no.toPStmtInt()?>
+				                                            AND version_no <=<?s:version_no.toPStmtInt()?>
+				                                            AND request_type_id=<?s:request_type_id.toPStmtInt()?>))
+				                  AND rd.created_by = u.user_id"  -->
+
+			<!--#SMARTCOLUMN name="name" title="Name" style="width:200" href="javascript:download(<?r:attachedDocuments:request_document_id?>)" -->
+			<!--#SMARTCOLUMN name="created_by" title="Created By" style="width:100" -->
+			<!--#SMARTCOLUMN name="date_created" title="Date Created" format="date" -->
+			<!--#SMARTCOLUMN name="delete" title="Delete" value="Delete" href="javascript:deleteDocument(<?r:attachedDocuments:request_document_id?>, <?r:attachedDocuments:name.toJavaScriptString()?>)" -->
+		<!--#/SMARTTABLE -->
+<!--#ELSE-->
+		<!--#SMARTTABLE name="attachedDocuments"
+	 	                query="SELECT DISTINCT rd.request_document_id,
+	 	                              rd.name,
+	 	                              u.full_name created_by,
+	 	                              rd.date_created
+			 	                 FROM request_documents rd,
+			 	                      users u
+				                WHERE (rd.request_id = <?s:request_id.toPStmtInt()?> OR
+				                       rd.request_id = <?s:quote_request_id.toPStmtInt()?> OR
+				                       rd.request_id = (SELECT quote_request_id FROM requests WHERE request_id = <?s:request_id.toPStmtInt()?>))
+				                  AND rd.created_by = u.user_id"  -->
+
+			<!--#SMARTCOLUMN name="name" title="Name" style="width:200" href="javascript:download(<?r:attachedDocuments:request_document_id?>)" -->
+			<!--#SMARTCOLUMN name="created_by" title="Created By" style="width:100" -->
+			<!--#SMARTCOLUMN name="date_created" title="Date Created" format="date" -->
+			<!--#SMARTCOLUMN name="delete" title="Delete" value="Delete" href="javascript:deleteDocument(<?r:attachedDocuments:request_document_id?>, <?r:attachedDocuments:name.toJavaScriptString()?>)" -->
+		<!--#/SMARTTABLE -->
+<!--#/IF-->
+		  </td>
+		</tr>
+		<form action="{!s:action!}requestDocumentUpload/enet/req/documents.html" method="post" enctype="multipart/form-data" onsubmit="return validate({!s:request_id.toJavaScriptString()!});">
+		<tr>
+			<td valign="top">
+				<span>Select document:</span>
+				<input type="file" name="uploadedFile" >&nbsp;<input type="Submit" class="button" value="Add" name="Submit" >
+			</td>
+		</tr>
+		<!--#IF defined="<?d:error_message?>" -->
+		<tr>
+			<td valign="top">
+				<span class="error">{!d:error_message.toHTML()!}</span>
+			</td>
+		</tr>
+		<!--#/IF -->
+		<tr>
+			<td valign="top">
+				<span>To add a new document browse to the file and click Add</span>
+			</td>
+		</tr>
+		</form>
+	</table>
+</body>
+<script language="JavaScript">
+function deleteDocument(requestDocumentId, documentName)
+{
+	if (confirm("Delete the document " + documentName + "?"))
+	{
+		var url = {!s:action.toJavaScriptString()!} + 'requestDocumentDelete/enet/req/documents.html'
+		+ '?request_document_id=' + requestDocumentId;
+		document.location.replace(url);
+	}
+}
+
+function download(requestDocumentId)
+{
+	var url = {!s:action.toJavaScriptString()!} + 'requestDocumentDownload'
+	+ '?request_document_id=' + requestDocumentId;
+	window.open(url, 'chooser', ##-WIN-##);
+}
+
+function validate(requestId)
+{
+	var result = true;
+	if (requestId === '')
+	{
+		alert("The request must be saved before documents may be added.");
+		result = false;
+	}
+	return result;
+}
+</script>
+</html>

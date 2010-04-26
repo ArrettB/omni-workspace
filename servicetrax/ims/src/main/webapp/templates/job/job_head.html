@@ -1,0 +1,80 @@
+<!-- $Header: job_head.html, 41, 8/2/2005 12:34:10 PM, Blake Von Haden$ -->
+<!--#EMBED template="embeds/header.html" -->
+<!--#EMBED template="embeds/tab_scripts.html" tab_type_code="JOB" tab_view="template_locations_2_v" -->
+
+<body class="BodyTag" onLoad="selectTab()">
+	<table cellpadding="0" cellspacing="0" width="100%">
+	<!--#SQLLOOP
+	     name="jh"
+	     query="SELECT job_no, job_type_name, dealer_name, customer_name, end_user_name, job_name, job_status_type_name
+	              FROM jobs_v
+	             WHERE job_id = <?s:job_id.toPStmtString()?>"
+	-->
+		<tr>
+			<td width="15%" align="middle" style="padding-right:10px">
+				<table cellpadding="0" cellspacing="0" width="100%">
+					<tr>
+						<td nowrap>Job #:</td>
+						<td><input type="text" name="job_no" value="{!r:jh:job_no!}" readonly class="viewonly"></td>
+					</tr>
+				</table>
+			</td>
+			<td width="15%" align="middle" style="padding-right:10px">
+				<table cellpadding="0" cellspacing="0" width="100%">
+					<tr>
+						<td nowrap>Job Type:</td>
+						<td><input type="text" name="job_type" value="{!r:jh:job_type_name!}" readonly class="viewonly"></td>
+					</tr>
+				</table>
+			</td>
+<!--
+			<td width="15%" align="middle" style="padding-right:10px">
+				<table cellpadding="0" cellspacing="0" width="100%">
+					<tr>
+						<td nowrap>Dealer:</td>
+						<td><input type="text" name="dealer_name" value="{!r:jh:dealer_name!}" readonly class="viewonly"></td>
+					</tr>
+				</table>
+			</td>
+-->
+			<td width="15%" align="middle" style="padding-right:10px">
+				<table cellpadding="0" cellspacing="0" width="100%">
+					<tr>
+						<td nowrap>Customer:</td>
+						<td><input type="text" name="customer_name" value="{!r:jh:customer_name!}" readonly class="viewonly"></td>
+					</tr>
+				</table>
+			</td>
+			<td width="15%" align="middle" style="padding-right:10px">
+				<table cellpadding="0" cellspacing="0" width="100%">
+					<tr>
+						<td nowrap>End User:</td>
+						<td><input type="text" name="end_user_name" value="{!r:jh:end_user_name!}" readonly class="viewonly"></td>
+					</tr>
+				</table>
+			</td>
+			<td width="20%" align="middle" style="padding-right:10px">
+				<table cellpadding="0" cellspacing="0" width="100%">
+					<tr>
+						<td nowrap>Job Name:</td>
+						<td><input type="text" name="job_name" value="{!r:jh:job_name!}" readonly class="viewonly"></td>
+					</tr>
+				</table>
+			</td>
+			<td width="20%" align="middle" style="padding-right:10px">
+				<table cellpadding="0" cellspacing="0" width="100%" >
+					<tr>
+						<td nowrap>Job Status:</td>
+						<td><input type="text" name="job_status_type_name" value="{!r:jh:job_status_type_name!}" readonly class="viewonly"></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	<!--#/SQLLOOP-->
+	<table>
+
+<!--#EMBED template="embeds/tab_table.html" tab_type_code="JOB" tab_view="template_locations_2_v" -->
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

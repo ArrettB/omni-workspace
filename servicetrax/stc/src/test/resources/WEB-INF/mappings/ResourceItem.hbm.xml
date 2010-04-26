@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.ResourceItem" table="RESOURCE_ITEMS" schema="dbo" catalog="">
+        <id name="resourceItemId" type="java.lang.Long">
+            <column name="RESOURCE_ITEM_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="item" class="com.dynamic.servicetrax.orm.Item" fetch="select">
+            <column name="ITEM_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="resource" class="com.dynamic.servicetrax.orm.Resource" fetch="select">
+            <column name="RESOURCE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="userByModifiedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="userByCreatedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="defaultItemFlag" type="string">
+            <column name="DEFAULT_ITEM_FLAG" length="1" not-null="true" />
+        </property>
+        <property name="maxAmount" type="big_decimal">
+            <column name="MAX_AMOUNT" precision="10" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+    </class>
+</hibernate-mapping>

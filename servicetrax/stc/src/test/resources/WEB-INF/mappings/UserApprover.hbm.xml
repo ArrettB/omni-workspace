@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.UserApprover" table="USER_APPROVERS" schema="dbo" catalog="">
+        <id name="userApproverId" type="java.lang.Long">
+            <column name="user_approver_id" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="user" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="user_id" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="customer" class="com.dynamic.servicetrax.orm.Customer" fetch="select">
+            <column name="customer_id" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

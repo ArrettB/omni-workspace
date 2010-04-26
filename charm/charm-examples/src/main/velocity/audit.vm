@@ -1,0 +1,39 @@
+#set ($stmt_sep = ";")
+
+#foreach ($table in $tables)
+  #set ($name = $table.name) 
+  #if (!$name.endsWith("audit"))
+    #set ($audit_table_name = "${table.name}_audit")
+    
+DROP TABLE IF EXISTS ${audit_table_name}${stmt_sep}
+  #end
+#end
+
+#foreach ($table in $tables)
+  #set ($name = $table.name) 
+  #set ($audit_table_name = "${table.name}_audit")
+  #set ($pkCol = $table.pkColumn) 
+  #if (!$name.endsWith("audit"))
+CREATE TABLE ${audit_table_name} (
+  ${audit_table_name}_id integer NOT NULL AUTO_INCREMENT,
+    #foreach( $column in $table.columns )
+      #if ($column.sqlTypeName == "varchar")
+ ${column.sqlName} ${column.sqlTypeName} (${column.size}) #if(! $column.nullable) NOT #end NULL,
+      #else
+ ${column.sqlName} ${column.sqlTypeName} #if(! $column.nullable) NOT #end NULL,
+      #end
+    #end
+  audit_type_code varchar(1) NOT NULL,
+  audit_user_id integer NOT NULL,
+  audit_valid_start datetime NOT NULL,
+  audit_valid_end datetime NULL,  
+  audit_is_current varchar(1) NULL,
+  PRIMARY KEY (${audit_table_name}_id)
+)
+TYPE=InnoDB${stmt_sep}
+
+CREATE INDEX ${audit_table_name}_idx ON ${audit_table_name} (#foreach( $column in $table.primaryKeyColumns )${column.sqlName}, #end audit_is_current)${stmt_sep}
+
+  #end
+#end
+

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<faqs title="About Charm">
+
+  <part id="about">
+    <faq id="what-is-charm">
+      <question>What is Charm?</question>
+      <answer>
+        <p>
+          3rd time's the charm!
+        </p>
+      </answer>
+    </faq>
+  </part>
+</faqs>
+

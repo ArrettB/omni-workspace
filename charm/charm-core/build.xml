@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+
+<!-- 
+The DOCTYPE declaration declares the location of product-specific parts of the
+Ant build file. You can change the values of these declarations to point to
+other available files. This gives you an opportunity to choose what database
+and EJB container to use for the Middlegen samples.
+
+Note that this syntax has nothing to do with Ant or Middlegen. This
+is the standard way defined by w3c to dynamically include external
+files in an XML document. Any decent XML parser will do the include
+transparently. Try to open this file in Internet Explorer and see
+for yourself.
+-->
+
+<!DOCTYPE project [
+   
+]>
+
+
+
+<project name="Charm Based Project" default="copy_web" basedir="." xmlns:ivy="antlib:fr.jayasoft.ivy.ant" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+	
+	<!-- grab system environment and prepend with env. -->
+	<property environment="env" />
+
+	<!-- User Properties From File -->
+	<property file="${user.home}\build.properties" />
+	<!-- Load Project Properties From File 
+	
+	    MUST DEFINE THE FOLLOWING:
+		jdbc.user
+		jdbc.password
+		jdbc.schema
+		jdbc.driver
+		jdbc.url
+		jdbc.org
+		jdbc.artifact
+		jdbc.version
+		hibernate.dialect
+	-->
+	<property file="src\main\filters\dev-filter.properties" />
+
+	<import file="${work.home}/common/build-common.xml"/>
+
+	<!-- Source Paths -->
+	<property name="src.dir" value="src/main" />
+	<property name="src.java.dir" value="${src.dir}/java" />
+	<property name="src.web.dir" value="${src.dir}/webapp" />
+	<property name="src.resources.dir" value="${src.dir}/resources" />
+	<property name="src.velocity.dir" value="${src.dir}/velocity" />
+	<property name="src.tld.dir" value="${src.dir}/tld" />
+	<property name="src.hibernate.dir" value="${src.web.dir}/WEB-INF/mappings" />
+
+	<!-- Test Source Paths -->
+	<property name="test.dir" value="test" />
+	<property name="test.includes" value="**/*Test.class" />
+	<property name="test.excludes" value="**/Abstract*" />
+
+	<!-- Target Paths -->
+	<property name="target.dir" value="target" />
+	<property name="target.web.dir" value="${target.dir}/web" />
+	<property name="target.webinf.dir" value="${target.web.dir}/WEB-INF" />
+	<property name="target.classes.dir" value="${target.dir}/classes" />
+	<property name="target.reports.dir" value="${target.dir}/reports/" />
+	<property name="target.mockclasses.dir" value="${target.dir}/mock-classes" />
+	<property name="target.testclasses.dir" value="${target.dir}/test-classes/" />
+	<property name="target.testreports.dir" value="${target.dir}/test-reports/" />
+	<property name="target.testsummary.dir" value="${target.dir}/test-summary/" />
+
+	<!-- Target Paths For Generation -->
+	<property name="target.gen.dir" value="${target.dir}/generated" />
+	<property name="target.gen.hibernate.dir" value="${target.gen.dir}/hibernate/" />
+	<property name="target.gen.webinf.dir" value="${target.gen.dir}/webinf" />
+	<property name="target.gen.middlegen.dir" value="${target.gen.dir}/middlegen" />
+
+	<property name="central.deploy.dir" value="\\bentley\home\maven\tomcat\webapps\ROOT\charm\"/>
+
+	<target name="init" description="Used to initialize the build" depends="">
+
+		<condition property="deploy.dir" value="${env.TOMCAT_HOME}\webapps">
+			<isset property="env.TOMCAT_HOME" />
+		</condition>
+		<condition property="deploy.dir" value="${env.CATALINA_HOME}\webapps">
+			<isset property="env.CATALINA_HOME" />
+		</condition>
+
+		<condition property="do_production" value="true">
+			<isset property="production" />
+		</condition>
+
+		<echo message="ANT_HOME = ${env.ANT_HOME}" />
+		<echo message="JAVA_HOME = ${env.JAVA_HOME}" />
+		<echo>Using ${deploy.dir} for deployment.</echo>
+
+		<!-- Create the time stamp -->
+		<tstamp>
+			<format property="dateStamp" pattern="yyyy-MM-dd" locale="en" />
+		</tstamp>
+
+		<filterchain id="resource.filters">
+			<replacetokens>
+				<token key="VERSION" value="${version}" />
+				<token key="DATE" value="${TODAY}" />
+				<token key="TIME" value="${TSTAMP}" />
+			</replacetokens>
+		</filterchain>
+
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${target.dir}" />
+	</target>
+
+
+	<target name="tlddoc" description="generates tld documentation">
+		
+		<exec executable="cmd.exe" dir="." spawn="false">
+		</exec>		
+		
+		<java fork="true" jar="${tlddoc.home}/tlddoc.jar" failonerror="true">
+			<arg line="-d ${target.dir}/doc/tld"/>
+			<arg value="target/classes/META-INF/${application.shortname}.tld"/>
+		</java>
+
+		<copy todir="${central.deploy.dir}/tld">
+			<fileset dir="${target.dir}/doc/tld">
+			</fileset>
+		</copy>
+
+	</target>
+
+	<target name="clean">
+
+		<delete dir="${target.classes.dir}" />
+		<delete dir="${target.web.dir}" />
+		<delete dir="${target.webinf.dir}" />
+		<delete dir="${target.classes.dir}" />
+		<delete dir="${target.reports.dir}" />
+		<delete dir="${target.mockclasses.dir}" />
+		<delete dir="${target.testclasses.dir}" />
+		<delete dir="${target.testreports.dir}" />
+		<delete dir="${target.junit.reports.dir}" />
+		<delete dir="${target.testsummary.dir}" />
+		<delete dir="${target.gen.dir}" />
+		<delete dir="${target.gen.hibernate.dir}" />
+		<delete dir="${target.gen.webinf.dir}" />
+		<delete dir="${target.gen.tld.dir}" />
+
+		<!-- Just kill target dir (it's safer). No need at this point to keep it. -->
+		<delete dir="${target.dir}" />
+
+		<delete dir="${dist.dir}" />
+		<delete dir="${javadocs.dir}" />
+	</target>
+
+	<target name="info" description="Echoes useful system properties">
+		<echo message="java.vm.info=${java.vm.info}" />
+		<echo message="java.vm.name=${java.vm.name}" />
+		<echo message="java.vm.vendor=${java.vm.vendor}" />
+		<echo message="java.vm.version=${java.vm.version}" />
+		<echo message="os.arch=${os.arch}" />
+		<echo message="os.name=${os.name}" />
+		<echo message="os.version=${os.version}" />
+		<echo message="java.home = ${java.home}" />
+		<!--
+        <echo message="java.class.path = ${java.class.path}"/>
+ -->
+		<echo message="build.compiler = ${build.compiler}" />
+		<echo message="file.encoding=${file.encoding}" />
+		<echo message="user.home = ${user.home}" />
+		<echo message="user.language=${user.language}" />
+
+		<pathconvert targetos="windows" property="foo" refid="hibernate.classpath" />
+
+		<echoproperties>
+			<propertyset>
+				<propertyref prefix="maven" />
+
+			</propertyset>
+		</echoproperties>
+
+
+
+	</target>
+
+
+</project>

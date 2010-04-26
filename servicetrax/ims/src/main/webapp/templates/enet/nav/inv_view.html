@@ -1,0 +1,85 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<body class="BodyTag" onLoad="">
+
+<span class="Label">
+You may choose a project folder to view that Project's details.
+</span>
+
+
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="iev" var="mainQuery"
+		query="SELECT iev.project_id, iev.project_no, iev.customer_name,iev.end_user_name, iev.job_name,
+		              iev.project_status_type_name, iev.invoice_status_name,
+					  iev.po_no, iev.invoice_total, invoiced_date, invoice_id, invoice_type_name, null empty
+				 FROM invoices_extranet_v iev
+				WHERE iev.organization_id = <?s:org_id.toPStmtString()?>
+		  	 ORDER BY iev.project_no desc, iev.po_no" -->
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="iev" var="customerQuery"
+		query="SELECT DISTINCT
+                      iev.customer_id,
+                      iev.customer_name
+                 FROM (SELECT CASE WHEN customer_type.code = 'end_user' THEN c.end_user_parent_id ELSE p.customer_id END customer_id,
+                              CASE customer_type.code WHEN 'end_user' THEN pc.customer_name ELSE c.customer_name END customer_name,
+                              CASE WHEN customer_type.code = 'dealer' THEN ISNULL(c.ext_customer_id, c.ext_dealer_id) ELSE c.ext_dealer_id END ext_dealer_id
+                         FROM projects p JOIN
+                              customers c ON p.customer_id = c.customer_id LEFT JOIN
+                              customers pc ON c.end_user_parent_id = pc.customer_id JOIN
+                              lookups customer_type ON c.customer_type_id = customer_type.lookup_id
+                        WHERE c.organization_id = <?s:org_id.toPStmtString()?>
+                       ) iev
+              ORDER BY iev.customer_name" -->
+
+
+<!--EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="iev" var="dealerQuery"
+		query="SELECT DISTINCT iev.ext_dealer_id, iev.dealer_name
+				 FROM invoices_extranet_v iev
+				WHERE iev.organization_id = <?s:org_id.toPStmtString()?>
+		   	 ORDER BY iev.dealer_name" -->
+
+
+<!--#SMARTTABLE name="inv_view"
+		class="SmartTable"
+		query="<?d:mainQuery?>"
+-->
+	<!--#SMARTCOLUMN name="project_no" sort="project_no" title="Project #" width="8%" align="center" nowrap href="<?s:action?>setProjectDatum?project_id=<?r:inv_view:project_id?>&templateName=enet/proj/pf_main.html&request_id=" target="_top" filter="project_no:project_no" -->
+<!--#IF evaluate="<?r:inv_view:invoiced_date?>" compare=""-->
+	<!--#SMARTCOLUMN name="invoice_id" sort="invoice_id" title="Invoice #" width="8%" align="center" value="" filter="invoice_id:invoice_id" -->
+<!--#ELSE-->
+	<!--#SMARTCOLUMN name="invoice_id" sort="invoice_id" title="Invoice #" width="8%" align="center" nowrap href="" onClick="showDetail('<?r:inv_view:invoice_id?>');return false;" filter="invoice_id:invoice_id" -->
+<!--#/IF-->
+	<!--#SMARTCOLUMN name="customer_name" sort="iev.customer_name" title="Customer" width="20%"
+		filter="customer_name:iev.customer_name" filterQuery="<?d:customerQuery?>" filterQuick="true" -->
+	<!--#SMARTCOLUMN name="end_user_name" sort="end_user_name" title="End User" width="20%" filter="end_user_name:end_user_name" -->
+	<!--#SMARTCOLUMN name="job_name" sort="job_name" title="Job Name" width="20%" filter="job_name:job_name" -->
+	<!--#SMARTCOLUMN name="project_status_type_name" sort="project_status_type_name" title="Project Status" width="8%" nowrap
+		filter="project_status_type_name:project_status_type_name" filterQuery="SELECT lookup_name id, lookup_name FROM project_status_types_v" filterQuick="true"
+	 -->
+	<!--#SMARTCOLUMN name="po_no" sort="po_no" title="PO&nbsp;#" width="10%" value="<?r:inv_view:po_no.isNull('None')?>" align="center" filter="po_no:po_no" -->
+	<!--#SMARTCOLUMN name="invoice_status_name" sort="invoice_status_name" title="Inv Status" width="8%" nowrap
+		filter="invoice_status_name:invoice_status_name" filterQuery="SELECT name id, name FROM invoice_statuses ORDER BY status_id" filterQuick="true"
+	-->
+	<!--#SMARTCOLUMN name="invoice_type_name" sort="invoice_type_name" title="Bill" width="15%" filter="invoice_type_name:invoice_type_name" -->
+	<!--#SMARTCOLUMN name="invoiced_date" sort="invoiced_date" title="Invoice&nbsp;Date" format="date" width="15%" -->
+	<!--#SMARTCOLUMN name="invoice_total" sort="invoice_total" title="Total Amt" format="money" width="10%" align="right" -->
+
+	<!--#SMARTCOLUMN name="empty" sort="empty" title="" width="5%" -->
+
+<!--#/SMARTTABLE -->
+
+<script language="JavaScript">
+<!--
+
+	function showDetail(invoice_id) //display inv detail popup window
+	{
+		if( invoice_id == null )
+			invoice_id = '';
+		newWindowScrollBars("{!s:showPage!}enet/nav/inv_detail.html?invoice_id="+invoice_id, "invoice_detail_window",400,700);
+	}
+
+-->
+</script>
+
+<!--#EMBED template="enet/embeds/footer.html" -->
+

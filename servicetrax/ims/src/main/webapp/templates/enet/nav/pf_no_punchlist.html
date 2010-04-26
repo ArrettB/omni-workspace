@@ -1,0 +1,72 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<body class="BodyTag" onLoad="">
+
+<span class="Label">The following project folders do not have any punchlists:</span>
+<span class="">To create a Punchlist, select a Project Folder</span>
+
+
+
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="rpv" var="mainQuery"
+		query="SELECT rpv.request_id, rpv.project_id, rpv.project_no, rpv.request_no, rpv.project_request_no, rpv.dealer_name, rpv.ext_dealer_id, rpv.customer_name,
+					  rpv.job_name, rpv.request_type_code, rpv.request_status_type_code, rpv.request_status_type_name, rpv.date_created
+				FROM request_no_punchlists_v rpv
+				WHERE rpv.organization_id = <?s:org_id.toPStmtString()?>
+				AND rpv.request_status_type_code != 'closed'
+				AND ((rpv.request_type_code = 'service_request' AND rpv.request_status_type_code='sent')
+					OR (rpv.request_type_code = 'workorder' AND rpv.request_status_type_code='approved')
+					)
+				ORDER BY rpv.project_no DESC, rpv.request_no DESC"
+
+-->
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="rpv" var="customerQuery"
+		query="SELECT DISTINCT rpv.customer_name id, rpv.customer_name
+				FROM request_no_punchlists_v rpv
+				WHERE rpv.organization_id = <?s:org_id.toPStmtString()?>
+				AND rpv.request_status_type_code != 'closed'
+				AND ((rpv.request_type_code = 'service_request' AND rpv.request_status_type_code='sent')
+					OR (rpv.request_type_code = 'workorder' AND rpv.request_status_type_code='approved')
+					)
+		  		ORDER BY rpv.customer_name"
+
+-->
+
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="rpv" var="requestStatusQuery"
+		query="SELECT DISTINCT rpv.request_status_type_name id, rpv.request_status_type_name
+				FROM request_no_punchlists_v rpv
+				WHERE rpv.organization_id = <?s:org_id.toPStmtString()?>
+				AND rpv.request_status_type_code != 'closed'
+				AND ((rpv.request_type_code = 'service_request' AND rpv.request_status_type_code='sent')
+					OR (rpv.request_type_code = 'workorder' AND rpv.request_status_type_code='approved')
+					)
+		   		ORDER BY rpv.request_status_type_name"
+
+-->
+
+
+
+
+<!--#SMARTTABLE name="p_list"
+		class="SmartTable"
+		query="<?d:mainQuery?>"
+	-->
+	 <!--SMARTCOLUMN name="project_no" sort="project_no" title="Project&nbsp;#" width="5%" align="center" href="<?s:action?>setProjectDatum?project_id=<?r:p_list:project_id?>&templateName=enet/proj/pf_main.html&request_id=&prev_template=enet/main.html&loc=pl_create" target="_top" filter="a_project_no:project_no" -->
+	 <!--#SMARTCOLUMN name="project_request_no" sort="project_request_no" title="Request&nbsp;#" width="5%" align="center" href="<?s:action?>setProjectDatum?project_id=<?r:p_list:project_id?>&templateName=enet/proj/pf_main.html&request_id=<?r:p_list:request_id?>&prev_template=enet/main.html&loc=pl_create" target="_top" filter="a_project_request_no:project_request_no" -->
+	 <!--#SMARTCOLUMN name="customer_name" sort="rpv.customer_name" title="Customer" width="20%"
+	 	filter="customer_name:rpv.customer_name" filterQuery="<?d:customerQuery?>" filterQuick="true"
+	 -->
+	 <!--#SMARTCOLUMN name="job_name" sort="job_name" title="Job Name" width="20%" filter="job_name:a_job_name" -->
+	 <!--#SMARTCOLUMN name="date_created" sort="date_created" format="date" title="Date Created" width="10%" filter="a_date_created:date_created like '%'+<?p:a_date_created.toPStmtString()?>+'%'" -->
+	 <!--#SMARTCOLUMN name="request_status_type_name" sort="request_status_type_name" title="Status" width="10%"
+	 	filter="a_request_status_type_name:request_status_type_name" filterQuery="<?d:requestStatusQuery?>" filterQuick="true"
+	 -->
+	 <!--#SMARTCOLUMN name="dealer_name" sort="dealer_name" title="Dealer" width="5%"-->
+
+<!--#/SMARTTABLE -->
+
+
+<!--#EMBED template="enet/embeds/footer.html" -->
+

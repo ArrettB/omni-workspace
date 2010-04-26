@@ -1,0 +1,333 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<name>Charm Core Components</name>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.dynamic.charm</groupId>
+	<artifactId>charm-core</artifactId>
+	<packaging>jar</packaging>
+	<version>1.5-SNAPSHOT</version>
+	<parent>
+		<groupId>com.dynamic.charm</groupId>
+		<artifactId>charm-parent</artifactId>
+		<version>2.3</version>
+	</parent>
+	<organization>
+		<name>Apex IT</name>
+		<url>http://www.apexit.com</url>
+	</organization>
+	
+	<licenses>
+		<license>
+			<name />
+			<url />
+			<distribution />
+			<comments />
+		</license>
+	</licenses>
+	
+	<developers>
+		<developer>
+			<id>blake.vonhaden</id>
+			<name>Blake VonHaden</name>
+			<email>blake.vonhaden@apexit.com</email>
+			<url>http://www.apexit.com</url>
+			<organization>Apex IT</organization>
+			<roles />
+			<timezone />
+		</developer>
+	</developers>	
+	<scm>
+		<connection>scm:svn:http://svn.apexit.com/svn/charm/trunk/charm-core</connection>
+		<developerConnection>scm:svn:http://svn.apexit.com/svn/charm/trunk/charm-core</developerConnection>
+		<url>http://svn.apexit.com/svn/charm/trunk/charm-core</url>
+	</scm>
+	
+	<ciManagement>
+		<system>continuum</system>
+		<notifiers>
+			<notifier>
+				<type>mail</type>
+				<configuration>
+					<address>bvonhaden@apexit.com</address>
+				</configuration>
+			</notifier>
+		</notifiers>
+	</ciManagement>
+	
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://jira.apexit.com/jira/browse/CHM</url>
+	</issueManagement>
+	
+	<repositories>
+		<repository>
+			<id>apex_central</id>
+			<name>ApexIT Central Repository</name>
+			<url>http://maven.apexit.com/repository/</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
+	
+	
+	<distributionManagement>
+		<repository>
+			<id>dynamic_repo_file_deploy</id>
+			<name>ApexIT Repository</name>
+			<url> file:////bentley/home/maven/tomcat/webapps/ROOT/repository</url>
+			<layout>default</layout>
+		</repository>
+		<site>
+			<id>website</id>
+			<url>file:////bentley/home/maven/tomcat/webapps/ROOT/charm</url>
+		</site>
+	</distributionManagement>
+	
+	<dependencies>
+		
+		<!-- Servlet API -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jsp-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!-- JSTL Libs -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		
+		<!-- Commons -->
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-digester</groupId>
+			<artifactId>commons-digester</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		
+		<!-- Dom4j -->
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		
+		<!-- Hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		
+		<!-- Log4j -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+		
+		<!-- Spring Dependencies -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-dao</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-hibernate3</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-remoting</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		
+		<!-- ACEGI security -->
+		<dependency>
+			<groupId>org.acegisecurity</groupId>
+			<artifactId>acegi-security</artifactId>
+		</dependency>
+		
+		<!-- Testing -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-mock</artifactId>
+			<version>2.0.8</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+	</dependencies>
+	
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>cfg</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.4</source>
+					<target>1.4</target>
+					<compilerVersion>1.4</compilerVersion>
+					<excludes>
+						<exclude>**/*.svn</exclude>
+						<exclude>**/*.svn/**</exclude>
+					</excludes>	
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>xdoclet-maven-plugin</artifactId>
+				<dependencies>
+				    <dependency>
+					<groupId>ant</groupId>
+					<artifactId>ant</artifactId>
+					<version>1.6.5</version>
+				    </dependency>
+				</dependencies> 
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>xdoclet</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<webdoclet destDir="${project.build.outputDirectory}/META-INF" verbose="true" force="true">
+									<fileset dir="${basedir}/src/main/java">
+										<include name="com/dynamic/charm/web/form/tag/da/*Tag.java" />
+										<include name="com/dynamic/charm/web/form/tag/audit/*Tag.java" />
+										<include name="com/dynamic/charm/web/tag/*Tag.java" />
+										<include name="com/dynamic/charm/web/tag/menu/*Tag.java" />
+									</fileset>
+									<jspTaglib jspversion="2.0" taglibversion="1.1.2" displayname="Charm Tag Library" shortname="charm" uri="/tld/charm" acceptAbstractClasses="false" destinationFile="charm.tld" validateXml="false" />
+								</webdoclet>
+							</tasks>
+						</configuration>
+						
+					</execution>
+				</executions>
+			</plugin>
+			
+		</plugins>
+	</build>
+	
+	
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>changelog-maven-plugin</artifactId>
+				<reportSets>
+					<reportSet>
+						<id>full-report</id>
+						<configuration>
+							<type>range</type>
+							<range>30</range>
+							<basedir>${basedir}</basedir>
+						</configuration>
+						<reports>
+							<report>changelog</report>
+							<report>file-activity</report>
+							<report>dev-activity</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
+	
+</project>

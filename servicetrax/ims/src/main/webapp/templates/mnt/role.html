@@ -1,0 +1,159 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: role.html, 11, 1/7/2005 5:11:18 PM, Lee A. Gunderson$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--REQUIRED data="<?s:rights.mnt/role.view?>"-->
+
+<body class="BodyTag" onLoad="focusFirstField();">
+
+	<table width="100%" border="0" cellspacing="0" cellpadding="0"> <!-- table goes first because desire error message to appear right above table, instead of fat space between them. -->
+	<!--#SMARTFORM name="mnt/role"
+		useCSS="true"
+		table="roles"
+		key="role_id"
+		nextTemplate="mnt/roles.html"
+		preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+		postHandler="ims.handlers.maintenance.HandleRoleDetail"
+		onClickFunction="exitFunction"
+	-->
+		<!--#SMARTFIELD mode="Insert" name="code" type="hidden" -->
+		<tr>
+			<td colspan="4" class="TableTitle">Role</td>
+		</tr>
+		<tr>
+			<td colspan="2"><!--#SMARTFIELD title="Role Name:&nbsp" name="name" --></td>
+			<td colspan="2">&nbsp;</td>
+		</tr>
+		<!--#IF evaluate="<?d:mode?>" compare="Update" -->
+		<tr>
+			<td colspan="4" class="TableTitle">System Info</td>
+		</tr>
+		<tr>
+			<td width="10%"><!--#SMARTFIELD title="Date Created:&nbsp;" div="</td><td width='10%'>" name="date_created" type="datetime"
+				mode="Update" readonly class="readonly" size="22" --></td>
+			<td width="10%"><!--#SMARTFIELD title="Created By:&nbsp;" div="</td><td width='30%'>" name="created_by" type="chooser"
+				mode="Update" table="users" display="first_name+' '+last_name" key="user_id"
+				readonly class="readonly"--></td>
+		</tr>
+		<tr>
+			<td><!--#SMARTFIELD title="Date Modified:&nbsp;" div="</td><td>" name="date_modified" type="datetime"
+				mode="Update" readonly class="readonly" size="22"--></td>
+			<td><!--#SMARTFIELD title="Modified By:&nbsp;" div="</td><td>" name="modified_by" type="chooser"
+				mode="Update" table="users" display="first_name+' '+last_name" key="user_id"
+				readonly class="readonly"--></td>
+		</tr>
+		<!--#/IF-->
+	</table>
+
+	<table width="100%">
+		<tr><td><BR></td></tr>
+		<tr><td class="TableTitle">Rights</td></tr>
+		<tr><td><BR></td></tr>
+	</table>
+
+	<!--#SQLLOOP name="fg" query="SELECT fg.function_group_id, fg.name FROM function_groups fg ORDER BY fg.name"-->
+	<table name="{!r:fg:name!}" class="SmartTable" border="0" cellpadding="0" cellspacing="0" width="100%">
+		<tr class="tableHeader" height="22"><td>{!r:fg:name!} Rights</td></tr>
+	</table>
+
+	<table class="SmartTable" border="0" cellpadding="0" cellspacing="0" width="100%">
+		<tr height="15">
+			<td width="40%" class="TableTitle">Function Name</td>
+			<td width="10%" class="TableTitle">Function Code</td>
+			<!--#SQLLOOP name="rt"
+						query="SELECT right_type_id id, name
+							  FROM right_types
+							  ORDER BY code DESC"
+			-->
+			<td width="10%" class="TableTitle">{!r:rt:name!}</td>
+			<!--#/SQLLOOP-->
+		</tr>
+
+	<!--#IF defined="<?p:role_id?>" -->
+		<!--#SQLLOOP name="rfv"
+						query="SELECT role_id, function_id, function_name, function_code
+								FROM role_functions_all_v
+								WHERE function_group_id=<?r:fg:function_group_id.toPStmtString()?>
+								AND role_id=<?p:role_id.toPStmtString()?>
+								ORDER BY function_name"
+						alternator1="TableRow1:TableRow2"
+				-->
+				<tr height="15">
+					<td width="40%" class="{!d:rfv:alt1!}">{!r:rfv:function_name!}</td>
+					<td width="20%" class="{!d:rfv:alt1!}">{!r:rfv:function_code!}</td>
+				<!--#SQLLOOP name="rfrv"
+							 query="SELECT right_type_id,
+										   (CASE right_updatable_flag WHEN 'N' THEN 'disabled' ELSE '' END) disabled,
+										   (CASE has_right WHEN 'Y' THEN 'checked' ELSE '' END) checked
+									FROM role_function_rights_all_v
+									WHERE role_id = <?r:rfv:role_id.toPStmtString()?>
+									AND function_id = <?r:rfv:function_id.toPStmtString()?>
+									ORDER BY right_type_code DESC"
+				-->
+					<td width="10%" class="{!d:rfv:alt1!}" align="center"><input type="checkbox" name="right_{!r:rfv:function_id!}_{!r:rfrv:right_type_id!}" value="Y" {!r:rfrv:disabled!} {!r:rfrv:checked!} ></td>
+				<!--#/SQLLOOP-->
+			</tr>
+			<!--#/SQLLOOP-->
+
+	<!--#ELSE-->
+
+		<!--#SQLLOOP name="rfv"
+						query="SELECT f.function_id, f.name function_name, f.code function_code
+								FROM  functions f
+								WHERE f.function_group_id = <?r:fg:function_group_id.toPStmtString()?>
+								ORDER BY function_name"
+						alternator1="TableRow1:TableRow2"
+				-->
+				<tr height="15">
+					<td width="40%" class="{!d:rfv:alt1!}">{!r:rfv:function_name!}</td>
+					<td width="20%" class="{!d:rfv:alt1!}">{!r:rfv:function_code!}</td>
+				<!--#SQLLOOP name="rfrv"
+							 query="SELECT rt.right_type_id,
+										   (CASE frt.updatable_flag WHEN 'N' THEN 'disabled' ELSE '' END) disabled
+									FROM function_right_types frt, right_types rt
+									WHERE frt.function_id = <?r:rfv:function_id.toPStmtString()?>
+									AND frt.right_type_id = rt.right_type_id
+									ORDER BY rt.code DESC"
+				-->
+					<td width="10%" class="{!d:rfv:alt1!}" align="center"><input type="checkbox" name="right_{!r:rfv:function_id!}_{!r:rfrv:right_type_id!}" value="Y" {!r:rfrv:disabled!}></td>
+				<!--#/SQLLOOP-->
+			</tr>
+			<!--#/SQLLOOP-->
+			<tr><td>&nbsp;</td></td>
+
+	<!--#/IF-->
+
+			<tr><td>&nbsp;</td></td>
+		</table>
+		<!--#/SQLLOOP-->
+
+	<!--#/SMARTFORM-->
+
+</body>
+
+<script language="JavaScript">
+<!--
+function exitFunction(button)
+{
+<!--#IF evaluate="<?d:mode?>" compare="Insert" -->
+	document.role.code.value = getCode(document.role.name.value); //special case, create role code for new record when copying
+<!--#/IF-->
+	document.role.submit();
+}
+
+function getCode(sString)
+{
+	for (i=0; i<sString.length; i++)
+	{
+		sString = sString.replace(' ','_');
+		sString = sString.replace('&','_');
+		sString = sString.replace('\\','_');
+		sString = sString.replace('/','_');
+	}
+	return sString.toLowerCase();
+}
+
+//-->
+</script>
+
+<!--#EMBED template="embeds/footer.html" -->
+

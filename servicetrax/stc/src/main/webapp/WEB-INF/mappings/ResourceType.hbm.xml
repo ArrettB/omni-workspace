@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.ResourceType" table="RESOURCE_TYPES" schema="dbo" catalog="">
+        <id name="resourceTypeId" type="java.lang.Long">
+            <column name="RESOURCE_TYPE_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="userByModifiedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="userByCreatedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="code" type="string">
+            <column name="CODE" length="20" not-null="true" />
+        </property>
+        <property name="name" type="string">
+            <column name="NAME" length="50" not-null="true" />
+        </property>
+        <property name="defTimeUomTypeId" type="java.lang.Long">
+            <column name="DEF_TIME_UOM_TYPE_ID" precision="18" scale="0" />
+        </property>
+        <property name="defResCatTypeId" type="java.lang.Long">
+            <column name="DEF_RES_CAT_TYPE_ID" precision="18" scale="0" />
+        </property>
+        <property name="estimateHoursFlag" type="string">
+            <column name="ESTIMATE_HOURS_FLAG" length="50" not-null="true" />
+        </property>
+        <property name="uniqueFlag" type="string">
+            <column name="UNIQUE_FLAG" length="1" not-null="true" />
+        </property>
+        <property name="sequenceNo" type="java.lang.Long">
+            <column name="SEQUENCE_NO" precision="18" scale="0" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <set name="resources" inverse="true">
+            <key>
+                <column name="RESOURCE_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Resource" />
+        </set>
+        <set name="resourceTypeItems" inverse="true">
+            <key>
+                <column name="RESOURCE_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ResourceTypeItem" />
+        </set>
+        <set name="resourceEstimates" inverse="true">
+            <key>
+                <column name="RESOURCE_TYPE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ResourceEstimate" />
+        </set>
+    </class>
+</hibernate-mapping>

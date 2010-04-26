@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.InvoiceStatus" table="INVOICE_STATUSES" schema="dbo" catalog="">
+        <id name="statusId" type="java.lang.Long">
+            <column name="STATUS_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <property name="code" type="string">
+            <column name="CODE" length="10" not-null="true" />
+        </property>
+        <property name="name" type="string">
+            <column name="NAME" length="50" not-null="true" />
+        </property>
+        <set name="invoiceTrackingsForOldStatusId" inverse="true">
+            <key>
+                <column name="OLD_STATUS_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.InvoiceTracking" />
+        </set>
+        <set name="invoices" inverse="true">
+            <key>
+                <column name="STATUS_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Invoice" />
+        </set>
+        <set name="invoices_1" inverse="true">
+            <key>
+                <column name="STATUS_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Invoice" />
+        </set>
+        <set name="invoiceTrackingsForNewStatusId" inverse="true">
+            <key>
+                <column name="NEW_STATUS_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.InvoiceTracking" />
+        </set>
+    </class>
+</hibernate-mapping>

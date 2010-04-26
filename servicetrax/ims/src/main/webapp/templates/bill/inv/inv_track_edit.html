@@ -1,0 +1,84 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: inv_track_edit.html, 12, 1/12/2005 9:02:00 AM, Lee A. Gunderson$ -->
+<!--#SQLLOOP name="tracking_types" query="SELECT n.lookup_id none_id FROM alert_types_v n WHERE n.lookup_name='None'" -->
+<script type="text/javascript">
+<!--
+function exitFunction(button)
+{
+   if( button == 'Save' )
+   {
+      if( inv_track_edit.invoice_tracking_type_id.options[inv_track_edit.invoice_tracking_type_id.selectedIndex].text == 'Alert' ||
+          inv_track_edit.invoice_tracking_type_id.options[inv_track_edit.invoice_tracking_type_id.selectedIndex].text == 'PDA Note' )
+      {
+         if( inv_track_edit.to_contact_id.selectedIndex == 0 )
+         {
+         	inv_track_edit.to_contact_id.focus();
+         	alert("You must select a 'Send To:' when Tracking Type is Alert or PDA Note.")
+				return false;
+         }
+      }
+   }
+}
+
+function manageNote()
+{
+	if(inv_track_edit.invoice_tracking_type_id.options[inv_track_edit.invoice_tracking_type_id.selectedIndex].text == 'Note')
+	{
+		inv_track_edit.to_contact_id.disabled = true;
+		inv_track_edit.to_contact_id.className = "readonly";
+	}
+	else
+	{
+		inv_track_edit.to_contact_id.disabled = false;
+	   inv_track_edit.to_contact_id.className = "regular";
+	}
+}
+-->
+</script>
+<body class="BodyTag" onLoad="focusFirstField();manageNote();">
+	<table width="100%" border="0" cellspacing="0" cellpadding="3">
+	<!--#SMARTFORM name="inv_track_edit" table="invoice_tracking" key="invoice_tracking_id"
+					sequence="@@IDENTITY" security="off" nextTemplate="bill/inv/inv_track_list.html"
+					preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+
+					buttons="Save,Copy,New,Delete,Cancel"
+					onClickFunction="return exitFunction();"
+
+	-->
+		<!--#SMARTFIELD name="loc" type="hidden" value="<?p:loc?>" -->
+		<!--#SMARTFIELD name="invoice_id" type="hidden" value="<?p:invoice_id?>" -->
+		<!--#SMARTFIELD name="invoice_tracking_type_name" type="hidden" -->
+		<!--#SMARTFIELD name="from_user_id" type="hidden" value="<?s:user_id?>" -->
+		<!--#SMARTFIELD name="email_sent_flag" type="hidden" value="N" -->
+		<tr>
+			<td colspan="6" class="TableTitle">Edit Invoice Tracking</td></tr>
+		<tr>
+			<td><!--#SMARTFIELD title="Type:" div="</td><td>" name="invoice_tracking_type_id" type="droplist" table="invoice_tracking_types_v" display="lookup_name" key="lookup_id" onChange="manageNote()" value="Note"--></td>
+			<td><!--#SMARTFIELD title="Send To:" div="</td><td>" name="to_contact_id" type="droplist" table="contacts_v" display="contact_name" key="contact_id"
+					filter="organization_id=<?s:org_id.toPStmtInt()?> AND ((ext_dealer_id=<?s:user.extDealerID.toPStmtString()?> AND (contact_type_code='accounting' OR contact_type_code='a_m')))"-->
+			<!--#CHECKSECURITY right="contact_view" -->
+			<input type="button" name="contact_edit" value="View" class="button2" onClick="newWindow('{!s:showPage!}job/contact_edit.html?loc=contact_edit&theForm=inv_track_edit&theDroplist=to_contact_id&contact_id=','contacts',450,490,inv_track_edit.to_contact_id);">
+			<!--#/CHECKSECURITY--></td>
+		</tr>
+		<tr valign="top">
+			<td valign="top">Notes:</td>
+			<td colspan="5"><!--#SMARTFIELD title="" name="notes" type="textarea" cols="80" rows="4" --><BR><BR></td>
+		</tr>
+	   <!--#IF evaluate="<?d:mode?>" compare="Update"-->
+		<tr>
+			<td class="TableTitle" colspan="6">System Info</td>
+		</tr>
+		<!--#/IF-->
+		<tr>
+			<td><!--#SMARTFIELD title="Date Created" div="</td><td>" name="date_created" type="datetime" mode="Update" readonly class="readonly" size="22" --></td>
+			<td><!--#SMARTFIELD title="Created By" div="</td><td>" name="created_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+		</tr>
+		<tr>
+			<td><!--#SMARTFIELD title="Date Modified" div="</td><td>" name="date_modified" type="datetime" mode="Update" readonly class="readonly" size="22"--></td>
+			<td><!--#SMARTFIELD title="Modified By" div="</td><td>" name="modified_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+		</tr>
+		<!--#/SMARTFORM -->
+	</table>
+</body>
+<!--#/SQLLOOP-->
+<!--#EMBED template="embeds/footer.html" -->

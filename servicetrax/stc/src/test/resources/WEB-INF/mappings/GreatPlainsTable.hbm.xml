@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.GreatPlainsTable" table="GREAT_PLAINS_TABLES" schema="dbo" catalog="">
+        <id name="tableId" type="java.lang.Long">
+            <column name="TABLE_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <property name="tableName" type="string">
+            <column name="TABLE_NAME" length="50" not-null="true" />
+        </property>
+        <property name="gpPhysicalName" type="string">
+            <column name="GP_PHYSICAL_NAME" length="50" not-null="true" />
+        </property>
+        <property name="gpDisplayName" type="string">
+            <column name="GP_DISPLAY_NAME" length="50" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

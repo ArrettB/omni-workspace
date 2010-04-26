@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+	<class name="com.dynamic.servicetrax.orm.User" table="USERS" schema="dbo" catalog="">
+		<id name="userId" type="java.lang.Long">
+			<column name="USER_ID" precision="18" scale="0"/>
+			<generator class="identity"/>
+		</id>
+		<many-to-one name="lookupByEmploymentTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+			<column name="EMPLOYMENT_TYPE_ID" precision="18" scale="0" not-null="true"/>
+		</many-to-one>
+		<many-to-one name="contactByContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+			<column name="CONTACT_ID" precision="18" scale="0"/>
+		</many-to-one>
+		<many-to-one name="contactByVendorContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+			<column name="VENDOR_CONTACT_ID" precision="18" scale="0"/>
+		</many-to-one>
+		<many-to-one name="lookupByUserTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+			<column name="USER_TYPE_ID" precision="18" scale="0"/>
+		</many-to-one>
+		<many-to-one name="userByModifiedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+			<column name="MODIFIED_BY" precision="18" scale="0"/>
+		</many-to-one>
+		<many-to-one name="userByCreatedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+			<column name="CREATED_BY" precision="18" scale="0" not-null="true"/>
+		</many-to-one>
+		<property name="extEmployeeId" type="string">
+			<column name="EXT_EMPLOYEE_ID" length="15"/>
+		</property>
+		<property name="extDealerId" type="string">
+			<column name="EXT_DEALER_ID" length="15" not-null="true"/>
+		</property>
+		<property name="dealerName" type="string">
+			<column name="DEALER_NAME" length="65"/>
+		</property>
+		<property name="firstName" type="string">
+			<column name="FIRST_NAME" length="200" not-null="true"/>
+		</property>
+		<property name="lastName" type="string">
+			<column name="LAST_NAME" length="200" not-null="true"/>
+		</property>
+		<property name="login" type="string">
+			<column name="LOGIN" length="200" not-null="true"/>
+		</property>
+		<property name="password" type="string">
+			<column name="PASSWORD" length="20" not-null="true"/>
+		</property>
+		<property name="lastLogin" type="timestamp">
+			<column name="LAST_LOGIN" length="23"/>
+		</property>
+		<property name="pin" type="string">
+			<column name="PIN" length="10"/>
+		</property>
+		<property name="activeFlag" type="string">
+			<column name="ACTIVE_FLAG" length="240" not-null="true"/>
+		</property>
+		<property name="imobileLogin" type="string">
+			<column name="IMOBILE_LOGIN" length="20"/>
+		</property>
+		<property name="lastSynchDate" type="timestamp">
+			<column name="LAST_SYNCH_DATE" length="23"/>
+		</property>
+		<property name="dateCreated" type="timestamp">
+			<column name="DATE_CREATED" length="23" not-null="true"/>
+		</property>
+		<property name="dateModified" type="timestamp">
+			<column name="DATE_MODIFIED" length="23"/>
+		</property>
+		<property name="fullName" type="string">
+			<column name="FULL_NAME" length="400"/>
+		</property>
+		<property name="qp3" type="string">
+			<column name="QP3" length="50"/>
+		</property>
+		<set name="organizations" table="user_organizations" cascade="persist">
+			<key column="user_id"/>			
+			<many-to-many column="organization_id" class="com.dynamic.servicetrax.orm.Organization"/>
+		</set>
+		<set name="roles" table="user_roles" cascade="persist">
+			<key column="user_id"/>			
+			<many-to-many column="role_id" class="com.dynamic.servicetrax.orm.Role"/>
+		</set>
+        <set name="userCustomers" inverse="true">
+            <key>
+                <column name="user_id" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.UserCustomer" />
+        </set>
+	</class>
+</hibernate-mapping>

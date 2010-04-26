@@ -1,0 +1,93 @@
+<!-- $Header: job_inv_cust_lines.html, 11, 1/18/2006 10:59:58 AM, Blake Von Haden$ -->
+
+
+<script type="text/javascript">
+<!--
+	var customLineTax = 0;
+
+	function addToCustomTax(new_value)
+	{
+		if( new_value )
+			customLineTax = customLineTax + new_value;
+	}
+
+	function openCustomLines(invoiceId, invoiceLineId, invoiceLineNo)
+	{
+		if (false)
+		{
+			var url = '{!s:action!}launchCharm?address=invoice.html';
+			url += '%3FinvoiceId=' + invoiceId;
+			url += '%26invoiceLineNo=' + invoiceLineNo;
+
+			window.open(url);
+		}
+		else
+		{
+			var url = '{!s:showPage!}bill/inv/inv_cust_edit.html'
+			url += '?invoice_id=' + invoiceId;
+			url += '&invoice_line_id=' + invoiceLineId;
+			url += '&prev_template=' + 'bill/inv/job_inv_lines_sum_det.html';
+
+			//parent.location = url;
+			location.href = url;
+		}
+		return false;
+	}
+
+
+//-->
+</script>
+
+<FORM ACTION="{!s:action!}setServiceLineStatus" METHOD="POST" name="CustInvoiceForm">
+<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0" summary="">
+	<tr><td height="25" class="tableTitle">Custom</td></tr>
+</TABLE>
+	<input type="hidden" name="level" value="invoice">
+	<input type="hidden" name="status_id" value="">
+	<input type="hidden" name="template_name" value="bill/job_bill_list_det.html">
+
+<!--#SMARTTABLE name="cust_inv_lines"
+	class="SmartTable" totalClass="TableTotal"
+	query="SELECT il.invoice_id,
+	              il.invoice_line_id,
+	              il.invoice_line_no,
+	              il.description line_desc,
+	              il.qty,
+	              il.unit_price,
+	              (il.qty*il.unit_price) extended_price,
+	              il.taxable_flag,
+	              il.po_no line_po_no,
+			      inv.job_id,
+			      i.name,
+			      s.service_no
+	         FROM invoice_lines il INNER JOIN
+			      invoices inv ON il.invoice_id = inv.invoice_id LEFT OUTER JOIN
+			      lookups invoice_line_type ON il.invoice_line_type_id = invoice_line_type.lookup_id LEFT OUTER JOIN
+                  items i ON il.item_id = i.item_id LEFT OUTER JOIN
+                  services s ON il.bill_service_id = s.service_id
+	        WHERE il.invoice_id = <?p:invoice_id.toPStmtInt()?>
+	          AND invoice_line_type.code='custom'
+	     ORDER BY il.invoice_line_no" -->
+
+	<!--#IF evaluate="<?d:rowid?>" greaterthan="0" -->
+		<!--#IF evaluate="<?r:cust_inv_lines:taxable_flag?>" compare="Y" -->
+			<script type="text/javascript">addToCustomTax({!r:cust_inv_lines:extended_price.isNull('0')!});</script>
+		<!--#/IF-->
+	<!--#/IF-->
+	<!--#SMARTCOLUMN name="taxable_flag" sort="taxable_flag" title="Tax" align="center" width="2%" -->
+	<!--#SMARTCOLUMN name="invoice_line_no" sort="invoice_line_no" title="Invoice Line#" width="5%" align="center" href="javascript:void(0);" onclick="return openCustomLines(<?r:cust_inv_lines:invoice_id?>, <?r:cust_inv_lines:invoice_line_id?>, <?r:cust_inv_lines:invoice_line_no?>);"-->
+	<!--#SMARTCOLUMN name="service_no" sort="service_no" title="Req#" width="5%" -->
+	<!--#SMARTCOLUMN name="line_po_no" sort="line_po_no" title="PO#" width="5%" -->
+	<!--#SMARTCOLUMN name="line_desc" sort="line_desc" title="Description" width="15%" -->
+	<!--#SMARTCOLUMN name="name" sort="name" title="Item" width="5%" -->
+	<!--#SMARTCOLUMN name="qty" sort="qty" title="Qty" align="right" format="###,###,##0.00" width="5%" total="true"-->
+	<!--#SMARTCOLUMN name="unit_price" sort="unit_price" title="Rate" align="right" format="money" width="5%" -->
+	<!--#SMARTCOLUMN name="extended_price" sort="extended_price" title="Total" align="right" total="true" format="money" width="5%" -->
+
+<!--#/SMARTTABLE -->
+
+
+ <BR> <BR>
+</FORM>
+
+

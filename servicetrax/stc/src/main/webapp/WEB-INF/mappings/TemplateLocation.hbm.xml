@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.TemplateLocation" table="TEMPLATE_LOCATIONS" schema="dbo" catalog="">
+        <id name="templateLocationId" type="java.lang.Long">
+            <column name="TEMPLATE_LOCATION_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <property name="location" type="string">
+            <column name="LOCATION" length="50" />
+        </property>
+        <property name="target" type="string">
+            <column name="TARGET" length="50" />
+        </property>
+        <property name="level1Tab" type="java.lang.Long">
+            <column name="LEVEL_1_TAB" precision="18" scale="0" />
+        </property>
+        <property name="level1Template" type="java.lang.Long">
+            <column name="LEVEL_1_TEMPLATE" precision="18" scale="0" />
+        </property>
+        <property name="level2Tab" type="java.lang.Long">
+            <column name="LEVEL_2_TAB" precision="18" scale="0" />
+        </property>
+        <property name="level2Template" type="java.lang.Long">
+            <column name="LEVEL_2_TEMPLATE" precision="18" scale="0" />
+        </property>
+        <property name="level3Tab" type="java.lang.Long">
+            <column name="LEVEL_3_TAB" precision="18" scale="0" />
+        </property>
+        <property name="level3Template" type="java.lang.Long">
+            <column name="LEVEL_3_TEMPLATE" precision="18" scale="0" />
+        </property>
+    </class>
+</hibernate-mapping>

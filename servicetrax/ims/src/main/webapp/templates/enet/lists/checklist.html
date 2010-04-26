@@ -1,0 +1,380 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<script language="JavaScript">
+<!--
+	function setDefaults()
+	{
+	<!--#IF evaluate="<?p:checklist_id?>" compare=""-->
+		setFormEdit('N');
+	<!--#/IF-->
+	}
+
+-->
+</script>
+
+<body class="BodyTag" onLoad="setDefaults()">
+
+<!--#EMBED template="enet/embeds/project_header.html"-->
+
+
+<table border="0" cellpadding="0" cellspacing="0" class="SmartTable">
+<!--#IF defined="<?d:error_msg?>" -->
+	<tr><td class="errorText">{!d:error_msg!}</td></tr>
+<!--#/IF-->
+<!--#IF evaluate="<?p:checklist_id?>" compare=""-->
+	<tr><td class="HeaderRow" align="Center">Create Checklist</td>
+<!--#ELSE-->
+	<tr><td class="HeaderRow" align="Center">View/Update Checklist</td>
+<!--#/IF-->
+</table>
+
+<form action="{!s:action!}saveChecklist" method="post" name="saveChecklist" id="saveChecklist">
+<input type="hidden" name="checklist_id" value="{!p:checklist_id!}">
+<input type="hidden" name="request_id" value="{!p:request_id.isNull('<?s:request_id?>')!}">
+<input type="hidden" name="prev_template" value="enet/docs/doc_list">
+
+<table>
+	<tr>
+		<td width="420">
+			Total number of workstations:&nbsp;
+			<input type="text" name="num_stations" size="5" value="{!d:num_stations!}">
+		</td>
+	</tr>
+	<tr>
+		<td width="420">
+			1) Did the description of the work order match the work you were required to do?
+		</td>
+		<td>
+			<input name="1" type="radio" value="Yes" {!d:1_yes_checked!}>&nbsp;<b>Yes</b>
+		</td>
+		<td>
+			<input name="1" type="radio" value="No" {!d:1_no_checked!}>&nbsp;<b>No</b>
+		</td>
+		<td>
+			<input name="1" type="radio" value="NA" {!d:1_na_checked!}>&nbsp;<b>N/A</b>
+		</td>
+	</tr>
+	<tr height="5">
+	<tr>
+		<td width="420">
+			2) Was the job completed on the first trip?
+		</td>
+		<td>
+			<input name="2" type="radio" value="Yes" {!d:2_yes_checked!}>&nbsp;<b>Yes</b>
+		</td>
+		<td>
+			<input name="2" type="radio" value="No" {!d:2_no_checked!}>&nbsp;<b>No</b>
+		</td>
+		<td>
+			<input name="2" type="radio" value="NA" {!d:2_na_checked!}>&nbsp;<b>N/A</b>
+		</td>
+	</tr>
+	<tr height="5">
+	<tr>
+		<td width="420">
+			3) Did you receive print prior to the start of job?
+		</td>
+		<td>
+			<input name="3" type="radio" value="Yes" {!d:3_yes_checked!}>&nbsp;<b>Yes</b>
+		</td>
+		<td>
+			<input name="3" type="radio" value="No" {!d:3_no_checked!}>&nbsp;<b>No</b>
+		</td>
+		<td>
+			<input name="3" type="radio" value="NA" {!d:3_na_checked!}>&nbsp;<b>N/A</b>
+		</td>
+	</tr>
+	<tr height="5">
+	<tr>
+		<td width="420">
+			4) Were prints usable/accurate?
+		</td>
+		<td>
+			<input name="4" type="radio" value="Yes" {!d:4_yes_checked!}>&nbsp;<b>Yes</b>
+		</td>
+		<td>
+			<input name="4" type="radio" value="No" {!d:4_no_checked!}>&nbsp;<b>No</b>
+		</td>
+		<td>
+			<input name="4" type="radio" value="NA" {!d:4_na_checked!}>&nbsp;<b>N/A</b>
+		</td>
+	</tr>
+	<tr height="5">
+	<tr>
+		<td width="420">
+			5) Was there product damage at the time of delivery from manufacturer?
+		</td>
+		<td>
+			<input name="5" type="radio" value="Yes" {!d:5_yes_checked!}>&nbsp;<b>Yes</b>
+		</td>
+		<td>
+			<input name="5" type="radio" value="No" {!d:5_no_checked!}>&nbsp;<b>No</b>
+		</td>
+		<td>
+			<input name="5" type="radio" value="NA" {!d:5_na_checked!}>&nbsp;<b>N/A</b>
+		</td>
+	</tr>
+	<tr>
+		<td width="420" style="padding-left:20">
+			If yes, was damaged caused by:
+		</td>
+	</tr>
+	<tr>
+		<td width="420" style="padding-left:20">
+			Service Provider
+		</td>
+		<td>
+			<input name="5_A" type="radio" value="Yes" {!d:5_A_yes_checked!}>&nbsp;<b>Yes</b>
+		</td>
+		<td>
+			<input name="5_A" type="radio" value="No" {!d:5_A_no_checked!}>&nbsp;<b>No</b>
+		</td>
+		<td>
+			<input name="5_A" type="radio" value="NA" {!d:5_A_na_checked!}>&nbsp;<b>N/A</b>
+		</td>
+	</tr>
+	<tr>
+		<td width="420" style="padding-left:20">
+			Dealer
+		</td>
+		<td>
+			<input name="5_B" type="radio" value="Yes" {!d:5_B_yes_checked!}>&nbsp;<b>Yes</b>
+		</td>
+		<td>
+			<input name="5_B" type="radio" value="No" {!d:5_B_no_checked!}>&nbsp;<b>No</b>
+		</td>
+		<td>
+			<input name="5_B" type="radio" value="NA" {!d:5_B_na_checked!}>&nbsp;<b>N/A</b>
+		</td>
+	</tr>
+	<tr>
+		<td width="420" style="padding-left:20">
+			Manufacturer
+		</td>
+		<td>
+			<input name="5_C" type="radio" value="Yes" {!d:5_C_yes_checked!}>&nbsp;<b>Yes</b>
+		</td>
+		<td>
+			<input name="5_C" type="radio" value="No" {!d:5_C_no_checked!}>&nbsp;<b>No</b>
+		</td>
+		<td>
+			<input name="5_C" type="radio" value="NA" {!d:5_C_na_checked!}>&nbsp;<b>N/A</b>
+		</td>
+	</tr>
+	<tr height="5">
+	<tr>
+		<td width="420">
+			6) Did we complete the installation without damaging the product?
+		</td>
+		<td>
+			<input name="6" type="radio" value="Yes" {!d:6_yes_checked!}>&nbsp;<b>Yes</b>
+		</td>
+		<td>
+			<input name="6" type="radio" value="No" {!d:6_no_checked!}>&nbsp;<b>No</b>
+		</td>
+		<td>
+			<input name="6" type="radio" value="NA" {!d:6_na_checked!}>&nbsp;<b>N/A</b>
+		</td>
+	</tr>
+	<tr height="5">
+	<tr>
+		<td width="420">
+			7) Was the product correct?
+		</td>
+		<td>
+			<input name="7" type="radio" value="Yes" {!d:7_yes_checked!}>&nbsp;<b>Yes</b>
+		</td>
+		<td>
+			<input name="7" type="radio" value="No" {!d:7_no_checked!}>&nbsp;<b>No</b>
+		</td>
+		<td>
+			<input name="7" type="radio" value="NA" {!d:7_na_checked!}>&nbsp;<b>N/A</b>
+		</td>
+	</tr>
+	<tr>
+		<td width="420" style="padding-left:20">
+			a) If not, was all product present (i.e. no shortages)?
+		</td>
+		<td>
+			<input name="7_A" type="radio" value="Yes" {!d:7_A_yes_checked!}>&nbsp;<b>Yes</b>
+		</td>
+		<td>
+			<input name="7_A" type="radio" value="No" {!d:7_A_no_checked!}>&nbsp;<b>No</b>
+		</td>
+		<td>
+			<input name="7_A" type="radio" value="NA" {!d:7_A_na_checked!}>&nbsp;<b>N/A</b>
+		</td>
+	</tr>
+	<tr height="5">
+	<tr>
+		<td width="420">
+			8) At the time of the punchlist walkthrough:
+		</td>
+		<td>
+		</td>
+		<td>
+		</td>
+		<td>
+		</td>
+		<td align="center">
+			<b># of Stations Incorrect</b>
+		</td>
+	</tr>
+	<tr>
+		<td width="420" style="padding-left:20">
+			a) Were all products installed according to plan?
+		</td>
+		<td>
+			<input name="8_A" type="radio" value="Yes" {!d:8_A_yes_checked!}>&nbsp;<b>Yes</b>
+		</td>
+		<td>
+			<input name="8_A" type="radio" value="No" {!d:8_A_no_checked!}>&nbsp;<b>No</b>
+		</td>
+		<td>
+			<input name="8_A" type="radio" value="NA" {!d:8_A_na_checked!}>&nbsp;<b>N/A</b>
+		</td>
+		<td align="center">
+			<input type="text" value="{!d:8_A_num!}" size="5" name="8_A_Num">
+		</td>
+	</tr>
+	<tr>
+		<td width="420" style="padding-left:20">
+			b) Were all panels installed correctly?
+		</td>
+		<td>
+			<input name="8_B" type="radio" value="Yes" {!d:8_B_yes_checked!}>&nbsp;<b>Yes</b>
+		</td>
+		<td>
+			<input name="8_B" type="radio" value="No" {!d:8_B_no_checked!}>&nbsp;<b>No</b>
+		</td>
+		<td>
+			<input name="8_B" type="radio" value="NA" {!d:8_B_na_checked!}>&nbsp;<b>N/A</b>
+		</td>
+		<td align="center">
+			<input type="text" value="{!d:8_B_num!}" size="5" name="8_B_Num">
+		</td>
+	</tr>
+	<tr>
+		<td width="420" style="padding-left:20">
+			c) Were all components installed correctly?
+		</td>
+		<td>
+			<input name="8_C" type="radio" value="Yes" {!d:8_C_yes_checked!}>&nbsp;<b>Yes</b>
+		</td>
+		<td>
+			<input name="8_C" type="radio" value="No" {!d:8_C_no_checked!}>&nbsp;<b>No</b>
+		</td>
+		<td>
+			<input name="8_C" type="radio" value="NA" {!d:8_C_na_checked!}>&nbsp;<b>N/A</b>
+		</td>
+		<td align="center">
+			<input type="text" value="{!d:8_C_num!}" size="5" name="8_C_Num">
+		</td>
+	</tr>
+	<tr>
+		<td width="420" style="padding-left:20">
+			d) Was all electrical completed and working?
+		</td>
+		<td>
+			<input name="8_D" type="radio" value="Yes" {!d:8_D_yes_checked!}>&nbsp;<b>Yes</b>
+		</td>
+		<td>
+			<input name="8_D" type="radio" value="No" {!d:8_D_no_checked!}>&nbsp;<b>No</b>
+		</td>
+		<td>
+			<input name="8_D" type="radio" value="NA" {!d:8_D_na_checked!}>&nbsp;<b>N/A</b>
+		</td>
+		<td align="center">
+			<input type="text" value="{!d:8_D_num!}" size="5" name="8_D_Num">
+		</td>
+	</tr>
+	<tr>
+		<td width="420" style="padding-left:20">
+			e) Was the product clean?
+		</td>
+		<td>
+			<input name="8_E" type="radio" value="Yes" {!d:8_E_yes_checked!}>&nbsp;<b>Yes</b>
+		</td>
+		<td>
+			<input name="8_E" type="radio" value="No" {!d:8_E_no_checked!}>&nbsp;<b>No</b>
+		</td>
+		<td>
+			<input name="8_E" type="radio" value="NA" {!d:8_E_na_checked!}>&nbsp;<b>N/A</b>
+		</td>
+		<td align="center">
+			<input type="text" value="{!d:8_E_num!}" size="5" name="8_E_Num">
+		</td>
+	</tr>
+	<tr>
+		<td width="420" style="padding-left:20">
+			f) Was the work area clean?
+		</td>
+		<td>
+			<input name="8_F" type="radio" value="Yes" {!d:8_F_yes_checked!}>&nbsp;<b>Yes</b>
+		</td>
+		<td>
+			<input name="8_F" type="radio" value="No" {!d:8_F_no_checked!}>&nbsp;<b>No</b>
+		</td>
+		<td>
+			<input name="8_F" type="radio" value="NA" {!d:8_F_na_checked!}>&nbsp;<b>N/A</b>
+		</td>
+		<td align="center">
+			<input type="text" value="{!d:8_F_num!}" size="5" name="8_F_Num">
+		</td>
+	</tr>
+	<tr height="5">
+	<tr>
+		<td width="420">
+			9) Did customer sign delivery ticket?
+		</td>
+		<td>
+			<input name="9" type="radio" value="Yes" {!d:9_yes_checked!}>&nbsp;<b>Yes</b>
+		</td>
+		<td>
+			<input name="9" type="radio" value="No" {!d:9_no_checked!}>&nbsp;<b>No</b>
+		</td>
+		<td>
+			<input name="9" type="radio" value="NA" {!d:9_na_checked!}>&nbsp;<b>N/A</b>
+		</td>
+	</tr>
+	<tr height="5">
+	<tr>
+		<td width="420">
+			10) Is there any furniture going to be returned to the Service Provider from jobsite?
+		</td>
+		<td>
+			<input name="10" type="radio" value="Yes" {!d:10_yes_checked!}>&nbsp;<b>Yes</b>
+		</td>
+		<td>
+			<input name="10" type="radio" value="No" {!d:10_no_checked!}>&nbsp;<b>No</b>
+		</td>
+		<td>
+			<input name="10" type="radio" value="NA" {!d:10_na_checked!}>&nbsp;<b>N/A</b>
+		</td>
+	</tr>
+
+</table>
+<table>
+	<tr>
+<!--#IF evaluate="<?p:checklist_id?>" compare=""-->
+		<!--#SQLLOOP name="punchlistQuery" query="SELECT punchlist_id FROM punchlists WHERE project_id = <?s:project_id.toPStmtString()?>"-->
+		<!--#SQLNODATA-->
+		<td>
+			<input type="submit" name="button" id="SaveCreate" value="Save and Create Punchlist" class="button">
+		</td>
+		<!--#/SQLNODATA-->
+		<!--#/SQLLOOP-->
+<!--#/IF-->
+		<td>
+			<input type="submit" name="button" id="Save" value="Save" class="button">
+		</td>
+		<td>
+			<input type="button" name="button" id="Cancel" value="Cancel" class="button" onClick="newWindow('{!s:showPage!}setProjectDatum/enet/docs/doc_list.html','main_frame')">
+		</td>
+	</tr>
+</table>
+</form>
+
+</body>
+
+<!--#EMBED template="enet/embeds/footer.html" -->

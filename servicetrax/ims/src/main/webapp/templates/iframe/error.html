@@ -1,0 +1,82 @@
+<html>
+
+<head>
+<!--#IF defined="<?d:errTitle?>" -->
+<title>{!d:errTitle.toHTML()!}</title>
+<!--#/IF -->
+<script language="JavaScript">
+<!--//
+function prepare() {
+	document.form1.title.value = document.title;
+	document.form1.location.value = document.location;
+	document.form1.referrer.value = document.referrer;
+	document.form1.platform.value = navigator.appName + " " + navigator.appVersion;
+	document.form1.message.value = document.all.details.innerText;
+	document.form1.comments.select();
+}
+//-->
+</script>
+</head>
+
+<body onload="prepare()">
+<font face="verdana,arial,helvetica,sans-serif">
+<!--#IF defined="<?d:errTitle?>" -->
+<hr>
+<div align="center"><font face="verdana" size="+2"><b>{!d:errTitle.toHTML()!}</b></font></div>
+<hr>
+<!--#/IF -->
+
+<script language="JavaScript">
+<!--//
+document.write('Location: <font color="#FF0000">' + document.location + '</font><br>');
+document.write('Referrer: <font color="#FF0000">' + document.referrer + '</font><br>');
+document.write('Platform: <font color="#FF0000">' + navigator.appName + ' ' + navigator.appVersion + '</font><br>');
+//-->
+</script>
+</font>
+
+<form name="form1" method="post" action="mailto:{!a:sendErrorsTo!}?SUBJECT={!d:errTitle!}" enctype="text/plain">
+	<input type="button" value="Back" onclick="history.back(); return true">
+	<input type="button" value="Details" onclick="if (this.value == 'Details') { document.all.details.style.display=''; this.value='Hide' } else { document.all.details.style.display='none'; this.value='Details' } return true">
+
+	<div id="details" style="display:none">
+	<br>
+	{!d:errMessage!}<br>
+	<br>
+	<table width="600" border="0" cellpadding="0" cellspacing="1">
+	<tr><td bgcolor="#8888CC"><h3>URL</td></tr>
+	<tr><td>{!d:errURL!}</td></tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr><td bgcolor="#8888CC"><h3>Transient Data</td></tr>
+	<tr><td>{!d:errTransientData!}</td></tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr><td bgcolor="#8888CC"><h3>Parameter Data</td></tr>
+	<tr><td>{!d:errParameterData!}</td></tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr><td bgcolor="#8888CC"><h3>Session Data</td></tr>
+	<tr><td>{!d:errSessionData!}</td></tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr><td bgcolor="#8888CC"><h3>App Global Data</td></tr>
+	<tr><td>{!d:errAppGlobalData!}</td></tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr><td bgcolor="#8888CC"><h3>System Properties</td></tr>
+	<tr><td>{!d:errProperties!}</td></tr>
+	</table>
+	</div>
+
+	<hr>
+	<input type="hidden" name="title" value="none">
+	<input type="hidden" name="location" value="none">
+	<input type="hidden" name="referrer" value="none">
+	<input type="hidden" name="platform" value="none">
+	<input type="hidden" name="message" value="none">
+	<font face="verdana" size="+1" color="#000066">
+		Please <a href="javascript:document.form1.send.click()">contact us</a> about the problem. Our apologies for any inconvenience.<br>
+	</font>
+	<textarea name="comments" cols="80" rows="5">Type your comments here.</textarea><br>
+	<input type="submit" value="Send" style="width:60"><br><br>
+</form>
+</font>
+
+</body>
+</html>

@@ -1,0 +1,94 @@
+#set ($name = $table.destinationClassName) 
+#set ($alias = "$name.substring(0,1).toLowerCase()$name.substring(1)")
+#set ($pkCol = $table.pkColumn) 
+#macro(paramRef $ref)param.$ref#end
+
+<%@ include file="../includes/init.jsp" %>
+
+<html><head><title><fmt:message key="${alias}_detail.title"/></title></head><body>
+
+<h2><fmt:message key="${alias}_detail.heading"/></h2>
+
+<charm:form
+ name="${alias}_detail"
+ action="process.form"
+ successView="admin/${name}_list"
+ formView="admin/${name}_detail"
+ fieldDecorator="paraDecorator"
+ css="form"
+>
+
+
+	<charm:bind name="b1" identifier="${#paramRef($pkCol.variableName)}" className="${table.destinationClassName}" primary="true"/>
+ 	<charm:error bind="b1" css="errorFormRow" />
+
+#foreach ( $column in $table.notKeyColumns )
+##having trouble with ! operator, so this is the longhand version
+#if ($column.nullable)
+#set ( $mandatory = false )
+#else
+#set ( $mandatory = true )
+#end
+
+#if (${column.variableName} == "dateCreated" || ${column.variableName} == "createdBy" || ${column.variableName} == "dateModified" || ${column.variableName} == "modifiedBy" || ${column.variableName} == "version")
+	<%-- Skipping ${column.variableName} 
+		 <charm:text bind="b1" property="${column.variableName}" label="${alias}Form.${column.variableName}.label" tooltip="${alias}Form.${column.variableName}.tooltip" mandatory="${mandatory}" />
+	--%>
+#elseif ( ${column.size} > 200 || ${column.javaType} == "java.sql.Clob")
+	<charm:textarea bind="b1" property="${column.variableName}" rows="3" cols="50" label="${alias}Form.${column.variableName}.label" tooltip="${alias}Form.${column.variableName}.tooltip" mandatory="${mandatory}" />
+#elseif (${column.javaType} == "java.util.Date" || ${column.javaType} == "java.sql.Date" || ${column.javaType} == "java.sql.Timestamp")
+	<charm:date bind="b1" property="${column.variableName}" label="${alias}Form.${column.variableName}.label" tooltip="${alias}Form.${column.variableName}.tooltip" mandatory="${mandatory}" />
+#else
+	<charm:text bind="b1" property="${column.variableName}" label="${alias}Form.${column.variableName}.label" tooltip="${alias}Form.${column.variableName}.tooltip" mandatory="${mandatory}" />
+#end
+#end
+
+
+#foreach($relationshipRole in $table.notPrimaryKeyRoles)
+#if ($table.getCardinalityValue($relationshipRole) == "many-to-one" && $relationshipRole.enabled)
+#set( $target = $relationshipRole.getTarget($plugin))
+#set ($targetName = $target.destinationClassName) 
+#set ($targetProperty = ${table.getVariableName($relationshipRole)})
+#foreach( $column in $target.notKeyColumns )
+#if( ${column.variableName} == "name")
+	<charm:select bind="b1" property="${targetProperty}" label="${alias}Form.${targetProperty}.label" css="selectFontLong">
+	  <charm:options namedQueryId="all${targetName}" optionLabel="name" optionValue="${target.pkColumn.variableName}" />
+  	</charm:select>
+#end
+#end
+#end
+#end
+
+	<p>
+		<charm:button css="button" code="Cancel" display="Cancel" />
+		<charm:button css="button" code="Save" display="Save" />
+		<charm:button css="button" code="Delete" display="Delete" />
+	</p>
+	##<charm:audit bind="b1" />
+	
+</charm:form> 
+
+
+
+Related tables:
+<ul>
+#foreach($relationshipRole in $table.notPrimaryKeyRoles)
+#if ($table.getCardinalityValue($relationshipRole) == "one-to-many" && $relationshipRole.enabled)
+
+#set( $one2one = $relationshipRole.relation.one2One )
+#set( $many2many = $relationshipRole.relation.many2Many )
+#set( $bidirectional = $relationshipRole.relation.bidirectional )
+#set( $target = $relationshipRole.getTarget($plugin))
+
+  <c:url value="${target.destinationClassName}_listing.html" var="destUrl">
+   <c:param name="queryName" value="${table.getVariableName($relationshipRole)}From${table.destinationClassName}"/>   	
+   <c:param name="fk" value="${#paramRef($pkCol.variableName)}"/>   	
+ </c:url>
+ 
+ <li><a href="${destUrl}">${target.destinationClassName}</a></li>
+
+#end
+#end
+</ul>
+
+</body></html>

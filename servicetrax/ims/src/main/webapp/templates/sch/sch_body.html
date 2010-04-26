@@ -1,0 +1,24 @@
+<!--#EMBED template="embeds/header.html" -->
+
+<frameset rows="50%,50%">
+
+	<frameset cols="70%,30%">
+		<frame name="sch_job_list_frame" src="{!s:showPage!}sch/sch_job_list.html">
+	<!--#IF defined="<?s:job_service_id?>" -->
+		<frame name="sch_job_req_info_frame" src="{!s:showPage!}sch/sch_job_req_info.html">
+	<!--#ELSE-->
+		<frame name="sch_job_req_info_frame">
+	<!--#/IF-->
+	</frameset>
+
+	<frameset cols="73%,27%">
+		<frame name="sch_res_list_frame" src="{!s:showPage!}sch/sch_res_list.html">
+		<frame name="schd_res_list_frame">
+	</frameset>
+
+	<noframes>
+	   Your browser does not support frames.
+	</noframes>
+</frameset>
+
+<!--#EMBED template="embeds/footer.html" -->

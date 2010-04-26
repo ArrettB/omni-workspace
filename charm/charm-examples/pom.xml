@@ -1,0 +1,411 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.dynamic.charm</groupId>
+	<artifactId>example</artifactId>
+	<packaging>war</packaging>
+	<name>Example Project</name>
+	<version>1.2-SNAPSHOT</version>
+
+	<properties>
+		<filter.name>dev</filter.name>
+	</properties>
+
+	<developers>
+		<developer>
+			<id>barry.johnson</id>
+			<name>Barry Johnson</name>
+			<email>barry.johnson@apexit.com</email>
+			<url>http://www.apexit.com</url>
+			<organization>Apex IT</organization>
+			<roles />
+			<timezone />
+		</developer>
+		<developer>
+			<id>blake.vonhaden</id>
+			<name>Blake VonHaden</name>
+			<email>blake.vonhaden@apexit.com</email>
+			<url>http://www.apexit.com</url>
+			<organization>Apex IT</organization>
+			<roles />
+			<timezone />
+		</developer>
+		<developer>
+			<id>david.zhao</id>
+			<name>David Zhao</name>
+			<email>david.zhao@apexit.com</email>
+			<url>http://www.apexit.com</url>
+			<organization>Apex IT</organization>
+			<roles />
+			<timezone />
+		</developer>
+		<developer>
+			<id>greg.case</id>
+			<name>Greg Case</name>
+			<email>greg.case@apexit.com</email>
+			<url>http://www.apexit.com</url>
+			<organization>Apex IT</organization>
+			<roles />
+			<timezone />
+		</developer>
+		<developer>
+			<id>jason.heald</id>
+			<name>Jason Heald</name>
+			<email>jason.heald@apexit.com</email>
+			<url>http://www.apexit.com</url>
+			<organization>Apex IT</organization>
+			<roles />
+			<timezone />
+		</developer>
+		<developer>
+			<id>lee.gunderson</id>
+			<name>Lee Gunderson</name>
+			<email>lee.gunderson@apexit.com</email>
+			<url>http://www.apexit.com</url>
+			<organization>Apex IT</organization>
+			<roles />
+			<timezone />
+		</developer>
+		<developer>
+			<id>john.cicchese</id>
+			<name>John Cicchese</name>
+			<email>john.cicchese@apexit.com</email>
+			<url>http://www.apexit.com</url>
+			<organization>Apex IT</organization>
+			<roles />
+			<timezone />
+		</developer>
+		<developer>
+			<id>cindy.joanning</id>
+			<name>Cindy Joanning</name>
+			<email>Cindy.Joanning@apexit.com</email>
+			<url>http://www.apexit.com</url>
+			<organization>Apex IT</organization>
+			<roles />
+			<timezone />
+		</developer>
+		<developer>
+			<id>terry.schumacher</id>
+			<name>Terry Schumacher</name>
+			<email>terry.schumacher@apexit.com</email>
+			<url>http://www.apexit.com</url>
+			<organization>Apex IT</organization>
+			<roles />
+			<timezone />
+		</developer>
+		<developer>
+			<id>wilson.hendrawan</id>
+			<name>Wilson Hendrawan</name>
+			<email>wilson.hendrawan@apexit.com</email>
+			<url>http://www.apexit.com</url>
+			<organization>Apex IT</organization>
+			<roles />
+			<timezone />
+		</developer>
+	</developers>
+	<scm>
+		<connection>scm:svn:http://svn.apexit.com/svn/charm/trunk/charm-examples</connection>
+		<developerConnection>scm:svn:http://svn.apexit.com/svn/charm/trunk/charm-examples</developerConnection>
+	</scm>
+	<repositories>
+		<repository>
+			<id>dynamic_repo</id>
+			<name>Dynamic Central Repository</name>
+			<url>http://maven.apexit.com/repository/</url>
+		</repository>
+	</repositories>
+	<distributionManagement>
+		<repository>
+			<id>dynamic_repo_file_deploy</id>
+			<name>Dynamic Repository</name>
+			<url>file:////bentley/home/maven/tomcat/webapps/ROOT/repository</url>
+		</repository>
+	</distributionManagement>
+	<ciManagement>
+		<system>continuum</system>
+		<notifiers>
+			<notifier>
+				<configuration>
+					<address>bvonhaden@apexit.com</address>
+				</configuration>
+			</notifier>
+		</notifiers>
+	</ciManagement>
+	<build>
+		<finalName>charm-examples</finalName>
+		<filters>
+			<filter>src/main/filters/${filter.name}-filter.properties</filter>
+		</filters>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	<plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-war-plugin</artifactId>
+			<configuration>
+				<filters>
+					<filter>src/main/filters/${filter.name}-filter.properties</filter>
+				</filters>
+				<webResources>
+					<resource>
+						<directory>${basedir}/src/main/webapp</directory>
+						<filtering>false</filtering>
+					</resource>
+					<resource>
+						<directory>${basedir}/src/main/webapp_filtered</directory>
+						<filtering>true</filtering>
+						<targetPath>/</targetPath>
+					</resource>
+				</webResources>
+			</configuration>
+		</plugin>
+		
+		<plugin>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<configuration>
+				<source>1.5</source>
+				<target>1.5</target>
+			</configuration>
+		</plugin>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-clean-plugin</artifactId>
+			<configuration>
+				<filesets>
+					<fileset>
+						<directory>src\main\webapp\WEB-INF\lib</directory>
+					</fileset>
+					<fileset>
+						<directory>src\main\webapp\WEB-INF\classes</directory>
+					</fileset>
+					<fileset>
+						<directory>src\main\webapp\WEB-INF\logs</directory>
+						<includes>
+							<include>*.log</include>
+						</includes>
+					</fileset>
+				</filesets>
+			</configuration>
+		</plugin>
+		
+		<plugin>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>maven-jetty-plugin</artifactId>
+			<configuration>
+				<scanIntervalSeconds>10</scanIntervalSeconds>
+ 				<webDefaultXml>src/main/resources/webdefault.xml</webDefaultXml>
+ 				<contextPath>/${pom.artifactId}</contextPath>
+				<connectors>
+					<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+						<port>80</port>
+						<maxIdleTime>60000</maxIdleTime>
+					</connector>
+				</connectors>
+				<systemProperties>
+					<systemProperty>
+						<name>org.apache.commons.logging.Log</name>
+						<value>org.apache.commons.logging.impl.SimpleLog</value>
+					</systemProperty>
+				</systemProperties>
+			</configuration>
+		</plugin>
+		
+		
+		<plugin>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>xdoclet-maven-plugin</artifactId>
+			<dependencies>
+				<dependency>
+					<groupId>ant</groupId>
+					<artifactId>ant</artifactId>
+					<version>1.6.5</version>
+			  </dependency>
+				<dependency>
+					<groupId>com.dynamic.charm</groupId>
+					<artifactId>charm-core</artifactId>
+					<version>0.9</version>
+				</dependency>
+			</dependencies>
+			<executions>
+				<execution>
+					<phase>generate-sources</phase>
+					<goals>
+						<goal>xdoclet</goal>
+					</goals>
+					<configuration>
+						<tasks>
+							<webdoclet destDir="${project.build.outputDirectory}/META-INF" verbose="true" force="true">
+								<fileset dir="${basedir}/src/main/java">
+									<include name="**/*Tag.java" />
+								</fileset>
+								<jspTaglib jspversion="1.2" displayname="Charm Examples Tag Library" shortname="ce" uri="/tld/ce" acceptAbstractClasses="false" destinationFile="ce.tld" validateXml="false" />
+							</webdoclet>
+						</tasks>
+					</configuration>
+				</execution>
+			</executions>
+		</plugin>
+	</plugins>
+	</build>
+	
+	<dependencies>
+	
+		<!-- Charm -->
+		<dependency>
+			<groupId>com.dynamic.charm</groupId>
+			<artifactId>charm-core</artifactId>
+			<version>0.9</version>
+		</dependency>
+
+		<!-- Servlet, JSP, and JSTL -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.4</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jsp-api</artifactId>
+			<scope>provided</scope>
+			<version>2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		
+		<!-- SQL Server -->		
+		<dependency>
+			<groupId>net.sourceforge.jtds</groupId>
+			<artifactId>jtds</artifactId>
+			<version>1.2</version>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<!-- MySQL -->		
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.0.4</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- Oracle JDBC Driver -->
+		<dependency>
+			<groupId>oracle</groupId>
+			<artifactId>ojdbc14</artifactId>
+			<version>10.2.0.2</version>
+			<scope>runtime</scope>
+		</dependency>		
+
+		<!-- HSQLDB -->		
+		<dependency>
+			<groupId>hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>1.8.0.7</version>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<!-- Hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate</artifactId>
+			<version>3.2.1.ga</version>
+			<scope>compile</scope>
+		</dependency>
+		
+		<!-- Display Tag - Tables -->
+		<dependency>
+			<groupId>displaytag</groupId>
+			<artifactId>displaytag</artifactId>
+			<version>1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>displaytag</groupId>
+			<artifactId>displaytag-export-poi</artifactId>
+			<version>1.1</version>
+		</dependency>
+		
+		<!-- SiteMesh -->
+		<dependency>
+			<groupId>opensymphony</groupId>
+			<artifactId>sitemesh</artifactId>
+			<version>2.3</version>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<!-- DWR -->
+		<dependency>
+			<groupId>uk.ltd.getahead</groupId>
+			<artifactId>dwr</artifactId>
+			<version>1.1</version>
+		</dependency>
+		
+		<!-- ACEGI security -->
+		<dependency>
+			<groupId>org.acegisecurity</groupId>
+			<artifactId>acegi-security</artifactId>
+			<version>1.0.3</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-lang</artifactId>
+					<groupId>commons-lang</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<!-- Spring support needed for mail -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-support</artifactId>
+			<version>2.0.6</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-mock</artifactId>
+			<version>2.0.6</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.1</version>
+			<scope>test</scope>
+		</dependency>
+				
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.1.1</version>
+		</dependency>	
+		
+		<dependency>
+			<groupId>velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>1.4</version>
+		</dependency>
+		
+		<!-- javax.mail -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4</version>
+		</dependency>
+
+	</dependencies>
+		
+</project>

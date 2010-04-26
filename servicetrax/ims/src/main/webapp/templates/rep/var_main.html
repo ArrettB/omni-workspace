@@ -1,0 +1,200 @@
+<!-- $Header: var_report.html, 12, 9/19/2006 11:18:01 AM, Greg Case$ -->
+<!--#EMBED template="embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.rep/var_main.view?>"-->
+
+<body class="BodyTag" onLoad="if({!p:r_show_report.isNull('false')!} == true) redisplayPage('var_head','var_head_frame')">
+
+	<table border="0" cellspacing="0" cellpadding="3">
+	<form name="report">
+		<input name="run_report" type="hidden" value="Y" >
+		<tr>
+			<td valign="top"><table border="0" cellspacing="0" cellpadding="3">
+				<tr>
+					<td class="HeaderLabel">Invoice From Date:&nbsp;</td>
+					<td>
+				<!--#IF DEFINED="<?p:r_from_date?>" -->
+						<input name="r_from_date" class="regular" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_from_date)')</script>" value="{!p:r_from_date!}" size="12" -->
+				<!--#ELSE-->
+					<!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) as from_date" name="dateQuery"-->
+			     		<input name="r_from_date" class="regular" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_from_date)')</script>" value="{!r:dateQuery:from_date!}" size="12"-->
+					<!--#/SQLLOOP-->
+				<!--#/IF-->
+						<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_from_date)')</script>
+					</td>
+					<td class="HeaderLabel">Invoice To Date:&nbsp;</td>
+			     	<td>
+				<!--#IF DEFINED="<?p:r_to_date?>" -->
+						<input name="r_to_date" class="regular" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_to_date)')</script>" value="{!p:r_to_date!}" size="12" -->
+				<!--#ELSE-->
+					<!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) as to_date" name="dateQuery"-->
+			     		<input name="r_to_date" class="regular" value="{!r:dateQuery:to_date!}" size="12"-->&nbsp;
+					<!--#/SQLLOOP-->
+				<!--#/IF-->
+						<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_to_date)')</script>
+					</td>
+				</tr>
+			</table></td>
+		</tr>
+		<tr>
+			<td valign="top"><table border="0" cellspacing="0" cellpadding="3">
+				<tr>
+					<td class="HeaderLabel">Dealer:&nbsp;</td>
+					<td><!--#SELECT name="r_ext_dealer_id" class="regular" resourceName="<?s:org_resource?>" query="SELECT rtrim(custnmbr) customer_id, rtrim(shrtname) customer_name FROM RM00101 WHERE userdef1='DEALER' or custnmbr=<?p:r_ext_dealer_id.toSQLString()?> ORDER BY custname" firstOption="All" firstOptionValue="" currentValue="<?p:r_ext_dealer_id?>" --></td>
+				</tr>
+				<tr>
+					<td class="HeaderLabel">Customer:&nbsp;</td>
+					<td><!--#SELECT name="r_customer_id" class="regular" query="SELECT customer_id, customer_name FROM customers WHERE organization_id = <?s:org_id.toSQLString()?> AND ext_dealer_id <?p:r_ext_dealer_id.isNullSQLStringLike('%')?> ORDER BY customer_name" firstOption="All" firstOptionValue="" currentValue="<?p:r_customer_id?>" style="width:150"--></td>
+				</tr>
+				<tr>
+					<td class="HeaderLabel">Job #:&nbsp;</td>
+					<td><!--#SELECT name="r_job_id" class="regular" query="SELECT DISTINCT JOBS_V.job_id, job_no FROM dbo.JOBS_V INNER JOIN
+                      dbo.INVOICES ON dbo.JOBS_V.JOB_ID = dbo.INVOICES.JOB_ID WHERE JOBS_V.organization_id = <?s:org_id.toPStmtString()?> AND (ext_dealer_id like <?p:r_ext_dealer_id.isNull('%').toPStmtString()?> or customer_id=<?p:r_customer_id..toPStmtString()?>) ORDER BY job_no" firstOption="All" firstOptionValue="" currentValue="<?p:r_job_id?>" --></td>
+				</tr>
+			</table></td>
+			<td valign="top"><table border="0" cellspacing="0" cellpadding="3">
+				<tr>
+					<td class="HeaderLabel">Project Manager:&nbsp;</td>
+					<td><!--#SELECT name="r_billing_user_id" class="regular" query="SELECT DISTINCT billing_user_id, billing_user_name FROM jobs_v WHERE organization_id = <?s:org_id.toPStmtString()?> AND billing_user_name is not null ORDER BY billing_user_name" firstOption="All" firstOptionValue="" currentValue="<?p:r_billing_user_id?>" --></td>
+				</tr>
+				<tr>
+					<td class="HeaderLabel">Foreman:&nbsp;</td>
+					<td><!--#SELECT name="r_foreman_resource_id" class="regular" query="SELECT DISTINCT foreman_resource_id, foreman_resource_name FROM sch_resources_v WHERE organization_id = <?s:org_id.toPStmtString()?> AND sch_foreman_flag = 'Y' and foreman_resource_name is not null ORDER BY foreman_resource_name" firstOption="All" firstOptionValue="" currentValue="<?p:r_foreman_resource_id?>" --></td>
+				</tr>
+
+				<tr>
+					<td class="HeaderLabel">Job Type:&nbsp;</td>
+					<td><!--#SELECT name="r_job_type_code" class="regular" query="SELECT lookup_code, lookup_name FROM job_types_v ORDER BY sequence_no" firstOption="All" firstOptionValue="" currentValue="<?p:r_job_type_code?>" --></td>
+				</tr>
+			</table></td>
+		</tr>
+		<tr>
+		   <td><input type="submit" name="set_button" value="Run Report" class="button2"-->&nbsp;</td>
+		</tr>
+	</form>
+	</table>
+
+	<!-- #IF defined="<?run_report?>" -->
+	<table width="100%">
+		<tr><td colspan="16" class="tableHeader">Variance Report (Time &amp; Exp based on Time Capture)</td></tr>
+	</table>
+
+   <!--#SMARTTABLE class="SmartTable" name="var_report_v" maxRows="50" TableTotal="true"
+	   query="SELECT job_id, job_no, job_name, job_type_code, job_status_type_name, dealer_name, customer_name,
+	sum_time_exp,
+	sum_time,
+	sum_exp,
+	sum_quote,
+	sum_payroll_qty,
+	sum_expense_qty,
+	sum_estimated_hours,
+	sum_inv,
+	sum_inv - sum_time_exp AS sum_inv_var,
+	CASE sum_inv WHEN 0 THEN 0 ELSE (sum_inv - sum_time_exp) / sum_inv END AS sum_inv_var_percent,
+	sum_quote - sum_time_exp AS sum_q_te_var,
+	CASE sum_time_exp WHEN 0 THEN 0 ELSE (sum_quote - sum_time_exp) / sum_time_exp END AS sum_q_te_var_percent,
+	sum_inv - sum_quote AS sum_inv_q_var,
+	CASE sum_inv WHEN 0 THEN 0 ELSE (sum_inv - sum_quote) / sum_inv END AS sum_inv_q_var_percent,
+	sum_estimated_hours - sum_payroll_qty AS sum_est_act_hours_var,
+	CASE sum_payroll_qty WHEN 0 THEN 0 ELSE (sum_estimated_hours - sum_payroll_qty) / sum_payroll_qty END AS sum_est_act_hours_var_percent
+FROM
+	(	SELECT
+			var_report_v.*,
+			(	SELECT
+					ISNULL(SUM(VAR_INV_DATE_V.sum_inv), 0)
+				FROM
+					VAR_INV_DATE_V
+				WHERE VAR_INV_DATE_V.job_id = var_report_v.job_id
+				  AND VAR_INV_DATE_V.date_sent <= <?p:r_to_date.isNullSQLString('1/1/2101')?>
+				  AND VAR_INV_DATE_V.date_sent >= <?p:r_from_date.isNullSQLString('1/1/1901')?>
+			)
+			AS sum_inv
+		FROM
+			dbo.VAR_REPORT_V
+		WHERE 1=1
+		    <?p:r_ext_dealer_id.isNotNullSQLString('AND ext_dealer_id = ')?>
+			<?p:r_customer_id.isNotNull('AND customer_id = ')?>
+			<?p:r_job_id.isNotNull('AND job_id = ')?>
+			<?p:r_job_type_code.isNotNullSQLString('AND job_type_code = ')?>
+			<?p:r_billing_user_id.isNotNull('AND billing_user_id = ')?>
+			<?p:r_foreman_resource_id.isNotNull('AND foreman_resource_id = ')?>
+	)
+	AS temptable
+ORDER BY job_no"
+   -->
+	<!--#CHECKSECURITY right="rights.job/job_edit.view" -->
+		<!--#SMARTCOLUMN title="Job#" name="job_no" sort="job_no" align="center" href="" onClick="newWindow('<?s:action?>setupSession/job/job_edit?job_id=<?r:var_report_v:job_id?>&closeOnCancel=true','job_window',550,650);return false;" -->
+	<!--#ELSE-->
+		<!--#SMARTCOLUMN title="Job#" name="job_no" sort="job_no" align="center"  -->
+	<!--#/CHECKSECURITY-->
+		<!--#SMARTCOLUMN title="Job&nbsp;Status" name="job_status_type_name" sort="job_status_type_name" -->
+		<!--#SMARTCOLUMN title="Customer" name="customer_name" sort="customer_name" -->
+		<!--#SMARTCOLUMN title="Invoice&nbsp;$" name="sum_inv" sort="sum_inv" format="money" total="true" align="right" -->
+		<!--#SMARTCOLUMN title="Time Exp&nbsp;$" name="sum_time_exp" total="true" sort="sum_time_exp" format="money" align="right" -->
+		<!--#SMARTCOLUMN title="Billed Var&nbsp;$" name="sum_inv_var" sort="sum_inv_var" total="true" format="money" align="right" -->
+		<!--#SMARTCOLUMN title="Billed Var&nbsp;%" name="sum_inv_var_percent" sort="sum_inv_var_percent" format="percent" numDecimals="0" align="center" -->
+		<!--#SMARTCOLUMN title="Time&nbsp;$" name="sum_time" sort="sum_time" format="money" total="true" align="right" -->
+		<!--#SMARTCOLUMN title="Exp&nbsp;$" name="sum_exp" sort="sum_exp" format="money" total="true" align="right" -->
+		<!--#SMARTCOLUMN title="Quote&nbsp;$" name="sum_quote" sort="sum_quote" format="money" total="true" align="right" -->
+		<!--#SMARTCOLUMN title="TC Hours" name="sum_payroll_qty" sort="sum_payroll_qty" total="true" align="right" format="###,###,###,##0.00" -->
+		<!--#SMARTCOLUMN title="(Q-TE)&nbsp;$" name="sum_q_te_var" sort="sum_q_te_var" format="money" total="true" align="right" -->
+		<!--#SMARTCOLUMN title="(Q-TE)/ TE&nbsp;%" name="sum_q_te_var_percent" sort="sum_q_te_var_percent" format="percent" numDecimals="0" align="center" -->
+		<!--#SMARTCOLUMN title="(INV-Q)&nbsp;$" name="sum_inv_q_var" sort="sum_inv_q_var" format="money" total="true" align="right" -->
+		<!--#SMARTCOLUMN title="(INV-Q)/ INV&nbsp;%" name="sum_inv_q_var_percent" sort="sum_inv_q_var_percent" format="percent" numDecimals="0" align="center" -->
+		<!--#SMARTCOLUMN title="Est Hours" name="sum_estimated_hours" sort="sum_estimated_hours" total="true" align="right" -->
+		<!--#SMARTCOLUMN title="Hours Var" name="sum_est_act_hours_var" sort="sum_est_act_hours_var" format="###,###,###,##0.00" total="true" align="right" -->
+		<!--#SMARTCOLUMN title="Hours Var&nbsp;%" name="sum_est_act_hours_var_percent" sort="sum_est_act_hours_var_percent" format="percent" numDecimals="0" align="center" -->
+		<!--#SMARTCOLUMN title="Dealer" name="dealer_name" sort="dealer_name" -->
+		<!--#SMARTCOLUMN title="Job Name" name="job_name" sort="job_name" -->
+		<!--#SMARTCOLUMN title="Job Type" name="job_type_code" sort="job_type_code" align="center"  -->
+
+   <!--#/SMARTTABLE -->
+
+	<BR><BR>
+
+	<table width="100%" cellspacing="0" cellpadding="0">
+		<tr><td colspan="3" class="tableHeader">Average Percent Variance</td></tr>
+	</table>
+
+   <!--#SMARTTABLE class="SmartTable" name="var_report_sum"
+	   query="SELECT organization_id,
+	   				(CASE SUM(sum_inv)          WHEN 0 THEN 0 ELSE SUM(sum_inv - sum_time_exp)   / SUM(sum_inv) END)          sum_inv_var_percent,
+	   				(CASE SUM(sum_time_exp)     WHEN 0 THEN 0 ELSE SUM(sum_quote - sum_time_exp)  / SUM(sum_time_exp) END)     sum_q_te_var_percent,
+	   				(CASE SUM(sum_inv)          WHEN 0 THEN 0 ELSE SUM(sum_inv - sum_quote) / SUM(sum_inv) END)          sum_inv_q_var_percent,
+	   				(CASE SUM(sum_payroll_qty)  WHEN 0 THEN 0 ELSE SUM(sum_estimated_hours - sum_payroll_qty) / SUM(sum_payroll_qty) END) sum_hours_var_percent
+				FROM
+					(	SELECT
+							var_report_v.*,
+							(	SELECT
+									ISNULL(SUM(VAR_INV_DATE_V.sum_inv), 0)
+								FROM
+									VAR_INV_DATE_V
+								WHERE VAR_INV_DATE_V.job_id = var_report_v.job_id
+								  AND VAR_INV_DATE_V.date_sent <= <?p:r_to_date.isNullSQLString('1/1/2101')?>
+								  AND VAR_INV_DATE_V.date_sent >= <?p:r_from_date.isNullSQLString('1/1/1901')?>
+							)
+							AS sum_inv
+						FROM
+							dbo.VAR_REPORT_V
+						WHERE 1=1
+						    <?p:r_ext_dealer_id.isNotNullSQLString('AND ext_dealer_id = ')?>
+							<?p:r_customer_id.isNotNull('AND customer_id = ')?>
+							<?p:r_job_id.isNotNull('AND job_id = ')?>
+							<?p:r_job_type_code.isNotNullSQLString('AND job_type_code = ')?>
+							<?p:r_billing_user_id.isNotNull('AND billing_user_id = ')?>
+							<?p:r_foreman_resource_id.isNotNull('AND foreman_resource_id = ')?>
+					)
+					AS temptable
+				GROUP BY organization_id"
+   -->
+		<!--#SMARTCOLUMN title="Billed Var&nbsp;%" name="sum_inv_var_percent" sort="sum_inv_var_percent" format="percent" align="center" -->
+		<!--#SMARTCOLUMN title="(Q-TE)/TE&nbsp;%" name="sum_q_te_var_percent" sort="sum_q_te_var_percent" format="percent" align="center" -->
+		<!--#SMARTCOLUMN title="(INV-Q)/INV&nbsp;%" name="sum_inv_q_var_percent" sort="sum_inv_q_var_percent" format="percent" align="center" -->
+		<!--#SMARTCOLUMN title="Hours Var&nbsp;%" name="sum_hours_var_percent" sort="sum_hours_var_percent" format="percent" align="center" -->
+   <!--#/SMARTTABLE -->
+
+<!--/#IF-->
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->
+

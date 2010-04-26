@@ -1,0 +1,39 @@
+
+<!--#EMBED template="embeds/header.html" -->
+<script language="JavaScript">
+<!--
+function choose()
+{
+	window.opener.focus();	
+	if (window.opener.{!p:form!}.{!p:field!})
+		window.opener.{!p:form!}.{!p:field!}.value = {!p:id!};
+	if (window.opener.{!p:form!}.{!p:field!}_text)
+	{
+		window.opener.{!p:form!}.{!p:field!}_text.value = display;
+		window.opener.{!p:form!}.{!p:field!}_text.focus();
+	}
+	if (window.opener.{!p:form!}.{!p:rate_field!})
+		window.opener.{!p:form!}.{!p:rate_field!}.value = rate;
+	if (window.opener.{!p:form!}.{!p:rate_field!}_text)
+		window.opener.{!p:form!}.{!p:rate_field!}_text.value = rate;
+
+	document.body.onunload = null;
+}
+
+window.focus(); //in case window is already open, then focus on window 
+
+// -->
+</script>
+
+<!--#CHOOSERTABLE name="choose" query="<?p:query?>" -->
+	<!--#CHOOSERCOLUMN title="<?p:title1?>" name="display" width="100%" filter="<?p:value?>" nowrap -->
+	<!--#CHOOSERCOLUMN title="<?p:title2?>" name="rate" width="100%" nowrap -->
+<!--#/CHOOSERTABLE -->
+</html>
+
+
+
+
+
+
+

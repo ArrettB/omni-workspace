@@ -1,0 +1,14 @@
+<html>
+<!-- $Header: clear.html, 4, 8/2/2005 3:02:34 PM, Greg Case$ -->
+<head>
+	<title></title>
+</head>
+<!--#IF defined="<?p:resource_clear?>"-->
+<body onLoad="location='{!s:showPage!}{!p:caller!}?user_id={!p:user_id!}&resource_id={!p:resource_id!}'">
+<!--#ELSEIF defined="<?p:lookup_clear?>"-->
+<body onLoad="location='{!s:showPage!}{!p:caller!}?lookup_type_id={!p:lookup_type_id!}'">
+<!--#ELSE-->
+<body onLoad="location='{!s:showPage!}{!p:caller!}'">
+<!--#/IF-->
+</body>
+</html>

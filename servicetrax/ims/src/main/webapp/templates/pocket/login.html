@@ -1,0 +1,44 @@
+<!--#EMBED template="pocket/embeds/header.html" title="Login"-->
+
+<form name="loginform" action="{!s:action!}login/pocket/start.html" method="post">
+	<input type="hidden" name="action" value="login">
+	<input type="hidden" name="loginTemplate" value="pocket/login.html">
+	<input type="hidden" name="locationTemplate" value="pocket/login.html">
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
+	<tr>
+		<td colspan="2">
+		<font face="Verdana" size="3"><b>Login to PockeTrax</b></font>
+		</td>
+	</tr>
+	<!--#EMBED template="embeds/spacer_row.html" spacer_height="10"-->
+	<tr>
+		<td><font color="#000000" size="-2" face="Verdana"><b>User Name</b></font></td>
+		<td><input name="username" type="text" value="{!d:user_name!}" style="width:115"></td>
+	</tr>
+	<tr>
+		<td><font color="#000000" size="-2" face="Verdana"><b>Password</b></font></td>
+		<td><input name="password" type="password" value="{!d:pass_word!}" style="width:115"></td>
+	</tr>
+	<tr>
+		<td><font color="#000000" size="-2" face="Verdana"><b>Location</b></font></td>
+		<td><!--#SELECT name="org_id"	style="width:115" query="SELECT organization_id, name FROM organizations ORDER BY sequence_no"  currentValue="<?p:org_id?>"--></td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>
+			<input type="submit" value="Login">
+			<input type="reset" value="Cancel">
+		</td>
+	</tr>
+	<!--#IF defined="<?d:message?>" -->
+	<tr>
+		<td colspan="2" align="center" valign="middle"><font color="#FF0000" size="-2" face="Verdana" ><b>{!d:message!}</b></font></td>
+	</tr>
+	<!--#/IF-->
+</table>
+
+
+</form>
+
+<!--#EMBED template="pocket/embeds/footer.html" -->

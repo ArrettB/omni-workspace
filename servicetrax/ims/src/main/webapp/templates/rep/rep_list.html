@@ -1,0 +1,54 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: rep_list.html, 8, 12/20/2006 7:05:46 PM, Greg Case$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.REPORTS_TAB.view?>"-->
+
+<body class="BodyTag">
+
+	<table width="100%" cellspacing="0" cellpadding="0">
+		<tr><td  class="TableTitle">Please choose a Report:</td></tr>
+	</table>
+
+	<!--#CHECKSECURITY right="rights.rep/other_reports_new.view"-->
+	<h3>
+	<a href="{!s:action!}launchCharm?address=reports/index.html" target="_new">View New Reports</A>
+	</h3>
+	<!--#/CHECKSECURITY-->
+
+
+	<br>
+
+	<table width="100%">
+   <!--#SQLLOOP name="user_org_function_rights_v"
+   	query="SELECT DISTINCT user_name, function_name, function_desc, target, template_name
+   	       FROM user_org_function_rights_v
+   	       WHERE user_id=<?s:user_id.toPStmtString()?>
+   	         AND is_menu_function='Y' AND function_group_code='rep'
+			 AND right_type_code = 'view' AND has_right = 'Y'
+			 AND organization_id=<?s:org_id.toPStmtString()?>
+			ORDER BY function_name"
+		resourceName="SQLServer"-->
+	<!--#SQLHEADER-->
+
+	<!--#/SQLHEADER-->
+		<tr>
+			<td width="10%"><a href="{!s:showPage!}{!r:user_org_function_rights_v:template_name!}"  target="main_frame">{!r:user_org_function_rights_v:function_name!}</a></td>
+		<tr>
+		<!--#SQLFOOTER-->
+		<!--#/SQLFOOTER-->
+		<!--#SQLNODATA-->
+			<!-- No functions defined! -->
+		<!--#/SQLNODATA-->
+	<!--#/SQLLOOP-->
+
+	<!--#CHECKSECURITY right="rights.rep/other_reports_in.view"-->
+		<tr>
+			<td width="10%"><a href="{!a:additionalReports!}" target="_top">Additional Reports</a></td>
+		<tr>
+	<!--#/CHECKSECURITY-->
+
+	</table>
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

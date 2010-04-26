@@ -1,0 +1,274 @@
+
+<project default="init" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+	<import file="../../common/build-common.xml"/>
+
+	<!-- grab system environment and prepend with env. -->
+	<property environment="env" />
+
+	<property file="build.properties" />
+
+	<property file="src\main\filters\development-filter.properties" />
+
+	<!-- Source Paths -->
+	<property name="src.dir" value="src" />
+	<property name="src.java.dir" value="${src.dir}/main/java" />
+	<property name="src.web.dir" value="${src.dir}/main/webapp" />
+	<property name="src.resources.dir" value="${src.dir}/main/resources" />
+	<property name="src.velocity.dir" value="${src.dir}/main/velocity" />
+	<property name="src.tld.dir" value="${src.dir}/main/tld" />
+	<property name="src.hibernate.dir" value="${src.dir}/main/webapp/WEB-INF/mappings" />
+
+	<!-- Target Paths -->
+	<property name="target.dir" value="target" />
+	<property name="target.web.dir" value="${target.dir}/web" />
+	<property name="target.webinf.dir" value="${target.web.dir}/WEB-INF" />
+	<property name="target.classes.dir" value="${target.dir}/classes" />
+	<property name="target.reports.dir" value="${target.dir}/reports/" />
+	<property name="target.mockclasses.dir" value="${target.dir}/mock-classes" />
+	<property name="target.testclasses.dir" value="${target.dir}/test-classes/" />
+	<property name="target.testreports.dir" value="${target.dir}/test-reports/" />
+	<property name="target.testsummary.dir" value="${target.dir}/test-summary/" />
+
+	<!-- Target Paths For Generation -->
+	<property name="target.gen.dir" value="${target.dir}/generated" />
+	<property name="target.gen.hibernate.dir" value="${target.gen.dir}/hibernate/" />
+	<property name="target.gen.tld.dir" value="${target.gen.dir}/tld" />
+	<property name="target.gen.webinf.dir" value="${target.gen.dir}/webinf" />
+	<property name="target.gen.middlegen.dir" value="${target.gen.dir}/middlegen" />
+
+	<!-- Report properties -->
+	<property name="target.reports.dir" value="${target.dir}/reports/" />
+	<property name="src.reports.dir" value="src/main/resources/reports" />
+
+	<target name="prep_for_dev" unless="do_production">
+		<echo message="Doing a Development Build" />
+	</target>
+
+	<target name="prep_for_production" if="do_production">
+		<echo message="Doing a Production Build" />
+	</target>
+
+	<target name="project_dependencies">
+		<artifact:pom file="pom.xml" id="maven.project" />
+
+		<artifact:dependencies pathId="project.classpath" filesetId="project.fileset">
+			<artifact:pom refid="maven.project" />
+		</artifact:dependencies>
+	</target>
+
+	<target name="clean">
+		<delete dir="${target.dir}" />
+	</target>
+		
+	<target name="init" description="Used to initialize the build" depends="prep_for_dev,prep_for_production">
+
+		<splash imageurl="http://maven.apexit.com/charm/images/charm.gif" />
+
+		<condition property="deploy.dir" value="${env.TOMCAT_HOME}\webapps">
+			<isset property="env.TOMCAT_HOME" />
+		</condition>
+		<condition property="deploy.dir" value="${env.CATALINA_HOME}\webapps">
+			<isset property="env.CATALINA_HOME" />
+		</condition>
+
+		<condition property="do_production" value="true">
+			<isset property="production" />
+		</condition>
+
+		<echo message="ANT_HOME = ${env.ANT_HOME}" />
+		<echo message="JAVA_HOME = ${env.JAVA_HOME}" />
+
+		<!-- Create the time stamp -->
+		<tstamp>
+			<format property="dateStamp" pattern="yyyy-MM-dd" locale="en" />
+		</tstamp>
+
+		<filterchain id="resource.filters">
+			<replacetokens>
+				<token key="VERSION" value="${version}" />
+				<token key="DATE" value="${TODAY}" />
+				<token key="TIME" value="${TSTAMP}" />
+			</replacetokens>
+		</filterchain>
+
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${target.dir}" />
+
+	</target>
+
+
+	<target name="base_data" depends="init,init_jdbc">
+		<sql
+			driver="${jdbc.driver}"
+			url="${jdbc.url}"
+			userid="${jdbc.user}"
+			password="${jdbc.pass}"
+			classpathref="jdbc.classpath"
+		>
+			<transaction src="dbscripts/basedata.sql"/>
+
+		</sql>
+	</target>
+
+	<target name="create_tables" depends="init,init_jdbc">
+		<sql
+			driver="${jdbc.driver}"
+			url="${jdbc.url}"
+			userid="${jdbc.user}"
+			password="${jdbc.pass}"
+			classpathref="jdbc.classpath"
+		>
+
+			<transaction src="dbscripts/create.sql"/>
+
+		</sql>
+	</target>
+
+	<target name="drop_tables" depends="init,init_jdbc">
+		<sql
+			driver="${jdbc.driver}"
+			url="${jdbc.url}"
+			userid="${jdbc.user}"
+			password="${jdbc.pass}"
+			classpathref="jdbc.classpath"
+		>
+			<transaction src="dbscripts/drop.sql"/>
+
+		</sql>
+	</target>
+
+	<target name="compact" depends="init,init_jdbc">
+		<sql
+			driver="${jdbc.driver}"
+			url="${jdbc.url}"
+			userid="${jdbc.user}"
+			password="${jdbc.pass}"
+			classpathref="jdbc.classpath"
+		>
+			<transaction>SHUTDOWN COMPACT</transaction>
+
+		</sql>
+	</target>
+
+	<target name="delete_data" depends="init,init_jdbc">
+		<sql
+			driver="${jdbc.driver}"
+			url="${jdbc.url}"
+			userid="${jdbc.user}"
+			password="${jdbc.pass}"
+			classpathref="jdbc.classpath"
+		>
+		</sql>
+	</target>
+
+	<target name="test_data" depends="init,init_jdbc">
+		<sql
+			driver="${jdbc.driver}"
+			url="${jdbc.url}"
+			userid="${jdbc.user}"
+			password="${jdbc.pass}"
+			classpathref="jdbc.classpath"
+		>
+			SELECT name from cities;
+		</sql>
+	</target>
+	
+	<target name="td" depends="init,init_jdbc">
+		<sql
+			driver="${jdbc.driver}"
+			url="${jdbc.url}"
+			userid="${jdbc.user}"
+			password="${jdbc.pass}"
+			classpathref="jdbc.classpath"
+		>
+
+			SELECT count (*) from cities;
+		</sql>
+	</target>
+
+	<target name="generate_hbm" depends="init,init_hibernate_tools" description="Reverse Engineers the database, generating .hbm.xml mapping files and .java POJOs">
+
+		<delete dir="${target.gen.hibernate.dir}" quiet="true" />
+		<mkdir dir="${target.gen.hibernate.dir}" />
+
+		<hibernatetool destdir="${target.gen.hibernate.dir}">
+			<!-- database settings are read from hibernate.cfg.xml and/or via propertyfile if provided -->
+			<jdbcconfiguration  packageName="${jdbc.orm.package}" configurationfile="hibernate.cfg.xml" reversestrategy="charm.hibernate.tools.CharmReverseEngineeringStrategy" />
+			<!-- generate default .hbm.xml files -->
+			<hbm2hbmxml />
+			<!-- generate default .java files without EJB3 annotations -->
+			<hbm2java ejb3="false" />
+		</hibernatetool>
+
+	</target>
+
+	<target name="db2hbm" depends="generate_hbm" description="Modifies the generated .hbm files">
+
+		<!-- Remove catalog="XXX" from the hbm.xml files -->
+		<replace dir="${target.gen.hibernate.dir}" includes="**/*.hbm.xml" excludes="**/*.java" token="catalog=&quot;test&quot;" value=" " />
+
+		<!-- Modify the generator from assigned to identity -->
+		<replace dir="${target.gen.hibernate.dir}" includes="**/*.hbm.xml" excludes="**/*.java" token="&lt;generator class=&quot;assigned&quot; /&gt;" value="&lt;generator class=&quot;identity&quot; /&gt;" />
+
+		<!-- Add lazy="true" and cascade="none" -->
+		<replace dir="${target.gen.hibernate.dir}" includes="**/*.hbm.xml" excludes="**/*.java" token="&lt;set name=&quot;" value="&lt;set lazy=&quot;true&quot; cascade=&quot;none&quot; name=&quot;" />
+
+		<!-- Make it so Event extends ModifyTracker -->
+		<replace dir="${target.gen.hibernate.dir}" includes="**/Event.java"  token="public class Event" value="public class Event extends ModifyTracker" />
+
+		<!-- Remove fetch=select -->
+		<replace dir="${target.gen.hibernate.dir}" includes="**/*.hbm.xml" excludes="**/*.java" token="fetch=&quot;select&quot;" value=" " />
+
+
+	</target>
+	
+	
+	<target name="webdoclet" depends="init_xdoclet" description="Generates tld files for your tags in the source directory">
+		<copy file="${src.tld.dir}/${project.name.unique}.tld" tofile="${src.web.dir}/WEB-INF/classes/META-INF/${project.name.unique}.tld" />
+	</target>
+	
+	
+	<target name="copy_hibernate" depends="init" description="Copies the generated .hbm.xml and .java files to the source directories">
+
+		<mkdir dir="${src.hibernate.dir}" />
+
+		<!--Delete the existing hbm.xml files -->
+		<delete>
+			<fileset dir="${src.hibernate.dir}">
+				<include name="**/*.hbm.xml" />
+			</fileset>
+		</delete>
+
+		<!-- Copy the hbm.xml files to the src/web/WEB-INF/mappings folder -->
+		<copy todir="${src.hibernate.dir}" flatten="true">
+			<fileset dir="${target.gen.hibernate.dir}">
+				<include name="**/*.hbm.xml" />
+			</fileset>
+		</copy>
+
+		<!-- Copy the java files to the src/java folder -->
+		<copy todir="${src.java.dir}" flatten="false">
+			<fileset dir="${target.gen.hibernate.dir}">
+				<include name="**/*.java" />
+			</fileset>
+		</copy>
+
+	</target>
+
+	<target name="hsqldb_dependencies">
+		<artifact:dependencies pathId="hsqldb.classpath">
+			<remoteRepository refid="dynamic.repo"/>
+			<dependency groupId="hsqldb" artifactId="hsqldb" version="1.8.0.1" /> 
+		</artifact:dependencies>
+	</target>
+	
+	<target name="dbgui" depends="hsqldb_dependencies" description="HSQLDB Database GUI">
+		  <java classpathref="hsqldb.classpath" classname="org.hsqldb.util.DatabaseManagerSwing" fork="yes" >
+		    <arg value="--url"/>
+		  	<arg value="${jdbc.url}" />
+		  </java>
+		
+	</target>
+	
+</project>

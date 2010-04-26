@@ -1,0 +1,99 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: items.html, 15, 1/7/2005 5:09:46 PM, Lee A. Gunderson$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.mnt/items.view?>"-->
+<!--#REQUIRED data="<?s:rights.mnt/item.view?>"-->
+<script language="JavaScript">
+<!--
+function customSave()
+{
+	document.item.button.value = 'Save';
+	document.item.submit();
+}
+function customDelete()
+{
+	document.item.active_flag.value = 'N';
+	document.item.button.value = 'Save';
+	document.item.submit();
+}
+function customCancel()
+{
+	location='{!s:showPage!}mnt/clear.html?caller=mnt/items.html'
+}
+//-->
+</script>
+<body class="BodyTag">
+<table width="100%" cellspacing="0" cellpadding="0">
+	<tr>
+		<!--#IF defined="<?p:item_id?>"-->
+		<td  class="HeaderBar">Edit an Item</td>
+		<!--#ELSE-->
+		<td  class="HeaderBar">No Item Selected</td>
+		<!--#/IF-->
+	</tr>
+</table>
+<!--#SMARTFORM name="mnt/item"	security="rights" table="items"	key="item_id" sequence="@@IDENTITY"	useCSS="true"	nextTemplate="mnt/clear.html"	buttons=""
+-->
+	<!--#SMARTFIELD name="created_by" mode="Insert" value="<?s:user.userID?>" type="hidden" -->
+	<!--#SMARTFIELD name="date_created" mode="Insert" value="getDate()" type="hidden" -->
+	<!--#SMARTFIELD name="modified_by" mode="Update" value="<?s:user.userID?>" type="hidden" -->
+	<!--#SMARTFIELD name="date_modified" mode="Update" value="getDate()" type="hidden" -->
+	<!--#SMARTFIELD name="active_flag" mode="Insert" value="Y" type="hidden" -->
+	<!--#SMARTFIELD name="active_flag" mode="Update" type="hidden" -->
+	<!--#SMARTFIELD name="caller" value="mnt/items.html" type="hidden" -->
+	<!--#SMARTFIELD name="button" type="hidden" -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr><td width="75"><!--#SMARTFIELD title="Name" name="name" div="</td><td>" --></td></tr>
+	<tr><td width="75"><!--#SMARTFIELD title="Code" name="code" div="</td><td>" --></td></tr>
+	<tr><td width="75"><!--#SMARTFIELD title="Sequence" name="sequence_no" div="</td><td>" type="text" size="5"--></td></tr>
+	<tr><td width="75"><!--#SMARTFIELD title="Description" name="description" div="</td><td>" size="100"--></td></tr>
+	<tr><td width="75"><!--#SMARTFIELD title="Ext Item Id" name="ext_item_id" div="</td><td>" --></td></tr>
+	<tr><td width="75"><!--#SMARTFIELD title="Item Type" name="item_type_id" div="</td><td>" type="droplist" table="item_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+	<tr><td width="75"><!--#SMARTFIELD title="Item Status" name="item_status_type_id" div="</td><td>" type="droplist" table="item_status_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+	<tr><td width="75"><!--#SMARTFIELD title="Billable?" name="billable_flag" div="</td><td>" type="boolean" --></td></tr>
+</table>
+
+	<tr><td colspan="4">
+	</td></tr>
+
+<!--#EMBED template="embeds/audit.html" table_name="items" table_key="item_id" key_value="<?p:item_id?>"-->
+
+<!--#/SMARTFORM -->
+<br>
+<table>
+	<tr>
+		<!--#IF evaluate="<?d:mode?>" compare="Update"-->
+		<!--#IF defined="<?s:rights.mnt/item.update?>"-->
+		<td><input type="submit" id="Save" class="button" name="button" value="Save" onclick="customSave()"></td>
+		<!--#/IF-->
+		<!--#/IF-->
+		<!--#IF evaluate="<?d:mode?>" compare="Update"-->
+		<!--#IF defined="<?s:rights.mnt/item.delete?>"-->
+		<td><input type="button" id="Delete" class="button" name="button" value="Delete" onclick="customDelete()"></td>
+		<!--#/IF-->
+		<!--#/IF-->
+		<td><input type="submit" id="Cancel" class="button" name="button" value="Cancel"></td>
+	</tr>
+</table>
+<br>
+<table width="100%" cellspacing="0" cellpadding="0">
+	<tr>
+		<td  class="HeaderBar">Select an Item to Edit</td>
+	</tr>
+</table>
+<!--#SMARTTABLE class="SmartTable" name="items"
+	   query="SELECT item_id, name, code, description, sequence_no
+	   			FROM items_v
+	   			WHERE item_status_type_code='active' AND organization_id=<?s:org_id.toPStmtString()?>
+	        	ORDER BY sequence_no
+	        	"-->
+	<!--#SMARTCOLUMN name="name" sort="name" title="Name" width="20%" href="<?s:showPage?>mnt/items.html?item_id=<?r:items:item_id?>" target="main_frame" -->
+	<!--#SMARTCOLUMN name="code" sort="code" title="Code" width="10%" -->
+	<!--#SMARTCOLUMN name="sequence_no" sort="sequence_no" title="Sequence" width="10%" -->
+	<!--#SMARTCOLUMN name="description" sort="description" title="Description" width="60%" -->
+
+<!--#/SMARTTABLE -->
+<br>
+<input type="button" class="button" name="button" value="Resource Type Items" onClick="location='{!s:showPage!}mnt/res_type_items.html?item_id='">
+</body>
+<!--#EMBED template="embeds/footer.html" -->

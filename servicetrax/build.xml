@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<project name="serviceTrax" default="build_all" basedir=".">
+
+	<!-- grab system environment and prepend with env. -->
+	<property environment="env" />
+
+	<!-- User Properties From File -->
+	<property file="${user.home}\build.properties" />
+
+	<!-- set global properties for this build -->
+	<property name="target.dir" value="target"/>
+	<property name="dist.dir" value="dist"/>
+	<property name="deploy.dir" value="${env.CATALINA_HOME}\webapps"/>
+
+	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" /> 
+
+	<target name="clean" description="Cleans out temporary files">
+		<delete dir="${target.dir}"/>
+	</target>
+
+	<target name="info" description="Check the max version">
+		<svn>
+			<wcVersion  path="${basedir}">
+			</wcVersion>
+		</svn>
+		<echo message="Max version = ${revision.max}" />
+
+	</target>
+
+	<target name="init" depends="info" description="Used to initialize the build">
+
+		<!-- Create the time stamp -->
+		<tstamp>
+			<format property="dateStamp" pattern="yyyy-MM-dd" locale="en"/>
+		</tstamp>
+
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${dist.dir}"/>
+	</target>
+
+
+	<target name="test" depends="init" description="Builds wars for each environment for servicetrax and charm module">
+
+		<antcall target="clean" inheritall="false" />
+
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn clean package" />
+			<arg line="-Ptest" />
+		</exec>
+		<copy file="ims/target/ims.war" tofile="${dist.dir}/${dateStamp}/ims-test.war" />
+		<copy file="stc/target/stc.war" tofile="${dist.dir}/${dateStamp}/stc-test.war" />
+
+	</target>
+
+	
+	<target name="build_all" depends="init" description="Builds wars for each environment for servicetrax and charm module">
+
+		<antcall target="clean" inheritall="false" />
+
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn clean" />
+		</exec>
+		
+
+<!--
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn clean package" />
+			<arg line="-Parchive" />
+		</exec>
+		<copy file="ims/target/ims.war" tofile="${dist.dir}/${dateStamp}/ims-archive.war" />
+		<copy file="stc/target/stc.war" tofile="${dist.dir}/${dateStamp}/stc-archive.war" />
+
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn clean package" />
+			<arg line="-Ptest" />
+		</exec>
+		<copy file="ims/target/ims.war" tofile="${dist.dir}/${dateStamp}/ims-test.war" />
+		<copy file="stc/target/stc.war" tofile="${dist.dir}/${dateStamp}/stc-test.war" />
+-->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn clean package" />
+			<arg line="-Pqa" />
+		</exec>
+		<copy file="ims/target/ims.war" tofile="${dist.dir}/${dateStamp}/ims-qa${revision.max}.war" />
+		<copy file="stc/target/stc.war" tofile="${dist.dir}/${dateStamp}/stc-qa${revision.max}.war" />
+
+
+<!--
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn clean package" />
+			<arg line="-Pqa2008" />
+		</exec>
+		<copy file="ims/target/ims.war" tofile="${dist.dir}/${dateStamp}/ims-qa2008.war" />
+		<copy file="stc/target/stc.war" tofile="${dist.dir}/${dateStamp}/stc-qa2008.war" />
+-->
+		
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn clean package" />
+			<arg line="-Pprod" />
+		</exec>
+		<copy file="ims/target/ims.war" tofile="${dist.dir}/${dateStamp}/ims-prod${revision.max}.war" />
+		<copy file="stc/target/stc.war" tofile="${dist.dir}/${dateStamp}/stc-prod${revision.max}.war" />
+
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn source:jar" />
+		</exec>
+		<copy file="ims/target/ims-sources.jar" tofile="${dist.dir}/${dateStamp}/ims-sources${revision.max}.jar" />
+		<copy file="stc/target/stc-sources.jar" tofile="${dist.dir}/${dateStamp}/stc-sources${revision.max}.jar" />
+
+	</target>
+
+	<target name="test_deploy" description="Deploys the builds to tomcat directory">
+
+		<delete dir="${deploy.dir}/ims"/>
+		<delete dir="${deploy.dir}/stc"/>
+
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn clean package" />
+			<arg line="-Ptest" />
+		</exec>
+		<copy file="ims/target/ims.war" tofile="${deploy.dir}/ims.war" />
+		<copy file="stc/target/stc.war" tofile="${deploy.dir}/stc.war" />
+	
+	</target>
+
+	<target name="view_war" description="Unpacks the war">
+
+		<delete dir="${deploy.dir}/ims"/>
+		<delete dir="${deploy.dir}/stc"/>
+
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn clean package" />
+			<arg line="-Ptest" />
+		</exec>
+
+		<delete dir="${target.dir}/war_contents"/>
+		<mkdir dir="${target.dir}/war_contents"/>
+
+		<unwar src="ims/target/ims.war" dest="${target.dir}/war_contents/ims"/>
+		<unwar src="stc/target/stc.war" dest="${target.dir}/war_contents/stc"/>
+
+	
+	</target>
+
+</project>
+

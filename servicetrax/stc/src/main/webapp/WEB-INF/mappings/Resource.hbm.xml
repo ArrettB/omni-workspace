@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.Resource" table="RESOURCES" schema="dbo" catalog="">
+        <id name="resourceId" type="java.lang.Long">
+            <column name="RESOURCE_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="userByUserId" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="USER_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="organization" class="com.dynamic.servicetrax.orm.Organization" fetch="select">
+            <column name="ORGANIZATION_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="userByModifiedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="userByCreatedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="resourceType" class="com.dynamic.servicetrax.orm.ResourceType" fetch="select">
+            <column name="RESOURCE_TYPE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="name" type="string">
+            <column name="NAME" length="200" not-null="true" />
+        </property>
+        <property name="resCategoryTypeId" type="long">
+            <column name="RES_CATEGORY_TYPE_ID" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="attachedFlag" type="string">
+            <column name="ATTACHED_FLAG" length="1" />
+        </property>
+        <property name="vendorName" type="string">
+            <column name="VENDOR_NAME" length="50" />
+        </property>
+        <property name="extVendorId" type="string">
+            <column name="EXT_VENDOR_ID" length="30" />
+        </property>
+        <property name="activeFlag" type="string">
+            <column name="ACTIVE_FLAG" length="1" not-null="true" />
+        </property>
+        <property name="foremanFlag" type="string">
+            <column name="FOREMAN_FLAG" length="1" not-null="true" />
+        </property>
+        <property name="notes" type="string">
+            <column name="NOTES" length="500" />
+        </property>
+        <property name="sortOrder" type="java.lang.Long">
+            <column name="SORT_ORDER" precision="18" scale="0" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <property name="qp3Team" type="string">
+            <column name="QP3_TEAM" length="50" />
+        </property>
+        <set name="schResources" inverse="true">
+            <key>
+                <column name="RESOURCE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.SchResource" />
+        </set>
+        <set name="resourceItems" inverse="true">
+            <key>
+                <column name="RESOURCE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ResourceItem" />
+        </set>
+        <set name="jobs" inverse="true">
+            <key>
+                <column name="FOREMAN_RESOURCE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Job" />
+        </set>
+        <set name="serviceLines" inverse="true">
+            <key>
+                <column name="RESOURCE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ServiceLine" />
+        </set>
+        <set name="schResources_1" inverse="true">
+            <key>
+                <column name="RESOURCE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.SchResource" />
+        </set>
+    </class>
+</hibernate-mapping>

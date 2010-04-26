@@ -1,0 +1,159 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!-- $Header: site_info.html, 4, 1/12/2005 9:02:02 AM, Lee A. Gunderson$ -->
+
+<body class="BodyTag" onLoad="setDefaults()">
+
+   <table class="SmartTable" cellpadding="0" cellspacing="0" border="0">
+   <!--#SMARTFORM name="job/job_loc_edit" table="job_locations" key="job_location_id" security="rights" buttons="" nextTemplate="enet/proj/site_info.html" -->
+		<!--#SMARTFIELD name="button" type="hidden" value="Save" -->
+		<!--#SMARTFIELD name="mand_fields" type="hidden" value="<?p:mand_fields?>" -->
+		<!--#IF undefined="<?p:job_location_id?>"-->
+			<td><table>
+			<!--#IF evaluate="<?s:customer_id?>" compare="" -->
+				<tr><td class="HeaderLabel">Select a Customer first, then select a Job Location.  After selecting a Job Location, Job Location fields will display here...</td></tr>
+			<!--#ELSE-->
+				<tr><td class="HeaderLabel">You need to select a Job Location at the top of this form before the site location fields will appear here.</td></tr>
+				<tr><td>&nbsp;</td></tr>
+				<tr><td class="HeaderLabel">OR</td></tr>
+				<tr><td>&nbsp;</td></tr>
+				<tr><td class="HeaderLabel">You may click on the new button to create a new Job Location</td></tr>
+				<tr><td>&nbsp;</td></tr>
+				<tr><td>&nbsp;</td></tr>
+				<tr><td align="right">
+			      <input name="job_loc_button" type="button" value="New" class="button" onClick="if( parent.isLoaded() ) parent.newJob();">&nbsp;&nbsp;&nbsp;&nbsp;
+				</td></tr>
+			<!--#/IF-->
+			</table></td>
+		<!--#ELSEIF evaluate="<?p:mand_fields?>" compare="sr" -->
+			<td><table>
+				<tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Loading Dock Avail</span>:" div="&nbsp;</td><td>" name="loading_dock_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Dock Avail Time:" div="&nbsp;</td><td>" name="dock_available_time" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Dock Reserv Required</span>:" div="&nbsp;</td><td>" name="dock_reserv_req_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Semi Access Avail</span>:" div="&nbsp;</td><td>" name="semi_access_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Dock Height:" div="&nbsp;</td><td>" name="dock_height" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Elevator Available</span>:" div="&nbsp;</td><td>" name="elevator_avail_type_id" type="droplist" table="elevator_available_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Elevator&nbsp;Reserv&nbsp;Req</span>:" div="&nbsp;</td><td>" name="elevator_reserv_req_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Security:" div="</td><td>" name="security_type_id" type="droplist" table="security_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no"--></td></tr>
+			</table></td>
+			<td><table>
+				<tr><td><!--#SMARTFIELD title="Multi-Level:" div="</td><td>" name="multi_level_type_id" type="droplist" table="multi_level_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Stair Carry</span>:" div="&nbsp;</td><td>" name="stair_carry_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Number of Flights:" div="&nbsp;</td><td>" name="stair_carry_flights" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Number of Stairs:" div="&nbsp;</td><td>" name="stair_carry_stairs" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Smallest Door/Elev:" div="&nbsp;</td><td>" name="smallest_door_elev_width" --></td></tr>
+				<tr><td colspan="2"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<td width="140"><!--#SMARTFIELD title="<span class='mandatoryLabel'>Floor Protection</span>:" div="&nbsp;</td><td>" name="floor_protection_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td>
+						<!--#IF evaluate="<?s:request_readonly?>" compare="true" -->
+							<td rowspan="3" width="80">&nbsp;</td>
+						<!--#ELSE-->
+							<!-- td rowspan="3"><input type="submit" name="save_button" value="Save" class="button"></td> -->
+							<td rowspan="3" width="80">&nbsp;</td>
+						<!--#/IF-->
+					</tr>
+					<tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Wall Protection</span>:" div="&nbsp;</td><td>" name="wall_protection_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+					<tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Doorway Protection</span>:" div="&nbsp;</td><td>" name="doorway_prot_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				</table></td></tr>
+			</table></td>
+		<!--#ELSEIF evaluate="<?p:mand_fields?>" compare="qr" -->
+			<td><table>
+				<tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Loading Dock Avail</span>:" div="&nbsp;</td><td>" name="loading_dock_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Dock Avail Time:" div="&nbsp;</td><td>" name="dock_available_time" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Dock Reserv Required:" div="&nbsp;</td><td>" name="dock_reserv_req_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Semi Access Avail</span>:" div="&nbsp;</td><td>" name="semi_access_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Dock Height:" div="&nbsp;</td><td>" name="dock_height" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Elevator Available</span>:" div="&nbsp;</td><td>" name="elevator_avail_type_id" type="droplist" table="elevator_available_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Elevator&nbsp;Reserv&nbsp;Required:" div="&nbsp;</td><td>" name="elevator_reserv_req_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Security:" div="</td><td>" name="security_type_id" type="droplist" table="security_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no"--></td></tr>
+			</table></td>
+			<td><table>
+				<tr><td><!--#SMARTFIELD title="Multi-Level:" div="</td><td>" name="multi_level_type_id" type="droplist" table="multi_level_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Stair Carry</span>:" div="&nbsp;</td><td>" name="stair_carry_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Number of Flights:" div="&nbsp;</td><td>" name="stair_carry_flights" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Number of Stairs:" div="&nbsp;</td><td>" name="stair_carry_stairs" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Smallest Door/Elev Width:" div="&nbsp;</td><td>" name="smallest_door_elev_width" --></td></tr>
+				<tr><td colspan="2"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<td width="140"><!--#SMARTFIELD title="Floor Protection:" div="&nbsp;</td><td>" name="floor_protection_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td>
+						<!--#IF evaluate="<?s:request_readonly?>" compare="true" -->
+							<td rowspan="3" width="80">&nbsp;</td>
+						<!--#ELSE-->
+							<!-- td rowspan="3"><input type="submit" name="save_button" value="Save" class="button"></td> -->
+							<td rowspan="3" width="80">&nbsp;</td>
+						<!--#/IF-->
+					</tr>
+					<tr><td><!--#SMARTFIELD title="Wall Protection:" div="&nbsp;</td><td>" name="wall_protection_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+					<tr><td><!--#SMARTFIELD title="Doorway Protection:" div="&nbsp;</td><td>" name="doorway_prot_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				</table></td></tr>
+			</table></td>
+
+		<!--#ELSEIF evaluate="<?p:mand_fields?>" compare="none" -->
+			<td><table>
+				<tr><td><!--#SMARTFIELD title="Loading Dock Avail:" div="&nbsp;</td><td>" name="loading_dock_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Dock Avail Time:" div="&nbsp;</td><td>" name="dock_available_time" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Dock&nbsp;Reserv&nbsp;Required:" div="&nbsp;</td><td>" name="dock_reserv_req_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Semi Access Avail:" div="&nbsp;</td><td>" name="semi_access_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Dock Height:" div="&nbsp;</td><td>" name="dock_height" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Elev Available:" div="&nbsp;</td><td>" name="elevator_avail_type_id" type="droplist" table="elevator_available_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Elev&nbsp;Reserv&nbsp;Required:" div="&nbsp;</td><td>" name="elevator_reserv_req_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Security:" div="</td><td>" name="security_type_id" type="droplist" table="security_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no"--></td></tr>
+			</table></td>
+			<td><table>
+				<tr><td><!--#SMARTFIELD title="Multi-Level:" div="</td><td>" name="multi_level_type_id" type="droplist" table="multi_level_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Stair Carry:" div="&nbsp;</td><td>" name="stair_carry_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Number of Flights:" div="&nbsp;</td><td>" name="stair_carry_flights" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Number of Stairs:" div="&nbsp;</td><td>" name="stair_carry_stairs" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Min&nbsp;Door/Elev&nbsp;Width:" div="&nbsp;</td><td>" name="smallest_door_elev_width" --></td></tr>
+				<tr><td colspan="2"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<td width="140"><!--#SMARTFIELD title="Floor Protection:" div="&nbsp;</td><td>" name="floor_protection_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td>
+						<!--#IF evaluate="<?s:request_readonly?>" compare="true" -->
+							<td rowspan="3" width="80"></td>
+						<!--#ELSE-->
+							<!-- <td rowspan="3"><input type="button" name="save_button" value="Save" class="button" onClick="exitFunction('Save')";></td> -->
+							<td rowspan="3" width="80">&nbsp;</td>
+						<!--#/IF-->
+					</tr>
+					<tr><td><!--#SMARTFIELD title="Wall Protection:" div="&nbsp;</td><td>" name="wall_protection_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+					<tr><td><!--#SMARTFIELD title="Doorway Protection:" div="&nbsp;</td><td>" name="doorway_prot_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				</table></td></tr>
+			</table></td>
+		<!--#ELSE-->
+			<td><table><tr><td class="error">Not a recognized parameter, don't know which fields are mandatory.  Tell Sys Admin to look at template enet/proj/site_info.html</td></tr></table>
+		<!--#/IF-->
+
+		</table></td></tr>
+   <!--#/SMARTFORM-->
+   </table>
+
+</body>
+
+<script language="JavaScript">
+<!--
+	function setDefaults()
+	{
+	<!--#IF evaluate="<?s:request_readonly?>" compare="true" -->
+		<!--#IF undefined="<?p:print_sr?>"-->
+			setFormEdit('N');
+		<!--#/IF-->
+	<!--#/IF-->
+		//need to set error fields on job location iframe window if validation failed.
+		if( !(parent.setJobLocErr == null) )
+			parent.setJobLocErr();
+	}
+
+	function exitFunction( action )
+	{
+		if( !(action == null ) && action == 'Save')
+		{
+		<!--#IF evaluate="<?p:job_location_id?>" compare="" -->
+		<!--#ELSE-->
+			job_loc_edit.submit();
+		<!--#/IF-->
+		}
+	}
+
+-->
+</script>
+
+<!--#EMBED template="enet/embeds/footer.html" -->

@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ShowPlanXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0" Build="9.00.3054.00" xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan">
+  <BatchSequence>
+    <Batch>
+      <Statements>
+        <StmtSimple StatementCompId="1" StatementEstRows="1" StatementId="1" StatementOptmLevel="FULL" StatementOptmEarlyAbortReason="GoodEnoughPlanFound" StatementSubTreeCost="0.0712906" StatementText="SELECT po.po_id,&#xD;&#xA;	              CONVERT(VARCHAR, j.job_no) + '-' + CONVERT(VARCHAR, r.request_no) + '-' + CONVERT(VARCHAR, po.po_no) project_request_po_no,&#xD;&#xA;                  po.vendor_name,&#xD;&#xA;                  j.job_name,&#xD;&#xA;                  i.name item_name,&#xD;&#xA;                  po.po_total,&#xD;&#xA;                  po.date_created,&#xD;&#xA;                  po_status_type.name status,&#xD;&#xA;                  billing_type.name billing_type,&#xD;&#xA;                  re.name resource_name,&#xD;&#xA;                  '' foo,&#xD;&#xA;                  '' selected&#xD;&#xA;             FROM jobs j INNER JOIN&#xD;&#xA;                  requests r ON j.project_id = r.project_id INNER JOIN&#xD;&#xA;                  purchase_orders po ON r.request_id = po.request_id INNER JOIN&#xD;&#xA;                  lookups po_status_type ON po.po_status_id = po_status_type.lookup_id INNER JOIN&#xD;&#xA;                  lookups billing_type ON po.billing_type_id = billing_type.lookup_id INNER JOIN&#xD;&#xA;                  items i ON po.item_id=i.item_id LEFT OUTER JOIN&#xD;&#xA;                  resources re ON po.ext_vendor_id = re.ext_vendor_id&#xD;&#xA;            WHERE po_status_type.code = 'released'&#xD;&#xA;              AND j.job_id =  70867 &#xD;&#xA;		 ORDER BY po.po_id" StatementType="SELECT">
+          <StatementSetOptions ANSI_NULLS="false" ANSI_PADDING="false" ANSI_WARNINGS="false" ARITHABORT="true" CONCAT_NULL_YIELDS_NULL="false" NUMERIC_ROUNDABORT="false" QUOTED_IDENTIFIER="false" />
+          <QueryPlan DegreeOfParallelism="1" CachedPlanSize="91" CompileTime="57" CompileCPU="39" CompileMemory="1464">
+            <MissingIndexes>
+              <MissingIndexGroup Impact="36.4793">
+                <MissingIndex Database="[servicetrax_dev]" Schema="[dbo]" Table="[RESOURCES]">
+                  <ColumnGroup Usage="EQUALITY">
+                    <Column Name="[EXT_VENDOR_ID]" ColumnId="9" />
+                  </ColumnGroup>
+                  <ColumnGroup Usage="INCLUDE">
+                    <Column Name="[NAME]" ColumnId="3" />
+                  </ColumnGroup>
+                </MissingIndex>
+              </MissingIndexGroup>
+            </MissingIndexes>
+            <RelOp AvgRowSize="400" EstimateCPU="1E-07" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Compute Scalar" NodeId="0" Parallel="false" PhysicalOp="Compute Scalar" EstimatedTotalSubtreeCost="0.0712906">
+              <OutputList>
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="JOB_NAME" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_id" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="vendor_name" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_total" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="date_created" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[po_status_type]" Column="NAME" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[billing_type]" Column="NAME" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[ITEMS]" Alias="[i]" Column="NAME" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[RESOURCES]" Alias="[re]" Column="NAME" />
+                <ColumnReference Column="Expr1014" />
+                <ColumnReference Column="Expr1015" />
+                <ColumnReference Column="Expr1016" />
+              </OutputList>
+              <ComputeScalar>
+                <DefinedValues>
+                  <DefinedValue>
+                    <ColumnReference Column="Expr1014" />
+                    <ScalarOperator ScalarString="(([Expr1017]+[Expr1018])+'-')+[Expr1019]">
+                      <Arithmetic Operation="ADD">
+                        <ScalarOperator>
+                          <Arithmetic Operation="ADD">
+                            <ScalarOperator>
+                              <Arithmetic Operation="ADD">
+                                <ScalarOperator>
+                                  <Identifier>
+                                    <ColumnReference Column="Expr1017" />
+                                  </Identifier>
+                                </ScalarOperator>
+                                <ScalarOperator>
+                                  <Identifier>
+                                    <ColumnReference Column="Expr1018" />
+                                  </Identifier>
+                                </ScalarOperator>
+                              </Arithmetic>
+                            </ScalarOperator>
+                            <ScalarOperator>
+                              <Const ConstValue="'-'" />
+                            </ScalarOperator>
+                          </Arithmetic>
+                        </ScalarOperator>
+                        <ScalarOperator>
+                          <Identifier>
+                            <ColumnReference Column="Expr1019" />
+                          </Identifier>
+                        </ScalarOperator>
+                      </Arithmetic>
+                    </ScalarOperator>
+                  </DefinedValue>
+                  <DefinedValue>
+                    <ColumnReference Column="Expr1015" />
+                    <ScalarOperator ScalarString="''">
+                      <Const ConstValue="''" />
+                    </ScalarOperator>
+                  </DefinedValue>
+                  <DefinedValue>
+                    <ColumnReference Column="Expr1016" />
+                    <ScalarOperator ScalarString="''">
+                      <Const ConstValue="''" />
+                    </ScalarOperator>
+                  </DefinedValue>
+                </DefinedValues>
+                <RelOp AvgRowSize="393" EstimateCPU="0.00937574" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Left Outer Join" NodeId="1" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.0712905">
+                  <OutputList>
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="JOB_NAME" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_id" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="vendor_name" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_total" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="date_created" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[po_status_type]" Column="NAME" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[billing_type]" Column="NAME" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[ITEMS]" Alias="[i]" Column="NAME" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[RESOURCES]" Alias="[re]" Column="NAME" />
+                    <ColumnReference Column="Expr1017" />
+                    <ColumnReference Column="Expr1018" />
+                    <ColumnReference Column="Expr1019" />
+                  </OutputList>
+                  <RunTimeInformation>
+                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                  </RunTimeInformation>
+                  <NestedLoops Optimized="false">
+                    <Predicate>
+                      <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[purchase_orders].[ext_vendor_id] as [po].[ext_vendor_id]=[servicetrax_dev].[dbo].[RESOURCES].[EXT_VENDOR_ID] as [re].[EXT_VENDOR_ID]">
+                        <Compare CompareOp="EQ">
+                          <ScalarOperator>
+                            <Identifier>
+                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="ext_vendor_id" />
+                            </Identifier>
+                          </ScalarOperator>
+                          <ScalarOperator>
+                            <Identifier>
+                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[RESOURCES]" Alias="[re]" Column="EXT_VENDOR_ID" />
+                            </Identifier>
+                          </ScalarOperator>
+                        </Compare>
+                      </ScalarOperator>
+                    </Predicate>
+                    <RelOp AvgRowSize="306" EstimateCPU="1E-07" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Compute Scalar" NodeId="2" Parallel="false" PhysicalOp="Compute Scalar" EstimatedTotalSubtreeCost="0.0266036">
+                      <OutputList>
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="JOB_NAME" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_id" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="ext_vendor_id" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="vendor_name" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_total" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="date_created" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[po_status_type]" Column="NAME" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[billing_type]" Column="NAME" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[ITEMS]" Alias="[i]" Column="NAME" />
+                        <ColumnReference Column="Expr1017" />
+                        <ColumnReference Column="Expr1018" />
+                        <ColumnReference Column="Expr1019" />
+                      </OutputList>
+                      <ComputeScalar>
+                        <DefinedValues>
+                          <DefinedValue>
+                            <ColumnReference Column="Expr1017" />
+                            <ScalarOperator ScalarString="CONVERT(varchar(30),[servicetrax_dev].[dbo].[JOBS].[JOB_NO] as [j].[JOB_NO],0)+'-'">
+                              <Arithmetic Operation="ADD">
+                                <ScalarOperator>
+                                  <Convert DataType="varchar" Length="30" Style="0" Implicit="false">
+                                    <ScalarOperator>
+                                      <Identifier>
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="JOB_NO" />
+                                      </Identifier>
+                                    </ScalarOperator>
+                                  </Convert>
+                                </ScalarOperator>
+                                <ScalarOperator>
+                                  <Const ConstValue="'-'" />
+                                </ScalarOperator>
+                              </Arithmetic>
+                            </ScalarOperator>
+                          </DefinedValue>
+                        </DefinedValues>
+                        <RelOp AvgRowSize="298" EstimateCPU="4.18E-06" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Inner Join" NodeId="3" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.0266035">
+                          <OutputList>
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="JOB_NO" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="JOB_NAME" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_id" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="ext_vendor_id" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="vendor_name" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_total" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="date_created" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[po_status_type]" Column="NAME" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[billing_type]" Column="NAME" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[ITEMS]" Alias="[i]" Column="NAME" />
+                            <ColumnReference Column="Expr1018" />
+                            <ColumnReference Column="Expr1019" />
+                          </OutputList>
+                          <RunTimeInformation>
+                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                          </RunTimeInformation>
+                          <NestedLoops Optimized="false">
+                            <OuterReferences>
+                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="JOB_ID" />
+                            </OuterReferences>
+                            <RelOp AvgRowSize="281" EstimateCPU="4.18E-06" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Inner Join" NodeId="4" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.0233163">
+                              <OutputList>
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="JOB_ID" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_id" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="ext_vendor_id" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="vendor_name" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_total" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="date_created" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[po_status_type]" Column="NAME" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[billing_type]" Column="NAME" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[ITEMS]" Alias="[i]" Column="NAME" />
+                                <ColumnReference Column="Expr1018" />
+                                <ColumnReference Column="Expr1019" />
+                              </OutputList>
+                              <RunTimeInformation>
+                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                              </RunTimeInformation>
+                              <NestedLoops Optimized="false">
+                                <OuterReferences>
+                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Alias="[r]" Column="PROJECT_ID" />
+                                </OuterReferences>
+                                <RelOp AvgRowSize="281" EstimateCPU="1E-07" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Compute Scalar" NodeId="5" Parallel="false" PhysicalOp="Compute Scalar" EstimatedTotalSubtreeCost="0.020029">
+                                  <OutputList>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Alias="[r]" Column="PROJECT_ID" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_id" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="ext_vendor_id" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="vendor_name" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_total" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="date_created" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[po_status_type]" Column="NAME" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[billing_type]" Column="NAME" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[ITEMS]" Alias="[i]" Column="NAME" />
+                                    <ColumnReference Column="Expr1018" />
+                                    <ColumnReference Column="Expr1019" />
+                                  </OutputList>
+                                  <ComputeScalar>
+                                    <DefinedValues>
+                                      <DefinedValue>
+                                        <ColumnReference Column="Expr1018" />
+                                        <ScalarOperator ScalarString="CONVERT(varchar(30),[servicetrax_dev].[dbo].[REQUESTS].[REQUEST_NO] as [r].[REQUEST_NO],0)">
+                                          <Convert DataType="varchar" Length="30" Style="0" Implicit="false">
+                                            <ScalarOperator>
+                                              <Identifier>
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Alias="[r]" Column="REQUEST_NO" />
+                                              </Identifier>
+                                            </ScalarOperator>
+                                          </Convert>
+                                        </ScalarOperator>
+                                      </DefinedValue>
+                                    </DefinedValues>
+                                    <RelOp AvgRowSize="279" EstimateCPU="4.18E-06" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Inner Join" NodeId="6" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.0200289">
+                                      <OutputList>
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Alias="[r]" Column="PROJECT_ID" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Alias="[r]" Column="REQUEST_NO" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_id" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="ext_vendor_id" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="vendor_name" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_total" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="date_created" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[po_status_type]" Column="NAME" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[billing_type]" Column="NAME" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[ITEMS]" Alias="[i]" Column="NAME" />
+                                        <ColumnReference Column="Expr1019" />
+                                      </OutputList>
+                                      <RunTimeInformation>
+                                        <RunTimeCountersPerThread Thread="0" ActualRows="15" ActualEndOfScans="1" ActualExecutions="1" />
+                                      </RunTimeInformation>
+                                      <NestedLoops Optimized="false">
+                                        <OuterReferences>
+                                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="request_id" />
+                                        </OuterReferences>
+                                        <RelOp AvgRowSize="270" EstimateCPU="4.18E-06" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Inner Join" NodeId="7" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.0167416">
+                                          <OutputList>
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_id" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="request_id" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="ext_vendor_id" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="vendor_name" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_total" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="date_created" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[po_status_type]" Column="NAME" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[billing_type]" Column="NAME" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[ITEMS]" Alias="[i]" Column="NAME" />
+                                            <ColumnReference Column="Expr1019" />
+                                          </OutputList>
+                                          <RunTimeInformation>
+                                            <RunTimeCountersPerThread Thread="0" ActualRows="15" ActualEndOfScans="1" ActualExecutions="1" />
+                                          </RunTimeInformation>
+                                          <NestedLoops Optimized="false">
+                                            <OuterReferences>
+                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="item_id" />
+                                            </OuterReferences>
+                                            <RelOp AvgRowSize="177" EstimateCPU="4.18E-06" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Inner Join" NodeId="8" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.0134543">
+                                              <OutputList>
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_id" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="request_id" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="ext_vendor_id" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="vendor_name" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="item_id" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_total" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="date_created" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[po_status_type]" Column="NAME" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[billing_type]" Column="NAME" />
+                                                <ColumnReference Column="Expr1019" />
+                                              </OutputList>
+                                              <RunTimeInformation>
+                                                <RunTimeCountersPerThread Thread="0" ActualRows="15" ActualEndOfScans="1" ActualExecutions="1" />
+                                              </RunTimeInformation>
+                                              <NestedLoops Optimized="false">
+                                                <OuterReferences>
+                                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="billing_type_id" />
+                                                </OuterReferences>
+                                                <RelOp AvgRowSize="134" EstimateCPU="9.614E-05" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Inner Join" NodeId="9" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.010167">
+                                                  <OutputList>
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_id" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="request_id" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="ext_vendor_id" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="vendor_name" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="billing_type_id" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="item_id" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_total" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="date_created" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[po_status_type]" Column="NAME" />
+                                                    <ColumnReference Column="Expr1019" />
+                                                  </OutputList>
+                                                  <RunTimeInformation>
+                                                    <RunTimeCountersPerThread Thread="0" ActualRows="15" ActualEndOfScans="1" ActualExecutions="1" />
+                                                  </RunTimeInformation>
+                                                  <NestedLoops Optimized="false">
+                                                    <OuterReferences>
+                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_status_id" />
+                                                    </OuterReferences>
+                                                    <RelOp AvgRowSize="133" EstimateCPU="2.3E-06" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="23" LogicalOp="Compute Scalar" NodeId="10" Parallel="false" PhysicalOp="Compute Scalar" EstimatedTotalSubtreeCost="0.0033096">
+                                                      <OutputList>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_id" />
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="request_id" />
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_status_id" />
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="ext_vendor_id" />
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="vendor_name" />
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="billing_type_id" />
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="item_id" />
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_total" />
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="date_created" />
+                                                        <ColumnReference Column="Expr1019" />
+                                                      </OutputList>
+                                                      <ComputeScalar>
+                                                        <DefinedValues>
+                                                          <DefinedValue>
+                                                            <ColumnReference Column="Expr1019" />
+                                                            <ScalarOperator ScalarString="CONVERT(varchar(30),[servicetrax_dev].[dbo].[purchase_orders].[po_no] as [po].[po_no],0)">
+                                                              <Convert DataType="varchar" Length="30" Style="0" Implicit="false">
+                                                                <ScalarOperator>
+                                                                  <Identifier>
+                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_no" />
+                                                                  </Identifier>
+                                                                </ScalarOperator>
+                                                              </Convert>
+                                                            </ScalarOperator>
+                                                          </DefinedValue>
+                                                        </DefinedValues>
+                                                        <RelOp AvgRowSize="120" EstimateCPU="0.0001823" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="23" LogicalOp="Clustered Index Scan" NodeId="11" Parallel="false" PhysicalOp="Clustered Index Scan" EstimatedTotalSubtreeCost="0.0033073">
+                                                          <OutputList>
+                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_id" />
+                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_no" />
+                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="request_id" />
+                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_status_id" />
+                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="ext_vendor_id" />
+                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="vendor_name" />
+                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="billing_type_id" />
+                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="item_id" />
+                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_total" />
+                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="date_created" />
+                                                          </OutputList>
+                                                          <RunTimeInformation>
+                                                            <RunTimeCountersPerThread Thread="0" ActualRows="23" ActualEndOfScans="1" ActualExecutions="1" />
+                                                          </RunTimeInformation>
+                                                          <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                                            <DefinedValues>
+                                                              <DefinedValue>
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_id" />
+                                                              </DefinedValue>
+                                                              <DefinedValue>
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_no" />
+                                                              </DefinedValue>
+                                                              <DefinedValue>
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="request_id" />
+                                                              </DefinedValue>
+                                                              <DefinedValue>
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_status_id" />
+                                                              </DefinedValue>
+                                                              <DefinedValue>
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="ext_vendor_id" />
+                                                              </DefinedValue>
+                                                              <DefinedValue>
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="vendor_name" />
+                                                              </DefinedValue>
+                                                              <DefinedValue>
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="billing_type_id" />
+                                                              </DefinedValue>
+                                                              <DefinedValue>
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="item_id" />
+                                                              </DefinedValue>
+                                                              <DefinedValue>
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_total" />
+                                                              </DefinedValue>
+                                                              <DefinedValue>
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="date_created" />
+                                                              </DefinedValue>
+                                                            </DefinedValues>
+                                                            <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Index="[PK__purchase_orders__0E21126A]" Alias="[po]" />
+                                                          </IndexScan>
+                                                        </RelOp>
+                                                      </ComputeScalar>
+                                                    </RelOp>
+                                                    <RelOp AvgRowSize="19" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="14.5263" EstimateRewinds="7.47368" EstimateRows="1" LogicalOp="Index Seek" NodeId="15" Parallel="false" PhysicalOp="Index Seek" EstimatedTotalSubtreeCost="0.0067613">
+                                                      <OutputList>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[po_status_type]" Column="NAME" />
+                                                      </OutputList>
+                                                      <RunTimeInformation>
+                                                        <RunTimeCountersPerThread Thread="0" ActualRows="15" ActualEndOfScans="8" ActualExecutions="23" />
+                                                      </RunTimeInformation>
+                                                      <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                                        <DefinedValues>
+                                                          <DefinedValue>
+                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[po_status_type]" Column="NAME" />
+                                                          </DefinedValue>
+                                                        </DefinedValues>
+                                                        <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Index="[IX_L_LID_CODE_NAME]" Alias="[po_status_type]" />
+                                                        <SeekPredicates>
+                                                          <SeekPredicate>
+                                                            <Prefix ScanType="EQ">
+                                                              <RangeColumns>
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[po_status_type]" Column="LOOKUP_ID" />
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[po_status_type]" Column="CODE" />
+                                                              </RangeColumns>
+                                                              <RangeExpressions>
+                                                                <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[purchase_orders].[po_status_id] as [po].[po_status_id]">
+                                                                  <Identifier>
+                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="po_status_id" />
+                                                                  </Identifier>
+                                                                </ScalarOperator>
+                                                                <ScalarOperator ScalarString="'released'">
+                                                                  <Const ConstValue="'released'" />
+                                                                </ScalarOperator>
+                                                              </RangeExpressions>
+                                                            </Prefix>
+                                                          </SeekPredicate>
+                                                        </SeekPredicates>
+                                                      </IndexScan>
+                                                    </RelOp>
+                                                  </NestedLoops>
+                                                </RelOp>
+                                                <RelOp AvgRowSize="61" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Index Seek" NodeId="16" Parallel="false" PhysicalOp="Index Seek" EstimatedTotalSubtreeCost="0.0032831">
+                                                  <OutputList>
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[billing_type]" Column="NAME" />
+                                                  </OutputList>
+                                                  <RunTimeInformation>
+                                                    <RunTimeCountersPerThread Thread="0" ActualRows="15" ActualEndOfScans="0" ActualExecutions="15" />
+                                                  </RunTimeInformation>
+                                                  <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                                    <DefinedValues>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[billing_type]" Column="NAME" />
+                                                      </DefinedValue>
+                                                    </DefinedValues>
+                                                    <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Index="[IX_L_LID_NAME]" Alias="[billing_type]" />
+                                                    <SeekPredicates>
+                                                      <SeekPredicate>
+                                                        <Prefix ScanType="EQ">
+                                                          <RangeColumns>
+                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[billing_type]" Column="LOOKUP_ID" />
+                                                          </RangeColumns>
+                                                          <RangeExpressions>
+                                                            <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[purchase_orders].[billing_type_id] as [po].[billing_type_id]">
+                                                              <Identifier>
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="billing_type_id" />
+                                                              </Identifier>
+                                                            </ScalarOperator>
+                                                          </RangeExpressions>
+                                                        </Prefix>
+                                                      </SeekPredicate>
+                                                    </SeekPredicates>
+                                                  </IndexScan>
+                                                </RelOp>
+                                              </NestedLoops>
+                                            </RelOp>
+                                            <RelOp AvgRowSize="111" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Clustered Index Seek" NodeId="17" Parallel="false" PhysicalOp="Clustered Index Seek" EstimatedTotalSubtreeCost="0.0032831">
+                                              <OutputList>
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[ITEMS]" Alias="[i]" Column="NAME" />
+                                              </OutputList>
+                                              <RunTimeInformation>
+                                                <RunTimeCountersPerThread Thread="0" ActualRows="15" ActualEndOfScans="0" ActualExecutions="15" />
+                                              </RunTimeInformation>
+                                              <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                                <DefinedValues>
+                                                  <DefinedValue>
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[ITEMS]" Alias="[i]" Column="NAME" />
+                                                  </DefinedValue>
+                                                </DefinedValues>
+                                                <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[ITEMS]" Index="[I_PK]" Alias="[i]" />
+                                                <SeekPredicates>
+                                                  <SeekPredicate>
+                                                    <Prefix ScanType="EQ">
+                                                      <RangeColumns>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[ITEMS]" Alias="[i]" Column="ITEM_ID" />
+                                                      </RangeColumns>
+                                                      <RangeExpressions>
+                                                        <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[purchase_orders].[item_id] as [po].[item_id]">
+                                                          <Identifier>
+                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="item_id" />
+                                                          </Identifier>
+                                                        </ScalarOperator>
+                                                      </RangeExpressions>
+                                                    </Prefix>
+                                                  </SeekPredicate>
+                                                </SeekPredicates>
+                                              </IndexScan>
+                                            </RelOp>
+                                          </NestedLoops>
+                                        </RelOp>
+                                        <RelOp AvgRowSize="25" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Clustered Index Seek" NodeId="18" Parallel="false" PhysicalOp="Clustered Index Seek" EstimatedTotalSubtreeCost="0.0032831">
+                                          <OutputList>
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Alias="[r]" Column="PROJECT_ID" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Alias="[r]" Column="REQUEST_NO" />
+                                          </OutputList>
+                                          <RunTimeInformation>
+                                            <RunTimeCountersPerThread Thread="0" ActualRows="15" ActualEndOfScans="0" ActualExecutions="15" />
+                                          </RunTimeInformation>
+                                          <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                            <DefinedValues>
+                                              <DefinedValue>
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Alias="[r]" Column="PROJECT_ID" />
+                                              </DefinedValue>
+                                              <DefinedValue>
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Alias="[r]" Column="REQUEST_NO" />
+                                              </DefinedValue>
+                                            </DefinedValues>
+                                            <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Index="[PK_REQUESTS]" Alias="[r]" />
+                                            <SeekPredicates>
+                                              <SeekPredicate>
+                                                <Prefix ScanType="EQ">
+                                                  <RangeColumns>
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Alias="[r]" Column="REQUEST_ID" />
+                                                  </RangeColumns>
+                                                  <RangeExpressions>
+                                                    <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[purchase_orders].[request_id] as [po].[request_id]">
+                                                      <Identifier>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[purchase_orders]" Alias="[po]" Column="request_id" />
+                                                      </Identifier>
+                                                    </ScalarOperator>
+                                                  </RangeExpressions>
+                                                </Prefix>
+                                              </SeekPredicate>
+                                            </SeekPredicates>
+                                          </IndexScan>
+                                        </RelOp>
+                                      </NestedLoops>
+                                    </RelOp>
+                                  </ComputeScalar>
+                                </RelOp>
+                                <RelOp AvgRowSize="16" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Index Seek" NodeId="22" Parallel="false" PhysicalOp="Index Seek" EstimatedTotalSubtreeCost="0.0032831">
+                                  <OutputList>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="JOB_ID" />
+                                  </OutputList>
+                                  <RunTimeInformation>
+                                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="15" ActualExecutions="15" />
+                                  </RunTimeInformation>
+                                  <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                    <DefinedValues>
+                                      <DefinedValue>
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="JOB_ID" />
+                                      </DefinedValue>
+                                    </DefinedValues>
+                                    <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[JOBS]" Index="[IX_JOB_PROJECTS]" Alias="[j]" />
+                                    <SeekPredicates>
+                                      <SeekPredicate>
+                                        <Prefix ScanType="EQ">
+                                          <RangeColumns>
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="PROJECT_ID" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="JOB_ID" />
+                                          </RangeColumns>
+                                          <RangeExpressions>
+                                            <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[REQUESTS].[PROJECT_ID] as [r].[PROJECT_ID]">
+                                              <Identifier>
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Alias="[r]" Column="PROJECT_ID" />
+                                              </Identifier>
+                                            </ScalarOperator>
+                                            <ScalarOperator ScalarString="(70867.)">
+                                              <Const ConstValue="(70867.)" />
+                                            </ScalarOperator>
+                                          </RangeExpressions>
+                                        </Prefix>
+                                      </SeekPredicate>
+                                    </SeekPredicates>
+                                  </IndexScan>
+                                </RelOp>
+                              </NestedLoops>
+                            </RelOp>
+                            <RelOp AvgRowSize="70" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Clustered Index Seek" NodeId="24" Parallel="false" PhysicalOp="Clustered Index Seek" EstimatedTotalSubtreeCost="0.0032831">
+                              <OutputList>
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="JOB_NO" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="JOB_NAME" />
+                              </OutputList>
+                              <RunTimeInformation>
+                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                              </RunTimeInformation>
+                              <IndexScan Lookup="true" Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                <DefinedValues>
+                                  <DefinedValue>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="JOB_NO" />
+                                  </DefinedValue>
+                                  <DefinedValue>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="JOB_NAME" />
+                                  </DefinedValue>
+                                </DefinedValues>
+                                <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[JOBS]" Index="[PK_JOBS]" Alias="[j]" TableReferenceId="-1" />
+                                <SeekPredicates>
+                                  <SeekPredicate>
+                                    <Prefix ScanType="EQ">
+                                      <RangeColumns>
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="JOB_ID" />
+                                      </RangeColumns>
+                                      <RangeExpressions>
+                                        <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[JOBS].[JOB_ID] as [j].[JOB_ID]">
+                                          <Identifier>
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="JOB_ID" />
+                                          </Identifier>
+                                        </ScalarOperator>
+                                      </RangeExpressions>
+                                    </Prefix>
+                                  </SeekPredicate>
+                                </SeekPredicates>
+                              </IndexScan>
+                            </RelOp>
+                          </NestedLoops>
+                        </RelOp>
+                      </ComputeScalar>
+                    </RelOp>
+                    <RelOp AvgRowSize="128" EstimateCPU="0.0026243" EstimateIO="0.0320139" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="2243" LogicalOp="Clustered Index Scan" NodeId="33" Parallel="false" PhysicalOp="Clustered Index Scan" EstimatedTotalSubtreeCost="0.0346382">
+                      <OutputList>
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[RESOURCES]" Alias="[re]" Column="NAME" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[RESOURCES]" Alias="[re]" Column="EXT_VENDOR_ID" />
+                      </OutputList>
+                      <RunTimeInformation>
+                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                      </RunTimeInformation>
+                      <IndexScan Ordered="false" ForcedIndex="false" NoExpandHint="false">
+                        <DefinedValues>
+                          <DefinedValue>
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[RESOURCES]" Alias="[re]" Column="NAME" />
+                          </DefinedValue>
+                          <DefinedValue>
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[RESOURCES]" Alias="[re]" Column="EXT_VENDOR_ID" />
+                          </DefinedValue>
+                        </DefinedValues>
+                        <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[RESOURCES]" Index="[PK_RESOURCES]" Alias="[re]" />
+                      </IndexScan>
+                    </RelOp>
+                  </NestedLoops>
+                </RelOp>
+              </ComputeScalar>
+            </RelOp>
+          </QueryPlan>
+        </StmtSimple>
+      </Statements>
+    </Batch>
+  </BatchSequence>
+</ShowPlanXML>

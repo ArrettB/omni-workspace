@@ -1,0 +1,108 @@
+<!--#EMBED template="embeds/header.html" -->
+
+<body class="BodyTag" onLoad="setupSch();main_sch.sch_from_date.focus();">
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<!--#SMARTFORM name="sch/main_sch" action="<?s:action?>setupSchSession" table="dates_v" key="today" buttons="" -->
+	<!--#SMARTFIELD name="return_page" type="hidden"value="sch/sch_head.html" -->
+	<!--#SMARTFIELD name="sch_action" type="hidden" value="" -->
+	<!--#SMARTFIELD name="updated_dates" type="hidden" value="true"-->
+<tr>
+	<td width="50%"><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="30">
+		<td><!--#SELECT name="date_type_code" currentValue="<?s:date_type_code?>" autoSelect="true" style="width:114" class="regular" query="SELECT lookup_code, lookup_name FROM lookups_v WHERE type_code='date_type' ORDER BY sequence_no" onChange="updateDateType(this);" --></td>
+	<!--#IF DEFINED="<?s:sch_from_date?>"-->
+		<td><!--#SMARTFIELD title="&nbsp;From:&nbsp;" div="</td><td>" name="sch_from_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(sch_from_date)')</script>" value="<?s:sch_from_date?>" size="12"-->&nbsp;</td>
+	<!--#ELSE-->
+		<!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) as from_date" name="dateQuery"-->
+		<td><!--#SMARTFIELD title="From:&nbsp;" div="</td><td>" name="sch_from_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(sch_from_date)')</script>" value="<?r:dateQuery:from_date?>" size="12"-->&nbsp;</td>
+		<!--#/SQLLOOP-->
+	<!--#/IF-->
+
+	<!--#IF DEFINED="<?s:sch_to_date?>"-->
+		<td><!--#SMARTFIELD title="To:&nbsp;" div="</td><td>" name="sch_to_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(sch_to_date)')</script>" value="<?s:sch_to_date?>" size="12"-->&nbsp;</td>
+	<!--#ELSE-->
+		<!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) as to_date" name="dateQuery"-->
+		<td><!--#SMARTFIELD title="To:&nbsp;" div="</td><td>" name="sch_to_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(sch_to_date)')</script>" value="<?r:dateQuery:to_date?>" size="12"-->&nbsp;</td>
+		<!--#/SQLLOOP-->
+	<!--#/IF-->
+	    <td><input type="button" name="set_dates_button" value="Set Dates" onClick="updateDates(this);" class="button2"-->&nbsp;</td>
+	</tr></table></td>
+	<td width="50%"><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr height="20">
+		<td class="LabelLink"><a href="{!s:action!}setupSchSession/sch/sch_head.html?sch_action=set_template&cur_template=sch/sch_body.html" target="sch_head_frame">Main&nbsp;Window</a></td>
+
+	<!--#CHECKSECURITY right="rights.sch/sch_vacation.view"-->
+		<td class="LabelLink"><a href="{!s:action!}setupSchSession/sch/sch_vacation.html?sch_action=set_template&cur_template=sch/sch_vacation.html" target="sch_body_frame">Vacation</a></td>
+	<!--#/CHECKSECURITY-->
+
+	<!--#CHECKSECURITY right="rights.sch/sch_weekend.view"-->
+		<td class="LabelLink"><input type="button" name="weekend_button" value="Weekend Entry" class="button2" onClick="showWeekend();">&nbsp;</td>
+	<!--#/CHECKSECURITY-->
+
+	<!--#CHECKSECURITY right="rights.sch/sch_distribution.view"-->
+		<td class="LabelLink"><input type="button" name="dis_sch_button" value="Distribute Schedules" class="button2" onClick="doubleCheck();"></td>
+	<!--#/CHECKSECURITY-->
+	</tr></table></td>
+</tr>
+<!--#/SMARTFORM-->
+</table>
+
+</body>
+
+
+<script language="Javascript">
+<!--
+
+	function setupSch()
+	{
+		if( main_sch.updated_dates.value == 'true' )
+		{//refresh job list and resource list
+			main_sch.updated_dates.value = 'false';
+			main_sch.sch_action.value = '';
+			newWindow('{!s:showPage!}{!s:cur_template!}','sch_body_frame');
+		}
+	}
+
+	function updateDates(field)
+	{
+		eval(field.form.name+".sch_action.value='set_dates'");
+		eval(field.form.name+".updated_dates.value='true'");
+		eval(field.form.name+".submit()");
+	}
+
+	function updateDateType(field)
+	{
+		eval(field.form.name+".sch_action.value='set_date_type'");
+		eval(field.form.name+".updated_dates.value='true'");
+		eval(field.form.name+".submit()");
+	}
+
+	function showWeekend()
+	{
+		newWindow('{!s:showPage!}sch/sch_weekend.html','weekend_window',250,450);
+	}
+
+	function doubleCheck(field)
+	{
+		if( confirm("Are you sure you want to notify all Foremen with tomorrow's job locations?") )
+		{
+			main_sch.action='{!s:action!}emailSchedule';
+			main_sch.submit();
+		}
+	}
+
+	function distSchedule()
+	{
+		if( confirm("Are you sure you want to notify all Foremen with tomorrow's job locations?") )
+		{
+			eval(field.form.name+".action='{!s:action!}emailSchedule'");
+			eval(field.form.name+".submit()");
+		}
+	}
+
+-->
+</script>
+
+
+
+<!--#EMBED template="embeds/footer.html" -->
+

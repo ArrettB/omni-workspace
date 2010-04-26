@@ -1,0 +1,17 @@
+<!-- $Header: ext_end_user_id.html, 8/1/2007, David Zhaon$ -->
+<html>
+<head>
+<title>Ext end user id</title>
+</head>
+<body>
+  <!--#SQLLOOP name="ext_cust"
+               query="SELECT ISNULL(ext_customer_id,'') ext_customer_id
+                        FROM customers
+                       WHERE customer_id = <?p:parameter.toPStmtInt()?>"-->
+    <input type="hidden" id="ext_end_user_id" value="{!r:ext_cust:ext_customer_id!}" >
+  <!--#SQLNODATA-->
+    <input type="hidden" id="ext_end_user_id" value="">
+  <!--#/SQLNODATA-->
+  <!--#/SQLLOOP-->
+</body>
+</html>

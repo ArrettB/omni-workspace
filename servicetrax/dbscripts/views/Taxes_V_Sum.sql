@@ -1,0 +1,8 @@
+CREATE VIEW dbo.Taxes_V_Sum
+AS
+SELECT     TOP 100 PERCENT INVOICE_ID, SUM(line_tax) AS Total_tax
+FROM         dbo.Taxes_V
+WHERE     (TAXOPTNS = 1)
+GROUP BY INVOICE_ID
+ORDER BY INVOICE_ID
+

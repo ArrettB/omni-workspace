@@ -1,0 +1,37 @@
+<!--#EMBED template="embeds/header.html"-->
+
+<body class="BodyTag">
+
+<table class="SmartTable" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td class="tableHeader">Req/Work Code Summary</td>
+	</tr>
+</table>
+
+<!--#SMARTTABLE name="service_lines"
+	class="SmartTable" TableTotal="true" totalClass="TableTotal"
+	query="SELECT tc_job_id, tc_service_no, tc_service_id, service_item_status_id, item_name, sum(payroll_qty) hours_tot, sum(expense_total) exp_tot, service_description, ext_pay_code
+	FROM time_capture_v
+	WHERE tc_job_id = <?s:job_id.toPStmtString()?>
+	AND status_code = 'submitted'
+	AND (
+		foreman_user_id = <?s:user_id.toPStmtString()?>
+		OR billing_user_id = <?s:user_id.toPStmtString()?>
+		OR 'true' = <?s:rights.view_all_jobs.view.isNull('false').toPStmtString()?>
+		)
+	AND ph_service_id is null
+    AND fully_allocated_flag = 'N'
+	AND billed_flag = 'N'
+	GROUP BY tc_job_id, tc_service_no, tc_service_id, service_item_status_id, item_name, service_description, ext_pay_code
+	ORDER BY tc_service_no"
+-->
+  <!--#SMARTCOLUMN name="tc_service_no" sort="tc_service_no" title="Req#" width="5%" align="center" href="<?s:action?>setupSession/job/job_main.html?service_id=<?r:service_lines:tc_service_id?>&job_id=<?r:service_lines:tc_job_id?>&loc=req_tc_list" target="main_frame"-->
+  <!--#SMARTCOLUMN name="service_description" sort="service_description" title="Req Desc" width="20%" value="<input readonly='true' class='smartTableDisplay' size='55' value='<?r:service_lines:service_description.replaceString('\'','&#39;')?>'>" -->
+  <!--#SMARTCOLUMN name="item_name" sort="item_name" title="Work Code" width="10%" -->
+  <!--#SMARTCOLUMN name="ext_pay_code" sort="ext_pay_code" title="Paycode" width="5%" align="center" -->
+  <!--#SMARTCOLUMN name="hours_tot" sort="hours_tot" title="Hours" align="right" total="true" format="###,###,###,##0.00" width="5%" -->
+  <!--#SMARTCOLUMN name="exp_tot" sort="exp_tot" title="Exp Total" align="right" total="true" format="money" width="5%" -->
+<!--#/SMARTTABLE -->
+
+
+<!--#EMBED template="embeds/footer.html" -->

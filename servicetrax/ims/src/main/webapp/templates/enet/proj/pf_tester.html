@@ -1,0 +1,33 @@
+<html>
+<script>
+
+<!--#IF defined="<?s:project_id?>"-->
+
+<!--#SQLLOOP
+	name="test"
+	query="SELECT r.request_id,
+	              p.is_new
+			 FROM requests r INNER JOIN
+			      lookups request_type ON r.request_type_id = request_type.lookup_id INNER JOIN
+			      lookups request_status_type ON r.request_status_type_id = request_status_type.lookup_id INNER JOIN
+			      projects p ON r.project_id = p.project_id
+			WHERE p.project_id = <?s:project_id.toPStmtString()?>
+			  AND request_type.code = 'project_folder'
+			  AND request_status_type.code <> 'closed'"
+-->
+  <!--#IF evaluate="<?r:test:is_new?>" compare="Y" -->
+    location.replace({!s:showPage.toJavaScriptString()!} + 'enet/proj/service_account.html?request_id='+{!r:test:request_id.toJavaScriptString()!});
+  <!--#ELSE-->
+	location.replace({!s:showPage.toJavaScriptString()!} + 'enet/proj/pf_edit.html?request_id='+{!r:test:request_id.toJavaScriptString()!});
+  <!--#/IF-->
+<!--#SQLNODATA-->
+	location.replace({!s:showPage.toJavaScriptString()!} + 'enet/proj/pf_list.html');
+<!--#/SQLNODATA-->
+
+<!--#/SQLLOOP-->
+<!--#ELSE-->
+	location.replace({!s:showPage.toJavaScriptString()!} + 'enet/proj/pf.html');
+<!--#/IF-->
+
+</script>
+</html>

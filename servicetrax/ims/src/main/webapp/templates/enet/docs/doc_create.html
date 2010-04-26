@@ -1,0 +1,69 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<script>
+<!--
+function openUploadWindow()
+{
+
+	var href= {!s:showPage.toJavaScriptString()!} +
+	'enet/docs/doc_upload.html' +
+	 '?return_page=' + 'enet/docs/doc_create.html' +
+	 '&project_id=' + {!p:project_id.toJavaScriptString()!} +
+	 '&name=' + document.doc_create.name.value +
+	 '&format_id=' + document.doc_create.format_id.value +
+	 '&comments=' + document.doc_create.comments.value;
+	newWindow(href, 'DocumentUpload', 125, 500);
+}
+-->
+</script>
+<body class="BodyTag">
+
+      <!--#SMARTFORM name="doc/doc_create" table="documents" key="document_id"
+				preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+				postHandler="ims.handlers.docs.DocumentPostHandler"
+				buttons="Save,Cancel"
+				nextTemplate="enet/docs/doc_list.html"
+				prevTemplate="enet/docs/doc_list.html"
+
+	-->
+		<!--#SMARTFIELD name="project_id" value="<?p:project_id?>" type="hidden"-->
+		<!--#SMARTFIELD name="filename" value="<?p:filename?>" type="hidden"-->
+		<table>
+			<tr>
+				<td>
+					<!--#SMARTFIELD name="name" value="<?p:name?>" type="text" title="Document Name" div="</td><td>" -->
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<!--#SMARTFIELD name="format_id" value="<?p:format_id?>" div="</td><td>" type="droplist" title="Format" table="formats" display="name" key="format_id" orderBy="name" style="width:114" -->
+				</td>
+			</tr>
+			<tr>
+				<td class="mandatoryLabel">
+					Filename
+				</td>
+				<!--#IF defined="<?p:filename?>"-->
+				<td class="mandatoryLabel">
+					{!p:filename!}
+				</td>
+				<!--#ELSE-->
+				<td class="mandatoryLabel">
+					&lt;&lt;Not uploaded&gt;&gt;
+				</td>
+				<!--#/IF-->
+				<td>
+					<input type="button" value="Upload..." class="button" class="button" onClick="openUploadWindow()">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<!--#SMARTFIELD name="comments" value="<?p:comments?>" title="Comments" div="</td><td colspan=2>" type="textarea" rows="3" cols="40"-->
+				</td>
+			</tr>
+		</table>
+<!--#/SMARTFORM-->
+
+
+</body>
+
+<!--#EMBED template="enet/embeds/footer.html" -->

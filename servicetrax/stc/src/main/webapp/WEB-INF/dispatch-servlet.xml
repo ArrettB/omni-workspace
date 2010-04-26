@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	
+	<bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/**/*.html">viewController</prop>
+				<prop key="/**/*.form">formController</prop>
+<!--
+					<prop key="/**/logManager.html">logManagerController</prop>
+				<prop key="/**/logViewer.html">logManagerController</prop>
+-->
+					<prop key="/**/admin/sessions.html">sessionsController</prop>
+					<prop key="/**/admin/dataSources.html">dataSourcesController</prop>
+					<prop key="/**/admin/hibernateStats.html">hibernateStatsController</prop>
+			</props>
+		</property>
+		<property name="interceptors">
+			<list>
+				<ref bean="openSessionInViewInterceptor" />
+				<ref bean="contextInterceptor"/>
+				<ref bean="sessionInterceptor"/>
+				<ref bean="loginInterceptor"/>
+			</list>
+		</property>
+
+	</bean>
+	
+	<bean id="contextInterceptor" class="com.dynamic.charm.web.interceptor.ContextHolderInterceptor">
+	</bean>
+	<bean id="requestInterceptor" class="com.dynamic.charm.web.interceptor.RequestInterceptor">
+	</bean>
+	<bean id="sessionInterceptor" class="com.dynamic.charm.web.admin.interceptor.SessionDataPopulator">
+	</bean>
+	
+
+	
+	<bean id="viewController" class="com.dynamic.charm.web.controller.UrlFilenameViewController"/>
+
+	<bean id="sessionsController" class="com.dynamic.charm.web.admin.controllers.SessionsController">
+	</bean>
+	
+	<bean id="dataSourcesController" class="com.dynamic.charm.web.admin.controllers.DataSourcesController">
+	</bean>
+
+	<bean id="hibernateStatsController" class="com.dynamic.charm.web.admin.controllers.HibernateStatsController">
+		<property name="queryService" ref="queryService" />
+	</bean>
+	
+	
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	<bean id="rowDecorator" class="com.dynamic.charm.web.form.tag.decorator.RowDecoratorWithLabel">
+		<property name="rowCss" value="formRow" />
+		<property name="errorCss" value="errorFieldRow" />
+		<property name="mandatoryRowCss" value="mandatoryFormRow" />
+		<property name="labelCss" value="label" />
+		<property name="inputCss" value="control" />
+	</bean>
+	
+	
+	<bean id="formService" class="com.dynamic.charm.web.form.HibernateFormService">
+		<property name="hibernateService">
+			  <ref bean="hibernateService"/>
+		</property>
+	</bean>
+		
+	<bean id="hibernateProcessor" class="com.dynamic.charm.web.form.controller.HibernateProcessor">
+		<property name="hibernateService">
+			  <ref bean="hibernateService"/>
+		</property>
+	</bean>
+
+	<bean id="auditProcessor" class="com.dynamic.charm.web.form.controller.AuditProcessor">
+		<property name="securityService">
+			  <ref bean="securityService"/>
+		</property>
+		<property name="dateCreatedProperty">
+			<value>dateCreated</value>
+		</property>
+		<property name="createdByProperty">
+			<value>createdBy</value>
+		</property>
+		<property name="dateModifiedProperty">
+			<value>dateModified</value>
+		</property>
+		<property name="modifiedByProperty">
+			<value>modifiedBy</value>
+		</property>
+	</bean>
+	
+	<bean id="formController" class="com.dynamic.charm.web.form.controller.FormController">
+		<property name="invalidFormView">
+			<value>bad_form</value>
+		</property>
+		<property name="processorList">  
+			<list>  
+				<ref bean="auditProcessor"/>
+				<ref bean="hibernateProcessor"/>
+			</list>  
+		</property>	
+	</bean>	
+	
+	
+</beans>

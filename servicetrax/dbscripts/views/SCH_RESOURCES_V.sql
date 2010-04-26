@@ -1,0 +1,33 @@
+CREATE VIEW dbo.SCH_RESOURCES_V
+AS
+SELECT     CAST(dbo.RESOURCES_V.RESOURCE_ID AS varchar(30)) + ':' + ISNULL(CAST(dbo.SCH_RESOURCES.SCH_RESOURCE_ID AS varchar(30)), '') 
+                      AS res_sch_id, dbo.RESOURCES_V.RESOURCE_ID, dbo.RESOURCES_V.ORGANIZATION_ID, dbo.SCH_RESOURCES.SCH_RESOURCE_ID, 
+                      dbo.SCH_RESOURCES.WEEKEND_SCH_RESOURCE_ID, dbo.RESOURCES_V.NAME AS resource_name, dbo.SCH_RESOURCES.JOB_ID, 
+                      dbo.SCH_RESOURCES.SERVICE_ID, dbo.SERVICES.SERVICE_NO, dbo.SCH_RESOURCES.HIDDEN_SERVICE_ID, 
+                      ISNULL(dbo.SCH_RESOURCES.SERVICE_ID, dbo.SCH_RESOURCES.HIDDEN_SERVICE_ID) AS actual_service_id, 
+                      dbo.SCH_RESOURCES.RES_STATUS_TYPE_ID, RES_STATUS_TYPES.CODE AS res_status_type_code, ISNULL(RES_STATUS_TYPES.NAME, 
+                      'Available') AS res_status_type_name, dbo.SCH_RESOURCES.REASON_TYPE_ID, REASON_TYPE.CODE AS reason_type_code, 
+                      REASON_TYPE.NAME AS reason_type_name, dbo.RESOURCES_V.RES_CATEGORY_TYPE_ID, dbo.RESOURCES_V.res_cat_type_code, 
+                      dbo.RESOURCES_V.res_cat_type_name, dbo.RESOURCES_V.RESOURCE_TYPE_ID, dbo.RESOURCES_V.resource_type_code, 
+                      dbo.RESOURCES_V.resource_type_name, dbo.RESOURCES_V.UNIQUE_FLAG, dbo.RESOURCES_V.NOTES, dbo.RESOURCES_V.PIN, 
+                      dbo.RESOURCES_V.FOREMAN_FLAG, dbo.RESOURCES_V.ACTIVE_FLAG, dbo.RESOURCES_V.EXT_VENDOR_ID, 
+                      dbo.RESOURCES_V.EXT_EMPLOYEE_ID, dbo.RESOURCES_V.employment_type_name, dbo.RESOURCES_V.employment_type_code, 
+                      dbo.RESOURCES_V.EMPLOYMENT_TYPE_ID, dbo.RESOURCES_V.USER_ID, dbo.RESOURCES_V.user_full_name, 
+                      dbo.RESOURCES_V.user_contact_id, dbo.RESOURCES_V.user_contact_name, dbo.RESOURCES_V.modified_by_name AS res_modified_by_name, 
+                      dbo.RESOURCES_V.MODIFIED_BY AS res_modified_by, dbo.RESOURCES_V.DATE_MODIFIED AS res_date_modified, 
+                      dbo.RESOURCES_V.created_by_name AS res_created_by_name, dbo.RESOURCES_V.CREATED_BY AS res_created_by, 
+                      dbo.RESOURCES_V.DATE_CREATED AS res_date_created, ISNULL(dbo.SCH_RESOURCES.FOREMAN_FLAG, 'N') AS sch_foreman_flag, 
+                      dbo.SCH_RESOURCES.RES_START_DATE, dbo.SCH_RESOURCES.RES_START_TIME, dbo.SCH_RESOURCES.RES_END_DATE, 
+                      dbo.SCH_RESOURCES.RES_END_TIME, dbo.SCH_RESOURCES.DATE_CONFIRMED, dbo.SCH_RESOURCES.RESOURCE_QTY, 
+                      dbo.SCH_RESOURCES.SCH_NOTES, dbo.SCH_RESOURCES.WEEKEND_FLAG, dbo.SCH_RESOURCES.DATE_CREATED AS sch_date_created, 
+                      dbo.SCH_RESOURCES.CREATED_BY AS sch_created_by, CREATED_BY.FIRST_NAME + ' ' + CREATED_BY.LAST_NAME AS sch_created_by_name, 
+                      dbo.SCH_RESOURCES.DATE_MODIFIED AS sch_date_modified, dbo.SCH_RESOURCES.MODIFIED_BY AS sch_modified_by, 
+                      MODIFIED_BY.FIRST_NAME + ' ' + MODIFIED_BY.LAST_NAME AS sch_modified_by_name, ISNULL(report_to.NAME, 'Job Location') 
+                      AS report_to_name, dbo.SCH_RESOURCES.DATE_TYPE_ID, dbo.SERVICES.SERV_STATUS_TYPE_ID, 
+                      SERV_STATUS_TYPES.CODE AS serv_status_type_code, SERV_STATUS_TYPES.NAME AS serv_status_type_name, 
+                      SERV_STATUS_TYPES.SEQUENCE_NO AS serv_status_type_seq_no, dbo.JOBS_V.JOB_ID AS Expr1, dbo.JOBS_V.JOB_NO, dbo.JOBS_V.JOB_NAME, 
+                      dbo.JOBS_V.JOB_TYPE_ID, dbo.JOBS_V.job_type_code, dbo.JOBS_V.job_type_name, dbo.JOBS_V.JOB_STATUS_TYPE_ID, 
+                      dbo.JOBS_V.job_status_type_code, dbo.JOBS_V.job_status_type_name, dbo.JOBS_V.CUSTOMER_ID, dbo.JOBS_V.FOREMAN_RESOURCE_ID, 
+                      dbo.JOBS_V.foreman_resource_name, dbo.JOBS_V.foreman_user_id, dbo.JOBS_V.foreman_user_name, 
+                      dbo.SCH_RESOURCES.REPORT_TO_TYPE_ID, dbo.SCH_RESOURCES.SEND_TO_PDA_FLAG, 
+                      (CASE reason_type.code WHEN 'unconfirmed' THEN 'Y' ELSE '

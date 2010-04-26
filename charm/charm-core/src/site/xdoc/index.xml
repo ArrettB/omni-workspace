@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<document>
+	<properties>
+		<title>Welcome</title>
+		<author email="greg.case@apexit.com">Greg Case</author>
+	</properties>
+	<body>
+		<section name="Welcome to Charm">
+			<p>Charm is the next generation framework being developed by ApexIT</p>
+			<subsection name="About Charm">
+				<p>
+				Charm is Apex's 3rd generation framework for developing standards-based internet applications.
+				Leveraging our experience with our iFrame and iFrame2 frameworks (currently the foundation for scores 
+				of applications used by hundreds of thousands of people everyday and managing billions of dollars 
+				in assets and transactions) we set out to design our new framework on a select set of open source technologies.
+			</p>
+			</subsection>
+			<subsection name="Design Goals">
+			<p>
+			The goal of Charm is basically the same as the goal of all of Apex's past framework development: to make it faster and easier for us to 
+			create more robust and sophisticated applications for our clients. Specifically, the goal is to:
+			</p>
+				<ul>
+					<li>Avoid reinventing the wheel</li>
+					<li>Enhance our ability to support our clients by leveraging a common architecture</li>
+					<li>Reduce the time spent writing tedious code, freeing up time to solve unique business problems</li>
+				</ul>
+			</subsection>
+			<subsection name="User's Guide">
+				<p>
+			Look at all of this swell documentation!
+			</p>
+				<ul>
+					<li>
+						<i>
+							<a href="getting_started.html">Getting Started</a>
+						</i>
+					</li>
+					<li>
+						<i>
+							<a href="configuration.html">Configuring Charm</a>
+						</i>
+					</li>
+				</ul>
+			</subsection>
+			<subsection name="Developing Charm">
+				<p>
+			There is plenty of work to be done. If you are interested in getting involved, the following may help:
+			</p>
+				<ul>
+					<li>
+						<i>How can I
+              <a href="about.html#get-involved">get involved</a>?
+            </i>
+					</li>
+					<li>
+						<i>What <a href="docs_required.html">documentation is needed</a>?
+					</i>
+					</li>
+				</ul>
+			</subsection>
+			<subsection name="Selling Charm">
+				<p>
+			This section would contain a list of documents to be used for the sales team when touting the advantages of charm.
+			</p>
+				<ul>
+					<li>Fast Development</li>
+					<li>Standards Based</li>
+					<li>Query Isolation</li>
+					<li>Service Oriented</li>
+					<li>Probably does not cause cancer</li>
+				</ul>
+			</subsection>
+		</section>
+	</body>
+</document>

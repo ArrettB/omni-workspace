@@ -1,0 +1,150 @@
+
+Modify Item drop downs
+•	new project types
+	project -> furniture  === used in PDSPreHandler, SchHandler,
+
+•	Item drop-downs specific to project type.
+	table == items
+	loaded in ItemHandler
+	loaded from Intranet->Jobs->Job Header->Load New Rates
+	bcp "AMBIM.dbo.iv00101" out "iv00101.txt" -c -U"gp" -S"scooby"	
+	SELECT  im.itemnmbr ext_itemnmbr, im.itmshnam name, im.itemdesc description,
+	im.modifdt date_created, im.pricegroup price_group, im.itemtype, 
+	im.uscatvls_1 billable_flag, im.uscatvls_2 expense_export_code
+	 FROM IV00101 im
+	 WHERE (im.pricegroup='HOURLY' OR im.pricegroup='EXPENSE')
+	 ORDER BY im.itemnmbr
+	 
+	 Project Type field == IV00101.uscatvls_3 
+
+
+Dealers	allowed to make jobs with the type  on the role or (chooser box)
+	furniture
+	carpet
+
+
+
+Create a req from Service Account
+	default to the short view rather than the long view
+	
+	short view
+		for specified job types
+
+
+Service Request Screen Simplification
+	Request Service 
+
+•	Add a furniture type text box and quantity fields 
+
+	new fields on Product Info section
+	new columns on table xxxxx
+
+
+•	Display Office & Cell Phone numbers for each contact 
+	
+	add two phone numbers to the dropdown
+	
+
+•	For each section, create functionality to toggle between mandatory fields and showing all of the fields. Currently, the system defaults to displaying all fields. 
+
+	originally just show the mandatory fields.
+	expander/hider button on each section.
+	
+
+•	Add/Modify Product Disposition dropdowns (one dependent on the other). There will be two drop down lists in the Service Request Form; a selection from the first list will drive the options on the second.
+
+	Product Info
+	the product disposition will consist of a single field with the options:
+		none
+		store onsite
+		return to stock
+		broker
+		dispose
+		return to warehouse
+
+	
+
+•	If a service request is created from a quote request, pull in the billing type, else force the user to enter 
+	move Quote Type to the top header section from the more fields section.
+	Make quote type mandatory - probably in PDSPreHandler
+ 
+	quote_type_id
+
+
+
+Hours Express
+•	Enter time for single person with multiple req's.
+
+
+•	Schedule multiple resources on a job at once.
+	/sch/sch_res_list.html
+	/schEditRes/sch/sch_res_edit.html?resource_id="+resource_id+"&sch_resource_id="+sch_resource_id
+
+	sch_resource_id is a services.service_id
+	resource_id is a resources.resource_id
+
+	res_start_date = <?s:est_start_date?>
+	res_end_date = <?s:est_end_date?>
+
+
+	resource_name,
+	res_status_type_id, 
+	weekend_sch_resource_id, 
+	reason_type_id,   form dropdown
+	job_id,   session
+	service_id,  session
+	resource_qty,   1
+	sch_notes,   form fill in
+	res_start_time,  form fill in
+	date_confirmed,   today
+	send_to_pda_flag,   form fill in
+	res_start_date,   form fill in
+	res_end_date"   form fill in
+
+
+
+
+
+Cost Report
+
+Hours
+	The labor hours comes from service_lines.tc_qty
+	service_lines.tc_job_id  Job
+	service_lines.tc_service_id Requisition
+
+
+Expenses
+	service_lines.tc_qty
+	service_lines.tc_rate
+	service_lines.tc_job_id = Job
+	service_lines.tc_service_id Requisition
+
+
+The table for expenses is:
+PM20000 the columns are 
+PORDNMBR for job #
+SHIPMTHD for the Item 
+PRCHAMNT for the dollar amount
+
+
+Job Type field and the new column field are located in:
+IV00101 table and the columns are 
+uscatvls_3 Job Type field
+uscatvls_4 new column field
+
+bcp "AMBIM.dbo.pm20000" in "pm20000.txt" -c -U"ims" -S"EDSEL"
+
+Expense insert example:
+INSERT INTO service_lines 
+(tc_service_line_no, service_line_date, status_id, tc_job_id, tc_service_id, resource_id, item_id, item_type_code
+, invoice_id, tc_qty, tc_rate, bill_rate, entered_date, entered_by, entry_method, date_created, created_by)
+values (NULL, '06/21/2005 00:00:00', 0, 24931, 84486, 854, 150, 'expense'
+, NULL, 1, 16, 16, getDate(), 247, 'WEB', getDate(), 247)
+
+cast(convert(char(10), getDate(), 101) as datetime)
+
+select pordnmbr, shipmthd, prchamnt from pm20000
+select itmshnam name, uscatvls_3 job_type, uscatvls_4 column_position from iv00101
+
+
+

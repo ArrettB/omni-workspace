@@ -1,0 +1,19 @@
+<!-- $Header: vendor_locations.html, 4/8/2008, David Zhaon$ -->
+<html>
+<head>
+<title>Vendor Locations</title>
+</head>
+<body>
+
+	  <!--#SELECT name="ext_vendor_address_id" id="ext_vendor_address_id" class="regular" style="width:200"
+				  onChange="onVendorLocationChange()"
+				  firstOption="" firstOptionValue=""
+				  currentValue="<?p:current_val?>"
+				  resourceName="<?s:org_resource?>"
+				  query="SELECT adrscode ext_vendor_address_id, adrscode
+	  			  		   FROM pm00300
+	  					  WHERE vendorid = <?p:parameter.toPStmtString()?>
+	  				   ORDER BY adrscode"  -->
+
+</body>
+</html>

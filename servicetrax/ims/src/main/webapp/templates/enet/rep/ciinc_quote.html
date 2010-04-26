@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<title>Quote Report</title>
+<style>
+
+.Regular
+{
+	font-family: 'Times New Roman', Times, serif;
+	font-size: 13px;
+	font-weight: normal;
+}
+
+.Heading
+{
+	font-family: 'Times New Roman', Times, serif;
+	font-size: 14px;
+	font-style: italic;
+	font-weight: bold;
+}
+
+.button{
+	font-weight: bold;
+	background-color: #669999;
+	color: #000000;
+	text-align : center;
+	font-size: 11px;
+	font-family : Verdana, Arial, Helvetica, sans-serif;
+	border-left-color : #000000;
+	border-right-color : #000000;
+	border-top-color : #000000;
+	border-bottom-color : #000000;
+	border-style : solid;
+	border-width: 1;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-right: 2px;
+	padding-left: 2px;
+
+}
+
+</style>
+
+</head>
+
+<body onLoad="window.focus();optionalPrint('{!p:print_quote!}');">
+
+<table width="700" border="0" cellspacing="0" cellpadding="0" class="Regular">
+<tr height="105" width="100%">
+	<td colspan="2"><img src="/ims/images/letterhead/ciinc_top.gif"></td>
+</tr>
+
+<!--#IF evaluate="<?p:print_quote?>" compare="" -->
+<tr>
+	<td colspan="2" align="center">
+		<input type="button" name="printButton" value="Print" class="button" onClick="location='{!s:action!}quoteReport?print_quote=true&quote_id={!p:quote_id!}'">
+		<input type="button" name="printButton" value="Cancel" class="button" onClick="window.opener.focus();window.close();">
+	</td>
+</tr>
+<!--#/IF-->
+
+<tr>
+	<td width="56" valign="top" align="right"><img src="/ims/images/letterhead/ciinc_left.gif"></td>
+	<td>
+		<table width="90%" border="0" cellspacing="0" cellpadding="0" class="Regular">
+			<tr>
+				<td align="left">{!d:date_quoted!}</td>
+				<td align="right"><B>Quote&nbsp;#:</B> {!d:project_quote_no!}&nbsp;&nbsp;&nbsp;</td>
+			</tr>
+			<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+			<tr>
+				<td align="left">
+					{!d:address!}<BR><BR>
+					<B>Sales Rep:</B> &nbsp;&nbsp;{!d:sales_rep_contact_name!}<BR>
+					<B>Customer:</B> &nbsp;&nbsp;{!d:customer_name!}<BR>
+					<B>Job:</B> &nbsp;&nbsp;{!d:job_name!}<BR><BR>
+				</td>
+				<td align="right">&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align:justify;width:615">Thank you for the opportunity to provide pricing for the above job. Based on the information you provided,
+we have estimated the number of hours and amount of materials necessary to complete the work. The estimated
+price could increase or decrease if the amount or scope of work changes. Please communicate any changes as
+soon as possible to your Service Provider contact that will determine if a pricing change is required.</td>
+			</tr>
+			<tr>
+<pre><td colspan="2" style="text-align:justify;width:615"><BR><span class="Heading">Job Description</span><BR>
+<span class="regular">{!d:description!}</span></pre>
+</td></tr>
+			<tr><td colspan="2" style="text-align:justify;width:615">
+<BR><span class="Heading">Time Frame</span><BR>
+<span>The quote reflects work to be completed in a time span of {!d:duration_qty!} {!d:duration_name!}</span>
+
+</td></tr>
+			<tr><td colspan="2" style="text-align:justify;width:615">
+<BR>
+<span class="Heading">Proposed Pricing</span><BR>
+<span>
+
+<span>
+<!--#IF evaluate="<?d:warehouse_fee_flag?>" compare="Y" -->
+There will be an automatic 3% TCI warehouse fee to receive product into warehouse.
+Pulling, delivery, and installation are part of the installation quote.
+<!--#/IF-->
+The quote is a/an {!d:quote_type_name!} quote of {!d:quote_total!}{!d:warehouse_fee!}.</span>
+
+
+<!--#IF defined="<?d:taxable_amount?>"-->
+<BR>In the above amount, {!d:taxable_amount!} is taxable.
+<!--#/IF-->
+<BR><BR>
+<span class="Heading">Standard Conditions</span><BR>
+
+<table cellspacing="0" cellpadding="0" border="0">
+		<tr><td class="regular" style="width:615">The above pricing is inclusive of the entire project quoted.  If selecting parts of the project, will price each individually.</td></tr>
+	<!--#SQLLOOP name="conditionsQuery" query="SELECT name FROM quote_conditions_v WHERE quote_id = <?p:quote_id.toSQLString()?>" -->
+		<tr><td class="regular" style="width:615">{!r:conditionsQuery:name!}</td></tr>
+	<!--#/SQLLOOP-->
+</table>
+
+</td></tr>
+			<tr>
+<pre><td colspan="2" style="text-align:justify;width:615"><BR><span class="Heading">Additional Conditions</span><BR>
+<span class="regular">{!d:extra_conditions.isNull('None')!}</span></pre>
+
+Please call me with any questions at {!d:quoted_by_phone!}
+<br>
+<br>
+Thank you,
+<br>
+<br>
+{!d:quoted_by_name!}
+
+	</td></tr>
+	</table>
+
+	</td></tr>
+</table>
+
+</body>
+
+<script language="JavaScript">
+<!--
+	function optionalPrint(flag)
+	{
+		if( !(flag == null) && flag == 'true' )
+			window.print();
+	}
+-->
+</script>
+
+</html>

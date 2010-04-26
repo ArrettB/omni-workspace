@@ -1,0 +1,36 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: main_pay_user_det_batch.html, 2, 1/7/2005 5:10:27 PM, Lee A. Gunderson$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.time/pay/payroll.view?>"-->
+
+<body class="BodyTag">
+
+<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0">
+	<tr><td colspan="7" class="HeaderBar">{!p:emp_name!} - Batch {!p:ext_batch_id!}</td></tr>
+</TABLE>
+
+   <!--#SMARTTABLE name="payrollQry" totalClass="tableTotal"
+	   query="
+	   SELECT p.tc_job_no, p.tc_job_id, p.tc_service_no, p.service_line_id, p.tc_service_line_no, p.service_line_date_varchar, p.item_name, p.ext_pay_code, p.payroll_qty
+		FROM payroll_batches_v p
+		WHERE p.ext_batch_id = <?p:ext_batch_id.toPStmtString()?> and p.user_id = <?p:user_id.toPStmtString()?> and organization_id = <?s:org_id.toPStmtString()?>
+		ORDER BY p.service_line_date_varchar, p.tc_job_no, p.tc_service_no, p.tc_service_line_no, p.ext_pay_code"
+   -->
+		<!--#SMARTCOLUMN width="5%" name="service_line_date_varchar" sort="service_line_date_varchar" title="Date" align="center" filter="p.service_line_date_varchar:service_line_date_varchar" -->
+		<!--#SMARTCOLUMN width="5%" name="tc_job_no" sort="tc_job_no" title="Job#" align="center" filter="tc_job_no:tc_job_no" -->
+		<!--#SMARTCOLUMN width="5%" name="tc_service_no" sort="tc_service_no" title="Service#" align="center" filter="p.tc_service_no:tc_service_no" -->
+		<!--#SMARTCOLUMN width="5%" name="tc_service_line_no" sort="tc_service_line_no" title="Line#" href="" onClick="location='<?s:showPage?>time/tc_edit.html?service_line_id=<?r:payrollQry:service_line_id?>&module=payroll&job_id=<?r:payrollQry:tc_job_id?>&emp_name=<?p:emp_name?>&user_id=<?p:user_id?>&prev_template=time/pay/main_pay_user_det_batch.html&ext_batch_id='+escape(<?p:ext_batch_id.toJavaScriptString()?>);return false;" align="center" filter="p.tc_service_line_no:tc_service_line_no" -->
+		<!--#SMARTCOLUMN width="5%" name="item_name" sort="item_name" title="Item" align="center" filter="p.item_name:item_name" -->
+		<!--#SMARTCOLUMN width="5%" name="ext_pay_code" sort="ext_pay_code" title="Pay Code" align="center" filter="p.ext_pay_code:ext_pay_code" -->
+		<!--#SMARTCOLUMN width="5%" name="payroll_qty" sort="payroll_qty" title="Hours" format="###,###,##0.00" align="right" total="true"-->
+   <!--#/SMARTTABLE -->
+</body>
+
+<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0">
+	<tr><td>&nbsp;</td></tr>
+	<tr><td>
+		<input type="button" value="Cancel" name="button" class="button" onClick="location='{!s:showPage!}time/pay/main_pay_batch_det.html?ext_batch_id='+escape({!p:ext_batch_id.toJavaScriptString()!});">
+	</td></tr>
+</TABLE>
+
+<!--#EMBED template="embeds/footer.html" -->

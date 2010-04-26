@@ -1,0 +1,40 @@
+<!--#EMBED template="embeds/header.html" -->
+
+<script language="JavaScript">
+<!--
+function choose()
+{
+	window.opener.focus();
+	if (window.opener.{!p:form!}.{!p:field!})
+	{
+		theType = window.opener.{!p:form!}.{!p:field!}.type;
+		if( theType == 'select' || theType == 'select-one')
+		{
+			returnDroplistOption({!p:form.toJavaScriptString()!}, {!p:field.toJavaScriptString()!}, display, {!p:id!});
+		}
+		else
+		{
+			window.opener.{!p:form!}.{!p:field!}.value = {!p:id!};
+		}
+	}
+	if (window.opener.{!p:form!}.{!p:field!}_text)
+		window.opener.{!p:form!}.{!p:field!}_text.value = display;
+
+	document.body.onunload = null;
+	window.setTimeout(5000);
+	window.opener.redisplayPage();
+}
+
+window.focus(); //in case window is already open, then focus on window 
+
+// -->
+</script>
+</head>
+
+<!--#CHOOSERTABLE name="choose" query="<?p:query?>" -->
+	<!--#CHOOSERCOLUMN title="<?p:title?>" name="display" width="100%" filter="<?p:value?>" width="50%" nowrap -->
+	<!--#CHOOSERCOLUMN title="Contact Type"name="type" sort="type" nowrap -->
+<!--#/CHOOSERTABLE -->
+
+
+<!--#EMBED template="embeds/footer.html" -->

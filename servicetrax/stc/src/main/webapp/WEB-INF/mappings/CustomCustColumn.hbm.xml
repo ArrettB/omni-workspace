@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.CustomCustColumn" table="CUSTOM_CUST_COLUMNS" schema="dbo" catalog="">
+        <id name="customCustColId" type="java.lang.Long">
+            <column name="CUSTOM_CUST_COL_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="customer" class="com.dynamic.servicetrax.orm.Customer" fetch="select">
+            <column name="CUSTOMER_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="columnDesc" type="string">
+            <column name="COLUMN_DESC" length="25" not-null="true" />
+        </property>
+        <property name="colSequence" type="int">
+            <column name="COL_SEQUENCE" not-null="true" />
+        </property>
+        <property name="activeFlag" type="string">
+            <column name="ACTIVE_FLAG" length="1" not-null="true" />
+        </property>
+        <property name="createdBy" type="long">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="modifiedBy" type="java.lang.Long">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <property name="isDroplist" type="string">
+            <column name="IS_DROPLIST" length="1" not-null="true" />
+        </property>
+        <property name="isMandatory" type="string">
+            <column name="IS_MANDATORY" length="1" not-null="true" />
+        </property>
+        <set name="customColLists" inverse="true">
+            <key>
+                <column name="CUSTOM_CUST_COL_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.CustomColList" />
+        </set>
+    </class>
+</hibernate-mapping>

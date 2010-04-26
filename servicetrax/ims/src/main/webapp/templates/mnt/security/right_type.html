@@ -1,0 +1,52 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: right_type.html, 1, 8/2/2005 3:05:41 PM, Greg Case$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.mnt/security/right_type.view?>"-->
+<body class="BodyTag">
+<table width="100%" cellspacing="0" cellpadding="0">
+	<tr><td  class="HeaderBar">{!s:rights.mnt/security/right_type.name!}</td></tr>
+</table>
+<table width="100%" class="FormTable" border="0" cellspacing="0" cellpadding="3">
+<!--#SMARTFORM security="rights" name="mnt/security/right_type" table="right_types" key="right_type_id" prevTemplate="mnt/security/right_types" nextTemplate="mnt/security/right_types" -->
+	<!--#SMARTFIELD name="created_by" mode="Insert" type="hidden" value="<?s:user.userID?>" -->
+	<!--#SMARTFIELD name="date_created" mode="Insert" type="hidden" value="getDate()" -->
+	<!--#SMARTFIELD name="modified_by" mode="Update" type="hidden" value="<?s:user.userID?>" -->
+	<!--#SMARTFIELD name="date_modified" mode="Update" type="hidden" value="getDate()" -->
+	<tr>
+		<td width="75" nowrap>Code</td>
+		<td><!--#SMARTFIELD name="code" div="</td><td>"--></td>
+	</tr>
+	<tr>
+		<td width="75" nowrap>Name</td>
+		<td><!--#SMARTFIELD name="name" div="</td><td>"--></td>
+	</tr>
+	<tr>
+		<td width="75" nowrap valign="top">Description</td>
+		<td><!--#SMARTFIELD name="description" div="</td><td>" type="textarea" rows="5" cols="40"--></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		<br>
+		<table width="100%" cellspacing="0" cellpadding="0">
+			<tr>
+				<td  class="HeaderBar">System Info</td>
+			</tr>
+		</table>
+		<table width="100%">
+			<tr>
+				<td width="75"><!--#SMARTFIELD title="Date Created" div="</td><td>" name="date_created" type="datetime" mode="Update" readonly class="readonly" size="22" --></td>
+				<td width="75"><!--#SMARTFIELD title="Created By" div="</td><td>" name="created_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+			</tr>
+			<tr>
+				<td width="75"><!--#SMARTFIELD title="Date Modified" div="</td><td>" name="date_modified" type="datetime" mode="Update" readonly class="readonly" size="22"--></td>
+				<td width="75"><!--#SMARTFIELD title="Modified By" div="</td><td>" name="modified_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+			</tr>
+		</table>
+		</td>
+	</tr>	
+	<tr>
+		<td colspan="2"><!--#/SMARTFORM--></td>
+	</tr>
+</table>
+</body>
+<!--#EMBED template="embeds/footer.html" -->

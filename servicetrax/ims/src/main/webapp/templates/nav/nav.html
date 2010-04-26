@@ -1,0 +1,19 @@
+<!--#EMBED template="embeds/header.html" -->
+
+<body class="BodyTag" onLoad="loadColors()">
+
+   <!--#SMARTTABLE name="jobs_v"
+	   query="SELECT j.job_id, j.job_no, j.name job_type, j.name status, j.customer_name
+   	FROM jobs_v j
+   	WHERE j.organization_id=<?s:org_id.toPStmtString()?>
+   	ORDER BY j.job_no"
+   	-->
+        <!--#SMARTCOLUMN name="job_no" sort="job_no" title="Job#" width="20%" href="<?s:action?>setupSession/job/main_job.html?job_id=<?r:jobs:job_id?>" -->
+        <!--#SMARTCOLUMN name="customer_name" sort="customer_name" title="Customer" width="10%" -->
+        <!--#SMARTCOLUMN name="job_type" sort="job_type" title="Job Type" width="10%" -->
+        <!--#SMARTCOLUMN name="status" sort="status" title="Status" width="10%" -->
+   <!--#/SMARTTABLE -->
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

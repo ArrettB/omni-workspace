@@ -1,0 +1,61 @@
+<!-- $Header: job_location_contact.html, 8/1/2007, David Zhaon$ -->
+<html>
+<head>
+<title>Job Location Contact</title>
+</head>
+<body>
+
+  <!--#SQLLOOP name="job_loc_contact"
+               query="SELECT c.contact_name,
+                             c.phone_work,
+                             c.phone_cell,
+                             c.phone_home,
+                             c.email,
+                             u.full_name,
+                             CONVERT(VARCHAR(10), c.date_created, 101) date_created
+                        FROM contacts c LEFT OUTER JOIN
+                             users u ON c.created_by = u.user_id
+                       WHERE c.contact_id = <?p:parameter.toPStmtString()?>"-->
+
+  <table border="0" cellspacing="5" cellpadding="0">
+
+    <tr><td><label for="contact_name">Contact&nbsp;Name:</label></td><td><input type="textbox" name="contact_name" value="{!r:job_loc_contact:contact_name!}"/></td></tr>
+    <tr><td><label for="cust_types">Contact&nbsp;Group:</label></td><td>
+		   <!--#SELECT name="contact_type_id"
+					   query="SELECT l.lookup_id, l.name
+							    FROM lookups l INNER JOIN lookup_types lt ON l.lookup_type_id=lt.lookup_type_id
+							   WHERE lt.code='contact_type'
+							     AND l.active_flag='Y'
+							     AND l.code = 'job_location'" -->
+      </td></tr>
+
+	<tr><td><label for="phone_work">Work&nbsp;Phone:</label></td><td><input type="textbox" name="phone_work" value="{!r:job_loc_contact:phone_work!}"/></td></tr>
+	<tr><td><label for="phone_cell">Cell&nbsp;Phone:</label></td><td><input type="textbox" name="phone_cell" value="{!r:job_loc_contact:phone_cell!}"/></td></tr>
+	<tr><td><label for="phone_home">Home&nbsp;Phone:</label></td><td><input type="textbox" name="phone_home" value="{!r:job_loc_contact:phone_home!}"/></td></tr>
+	<tr><td><label for="email">Email:</label></td><td><input type="textbox" name="email" value="{!r:job_loc_contact:email!}"/></td></tr>
+	<tr><td><label for="cont_status_type_id">Active:</label></td><td><input type="checkbox" name="cont_status_type_id" checked/></td></tr>
+	<tr><td><label for="full_name">Created&nbsp;By:</label></td><td>{!r:job_loc_contact:full_name!}</td></tr>
+	<tr><td><label for="date_created">Date&nbsp;Created:</label></td><td>{!r:job_loc_contact:date_created!}</td></tr>
+  </table>
+
+  <!--#SQLNODATA-->
+    <table border="0" cellspacing="5" cellpadding="0">
+    <tr><td><label for="contact_name">Contact&nbsp;Name:</label></td><td><input type="textbox" name="contact_name"></td></tr>
+    <tr><td><label for="cust_types">Contact&nbsp;Group:</label></td><td>
+		   <!--#SELECT name="contact_type_id"
+					   query="SELECT l.lookup_id, l.name
+							    FROM lookups l INNER JOIN lookup_types lt ON l.lookup_type_id=lt.lookup_type_id
+							   WHERE lt.code='contact_type'
+							     AND l.active_flag='Y'
+							     AND l.code = 'job_location'" -->
+    </td></tr>
+	<tr><td><label for="phone_work">Work&nbsp;Phone:</label></td><td><input type="textbox" name="phone_work" /></td></tr>
+	<tr><td><label for="phone_cell">Cell&nbsp;Phone:</label></td><td><input type="textbox" name="phone_cell" /></td></tr>
+	<tr><td><label for="phone_home">Home&nbsp;Phone:</label></td><td><input type="textbox" name="phone_home" /></td></tr>
+	<tr><td><label for="email">Email:</label></td><td><input type="textbox" name="email" /></td></tr>
+  </table>
+
+  <!--#/SQLNODATA-->
+  <!--#/SQLLOOP-->
+</body>
+</html>

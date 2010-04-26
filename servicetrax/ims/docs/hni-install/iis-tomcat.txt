@@ -1,0 +1,77 @@
+A. Set up Tomcat
+
+1. Edit d:\tomcat5.0\conf\workers2.properties
+	Change the examples section to look like this:
+	[uri:/ims/*]
+	info=ServiceTrax.
+	context=/ims
+
+2. Check that the AJP/1.3 connector is listening:
+  netstat -na | findstr 8009
+  TCP    0.0.0.0:8009           0.0.0.0:0              LISTENING
+  
+  If it is not running, make certain the line in the file d:\tomcat5.0\conf\server.xml
+   <Connector port="8009" enableLookups="false" redirectPort="8443" protocol="AJP/1.3" />
+  is not commented out.
+
+3. Check the registry for the ISAPI redirector settings.
+   The settings should look similar (depending on the installation folders) to the following.
+   Make certain the workers.properties file listed in A.1. is in the same location indicated
+   by workersFile below.
+[HKEY_LOCAL_MACHINE\SOFTWARE\Apache Software Foundation\Jakarta Isapi Redirector\2.0]
+"workersFile"="D:\\Tomcat5.0\\conf\\workers2.properties"
+"extensionUri"="/jakarta/isapi_redirector2.dll"
+"logLevel"="debug"
+"serverRoot"="D:\\Tomcat5.0\\"
+
+
+
+B. OPTIONAL - Create a web site definition in IIS for ServiceTrax if not using Default Web Site
+
+1. Bring up the IIS Manager
+
+2. Right click on the Web Sites -> New -> Web Site...
+
+	Description: ServiceTrax
+	Enter IP address: <specific IP address>
+	
+	Path to home directory:
+		D:\web
+
+
+C. Create a virtual directory (or set up Default Web Site)
+
+1. In IIS Manager
+
+2. Right click on new ServiceTrax web site
+
+3. New -> Virtual Directory
+	Alias: jakarta
+	Path: d:\Tomcat5.0\bin\win32\i386
+	
+4. on Virtual Directory Access Permissions
+	check "Execute (such as ISAPI applications or CGI)
+	
+5. Now in the properties for the 'ims' virtual directory confirm:
+	
+	- "Script source access" is checked
+	- "Read" access is checked
+	- The Execute Permissions is set to "Scripts and Executables"
+	- The "Local Path" points to the bin directory of the Jakarta Isapi Redirector 
+	
+6.You will also need to make sure that the non-default website has the Jakarta Redirector installed unless it is already installed
+  at the global Web Sites level. This can be done by right-clicking on the non-default website, 
+  clicking 'properties' and then clicking on the "ISAPI Filters" tab.
+
+  From here you will need to:
+
+   - Click the "Add..." button
+   - Enter a filter name: jakarta
+   - Browse to the "isapi_redirector2.dll" file located here: d:\Tomcat5.0\bin\win32\i386
+   - Click OK, Apply and then OK. 
+
+7. In IIS Manager right-click Web Service Extensions and then click Add a new web service extension.  
+   Call the new extension Tomcat and then browse to D:\Tomcat5.0\bin\win32\i386\isapi_redirector2.dll 
+   and the click OK, click Set extension status to allowed and then click OK.
+
+8. The final step is to restart the IIS Server.

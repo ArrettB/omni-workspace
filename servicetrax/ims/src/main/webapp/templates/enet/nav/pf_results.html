@@ -1,0 +1,59 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<body class="BodyTag" onLoad="">
+
+<span class="Label">
+The following project folders matched your search criteria:
+</span>
+
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="r" var="subQuery"
+	  	  query="SELECT r.project_id
+				   FROM projects_all_requests_v r <?s:contacts_table?>
+				  WHERE r.organization_id = <?s:org_id.toPStmtString()?>
+					<?s:enetNavQuery?> " -->
+
+
+
+	<!--#SMARTTABLE name="result_list"
+		 class="SmartTable"
+		 query=" SELECT p.project_id,
+						p.project_no,
+						p.job_name,
+						p.date_created,
+						p.project_status_type_id,
+						project_status_type.code AS project_status_type_code,
+						project_status_type.name AS project_status_type_name,
+						CASE WHEN customer_type.code = 'dealer' THEN ISNULL(c.ext_customer_id, c.ext_dealer_id) ELSE c.ext_dealer_id END ext_dealer_id,
+						CASE WHEN customer_type.code = 'end_user' THEN (SELECT customer_name FROM customers WHERE customer_id = c.end_user_parent_id) ELSE c.customer_name END customer_name,
+						CASE WHEN customer_type.code = 'end_user' THEN c.customer_name ELSE eu.customer_name END end_user_name,
+						p.is_new
+				   FROM projects p INNER JOIN
+						lookups project_status_type ON p.project_status_type_id = project_status_type.lookup_id INNER JOIN
+						customers c ON p.customer_id = c.customer_id INNER JOIN
+						lookups customer_type ON c.customer_type_id = customer_type.lookup_id LEFT OUTER JOIN
+						customers eu ON p.end_user_id = eu.customer_id
+				  WHERE p.project_id IN (<?d:subQuery?>)
+			   ORDER BY p.project_no" -->
+		<!--#SMARTCOLUMN name="project_no" sort="project_no" title="Project&nbsp;#" width="10%" align="center" filter="project_no:project_no"
+		                 href="<?s:action?>setProjectDatum?project_id=<?r:result_list:project_id?>&templateName=enet/proj/pf_main.html&request_id=" target="_top" -->
+		<!--#SMARTCOLUMN name="customer_name" sort="customer_name" title="Customer" width="25%" filter="customer_name:customer_name" filterQuick="true"
+			             filterQuery="SELECT DISTINCT customer_id, customer_name
+			                            FROM project_requests_v2 pr
+			                           WHERE pr.project_id in (<?d:subQuery?>)
+			                        ORDER BY customer_name" -->
+		<!--#SMARTCOLUMN name="end_user_name" sort="end_user_name" title="End User" width="25%" filter="end_user_name:end_user_name" filterQuick="true"
+			             filterQuery="SELECT DISTINCT end_user_id, end_user_name
+			                            FROM project_requests_v2 pr
+			                           WHERE pr.project_id in (<?d:subQuery?>)
+			                        ORDER BY end_user_name" -->
+		<!--#SMARTCOLUMN name="job_name" sort="job_name" title="Job&nbsp;Name" width="30%"  filter="job_name:job_name" -->
+		<!--#SMARTCOLUMN name="project_status_type_name" sort="project_status_type_name" title="Status" width="15%" nowrap
+			             filter="project_status_type_name:project_status_type_name" filterQuick="true"
+			             filterQuery="SELECT lookup_name id, lookup_name FROM project_status_types_v" -->
+		<!--#SMARTCOLUMN name="date_created" sort="date_created"  format="date" title="Date&nbsp;Created" width="10%"-->
+
+	<!--#/SMARTTABLE -->
+
+<!--#EMBED template="enet/embeds/footer.html" -->
+

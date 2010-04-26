@@ -1,0 +1,14 @@
+<!--#EMBED template="embeds/header.html" -->
+
+<frameset rows="250,*" framespacing="0" frameborder="no">
+
+   <frame name="task_edit_frame" src="{!s:showPage!}job/task/task_edit.html?loc=task_main&job_id={!p:job_id!}&service_id={!p:service_id!}" scrolling="NO" noresize>
+   <frame name="task_list_frame" src="{!s:showPage!}job/task/task_list.html?loc=task_list&job_id={!p:job_id!}&service_id={!p:service_id!}">
+   <noframes>
+      Your browser does not support frames.
+   </noframes>
+
+</frameset>
+
+
+<!--#EMBED template="embeds/footer.html" -->

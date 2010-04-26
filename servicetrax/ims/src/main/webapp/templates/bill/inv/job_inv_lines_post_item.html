@@ -1,0 +1,41 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: job_inv_lines_post_item.html, 5, 1/7/2005 5:09:57 PM, Lee A. Gunderson$ -->
+
+<body class="BodyTag" onLoad="">
+
+<FORM ACTION="{!s:action!}setServiceLineStatus" METHOD="POST" name="LinesForm">
+
+	<input type="hidden" name="level" value="bill_job_item">
+	<input type="hidden" name="invoice_id" value="{!p:invoice_id!}">
+	<input type="hidden" name="template_name" value="bill/inv/job_inv_lines_post_req_item.html">
+
+<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0"> <tr><td height="25" class="tableTitle">Assigned</td></tr></TABLE>
+
+<!--#SMARTTABLE name="inv_lines"
+	class="SmartTable" TableTotal="true" totalClass="TableTotal"
+	query="SELECT b.bill_rate, b.item_id, b.item_name, b.job_item_status_id, b.bill_job_id,
+	sum(b.bill_hourly_qty) sum_bill_hourly_qty, sum(b.payroll_qty) sum_payroll_total,
+	sum(b.bill_hourly_total) sum_bill_hourly_total, sum(b.bill_exp_total) sum_bill_exp_total, sum(b.bill_total) sum_bill_total,
+	taxable_flag
+	FROM billing_v b
+	WHERE b.invoice_id = <?p:invoice_id.toPStmtString()?> AND b.billable_flag = 'Y'
+	GROUP BY b.item_id, b.item_name, b.bill_rate, b.job_item_status_id, b.bill_job_id, taxable_flag
+	ORDER BY b.item_name"
+-->
+	<!--#SMARTCOLUMN name="item_name" sort="item_name" title="Item" width="10%" -->
+	<!--#SMARTCOLUMN name="sum_payroll_total" sort="sum_payroll_total" title="TC Hours" align="right" format="###,###,###,##0.00" width="5%" total="true" -->
+	<!--#SMARTCOLUMN name="sum_bill_hourly_qty" sort="sum_bill_hourly_qty" title="Bill Hours" align="right" format="###,###,###,##0.00" width="5%" total="true" -->
+	<!--#SMARTCOLUMN name="bill_rate" sort="bill_rate" title="Bill Rate" align="right" format="money" width="5%" -->
+	<!--#SMARTCOLUMN name="sum_bill_hourly_total" sort="sum_bill_hourly_total" title="Hours Total" align="right" total="true" format="money" width="5%" -->
+	<!--#SMARTCOLUMN name="sum_bill_exp_total" sort="sum_bill_exp_total" title="Exp Total" align="right" total="true" format="money" width="5%" -->
+	<!--#SMARTCOLUMN name="sum_bill_total" sort="sum_bill_total" title="Total" align="right" total="true" format="money" width="5%" -->
+	<!--#SMARTCOLUMN name="taxable_flag" sort="taxable_flag" title="Tax" align="center" width="2%" -->
+<!--#/SMARTTABLE -->
+
+<BR><BR>
+
+<!--#EMBED template="bill/inv/job_inv_cust_lines.html" -->
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

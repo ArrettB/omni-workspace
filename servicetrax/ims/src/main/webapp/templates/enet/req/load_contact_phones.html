@@ -1,0 +1,9 @@
+<!--#SQLLOOP name="q1"
+	query="SELECT ISNULL(SPACE(1) + phone_work, '') work, ISNULL(SPACE(1) + phone_cell, '') cell
+					           FROM contacts_v
+					          WHERE organization_id=<?s:org_id.toPStmtInt()?> AND contact_id=<?p:customer_contact_id.toPStmtString()?>" -->
+<!--#SQLNODATA -->
+setText({!p:fieldId.toJavaScriptString()!}, '');
+<!--#/SQLNODATA -->
+setText({!p:fieldId.toJavaScriptString()!}, '(W)' + {!r:q1:work.toJavaScriptString()!} + ' (C)' + {!r:q1:cell.toJavaScriptString()!});
+<!--#/SQLLOOP-->

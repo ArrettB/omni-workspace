@@ -1,0 +1,9 @@
+
+9-10-2008
+	update project_requests_v2: added end_user_id
+10-3-2008
+	updated invoice_post_total_v: replaced most views with tables.
+10-29-2008
+	updated invoices: added batch_error_message column alter table invoices add batch_error_message varchar(255)
+	updated invoice_post_total_v: added batch_error_message
+	updated projects_v2: added ext_end_user_id

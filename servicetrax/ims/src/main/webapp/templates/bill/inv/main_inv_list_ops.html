@@ -1,0 +1,145 @@
+<!-- $Header: main_inv_list_ops.html, 13, 1/7/2005 5:10:23 PM, Lee A. Gunderson$ -->
+<BR><BR>
+<!--#SQLLOOP query="SELECT status_id, name status FROM invoice_statuses where status_id = 1" name="status_inv"-->
+<FORM ACTION="{!s:action!}setServiceLineStatus" METHOD="POST" name="InvoiceForm">
+	<input type="hidden" name="level" value="invoice">
+	<input type="hidden" name="status_id" value="">
+	<input type="hidden" name="template_name" value="{!p:temp_name!}">
+</script.alert("test");</script>
+
+<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0"> <tr><td class="HeaderBar">Invoices</td></tr></TABLE>
+<!--#SMARTTABLE name="invoice_lines"
+	class="SmartTable" totalClass="TableTotal"
+	query="select
+	IsNull(sum(il.unit_price * il.qty), 0) custom_tot,
+	IsNull(sum(sl.bill_hourly_total), 0) bill_hourly_total,
+	IsNull(sum(sl.bill_exp_total), 0) bill_exp_total,
+	IsNull(sum(sl.bill_total), 0) + IsNull(sum(il.unit_price * il.qty), 0) total_total,
+	i.job_id,
+	i_trk.invoice_id_trk,
+	i.invoice_id,
+	i.description invoice_description,
+	invoice_type.name invoice_type_name,
+	i.status_id invoice_status_id,
+	j.customer_name,
+	j.end_user_name,
+	j.billing_user_name,
+	j.job_no 
+from
+	invoices i
+	left join (
+		select
+			i2.invoice_id,
+		case
+			when iv.invoice_tracking_id is null then convert(varchar, i2.invoice_id) + ''
+			else convert(varchar, i2.invoice_id) + '*'
+		end invoice_id_trk
+		from
+			invoices i2
+			left join invoice_tracking iv on
+				i2.invoice_id = iv.invoice_id) i_trk on
+			i.invoice_id = i_trk.invoice_id
+	left join lookups invoice_type on
+		i.invoice_type_id = invoice_type.lookup_id
+	join (
+		select
+			j.job_id,
+			j.job_no,
+			j.billing_user_id,
+			CASE 
+				WHEN customer_type.code = 'end_user' THEN (SELECT customer_name FROM customers WHERE customer_id = c.end_user_parent_id) 
+				ELSE c.customer_name 
+			END customer_name,
+			CASE 
+				WHEN customer_type.code = 'end_user' THEN c.customer_name 
+				ELSE eu.customer_name 
+			END end_user_name,
+			u.first_name + ' ' + u.last_name billing_user_name
+		from
+			jobs j
+			join customers c on
+				j.customer_id = c.customer_id
+			join lookups customer_type on
+				c.customer_type_id = customer_type.lookup_id
+			left join projects p on
+				p.project_id = j.project_id
+			left join customers eu on
+				eu.customer_id = p.customer_id
+			left join users u on
+				u.user_id = j.billing_user_id
+		) j on
+		i.job_id = j.job_id
+	left join (
+		select
+			invoices.invoice_id,
+			unit_price,
+			qty
+		from
+			invoices
+			join invoice_lines on
+				invoices.invoice_id = invoice_lines.invoice_id
+			join lookups l on
+				invoice_lines.invoice_line_type_id = lookup_id
+			join lookup_types lt on
+				l.lookup_type_id = lt.lookup_type_id
+		where 
+			lt.code = 'invoice_line_type'
+			and lt.active_flag <> 'N'
+			and l.active_flag <> 'N'
+			and l.code = 'custom') il on
+		i.invoice_id = il.invoice_id
+	left join (
+		select
+			invoice_id,
+			bill_hourly_total,
+			bill_exp_total,
+			bill_total
+		from
+			service_lines
+		where
+			status_id > 3
+			AND internal_req_flag = 'N') sl on
+		i.invoice_id = sl.invoice_id
+where
+	i.organization_id = <?s:org_id.toPStmtString()?>
+	and i.status_id = <?r:status_inv:status_id.toPStmtString()?>
+	and (j.billing_user_id = <?s:user_id.toPStmtString()?> OR 'true' = <?s:rights.view_all_jobs.view.toPStmtString()?>)
+GROUP BY i.invoice_id,
+	              i_trk.invoice_id_trk,
+	              i.description,
+	              invoice_type.name,
+	              i.status_id,
+	              j.customer_name,
+	              j.end_user_name,
+	              i.job_id,
+	              j.billing_user_name,
+	              job_no
+order by
+	i.invoice_id"
+-->
+	<!--#IF EVALUATE="<?r:status_inv:status_id?>" COMPARE="6"-->
+	<!--#ELSE-->
+		<!--#SMARTCOLUMN value="<INPUT TYPE='checkbox' name='statusCheckBox' value='<?r:invoice_lines:invoice_id?>'>" title="<INPUT TYPE='checkbox' name='CheckAllBox' onclick='checkAllBoxes(this.form.CheckAllBox,this.form.statusCheckBox)'>" align="center" width="2%" -->
+	<!--#/IF-->
+		<!--#SMARTCOLUMN name="invoice_id_trk" sort="i.invoice_id" title="Invoice#" width="3%" align="center" href="<?s:action?>setupSession/bill/inv/job_inv_main.html?invoice_id=<?r:invoice_lines:invoice_id?>&status_id=<?r:invoice_lines:invoice_status_id?>&job_id=<?r:invoice_lines:job_id?>&prev_template=bill/main_unbill_ops_jobs.html&level=invoice"-->
+		<!--#SMARTCOLUMN name="job_no" sort="job_no" title="Job#" width="3%"-->
+		<!--#SMARTCOLUMN name="billing_user_name" sort="billing_user_name" title="Project&nbsp;Manager" width="5%"-->
+		<!--#SMARTCOLUMN name="customer_name" sort="customer_name" title="Customer" width="10%" value="<input name='customer_name' size='30' readonly='true' class='smartTableDisplay' value='<?r:invoice_lines:customer_name.replaceString('\'','&#39;')?>'>" -->
+		<!--#SMARTCOLUMN name="end_user_name" sort="end_user_name" title="End User" width="10%" value="<input name='end_user_name' size='30' readonly='true' class='smartTableDisplay' value='<?r:invoice_lines:end_user_name.replaceString('\'','&#39;')?>'>" -->
+		<!--SMARTCOLUMN name="end_user_name" sort="end_user_name" title="End User" width="10%"-->
+		<!--#SMARTCOLUMN name="invoice_type_name" sort="invoice_type_name" title="Type" width="5%"-->
+		<!--#SMARTCOLUMN name="invoice_description" sort="invoice_description" title="Description" width="5%" value="<input name='description' readonly='true' class='smartTableDisplay' value='<?r:invoice_lines:invoice_description.replaceString('\'','&#39;')?>'>" -->
+		<!--#SMARTCOLUMN name="custom_tot" sort="custom_tot" title="Custom Total" align="right" total="true" format="money" width="5%" -->
+		<!--#SMARTCOLUMN name="bill_hourly_total" sort="bill_hourly_total" title="Hours$" align="right" total="true" format="money" width="5%" -->
+		<!--#SMARTCOLUMN name="bill_exp_total" sort="bill_exp_total" title="Exp$" align="right" total="true" format="money" width="5%" -->
+		<!--#SMARTCOLUMN name="total_total" sort="total_total" title="Total" align="right" total="true" format="money" width="5%" -->
+<!--#/SMARTTABLE -->
+
+	<select NAME="submit_action" class="regular">
+		<option VALUE="changeInvoiceStatus2">Send to Processing Dept</option>
+	<input type="submit" value="Submit" name="button" class="button2">
+	</select>
+ <BR> <BR>
+</FORM>
+<!--#/SQLLOOP-->
+* Contains Invoice Tracking

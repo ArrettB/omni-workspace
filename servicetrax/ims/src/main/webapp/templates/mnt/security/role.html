@@ -1,0 +1,75 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: role.html, 1, 8/2/2005 3:05:41 PM, Greg Case$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.mnt/security/role.view?>"-->
+<body class="BodyTag">
+<table width="100%" cellspacing="0" cellpadding="0">
+	<tr><td  class="HeaderBar">{!s:rights.mnt/security/role.name!}</td></tr>
+</table>
+<table width="100%" border="0"><tr><td>
+	<table>
+	<!--#SMARTFORM name="mnt/security/role" security="rights" table="roles" key="role_id" postHandler="ims.handlers.maintenance.HandleRoleDetail" prevTemplate="mnt/security/roles" nextTemplate="mnt/security/roles"-->
+		<!--#SMARTFIELD name="created_by" mode="Insert" type="hidden" value="<?s:user.userID?>" -->
+		<!--#SMARTFIELD name="date_created" mode="Insert" type="hidden" value="getDate()" -->
+		<!--#SMARTFIELD name="modified_by" mode="Update" type="hidden" value="<?s:user.userID?>" -->
+		<!--#SMARTFIELD name="date_modified" mode="Update" type="hidden" value="getDate()" -->
+		<tr>
+			<td width="75">Role Name</td>
+			<td><!--#SMARTFIELD name="name" div="</td><td>" size="22"--></td>
+		</tr>
+	</table>
+</td>
+</tr>
+<tr>
+<td>
+<table width="100%" cellspacing="0" cellpadding="0">
+	<tr>
+		<td  class="HeaderBar">System Info</td>
+	</tr>
+</table>
+<table width="100%">
+	<tr>
+		<td width="75"><!--#SMARTFIELD title="Date Created" div="</td><td>" name="date_created" type="datetime" mode="Update" readonly class="readonly" size="22" --></td>
+		<td width="75"><!--#SMARTFIELD title="Created By" div="</td><td>" name="created_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+	</tr>
+	<tr>
+		<td width="75"><!--#SMARTFIELD title="Date Modified" div="</td><td>" name="date_modified" type="datetime" mode="Update" readonly class="readonly" size="22"--></td>
+		<td width="75"><!--#SMARTFIELD title="Modified By" div="</td><td>" name="modified_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+	</tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="0">
+	<tr><td  class="HeaderBar">Rights</td></tr>
+</table>
+</td>
+</tr>
+<tr>
+<td>
+	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td width="100" class="TableTitle" height="24">Name</td>
+		<td width="100" class="TableTitle" height="24">Code</td>
+		<!--#SQLLOOP query="SELECT name FROM right_types ORDER BY name DESC" name="right_type" -->
+		<td width="100" class="TableTitle" align="center">{!r:right_type:name!}</td>
+		<!--#/SQLLOOP-->
+	</tr>
+	<!--#SQLLOOP name="asset" query="SELECT asset_id id, code, name FROM assets ORDER BY code" alternator1="TableRow1:TableRow2"-->
+	<tr>
+		<td width="100" class="{!d:asset:alt1!}">{!r:asset:name!}</td>
+		<td width="100" class="{!d:asset:alt1!}">{!r:asset:code!}</td>
+		<!--#SQLLOOP name="right_type"
+					 query="SELECT right_type_id id,
+								   checked = CASE
+									 	WHEN (SELECT right_type_id FROM rights b WHERE a.right_type_id = b.right_type_id AND (asset_id = <?r:asset:id.toSQLString()?> AND role_id = <?p:role_id.toSQLString()?>)) IS NULL THEN ''
+										ELSE 'checked'
+									 END
+							  FROM right_types a
+						  ORDER BY a.code DESC" -->
+			<td width="25" class="{!d:asset:alt1!}" align="center"><input type="checkbox" name="right_{!r:asset:id!}_{!r:right_type:id!}" value="Y" {!r:right_type:checked!}></td>
+		<!--#/SQLLOOP-->
+	</tr>
+	<!--#/SQLLOOP-->
+</table>
+<!--#/SMARTFORM-->
+</td></tr></table>
+</body>
+<!--#EMBED template="embeds/footer.html" -->

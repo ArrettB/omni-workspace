@@ -1,0 +1,255 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.dynamic.charm</groupId>
+	<artifactId>charm-ajax</artifactId>
+	<packaging>jar</packaging>
+	<name>Charm Ajax Components</name>
+	<version>1.6-SNAPSHOT</version>
+
+	<parent>
+		<artifactId>charm-parent</artifactId>
+		<groupId>com.dynamic.charm</groupId>
+		<version>2.1</version>
+	</parent>
+
+	<ciManagement>
+		<system>continuum</system>
+		<notifiers>
+			<notifier>
+				<configuration>
+					<address>smays@apexit.com</address>
+				</configuration>
+			</notifier>
+		</notifiers>
+	</ciManagement>
+	<scm>
+		<connection>scm:svn:http://svn.apexit.com/svn/charm/trunk/charm-ajax</connection>
+		<developerConnection>scm:svn:http://svn.apexit.com/svn/charm/trunk/charm-ajax</developerConnection>
+	  <url>http://svn.apexit.com/svn/charm/trunk/charm-ajax</url>
+  </scm>
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>src\main\webapp\WEB-INF\lib</directory>
+						</fileset>
+						<fileset>
+							<directory>src\main\webapp\WEB-INF\classes</directory>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty6-plugin</artifactId>
+				<configuration>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<contextPath>/ca</contextPath>
+					<systemProperties>
+						<systemProperty>
+							<name>org.apache.commons.logging.Log</name>
+							<value>org.apache.commons.logging.impl.SimpleLog</value>
+						</systemProperty>
+					</systemProperties>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<configuration>
+					<container>
+						<containerId>tomcat5x</containerId>
+						<home>C:\dev\tools\apache-tomcat-5.5.12</home>
+					</container>
+					<configuration>
+						<dir>${project.build.directory}/tomcat</dir>
+						<cargo.servlet.port>8081</cargo.servlet.port>
+					</configuration>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>xdoclet-maven-plugin</artifactId>
+				<dependencies>
+  		                       <dependency>
+					        <groupId>ant</groupId>
+					        <artifactId>ant</artifactId>
+					        <version>1.6.5</version>
+					</dependency>
+					<dependency>
+						<groupId>com.dynamic.charm</groupId>
+						<artifactId>charm-core</artifactId>
+						<version>1.2</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>xdoclet</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<webdoclet destDir="${project.build.outputDirectory}/META-INF" verbose="true" force="true">
+									<fileset dir="src/main/java">
+										<include name="**/*Tag.java" />
+									</fileset>
+									<jspTaglib jspversion="1.2" displayname="Charm Ajax Tag Library" shortname="charm-ajax" uri="/tld/charm-ajax" acceptAbstractClasses="false" destinationFile="charm-ajax.tld" validateXml="false" />
+								</webdoclet>
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<repositories>
+		<repository>
+			<id>dynamic_repo</id>
+			<name>ApexIT Central Repository</name>
+			<url>http://maven.apexit.com/repository/</url>
+		</repository>
+	</repositories>
+	
+	
+	<dependencies>
+		<!-- Charm -->
+		<dependency>
+			<groupId>com.dynamic.charm</groupId>
+			<artifactId>charm-core</artifactId>
+			<version>1.2</version>
+		</dependency>
+		
+		<!-- Servlet, JSP, and JSTL -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.4</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jsp-api</artifactId>
+			<scope>provided</scope>
+			<version>2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+				
+		<!-- Oracle JDBC Driver -->
+		<dependency>
+			<groupId>oracle</groupId>
+			<artifactId>ojdbc14</artifactId>
+			<version>10.2.0.3</version>
+			<scope>runtime</scope>
+		</dependency>
+				
+		<!-- Display Tag - Tables -->
+		<dependency>
+			<groupId>displaytag</groupId>
+			<artifactId>displaytag</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>displaytag</groupId>
+			<artifactId>displaytag-export-poi</artifactId>
+			<version>1.2</version>
+		</dependency>
+			
+		<!-- DWR -->
+		<dependency>
+			<groupId>uk.ltd.getahead</groupId>
+			<artifactId>dwr</artifactId>
+			<version>1.1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>1.8.0.1</version>
+			<scope>test</scope>
+		</dependency>
+	
+		<dependency>
+			<groupId>json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.2.1</version>
+		</dependency>
+		
+	</dependencies>
+	
+	<distributionManagement>
+		<repository>
+			<id>dynamic_repo_file_deploy</id>
+			<name>ApexIT Repository</name>
+			<url>file:////bentley/home/maven/tomcat/webapps/ROOT/repository</url>
+		</repository>
+		<site>
+			<id>website</id>
+			<url>file:////bentley/home/maven/tomcat/webapps/ROOT/charm-ajax</url>
+		</site>
+	</distributionManagement>
+	
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+			</plugin>
+			<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>changelog-maven-plugin</artifactId>
+				<version>2.0-beta-1</version>
+				<reportSets>
+					<reportSet>
+						<id>full-report</id>
+						<configuration>
+							<type>range</type>
+							<range>30</range>
+							<basedir>${basedir}</basedir>
+						</configuration>
+						<reports>
+							<report>changelog</report>
+							<report>file-activity</report>
+							<report>dev-activity</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptor>src/main/assembly/dep.xml</descriptor>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
+</project>

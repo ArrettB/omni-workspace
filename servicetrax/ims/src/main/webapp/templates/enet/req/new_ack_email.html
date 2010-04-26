@@ -1,0 +1,269 @@
+<!--#IF evaluate="<?p:request_type_code?>" compare="quote_request" -->
+
+  <!--#SQLLOOP name="c"
+			   query="SELECT am_name,
+			                 am_sales_name,
+			                 customer_contact_name,
+			                 customer_contact2_name,
+			                 customer_contact3_name,
+			                 customer_contact4_name
+						  FROM request_mail_v2
+						 WHERE request_id = <?p:request_id.toPStmtString()?>
+						   AND request_type_code=<?p:request_type_code.toPStmtString()?>"
+	-->
+
+	<table width="100%" >
+	<!--
+		<tr>
+			<td class="HeaderLabel" colspan="2">
+				The following people have been notified via email:
+			</td>
+		</tr>
+	--->
+
+		<tr>
+			<td width="50" class="HeaderLabel">
+				Omni&nbsp;Project&nbsp;Manager:
+			</td>
+			<td width="300">
+				{!r:c:am_name!}
+		<!--#IF evaluate="<?p:a_m?>" compare="false" -->
+				<span class="mandatoryLabel">[missing email]</span>
+		<!--#/IF-->
+			</td>
+		</tr>
+		<tr>
+			<td width="50" class="HeaderLabel">
+				Omni&nbsp;Sales&nbsp;Person:
+			</td>
+			<td width="300">
+				{!r:c:am_sales_name!}
+		<!--#IF evaluate="<?p:a_m_sales?>" compare="false" -->
+				<span class="mandatoryLabel">[missing email]</span>
+		<!--#/IF-->
+			</td>
+		</tr>
+		<tr>
+			<td width="50" class="HeaderLabel">
+				Customer&nbsp;Contact:
+			</td>
+			<td width="300">
+				{!r:c:customer_contact_name!}
+		<!--#IF evaluate="<?p:customer?>" compare="false" -->
+				<span class="mandatoryLabel">[missing email]</span>
+		<!--#/IF-->
+			</td>
+		</tr>
+		<tr>
+			<td width="50" class="HeaderLabel">
+				Customer&nbsp;Contact2:
+			</td>
+			<td width="300">
+				{!r:c:customer_contact2_name!}
+		<!--#IF evaluate="<?p:customer2?>" compare="false" -->
+				<span class="mandatoryLabel">[missing email]</span>
+		<!--#/IF-->
+			</td>
+		</tr>
+		<tr>
+			<td width="50" class="HeaderLabel">
+				Customer&nbsp;Contact3:
+			</td>
+			<td width="300">
+				{!r:c:customer_contact3_name!}
+		<!--#IF evaluate="<?p:customer3?>" compare="false" -->
+				<span class="mandatoryLabel">[missing email]</span>
+		<!--#/IF-->
+			</td>
+		</tr>
+		<tr>
+			<td width="50" class="HeaderLabel">
+				Customer&nbsp;Contact4:
+			</td>
+			<td width="300">
+				{!r:c:customer_contact4_name!}
+		<!--#IF evaluate="<?p:customer4?>" compare="false" -->
+				<span class="mandatoryLabel">[missing email]</span>
+		<!--#/IF-->
+			</td>
+		</tr>
+	</table>
+
+	<!--#/SQLLOOP-->
+
+<!--#ELSEIF evaluate="<?p:request_type_code?>" compare="service_request" -->
+
+  <!--#SQLLOOP name="c"
+			   query="SELECT am_name,
+			                 am_sales_name,
+			                 customer_contact_name,
+			                 customer_contact2_name,
+			                 customer_contact3_name,
+			                 customer_contact4_name
+						  FROM request_mail_v2
+						  WHERE request_id = <?p:request_id.toPStmtString()?>
+						   AND request_type_code=<?p:request_type_code.toPStmtString()?>"
+	-->
+
+	<table width="100%" >
+	<!--
+		<tr>
+			<td class="HeaderLabel" colspan="2">
+				The following people have been notified via email:
+			</td>
+		</tr>
+	--->
+
+		<tr>
+			<td width="50" class="HeaderLabel">
+				Omni&nbsp;Project&nbsp;Manager:
+			</td>
+			<td width="300">
+				{!r:c:am_name!}
+		<!--#IF evaluate="<?p:a_m?>" compare="false" -->
+				<span class="mandatoryLabel">[missing email]</span>
+		<!--#/IF-->
+			</td>
+		</tr>
+		<tr>
+			<td width="50" class="HeaderLabel">
+				Omni&nbsp;Sales&nbsp;Person:
+			</td>
+			<td width="300">
+				{!r:c:am_sales_name!}
+		<!--#IF evaluate="<?p:a_m_sales?>" compare="false" -->
+				<span class="mandatoryLabel">[missing email]</span>
+		<!--#/IF-->
+			</td>
+		</tr>
+		<tr>
+			<td width="50" class="HeaderLabel">
+				Customer&nbsp;Contact:
+			</td>
+			<td width="300">
+				{!r:c:customer_contact_name!}
+		<!--#IF evaluate="<?p:customer?>" compare="false" -->
+				<span class="mandatoryLabel">[missing email]</span>
+		<!--#/IF-->
+			</td>
+		</tr>
+		<tr>
+			<td width="50" class="HeaderLabel">
+				Customer&nbsp;Contact2:
+			</td>
+			<td width="300">
+				{!r:c:customer_contact2_name!}
+		<!--#IF evaluate="<?p:customer2?>" compare="false" -->
+				<span class="mandatoryLabel">[missing email]</span>
+		<!--#/IF-->
+			</td>
+		</tr>
+		<tr>
+			<td width="50" class="HeaderLabel">
+				Customer&nbsp;Contact3:
+			</td>
+			<td width="300">
+				{!r:c:customer_contact3_name!}
+		<!--#IF evaluate="<?p:customer3?>" compare="false" -->
+				<span class="mandatoryLabel">[missing email]</span>
+		<!--#/IF-->
+			</td>
+		</tr>
+		<tr>
+			<td width="50" class="HeaderLabel">
+				Customer&nbsp;Contact4:
+			</td>
+			<td width="300">
+				{!r:c:customer_contact4_name!}
+		<!--#IF evaluate="<?p:customer4?>" compare="false" -->
+				<span class="mandatoryLabel">[missing email]</span>
+		<!--#/IF-->
+			</td>
+		</tr>
+	</table>
+
+	<!--#/SQLLOOP-->
+
+<!--#ELSE-->
+
+	<!--#SQLLOOP name="c"
+				 query="SELECT sales_name, sales_sup_name, designer_name, proj_mgr_name, am_name, null furn1_name, null furn2_name
+						  FROM request_mail_v
+						 WHERE record_id = <?p:request_id.toPStmtString()?>
+						   AND record_type_code=<?p:request_type_code.toPStmtString()?>"
+	-->
+
+	<table width="100%" >
+	<!--
+		<tr>
+			<td class="HeaderLabel" colspan="2">
+				The following people have been notified via email:
+			</td>
+		</tr>
+	--->
+  <!--#IF evaluate="<?p:request_type_code?>" compare="workorder" -->
+	<!--#SIMPLELOOP vector="<?s:email_results?>" loopIndex="x" -->
+		<tr>
+			<td class="HeaderLabel" nowrap>
+				{!s:email_results[x].getContactName()!}
+			</td>
+			<td>
+		<!--#IF evaluate="<?s:email_results[x].getEmail()?>" compare="" -->
+				<span class="mandatoryLabel">[missing email]</span>
+		<!--#ELSE-->
+				&nbsp;
+		<!--#/IF-->
+			</td>
+		</tr>
+	<!--#/SIMPLELOOP-->
+  <!--#ELSEIF evaluate="<?p:request_type_code?>" compare="quote" -->
+		<tr>
+			<td width="50" class="HeaderLabel">
+				Omni&nbsp;Sales&nbsp;Person:&nbsp;
+			</td>
+			<td width="300">
+				{!r:c:sales_name!}
+		<!--#IF evaluate="<?p:sales_rep?>" compare="false" -->
+				<span class="mandatoryLabel">[missing email]</span>
+		<!--#/IF-->
+			</td>
+		</tr>
+		<tr>
+			<td width="50" class="HeaderLabel">
+				Omni&nbsp;Sales&nbsp;Support:&nbsp;
+			</td>
+			<td width="300">
+				{!r:c:sales_sup_name!}
+		<!--#IF evaluate="<?p:sales_sup?>" compare="false" -->
+				<span class="mandatoryLabel">[missing email]</span>
+		<!--#/IF-->
+			</td>
+		</tr>
+		<tr>
+			<td width="50" class="HeaderLabel">
+				Omni&nbsp;Project&nbsp;Mgr:
+			</td>
+			<td width="300">
+				{!r:c:proj_mgr_name!}
+		<!--#IF evaluate="<?p:proj_mgr?>" compare="false" -->
+				<span class="mandatoryLabel">[missing email]</span>
+		<!--#/IF-->
+			</td>
+		</tr>
+		<tr>
+			<td width="50" class="HeaderLabel">
+				Omni&nbsp;Project&nbsp;Manager:
+			</td>
+			<td width="300">
+				{!r:c:am_name!}
+		<!--#IF evaluate="<?p:a_m?>" compare="false" -->
+				<span class="mandatoryLabel">[missing email]</span>
+		<!--#/IF-->
+			</td>
+		</tr>
+  <!--#/IF-->
+	</table>
+
+	<!--#/SQLLOOP-->
+
+<!--#/IF-->

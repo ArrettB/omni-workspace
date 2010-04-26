@@ -1,0 +1,135 @@
+<!--#EMBED template="pocket/embeds/header.html" title="Hours To Send"-->
+
+<!--#EMBED template="pocket/embeds/title_bar.html" title="Hours To Send"-->
+
+<!--#EMBED template="embeds/spacer_table.html" spacer_height="5"-->
+
+<!--#EXEC handler="ims.handlers.pocket.PocketPreFlightHandler"-->
+
+<!--#SQLLOOP
+     name="detail"
+     query="SELECT substring(customer_name, 0, 20) customer_name, job_no, job_id, job_name
+			  FROM jobs_v
+			  WHERE job_id = <?p:job_id.toPStmtString()?>"
+	 alternator1="#FFFFFF:#DCDCDC"
+-->
+
+<!--Entry Header-->
+<table cellspacing="0" cellpadding="0" width="100%">
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Job</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana">{!r:detail:job_no!} - {!r:detail:job_name!}</font>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Customer</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana">{!r:detail:customer_name!} </font>
+		</td>
+	</tr>
+</table>
+<!--#/SQLLOOP-->
+
+
+<!--List-->
+
+<!--#SQLLOOP
+     name="time_list"
+     query="SELECT service_line_id, service_no, service_line_no, item_name, qty, dbo.getShortName(resource_name) resource_name, user_id
+			  FROM pkt_service_lines_v
+			  WHERE job_id = <?p:job_id.toPStmtString()?>
+			  AND (status_code = 'New' OR status_code = 'Temp')
+			  ORDER BY service_line_no"
+	 alternator1="#FFFFFF:#DCDCDC"
+-->
+
+<!--#SQLHEADER-->
+<form action="{!s:action!}pocketSendHours/pocket/send.html" method="post">
+<input name="job_id" type="hidden" value="{!p:job_id!}">
+<input name="service_line_date" type="hidden" value="{!d:service_line_date!}">
+<table cellspacing="0" cellpadding="0" width="100%">
+	<tr height="1">
+		<td bgcolor="black" height="1" colspan="5"><img alt="image" src="/ims/images/spacer.gif" width="1" height="1"></td>
+	</tr>
+	<tr>
+		<td>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>MAC</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Resource</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Item</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Qty</b></font>
+		</td>
+	</tr>
+	<tr height="1">
+		<td bgcolor="black" height="1" colspan="5"><img alt="image" src="/ims/images/spacer.gif" width="1" height="1"></td>
+	</tr>
+<!--#/SQLHEADER-->
+
+	<tr>
+		<td>
+			<input type="checkbox" name="send_cb" value="{!r:time_list:service_line_id!}"<!--#IF evaluate="<?r:time_list:user_id?>" compare="<?s:user_id?>"--> checked<!--#/IF-->>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana">{!r:time_list:service_no!}</font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana">{!r:time_list:resource_name!}</font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana">{!r:time_list:item_name!}</font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana">{!r:time_list:qty!}</font>
+		</td>
+	</tr>
+
+<!--#SQLFOOTER-->
+</table>
+<table cellspacing="0" cellpadding="0" width="100%">
+	<tr>
+		<td>
+				<input type="submit" name="button" value="Send">
+		</td>
+	</tr>
+</table>
+</form>
+<!--#/SQLFOOTER-->
+
+<!--#SQLNODATA-->
+<table cellspacing="0" cellpadding="0" width="100%">
+	<tr height="1">
+		<td bgcolor="black" height="1" colspan="1"><img alt="image" src="/ims/images/spacer.gif" width="1" height="1"></td>
+	</tr>
+	<tr height="1">
+		<td><font color="#000000" size="-2" face="Verdana"><b>No time has been entered for this Job/date</b></font></td>
+	</tr>
+</table>
+<!--#/SQLNODATA-->
+
+
+<!--#/SQLLOOP-->
+
+<!--#IF defined="<?d:error?>" -->
+<font color="#FF0000" size="-2" face="Verdana"><b>{!d:error!}</b></font>
+<!--#/IF-->
+
+<table cellspacing="0" cellpadding="0" width="100%">
+	<tr>
+		<td align="center">
+			<font color="#000000" size="-2" face="Verdana"><b><a href="{!s:showPage!}pocket/send_job_list.html?job_id={!p:job_id!}">Job List</a></b></font>
+		</td>
+	</tr>
+</table>
+<!--#EMBED template="pocket/embeds/footer.html"-->

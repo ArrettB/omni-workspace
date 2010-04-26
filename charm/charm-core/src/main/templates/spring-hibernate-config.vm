@@ -1,0 +1,6 @@
+#foreach($table in $tables)
+<value>${table.package}.${table.destinationClassName}.hbm.xml</value>
+#end
+
+
+			

@@ -1,0 +1,1 @@
+SELECT sales_rep_name, cost_to_cust, cost_to_vend, cost_to_job, warehouse_fee FROM invoice_cost_codes_job_v WHERE invoice_id = 164325 AND (date_created = (SELECT MAX(date_created) FROM invoice_cost_codes_job_v WHERE invoice_id = 164325))

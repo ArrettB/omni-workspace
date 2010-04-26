@@ -1,0 +1,71 @@
+#set ($alias = $table.destinationClassName) 
+#set( $width = 100 / $table.notKeyColumns.size() )
+#macro(rowsRef $ref)rows.$ref#end
+
+<%@ include file="/WEB-INF/jsp/include.jsp" %>
+
+<html>
+<head><title><fmt:message key="${alias}_listing.title"/></title></head>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/main.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/extremecomponents.css">
+
+<body>
+
+<h1><fmt:message key="${alias}_listing.heading"/></h1>
+
+
+<commons:table 
+          collection="rows"
+          queryService="queryService"
+          queryName="${alias}_all" 
+          action="${pageContext.request.contextPath}/${alias}_listing.html" 
+          imagePath="${pageContext.request.contextPath}/images/*.gif" 
+          cellspacing="1"
+          cellpadding="1"
+          maxRows="12">
+
+	<!-- Primary Table Columns -->          
+#foreach( $column in $table.notKeyColumns )
+ #if (${column.javaType} == "java.util.Date" || ${column.javaType} == "java.sql.Date" || ${column.javaType} == "java.sql.Timestamp")
+	<et:column property="${column.variableName}" cell="date" format="MM/dd/yyyy" parse="yyyy-MM-dd hh:mm:ss" /> 
+ #else
+	<et:column property="${column.variableName}" /> 
+ #end
+#end
+
+	<!-- Foreign Table References --> 
+#foreach($relationshipRole in $table.notPrimaryKeyRoles)
+ #if ( $relationshipRole.enabled)
+  #set ( $one2one = $relationshipRole.relation.one2One )
+  #set ( $many2many = $relationshipRole.relation.many2Many )
+  #set ( $bidirectional = $relationshipRole.relation.bidirectional )
+  #set ( $target = $relationshipRole.getTarget($plugin))
+  #if ($table.getCardinalityValue($relationshipRole) == "many-to-one")
+   #foreach ($column in $target.notKeyColumns )
+    #if (${column.variableName} == "name")
+	<et:column property="${table.getVariableName($relationshipRole)}.${column.variableName}" title="${target.destinationClassName} Name" /> 
+    #end
+   #end
+  #end
+ #end
+#end
+#set ($column = $table.pkColumn)  
+	<!-- Edit Column -->
+	<et:column property="${column.variableName}" width="5%" title="Edit" filter="false" sort="false" styleClass="odd">
+		   <div align="center">
+		   <a href="${pageContext.request.contextPath}/${alias}_detail.html?$column.variableName=${#rowsRef($column.variableName)}">
+		   <img src="${pageContext.request.contextPath}/images/edit_details_sm.gif" border="0" title="Edit">
+		   </a>
+		   </div> 
+	</et:column>
+	
+</commons:table> 
+
+<form>
+<div id="strutsButtons" >
+<input type="button" value="Add New" class="button" onclick="window.location='<c:url value="${alias}_detail.html"/>'">
+</div>
+</form>
+
+</body>
+</html>    

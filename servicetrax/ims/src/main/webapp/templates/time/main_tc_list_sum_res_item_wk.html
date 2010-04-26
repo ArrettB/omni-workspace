@@ -1,0 +1,41 @@
+<!--#EMBED template="embeds/header.html" -->
+
+
+<body class="BodyTag">
+
+<table class="SmartTable" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td class="tableHeader">Resource/Work Code/Week Summary</td>
+	</tr>
+</table>
+
+<!--#SMARTTABLE name="service_lines"
+	class="SmartTable"
+	query="SELECT  status_id, sum(expense_total) exp, sum(payroll_qty) hours, resource_name, resource_id, service_line_week, service_line_week_varchar, item_name, ext_pay_code
+			FROM time_capture_v
+			WHERE status_code = 'submitted'
+			AND (
+				foreman_user_id = <?s:user_id.toPStmtString()?>
+				OR billing_user_id = <?s:user_id.toPStmtString()?>
+				OR 'true' = <?s:rights.view_all_jobs.view.isNull('false').toPStmtString()?>
+				)
+			AND ph_service_id is null
+			AND fully_allocated_flag = 'N'
+			AND organization_id = <?s:org_id.toPStmtString()?>
+			AND billed_flag = 'N'
+			GROUP BY status_id, resource_name, resource_id, service_line_week, service_line_week_varchar, item_name, ext_pay_code
+			ORDER BY resource_name, service_line_week, item_name"
+-->
+	<!--#SMARTCOLUMN name="resource_name" sort="resource_name" title="Resource" width="10%" filter="resource_name:resource_name" -->
+	<!--#SMARTCOLUMN name="service_line_week_varchar" sort="service_line_week_varchar" title="Week" width="10%" align="center" filter="service_line_week_varchar:service_line_week_varchar" -->
+	<!--#SMARTCOLUMN name="item_name" sort="item_name" title="Work Code" width="10%" filter="item_name:item_name" -->
+	<!--#SMARTCOLUMN name="ext_pay_code" sort="ext_pay_code" title="Paycode" width="5%" align="center" filter="ext_pay_code:ext_pay_code" -->
+	<!--#SMARTCOLUMN name="hours" sort="hours" title="Hours" width="10%" format="###,###,##0.00" align="right" total="true" -->
+	<!--#SMARTCOLUMN name="exp" sort="exp" title="Expenses" width="10%" format="money" align="right" total="true"-->
+<!--#/SMARTTABLE -->
+<br>
+
+<!--#EMBED template="time/po/po_list.html" main_page="main_tc_list_sum_det.html"-->
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

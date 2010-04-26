@@ -1,0 +1,75 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: C:\work\ims\templates\mnt\org.html, 18, 3/31/2006 2:09:46 PM, Blake Von Haden$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.mnt/org.view?>"-->
+<body class="BodyTag">
+<table width="100%" cellspacing="0" cellpadding="0">
+	<tr>
+		<!--#IF defined="<?p:organization_id?>"-->
+		<td  class="HeaderBar">Edit an Organization</td>
+		<!--#ELSE-->
+		<td  class="HeaderBar">Create an Organization</td>
+		<!--#/IF-->
+	</tr>
+</table>
+<span class="Label">Please select an Organization to edit:</span>
+<!--#SMARTFORM name="mnt/org"	security="rights" table="organizations" key="organization_id" sequence="@@IDENTITY" useCSS="true"
+	preHandler="ims.handlers.job_processing.SmartFormPreHandler,ims.handlers.maintenance.OrganizationPreHandler"
+	nextTemplate="mnt/clear.html"
+	prevTemplate="mnt/main_mnt.html" buttons="Save,Delete,Cancel"
+-->
+
+	<!--#SMARTFIELD name="caller" value="mnt/org.html" type="hidden" -->
+<table border="0" cellspacing="0" cellpadding="0">
+	<tr><td><!--#SMARTFIELD title="List Order:" name="sequence_no" div="</td><td>" style="width:50" --></td></tr>
+	<tr><td><!--#SMARTFIELD title="Name:" name="name" div="</td><td>" --></td></tr>
+	<tr><td><!--#SMARTFIELD title="Code:" name="code" div="</td><td>" --></td></tr>
+	<tr><td><!--#SMARTFIELD title="XML Db Resource:" name="resource_name" div="</td><td>" --></td></tr>
+	<tr><td><!--#SMARTFIELD title="Db Prefix:" name="db_prefix" div="</td><td>" --></td></tr>
+	<tr><td><!--#SMARTFIELD mode="Update" title="Direct Dealer" name="ext_direct_dealer_id" div="</td><td>" resourceName="<?r:mnt/org:resource_name?>" type="droplist" table="RM00101" display="rtrim(shrtname)" key="rtrim(custnmbr)" filter="userdef1='DEALER'" --></td></tr>
+	<tr><td><!--#SMARTFIELD mode="Update" title="DCI Dealer" name="ext_dci_dealer_id" div="</td><td>" resourceName="<?r:mnt/org:resource_name?>" type="droplist" table="RM00101" display="rtrim(shrtname)" key="rtrim(custnmbr)" filter="userdef1='DEALER'" --></td></tr>
+	<tr><td><!--#SMARTFIELD title="Pay Code Table:" name="pay_code_table" div="</td><td>" style="width:200" --></td></tr>
+	<tr><td nowrap><!--#SMARTFIELD title="PDA Item Paycodes Table:&nbsp;" name="pda_item_paycodes_table" div="</td><td>" style="width:200" --></td></tr>
+	<tr><td><!--#SMARTFIELD title="GP Invoice Integration:" name="inv_integration_name" div="</td><td>"  --></td></tr>
+	<tr><td><!--#SMARTFIELD title="GP Payroll Integration:" name="pr_integration_name" div="</td><td>" --></td></tr>
+	<tr><td><!--#SMARTFIELD title="GP Default Site:" name="default_site" div="</td><td>" mandatory="true" --></td></tr>
+	<tr><td><!--#SMARTFIELD title="GP Invoice Suffix:" name="invoice_suffix" div="</td><td>" mandatory="true" --></td></tr>
+	<tr><td><!--#SMARTFIELD title="GP Comment ID:" name="comment_id" div="</td><td>" mandatory="true" --></td></tr>
+	<tr><td><!--#SMARTFIELD title="Scheduler:" name="scheduler_contact_id" div="</td><td>" type="droplist" query="SELECT contact_id, contact_name FROM contacts_v WHERE organization_id=<?s:org_id.toPStmtInt()?> ORDER BY contact_name" --></td></tr>
+	<!-- the scheduler is emailed when a new version is created on the extranet (when you save,send,approve an existing approved or sent request) -->
+</table>
+<br>
+
+<!--#EMBED template="embeds/audit.html" table_name="organizations" table_key="organization_id" key_value="<?p:organization_id?>"-->
+
+
+<!--#/SMARTFORM -->
+<table width="100%" cellspacing="0" cellpadding="0">
+	<tr>
+		<td  class="HeaderBar">Select an Organization to Edit</td>
+	</tr>
+</table>
+<!--#SMARTTABLE name="orgs"
+	   query="SELECT o.organization_id, o.name, o.code, o.resource_name, o.ext_direct_dealer_id, o.ext_dci_dealer_id, o.db_prefix, o.pay_code_table, o.pda_item_paycodes_table, o.sequence_no, o.inv_integration_name, o.pr_integration_name, c.contact_name scheduler_contact_name
+	   FROM ORGANIZATIONS o LEFT OUTER JOIN CONTACTS c ON o.SCHEDULER_CONTACT_ID = c.CONTACT_ID ORDER BY sequence_no"
+   -->
+	<!--#SMARTCOLUMN name="sequence_no" sort="sequence_no" title="List Order" width="50" align="center"  -->
+	<!--#SMARTCOLUMN name="name" sort="name" title="Name" width="150" href="<?s:showPage?>mnt/org.html?organization_id=<?r:orgs:organization_id?>" target="main_frame" -->
+	<!--#SMARTCOLUMN name="code" sort="code" title="Code" width="125" -->
+	<!--#SMARTCOLUMN name="resource_name" sort="resource_name" title="DB Resource Name" width="125" -->
+	<!--#SMARTCOLUMN name="db_prefix" sort="db_prefix" title="Database" width="100" -->
+	<!--#SMARTCOLUMN name="ext_direct_dealer_id" sort="ext_direct_dealer_id" title="Direct Dealer" width="100" -->
+	<!--#SMARTCOLUMN name="ext_dci_dealer_id" sort="ext_dci_dealer_id" title="DCI Dealer" width="100" -->
+	<!--#SMARTCOLUMN name="pay_code_table" sort="pay_code_table" title="Pay Code Table" width="150" -->
+	<!--#SMARTCOLUMN name="pda_item_paycodes_table" sort="pda_item_paycodes_table" title="PDA Item Paycodes Table" width="150" -->
+	<!--#SMARTCOLUMN name="inv_integration_name" sort="inv_integration_name" title="Invoice GP Integration" width="150" -->
+	<!--#SMARTCOLUMN name="pr_integration_name" sort="pr_integration_name" title="Payroll GP Integration" width="150" -->
+	<!--#SMARTCOLUMN name="scheduler_contact_name" sort="scheduler_contact_name" title="Scheduler" width="150" -->
+
+<!--#/SMARTTABLE -->
+<!--#IF defined="<?s:rights.mnt/org.insert?>"-->
+<br>
+<input type="submit" class="button" name="button" value="New Organization" onClick="location='{!s:showPage!}mnt/org.html?organization_id='">
+</body>
+<!--#/IF-->
+<!--#EMBED template="embeds/footer.html" -->

@@ -1,0 +1,231 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.ServiceLine" table="SERVICE_LINES" schema="dbo" catalog="">
+        <id name="serviceLineId" type="java.lang.Long">
+            <column name="SERVICE_LINE_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="serviceByTcServiceId" class="com.dynamic.servicetrax.orm.Service" fetch="select">
+            <column name="TC_SERVICE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="userByVerifiedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="VERIFIED_BY" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookup" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="OVERRIDE_REASON" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="invoice" class="com.dynamic.servicetrax.orm.Invoice" fetch="select">
+            <column name="INVOICE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="resource" class="com.dynamic.servicetrax.orm.Resource" fetch="select">
+            <column name="RESOURCE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="serviceByPhServiceId" class="com.dynamic.servicetrax.orm.Service" fetch="select">
+            <column name="PH_SERVICE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="userByModifiedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="serviceByBillServiceId" class="com.dynamic.servicetrax.orm.Service" fetch="select">
+            <column name="BILL_SERVICE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="userByOverrideBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="OVERRIDE_BY" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="item" class="com.dynamic.servicetrax.orm.Item" fetch="select">
+            <column name="ITEM_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="serviceLineStatuse" class="com.dynamic.servicetrax.orm.ServiceLineStatuse" fetch="select">
+            <column name="STATUS_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="userByEnteredBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="ENTERED_BY" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="userByCreatedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="organizationId" type="java.lang.Long">
+            <column name="ORGANIZATION_ID" precision="18" scale="0" />
+        </property>
+        <property name="tcJobNo" type="java.lang.Long">
+            <column name="TC_JOB_NO" precision="18" scale="0" />
+        </property>
+        <property name="tcServiceNo" type="java.lang.Long">
+            <column name="TC_SERVICE_NO" precision="18" scale="0" />
+        </property>
+        <property name="tcServiceLineNo" type="java.lang.Long">
+            <column name="TC_SERVICE_LINE_NO" precision="18" scale="0" />
+        </property>
+        <property name="billJobNo" type="java.lang.Long">
+            <column name="BILL_JOB_NO" precision="18" scale="0" />
+        </property>
+        <property name="billServiceNo" type="java.lang.Long">
+            <column name="BILL_SERVICE_NO" precision="18" scale="0" />
+        </property>
+        <property name="billServiceLineNo" type="java.lang.Long">
+            <column name="BILL_SERVICE_LINE_NO" precision="18" scale="0" />
+        </property>
+        <property name="serviceLineDate" type="timestamp">
+            <column name="SERVICE_LINE_DATE" length="23" />
+        </property>
+        <property name="serviceLineDateVarchar" type="string">
+            <column name="SERVICE_LINE_DATE_VARCHAR" length="12" />
+        </property>
+        <property name="exportedFlag" type="string">
+            <column name="EXPORTED_FLAG" length="1" not-null="true" />
+        </property>
+        <property name="billedFlag" type="string">
+            <column name="BILLED_FLAG" length="1" not-null="true" />
+        </property>
+        <property name="postedFlag" type="string">
+            <column name="POSTED_FLAG" length="1" not-null="true" />
+        </property>
+        <property name="pooledFlag" type="string">
+            <column name="POOLED_FLAG" length="1" />
+        </property>
+        <property name="tcJobId" type="java.lang.Long">
+            <column name="TC_JOB_ID" precision="18" scale="0" />
+        </property>
+        <property name="billJobId" type="java.lang.Long">
+            <column name="BILL_JOB_ID" precision="18" scale="0" />
+        </property>
+        <property name="resourceName" type="string">
+            <column name="RESOURCE_NAME" length="200" />
+        </property>
+        <property name="itemName" type="string">
+            <column name="ITEM_NAME" length="200" />
+        </property>
+        <property name="itemTypeCode" type="string">
+            <column name="ITEM_TYPE_CODE" length="50" />
+        </property>
+        <property name="postedFromInvoiceId" type="java.lang.Long">
+            <column name="POSTED_FROM_INVOICE_ID" precision="18" scale="0" />
+        </property>
+        <property name="taxableFlag" type="string">
+            <column name="TAXABLE_FLAG" length="1" />
+        </property>
+        <property name="billableFlag" type="string">
+            <column name="BILLABLE_FLAG" length="1" />
+        </property>
+        <property name="tcQty" type="big_decimal">
+            <column name="TC_QTY" precision="18" />
+        </property>
+        <property name="tcRate" type="big_decimal">
+            <column name="TC_RATE" precision="11" scale="3" />
+        </property>
+        <property name="payrollQty" type="big_decimal">
+            <column name="PAYROLL_QTY" precision="18" />
+        </property>
+        <property name="payrollRate" type="big_decimal">
+            <column name="PAYROLL_RATE" precision="11" scale="3" />
+        </property>
+        <property name="extPayCode" type="string">
+            <column name="EXT_PAY_CODE" length="7" />
+        </property>
+        <property name="payrollExportedFlag" type="string">
+            <column name="PAYROLL_EXPORTED_FLAG" length="1" />
+        </property>
+        <property name="expenseQty" type="big_decimal">
+            <column name="EXPENSE_QTY" precision="18" />
+        </property>
+        <property name="expenseRate" type="big_decimal">
+            <column name="EXPENSE_RATE" precision="11" scale="3" />
+        </property>
+        <property name="expensesExportedFlag" type="string">
+            <column name="EXPENSES_EXPORTED_FLAG" length="1" />
+        </property>
+        <property name="billQty" type="big_decimal">
+            <column name="BILL_QTY" precision="18" />
+        </property>
+        <property name="billRate" type="big_decimal">
+            <column name="BILL_RATE" precision="11" scale="3" />
+        </property>
+        <property name="billHourlyQty" type="big_decimal">
+            <column name="BILL_HOURLY_QTY" precision="18" />
+        </property>
+        <property name="billHourlyRate" type="big_decimal">
+            <column name="BILL_HOURLY_RATE" precision="11" scale="3" />
+        </property>
+        <property name="billExpQty" type="big_decimal">
+            <column name="BILL_EXP_QTY" precision="18" />
+        </property>
+        <property name="billExpRate" type="big_decimal">
+            <column name="BILL_EXP_RATE" precision="11" scale="3" />
+        </property>
+        <property name="allocatedQty" type="big_decimal">
+            <column name="ALLOCATED_QTY" precision="18" />
+        </property>
+        <property name="internalReqFlag" type="string">
+            <column name="INTERNAL_REQ_FLAG" length="1" />
+        </property>
+        <property name="partiallyAllocatedFlag" type="string">
+            <column name="PARTIALLY_ALLOCATED_FLAG" length="1" not-null="true" />
+        </property>
+        <property name="fullyAllocatedFlag" type="string">
+            <column name="FULLY_ALLOCATED_FLAG" length="1" not-null="true" />
+        </property>
+        <property name="palmRepId" type="java.lang.Long">
+            <column name="PALM_REP_ID" precision="18" scale="0" />
+        </property>
+        <property name="enteredDate" type="timestamp">
+            <column name="ENTERED_DATE" length="23" />
+        </property>
+        <property name="entryMethod" type="string">
+            <column name="ENTRY_METHOD" length="20" />
+        </property>
+        <property name="overrideDate" type="timestamp">
+            <column name="OVERRIDE_DATE" length="23" />
+        </property>
+        <property name="verifiedDate" type="timestamp">
+            <column name="VERIFIED_DATE" length="23" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <property name="serviceLineWeek" type="timestamp">
+            <column name="SERVICE_LINE_WEEK" length="23" />
+        </property>
+        <property name="serviceLineWeekVarchar" type="string">
+            <column name="SERVICE_LINE_WEEK_VARCHAR" length="12" />
+        </property>
+        <property name="extId" type="string">
+            <column name="EXT_ID" length="25" />
+        </property>
+        <property name="tcTotal" type="big_decimal">
+            <column name="tc_total" precision="30" scale="5" not-null="true" />
+        </property>
+        <property name="payrollTotal" type="big_decimal">
+            <column name="payroll_total" precision="30" scale="5" not-null="true" />
+        </property>
+        <property name="expenseTotal" type="big_decimal">
+            <column name="expense_total" precision="30" scale="5" not-null="true" />
+        </property>
+        <property name="billTotal" type="big_decimal">
+            <column name="bill_total" precision="30" scale="5" not-null="true" />
+        </property>
+        <property name="billHourlyTotal" type="big_decimal">
+            <column name="bill_hourly_total" precision="30" scale="5" not-null="true" />
+        </property>
+        <property name="billExpTotal" type="big_decimal">
+            <column name="bill_exp_total" precision="30" scale="5" not-null="true" />
+        </property>
+        <set name="payrollBatchLines" inverse="true">
+            <key>
+                <column name="SERVICE_LINE_ID" precision="18" scale="0" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.PayrollBatchLine" />
+        </set>
+        <set name="servInvLines" inverse="true">
+            <key>
+                <column name="SERVICE_LINE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ServInvLine" />
+        </set>
+    </class>
+</hibernate-mapping>

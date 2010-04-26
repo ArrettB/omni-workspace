@@ -1,0 +1,102 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: inv_detail.html, 5, 1/11/2005 9:39:08 AM, Lee A. Gunderson$-->
+<!--#REQUIRED data="<?s:user?>"-->
+
+<!-- job_id may not be set in session data which is needed when adding lines -->
+<!--#IF evaluate="<?p:invoice_id?>" compare="" -->
+<!--#ELSE-->
+	<!--#SQLLOOP name="jobQuery" query="SELECT job_id FROM invoices WHERE invoice_id = <?p:invoice_id.toPStmtString()?>"-->
+		<!--#EXEC handler="ims.handlers.job_processing.SetupSessionDataHandler" job_id="<?r:jobQuery:job_id?>" -->
+	<!--#/SQLLOOP-->
+<!--#/IF-->
+
+<script language="JavaScript">
+<!--
+
+	function readOnly()
+	{
+		setFormEdit('N');
+	}
+
+//-->
+</script>
+
+<body class="BodyTag" onLoad="readOnly();window.focus();">
+<TABLE width="100%" border="0" cellpadding="0" cellspacing="2">
+<!--#SMARTFORM
+	name="bill/inv_edit"
+	table="invoices"
+	key="invoice_id"
+	sequence="@@identity"
+	prevTemplate="<?p:prev_template?>"
+	nextTemplate="bill/inv/job_inv_head.html"
+	value="<?p:invoice_id?>"
+	buttons=""
+	preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+-->
+	<!--#SMARTFIELD name="level" type="hidden" value="<?p:level?>" -->
+	<!--#SMARTFIELD name="organization_id" type="hidden" value="<?s:org_id?>" -->
+
+    <tr><td colspan="10" class="HeaderBar">Invoice Header</td></tr>
+    <tr>
+		<td><!--#SMARTFIELD title="Invoice #:" div="&nbsp;</td><td>" name="invoice_id" size="10" readonly="true" class="readonly" type="text" --></td>
+		<td><!--#SMARTFIELD title="Customer:" div="&nbsp;</td><td>" size="30"readonly="true" class="readonly" name="bill_customer_id" type="chooser" display="customer_name" key="customer_id" table="customers" value="<?s:customer_id?>"--></td>
+		<td><!--#SMARTFIELD title="Status:" div="&nbsp;</td><td>" name="status_id" type="chooser" readonly="true" class="readonly" display="name" key="status_id" table="invoice_statuses"--></td>
+	</tr>
+	<tr>
+		<td><!--#SMARTFIELD title="Job#:" div="&nbsp;</td><td>" name="job_id" size="10" readonly="true" class="readonly" type="chooser" display="job_no" key="job_id" table="jobs" --></td>
+		<td><!--#SMARTFIELD title="Dealer:" div="&nbsp;</td><td>" name="ext_dealer_id" size="30" readonly="true" class="readonly" resourceName="<?s:org_resource?>" type="chooser" table="RM00101" display="rtrim(shrtname)" key="rtrim(custnmbr)" filter="userdef1='DEALER'" value="<?s:ext_dealer_id.trim()?>" --></td> <!-- used only to filter customers and create new customers -->
+		<td><!--#SMARTFIELD title="Date&nbsp;Sent:" div="&nbsp;</td><td>" name="date_sent" readonly="true" class="readonly" type="date" --></td>
+	</tr>
+	<tr>
+		<td><!--#SMARTFIELD title="PO #:" div="</td><td colspan='3'>" name="po_no" style="width:320" type="text" class="readonly" readonly --></td>
+		<td><!--#SMARTFIELD title="<span class='Label'>Invoice&nbsp;Type:</span>" div="&nbsp;</td><td>" name="invoice_type_id" type="droplist" display="name" key="lookup_id" table="invoice_types_v"--></td>
+	</tr>
+	<tr>
+		<td valign="top" rowspan="2">
+			<!--#SMARTFIELD title="Description:" div="&nbsp;</td><td valign='top' rowspan='2' colspan='3'>" type="textarea" name="description" cols="70" rows="4" -->
+		</td>
+		<td>
+			<!--#SMARTFIELD title="Billing Type:" div="&nbsp;</td><td>" name="billing_type_id" type="droplist" display="lookup_name" key="lookup_id" table="billing_types_v" -->
+		</td>
+	</tr>
+	<!--#IF evaluate="<?p:status_id?>" compare="1"-->
+	<!--#ELSE-->
+	<tr>
+		<td><!--#SMARTFIELD title="Format:" div="&nbsp;</td><td>" mandatory="true" name="invoice_format_type_id" type="droplist" display="name" key="lookup_id" table="invoice_format_types_v"--></td>
+	<!--#/IF-->
+	</tr>
+	<tr>
+		<td><!--#SMARTFIELD title="Created&nbsp;By:" div="&nbsp;</td><td>" name="created_by" type="chooser" readonly="true" class="readonly"  display="full_name" key="user_id" table="users_v"--></td>
+		<td><!--#SMARTFIELD title="Assigned To:" div="&nbsp;</td><td>" style="width:140" mandatory="true" name="assigned_to_user_id" type="droplist" display="user_name" key="user_id" table="user_org_function_rights_v"
+		filter="(organization_id=<?s:org_id.toPStmtInt()?>) AND (function_code = 'bill_acct') AND (right_type_code = 'insert') AND (has_right = 'Y')"--></td>
+	</tr>
+</TABLE>
+
+<TABLE width="100%">
+	<tr><td>
+			<input type="button"  class="button" value="Close" name="button" onClick="parent.window.focus();window.close()">
+   </td></tr>
+</table>
+
+<!--#/SMARTFORM -->
+
+<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0"> <tr><td class="HeaderBar">Invoice Lines</td></tr></TABLE>
+
+<!--#SMARTTABLE name="inv_lines"
+	class="SmartTable" totalClass="TableTotal"
+	query="SELECT invoice_id, invoice_line_id, invoice_line_no, line_desc, qty, unit_price, extended_price, job_id
+	FROM invoice_lines_v
+	WHERE invoice_id = <?p:invoice_id.toPStmtString()?>
+	ORDER BY invoice_line_no"
+-->
+	<!--#SMARTCOLUMN name="invoice_line_no" sort="invoice_line_no" title="Invoice Line#" width="5%" -->
+	<!--#SMARTCOLUMN name="line_desc" sort="line_desc" title="Item Description" width="15%" -->
+	<!--#SMARTCOLUMN name="qty" sort="qty" title="Qty" align="right" format="###,###,##0.00" width="5%" -->
+	<!--#SMARTCOLUMN name="unit_price" sort="unit_price" title="Rate" align="right" format="money" width="5%" -->
+	<!--#SMARTCOLUMN name="extended_price" sort="extended_price" title="Total" align="right" total="true" format="money" width="5%" -->
+<!--#/SMARTTABLE -->
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

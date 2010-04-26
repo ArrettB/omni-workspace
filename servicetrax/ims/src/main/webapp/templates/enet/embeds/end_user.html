@@ -1,0 +1,50 @@
+<!-- $Header: end_user.html, 8/1/2007, David Zhaon$ -->
+<html>
+<head>
+ <title>Customers</title>
+</head>
+<body>
+
+  <!--#SQLLOOP name="cust"
+               query="SELECT customer_name,
+                             customer_type_id
+                        FROM customers
+                       WHERE customer_id = <?p:parameter.toPStmtString()?>"-->
+
+
+
+ <table border="0" cellspacing="5" cellpadding="0">
+      <tr><td><label for="customer_name">Name:</label></td><td><input type="textbox" name="customer_name" value="{!r:cust:customer_name!}" /></td></tr>
+      <tr><td><label for="cust_types">Type:</label></td><td>
+
+		   <!--#SELECT name="customer_type_id"
+					   query="SELECT l.lookup_id customer_type_id, l.name
+							    FROM lookups l INNER JOIN lookup_types lt ON l.lookup_type_id=lt.lookup_type_id
+							   WHERE lt.code='customer_type'
+							     AND l.code = 'end_user'" -->
+
+      </td></tr>
+	  <tr><td><label for="active_flag">Active:</label></td><td><input type="checkbox" name="active_flag" checked/></td></tr>
+	</table>
+
+  <!--#SQLNODATA-->
+
+    <table border="0" cellspacing="5" cellpadding="0">
+	  <tr><td><label for="customer_name">Name:</label></td><td><input type="textbox" name="customer_name" /></td></tr>
+	  <tr><td><label for="cust_types">Type:</label></td><td>
+
+	   <!--#SELECT name="customer_type_id"
+				   query="SELECT l.lookup_id customer_type_id, l.name
+							FROM lookups l INNER JOIN lookup_types lt ON l.lookup_type_id=lt.lookup_type_id
+						   WHERE lt.code='customer_type'
+							 AND l.code = 'end_user'" -->
+	    </td>
+	  </tr>
+	</table>
+
+  <!--#/SQLNODATA-->
+
+  <!--#/SQLLOOP-->
+
+</body>
+</html>

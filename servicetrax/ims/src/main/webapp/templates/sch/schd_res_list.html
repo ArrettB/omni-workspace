@@ -1,0 +1,200 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: schd_res_list.html, 27, 1/7/2005 5:11:25 PM, Lee A. Gunderson$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+
+
+<body class="BodyTag" onLoad="refreshResList()">
+
+	<!-- Resource Estimates -->
+
+	<!--#IF evaluate="<?s:job_id?>" compare=""-->
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			<tr><td class="tableHeader">No job has been selected, can't show scheduled resources.</td></tr>
+		</table>
+	<!--#ELSE-->
+
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td class="Label">View Req#&nbsp;<!--#SELECT name="view_service_id" query="SELECT service_id, service_no FROM job_services_v WHERE job_id=<?s:job_id.toPStmtInt()?>" firstOption="All" firstOptionValue="" onChange="document.location='<?s:showPage?>sch/schd_res_list?view_service_id='+this.options[this.selectedIndex].value;" currentValue="<?p:view_service_id.isNull('%')?>" class="Label"--></td>
+				<td class="Label">Req Status:&nbsp;<!--#SELECT name="sch_req_status_filter" query="SELECT sequence_no, lookup_name FROM service_status_types_v" firstOption="All" firstOptionValue="" onChange="document.location='<?s:showPage?>sch/schd_res_list?sch_req_status_filter='+this.options[this.selectedIndex].value;" currentValue="<?p:sch_req_status_filter?>" class="Label"--></td>
+			<!--#IF evaluate="<?s:job_status_type_code?>" compare="closed"-->
+				<td class="Label">Job is Closed</td>
+			<!--#ELSE-->
+				<!--#IF defined="<?s:rights.job/res_est_edit.insert?>" -->
+				<td class="Label">Create <a href="" onClick="resEstEdit();return false;">Resource Estimates</a></td>
+		   	<!--#/IF-->
+	   	<!--#/IF-->
+			</tr>
+		</table>
+
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			<tr><td class="tableHeader">Resource Estimate</td></tr>
+		</table>
+
+	   <!--#SMARTTABLE name="sch_resource_estimates_v" class="SmartTable" TotalClass="TableTotal"
+		   query="SELECT rev.job_no, rev.service_id, rev.service_no, rev.resource_est_id, rev.resource_type_name,
+						 rev.unit_qty, rev.time_uom_type_name, rev.time_qty, rev.total_hours, rev.start_date,
+						 rev.date_created, rev.created_by_name, rev.date_modified, rev.modified_by_name,
+						 rev.start_date + rev.total_hours/24 end_date
+				    FROM sch_resource_estimates_v rev
+				   WHERE rev.job_id=<?s:job_id.toPStmtInt()?>
+				 	 AND (rev.service_id like <?p:view_service_id.isNull('%').toPStmtString()?> or rev.service_id is null)
+				ORDER BY rev.start_date, rev.service_no, rev.resource_type_name"
+	   -->
+
+			<!--#CHECKSECURITY right="rights.job/res_est_edit.update" -->
+				<!--#IF evaluate="<?s:job_status_type_code?>" compare="closed"-->
+					<!--#SMARTCOLUMN width="20%" title="Resource Name" name="resource_type_name" sort="resource_type_name" -->
+				<!--#ELSE-->
+					<!--#SMARTCOLUMN width="20%" title="Resource Name" name="resource_type_name" sort="resource_type_name" href="" onClick="resEstEdit(<?r:sch_resource_estimates_v:resource_est_id?>); return false;" -->
+				<!--#/IF-->
+			<!--#ELSE-->
+				<!--#SMARTCOLUMN width="20%" title="Resource Name" name="resource_type_name" sort="resource_type_name" value="<?r:sch_resource_estimates_v:resource_type_name.isNull('None')?>" -->
+			<!--#/CHECKSECURITY-->
+			<!--SMARTCOLUMN width="17%" title="Job#" name="job_no" sort="job_no" align="center" -->
+			<!--#SMARTCOLUMN width="17%" title="Resource Qty" name="unit_qty" sort="unit_qty" align="center" value="<?r:sch_resource_estimates_v:unit_qty.isNull('None')?>"-->
+			<!--SMARTCOLUMN width="13%" title="Resource Qty" name="time_qty" sort="time_qty" align="center" value="<?r:sch_resource_estimates_v:time_qty.isNull('None')?>" -->
+			<!--#SMARTCOLUMN width="15%" title="Start Date" name="start_date" sort="start_date" format="date" -->
+			<!--#SMARTCOLUMN width="15%" title="End Date" name="end_date" sort="end_date" format="date" -->
+			<!--SMARTCOLUMN width="17%" title="Req#" name="service_no" sort="service_no" align="center" value="<?r:sch_resource_estimates_v:service_no.isNull('None')?>"-->
+			<!--SMARTCOLUMN width="15%" title="Time UofM" name="time_uom_type_name" sort="time_uom_type_name" value="<?r:sch_resource_estimates_v:time_uom_type_name.isNull('None')?>" -->
+		<!--#/SMARTTABLE -->
+
+		<BR><HR><BR>
+
+		<!-- Scheduled Resources -->
+
+	<!--#IF evaluate="<?s:role_code?>" compare="scheduler" -->
+
+		<table width="100%" cellspacing="0" cellpadding="0">
+			<tr><td class="tableHeader">Resource Assigned2</td></tr>
+		</table>
+
+		<!--#SMARTTABLE name="sra" class="SmartTable"
+			query="SELECT sriv.resource_id, sriv.sch_resource_id, sriv.job_id, sriv.job_no, sriv.service_id, sriv.service_no,
+			              sriv.res_sch_id, sriv.resource_name, sriv.res_start_date, sriv.res_start_time, sriv.res_end_date,
+			              sriv.sch_foreman_flag, sriv.resource_qty, sriv.send_to_pda_flag, sriv.foreman_resource_name
+					 FROM sch_resources_all_jobs_v sriv
+					 WHERE sriv.job_id=<?s:job_id.toPStmtInt()?>
+					   AND ( (sriv.job_type_code IN ('project','national_services') AND sriv.service_id like <?p:view_service_id.isNull('%').toPStmtString()?>)
+					 			OR (sriv.job_type_code = 'service_account' AND sriv.service_id is null) )
+					   AND (sriv.serv_status_type_seq_no like <?p:sch_req_status_filter.isNull('%').toPStmtString()?> OR serv_status_type_seq_no is null )
+					   AND ( sriv.res_start_date <= <?s:sch_to_date.isNull('1/1/2101').toPStmtString()?>
+					   AND ISNULL(sriv.res_end_date, '1/1/2101') >= <?s:sch_from_date.isNull('1/1/1901').toPStmtString()?>)
+				  ORDER BY sriv.service_no, sriv.res_start_date, sriv.res_start_time"
+		-->
+
+		<!--#IF defined="<?r:sra:sch_resource_id?>" -->
+			<!--#CHECKSECURITY right="rights.<?s:function_code.isNull('none')?>.view"-->
+				<!--#SMARTCOLUMN title="Resource Name" name="resource_name" sort="resource_name" href="" onClick="resEdit('<?r:sra:job_id?>','<?r:sra:job_no?>','<?r:sra:service_id?>','<?r:sra:service_no?>','<?r:sra:resource_id?>','<?r:sra:sch_resource_id?>');return false;"-->
+			<!--#ELSE-->
+				<!--#SMARTCOLUMN title="Resource Name" name="resource_name" sort="resource_name" -->
+			<!--#/CHECKSECURITY-->
+		<!--#ELSE-->
+			<!--#SMARTCOLUMN title="Resource Name" name="resource_name" sort="resource_name" value="None" -->
+		<!--#/IF-->
+
+			<!--SMARTCOLUMN title="Job#" name="job_no" sort="job_no" align="center" -->
+			<!--SMARTCOLUMN title="Req#" name="service_no" sort="service_no" align="center" value="<?r:sra:service_no.isNull('None')?>"-->
+			<!--SMARTCOLUMN title="Qty" name="resource_qty" sort="resource_qty" align="center" -->
+			<!--#SMARTCOLUMN title="Start Date1" name="res_start_date" sort="res_start_date" format="date" --> <!--error where setting value=row datum, returning null when format=date even though there is a value-->
+			<!--SMARTCOLUMN title="Start Time" name="res_start_time" sort="res_start_time" format="time" -->
+			<!--#SMARTCOLUMN title="End Date" name="res_end_date" sort="res_end_date" format="date" -->
+			<!--#SMARTCOLUMN title="Foreman" name="foreman_resource_name" sort="foreman_resource_name" -->
+			<!--SMARTCOLUMN title="For" name="sch_foreman_flag" sort="sch_foreman_flag" align="center" -->
+			<!--SMARTCOLUMN title="PDA" name="send_to_pda_flag" sort="send_to_pda_flag" align="center" -->
+		<!--#/SMARTTABLE -->
+
+	<!--#ELSEIF evaluate="<?s:role_code?>" compare="major_acct_coord" -->
+
+		<table width="100%" cellspacing="0" cellpadding="0">
+			<tr><td class="tableHeader">Scheduled Resources</td></tr>
+		</table>
+
+		<!--#SMARTTABLE name="sra" class="SmartTable"
+			query="SELECT resource_id, sriv.sch_resource_id, sriv.job_id, sriv.job_no, sriv.service_id, sriv.service_no, sriv.res_sch_id,
+			              sriv.resource_name, sriv.res_start_date, sriv.res_start_time, sriv.res_end_date, sriv.sch_foreman_flag, sriv.resource_qty,
+			              sriv.send_to_pda_flag
+					 FROM sch_resources_all_jobs_v sriv
+				    WHERE sriv.job_id=<?s:job_id.toPStmtInt()?>
+				      AND (sriv.service_id like <?p:view_service_id.concat('%').toPStmtString()?> AND sriv.service_id is not null)
+					  AND (sriv.serv_status_type_seq_no like <?p:sch_req_status_filter.isNull('%').toPStmtString()?> )
+				 ORDER BY sriv.service_no, sriv.res_start_date, sriv.res_start_time desc"
+		-->
+
+	<!--#IF defined="<?r:sra:sch_resource_id?>" -->
+			<!--#CHECKSECURITY right="rights.<?s:function_code.isNull('none')?>.view"-->
+				<!--#SMARTCOLUMN title="Resource Name" name="resource_name" sort="resource_name" href="" onClick="resEdit('<?r:sra:job_id?>','<?r:sra:job_no?>','<?r:sra:service_id?>','<?r:sra:service_no?>','<?r:sra:resource_id?>','<?r:sra:sch_resource_id?>');return false;"-->
+			<!--#ELSE-->
+				<!--#SMARTCOLUMN title="Resource Name" name="resource_name" sort="resource_name" -->
+			<!--#/CHECKSECURITY-->
+		<!--#ELSE-->
+			<!--#SMARTCOLUMN title="Resource Name" name="resource_name" sort="resource_name" value="None" -->
+		<!--#/IF-->
+			<!--SMARTCOLUMN title="Job#" name="job_no" sort="job_no" align="center" -->
+			<!--SMARTCOLUMN title="Req#" name="service_no" sort="service_no" align="center" value="<?r:sra:service_no.isNull('None')?>"-->
+			<!--SMARTCOLUMN title="Resource Qty" name="resource_qty" sort="resource_qty" align="center" -->
+			<!--#SMARTCOLUMN title="Start Date2" name="res_start_date" sort="res_start_date" format="date" --> <!--error where setting value=row datum, returning null when format=date even though there is a value-->
+			<!--SMARTCOLUMN title="Start Time" name="res_start_time" sort="res_start_time" format="time" -->
+			<!--#SMARTCOLUMN title="End Date" name="res_end_date" sort="res_end_date" format="date" -->
+			<!--#SMARTCOLUMN title="Foreman" name="foreman_resource_name" sort="foreman_resource_name" -->
+			<!--SMARTCOLUMN title="For" name="sch_foreman_flag" sort="sch_foreman_flag" align="center" -->
+			<!--SMARTCOLUMN title="PDA" name="send_to_pda_flag" sort="send_to_pda_flag" align="center" -->
+		<!--#/SMARTTABLE -->
+
+		<!--#/IF-->
+
+	<!--#/IF-->
+
+
+</body>
+
+<script language="JavaScript">
+<!--
+
+	function refreshResList()
+	{
+	<!--#IF evaluate="<?s:role_code?>" compare="major_acct_coord" -->
+		newWindow('{!s:showPage!}sch/sch_res_list.html','sch_res_list_frame');
+	<!--#/IF-->
+	}
+
+	function resEstEdit(res_est_id) //load resource estimates window
+	{
+		if( res_est_id == null )
+			res_est_id = '';
+		if( {!p:view_service_id.toJavaScriptString()!} == '') //may have restricted view to one service so create resource estimates for that service
+			newWindow('{!s:showPage!}job/res_est_edit.html?job_id={!s:job_id!}&service_id={!s:service_id!}&called_by=sch&est_start_date={!s:est_start_date!}&show_all_services=%&resource_est_id='+res_est_id,'res_est',450,600);
+		else //is restricting view services to one service so include
+			newWindow('{!s:showPage!}job/res_est_edit.html?job_id={!s:job_id!}&service_id={!p:view_service_id!}&called_by=sch&est_start_date={!s:est_start_date!}&show_all_services=%&resource_est_id='+res_est_id,'res_est',450,600);
+	}
+
+	function resEdit(job_id, job_no, service_id, service_no, resource_id, sch_resource_id) //load resource window
+	{
+		if( job_id == null )
+			job_id = '';
+		if( job_no == null )
+			job_no = '';
+		if( service_id == null )
+			service_id = '';
+		if( service_no == null )
+			service_no = '';
+		if( resource_id == null )
+			resource_id = '';
+		if( sch_resource_id == null )
+			sch_resource_id = '';
+		newWindowScrollBars("{!s:action!}setupSchEditRes/sch/sch_res_edit.html?sch_action=set_job_req&job_id="+job_id+"&job_no="+job_no+"&service_id="+service_id+"&service_no="+service_no+"&resource_id="+resource_id+"&sch_resource_id="+sch_resource_id+"&allow_add=false", "sch_res_edit_window",530,510);
+	}
+
+	function exitFunction(button)
+	{
+		if( button == 'Cancel' )
+		{
+			document.location = '{!s:showPage!}sch/schd_res_list.html';
+		}
+	}
+
+-->
+</script>
+
+<!--#EMBED template="embeds/footer.html" -->

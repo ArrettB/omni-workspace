@@ -1,0 +1,255 @@
+<!-- $Header: sr_report.html, 20, 3/3/2006 5:19:21 PM, Blake Von Haden$ -->
+<!--#EMBED template="enet/embeds/header.html" -->
+
+<script type="text/javascript">
+<!--
+
+	function setDefaults()
+	{
+
+		window.print();
+	}
+
+
+	function getAMDealerID()
+	{
+		return escape({!s:ext_direct_dealer_id.toJavaScriptString()!});
+	}
+
+	function getContactID(droplist)
+	{
+		var contact_id = '';
+		if( !(droplist == null) && !(droplist.options === undefined) )
+			contact_id = droplist.options[droplist.selectedIndex].value;
+		return contact_id;
+	}
+
+	function getCustID()
+	{
+		return escape({!s:customer_id.toJavaScriptString()!});
+	}
+
+	function getCustName()
+	{
+		return escape({!s:customer_name.toJavaScriptString()!});
+	}
+
+	function getExtDealerID()
+	{
+		return escape({!s:ext_dealer_id.toJavaScriptString()!});
+	}
+
+	function getFormName()
+	{
+		return 'sr_edit';
+	}
+
+	function redisplaySmartForm()
+	{
+		document.sr_edit.redisplay.value = 'true';
+		document.sr_edit.submit();
+	}
+
+	function exitFunction(button)
+	{
+	}
+
+-->
+</script>
+
+
+<body class="BodyTag" onLoad="window.focus();setDefaults();">
+
+<table width="100%" cellspacing="0" cellpadding="0" summary="Report">
+	<!--#SMARTFORM name="enet/req/sr_edit" security="rights" table="requests" key="request_id"
+						preHandler="ims.handlers.job_processing.SmartFormPreHandler,ims.handlers.proj.PDSPreHandler"
+						postHandler="ims.handlers.proj.PDSPostHandler"
+                  buttons=""
+	-->
+		<!--#SMARTFIELD name="ext_customer_id" type="hidden" value="<?s:ext_customer_id?>" -->
+     	<!--#SMARTFIELD name="redisplay" type="hidden" value="false" -->
+		<!--#SMARTFIELD name="project_id" type="hidden" value="<?s:project_id?>" -->
+     	<!--#SMARTFIELD name="extDealerID" type="hidden" -->
+		<!--#SMARTFIELD name="request_type_code" type="hidden" value="service_request" --> <!-- used in PDSPreHandler -->
+		<!--#SMARTFIELD name="show_more_fields" type="hidden" value="false" -->
+		<!--#SMARTFIELD name="is_sent" type="hidden" value="<?s:is_sent.isNull('N')?>" -->
+		<!--#SMARTFIELD name="csc_wo_field_flag" type="hidden" value="<?p:csc_wo_field_flag.isNull('N')?>" -->  <!-- required by request table, not used here -->
+		<!--#SMARTFIELD name="button" type="hidden" --> <!-- used in exitFunction to inform PDSPreHandler -->
+		<!--#SMARTFIELD name="req_button" type="hidden" --> <!-- used in exitFunction to inform PDSPreHandler -->
+
+		<tr><td>
+			<table width="100%" border="0" cellspacing="0" summary="">
+				<tr><td colspan="4" class="HeaderRow">Installer Work Request</td></tr>
+			</table>
+		</td></tr>
+		<tr><td><!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Header" -->
+			<tr>
+				<td><!--#SMARTFIELD title="Job #:" div="&nbsp;</td><td>" name="project_no" value="<?s:project_no?>" --></td>
+				<td width="90"><!--#SMARTFIELD title="Quote&nbsp;Type:" div="&nbsp;</td><td>" name="quote_type_id" type="droplist" table="billing_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td>
+				<td width="100">&nbsp;</td><td width="100">Project&nbsp;Type:&nbsp;&nbsp;<span style="font-weight:normal">{!s:project_type_name!}</span></td>
+			</tr>
+			<tr>
+				<td>Req&nbsp;#:&nbsp;</td><td><!--#SMARTFIELD name="request_no" class="regular"--></td>
+				<td><!--#SMARTFIELD title="Job Location:&nbsp;" div="&nbsp;</td><td>" name="job_location_id" type="droplist" table="job_locations" display="job_location_name" key="job_location_id" filter="customer_id=<?s:customer_id.toSQLString()?> or job_location_id=<?r:enet/req/sr_edit:job_location_id.toSQLString()?>" onChange="loadJobLocation(this)" --></td>
+				<td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td><!--#SMARTFIELD title="Customer Name:" div="&nbsp;</td><td>" name="customer_id" type="chooser" table="customers" display="customer_name" key="customer_id" value="<?s:customer_id?>" -->
+
+				<td class="Label" colspan="4" rowspan="3">
+<!--#SQLLOOP name="job_loc_edit" query="SELECT * FROM job_locations WHERE job_location_id=<?r:enet/req/sr_edit:job_location_id.toPStmtString()?>" -->
+   <table class="SmartTable" cellpadding="0" cellspacing="0" border="0" summary="Job Locations">
+      <tr><td width="35"><!--#SMARTFIELD title="&nbsp;Address:" div="&nbsp;</td><td>" name="street1" style="width:300" value="<?r:job_loc_edit:street1?>" align="left"--></td></tr>
+	<!--#IF defined="<?r:job_loc_edit:street2?>" -->
+		<tr><td><!--#SMARTFIELD title="&nbsp;" div="&nbsp;</td><td>" name="street2" style="width:300" value="<?r:job_loc_edit:street2?>" --></td></tr>
+   <!--#/IF-->
+	<!--#IF defined="<?r:job_loc_edit:street3?>" -->
+      <tr><td><!--#SMARTFIELD title="&nbsp;" div="&nbsp;</td><td>" name="street3" style="width:300" value="<?r:job_loc_edit:street3?>" --></td></tr>
+   <!--#/IF-->
+      <tr><td colspan="2"><table cellpadding="0" cellspacing="0" summary="Address Detail">
+      	<tr>
+	      	<td><!--#SMARTFIELD title="&nbsp;City:" div="&nbsp;</td><td>" style="width:200" name="city" value="<?r:job_loc_edit:city?>"--></td>
+	         <td><!--#SMARTFIELD title="State:" div="&nbsp;</td><td>" style="width:40" name="state" value="<?r:job_loc_edit:state?>"--></td>
+	         <td><!--#SMARTFIELD title="Zip:" div="&nbsp;</td><td>" style="width:70" name="zip" value="<?r:job_loc_edit:zip?>"--></td>
+			</tr>
+		</table></td></tr>
+<!--#/SQLLOOP-->
+   </table>
+				</td>
+			</tr>
+			<tr>
+				<td><!--#SMARTFIELD title="Job Name:" div="&nbsp;</td><td>" name="job_name" value="<?s:job_name?>" --></td>
+			</tr>
+			<tr>
+				<td><!--#SMARTFIELD title="Dealer PO #:" div="&nbsp;</td><td>" name="dealer_po_no" --></td>
+			</tr>
+			<tr>
+				<td><!--#SMARTFIELD title="Dealer:" div="&nbsp;</td><td>" name="dealer_name" value="<?s:dealer_name?>" --></td>
+			</tr>
+	<!--#EMBED template="enet/embeds/boxout_footer.html" --></td></tr>
+	<tr><td><!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Contacts" -->
+		<tr><td valign="top"><table cellpadding="0" cellspacing="0" summary="Contacts">
+				<tr><td>
+					<!--#SMARTFIELD title="Customer Contact:" div="&nbsp;</td><td>" name="customer_contact_id" style="width:400" type="chooser" table="contacts_v" display="ISNULL(contact_name,'')+' :'+ISNULL('(W)'+phone_work,' No Phone Listed') +ISNULL(' (C)' + phone_cell,' : No Cell Listed')" key="contact_id" filter="(ext_dealer_id=<?s:ext_dealer_id.toSQLString()?> AND customer_id=<?s:customer_id.toSQLString()?> AND contact_type_code='customer') or contact_id=<?s:customer_contact_id.toSQLString()?>" -->
+				</td></tr>
+				<tr><td>
+					<!--#SMARTFIELD title="Dealer Sales Rep:" div="&nbsp;</td><td>" name="d_sales_rep_contact_id" style="width:400" type="chooser" table="contacts_v" display="ISNULL(contact_name,'')+' :'+ISNULL('(W)'+phone_work,' No Phone Listed') +ISNULL(' (C)' + phone_cell,' : No Cell Listed')" key="contact_id" filter="(ext_dealer_id=<?s:ext_dealer_id.toSQLString()?> AND contact_type_code='sales') or contact_id=<?s:d_sales_rep_contact_id.toSQLString()?>" -->
+				</td></tr>
+				<tr><td>
+					<!--#SMARTFIELD title="Dealer Sales Support:" div="&nbsp;</td><td>" name="d_sales_sup_contact_id" style="width:400" type="chooser" table="contacts_v" display="ISNULL(contact_name,'')+' :'+ISNULL('(W)'+phone_work,' No Phone Listed') +ISNULL(' (C)' + phone_cell,' : No Cell Listed')" key="contact_id" filter="(ext_dealer_id=<?s:ext_dealer_id.toSQLString()?> AND contact_type_code='support') or contact_id=<?s:d_sales_sup_contact_id.toSQLString()?>" -->
+				</td></tr>
+				<tr><td>
+					<!--#SMARTFIELD title="Dealer Design Rep:" div="&nbsp;</td><td>" name="d_designer_contact_id" style="width:400" type="chooser" table="contacts_v" display="ISNULL(contact_name,'')+' :'+ISNULL('(W)'+phone_work,' No Phone Listed') +ISNULL(' (C)' + phone_cell,' : No Cell Listed')" key="contact_id" filter="(ext_dealer_id=<?s:ext_dealer_id.toSQLString()?> AND contact_type_code='designer') or contact_id=<?s:d_designer_contact_id.toSQLString()?>" -->
+				</td></tr>
+				<tr><td>
+					<!--#SMARTFIELD title="Service Provider Contact:" div="&nbsp;</td><td>" name="a_m_contact_id" style="width:400" type="chooser" table="contacts_v" display="ISNULL(contact_name,'')+' :'+ISNULL('(W)'+phone_work,' No Phone Listed') +ISNULL(' (C)' + phone_cell,' : No Cell Listed')" key="contact_id" key="contact_id" filter="contact_type_code='a_m' or contact_id=<?s:a_m_contact_id.toSQLString()?>" -->
+				</td></tr>
+				<tr><td>
+					<!--#SMARTFIELD title="Service Provider Sales:" div="&nbsp;</td><td>" name="a_m_sales_contact_id" style="width:400" type="chooser" table="contacts_v" display="ISNULL(contact_name,'')+' :'+ISNULL('(W)'+phone_work,' No Phone Listed') +ISNULL(' (C)' + phone_cell,' : No Cell Listed')" key="contact_id" key="contact_id" filter="contact_type_code='service_provider_sales' or contact_id=<?s:a_m_sales_contact_id.toSQLString()?>" -->
+				</td></tr>
+<!--iframe: email-->
+				<tr><td><iframe name="email_frame" height="0" width="0"></iframe></td></tr>
+			</table></td>
+		<tr>
+	<!--#EMBED template="enet/embeds/boxout_footer.html" --></td></tr>
+	<tr><td><!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Product&nbsp;Info" -->
+		<tr>
+			<td valign="top"><table cellpadding="0" cellspacing="0" summary="">
+			  <tr><td><!--#SMARTFIELD title="Delivery By:" div="&nbsp;</td><td>" name="delivery_type_id" type="chooser" table="delivery_types_v" display="lookup_name" key="lookup_id"  orderBy="sequence_no" --></td></tr>
+			  <tr><td><!--#SMARTFIELD title="Product Location:" div="&nbsp;</td><td>" name="warehouse_loc" --></td>
+			  <tr><td><!--#SMARTFIELD title="Furniture Type:" div="&nbsp;</td><td>" name="furniture_type" --></td>
+			  <tr><td><!--#SMARTFIELD title="Furniture Qty:" div="&nbsp;</td><td>" name="furniture_qty" --></td>
+			</table></td>
+			<td valign="top"><table cellpadding="0" cellspacing="0" summary="">
+			  <tr><td><!--#SMARTFIELD title="Furniture Plan:" div="&nbsp;</td><td>" name="furn_plan_type_id" type="chooser" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Plan Location:" div="&nbsp;</td><td>" name="plan_location" --></td></tr>
+			  <tr><td><!--#SMARTFIELD title="Furniture Spec:" div="&nbsp;</td><td>" name="furn_spec_type_id" type="chooser" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Wood Product:" div="&nbsp;</td><td>" name="wood_product_type_id" type="chooser" table="wood_product_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
+			</table></td>
+			<td valign="top"><table cellpadding="0" cellspacing="0" summary="">
+				<tr><td><!--#SMARTFIELD title="Wall Mount:" div="&nbsp;</td><td>" name="wall_mount_type_id" type="chooser" table="wall_mount_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Workstation Typical:" div="&nbsp;</td><td>" name="workstation_typical_type_id" type="chooser" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Punch List Item:" div="&nbsp;</td><td>" name="punchlist_item_type_id" type="chooser" table="punchlist_item_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Product Disposition:" div="&nbsp;</td><td>" style="width:114" name="prod_disp_id" type="droplist" table="product_disposition_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" value="<?d:defaultProdDispType?>" --></td></tr>
+			</table></td>
+		</tr>
+	<!--#EMBED template="enet/embeds/boxout_footer.html" --></td></tr>
+	<tr><td><!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Critical&Dates&nbsp;&amp;&nbsp;Logistics" -->
+		<tr>
+			<td width="50%" valign="top"><table cellpadding="0" cellspacing="0" summary="">
+				<tr><td><!--#SMARTFIELD title="Schedule Type:" div="</td><td>" name="schedule_type_id" type="chooser" table="schedule_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
+			</table></td>
+			<td width="50%" align="left" valign="top"><table cellpadding="0" cellspacing="0" summary="">
+				<tr><td><!--#SMARTFIELD title="Installation Start Date:" div="&nbsp;</td><td>" name="est_start_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(est_start_date)')</script>"--></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Installation Start Time:" div="&nbsp;</td><td>" name="est_start_time" type="time" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Install Complete Target:" div="&nbsp;</td><td>" name="est_end_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(est_end_date)')</script>"--></td></tr>
+			</table></td>
+		</tr>
+	<!--#EMBED template="enet/embeds/boxout_footer.html" --></td></tr>
+	<tr><td><table width="100%" cellspacing="0" cellpadding="0" summary="">
+		<tr>
+			<td align="left"><!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Service&nbsp;Description" bo_width="450" -->
+				<tr>
+			      <td width="400" >{!r:enet/req/sr_edit:description.toHTML2()!}</td>
+				</tr>
+			<!--#EMBED template="enet/embeds/boxout_footer.html" --></td>
+
+			<td>&nbsp</td>
+			<td valign="top" align="center"><!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Change&nbsp;Order" bo_width="300" -->
+				<tr><td><!--#SMARTFIELD title="Approval Requirement:&nbsp;&nbsp;" name="approval_req_type_id" type="chooser" table="approval_req_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td>Who Can Approve</td></tr>
+				<tr><td><table cellpadding="0" cellspacing="0">
+					<tr><td align="right" width="100"><!--#SMARTFIELD title="Name:" div="&nbsp;</td><td width='100'>" name="who_can_approve_name" --></td></tr>
+					<tr><td align="right"><!--#SMARTFIELD title="Phone:" div="&nbsp;</td><td>" name="who_can_approve_phone" --></td></tr>
+				</table></td></tr>
+			<!--#EMBED template="enet/embeds/boxout_footer.html" --></td>
+		</tr>
+	</table></td></tr>
+	<tr><td><!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Site&nbsp;Conditions" bo_width="600"-->
+		<tr>
+			<td valign="top"><table cellspacing="0" cellpadding="0" summary="">
+				<tr><td><!--#SMARTFIELD title="Staging Area:" div="&nbsp;</td><td>" name="staging_area_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Site Dumpster:" div="&nbsp;</td><td>" name="dumpster_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Occupied Site:" div="&nbsp;</td><td>" name="occupied_site_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="New Site:" div="&nbsp;</td><td>" name="new_site_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+			</table></td>
+   <!--#/SMARTFORM-->
+
+   <!--#SMARTFORM name="job/job_loc_edit" table="job_locations" key="job_location_id" security="rights" buttons="" nextTemplate="enet/proj/site_info.html" -->
+			<td valign="top"><table cellspacing="0" cellpadding="0" summary="">
+				<tr><td><!--#SMARTFIELD title="Loading Dock Avail:" div="&nbsp;</td><td>" name="loading_dock_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Dock Avail Time:" div="&nbsp;</td><td>" name="dock_available_time" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Dock&nbsp;Reserv&nbsp;Required:" div="&nbsp;</td><td>" name="dock_reserv_req_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Semi Access Avail:" div="&nbsp;</td><td>" name="semi_access_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Dock Height:" div="&nbsp;</td><td>" name="dock_height" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Elev Available:" div="&nbsp;</td><td>" name="elevator_avail_type_id" type="droplist" table="elevator_available_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Elev&nbsp;Reserv&nbsp;Required:" div="&nbsp;</td><td>" name="elevator_reserv_req_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Security:" div="</td><td>" name="security_type_id" type="droplist" table="security_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no"--></td></tr>
+			</table></td>
+			<td valign="top"><table cellspacing="0" cellpadding="0" summary="">
+				<tr><td><!--#SMARTFIELD title="Multi-Level:" div="</td><td>" name="multi_level_type_id" type="droplist" table="multi_level_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Stair Carry:" div="&nbsp;</td><td>" name="stair_carry_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Number of Flights:" div="&nbsp;</td><td>" name="stair_carry_flights" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Number of Stairs:" div="&nbsp;</td><td>" name="stair_carry_stairs" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Min&nbsp;Door/Elev&nbsp;Width:" div="&nbsp;</td><td>" name="smallest_door_elev_width" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Floor Protection:" div="&nbsp;</td><td>" name="floor_protection_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td>
+				<tr><td><!--#SMARTFIELD title="Wall Protection:" div="&nbsp;</td><td>" name="wall_protection_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Doorway Protection:" div="&nbsp;</td><td>" name="doorway_prot_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+			</table></td>
+		</tr>
+	<!--#/SMARTFORM-->
+
+	<!--#SQLLOOP name="oc" query="SELECT other_conditions FROM requests WHERE request_id = <?p:request_id.toPStmtInt()?>"
+	-->
+		<tr><td colspan="3" class="HeaderLabel">Other Conditions / Notes</td></tr>
+		<tr><td colspan="3"><p><span style="width:650">{!r:oc:other_conditions.toHTML2().isNull('None')!}</span></p></td>
+   <!--#/SQLLOOP-->
+
+   <!--#EMBED template="enet/embeds/boxout_footer.html" --></td></tr>
+
+	</table>
+
+</body>
+
+
+<!--#EMBED template="enet/embeds/footer.html" -->

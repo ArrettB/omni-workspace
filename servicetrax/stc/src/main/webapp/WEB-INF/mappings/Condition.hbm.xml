@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.Condition" table="CONDITIONS" schema="dbo" catalog="">
+        <id name="conditionId" type="java.lang.Long">
+            <column name="CONDITION_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <property name="name" type="string">
+            <column name="NAME" length="250" not-null="true" />
+        </property>
+        <property name="activeFlag" type="string">
+            <column name="ACTIVE_FLAG" length="1" />
+        </property>
+        <property name="sequenceNo" type="java.lang.Long">
+            <column name="SEQUENCE_NO" precision="18" scale="0" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="createdBy" type="long">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <property name="modifiedBy" type="java.lang.Long">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </property>
+        <set name="quoteConditions" inverse="true">
+            <key>
+                <column name="CONDITION_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.QuoteCondition" />
+        </set>
+    </class>
+</hibernate-mapping>

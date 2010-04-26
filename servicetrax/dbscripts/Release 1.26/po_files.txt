@@ -1,0 +1,36 @@
+added:
+	folder: "enet\po"
+	"enent\po\confirm.html"
+	"enet\po\po_detail.html"
+	
+   	folder "bill\po"
+   	"bill\po\job_po_list.html"
+
+   
+   	folder: "time\po"
+	"time\po\po_list.html"
+   
+modified:
+	enet\req\service_request.html
+	
+	sch\sch_job_req_info.html
+	
+	time\main_tc_list_sum_det.html
+	time\main_tc_list_sum_job.html
+	tiem\main_tc_list_sum_job_item.html
+	time\main_tc_list_sum_req_item.html
+	time\main_tc_list_sum_res_item_wk.html
+	time\main_tc_list_sum_res_job.html
+	
+	bill\main_unbill_ops_jobs.html
+	
+	bill\job_unbill_ops_sum_det.html
+	bill\job_unbill_ops_sum_item.html
+	bill\job_unbill_ops_sum_req.html
+	bill\job_unbill_ops_sum_req_item.html
+	
+	
+	mnt\resource.html
+	//embeds\header.html
+	ims-dev.xml
+	

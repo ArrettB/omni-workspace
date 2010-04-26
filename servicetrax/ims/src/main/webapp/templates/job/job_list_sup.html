@@ -1,0 +1,86 @@
+<!--#EMBED template="embeds/header.html" -->
+
+<body class="BodyTag">
+
+<table width="100%" cellspacing="0" cellpadding="0">
+	<tr height="20">
+		<td>
+			<b>Which jobs would you like to view?</b>
+		</td>
+	</tr>
+<!--#CHECKSECURITY right="rights.job/job_list_open.view"-->
+	<tr height="20">
+		<td>
+			<a href="{!s:showPage!}job/job_list_open.html">
+			View All Open Jobs
+			</a>
+		</td>
+	</tr>
+<!--#/CHECKSECURITY-->
+<!--#CHECKSECURITY right="rights.job/job_list_owned.view"-->
+	<tr height="20">
+		<td>
+			<a href="{!s:showPage!}job/job_list_owned.html">
+			View Jobs I Own
+			</a>
+		</td>
+	</tr>
+<!--#/CHECKSECURITY-->
+<!--#CHECKSECURITY right="rights.job/job_list_scheduled.view"-->
+	<tr height="20">
+		<td>
+			<a href="{!s:showPage!}job/job_list_scheduled.html">
+			View Jobs I Am Scheduled On
+			</a>
+		</td>
+	</tr>
+<!--#/CHECKSECURITY-->
+<!--#CHECKSECURITY right="rights.job/job_list_sup.view"-->
+	<tr height="20">
+		<td>
+			<a href="{!s:showPage!}job/job_list_sup.html">
+			View Jobs I Supervise
+			</a>
+		</td>
+	</tr>
+<!--#/CHECKSECURITY-->
+	<tr height="10">
+		<td height="10">
+		</td>
+	</tr>
+	<tr height="5">
+		<td class="HeaderBar">
+			Jobs I Supervise
+		</td>
+	</tr>
+	<tr height="3">
+		<td height="3">
+		</td>
+	</tr>
+</table>
+
+
+	<!--#SMARTTABLE name="results"
+		class="SmartTable"
+		query="SELECT DISTINCT jv.job_no, jv.job_id, customer_name, jv.end_user_name, jv.job_name, jv.job_type_name, jv.job_status_type_name,
+		              jv.date_created
+				 FROM jobs_v jv, resources r
+				WHERE jv.organization_id = <?s:org_id.toPStmtString()?>
+				  AND jv.foreman_resource_id = r.resource_id
+				  AND r.user_id = <?s:user_id.toPStmtString()?>
+				  AND jv.job_status_type_code <> 'closed'
+			 ORDER BY jv.job_no desc"
+	-->
+
+	 <!--#SMARTCOLUMN name="job_no" sort="job_no" title="Job#" width="5%" align="center" class="TableRow1Link,TableRow2Link" href="<?s:action?>setupSession/job/job_main.html?job_id=<?r:results:job_id?>&loc=job_edit" target="main_frame"-->
+	 <!--#SMARTCOLUMN name="customer_name" sort="customer_name" title="Customer" width="10%"-->
+	 <!--#SMARTCOLUMN name="end_user_name" sort="end_user_name" title="End User" width="10%"-->
+	 <!--#SMARTCOLUMN name="job_name" sort="job_name" title="Job Name" width="10%"-->
+	 <!--#SMARTCOLUMN name="job_type_name" sort="job_type_name" title="Job Type" width="5%" -->
+	 <!--#SMARTCOLUMN name="job_status_type_name" sort="job_status_type_name" title="Status" width="7%" -->
+	 <!--#SMARTCOLUMN name="date_created" sort="date_created" title="Date Created" width="7%" format="date" -->
+<!--#/SMARTTABLE -->
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

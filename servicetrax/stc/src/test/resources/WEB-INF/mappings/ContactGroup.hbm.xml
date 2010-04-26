@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.ContactGroup" table="CONTACT_GROUPS" schema="dbo" catalog="">
+        <id name="contactGroupId" type="java.lang.Long">
+            <column name="CONTACT_GROUP_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="contact" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookup" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="CONTACT_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" />
+        </property>
+        <property name="createdBy" type="java.lang.Long">
+            <column name="CREATED_BY" precision="18" scale="0" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <property name="modifiedBy" type="java.lang.Long">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </property>
+    </class>
+</hibernate-mapping>

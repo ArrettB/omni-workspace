@@ -1,0 +1,58 @@
+<!--#EMBED template="enet/embeds/header_begin.html" -->
+<script type="text/javascript">
+
+function viewQuote(isNew, statusCode, quoteId, projectId)
+{
+
+	if ("Y" == isNew)
+	{
+		var url = "{!s:showPage!}quoteReports?quote_id=" + escape(quoteId) + "&compact=" + document.getElementById("short").checked;
+		if ("sent" == statusCode)
+		{
+			window.open(url);
+		}
+		else if ("saved" == statusCode)
+		{
+		<!--#CHECKSECURITY right="rights.enet/req/q_edit.update"-->
+			window.open(url);
+		<!--#/CHECKSECURITY-->
+		}
+	}
+	else
+	{
+    <!--#CHECKSECURITY right="rights.enet/req/q_edit.update"-->
+		parent.top.location.href = '{!s:action!}setProjectDatum?templateName=enet/proj/pf_main.html&loc=q_create&project_id='+escape(projectId)+'&quote_id='+escape(quoteId);
+    <!--#ELSE-->
+		newWindowScrollBars('{!s:action!}quoteReport?quote_id='+ escape(quoteId),'quote_window',600,780);
+    <!--#/CHECKSECURITY-->
+	}
+}
+</script>
+</head>
+<!--#REQUIRED data="<?s:user?>"-->
+<body class="BodyTag" onLoad="">
+
+<span class="Label">
+Please choose the quote to view:  <input type="checkbox" id="short" title="Only applies to new quotes" > Check to view compact Quote.
+</span>
+
+<!--#EXEC handler="ims.handlers.query.RecordListQueryHandler" record_type_code="quote" -->
+
+
+<!--#SMARTTABLE name="q_list" class="SmartTable" query="<?d:recordListQuery?>" -->
+	  <!--#SMARTCOLUMN name="project_request_version_no" sort="project_request_version_no" title="Quote#" width="10%" align="center"
+	                   href="javascript:viewQuote(<?r:q_list:is_new.toJavaScriptString()?>, <?r:q_list:record_status_code.toJavaScriptString()?>, <?r:q_list:quote_id.toJavaScriptString()?>, <?r:q_list:project_id.toJavaScriptString()?>)"
+	                 filter="a_project_request_version_no:project_request_version_no like '%<?p:a_project_request_version_no?>%'"
+	                 nowrap -->
+	  <!--#SMARTCOLUMN name="customer_name" sort="customer_name" title="Customer" width="20%"
+	                   filter="customer_name:customer_id" filterQuery="<?d:customerListQuery?>" filterQuick="true"	-->
+	  <!--#SMARTCOLUMN name="end_user_name" sort="end_user_name" title="End User" width="20%" filter="filter_end_user_name:end_user_name LIKE '%' + <?p:filter_end_user_name.toSQLString()?> + '%'"	-->
+	  <!--#SMARTCOLUMN name="job_name" sort="job_name" title="Job Name" width="20%" filter="job_name:job_name" -->
+	  <!--SMARTCOLUMN name="record_status_name" sort="record_status_name" title="Status" width="10%" filter="record_status_name:record_status_code" filterQuery="SELECT lookup_code, lookup_name FROM quote_status_types_v WHERE lookup_code <> 'closed'" filterQuick="true"-->
+	  <!--#SMARTCOLUMN name="quoted_by_name" sort="quoted_by_name"  title="Omni&nbsp;Project&nbsp;Manager" width="10%" filter="quoted_by_name:quoted_by_name" -->
+	  <!--#SMARTCOLUMN name="quote_total" type="money" sort="quote_total" title="Dollar&nbsp;Amt" format="money" width="10%" align="right" -->
+	  <!--SMARTCOLUMN name="is_new" sort="is_new" title="Is&nbsp;New" width="5%" align="left" -->
+
+<!--#/SMARTTABLE -->
+
+<!--#EMBED template="enet/embeds/footer.html" -->

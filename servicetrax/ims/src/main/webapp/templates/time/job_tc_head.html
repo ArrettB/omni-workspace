@@ -1,0 +1,63 @@
+<!--#EMBED template="embeds/header.html" -->
+
+<script language="JavaScript" type="text/javascript">
+<!--
+
+function refreshHours()
+{
+	parent.job_tc_frame.location.href = parent.job_tc_frame.location.href;
+}
+
+-->
+</script>
+
+</head>
+
+<body class="BodyTag">
+
+<FORM name="QuickIndex" >
+<table width="95%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+    <td width="50%" style="padding-right: 20">
+<!--#CHECKSECURITY right="rights.time/tc_edit.view"-->
+		<table cellspacing="0" cellpadding="0" border="0" width="500">
+			<tr>
+				<td width="100" align="middle">
+					<a href="{!s:action!}launchCharm?address=time.html%3FjobId={!s:job_id!}" target="_new">Add Hours</a>
+				</td>
+				<td width="100" align="middle">
+					<A href="{!s:action!}setServiceLineFields/time/tc_edit.html?item_type_code=expense&prev_template=time/job_tc_main.html&p_job_id={!s:job_id!}&module=time&module_mode=create&level={!p:level!}" target="_parent">Add Expenses</A>
+				</td>
+				<td width="100" align="middle">
+					<A href="{!s:showPage!}time/expense_express_entry.html?prev_template=time/job_tc_main.html?level={!p:level!}" target="_parent">Expense Express</A>
+				</td>
+				<td width="100" align="middle">
+					<A href="{!s:showPage!}time/express_entry.html?prev_template=time/job_tc_main.html?level={!p:level!}" target="_parent">Hrs Multi Member</A>
+				</td>
+				<td width="100" align="middle">
+					<A href="{!s:showPage!}time/express_entry_mr.html?prev_template=time/job_tc_main.html?level={!p:level!}" target="_parent">Hrs Multi Req</A>
+				</td>
+			</tr>
+			<tr height="5"><td>&nbsp;</td></tr>
+		</table>
+<!--#/CHECKSECURITY-->
+	</td>
+	<td width="50%" align="right">View
+		<SELECT name="URL" class="regular" onChange="if(options[selectedIndex].value) parent.job_tc_frame.location.href=(options[selectedIndex].value);window.focus();">
+			<OPTION value="{!s:action!}setServiceLineFields/time/job_tc_list_sum_det.html?level={!p:level!}">Detail</OPTION>
+			<OPTION value="{!s:action!}setServiceLineFields/time/job_tc_list_sum_req.html?level={!p:level!}">Req Summary</OPTION>
+			<OPTION value="{!s:action!}setServiceLineFields/time/job_tc_list_sum_item.html?level={!p:level!}">Work Code Summary</OPTION>
+			<OPTION value="{!s:action!}setServiceLineFields/time/job_tc_list_sum_req_item.html?level={!p:level!}">Req/Work Code Summary</OPTION>
+		</SELECT>
+		<NOSCRIPT>
+			<INPUT type="submit" value="Go">
+		</NOSCRIPT>
+	</td>
+</tr>
+</table>
+<hr>
+</FORM>
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

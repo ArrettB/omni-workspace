@@ -1,0 +1,39 @@
+<!--#EMBED template="embeds/header.html" -->
+
+</head>
+
+<body class="BodyTag">
+
+
+<table width="95%" border="0" cellspacing="0" cellpadding="0">
+
+	<tr>
+		<td width="50%">
+			Add
+			<A href="{!s:showPage!}time/tc_edit.html?item_type_code=expense&prev_template=time/exp/main_exp_list_pending.html&module=expenses&module_mode=create&res_cat=employee&level={!p:level!}" target="main_exp_frame">Expenses</A>
+		</td>
+
+
+<FORM name="QuickIndex" >
+	<td width="50%" align="right">View
+<SELECT name="URL" class="regular"
+   onChange="if(options[selectedIndex].value)
+   parent.main_exp_frame.location.href=
+   (options[selectedIndex].value);window.focus();">
+	<OPTION value="{!s:showPage!}time/exp/main_exp_list_pending.html?level={!p:level!}&calling_page=main_exp_main">Pending</OPTION>
+	<OPTION value="{!s:showPage!}time/exp/main_exp_list_exported.html?level={!p:level!}">Exported</OPTION>
+</SELECT>
+
+
+	</td>
+</tr>
+</FORM>
+</table>
+
+<hr>
+
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->
+

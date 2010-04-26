@@ -1,0 +1,44 @@
+<!-- $Header: job_inv_list_ops.html, 17, 1/7/2005 5:10:02 PM, Lee A. Gunderson$ -->
+
+<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0"> <tr><td class="HeaderBar">Invoices</td></tr></TABLE>
+<!--#SQLLOOP query="SELECT status_id, name status FROM invoice_statuses where status_id = 1" name="status_inv"-->
+<FORM ACTION="{!s:action!}setServiceLineStatus" METHOD="POST" name="InvoiceForm">
+<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0"> <tr><td class="tableTitle">{!r:status_inv:status!}</td></tr>
+</TABLE>
+	<input type="hidden" name="level" value="invoice">
+	<input type="hidden" name="status_id" value="">
+	<input type="hidden" name="template_name" value="{!p:temp_name!}">
+
+<!--#SMARTTABLE name="invoice_lines"
+	class="SmartTable" totalClass="TableTotal"
+	query="SELECT sum(custom_line_total) custom_tot, sum(bill_hourly_total) bill_hours_tot, sum(bill_exp_total) exp_tot, job_id, invoice_id_trk,
+					sum(bill_total + custom_line_total) total_tot, invoice_id, invoice_description, job_type_name, invoice_status_id, ext_dealer_id, dealer_name, customer_name, po_no, billing_user_name
+	FROM invoice_pre_total_v
+	WHERE job_id = <?s:job_id.toPStmtString()?>
+	AND invoice_status_id = <?r:status_inv:status_id.toPStmtString()?>
+	GROUP BY invoice_id, invoice_id_trk, invoice_description, job_type_name, invoice_status_id, ext_dealer_id, dealer_name, customer_name, job_id, po_no, billing_user_name
+	ORDER BY invoice_id"
+-->
+	<!--#IF EVALUATE="<?r:status_inv:status_id?>" COMPARE="6"-->
+	<!--#ELSE-->
+		<!--#SMARTCOLUMN value="<INPUT TYPE='checkbox' name='statusCheckBox' value='<?r:invoice_lines:invoice_id?>'>" title="<INPUT TYPE='checkbox' name='CheckAllBox' onclick='checkAllBoxes(this.form.CheckAllBox,this.form.statusCheckBox)'>" align="center" width="2%" -->
+	<!--#/IF-->
+		<!--#SMARTCOLUMN name="invoice_id_trk" sort="invoice_id" title="Invoice#" width="5%" align="center" href="<?s:action?>setupSession/bill/inv/job_inv_main.html?invoice_id=<?r:invoice_lines:invoice_id?>&status_id=<?r:invoice_lines:invoice_status_id?>&job_id=<?r:invoice_lines:job_id?>&prev_template=bill/job_unbill_ops_main.html&level=job" target="_parent"-->
+		<!--#SMARTCOLUMN name="billing_user_name" sort="billing_user_name" title="Project&nbsp;Manager" width="5%"-->
+		<!--#SMARTCOLUMN name="dealer_name" sort="dealer_name" title="Dealer" width="5%"-->
+		<!--#SMARTCOLUMN name="customer_name" sort="customer_name" title="Customer" width="10%" value="<INPUT TYPE='text' name='desc' value='<?r:invoice_lines:customer_name.replaceString('\'','&#39;')?>' readonly='true' class='smartTableDisplay' size='15'>" -->
+		<!--#SMARTCOLUMN name="job_type_name" sort="job_type_name" title="Job Type" width="5%"-->
+		<!--#SMARTCOLUMN name="invoice_description" sort="invoice_description" title="Description" width="15%" value="<INPUT TYPE='text' name='desc' value='<?r:invoice_lines:invoice_description.replaceString('\'','&#39;')?>' readonly='true' class='smartTableDisplay' size='30'>"-->
+		<!--#SMARTCOLUMN name="custom_tot" sort="custom_tot" title="Custom Total" align="right" total="true" format="money" width="5%" -->
+		<!--#SMARTCOLUMN name="bill_hours_tot" sort="bill_hours_tot" title="Hours Total" align="right" total="true" format="money" width="5%" -->
+		<!--#SMARTCOLUMN name="exp_tot" sort="exp_tot" title="Exp Total" align="right" total="true" format="money" width="5%" -->
+		<!--#SMARTCOLUMN name="total_tot" sort="total_tot" title="Total" align="right" total="true" format="money" width="5%" -->
+<!--#/SMARTTABLE -->
+
+	<select NAME="submit_action" class="regular">
+		<option VALUE="changeInvoiceStatus2">Send to Processing Dept</option>
+	<input type="submit" value="Submit" name="button" class="button2">
+	</select>
+ <BR> <BR>
+</FORM>
+<!--#/SQLLOOP-->

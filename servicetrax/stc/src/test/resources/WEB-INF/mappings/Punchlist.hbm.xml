@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.Punchlist" table="PUNCHLISTS" schema="dbo" catalog="">
+        <id name="punchlistId" type="java.lang.Long">
+            <column name="PUNCHLIST_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="project" class="com.dynamic.servicetrax.orm.Project" fetch="select">
+            <column name="PROJECT_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="request" class="com.dynamic.servicetrax.orm.Request" fetch="select">
+            <column name="request_id" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="userByModifiedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="userByCreatedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="walkthroughDate" type="timestamp">
+            <column name="WALKTHROUGH_DATE" length="23" />
+        </property>
+        <property name="printLocation" type="string">
+            <column name="PRINT_LOCATION" length="50" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <set name="punchlistIssues" inverse="true">
+            <key>
+                <column name="PUNCHLIST_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.PunchlistIssue" />
+        </set>
+    </class>
+</hibernate-mapping>

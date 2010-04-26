@@ -1,0 +1,282 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.Service" table="SERVICES" schema="dbo" catalog="">
+        <id name="serviceId" type="java.lang.Long">
+            <column name="SERVICE_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="lookupByPunchlistTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="PUNCHLIST_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactBySupportContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="SUPPORT_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="jobLocationByJobLocationId" class="com.dynamic.servicetrax.orm.JobLocation" fetch="select">
+            <column name="JOB_LOCATION_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByDesignerContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="DESIGNER_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByScheduleTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="SCHEDULE_TYPE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="lookupByWoodProductTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="WOOD_PRODUCT_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByPriFurnLineTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="PRI_FURN_LINE_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupBySecFurnLineTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="SEC_FURN_LINE_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByPriFurnTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="PRI_FURN_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="request" class="com.dynamic.servicetrax.orm.Request" fetch="select">
+            <column name="REQUEST_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByIdmContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="IDM_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByCustomerContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="CUSTOMER_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="userByModifiedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByServiceTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="SERVICE_TYPE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="lookupByBillingTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="BILLING_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByServStatusTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="SERV_STATUS_TYPE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="jobLocationByReportToLocId" class="com.dynamic.servicetrax.orm.JobLocation" fetch="select">
+            <column name="REPORT_TO_LOC_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByDeliveryTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="DELIVERY_TYPE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="lookupBySecFurnTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="SEC_FURN_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByProjectMgrContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="PROJECT_MGR_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="job" class="com.dynamic.servicetrax.orm.Job" fetch="select">
+            <column name="JOB_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="userByCreatedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="contactBySalesContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="SALES_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <property name="quoteId" type="java.lang.Long">
+            <column name="QUOTE_ID" precision="18" scale="0" />
+        </property>
+        <property name="serviceNo" type="java.lang.Long">
+            <column name="SERVICE_NO" precision="18" scale="0" />
+        </property>
+        <property name="description" type="string">
+            <column name="DESCRIPTION" length="500" />
+        </property>
+        <property name="internalReqFlag" type="string">
+            <column name="INTERNAL_REQ_FLAG" length="1" not-null="true" />
+        </property>
+        <property name="customerRefNo" type="string">
+            <column name="CUSTOMER_REF_NO" length="240" />
+        </property>
+        <property name="poNo" type="string">
+            <column name="PO_NO" length="100" />
+        </property>
+        <property name="orderedBy" type="java.lang.Long">
+            <column name="ORDERED_BY" precision="18" scale="0" />
+        </property>
+        <property name="orderedDate" type="timestamp">
+            <column name="ORDERED_DATE" length="23" />
+        </property>
+        <property name="estStartDate" type="timestamp">
+            <column name="EST_START_DATE" length="23" />
+        </property>
+        <property name="estStartTime" type="timestamp">
+            <column name="EST_START_TIME" length="23" />
+        </property>
+        <property name="estEndDate" type="timestamp">
+            <column name="EST_END_DATE" length="23" />
+        </property>
+        <property name="truckShipDate" type="timestamp">
+            <column name="TRUCK_SHIP_DATE" length="23" />
+        </property>
+        <property name="truckArrivalDate" type="timestamp">
+            <column name="TRUCK_ARRIVAL_DATE" length="23" />
+        </property>
+        <property name="productSetupDesc" type="string">
+            <column name="PRODUCT_SETUP_DESC" length="1000" />
+        </property>
+        <property name="warehouseLoc" type="string">
+            <column name="WAREHOUSE_LOC" length="60" />
+        </property>
+        <property name="numStations" type="string">
+            <column name="NUM_STATIONS" length="30" />
+        </property>
+        <property name="productQty" type="string">
+            <column name="PRODUCT_QTY" length="30" />
+        </property>
+        <property name="blueprintLocation" type="string">
+            <column name="BLUEPRINT_LOCATION" length="100" />
+        </property>
+        <property name="quoteTotal" type="java.lang.Long">
+            <column name="QUOTE_TOTAL" precision="18" scale="0" />
+        </property>
+        <property name="headValFlag" type="java.lang.Character">
+            <column name="HEAD_VAL_FLAG" length="1" />
+        </property>
+        <property name="locValFlag" type="java.lang.Character">
+            <column name="LOC_VAL_FLAG" length="1" />
+        </property>
+        <property name="prodValFlag" type="java.lang.Character">
+            <column name="PROD_VAL_FLAG" length="1" />
+        </property>
+        <property name="schValFlag" type="java.lang.Character">
+            <column name="SCH_VAL_FLAG" length="1" />
+        </property>
+        <property name="taskValFlag" type="java.lang.Character">
+            <column name="TASK_VAL_FLAG" length="1" />
+        </property>
+        <property name="resValFlag" type="java.lang.Character">
+            <column name="RES_VAL_FLAG" length="1" />
+        </property>
+        <property name="custValFlag" type="java.lang.Character">
+            <column name="CUST_VAL_FLAG" length="1" />
+        </property>
+        <property name="billValFlag" type="java.lang.Character">
+            <column name="BILL_VAL_FLAG" length="1" />
+        </property>
+        <property name="custCol1" type="string">
+            <column name="CUST_COL_1" length="200" />
+        </property>
+        <property name="custCol2" type="string">
+            <column name="CUST_COL_2" length="200" />
+        </property>
+        <property name="custCol3" type="string">
+            <column name="CUST_COL_3" length="200" />
+        </property>
+        <property name="custCol4" type="string">
+            <column name="CUST_COL_4" length="200" />
+        </property>
+        <property name="custCol5" type="string">
+            <column name="CUST_COL_5" length="200" />
+        </property>
+        <property name="custCol6" type="string">
+            <column name="CUST_COL_6" length="200" />
+        </property>
+        <property name="custCol7" type="string">
+            <column name="CUST_COL_7" length="200" />
+        </property>
+        <property name="custCol8" type="string">
+            <column name="CUST_COL_8" length="200" />
+        </property>
+        <property name="custCol9" type="string">
+            <column name="CUST_COL_9" length="200" />
+        </property>
+        <property name="custCol10" type="string">
+            <column name="CUST_COL_10" length="200" />
+        </property>
+        <property name="taxableFlag" type="string">
+            <column name="TAXABLE_FLAG" length="1" />
+        </property>
+        <property name="watchFlag" type="string">
+            <column name="WATCH_FLAG" length="1" />
+        </property>
+        <property name="weekendFlag" type="string">
+            <column name="WEEKEND_FLAG" length="1" />
+        </property>
+        <property name="misc" type="string">
+            <column name="MISC" length="200" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <property name="schStartDate" type="timestamp">
+            <column name="SCH_START_DATE" length="23" />
+        </property>
+        <property name="schStartTime" type="timestamp">
+            <column name="SCH_START_TIME" length="23" />
+        </property>
+        <property name="schEndDate" type="timestamp">
+            <column name="SCH_END_DATE" length="23" />
+        </property>
+        <property name="actStartDate" type="timestamp">
+            <column name="ACT_START_DATE" length="23" />
+        </property>
+        <property name="actStartTime" type="timestamp">
+            <column name="ACT_START_TIME" length="23" />
+        </property>
+        <property name="actEndDate" type="timestamp">
+            <column name="ACT_END_DATE" length="23" />
+        </property>
+        <property name="priorityTypeId" type="java.lang.Long">
+            <column name="PRIORITY_TYPE_ID" precision="18" scale="0" />
+        </property>
+        <property name="versionNo" type="java.lang.Long">
+            <column name="VERSION_NO" precision="18" scale="0" />
+        </property>
+        <set name="serviceLinesForTcServiceId" inverse="true">
+            <key>
+                <column name="TC_SERVICE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ServiceLine" />
+        </set>
+        <set name="trackings" inverse="true">
+            <key>
+                <column name="SERVICE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Tracking" />
+        </set>
+        <set name="serviceTasks" inverse="true">
+            <key>
+                <column name="SERVICE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ServiceTask" />
+        </set>
+        <set name="serviceLinesForPhServiceId" inverse="true">
+            <key>
+                <column name="PH_SERVICE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ServiceLine" />
+        </set>
+        <set name="schResourcesForServiceId" inverse="true">
+            <key>
+                <column name="SERVICE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.SchResource" />
+        </set>
+        <set name="serviceLinesForBillServiceId" inverse="true">
+            <key>
+                <column name="BILL_SERVICE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ServiceLine" />
+        </set>
+        <set name="schResourcesForHiddenServiceId" inverse="true">
+            <key>
+                <column name="HIDDEN_SERVICE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.SchResource" />
+        </set>
+        <set name="resourceEstimates" inverse="true">
+            <key>
+                <column name="SERVICE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ResourceEstimate" />
+        </set>
+    </class>
+</hibernate-mapping>

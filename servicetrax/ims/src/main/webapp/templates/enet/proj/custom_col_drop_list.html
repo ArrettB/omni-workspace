@@ -1,0 +1,197 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!-- $Header: custom_col_drop_list.html, 5, 1/7/2005 5:09:29 PM, Lee A. Gunderson$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+
+<body class="BodyTag" onLoad="window.focus()" onUnload="exitFunction()">
+
+<form name="dropListForm" action="{!s:action!}modifyCustomDropList" method="post">
+			<input type="hidden" name="custom_cust_col_id" value="{!p:custom_cust_col_id!}">
+			<input type="hidden" name="ids">
+			<input type="hidden" name="values">
+
+<table>
+	<tr><td class="HeaderLabel" colspan="2">Type in a new value to Add or select to Update:</td></tr>
+	<tr>
+		<td>
+			<input type="text" name="current_option">
+		</td>
+		<td>
+				<input type="button" class="button" value="Update" name="update_option" onClick="updateList()">
+				<input type="button" class="button" value="Add" name="add_option" onClick="addToList()">
+		</td>
+	</tr>
+	<tr>
+		<td rowspan="4">
+
+			<!--#SELECT name="list"
+				query="SELECT custom_col_list_id, list_value
+				FROM custom_col_lists
+				WHERE active_flag='Y'
+				  AND custom_cust_col_id = <?p:custom_cust_col_id.toPStmtString()?>
+				ORDER BY sequence"
+				style="width:100%"
+				size="10"
+				onClick="onSelect()"
+			-->
+		</td>
+		<td>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<button value="Up" name="Up" onClick="moveUp(dropListForm.list)"><img src="/ims/images/arrow_up.gif" alt="Move the selected item up in display order" border="0">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<button value="Down" name="Down" onClick="moveDown(dropListForm.list)"><img src="/ims/images/arrow_down.gif" alt="Move the selected item up in display order" border="0">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<button value="Trash" name="Trash" onClick="deleteSelected(dropListForm.list)"><img src="/ims/images/trash2.gif" alt="Deletes the selected item" border="0">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="button" name="save_button" class="button" value="Save" onClick="doSave()">
+			<input type="button" name="cancel_button" class="button" value="Cancel" onClick="parent.window.opener.focus(); parent.close();">
+		</td>
+	</tr>
+</table>
+</form>
+
+
+<script language="JavaScript">
+<!--
+
+	function doSave()
+	{
+		var colIds = "";
+		var colValues = "";
+
+		for (var i = 0; i < dropListForm.list.options.length; i++)
+		{
+			colIds += dropListForm.list.options[i].value + ",";
+			colValues += dropListForm.list.options[i].text + ",";
+		}
+		dropListForm.ids.value = colIds;
+		dropListForm.values.value = colValues;
+		dropListForm.submit();
+	}
+
+	updateButtons();
+
+	function updateButtons()
+	{
+		var selectedIndex = dropListForm.list.selectedIndex;
+		if (selectedIndex >= 0)
+		{
+			var currentOption = dropListForm.list.options[selectedIndex].text;
+			dropListForm.current_option.value = currentOption;
+			dropListForm.update_option.disabled = false;
+			dropListForm.update_option.className = "button";
+		}
+		else
+		{
+			dropListForm.current_option.value = "";
+			dropListForm.update_option.disabled = true;
+			dropListForm.update_option.className = "buttonDisabled";
+		}
+	}
+
+	function onSelect()
+	{
+
+		updateButtons();
+	}
+
+	function updateList()
+	{
+		var selectedIndex = dropListForm.list.selectedIndex;
+
+		if (selectedIndex >= 0)
+		{
+			var newText = dropListForm.current_option.value;
+			dropListForm.list.options[selectedIndex].text = newText;
+		}
+		updateButtons();
+
+	}
+
+	function addToList()
+	{
+
+			var newText = dropListForm.current_option.value;
+			var newOption = new Option(newText,"-1", true);
+			var length = dropListForm.list.options.length;
+			dropListForm.list.options[length] = newOption;
+
+			updateButtons();
+
+	}
+
+	function deleteSelected(selectObj)
+	{
+		var currentIndex = selectObj.selectedIndex;
+		if (currentIndex >= 0)
+		{
+			selectObj.options[currentIndex] = null;
+		}
+		if (currentIndex < selectObj.length)
+			selectObj.selectedIndex = currentIndex;
+
+		updateButtons();
+	}
+
+	function moveUp(selectObj)
+	{
+		var currentIndex = selectObj.selectedIndex;
+		if (currentIndex >= 1)
+		{
+			swapItems(selectObj, currentIndex, currentIndex-1);
+			selectObj.selectedIndex = currentIndex - 1;
+		}
+		updateButtons();
+	}
+
+	function moveDown(selectObj)
+	{
+		var currentIndex = selectObj.selectedIndex;
+		if (currentIndex < (selectObj.options.length - 1))
+		{
+			swapItems(selectObj, currentIndex, currentIndex+1);
+			selectObj.selectedIndex = currentIndex + 1;
+		}
+		updateButtons();
+
+	}
+
+
+	function swapItems(selectObj, index1, index2)
+	{
+		if (index1 < 0 || index2 < 0)
+			return;
+
+		if (index1 >= selectObj.options.length || index2 >= selectObj.options.length)
+			return;
+
+		var temp1 = new Option(selectObj.options[index1].text, selectObj.options[index1].value);
+		var temp2 = new Option(selectObj.options[index2].text, selectObj.options[index2].value);
+		selectObj.options[index1] = temp2;
+		selectObj.options[index2] = temp1;
+	}
+
+	function exitFunction()
+	{
+		<!--#IF evaluate="<?p:return_value_flag?>" compare="false"-->
+		<!--#ELSE-->
+			window.parent.opener.redisplaySmartForm()
+		<!--#/IF-->
+	}
+-->
+</script>
+
+</body>
+
+<!--#EMBED template="enet/embeds/footer.html" -->

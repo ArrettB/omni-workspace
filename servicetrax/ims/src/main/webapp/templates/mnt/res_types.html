@@ -1,0 +1,69 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: res_types.html, 6, 4/1/2004 1:45:23 PM, Greg Case$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.mnt/res_types.view?>"-->
+
+<body class="BodyTag">
+
+	<!--#IF evaluate="<?p:showForm?>" compare="Y" -->
+
+		<table width="100%">
+		<!--#SMARTFORM name="mnt/res_types" security="rights" table="resource_types" key="resource_type_id"
+				preHandler="ims.handlers.job_processing.SmartFormPreHandler" buttons="Save,New,Delete,Cancel"
+		-->
+			<!--#SMARTFIELD name="redisplay" value="false" type="hidden" -->
+			<!--#SMARTFIELD name="next_resource_name" value="" type="hidden" -->
+			<tr><td colspan="4" class="TableTitle">Edit Resource Types</td></tr>
+			<tr>
+				<td width="150"><!--#SMARTFIELD title="Resource Type Name:&nbsp;" div="</td><td>" name="name" --></td>
+				<td width="120"><!--#SMARTFIELD title="Resource Type Code:&nbsp;" div="</td><td>" name="code" --></td>
+			</tr>
+				<td><!--#SMARTFIELD title="Default Resource Category:&nbsp;" div="</td><td>" name="def_res_cat_type_id" type="droplist" table="resource_category_types_v" display="lookup_name" key="lookup_id" --></td>
+				<td><!--#SMARTFIELD title="Default Time UofM:&nbsp;" div="</td><td>" name="def_time_uom_type_id" type="droplist" table="time_uom_types_v" display="lookup_name" key="lookup_id" --></td>
+			<tr>
+				<td><!--#SMARTFIELD title="Use to Est. Hours?&nbsp;" div="</td><td>" name="estimate_hours_flag" type="boolean" value="N" class="mandatory" --></td>
+				<td><!--#SMARTFIELD title="Is Resource Unique?&nbsp;" div="</td><td>" name="unique_flag" type="boolean" --></td>
+			</tr>
+
+			<tr><td colspan="4">
+			<!--#EMBED template="embeds/audit.html" table_name="resource_types" table_key="resource_type_id" key_value="<?p:resource_type_id?>"-->
+			</td></tr>
+
+
+		</table>
+		<!--#/SMARTFORM -->
+
+	<!--#ELSE-->
+
+		<!--#CHECKSECURITY right="rights.mnt/res_types.insert" -->
+			<span class="Label"><BR><a href="{!s:showPage!}mnt/res_types?showForm=Y">Create<a> Resource Type or...<BR><BR></span>
+		<!--#/CHECKSECURITY-->
+		<span class="Label"><BR>To edit, please select a Resource Type from the list:<BR><BR></span>
+
+	<!--#/IF-->
+
+	<table width="100%" cellspacing="0" cellpadding="0">
+		<tr><td  class="tableHeader">Associate Resource Types to Bill Rates</td></tr>
+	</table>
+	<!--#SMARTTABLE width="100%" name="resource_types_v" query="SELECT resource_type_id, resource_type_name, resource_type_code, def_time_uom_type_name, def_res_cat_type_name, estimate_hours_flag, unique_flag, sequence_no FROM resource_types_v ORDER BY resource_type_name" -->
+		<!--#IF defined="<?s:rights.mnt/res_types.update?>"-->
+		<!--#SMARTCOLUMN width="20%" title="Resource Type" name="resource_type_name" sort="resource_type_name" class="TableRow1Link,TableRow2Link" href="<?s:showPage?>mnt/res_types.html?resource_type_id=<?r:resource_types_v:resource_type_id?>&showForm=Y" target="main_frame" -->
+		<!--#ELSE-->
+		<!--#SMARTCOLUMN width="20%" title="Resource Type Name" name="resource_type_name" sort="resource_type_name" -->
+		<!--#/IF-->
+		<!--#SMARTCOLUMN width="20%" title="Def Res Cat" name="def_res_cat_type_name" sort="def_res_cat_type_name" -->
+		<!--#SMARTCOLUMN width="20%" title="Def Time UofM" name="def_time_uom_type_name" sort="time_uom_type_name" -->
+		<!--#SMARTCOLUMN width="10%" title="Est Hours?" name="estimate_hours_flag" sort="estimate_hours_flag" align="center" -->
+		<!--#SMARTCOLUMN width="10%" title="Unique?" name="unique_flag" sort="unique_flag" align="center"-->
+	<!--#/SMARTTABLE-->
+
+</body>
+
+<script language="JavaScript">
+<!--
+
+
+-->
+</script>
+
+<!--#EMBED template="embeds/footer.html" -->

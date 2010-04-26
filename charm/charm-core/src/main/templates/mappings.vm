@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<mapping-configs>
+<mappings auditGenerator="com.urn.sec.audit.StdAuditImpl">
+</mappings>
+<queries>
+#foreach($table in $tables)
+#set ($alias = $table.destinationClassName) 
+#set ($column = $table.pkColumn)
+
+
+
+
+  <!-- Generated queries for  ${table.destinationClassName} -->
+	<named-query>
+		<name>${alias}_all</name>
+		<query>
+			SELECT ${alias}
+			FROM   ${table.package}.${table.destinationClassName} ${alias}
+		</query>
+		<cache>true</cache>
+		<cacheIdleMins>15</cacheIdleMins>
+		<cacheLiveMins>45</cacheLiveMins>
+		<cacheSize>5000</cacheSize>
+	</named-query>	
+	<named-query>
+
+		<name>${alias}_single</name>
+		<query>
+			SELECT ${alias}
+			FROM   ${table.package}.${table.destinationClassName} ${alias}
+			WHERE  ${alias}.${column.variableName} = ?
+		</query>
+		<type>${column.javaType}</type>
+		<cache>true</cache>
+		<cacheIdleMins>15</cacheIdleMins>
+		<cacheLiveMins>45</cacheLiveMins>
+		<cacheSize>5000</cacheSize>
+	</named-query>	
+#foreach($relationshipRole in $table.notPrimaryKeyRoles)
+#if( $relationshipRole.enabled)
+#set( $one2one = $relationshipRole.relation.one2One )
+#set( $many2many = $relationshipRole.relation.many2Many )
+#set( $bidirectional = $relationshipRole.relation.bidirectional )
+#set( $target = $relationshipRole.getTarget($plugin))
+
+<!--
+card = $table.getCardinalityValue($relationshipRole)
+one2Many = ${relationshipRole.relation.one2Many}
+variable = ${table.getVariableName($relationshipRole)}
+target = ${target.destinationClassName}
+-->
+#if ($table.getCardinalityValue($relationshipRole) == "one-to-many")
+
+
+    <!-- $table.getDirectionality($relationshipRole) $table.getCardinalityValue($relationshipRole) association to $target.destinationClassName -->
+	<named-query>
+		<name>${table.getVariableName($relationshipRole)}From${table.destinationClassName}</name>
+		<query>
+			SELECT ${alias}.${table.getVariableName($relationshipRole)}.elements
+			FROM   ${table.package}.${table.destinationClassName} ${alias} 
+			WHERE  ${alias}.${table.pkColumn.variableName} = ?		
+		</query>
+		<type>${table.pkColumn.javaType}</type>
+		<cache>true</cache>
+		<cacheIdleMins>15</cacheIdleMins>
+		<cacheLiveMins>45</cacheLiveMins>
+		<cacheSize>5000</cacheSize>
+	</named-query>	
+#end
+#end
+#end
+#end
+</queries>
+</mapping-configs>

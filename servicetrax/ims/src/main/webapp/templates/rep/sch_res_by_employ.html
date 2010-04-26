@@ -1,0 +1,294 @@
+<!-- $Header: sch_res_by_employ.html, 5, 4/10/2003 11:11:20 AM, Chad Ryan$ -->
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.rep/sch_res_by_employ.view?>"-->
+
+<body class="BodyTag" onLoad="window.focus()">
+
+
+<table width="100%" cellspacing="0" cellpadding="3">
+
+<body class="BodyTag" onLoad="">
+
+	<table width="100%">
+		<tr><td colspan="16" class="TableTitle">Scheduled Resources By Employment Type Report</td></tr>
+	</table>
+
+<BR>
+
+	<table border="0" cellspacing="0" cellpadding="3">
+	<form name="report">
+      <tr>
+			<td class="Label">From Date:&nbsp</td>
+			<td>
+		<!--#IF DEFINED="<?p:r_from_date?>" -->
+				<input name="r_from_date" class="regular" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_from_date)')</script>" value="{!p:r_from_date!}" size="12" -->
+		<!--#ELSE-->
+			<!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) as from_date" name="dateQuery"-->
+	     		<input name="r_from_date" class="regular" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_from_date)')</script>" value="{!r:dateQuery:from_date!}" size="12"-->
+			<!--#/SQLLOOP-->
+		<!--#/IF-->
+				<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_from_date)')</script>
+			</td>
+			<td class="Label">To Date:&nbsp</td>
+	     	<td>
+		<!--#IF DEFINED="<?p:r_to_date?>" -->
+				<input name="r_to_date" class="regular" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_to_date)')</script>" value="{!p:r_to_date!}" size="12" -->
+		<!--#ELSE-->
+			<!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) as to_date" name="dateQuery"-->
+	     		<input name="r_to_date" class="regular" value="{!r:dateQuery:to_date!}" size="12"-->&nbsp;
+			<!--#/SQLLOOP-->
+		<!--#/IF-->
+				<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_to_date)')</script>
+			</td>
+
+			<td class="HeaderLabel">Detail?:&nbsp</td>
+			<td><!--#SELECT name="r_detail" class="regular" query="SELECT lookup_code, lookup_name FROM lookups_v WHERE type_code='yes_no_type' and lookup_active_flag='Y' ORDER BY lookup_name" currentValue="<?p:r_detail?>" --></td>
+
+		</tr>
+		<tr>
+			<td class="HeaderLabel">Category Types:&nbsp</td>
+			<td><!--#SELECT name="r_res_cat_type_code" class="regular" firstOption="All" firstOptionValue="" lastOption="Emp/Sub/Truck" lastOptionValue="employee','contractor','truck" query="SELECT lookup_code, lookup_name FROM lookups_v WHERE type_code='resource_category_type' ORDER BY lookup_name" currentValue="<?p:r_res_cat_type_code?>" --></td>
+
+			<td class="HeaderLabel">Employee Types:&nbsp</td>
+			<td><!--#SELECT name="r_employment_type_id" class="regular" firstOption="All" firstOptionValue="" query="SELECT lookup_id, lookup_name FROM lookups_v WHERE type_code='employment_type' ORDER BY lookup_name" currentValue="<?p:r_employment_type_id?>" --></td>
+
+			<td class="HeaderLabel">Resource Types:&nbsp</td>
+			<td><!--#SELECT name="r_resource_type_id" class="regular" firstOption="All" firstOptionValue="" query="SELECT resource_type_id, name FROM resource_types ORDER BY name" currentValue="<?p:r_resource_type_id?>" --></td>
+		</tr>
+		<tr>
+			<td class="HeaderLabel">Reason Types:&nbsp</td>
+			<td><!--#SELECT name="r_reason_type_code" class="regular" firstOption="All" firstOptionValue="" query="SELECT lookup_code, lookup_name FROM lookups_v WHERE type_code='reason_type' ORDER BY lookup_name" currentValue="<?p:r_reason_type_code?>" --></td>
+
+			<td class="HeaderLabel">Job Types:&nbsp</td>
+			<td><!--#SELECT name="r_job_type_id" class="regular" firstOption="All" firstOptionValue="" query="SELECT lookup_id, lookup_name FROM lookups_v WHERE type_code='job_type' ORDER BY lookup_name" currentValue="<?p:r_job_type_id?>" --></td>
+		</tr>
+
+		<tr>
+   	   <td><input type="button" name="set_button" value="Run Report" onClick="redisplayPage();" class="button2"-->&nbsp;</td>
+		</tr>
+	</form>
+	</table>
+
+<BR> 
+
+	<!--#SMARTTABLE class="SmartTable" name="emp" maxrows="50"
+	   query="select v.res_cat_type_name, v.employment_type_name, v.res_status_type_name, v.reason_type_name, v.job_type_name, sum(v.resource_qty) sum_res
+FROM (SELECT  srv.RESOURCE_ID, srv.RESOURCE_NAME,
+		srv.RES_CATEGORY_TYPE_ID, srv.res_cat_type_code, srv.res_cat_type_name, srv.RESOURCE_TYPE_ID, srv.resource_type_code,
+		srv.resource_type_name, srv.EMPLOYMENT_TYPE_ID, srv.employment_type_code, srv.employment_type_name, srv.ACTIVE_FLAG, srv.FOREMAN_FLAG,
+		srv.SCH_RESOURCE_ID, srv.WEEKEND_SCH_RESOURCE_ID, srv.JOB_ID, srv.JOB_NO, srv.JOB_TYPE_ID, srv.job_type_code, srv.job_type_name,
+		srv.SERVICE_ID, srv.SERVICE_NO, srv.RES_STATUS_TYPE_ID, srv.res_status_type_code, srv.res_status_type_name,
+		srv.REASON_TYPE_ID, srv.reason_type_code, srv.reason_type_name, srv.FOREMAN_FLAG sch_foreman_flag,
+		srv.RES_START_DATE, srv.RES_START_TIME, srv.RES_END_DATE, srv.RES_END_TIME, srv.WEEKEND_FLAG, srv.report_to_name, srv.unconfirmed_flag,
+		srv.RESOURCE_QTY
+	FROM dbo.SCH_RESOURCES_V srv, 
+	(SELECT min(sch_resource_id) sch_resource_id FROM sch_resources_v s
+	WHERE 'true' = <?p:r_show_report.isNullSQLString('false')?>
+		AND s.organization_id = <?s:org_id.toSQLString()?>
+		AND (isnull(s.res_cat_type_code,'-1') <?p:r_res_cat_type_code.isNullSQLStringLike('%')?>
+			OR isnull(s.res_cat_type_code,'-1') IN ('<?p:r_res_cat_type_code?>') 
+			)
+		AND isnull(s.employment_type_id,-1) <?p:r_employment_type_id.isNullLike('%')?>
+		AND isnull(s.resource_type_id,-1) <?p:r_resource_type_id.isNullLike('%')?>
+		AND isnull(s.reason_type_code,-1) <?p:r_reason_type_code.isNullSQLStringLike('%')?>
+		AND isnull(s.job_type_id,-1) <?p:r_job_type_id.isNullLike('%')?>
+		AND ( s.res_start_date is null
+			OR	(<?p:r_from_date.isNullSQLString('1/1/1901')?> <= isnull(s.res_end_date,'1/1/2101')
+				AND <?p:r_to_date.isNullSQLString('1/1/2101')?> >= s.res_start_date
+				)
+			)
+		GROUP BY resource_id
+	) unique_resources
+	WHERE 'true' = <?p:r_show_report.isNullSQLString('false')?> and srv.sch_resource_id = unique_resources.sch_resource_id
+	UNION
+	SELECT rv.RESOURCE_ID, rv.NAME resource_name,
+		rv.RES_CATEGORY_TYPE_ID, rv.res_cat_type_code, rv.res_cat_type_name, rv.RESOURCE_TYPE_ID, rv.resource_type_code,
+		rv.resource_type_name, rv.EMPLOYMENT_TYPE_ID, rv.employment_type_code, rv.employment_type_name, rv.ACTIVE_FLAG, rv.FOREMAN_FLAG,
+		null SCH_RESOURCE_ID, null WEEKEND_SCH_RESOURCE_ID, null JOB_ID, null JOB_NO, null JOB_TYPE_ID, null job_type_code, null job_type_name,
+		null SERVICE_ID, null SERVICE_NO, null RES_STATUS_TYPE_ID, null res_status_type_code, null res_status_type_name,
+		null REASON_TYPE_ID, 'unscheduled' reason_type_code, 'Unscheduled' reason_type_name, null sch_foreman_flag,
+		null RES_START_DATE, null RES_START_TIME, null RES_END_DATE, null RES_END_TIME, null WEEKEND_FLAG, null report_to_name, null unconfirmed_flag,
+		1 RESOURCE_QTY
+	FROM dbo.RESOURCES_V rv
+	WHERE 'true' = <?p:r_show_report.isNullSQLString('false')?>
+		AND (isnull(rv.res_cat_type_code,'-1') <?p:r_res_cat_type_code.isNullSQLStringLike('%')?>
+			OR isnull(rv.res_cat_type_code,'-1') IN ('<?p:r_res_cat_type_code?>') 
+			)
+		AND isnull(rv.employment_type_id,-1) <?p:r_employment_type_id.isNullLike('%')?>
+		AND isnull(rv.resource_type_id,-1) <?p:r_resource_type_id.isNullLike('%')?>
+		AND rv.organization_id = <?s:org_id.toSQLString()?>
+		AND rv.active_flag = 'Y'
+		AND 'unscheduled' <?p:r_reason_type_code.isNullSQLStringLike('%')?>
+		AND NOT EXISTS 
+			(SELECT resource_id, min(sch_resource_id) sch_resource_id FROM sch_resources_v s
+			WHERE 'true' = <?p:r_show_report.isNullSQLString('false')?>
+				AND s.organization_id = <?s:org_id.toSQLString()?>
+				AND (isnull(s.res_cat_type_code,'-1') <?p:r_res_cat_type_code.isNullSQLStringLike('%')?>
+					OR isnull(s.res_cat_type_code,'-1') IN ('<?p:r_res_cat_type_code?>') 
+					)
+				AND isnull(s.employment_type_id,-1) <?p:r_employment_type_id.isNullLike('%')?>					AND s.resource_type_id <?p:r_resource_type_id.isNullLike('%')?>
+				AND isnull(s.reason_type_code,-1) <?p:r_reason_type_code.isNullSQLStringLike('%')?>
+				AND isnull(s.job_type_id,-1) <?p:r_job_type_id.isNullLike('%')?>
+				AND ( s.res_start_date is null
+					OR	(<?p:r_from_date.isNullSQLString('1/1/1901')?> <= isnull(s.res_end_date,'1/1/2101')
+						AND <?p:r_to_date.isNullSQLString('1/1/2101')?> >= s.res_start_date
+						)
+					)
+				AND s.resource_id = rv.resource_id
+				GROUP BY resource_id
+			)
+	) v
+	GROUP BY v.res_cat_type_name, v.employment_type_name, v.res_status_type_name, v.reason_type_name, v.job_type_name
+	ORDER BY v.res_cat_type_name, v.employment_type_name, v.res_status_type_name, v.reason_type_name, v.job_type_name"
+	group="res_cat_type_name, resource_type_name, res_status_type_name, reason_type_name, job_type_name"
+	-->
+		<!--#SMARTCOLUMN title="Category" name="res_cat_type_name" sort="res_cat_type_name" -->
+		<!--#SMARTCOLUMN title="Employmt." name="employment_type_name" sort="employment_type_name" -->
+		<!--#SMARTCOLUMN title="Status" name="res_status_type_name" sort="res_status_type_name" value="<?r:emp:res_status_type_name.isNull('Available')?>" -->
+		<!--#SMARTCOLUMN title="Reason" name="reason_type_name" sort="reason_type_name" -->
+		<!--#SMARTCOLUMN title="Job Type" name="job_type_name" sort="job_type_name" -->
+		<!--#SMARTCOLUMN title="# of Resources" name="sum_res" sort="sum_res" align="center" total="true" -->
+	<!--#/SMARTTABLE -->
+
+<br><br>
+
+<!--#IF evaluate="<?p:r_detail?>" compare="Y"-->
+
+	<!--#SMARTTABLE class="SmartTable" name="emp" maxrows="50"
+   query="select v.res_cat_type_name, v.employment_type_name, v.res_status_type_name, v.reason_type_name, v.job_type_name, v.resource_name, v.resource_qty, v.job_no, v.res_start_date
+FROM (SELECT  srv.RESOURCE_ID, srv.RESOURCE_NAME,
+		srv.RES_CATEGORY_TYPE_ID, srv.res_cat_type_code, srv.res_cat_type_name, srv.RESOURCE_TYPE_ID, srv.resource_type_code,
+		srv.resource_type_name, srv.EMPLOYMENT_TYPE_ID, srv.employment_type_code, srv.employment_type_name, srv.ACTIVE_FLAG, srv.FOREMAN_FLAG,
+		srv.SCH_RESOURCE_ID, srv.WEEKEND_SCH_RESOURCE_ID, srv.JOB_ID, srv.JOB_NO, srv.JOB_TYPE_ID, srv.job_type_code, srv.job_type_name,
+		srv.SERVICE_ID, srv.SERVICE_NO, srv.RES_STATUS_TYPE_ID, srv.res_status_type_code, srv.res_status_type_name,
+		srv.REASON_TYPE_ID, srv.reason_type_code, srv.reason_type_name, srv.FOREMAN_FLAG sch_foreman_flag,
+		srv.RES_START_DATE, srv.RES_START_TIME, srv.RES_END_DATE, srv.RES_END_TIME, srv.WEEKEND_FLAG, srv.report_to_name, srv.unconfirmed_flag,
+		srv.RESOURCE_QTY
+	FROM dbo.SCH_RESOURCES_V srv, 
+		(SELECT max(sch_resource_id) sch_resource_id FROM sch_resources_v s
+		WHERE 'true' = <?p:r_show_report.isNullSQLString('false')?>
+			AND s.organization_id = <?s:org_id.toSQLString()?>
+			AND (isnull(s.res_cat_type_code,'-1') <?p:r_res_cat_type_code.isNullSQLStringLike('%')?>
+				OR isnull(s.res_cat_type_code,'-1') IN ('<?p:r_res_cat_type_code?>') 
+				)
+			AND isnull(s.employment_type_id,-1) <?p:r_employment_type_id.isNullLike('%')?>
+			AND isnull(s.resource_type_id,-1) <?p:r_resource_type_id.isNullLike('%')?>
+			AND isnull(s.reason_type_code,-1) <?p:r_reason_type_code.isNullSQLStringLike('%')?>
+			AND isnull(s.job_type_id,-1) <?p:r_job_type_id.isNullLike('%')?>
+			AND ( s.res_start_date is null
+				OR	(<?p:r_from_date.isNullSQLString('1/1/1901')?> <= isnull(s.res_end_date,'1/1/2101')
+  					AND <?p:r_to_date.isNullSQLString('1/1/2101')?> >= s.res_start_date
+				)
+	   		)
+			GROUP BY resource_id
+	) unique_resources
+	WHERE 'true' = <?p:r_show_report.isNullSQLString('false')?> and srv.sch_resource_id = unique_resources.sch_resource_id
+	UNION
+	SELECT rv.RESOURCE_ID, rv.NAME resource_name,
+		rv.RES_CATEGORY_TYPE_ID, rv.res_cat_type_code, rv.res_cat_type_name, rv.RESOURCE_TYPE_ID, rv.resource_type_code,
+		rv.resource_type_name, rv.EMPLOYMENT_TYPE_ID, rv.employment_type_code, rv.employment_type_name, rv.ACTIVE_FLAG, rv.FOREMAN_FLAG,
+		null SCH_RESOURCE_ID, null WEEKEND_SCH_RESOURCE_ID, null JOB_ID, null JOB_NO, null JOB_TYPE_ID, null job_type_code, null job_type_name,
+		null SERVICE_ID, null SERVICE_NO, null RES_STATUS_TYPE_ID, null res_status_type_code, null res_status_type_name,
+		null REASON_TYPE_ID, 'unscheduled' reason_type_code, 'Unscheduled' reason_type_name, null sch_foreman_flag,
+		null RES_START_DATE, null RES_START_TIME, null RES_END_DATE, null RES_END_TIME, null WEEKEND_FLAG, null report_to_name, null unconfirmed_flag,
+		1 RESOURCE_QTY
+	FROM dbo.RESOURCES_V rv
+	WHERE 'true' = <?p:r_show_report.isNullSQLString('false')?>
+		AND (isnull(rv.res_cat_type_code,'-1') <?p:r_res_cat_type_code.isNullSQLStringLike('%')?>
+			OR isnull(rv.res_cat_type_code,'-1') IN ('<?p:r_res_cat_type_code?>') 
+			)
+		AND isnull(rv.employment_type_id,-1) <?p:r_employment_type_id.isNullLike('%')?>
+		AND isnull(rv.resource_type_id,-1) <?p:r_resource_type_id.isNullLike('%')?>
+		AND rv.organization_id = <?s:org_id.toSQLString()?>
+		AND rv.active_flag = 'Y'
+		AND 'unscheduled' <?p:r_reason_type_code.isNullSQLStringLike('%')?>
+		AND NOT EXISTS 
+		(SELECT resource_id, max(sch_resource_id) sch_resource_id FROM sch_resources_v s
+		WHERE 'true' = <?p:r_show_report.isNullSQLString('false')?>
+			AND s.organization_id = <?s:org_id.toSQLString()?>
+			AND (isnull(s.res_cat_type_code,'-1') <?p:r_res_cat_type_code.isNullSQLStringLike('%')?>
+				OR isnull(s.res_cat_type_code,'-1') IN ('<?p:r_res_cat_type_code?>') 
+				)
+			AND isnull(s.employment_type_id,-1) <?p:r_employment_type_id.isNullLike('%')?>
+			AND s.resource_type_id <?p:r_resource_type_id.isNullLike('%')?>
+			AND isnull(s.reason_type_code,-1) <?p:r_reason_type_code.isNullSQLStringLike('%')?>
+			AND isnull(s.job_type_id,-1) <?p:r_job_type_id.isNullLike('%')?>
+			AND ( s.res_start_date is null
+				OR	(<?p:r_from_date.isNullSQLString('1/1/1901')?> <= isnull(s.res_end_date,'1/1/2101')
+					AND <?p:r_to_date.isNullSQLString('1/1/2101')?> >= s.res_start_date
+				)
+		)
+		AND s.resource_id = rv.resource_id
+		GROUP BY resource_id
+		)
+	) v
+	ORDER BY v.res_cat_type_name, v.employment_type_name, v.res_status_type_name, v.reason_type_name, v.job_type_name, v.resource_name"
+	-->
+		<!--#SMARTCOLUMN title="Category" name="res_cat_type_name" sort="res_cat_type_name" -->
+		<!--#SMARTCOLUMN title="Employmt." name="employment_type_name" sort="employment_type_name" -->
+		<!--#SMARTCOLUMN title="Status" name="res_status_type_name" sort="res_status_type_name" value="<?r:emp:res_status_type_name.isNull('Available')?>" -->
+		<!--#SMARTCOLUMN title="Reason" name="reason_type_name" sort="reason_type_name" -->
+		<!--#SMARTCOLUMN title="Job Type" name="job_type_name" sort="job_type_name" -->
+		<!--#SMARTCOLUMN title="Resource Name" name="resource_name" sort="resource_name" -->
+		<!--#SMARTCOLUMN title="Qty" name="resource_qty" sort="resource_qty" total="true" -->
+		<!--#SMARTCOLUMN title="Job#" name="job_no" sort="job_no" align="center"-->
+		<!--#SMARTCOLUMN title="Start Date" name="res_start_date" sort="res_start_date" format="date"-->
+
+	<!--#/SMARTTABLE -->
+
+<!--#/IF-->
+
+</body>
+
+
+
+
+<script language="JavaScript">
+<!--
+
+	function redisplayPage()
+	{//used by report
+
+		var r_detail = escape(report.r_detail.value);
+		if( r_detail == null )
+			 r_detail = '';
+
+		var r_res_cat_type_code = escape(report.r_res_cat_type_code.value);
+		if( r_res_cat_type_code == null )
+			 r_res_cat_type_code = '';
+
+		var r_employment_type_id = escape(report.r_employment_type_id.value);
+		if( r_employment_type_id == null )
+			 r_employment_type_id = '';
+
+		var r_resource_type_id = escape(report.r_resource_type_id.value);
+		if( r_resource_type_id == null )
+			 r_resource_type_id = '';
+
+		var r_reason_type_code = escape(report.r_reason_type_code.value);
+		if( r_reason_type_code == null )
+			 r_reason_type_code = '';
+
+		var r_job_type_id = escape(report.r_job_type_id.value);
+		if( r_job_type_id == null )
+			 r_job_type_id = '';
+
+		var r_from_date = escape(report.r_from_date.value);
+		if( r_from_date == null )
+			 r_from_date = '';
+
+		var r_to_date = escape(report.r_to_date.value);
+		if( r_to_date == null )
+			 r_to_date = '';
+
+		location='{!s:showPage!}rep/sch_res_by_employ.html?r_detail='+r_detail+'&r_res_cat_type_code='+r_res_cat_type_code+'&r_employment_type_id='+r_employment_type_id+'&r_resource_type_id='+r_resource_type_id+'&r_reason_type_code='+r_reason_type_code+'&r_job_type_id='+r_job_type_id+'&r_from_date='+r_from_date+'&r_to_date='+r_to_date+'&r_show_report=true';
+	}
+
+-->
+</script>
+
+
+
+<!--#EMBED template="enet/embeds/footer.html" -->
+

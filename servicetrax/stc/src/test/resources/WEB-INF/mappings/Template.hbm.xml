@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.Template" table="TEMPLATES" schema="dbo" catalog="">
+        <id name="templateId" type="java.lang.Long">
+            <column name="TEMPLATE_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <property name="templateName" type="string">
+            <column name="TEMPLATE_NAME" length="50" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

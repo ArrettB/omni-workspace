@@ -1,0 +1,219 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: resource.html, 29, 4/7/2005 9:31:01 AM, Greg Case$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.mnt/resource.view?>"-->
+
+<body class="BodyTag" onLoad="setAttachedFlag();focusFirstField();">
+
+	<table width="100%" cellspacing="0" cellpadding="0">
+		<tr><td  class="HeaderBar">Edit Resource</td></tr>
+	</table>
+
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<!--#SMARTFORM name="mnt/resource" security="rights" table="resources"	key="resource_id"
+		prevTemplate="<?p:called_by.isNull('mnt/main_mnt')?>.html" nextTemplate="mnt/resource.html"
+		preHandler="ims.handlers.job_processing.SmartFormPreHandler" postHandler="ims.handlers.maintenance.ResourcePostHandler"
+		buttons="Save,New,Cancel" onClickFunction="exitFunction" -->
+		<!--#SMARTFIELD name="cur_user_id" value="<?p:cur_user_id?>" type="hidden" -->
+		<!--#SMARTFIELD name="vendor_name" type="hidden" -->
+		<!--#SMARTFIELD name="organization_id" type="hidden" value="<?s:org_id?>" -->
+		<!--#SMARTFIELD name="called_by" type="hidden" value="<?p:called_by?>" -->
+		<!--#SMARTFIELD name="res_action" type="hidden" value="loadResItems" --> <!-- used by ResourcePostHandler to load resource type items into resource items -->
+
+	<!--#IF evaluate="<?p:cur_user_id?>" compare="" -->
+		<!--#SMARTFIELD name="attached_flag" type="hidden" value="N" -->
+	<!--#ELSE-->
+	 	<tr>
+		 	<td width="100"><!--#SMARTFIELD title="User Name:" name="user_id" div="&nbsp;</td><td>" type="chooser" style="width:114" table="users_v" display="full_name" key="user_id" value="<?p:cur_user_id?>" readonly class="readonly" --></td>
+			<td width="100"><!--#SMARTFIELD title="Attached to User:" div="&nbsp;</td><td>" name="attached_flag" type="boolean" value="N" --></td>
+		</tr>
+	<!--#/IF-->
+		<tr>
+			<td colspan="2"><table>
+				<tr><td width="100"><!--#SMARTFIELD title="Resource Name:" name="name" div="&nbsp;</td><td>" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Resource Type:" name="resource_type_id" div="&nbsp;</td><td>" type="droplist" table="resource_types_v" display="resource_type_name" key="resource_type_id" orderBy="resource_type_name" onChange="setDefaultCategory(this)" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Foreman:" name="foreman_flag" type="boolean" div="&nbsp;</td><td>" value="N" --></td></tr>
+			</table></td>
+			<td colspan="2" align="left"><table>
+				<!-- vendor status, vendstts, 1=active, 2=inactive, 3=temporary, don't wan't inactives -->
+				<tr><td><!--#SMARTFIELD title="Resource&nbsp;Category:" name="res_category_type_id" div="&nbsp;</td><td>" type="droplist" table="resource_category_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no"--></td></tr>
+				<tr><td><!--#SMARTFIELD title="Active:" name="active_flag" type="boolean" div="&nbsp;</td><td>" value="Y" --></td></tr>
+				<tr><td width="100"><!--#SMARTFIELD title="Vendor:" name="ext_vendor_id" div="&nbsp;</td><td>" resourceName="SQLServer" type="droplist" style="width:114" onChange="setVendorName(this);"
+				     query="SELECT ext_vendor_id, vendor_name
+				              FROM vendors_v v
+				             WHERE organization_id = <?s:org_id.toPStmtInt()?>
+				               AND (NOT EXISTS (SELECT 'x' FROM resources WHERE ext_vendor_id = v.ext_vendor_id)
+				                OR ext_vendor_id = <?r:mnt/resource:ext_vendor_id.toPStmtString()?>)
+				          ORDER BY vendor_name"--></td></tr>
+			</table></td>
+		</tr>
+		<tr>
+			<td colspan="4" class="HeaderLabel">Notes About Resource:</td>
+		</tr>
+		<tr>
+			<td colspan="4" rowspan="1"><!--#SMARTFIELD name="notes" type="textarea" cols="100" rows="3" --></td>
+		</tr>
+      <!--#IF evaluate="<?d:mode?>" compare="Update" -->
+		<tr><td colspan="4" class="HeaderBar">System Info</td></tr>
+		<tr>
+			<td width="75"><!--#SMARTFIELD title="Date Created:" div="&nbsp;</td><td>" name="date_created" type="datetime" mode="Update" readonly class="readonly" size="22" --></td>
+			<td width="75"><!--#SMARTFIELD title="Created By:" div="&nbsp;</td><td>" name="created_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+		</tr>
+		<tr>
+			<td width="75"><!--#SMARTFIELD title="Date Modified:" div="&nbsp;</td><td>" name="date_modified" type="datetime" mode="Update" readonly class="readonly" size="22"--></td>
+			<td width="75"><!--#SMARTFIELD title="Modified By:" div="&nbsp;</td><td>" name="modified_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+		</tr>
+		<!--#/IF-->
+	<!--#/SMARTFORM -->
+	</table>
+
+   <!--#IF evaluate="<?d:mode?>" compare="Update" -->
+		<!--#IF defined="<?s:rights.mnt/resource_items.view?>" -->
+			<input type="button" class="button" name="button" value="Resource Items" onClick="location='{!s:showPage!}mnt/resource_items.html?called_by={!p:called_by!}&called_by2=mnt/resource&cur_user_id={!p:cur_user_id!}&resource_id={!p:resource_id!}'">
+			<br><br>
+		<!--#/IF-->
+	<!--#/IF-->
+
+	<table width="100%" cellspacing="0" cellpadding="0">
+	<!--#IF evaluate="<?p:cur_user_id?>" compare="" -->
+		<tr><td class="HeaderBar">Service Provider Resources</td></tr>
+		<tr>
+			<td class="Label">View:
+				&nbsp;<a href="{!s:showPage!}mnt/resource.html?cur_user_id={!p:cur_user_id!}&resource_id={!p:resource_id!}&active_filter=Y">Active</a>&nbsp;
+				&nbsp;<a href="{!s:showPage!}mnt/resource.html?cur_user_id={!p:cur_user_id!}&resource_id={!p:resource_id!}&active_filter=N">Inactive</a>&nbsp;
+				&nbsp;<a href="{!s:showPage!}mnt/resource.html?cur_user_id={!p:cur_user_id!}&resource_id={!p:resource_id!}&active_filter=">All</a>&nbsp;&nbsp;Resources
+			</td>
+		</tr>
+	<!--#ELSE-->
+		<tr><td class="HeaderBar">Select a Resource to Edit or Attach</td></tr>
+		<tr>
+			<td class="Label">View:
+				&nbsp;<a href="{!s:showPage!}mnt/resource.html?cur_user_id={!p:cur_user_id!}&resource_id={!p:resource_id!}&active_filter=Y&attached_filter=Y">Attached</a>&nbsp;
+				&nbsp;<a href="{!s:showPage!}mnt/resource.html?cur_user_id={!p:cur_user_id!}&resource_id={!p:resource_id!}&active_filter=Y&attached_filter=N">Unattached</a>&nbsp
+				&nbsp;<a href="{!s:showPage!}mnt/resource.html?cur_user_id={!p:cur_user_id!}&resource_id={!p:resource_id!}&active_filter=Y&attached_filter=">Both</a>&nbsp;&nbsp;Resources
+			</td>
+		</tr>
+	<!--#/IF-->
+	</table>
+
+	<HR>
+
+	<!--#SMARTTABLE class="SmartTable" name="resources"
+		query="SELECT r.resource_id, r.res_cat_type_name, r.resource_type_name, r.employment_type_name, r.vendor_name, r.name, r.active_flag, r.attached_flag
+				 FROM resources_v r
+				WHERE r.organization_id = <?s:org_id.toPStmtString()?>
+			  	  AND r.active_flag like <?p:active_filter.isNull('%').toPStmtString()?>
+				  AND r.attached_flag like <?p:attached_filter.isNull('%').toPStmtString()?>
+				  AND (r.user_id like <?p:cur_user_id.isNull('%').toPStmtString()?> or r.user_id is null)
+			 ORDER BY name"  -->
+		<!--#IF defined="<?s:rights.mnt/resource.update?>"-->
+	   	<!--#SMARTCOLUMN name="name" sort="name" title="Resource Name" href="<?s:showPage?>mnt/resource.html?cur_user_id=<?p:cur_user_id?>&resource_id=<?r:resources:resource_id?>" filter="name:r.name" -->
+		<!--#ELSE-->
+	   	<!--#SMARTCOLUMN name="name" sort="name" title="Resource Name" filter="name:r.name"	-->
+		<!--#/IF-->
+	  	<!--#SMARTCOLUMN name="res_cat_type_name" sort="res_cat_type_name" title="Res Category"
+	  		filter="res_cat_type_name:r.res_cat_type_name"
+			filterQuery="SELECT l.name id, l.name FROM lookups l, lookup_types lt WHERE lt.code = 'resource_category_type' AND l.lookup_type_id = lt.lookup_type_id ORDER BY l.name"
+			filterQuick="true"
+	  	-->
+	  	<!--#SMARTCOLUMN name="resource_type_name" sort="resource_type_name" title="Res Type"
+	  		filter="resource_type_name:r.resource_type_name"
+			filterQuery="SELECT name id, name FROM resource_types ORDER BY name"
+			filterQuick="true"
+	  	-->
+	  	<!--#SMARTCOLUMN name="employment_type_name" sort="employment_type_name" title="Employment"
+	  		filter="employment_type_name:r.employment_type_name"
+			filterQuery="SELECT l.name id, l.name FROM lookups l, lookup_types lt WHERE lt.code = 'employment_type' AND l.lookup_type_id = lt.lookup_type_id ORDER BY l.name"
+			filterQuick="true"
+	  	-->
+	  	<!--#SMARTCOLUMN name="vendor_name" sort="vendor_name" title="Vendor" align="left" -->
+	  	<!--#SMARTCOLUMN name="active_flag" sort="active_flag" title="Active?" align="center" -->
+	  	<!--#SMARTCOLUMN name="attached_flag" sort="attached_flag" title="Attached To&nbsp;User?" align="center" -->
+	<!--#/SMARTTABLE -->
+
+</body>
+
+<script language="JavaScript">
+<!--
+
+	function exitFunction(button)
+	{
+		if( button == 'Delete' )
+		{
+			document.resource.active_flag.value = 'N';
+			document.resource.button.value = 'Save';
+		}
+		if( button == 'Save' )
+		{//if changing attached_flag to no, then blank user_id
+			if( !(resource.attached_flag.options === undefined ) )
+				if( resource.attached_flag.options[resource.attached_flag.selectedIndex].value == 'N' )
+					document.resource.cur_user_id.value = "";
+		}
+	}
+
+   var res_categories = new Array();
+   <!-- retrieve resource type categories -->
+ 	<!--#SQLLOOP query="SELECT resource_type_id, def_res_cat_type_id
+ 	                    FROM resource_types"
+					resourceName="SQLServer"
+					name="defCatQuery"
+   -->
+   res_categories[{!r:defCatQuery:resource_type_id!}] = {!r:defCatQuery:def_res_cat_type_id.toJavaScriptString()!};
+   <!--#/SQLLOOP-->
+
+	function setDefaultCategory(res_type_field)
+	{
+
+		var cur_index = res_type_field.selectedIndex;
+		var res_type_id = res_type_field.options[cur_index].value;
+		var def_cat_id;
+		if( res_categories[res_type_id] === undefined )
+		{
+			//not found don't set
+		}
+		else
+		{//found default category
+			def_cat_id = res_categories[res_type_id];
+		   for( i=0; i < resource.res_category_type_id.length; i++)
+		   {//set res category droplist
+				if( resource.res_category_type_id.options[i].value == def_cat_id )
+				{
+					resource.res_category_type_id.options[i].selected = true;
+					break;
+				}
+			}
+		}
+	}
+
+	function setVendorName(droplist)
+	{
+		//set vendor name to be used in smart tables in the future
+		document.resource.vendor_name.value = droplist.options[droplist.selectedIndex].text;
+
+		//ask if should default resource name as vendor name
+		if( confirm("Should the Resource Name be replaced by the Vendor's Name?") )
+			document.resource.name.value = droplist.options[droplist.selectedIndex].text;
+	}
+
+	function setAttachedFlag()
+	{//set attached flag to yes saving user a step
+
+	<!--#IF evaluate="<?p:cur_user_id?>" compare="" -->
+	<!--#ELSE-->
+		if( resource.attached_flag.options[resource.attached_flag.selectedIndex].value == 'N' )
+		{
+		   for( i=0; i < resource.attached_flag.length; i++)
+		   {//set attached_flag = "Yes"
+				if( resource.attached_flag.options[i].value == 'Y')
+				{
+					resource.attached_flag.options[i].selected = true;
+				}
+			}
+		}
+	<!--#/IF-->
+	}
+
+//-->
+</script>
+
+<!--#EMBED template="embeds/footer.html" -->

@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.JobLocation" table="JOB_LOCATIONS" schema="dbo" catalog="">
+        <id name="jobLocationId" type="java.lang.Long">
+            <column name="JOB_LOCATION_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="lookupByWallProtectionTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="WALL_PROTECTION_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByMultiLevelTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="MULTI_LEVEL_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByElevatorAvailTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ELEVATOR_AVAIL_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByDockReservReqTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="DOCK_RESERV_REQ_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupBySecurityTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="SECURITY_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByDoorwayProtTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="DOORWAY_PROT_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="userByModifiedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByJobLocContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="JOB_LOC_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByBldgMgmtContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="BLDG_MGMT_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupBySemiAccessTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="SEMI_ACCESS_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByLoadingDockTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="LOADING_DOCK_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByLocationTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="LOCATION_TYPE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="lookupByStairCarryTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="STAIR_CARRY_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="customer" class="com.dynamic.servicetrax.orm.Customer" fetch="select">
+            <column name="CUSTOMER_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="lookupByFloorProtectionTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="FLOOR_PROTECTION_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="userByCreatedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="lookupByElevatorReservReqTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ELEVATOR_RESERV_REQ_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <property name="jobLocationName" type="string">
+            <column name="JOB_LOCATION_NAME" length="50" not-null="true" />
+        </property>
+        <property name="extAddressId" type="string">
+            <column name="EXT_ADDRESS_ID" length="30" />
+        </property>
+        <property name="street1" type="string">
+            <column name="STREET1" length="100" />
+        </property>
+        <property name="street2" type="string">
+            <column name="STREET2" length="100" />
+        </property>
+        <property name="street3" type="string">
+            <column name="STREET3" length="100" />
+        </property>
+        <property name="city" type="string">
+            <column name="CITY" length="50" />
+        </property>
+        <property name="state" type="string">
+            <column name="STATE" length="2" />
+        </property>
+        <property name="zip" type="string">
+            <column name="ZIP" length="10" />
+        </property>
+        <property name="country" type="string">
+            <column name="COUNTRY" length="100" />
+        </property>
+        <property name="directions" type="string">
+            <column name="DIRECTIONS" length="500" />
+        </property>
+        <property name="dockAvailableTime" type="string">
+            <column name="DOCK_AVAILABLE_TIME" length="30" />
+        </property>
+        <property name="dockHeight" type="string">
+            <column name="DOCK_HEIGHT" length="20" />
+        </property>
+        <property name="stairCarryFlights" type="java.lang.Long">
+            <column name="STAIR_CARRY_FLIGHTS" precision="18" scale="0" />
+        </property>
+        <property name="stairCarryStairs" type="string">
+            <column name="STAIR_CARRY_STAIRS" length="15" />
+        </property>
+        <property name="smallestDoorElevWidth" type="string">
+            <column name="SMALLEST_DOOR_ELEV_WIDTH" length="20" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <set name="requests" inverse="true">
+            <key>
+                <column name="JOB_LOCATION_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="servicesForReportToLocId" inverse="true">
+            <key>
+                <column name="REPORT_TO_LOC_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Service" />
+        </set>
+        <set name="servicesForJobLocationId" inverse="true">
+            <key>
+                <column name="JOB_LOCATION_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Service" />
+        </set>
+        <set name="servicesForJobLocationId_1" inverse="true">
+            <key>
+                <column name="JOB_LOCATION_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Service" />
+        </set>
+    </class>
+</hibernate-mapping>

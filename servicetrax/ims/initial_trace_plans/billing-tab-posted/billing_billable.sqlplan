@@ -1,0 +1,915 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ShowPlanXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0" Build="9.00.3054.00" xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan">
+  <BatchSequence>
+    <Batch>
+      <Statements>
+        <StmtSimple StatementCompId="1" StatementEstRows="811602" StatementId="1" StatementOptmLevel="FULL" StatementSubTreeCost="802.73" StatementText="SELECT bill_job_no, bill_job_id, bill_service_no, bill_service_id, service_description, invoice_id, bill_service_line_no, service_line_id, service_line_date,&#xD;&#xA;			cust_col_1, cust_col_2, cust_col_3, cust_col_4, cust_col_5, cust_col_6, cust_col_7, cust_col_8, cust_col_9, cust_col_10,&#xD;&#xA;			payroll_qty, bill_hourly_qty, bill_rate, bill_total, item_name, resource_name, item_type_code, '' statusCheckBox, posted_flag, billed_flag, posted_from_invoice_id,&#xD;&#xA;			invoiced_date&#xD;&#xA;	FROM billing_v&#xD;&#xA;	WHERE billable_flag =  'Y'&#xD;&#xA;	  AND ((status_id = 4 AND invoice_id IS NOT NULL) OR status_id = 5)&#xD;&#xA;		 &#xD;&#xA;		AND (posted_flag =  'Y' &#xD;&#xA;		      OR &#xD;&#xA;		     billed_flag =  'Y' )&#xD;&#xA;	ORDER BY service_line_date desc, bill_service_no, bill_service_line_no" StatementType="SELECT">
+          <StatementSetOptions ANSI_NULLS="false" ANSI_PADDING="false" ANSI_WARNINGS="false" ARITHABORT="true" CONCAT_NULL_YIELDS_NULL="false" NUMERIC_ROUNDABORT="false" QUOTED_IDENTIFIER="false" />
+          <QueryPlan DegreeOfParallelism="4" MemoryGrant="44788" CachedPlanSize="175" CompileTime="130" CompileCPU="112" CompileMemory="2928">
+            <MissingIndexes>
+              <MissingIndexGroup Impact="8.0852">
+                <MissingIndex Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]">
+                  <ColumnGroup Usage="EQUALITY">
+                    <Column Name="[BILLABLE_FLAG]" ColumnId="32" />
+                    <Column Name="[INTERNAL_REQ_FLAG]" ColumnId="58" />
+                  </ColumnGroup>
+                  <ColumnGroup Usage="INEQUALITY">
+                    <Column Name="[STATUS_ID]" ColumnId="14" />
+                  </ColumnGroup>
+                  <ColumnGroup Usage="INCLUDE">
+                    <Column Name="[SERVICE_LINE_ID]" ColumnId="2" />
+                    <Column Name="[BILL_JOB_NO]" ColumnId="6" />
+                    <Column Name="[BILL_SERVICE_NO]" ColumnId="7" />
+                    <Column Name="[BILL_SERVICE_LINE_NO]" ColumnId="8" />
+                    <Column Name="[SERVICE_LINE_DATE]" ColumnId="10" />
+                    <Column Name="[BILLED_FLAG]" ColumnId="16" />
+                    <Column Name="[POSTED_FLAG]" ColumnId="17" />
+                    <Column Name="[BILL_JOB_ID]" ColumnId="21" />
+                    <Column Name="[BILL_SERVICE_ID]" ColumnId="22" />
+                    <Column Name="[RESOURCE_NAME]" ColumnId="25" />
+                    <Column Name="[ITEM_NAME]" ColumnId="27" />
+                    <Column Name="[ITEM_TYPE_CODE]" ColumnId="28" />
+                    <Column Name="[INVOICE_ID]" ColumnId="29" />
+                    <Column Name="[POSTED_FROM_INVOICE_ID]" ColumnId="30" />
+                    <Column Name="[PAYROLL_QTY]" ColumnId="38" />
+                    <Column Name="[BILL_RATE]" ColumnId="48" />
+                    <Column Name="[BILL_HOURLY_QTY]" ColumnId="51" />
+                    <Column Name="[bill_total]" ColumnId="85" />
+                    <Column Name="[INVOICE_POST_DATE]" ColumnId="89" />
+                  </ColumnGroup>
+                </MissingIndex>
+              </MissingIndexGroup>
+            </MissingIndexes>
+            <RelOp AvgRowSize="1903" EstimateCPU="0.0811602" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="811602" LogicalOp="Compute Scalar" NodeId="0" Parallel="false" PhysicalOp="Compute Scalar" EstimatedTotalSubtreeCost="802.73">
+              <OutputList>
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_ID" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_NO" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_NO" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_LINE_NO" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_DATE" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_ID" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_ID" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="RESOURCE_NAME" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="ITEM_NAME" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="ITEM_TYPE_CODE" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FROM_INVOICE_ID" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="PAYROLL_QTY" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_RATE" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_HOURLY_QTY" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILLED_FLAG" ComputedColumn="true" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FLAG" ComputedColumn="true" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="bill_total" ComputedColumn="true" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="DESCRIPTION" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_1" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_2" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_3" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_4" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_5" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_6" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_7" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_8" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_9" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_10" />
+                <ColumnReference Column="Expr1063" />
+                <ColumnReference Column="Expr1066" />
+              </OutputList>
+              <ComputeScalar>
+                <DefinedValues>
+                  <DefinedValue>
+                    <ColumnReference Column="Expr1063" />
+                    <ScalarOperator ScalarString="isnull([servicetrax_dev].[dbo].[SERVICE_LINES].[INVOICE_POST_DATE] as [sl].[INVOICE_POST_DATE],[servicetrax_dev].[dbo].[INVOICES].[DATE_SENT] as [i].[DATE_SENT])">
+                      <Intrinsic FunctionName="isnull">
+                        <ScalarOperator>
+                          <Identifier>
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_POST_DATE" />
+                          </Identifier>
+                        </ScalarOperator>
+                        <ScalarOperator>
+                          <Identifier>
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Alias="[i]" Column="DATE_SENT" />
+                          </Identifier>
+                        </ScalarOperator>
+                      </Intrinsic>
+                    </ScalarOperator>
+                  </DefinedValue>
+                  <DefinedValue>
+                    <ColumnReference Column="Expr1066" />
+                    <ScalarOperator ScalarString="''">
+                      <Const ConstValue="''" />
+                    </ScalarOperator>
+                  </DefinedValue>
+                </DefinedValues>
+                <RelOp AvgRowSize="1909" EstimateCPU="63.8713" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="811602" LogicalOp="Gather Streams" NodeId="1" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="802.649">
+                  <OutputList>
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_ID" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_NO" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_NO" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_LINE_NO" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_DATE" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_ID" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_ID" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="RESOURCE_NAME" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="ITEM_NAME" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="ITEM_TYPE_CODE" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FROM_INVOICE_ID" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="PAYROLL_QTY" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_RATE" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_HOURLY_QTY" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_POST_DATE" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILLED_FLAG" ComputedColumn="true" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FLAG" ComputedColumn="true" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="bill_total" ComputedColumn="true" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="DESCRIPTION" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_1" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_2" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_3" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_4" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_5" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_6" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_7" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_8" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_9" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_10" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Alias="[i]" Column="DATE_SENT" />
+                  </OutputList>
+                  <RunTimeInformation>
+                    <RunTimeCountersPerThread Thread="0" ActualRows="883778" ActualEndOfScans="1" ActualExecutions="1" />
+                  </RunTimeInformation>
+                  <Parallelism>
+                    <OrderBy>
+                      <OrderByColumn Ascending="false">
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_DATE" />
+                      </OrderByColumn>
+                      <OrderByColumn Ascending="true">
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_NO" />
+                      </OrderByColumn>
+                      <OrderByColumn Ascending="true">
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_LINE_NO" />
+                      </OrderByColumn>
+                    </OrderBy>
+                    <RelOp AvgRowSize="1909" EstimateCPU="1.69625" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="811602" LogicalOp="Left Outer Join" NodeId="2" Parallel="true" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="738.778">
+                      <OutputList>
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_ID" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_NO" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_NO" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_LINE_NO" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_DATE" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_ID" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_ID" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="RESOURCE_NAME" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="ITEM_NAME" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="ITEM_TYPE_CODE" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FROM_INVOICE_ID" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="PAYROLL_QTY" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_RATE" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_HOURLY_QTY" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_POST_DATE" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILLED_FLAG" ComputedColumn="true" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FLAG" ComputedColumn="true" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="bill_total" ComputedColumn="true" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="DESCRIPTION" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_1" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_2" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_3" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_4" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_5" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_6" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_7" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_8" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_9" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_10" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Alias="[i]" Column="DATE_SENT" />
+                      </OutputList>
+                      <RunTimeInformation>
+                        <RunTimeCountersPerThread Thread="3" ActualRows="291292" ActualEndOfScans="1" ActualExecutions="1" />
+                        <RunTimeCountersPerThread Thread="1" ActualRows="139305" ActualEndOfScans="1" ActualExecutions="1" />
+                        <RunTimeCountersPerThread Thread="4" ActualRows="161199" ActualEndOfScans="1" ActualExecutions="1" />
+                        <RunTimeCountersPerThread Thread="2" ActualRows="291982" ActualEndOfScans="1" ActualExecutions="1" />
+                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                      </RunTimeInformation>
+                      <NestedLoops Optimized="false" WithOrderedPrefetch="true">
+                        <OuterReferences>
+                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                          <ColumnReference Column="Expr1076" />
+                        </OuterReferences>
+                        <RelOp AvgRowSize="1901" EstimateCPU="1.69625" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="811602" LogicalOp="Inner Join" NodeId="4" Parallel="true" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="600.931">
+                          <OutputList>
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_ID" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_NO" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_NO" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_LINE_NO" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_DATE" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_ID" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_ID" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="RESOURCE_NAME" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="ITEM_NAME" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="ITEM_TYPE_CODE" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FROM_INVOICE_ID" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="PAYROLL_QTY" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_RATE" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_HOURLY_QTY" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_POST_DATE" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILLED_FLAG" ComputedColumn="true" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FLAG" ComputedColumn="true" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="bill_total" ComputedColumn="true" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="DESCRIPTION" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_1" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_2" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_3" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_4" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_5" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_6" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_7" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_8" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_9" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_10" />
+                          </OutputList>
+                          <RunTimeInformation>
+                            <RunTimeCountersPerThread Thread="3" ActualRows="291292" ActualEndOfScans="1" ActualExecutions="1" />
+                            <RunTimeCountersPerThread Thread="1" ActualRows="139305" ActualEndOfScans="1" ActualExecutions="1" />
+                            <RunTimeCountersPerThread Thread="4" ActualRows="161199" ActualEndOfScans="1" ActualExecutions="1" />
+                            <RunTimeCountersPerThread Thread="2" ActualRows="291982" ActualEndOfScans="1" ActualExecutions="1" />
+                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                          </RunTimeInformation>
+                          <NestedLoops Optimized="false">
+                            <PassThru>
+                              <ScalarOperator ScalarString="[IsBaseRow1003] IS NULL">
+                                <Compare CompareOp="IS">
+                                  <ScalarOperator>
+                                    <Identifier>
+                                      <ColumnReference Column="IsBaseRow1003" />
+                                    </Identifier>
+                                  </ScalarOperator>
+                                  <ScalarOperator>
+                                    <Const ConstValue="NULL" />
+                                  </ScalarOperator>
+                                </Compare>
+                              </ScalarOperator>
+                            </PassThru>
+                            <OuterReferences>
+                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="SERVICE_ID" />
+                            </OuterReferences>
+                            <RelOp AvgRowSize="388" EstimateCPU="1.69625" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="811602" LogicalOp="Left Outer Join" NodeId="5" Parallel="true" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="470.674">
+                              <OutputList>
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_ID" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_NO" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_NO" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_LINE_NO" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_DATE" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_ID" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_ID" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="RESOURCE_NAME" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="ITEM_NAME" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="ITEM_TYPE_CODE" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FROM_INVOICE_ID" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="PAYROLL_QTY" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_RATE" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_HOURLY_QTY" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_POST_DATE" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILLED_FLAG" ComputedColumn="true" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FLAG" ComputedColumn="true" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="bill_total" ComputedColumn="true" />
+                                <ColumnReference Column="IsBaseRow1003" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="SERVICE_ID" />
+                              </OutputList>
+                              <RunTimeInformation>
+                                <RunTimeCountersPerThread Thread="3" ActualRows="291292" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="1" ActualRows="139305" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="4" ActualRows="161199" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="2" ActualRows="291982" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                              </RunTimeInformation>
+                              <NestedLoops Optimized="false" WithOrderedPrefetch="true">
+                                <OuterReferences>
+                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_ID" />
+                                  <ColumnReference Column="Expr1075" />
+                                </OuterReferences>
+                                <RelOp AvgRowSize="378" EstimateCPU="11.0877" EstimateIO="240.518" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="811602" LogicalOp="Sort" NodeId="7" Parallel="true" PhysicalOp="Sort" EstimatedTotalSubtreeCost="338.682">
+                                  <OutputList>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_ID" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_NO" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_NO" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_LINE_NO" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_DATE" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_ID" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_ID" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="RESOURCE_NAME" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="ITEM_NAME" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="ITEM_TYPE_CODE" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FROM_INVOICE_ID" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="PAYROLL_QTY" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_RATE" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_HOURLY_QTY" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_POST_DATE" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILLED_FLAG" ComputedColumn="true" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FLAG" ComputedColumn="true" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="bill_total" ComputedColumn="true" />
+                                  </OutputList>
+                                  <MemoryFractions Input="1" Output="1" />
+                                  <RunTimeInformation>
+                                    <RunTimeCountersPerThread Thread="1" ActualRebinds="1" ActualRewinds="0" ActualRows="139305" ActualEndOfScans="1" ActualExecutions="1" />
+                                    <RunTimeCountersPerThread Thread="3" ActualRebinds="1" ActualRewinds="0" ActualRows="291292" ActualEndOfScans="1" ActualExecutions="1" />
+                                    <RunTimeCountersPerThread Thread="4" ActualRebinds="1" ActualRewinds="0" ActualRows="161199" ActualEndOfScans="1" ActualExecutions="1" />
+                                    <RunTimeCountersPerThread Thread="2" ActualRebinds="1" ActualRewinds="0" ActualRows="291982" ActualEndOfScans="1" ActualExecutions="1" />
+                                    <RunTimeCountersPerThread Thread="0" ActualRebinds="0" ActualRewinds="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                  </RunTimeInformation>
+                                  <Sort Distinct="false">
+                                    <OrderBy>
+                                      <OrderByColumn Ascending="false">
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_DATE" />
+                                      </OrderByColumn>
+                                      <OrderByColumn Ascending="true">
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_NO" />
+                                      </OrderByColumn>
+                                      <OrderByColumn Ascending="true">
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_LINE_NO" />
+                                      </OrderByColumn>
+                                    </OrderBy>
+                                    <RelOp AvgRowSize="378" EstimateCPU="1.54163" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="811602" LogicalOp="Filter" NodeId="8" Parallel="true" PhysicalOp="Filter" EstimatedTotalSubtreeCost="87.0766">
+                                      <OutputList>
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_ID" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_NO" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_NO" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_LINE_NO" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_DATE" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_ID" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_ID" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="RESOURCE_NAME" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="ITEM_NAME" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="ITEM_TYPE_CODE" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FROM_INVOICE_ID" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="PAYROLL_QTY" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_RATE" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_HOURLY_QTY" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_POST_DATE" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILLED_FLAG" ComputedColumn="true" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FLAG" ComputedColumn="true" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="bill_total" ComputedColumn="true" />
+                                      </OutputList>
+                                      <RunTimeInformation>
+                                        <RunTimeCountersPerThread Thread="3" ActualRows="291292" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="1" ActualRows="139305" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="4" ActualRows="161199" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="2" ActualRows="291982" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                      </RunTimeInformation>
+                                      <Filter StartupExpression="false">
+                                        <RelOp AvgRowSize="393" EstimateCPU="0.0517325" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1034650" LogicalOp="Compute Scalar" NodeId="9" Parallel="true" PhysicalOp="Compute Scalar" EstimatedTotalSubtreeCost="85.535">
+                                          <OutputList>
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_ID" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_NO" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_NO" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_LINE_NO" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_DATE" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="STATUS_ID" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_ID" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_ID" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="RESOURCE_NAME" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="ITEM_NAME" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="ITEM_TYPE_CODE" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FROM_INVOICE_ID" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILLABLE_FLAG" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="PAYROLL_QTY" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_RATE" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_HOURLY_QTY" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INTERNAL_REQ_FLAG" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_POST_DATE" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILLED_FLAG" ComputedColumn="true" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FLAG" ComputedColumn="true" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="bill_total" ComputedColumn="true" />
+                                          </OutputList>
+                                          <ComputeScalar>
+                                            <DefinedValues>
+                                              <DefinedValue>
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILLED_FLAG" ComputedColumn="true" />
+                                                <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[SERVICE_LINES].[BILLED_FLAG] as [sl].[BILLED_FLAG]">
+                                                  <Identifier>
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILLED_FLAG" ComputedColumn="true" />
+                                                  </Identifier>
+                                                </ScalarOperator>
+                                              </DefinedValue>
+                                              <DefinedValue>
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FLAG" ComputedColumn="true" />
+                                                <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[SERVICE_LINES].[POSTED_FLAG] as [sl].[POSTED_FLAG]">
+                                                  <Identifier>
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FLAG" ComputedColumn="true" />
+                                                  </Identifier>
+                                                </ScalarOperator>
+                                              </DefinedValue>
+                                              <DefinedValue>
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="bill_total" ComputedColumn="true" />
+                                                <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[SERVICE_LINES].[bill_total] as [sl].[bill_total]">
+                                                  <Identifier>
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="bill_total" ComputedColumn="true" />
+                                                  </Identifier>
+                                                </ScalarOperator>
+                                              </DefinedValue>
+                                            </DefinedValues>
+                                            <RelOp AvgRowSize="395" EstimateCPU="0.0517325" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1034650" LogicalOp="Compute Scalar" NodeId="10" Parallel="true" PhysicalOp="Compute Scalar" EstimatedTotalSubtreeCost="85.4833">
+                                              <OutputList>
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_ID" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_NO" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_NO" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_LINE_NO" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_DATE" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="STATUS_ID" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILLED_FLAG" ComputedColumn="true" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FLAG" ComputedColumn="true" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_ID" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_ID" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="RESOURCE_NAME" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="ITEM_NAME" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="ITEM_TYPE_CODE" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FROM_INVOICE_ID" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILLABLE_FLAG" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="PAYROLL_QTY" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_RATE" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_HOURLY_QTY" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INTERNAL_REQ_FLAG" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="bill_total" ComputedColumn="true" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_POST_DATE" />
+                                              </OutputList>
+                                              <ComputeScalar>
+                                                <DefinedValues>
+                                                  <DefinedValue>
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILLED_FLAG" ComputedColumn="true" />
+                                                    <ScalarOperator ScalarString="CASE WHEN [servicetrax_dev].[dbo].[SERVICE_LINES].[INVOICE_ID] as [sl].[INVOICE_ID] IS NOT NULL THEN 'Y' ELSE 'N' END">
+                                                      <IF>
+                                                        <Condition>
+                                                          <ScalarOperator>
+                                                            <Compare CompareOp="IS NOT">
+                                                              <ScalarOperator>
+                                                                <Identifier>
+                                                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                                                                </Identifier>
+                                                              </ScalarOperator>
+                                                              <ScalarOperator>
+                                                                <Const ConstValue="NULL" />
+                                                              </ScalarOperator>
+                                                            </Compare>
+                                                          </ScalarOperator>
+                                                        </Condition>
+                                                        <Then>
+                                                          <ScalarOperator>
+                                                            <Const ConstValue="'Y'" />
+                                                          </ScalarOperator>
+                                                        </Then>
+                                                        <Else>
+                                                          <ScalarOperator>
+                                                            <Const ConstValue="'N'" />
+                                                          </ScalarOperator>
+                                                        </Else>
+                                                      </IF>
+                                                    </ScalarOperator>
+                                                  </DefinedValue>
+                                                  <DefinedValue>
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FLAG" ComputedColumn="true" />
+                                                    <ScalarOperator ScalarString="CASE WHEN [servicetrax_dev].[dbo].[SERVICE_LINES].[STATUS_ID] as [sl].[STATUS_ID]=(5.) THEN 'Y' ELSE 'N' END">
+                                                      <IF>
+                                                        <Condition>
+                                                          <ScalarOperator>
+                                                            <Compare CompareOp="EQ">
+                                                              <ScalarOperator>
+                                                                <Identifier>
+                                                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="STATUS_ID" />
+                                                                </Identifier>
+                                                              </ScalarOperator>
+                                                              <ScalarOperator>
+                                                                <Const ConstValue="(5.)" />
+                                                              </ScalarOperator>
+                                                            </Compare>
+                                                          </ScalarOperator>
+                                                        </Condition>
+                                                        <Then>
+                                                          <ScalarOperator>
+                                                            <Const ConstValue="'Y'" />
+                                                          </ScalarOperator>
+                                                        </Then>
+                                                        <Else>
+                                                          <ScalarOperator>
+                                                            <Const ConstValue="'N'" />
+                                                          </ScalarOperator>
+                                                        </Else>
+                                                      </IF>
+                                                    </ScalarOperator>
+                                                  </DefinedValue>
+                                                  <DefinedValue>
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="bill_total" ComputedColumn="true" />
+                                                    <ScalarOperator ScalarString="isnull([servicetrax_dev].[dbo].[SERVICE_LINES].[BILL_QTY] as [sl].[BILL_QTY]*[servicetrax_dev].[dbo].[SERVICE_LINES].[BILL_RATE] as [sl].[BILL_RATE],(0.00000))">
+                                                      <Intrinsic FunctionName="isnull">
+                                                        <ScalarOperator>
+                                                          <Arithmetic Operation="MULT">
+                                                            <ScalarOperator>
+                                                              <Identifier>
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_QTY" />
+                                                              </Identifier>
+                                                            </ScalarOperator>
+                                                            <ScalarOperator>
+                                                              <Identifier>
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_RATE" />
+                                                              </Identifier>
+                                                            </ScalarOperator>
+                                                          </Arithmetic>
+                                                        </ScalarOperator>
+                                                        <ScalarOperator>
+                                                          <Const ConstValue="(0.00000)" />
+                                                        </ScalarOperator>
+                                                      </Intrinsic>
+                                                    </ScalarOperator>
+                                                  </DefinedValue>
+                                                </DefinedValues>
+                                                <RelOp AvgRowSize="381" EstimateCPU="0.569135" EstimateIO="84.8624" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1034650" LogicalOp="Clustered Index Scan" NodeId="11" Parallel="true" PhysicalOp="Clustered Index Scan" EstimatedTotalSubtreeCost="85.4315">
+                                                  <OutputList>
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_ID" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_NO" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_NO" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_LINE_NO" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_DATE" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="STATUS_ID" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_ID" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_ID" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="RESOURCE_NAME" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="ITEM_NAME" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="ITEM_TYPE_CODE" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FROM_INVOICE_ID" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILLABLE_FLAG" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="PAYROLL_QTY" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_QTY" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_RATE" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_HOURLY_QTY" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INTERNAL_REQ_FLAG" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_POST_DATE" />
+                                                  </OutputList>
+                                                  <RunTimeInformation>
+                                                    <RunTimeCountersPerThread Thread="3" ActualRows="337932" ActualEndOfScans="1" ActualExecutions="1" />
+                                                    <RunTimeCountersPerThread Thread="1" ActualRows="162708" ActualEndOfScans="1" ActualExecutions="1" />
+                                                    <RunTimeCountersPerThread Thread="4" ActualRows="196076" ActualEndOfScans="1" ActualExecutions="1" />
+                                                    <RunTimeCountersPerThread Thread="2" ActualRows="337933" ActualEndOfScans="1" ActualExecutions="1" />
+                                                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                  </RunTimeInformation>
+                                                  <IndexScan Ordered="false" ForcedIndex="false" NoExpandHint="false">
+                                                    <DefinedValues>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_ID" />
+                                                      </DefinedValue>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_NO" />
+                                                      </DefinedValue>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_NO" />
+                                                      </DefinedValue>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_LINE_NO" />
+                                                      </DefinedValue>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_DATE" />
+                                                      </DefinedValue>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="STATUS_ID" />
+                                                      </DefinedValue>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_ID" />
+                                                      </DefinedValue>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_ID" />
+                                                      </DefinedValue>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="RESOURCE_NAME" />
+                                                      </DefinedValue>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="ITEM_NAME" />
+                                                      </DefinedValue>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="ITEM_TYPE_CODE" />
+                                                      </DefinedValue>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                                                      </DefinedValue>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FROM_INVOICE_ID" />
+                                                      </DefinedValue>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILLABLE_FLAG" />
+                                                      </DefinedValue>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="PAYROLL_QTY" />
+                                                      </DefinedValue>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_QTY" />
+                                                      </DefinedValue>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_RATE" />
+                                                      </DefinedValue>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_HOURLY_QTY" />
+                                                      </DefinedValue>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INTERNAL_REQ_FLAG" />
+                                                      </DefinedValue>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_POST_DATE" />
+                                                      </DefinedValue>
+                                                    </DefinedValues>
+                                                    <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Index="[PK_SERVICE_LINES]" Alias="[sl]" />
+                                                  </IndexScan>
+                                                </RelOp>
+                                              </ComputeScalar>
+                                            </RelOp>
+                                          </ComputeScalar>
+                                        </RelOp>
+                                        <Predicate>
+                                          <ScalarOperator ScalarString="([servicetrax_dev].[dbo].[SERVICE_LINES].[STATUS_ID] as [sl].[STATUS_ID]=(4.) AND [servicetrax_dev].[dbo].[SERVICE_LINES].[INVOICE_ID] as [sl].[INVOICE_ID] IS NOT NULL OR [servicetrax_dev].[dbo].[SERVICE_LINES].[STATUS_ID] as [sl].[STATUS_ID]=(5.)) AND ([servicetrax_dev].[dbo].[SERVICE_LINES].[POSTED_FLAG] as [sl].[POSTED_FLAG]='Y' OR [servicetrax_dev].[dbo].[SERVICE_LINES].[BILLED_FLAG] as [sl].[BILLED_FLAG]='Y') AND [servicetrax_dev].[dbo].[SERVICE_LINES].[BILLABLE_FLAG] as [sl].[BILLABLE_FLAG]='Y' AND [servicetrax_dev].[dbo].[SERVICE_LINES].[STATUS_ID] as [sl].[STATUS_ID]&gt;(3.) AND [servicetrax_dev].[dbo].[SERVICE_LINES].[INTERNAL_REQ_FLAG] as [sl].[INTERNAL_REQ_FLAG]='N'">
+                                            <Logical Operation="AND">
+                                              <ScalarOperator>
+                                                <Logical Operation="OR">
+                                                  <ScalarOperator>
+                                                    <Logical Operation="AND">
+                                                      <ScalarOperator>
+                                                        <Compare CompareOp="EQ">
+                                                          <ScalarOperator>
+                                                            <Identifier>
+                                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="STATUS_ID" />
+                                                            </Identifier>
+                                                          </ScalarOperator>
+                                                          <ScalarOperator>
+                                                            <Const ConstValue="(4.)" />
+                                                          </ScalarOperator>
+                                                        </Compare>
+                                                      </ScalarOperator>
+                                                      <ScalarOperator>
+                                                        <Compare CompareOp="IS NOT">
+                                                          <ScalarOperator>
+                                                            <Identifier>
+                                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                                                            </Identifier>
+                                                          </ScalarOperator>
+                                                          <ScalarOperator>
+                                                            <Const ConstValue="NULL" />
+                                                          </ScalarOperator>
+                                                        </Compare>
+                                                      </ScalarOperator>
+                                                    </Logical>
+                                                  </ScalarOperator>
+                                                  <ScalarOperator>
+                                                    <Compare CompareOp="EQ">
+                                                      <ScalarOperator>
+                                                        <Identifier>
+                                                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="STATUS_ID" />
+                                                        </Identifier>
+                                                      </ScalarOperator>
+                                                      <ScalarOperator>
+                                                        <Const ConstValue="(5.)" />
+                                                      </ScalarOperator>
+                                                    </Compare>
+                                                  </ScalarOperator>
+                                                </Logical>
+                                              </ScalarOperator>
+                                              <ScalarOperator>
+                                                <Logical Operation="OR">
+                                                  <ScalarOperator>
+                                                    <Compare CompareOp="EQ">
+                                                      <ScalarOperator>
+                                                        <Identifier>
+                                                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="POSTED_FLAG" ComputedColumn="true" />
+                                                        </Identifier>
+                                                      </ScalarOperator>
+                                                      <ScalarOperator>
+                                                        <Const ConstValue="'Y'" />
+                                                      </ScalarOperator>
+                                                    </Compare>
+                                                  </ScalarOperator>
+                                                  <ScalarOperator>
+                                                    <Compare CompareOp="EQ">
+                                                      <ScalarOperator>
+                                                        <Identifier>
+                                                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILLED_FLAG" ComputedColumn="true" />
+                                                        </Identifier>
+                                                      </ScalarOperator>
+                                                      <ScalarOperator>
+                                                        <Const ConstValue="'Y'" />
+                                                      </ScalarOperator>
+                                                    </Compare>
+                                                  </ScalarOperator>
+                                                </Logical>
+                                              </ScalarOperator>
+                                              <ScalarOperator>
+                                                <Compare CompareOp="EQ">
+                                                  <ScalarOperator>
+                                                    <Identifier>
+                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILLABLE_FLAG" />
+                                                    </Identifier>
+                                                  </ScalarOperator>
+                                                  <ScalarOperator>
+                                                    <Const ConstValue="'Y'" />
+                                                  </ScalarOperator>
+                                                </Compare>
+                                              </ScalarOperator>
+                                              <ScalarOperator>
+                                                <Compare CompareOp="GT">
+                                                  <ScalarOperator>
+                                                    <Identifier>
+                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="STATUS_ID" />
+                                                    </Identifier>
+                                                  </ScalarOperator>
+                                                  <ScalarOperator>
+                                                    <Const ConstValue="(3.)" />
+                                                  </ScalarOperator>
+                                                </Compare>
+                                              </ScalarOperator>
+                                              <ScalarOperator>
+                                                <Compare CompareOp="EQ">
+                                                  <ScalarOperator>
+                                                    <Identifier>
+                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INTERNAL_REQ_FLAG" />
+                                                    </Identifier>
+                                                  </ScalarOperator>
+                                                  <ScalarOperator>
+                                                    <Const ConstValue="'N'" />
+                                                  </ScalarOperator>
+                                                </Compare>
+                                              </ScalarOperator>
+                                            </Logical>
+                                          </ScalarOperator>
+                                        </Predicate>
+                                      </Filter>
+                                    </RelOp>
+                                  </Sort>
+                                </RelOp>
+                                <RelOp AvgRowSize="17" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="810957" EstimateRewinds="643.631" EstimateRows="1" LogicalOp="Index Seek" NodeId="27" Parallel="true" PhysicalOp="Index Seek" EstimatedTotalSubtreeCost="130.296">
+                                  <OutputList>
+                                    <ColumnReference Column="IsBaseRow1003" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="SERVICE_ID" />
+                                  </OutputList>
+                                  <RunTimeInformation>
+                                    <RunTimeCountersPerThread Thread="3" ActualRows="291290" ActualEndOfScans="2" ActualExecutions="291292" />
+                                    <RunTimeCountersPerThread Thread="1" ActualRows="139303" ActualEndOfScans="2" ActualExecutions="139305" />
+                                    <RunTimeCountersPerThread Thread="4" ActualRows="161196" ActualEndOfScans="3" ActualExecutions="161199" />
+                                    <RunTimeCountersPerThread Thread="2" ActualRows="291982" ActualEndOfScans="0" ActualExecutions="291982" />
+                                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                  </RunTimeInformation>
+                                  <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                    <DefinedValues>
+                                      <DefinedValue>
+                                        <ColumnReference Column="IsBaseRow1003" />
+                                      </DefinedValue>
+                                      <DefinedValue>
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="SERVICE_ID" />
+                                      </DefinedValue>
+                                    </DefinedValues>
+                                    <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Index="[IX_SERVICES1]" Alias="[s]" />
+                                    <SeekPredicates>
+                                      <SeekPredicate>
+                                        <Prefix ScanType="EQ">
+                                          <RangeColumns>
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="SERVICE_ID" />
+                                          </RangeColumns>
+                                          <RangeExpressions>
+                                            <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[SERVICE_LINES].[BILL_SERVICE_ID] as [sl].[BILL_SERVICE_ID]">
+                                              <Identifier>
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_ID" />
+                                              </Identifier>
+                                            </ScalarOperator>
+                                          </RangeExpressions>
+                                        </Prefix>
+                                      </SeekPredicate>
+                                    </SeekPredicates>
+                                  </IndexScan>
+                                </RelOp>
+                              </NestedLoops>
+                            </RelOp>
+                            <RelOp AvgRowSize="1532" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="811601" EstimateRows="1" LogicalOp="Clustered Index Seek" NodeId="29" Parallel="true" PhysicalOp="Clustered Index Seek" EstimatedTotalSubtreeCost="128.317">
+                              <OutputList>
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="DESCRIPTION" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_1" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_2" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_3" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_4" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_5" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_6" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_7" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_8" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_9" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_10" />
+                              </OutputList>
+                              <RunTimeInformation>
+                                <RunTimeCountersPerThread Thread="1" ActualRows="139303" ActualEndOfScans="0" ActualExecutions="139303" />
+                                <RunTimeCountersPerThread Thread="3" ActualRows="291290" ActualEndOfScans="0" ActualExecutions="291290" />
+                                <RunTimeCountersPerThread Thread="4" ActualRows="161196" ActualEndOfScans="0" ActualExecutions="161196" />
+                                <RunTimeCountersPerThread Thread="2" ActualRows="291982" ActualEndOfScans="0" ActualExecutions="291982" />
+                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                              </RunTimeInformation>
+                              <IndexScan Lookup="true" Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                <DefinedValues>
+                                  <DefinedValue>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="DESCRIPTION" />
+                                  </DefinedValue>
+                                  <DefinedValue>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_1" />
+                                  </DefinedValue>
+                                  <DefinedValue>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_2" />
+                                  </DefinedValue>
+                                  <DefinedValue>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_3" />
+                                  </DefinedValue>
+                                  <DefinedValue>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_4" />
+                                  </DefinedValue>
+                                  <DefinedValue>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_5" />
+                                  </DefinedValue>
+                                  <DefinedValue>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_6" />
+                                  </DefinedValue>
+                                  <DefinedValue>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_7" />
+                                  </DefinedValue>
+                                  <DefinedValue>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_8" />
+                                  </DefinedValue>
+                                  <DefinedValue>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_9" />
+                                  </DefinedValue>
+                                  <DefinedValue>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="CUST_COL_10" />
+                                  </DefinedValue>
+                                </DefinedValues>
+                                <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Index="[PK_SERVICES]" Alias="[s]" TableReferenceId="-1" />
+                                <SeekPredicates>
+                                  <SeekPredicate>
+                                    <Prefix ScanType="EQ">
+                                      <RangeColumns>
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="SERVICE_ID" />
+                                      </RangeColumns>
+                                      <RangeExpressions>
+                                        <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[SERVICES].[SERVICE_ID] as [s].[SERVICE_ID]">
+                                          <Identifier>
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="SERVICE_ID" />
+                                          </Identifier>
+                                        </ScalarOperator>
+                                      </RangeExpressions>
+                                    </Prefix>
+                                  </SeekPredicate>
+                                </SeekPredicates>
+                              </IndexScan>
+                            </RelOp>
+                          </NestedLoops>
+                        </RelOp>
+                        <RelOp AvgRowSize="15" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="811284" EstimateRewinds="316.964" EstimateRows="1" LogicalOp="Clustered Index Seek" NodeId="53" Parallel="true" PhysicalOp="Clustered Index Seek" EstimatedTotalSubtreeCost="136.15">
+                          <OutputList>
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Alias="[i]" Column="DATE_SENT" />
+                          </OutputList>
+                          <RunTimeInformation>
+                            <RunTimeCountersPerThread Thread="1" ActualRows="85265" ActualEndOfScans="54040" ActualExecutions="139305" />
+                            <RunTimeCountersPerThread Thread="3" ActualRows="158980" ActualEndOfScans="132312" ActualExecutions="291292" />
+                            <RunTimeCountersPerThread Thread="4" ActualRows="94861" ActualEndOfScans="66338" ActualExecutions="161199" />
+                            <RunTimeCountersPerThread Thread="2" ActualRows="157087" ActualEndOfScans="134895" ActualExecutions="291982" />
+                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                          </RunTimeInformation>
+                          <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                            <DefinedValues>
+                              <DefinedValue>
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Alias="[i]" Column="DATE_SENT" />
+                              </DefinedValue>
+                            </DefinedValues>
+                            <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Index="[INV_PK]" Alias="[i]" />
+                            <SeekPredicates>
+                              <SeekPredicate>
+                                <Prefix ScanType="EQ">
+                                  <RangeColumns>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Alias="[i]" Column="INVOICE_ID" />
+                                  </RangeColumns>
+                                  <RangeExpressions>
+                                    <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[SERVICE_LINES].[INVOICE_ID] as [sl].[INVOICE_ID]">
+                                      <Identifier>
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                                      </Identifier>
+                                    </ScalarOperator>
+                                  </RangeExpressions>
+                                </Prefix>
+                              </SeekPredicate>
+                            </SeekPredicates>
+                          </IndexScan>
+                        </RelOp>
+                      </NestedLoops>
+                    </RelOp>
+                  </Parallelism>
+                </RelOp>
+              </ComputeScalar>
+            </RelOp>
+          </QueryPlan>
+        </StmtSimple>
+      </Statements>
+    </Batch>
+  </BatchSequence>
+</ShowPlanXML>

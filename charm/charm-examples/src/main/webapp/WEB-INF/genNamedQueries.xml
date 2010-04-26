@@ -1,0 +1,283 @@
+<?xml version="1.0"?>
+<namedQueries>
+	<namedQuery>
+		<id>allBbpRole</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpRole 
+		FROM com.dynamic.skeleton.orm.BbpRole bbpRole 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpDeposit</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpDeposit 
+		FROM com.dynamic.skeleton.orm.BbpDeposit bbpDeposit 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpAssetAttribute</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpAssetAttribute 
+		FROM com.dynamic.skeleton.orm.BbpAssetAttribute bbpAssetAttribute 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpBusinessType</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpBusinessType 
+		FROM com.dynamic.skeleton.orm.BbpBusinessType bbpBusinessType 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpAuction</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpAuction 
+		FROM com.dynamic.skeleton.orm.BbpAuction bbpAuction 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpAuctionUser</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpAuctionUser 
+		FROM com.dynamic.skeleton.orm.BbpAuctionUser bbpAuctionUser 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpBid</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpBid 
+		FROM com.dynamic.skeleton.orm.BbpBid bbpBid 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpMenuItem</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpMenuItem 
+		FROM com.dynamic.skeleton.orm.BbpMenuItem bbpMenuItem 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpRecentView</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpRecentView 
+		FROM com.dynamic.skeleton.orm.BbpRecentView bbpRecentView 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpWatch</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpWatch 
+		FROM com.dynamic.skeleton.orm.BbpWatch bbpWatch 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpAuctionControl</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpAuctionControl 
+		FROM com.dynamic.skeleton.orm.BbpAuctionControl bbpAuctionControl 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpAuctionType</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpAuctionType 
+		FROM com.dynamic.skeleton.orm.BbpAuctionType bbpAuctionType 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpAsset</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpAsset 
+		FROM com.dynamic.skeleton.orm.BbpAsset bbpAsset 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpRound</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpRound 
+		FROM com.dynamic.skeleton.orm.BbpRound bbpRound 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpMessage</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpMessage 
+		FROM com.dynamic.skeleton.orm.BbpMessage bbpMessage 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpZipData</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpZipData 
+		FROM com.dynamic.skeleton.orm.BbpZipData bbpZipData 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpDdCategory</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpDdCategory 
+		FROM com.dynamic.skeleton.orm.BbpDdCategory bbpDdCategory 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpRoleRight</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpRoleRight 
+		FROM com.dynamic.skeleton.orm.BbpRoleRight bbpRoleRight 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpDdQuestion</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpDdQuestion 
+		FROM com.dynamic.skeleton.orm.BbpDdQuestion bbpDdQuestion 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpClick</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpClick 
+		FROM com.dynamic.skeleton.orm.BbpClick bbpClick 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpRight</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpRight 
+		FROM com.dynamic.skeleton.orm.BbpRight bbpRight 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpRoundUser</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpRoundUser 
+		FROM com.dynamic.skeleton.orm.BbpRoundUser bbpRoundUser 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpSecurityQuestion</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpSecurityQuestion 
+		FROM com.dynamic.skeleton.orm.BbpSecurityQuestion bbpSecurityQuestion 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpMenus</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpMenus 
+		FROM com.dynamic.skeleton.orm.BbpMenus bbpMenus 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpState</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpState 
+		FROM com.dynamic.skeleton.orm.BbpState bbpState 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpFile</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpFile 
+		FROM com.dynamic.skeleton.orm.BbpFile bbpFile 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpDdAnswer</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpDdAnswer 
+		FROM com.dynamic.skeleton.orm.BbpDdAnswer bbpDdAnswer 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpDdQuestionType</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpDdQuestionType 
+		FROM com.dynamic.skeleton.orm.BbpDdQuestionType bbpDdQuestionType 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpMenusAudit</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpMenusAudit 
+		FROM com.dynamic.skeleton.orm.BbpMenusAudit bbpMenusAudit 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpTransaction</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpTransaction 
+		FROM com.dynamic.skeleton.orm.BbpTransaction bbpTransaction 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpLocation</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpLocation 
+		FROM com.dynamic.skeleton.orm.BbpLocation bbpLocation 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpUser</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpUser 
+		FROM com.dynamic.skeleton.orm.BbpUser bbpUser 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpCode</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpCode 
+		FROM com.dynamic.skeleton.orm.BbpCode bbpCode 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpCodeType</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpCodeType 
+		FROM com.dynamic.skeleton.orm.BbpCodeType bbpCodeType 
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allBbpCcType</id>
+		<service>hibernateService</service>
+		<query>
+		SELECT bbpCcType 
+		FROM com.dynamic.skeleton.orm.BbpCcType bbpCcType 
+		</query>
+	</namedQuery>
+</namedQueries>

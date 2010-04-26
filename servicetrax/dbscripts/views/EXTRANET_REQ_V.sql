@@ -1,0 +1,10 @@
+CREATE VIEW dbo.EXTRANET_REQ_V
+AS
+SELECT     dbo.SERVICES.SERVICE_ID, w.REQUEST_ID, dbo.LOOKUPS.CODE request_type_code
+FROM         dbo.REQUESTS w INNER JOIN
+                      dbo.LOOKUPS ON w.REQUEST_TYPE_ID = dbo.LOOKUPS.LOOKUP_ID INNER JOIN
+                      dbo.VERSIONS_MAX_NO_V ON w.PROJECT_ID = dbo.VERSIONS_MAX_NO_V.PROJECT_ID AND 
+                      w.REQUEST_NO = dbo.VERSIONS_MAX_NO_V.REQUEST_NO AND w.VERSION_NO = dbo.VERSIONS_MAX_NO_V.max_version_no INNER JOIN
+                      dbo.SERVICES ON w.REQUEST_ID = dbo.SERVICES.REQUEST_ID
+
+

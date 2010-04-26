@@ -1,0 +1,170 @@
+11-8-2007:
+	(1) executed ALTER TABLE services ALTER COLUMN description VARCHAR(1000);
+	    edited new_quote_request.sql;
+	(2) updated project_all_requests_v: append + '.' + requests.version_no to record_no;
+	(3) updated quick_quote_requests_v2: append + '.' + requests.version_no to project_request_no;
+	(4) updated quick_requests_v2: append + '.' + requests.version_no to project_request_no.
+11-9-2007:
+	(1) updated projects_v2: if dealer's ext_customer is null then use ext_dealer_id
+11-12-2007:
+	(1) updated quick_quote_requests_v2: added ISNULL fpr ext_dealer_id; use sub query for customer_name; organization_id from cust
+	(2) updated quick_requests_v2: added ISNULL fpr ext_dealer_id; use sub query for customer_name
+	(3) updated projects_v2:
+	(4) added end_user_id and FK to projects
+	(5) moved end_user_id values from requests to projects
+	(6) dropped end_user_id and FK fro mrequests
+	(7) added quote_mapping table
+	(8) updated sp_estimator.sql
+11-13-2007:
+	(1) updated quick_quote_requests_v2: added is_new; Made end user outer join
+	(2) updated quick_requests_v2:added is_new; Made end user outer join
+11-14-2007:
+	(1) updated sch_job_list_v.sql: end user moved from requests to projects
+	(2) updated sch_job_req_info_v.sql:end user moved from requests to projects
+11-15-2007:
+	(1) updated projects_v.sql: replaced outers jin with inner joins; added is_new
+	(2) updated projects_all_requests_v.sql:added is_new
+	(3) billing_v.sql: added quoted_total; formatted
+	(4) sch_job_list_v.sql: updated est_hours
+	(5) quick_quotes_v.sql: inclusing quotes with quoted_by_user_id is null
+11-16-2007:
+	(1) updated versions_copy_v.sql: removed end_user_id
+	(2) updated quick_quote_requests_v2.sql:use project_request_version_no, remove record_no
+	(3) updated quick_requests_v2.sql:use project_request_version_no, remove record_no 
+	(4) updated quick_quotes_v.sql:remove record_no
+	(5) updated quick_request_vendor_v2.sql:remove record_no
+	//(6) updated quick_project_v.sql:formatted
+11-19-2007:
+	(1) created sp_varchar20_to_number.sql: 
+	(2) updated sch_job_req_info_v.sql:added est_hurs and hours_to_date, 6 columns
+	(3) updated quick_quotes_v.sql:added is_new
+11-20-2007:
+	(1) updated versions_copy_v.sql: added new column order_type_id
+	(2) re-create quick_quote_requests_v2.sql: In Kermit only, failed last time
+	(3) updated billing_v: added is_new
+	(4) updated versions_copy_v: get correct version_no
+11-21-2007:
+	(1) updated jobs_v.sql: added is_new
+11-27-2007
+	(1) updated sch_job_req_info_v: replaced some outer join with inner join and optimized the query
+	(2) updated quick_quotes_v: replaced project_request_no with project_request_version_no
+	(3) updated quotes_v: added version
+	(4) updated projects_all_requests_v: added q.version to record_no
+	(5) updated sp_estimator:updated request status when sending
+11-29-2007
+	(1) versions_copy_v:added new columns
+	(2) added two new columns to requests:ALTER TABLE requests ADD is_stair_carry_required VARCHAR(1);
+                                              ALTER TABLE requests ADD days_to_complete NUMERIC(5,0);
+12-4-2007
+	(1) updated sch_job_req_info_v: Added street1,street2,city,state and zip from job_locations for view map
+	(2) Added county to job_locations: ALTER TABLE job_locations ADD county VARCHAR(50); 
+	(3) updated sp_estimator
+12-5-2007
+	(1) updated projects_v2: added customers.refusal_email_info & survey_location
+	(2) updated projects_all_requests_v: added end_user_name (replaced projects_v with projects_v2 and modified joins.)
+	(3) created project_requests_v2: 
+	(4) Updated sch_job_list_v: est_hours 
+	(5) updated sch_job_req_info_v: Added 'driver-F-OT','driver-S-OT','driver-W-OT','driver-F-Reg','driver-S-Reg','driver-W-Reg', 'truck-F-Reg', 'truck-S-Reg', 'truck-W-Reg' when calculating delivery_hours_to_date
+	(6) Created table job_location_contacts:
+	(7) ALTER TABLE requests DROP CONSTRAINT fk_request_job_loc_contact;
+	(7) Cleaned contacts table: delete from contacts where job_location_id is not null
+	(8) Removed job_location_id FROM contacts table:ALTER TABLE contacts DROP CONSTRAINT fk_contact_job_location
+                                                        ALTER TABLE contacts DROP COLUMN job_location_id                               
+12-7-2007
+	(1) updated states.sql: added customers.refusal_email_info & survey_location
+	(2) updated sch_job_req_info_v: added is_new
+	(3) created data conversion scripts: 
+	
+	(4) Updated sch_job_list_v: est_hours 
+	(5) updated sch_job_req_info_v: Added 'driver-F-OT','driver-S-OT','driver-W-OT','driver-F-Reg','driver-S-Reg','driver-W-Reg', 'truck-F-Reg', 'truck-S-Reg', 'truck-W-Reg' when calculating delivery_hours_to_date
+	(6) Created table job_location_contacts:
+	(7) ALTER TABLE requests DROP CONSTRAINT fk_request_job_loc_contact;
+	(7) Cleaned contacts table: delete from contacts where job_location_id is not null
+	(8) Removed job_location_id FROM contacts table:ALTER TABLE contacts DROP CONSTRAINT fk_contact_job_location
+                                                        ALTER TABLE contacts DROP COLUMN job_location_id
+12-11-2007
+ 	(1) updated billing_v:removed is_new (not used). made it updateable.
+ 	(2) updated quotes_mapping_data.sql
+12-12-2007 
+	(1) updated billing_v: added is_new back.
+	(2) updated request_mail_v2: made it simple, light and fast
+	(3) updated quotes_mapping_data.sql
+	(4) updated sp_estimator.sql
+12-13-2007 
+	(1) updated projects_v: added end_user_id and end_user_name
+	(2) updated quotes table:
+		ALTER TABLE quotes ALTER COLUMN	[OTHER_FURNITURE_1] VARCHAR(100)
+		ALTER TABLE quotes ALTER COLUMN	[OTHER_FURNITURE_2] VARCHAR(100)
+		ALTER TABLE quotes ALTER COLUMN	[OTHER_FURNITURE_3] VARCHAR(100)
+		ALTER TABLE quotes ALTER COLUMN	[OTHER_FURNITURE_4] VARCHAR(100)
+		ALTER TABLE quotes ALTER COLUMN	[OTHER_FURNITURE_5] VARCHAR(100)
+		ALTER TABLE quotes ALTER COLUMN	[OTHER_FURNITURE_6] VARCHAR(100)
+		ALTER TABLE quotes ALTER COLUMN	[OTHER_FURNITURE_7] VARCHAR(100)
+		ALTER TABLE quotes ALTER COLUMN	[OTHER_FURNITURE_8] VARCHAR(100)
+		ALTER TABLE quotes ALTER COLUMN	[OTHER_FURNITURE_9] VARCHAR(100)
+		ALTER TABLE quotes ALTER COLUMN	[OTHER_FURNITURE_10] VARCHAR(100)
+		ALTER TABLE quotes ALTER COLUMN [T1_TYPICAL] VARCHAR(100)
+		ALTER TABLE quotes ALTER COLUMN [T2_TYPICAL] VARCHAR(100)
+		ALTER TABLE quotes ALTER COLUMN [T3_TYPICAL] VARCHAR(100)
+		ALTER TABLE quotes ALTER COLUMN [T4_TYPICAL] VARCHAR(100)
+		ALTER TABLE quotes ALTER COLUMN [T5_TYPICAL] VARCHAR(100)
+ALTER TABLE quotes ALTER COLUMN [T6_TYPICAL] VARCHAR(100)
+	(3) updated sp_estimator.sql:
+	(4) updated quick_quote_requests_v2.sql: added customer_id
+	(5) updated quick_quotes_v.sql: adde end_user_name
+12-14-2007
+	(1) updated jobs_v: added end user and mod customer and dealer
+12-18-2007
+	(1) updated pkt_job_user_res_v: removed duplicated where clause
+	(2) updated pkt_sch_jobs_v: added end_user_name
+12-19-2007
+	(1) created extranet_email_v2:
+	(2) updated sch_job_req_info_v: for hours to dates fields with additional item names
+	(3) updated projects_v: added ext_end_user_id
+12-21-2007
+	(1) EXECUTE ntlsv_data.sql
+	
+1-2-2008
+	(1) ALTER TABLE [dbo].[CUSTOMERS] DROP CONSTRAINT [DF__customers__VIEW___3541D3D0]
+            ALTER TABLE customers ADD CONSTRAINT df_customer_view_schedule_flag DEFAULT ('Y') FOR view_schedule_flag
+	
+1-3-2008
+	(1)ALTER TABLE jobs ADD end_user_id NUMERIC(18,0);
+           ALTER TABLE jobs ADD CONSTRAINT fk_job_end_user FOREIGN KEY (end_user_id) REFERENCES customers (customer_id);
+1-8-2008
+	(1) UPDATE items SET allow_expense_entry = 'Y' where organization_id=16 and item_type_id=6 (in production)
+	(2) DELETE from contact_groups where contact_id IN (select contact_id from contacts
+                                                             where organization_id=16
+                                                               and (contact_name like '%N/A%' OR contact_name = 'NA' or contact_name IS NULL)
+                                                            ) 
+	    DELETE FROM contacts
+	      where organization_id=16
+                and (contact_name like '%N/A%' OR contact_name = 'NA' or contact_name IS NULL) (In user test)
+                
+1-10-2008
+	(1) updated quick_project_v.sql:updated ext_dealer_id
+	(1) updated quick_quotes_v.sql:updated ext_dealer_id
+	(1) updated quick_request_vendors_v.sql:updated ext_dealer_id
+	
+1-18-2008
+	(1) updated quick_quotes_v: new/old customer
+  
+11-27-2007 (Optional)
+	DROP INDEX customers.IX_customer_customer_name
+	DROP INDEX customers.IX_customer_type_name
+	CREATE UNIQUE INDEX IX_customer_type_name ON customers (customer_id,customer_type_id,customer_name);
+	CREATE INDEX IX_sl_bill_item_tc_qty ON service_lines (bill_service_id,item_name,tc_qty);
+	CREATE INDEX IX_jl_name ON job_locations (job_location_name); 
+	drop index job_locations.IX_jl_name
+	CREATE UNIQUE INDEX IX_jl_name2 ON job_locations (job_location_id,job_location_name); 
+	CREATE INDEX IX_services_job_location ON services (job_location_id);
+	CREATE UNIQUE INDEX IX_requests_1 ON requests (request_id,prod_disp_id,wall_mount_type_id,elevator_avail_type_id,system_furniture_line_type_id,delivery_type_id,other_furniture_type_id,other_delivery_type_id,a_m_contact_id,customer_contact_id,customer_contact2_id,customer_contact3_id,customer_contact4_id); 
+	CREATE UNIQUE INDEX IX_quotes_1 ON quotes (quote_id,[ROC_OMNI_DISCOUNTED_HOURS-RECEIVE],[ROC_OMNI_DISCOUNTED_HOURS-RELOAD],[ROC_OMNI_DISCOUNTED_HOURS-TRUCK],[ROC_OMNI_DISCOUNTED_HOURS-DRIVER],[ROC_OMNI_DISCOUNTED_HOURS-UNLOAD],[ROC_OMNI_DISCOUNTED_HOURS-MOVE_STAGE],[ROC_OMNI_DISCOUNTED_HOURS-INSTALL],[ROC_OMNI_DISCOUNTED_HOURS-ELECTRICAL]); 
+	drop index services.IX_services_1
+	CREATE UNIQUE INDEX IX_services_1 ON services (service_id,service_no,job_id,job_location_id,request_id,quote_id,billing_type_id,po_no,est_start_date,est_start_time,est_end_date) 
+	CREATE UNIQUE INDEX IX_lookups_1 ON lookups (lookup_id,name)
+	CREATE UNIQUE INDEX IX_lookups_2 ON lookups (lookup_id,code)
+	CREATE UNIQUE INDEX IX_lookups_3 ON lookups (lookup_id,code,name)
+	CREATE UNIQUE INDEX IX_contacts_name1 ON contacts (contact_id,contact_name)
+        CREATE UNIQUE INDEX IX_jobs_1 ON jobs (job_id,job_type_id,project_id,customer_id,job_no)
+      

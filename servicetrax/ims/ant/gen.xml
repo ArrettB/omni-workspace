@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<project name="ims" default="gen_all" basedir=".." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+	<description>Generate IMS objects and smartforms</description>
+
+	<!-- set global properties for this build -->
+	<property name="project" value="ims"/>
+	<property name="web-inf.dir" value="${basedir}/src/main/webapp/WEB-INF"/>
+	<property name="lib.dir" value="lib"/>
+	<property name="classes.dir" value="${web-inf.dir}/classes"/>
+	
+	<property name="jdbc.org" value="net.sourceforge.jtds"/>
+	<property name="jdbc.artifact" value="jtds"/>
+	<property name="jdbc.version" value="1.2"/>
+	<property name="jdbc.driver" value="net.sourceforge.jtds.jdbc.Driver"/>
+	
+	<property name="schema" value="%"/>
+	<property name="resource_name" value="sqlserver"/>
+
+	<property name="busobjects.dir" value="generated/busobjects"/>
+	<property name="busobjects.package" value="ims.dataobjects.def"/>
+	<property name="smartforms.dir" value="generated/smartforms/"/>
+
+	<artifact:remoteRepository id="dynamic.repo" url="http://maven.apexit.com/repository" />
+
+	
+	<!-- =================================================================== -->
+	<!-- JDBC SETUP                                                          -->
+	<!-- =================================================================== -->
+	<target name="jdbc_dependencies">
+		<artifact:dependencies pathId="jdbc.classpath" filesetId="jdbc.fileset">
+			<remoteRepository refid="dynamic.repo"/>
+			<dependency groupId="${jdbc.org}" artifactId="${jdbc.artifact}" version="${jdbc.version}"/>
+		</artifact:dependencies>
+	</target>
+	
+	<target name="init_jdbc" depends="verify_jdbc, panic_no_jdbc_driver">
+		<echo message="Using JDBC Library: ${jdbc.org} : ${jdbc.artifact} - ${jdbc.version}"/>
+		<echo message="JDBC Driver found: ${jdbc.driver}"/>
+	</target>
+	
+	<target name="verify_jdbc" depends="jdbc_dependencies">
+		<available classname="${jdbc.driver}" classpathref="jdbc.classpath" property="driver.class.present"/>
+	</target>
+	
+	<!-- TO DO Clean up these warning messages -->
+	<target name="panic_no_jdbc_driver" unless="driver.class.present">
+		<fail>
+					The JDBC driver could not be found.  How to resolve:		
+					Edit  ${basedir}cfg/project.properties	
+					Looked in: ${jdbc.jar.location}			
+					Current settings: 	    jdbc.driver = ${jdbc.driver} 
+					jdbc.classpath = ${jdbc.classpath}		
+		</fail>
+	</target>
+
+	<target name="busobjects_dependencies">
+		<artifact:dependencies pathId="mavenlibs.classpath">
+			<remoteRepository refid="dynamic.repo"/>
+			<dependency groupId="com.dynamic" artifactId="iFrame2-ims" version="1.2" /> 
+ 		</artifact:dependencies>
+	</target>
+
+
+	<target name="gen_busobjects" depends="init_jdbc, busobjects_dependencies">
+		<path id="busobjects.classpath">
+			<path refid="jdbc.classpath"/>
+			<path refid="mavenlibs.classpath"/>
+			<pathelement location="${classes.dir}"/>
+		</path>
+		<echo>Generating business objects to ${busobjects.dir}</echo>
+		<!--
+			delete dir="${busobjects.dir}" quiet="true"/>
+		-->
+		<mkdir dir="${busobjects.dir}" />
+
+		<java classname="dynamic.dbtk.meta.RelationalJavaMapper" fork="true" classpathref="busobjects.classpath">
+				<arg value="${web-inf.dir}/${project}.xml" />
+				<arg value="${schema}" /> 
+				<arg value="${busobjects.package}" /> 
+				<arg value="${busobjects.dir}" /> 
+				<arg value="${resource_name}" /> 
+		</java>		
+	</target>
+	
+	<target name="gen_smartforms" depends="">
+		<echo>Generating SMARTFORM templates to ${smartforms.dir}</echo>
+		<delete dir="${smartforms.dir}" quiet="true"/>
+		<mkdir dir="${smartforms.dir}" />
+
+		<java classname="dynamic.dbtk.meta.SmartFormBuilder" fork="true">
+				<arg value="${project}.xml" />
+				<arg value="${schema}" /> 
+				<arg value="${smartforms.dir}" /> 
+				<arg value="${resource_name}" /> 
+			<classpath>
+				<pathelement location="servlets/servlet23.jar/"/>
+				<fileset dir="${lib.dir}">
+					<include name="*.jar" />
+					<include name="*.zip" />
+				</fileset>
+			</classpath>
+		</java>		
+	</target>
+
+	<target name="gen_all" depends="gen_busobjects,gen_smartforms">
+	</target>
+	
+</project>
+

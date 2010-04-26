@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.CustomColList" table="CUSTOM_COL_LISTS" schema="dbo" catalog="">
+        <id name="customColListId" type="java.lang.Long">
+            <column name="CUSTOM_COL_LIST_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="customCustColumn" class="com.dynamic.servicetrax.orm.CustomCustColumn" fetch="select">
+            <column name="CUSTOM_CUST_COL_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="sequence" type="long">
+            <column name="SEQUENCE" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="listValue" type="string">
+            <column name="LIST_VALUE" length="50" not-null="true" />
+        </property>
+        <property name="activeFlag" type="string">
+            <column name="ACTIVE_FLAG" length="1" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

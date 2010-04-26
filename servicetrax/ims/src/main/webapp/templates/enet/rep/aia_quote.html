@@ -1,0 +1,472 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 11 (filtered)">
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:"Albertus Extra Bold";
+	panose-1:0 0 0 0 0 0 0 0 0 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.MsoHeader, li.MsoHeader, div.MsoHeader
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.MsoFooter, li.MsoFooter, div.MsoFooter
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+ /* Page Definitions */
+ @page Section1
+	{size:8.5in 11.0in;
+	margin:.7in .5in .4in .7in;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+
+.Regular
+{
+	font-family: 'Times New Roman', Times, serif;
+	font-size: 13px;
+	font-weight: normal;
+}
+
+.Heading
+{
+	font-family: 'Times New Roman', Times, serif;
+	font-size: 14px;
+	font-style: italic;
+	font-weight: bold;
+}
+
+.button{
+	font-weight: bold;
+	background-color: #669999;
+	color: #000000;
+	text-align : center;
+	font-size: 11px;
+	font-family : Verdana, Arial, Helvetica, sans-serif;
+	border-left-color : #000000;
+	border-right-color : #000000;
+	border-top-color : #000000;
+	border-bottom-color : #000000;
+	border-style : solid;
+	border-width: 1;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-right: 2px;
+	padding-left: 2px;
+
+}
+
+-->
+</style>
+
+<script language="JavaScript">
+<!--
+	function optionalPrint(flag)
+	{
+		if( !(flag == null) && flag == 'true' )
+			window.print();
+	}
+-->
+</script>
+
+</head>
+
+<body onLoad="window.focus();optionalPrint('{!p:print_quote!}');">
+
+<div class=Section1>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0 width=780
+ style='width:585.0pt;margin-left:-30.6pt;border-collapse:collapse;border:none'>
+ <tr style='height:78.75pt'>
+  <td width=209 valign=top style='width:156.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:78.75pt'>
+  <p class=MsoNormal><span style='position:relative;z-index:-1'><span
+  style='position:absolute;left:35px;top:-19px;width:156px;height:125px'><img
+  width=156 height=125 src="/ims/images/letterhead/aia_logo.jpg"></span></span></p>
+  </td>
+  <td width=571 valign=bottom style='width:5.95in;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:78.75pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b><i><span
+  style='font-size:10.0pt;font-family:Arial;color:maroon'>&quot;We Stand Behind Our
+  Work To Ensure Your Project’s Success&quot;</span></i></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=209 valign=top style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>&nbsp;</p>
+  </td>
+  <td width=571 rowspan=30 valign=top style='width:5.95in;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="Regular">
+
+<!--#IF evaluate="<?p:print_quote?>" compare="" -->
+<tr>
+	<td colspan="2" align="center">
+		<input type="button" name="printButton" value="Print" class="button" onClick="location='{!s:action!}quoteReport?print_quote=true&quote_id={!p:quote_id!}'">
+		<input type="button" name="printButton" value="Cancel" class="button" onClick="window.opener.focus();window.close();">
+	</td>
+</tr>
+<!--#/IF-->
+
+<tr>
+	<td>
+		<table width="90%" border="0" cellspacing="0" cellpadding="0" class="Regular">
+			<tr>
+				<td align="left">{!d:date_quoted!}</td>
+				<td align="right"><B>Quote&nbsp;#:</B> {!d:project_quote_no!}&nbsp;&nbsp;&nbsp;</td>
+			</tr>
+			<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+			<tr>
+				<td align="left">
+					{!d:address!}<BR><BR>
+					<B>Sales Rep:</B> &nbsp;&nbsp;{!d:sales_rep_contact_name!}<BR>
+					<B>Customer:</B> &nbsp;&nbsp;{!d:customer_name!}<BR>
+					<B>Job:</B> &nbsp;&nbsp;{!d:job_name!}<BR><BR>
+				</td>
+				<td align="right">&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align:justify;">Thank you for the opportunity to provide pricing for the above job. Based on the information you provided,
+we have estimated the number of hours and amount of materials necessary to complete the work. The estimated
+price could increase or decrease if the amount or scope of work changes. Please communicate any changes as
+soon as possible to your Service Provider contact that will determine if a pricing change is required.</td>
+			</tr>
+			<tr>
+<pre><td colspan="2" style="text-align:justify;width"><BR><span class="Heading">Job Description</span><BR>
+<span class="regular">{!d:description!}</span></pre>
+</td></tr>
+			<tr><td colspan="2" style="text-align:justify;width">
+<BR><span class="Heading">Time Frame</span><BR>
+<span>The quote reflects work to be completed in a time span of {!d:duration_qty!} {!d:duration_name!}</span>
+
+</td></tr>
+			<tr><td colspan="2" style="text-align:justify;width">
+<BR>
+<span class="Heading">Proposed Pricing</span><BR>
+
+<span>
+<!--#IF evaluate="<?d:warehouse_fee_flag?>" compare="Y" -->
+There will be an automatic 3% TCI warehouse fee to receive product into warehouse.
+Pulling, delivery, and installation are part of the installation quote.
+<!--#/IF-->
+The quote is a/an {!d:quote_type_name!} quote of {!d:quote_total!}{!d:warehouse_fee!}.</span>
+
+
+<!--#IF defined="<?d:taxable_amount?>"-->
+<BR>In the above amount, {!d:taxable_amount!} is taxable.
+<!--#/IF-->
+<BR><BR>
+<span class="Heading">Standard Conditions</span><BR>
+
+<table cellspacing="0" cellpadding="0" border="0">
+		<tr><td class="regular">The above pricing is inclusive of the entire project quoted.  If selecting parts of the project, will price each individually.</td></tr>
+	<!--#SQLLOOP name="conditionsQuery" query="SELECT name FROM quote_conditions_v WHERE quote_id = <?p:quote_id.toSQLString()?>" -->
+		<tr><td class="regular">{!r:conditionsQuery:name!}</td></tr>
+	<!--#/SQLLOOP-->
+</table>
+
+</td></tr>
+			<tr>
+<pre><td colspan="2" style="text-align:justify;"><BR><span class="Heading">Additional Conditions</span><BR>
+<span class="regular">{!d:extra_conditions.isNull('None')!}</span></pre>
+
+Please call me with any questions at {!d:quoted_by_phone!}
+<br>
+<br>
+Thank you,
+<br>
+<br>
+{!d:quoted_by_name!}
+
+	</td></tr>
+	</table>
+
+	</td></tr>
+</table>
+
+
+  </p>
+  </td>
+ </tr>
+ <tr>
+  <td width=209 valign=top style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>&nbsp;</p>
+  </td>
+ </tr>
+ <tr style='height:7.15pt'>
+  <td width=209 valign=top style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:7.15pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt;font-family:Arial;
+  color:#66CCFF'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr style='height:3.5pt'>
+  <td width=209 valign=top style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:3.5pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt;font-family:Arial;
+  color:#66CCFF'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=209 valign=top style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b><i><span
+  style='font-size:10.0pt;font-family:Arial;color:#66CCFF'>Installation of <br>
+  Office Systems</span></i></b></p>
+  </td>
+ </tr>
+ <tr style='height:17.5pt'>
+  <td width=209 valign=top style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:17.5pt'><b><i><span style='font-size:10.0pt;
+  font-family:Arial;color:#66CCFF'>
+  <ul style='margin-top:0in' type=disc>
+   <li class=MsoNormal style='color:#66CCFF;text-align:center'><span
+       style='font-size:10.0pt;font-family:Arial'>&nbsp;</span></li>
+  </ul>
+  </span></i></b></td>
+ </tr>
+ <tr>
+  <td width=209 valign=top style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b><i><span
+  style='font-size:10.0pt;font-family:Arial;color:#66CCFF'>Installation of </span></i></b></p>
+  <p class=MsoNormal align=center style='text-align:center'><b><i><span
+  style='font-size:10.0pt;font-family:Arial;color:#66CCFF'>Freestanding
+  Furniture</span></i></b></p>
+  </td>
+ </tr>
+ <tr style='height:23.0pt'>
+  <td width=209 style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:23.0pt'><b><i><span style='font-size:10.0pt;
+  font-family:Arial;color:#66CCFF'>
+  <ul style='margin-top:0in' type=disc>
+   <li class=MsoNormal style='color:#66CCFF;text-align:center'><span
+       style='font-size:10.0pt;font-family:Arial'>&nbsp;</span></li>
+  </ul>
+  </span></i></b></td>
+ </tr>
+ <tr>
+  <td width=209 valign=top style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b><i><span
+  style='font-size:10.0pt;font-family:Arial;color:#66CCFF'>Reconfiguration</span></i></b></p>
+  </td>
+ </tr>
+ <tr style='height:23.0pt'>
+  <td width=209 style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:23.0pt'><b><i><span style='font-size:10.0pt;
+  font-family:Arial;color:#66CCFF'>
+  <ul style='margin-top:0in' type=disc>
+   <li class=MsoNormal style='color:#66CCFF;text-align:center'><span
+       style='font-size:10.0pt;font-family:Arial'>&nbsp;</span></li>
+  </ul>
+  </span></i></b></td>
+ </tr>
+ <tr>
+  <td width=209 valign=top style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b><i><span
+  style='font-size:10.0pt;font-family:Arial;color:#66CCFF'>Delivery</span></i></b></p>
+  </td>
+ </tr>
+ <tr style='height:23.0pt'>
+  <td width=209 style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:23.0pt'><b><i><span style='font-size:10.0pt;
+  font-family:Arial;color:#66CCFF'>
+  <ul style='margin-top:0in' type=disc>
+   <li class=MsoNormal style='color:#66CCFF;text-align:center'><span
+       style='font-size:10.0pt;font-family:Arial'>&nbsp;</span></li>
+  </ul>
+  </span></i></b></td>
+ </tr>
+ <tr>
+  <td width=209 valign=top style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b><i><span
+  style='font-size:10.0pt;font-family:Arial;color:#66CCFF'>Project <br>
+  Management</span></i></b></p>
+  </td>
+ </tr>
+ <tr style='height:23.0pt'>
+  <td width=209 style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:23.0pt'><b><i><span style='font-size:10.0pt;
+  font-family:Arial;color:#66CCFF'>
+  <ul style='margin-top:0in' type=disc>
+   <li class=MsoNormal style='color:#66CCFF;text-align:center'><span
+       style='font-size:10.0pt;font-family:Arial'>&nbsp;</span></li>
+  </ul>
+  </span></i></b></td>
+ </tr>
+ <tr style='height:13.95pt'>
+  <td width=209 valign=top style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:13.95pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b><i><span
+  style='font-size:10.0pt;font-family:Arial;color:#66CCFF'>Warehousing/<br>
+  Storage</span></i></b></p>
+  </td>
+ </tr>
+ <tr style='height:27.5pt'>
+  <td width=209 style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:27.5pt'><b><i><span style='font-size:10.0pt;
+  font-family:Arial;color:#66CCFF'>
+  <ul style='margin-top:0in' type=disc>
+   <li class=MsoNormal style='color:#66CCFF;text-align:center'><span
+       style='font-size:10.0pt;font-family:Arial'>&nbsp;</span></li>
+  </ul>
+  </span></i></b></td>
+ </tr>
+ <tr style='height:13.85pt'>
+  <td width=209 valign=top style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:13.85pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b><i><span
+  style='font-size:10.0pt;font-family:Arial;color:#66CCFF'>Receiving</span></i></b></p>
+  </td>
+ </tr>
+ <tr style='height:28.25pt'>
+  <td width=209 style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:28.25pt'><b><i><span style='font-size:
+  10.0pt;font-family:Arial;color:#66CCFF'>
+  <ul style='margin-top:0in' type=disc>
+   <li class=MsoNormal style='color:#66CCFF;text-align:center'><span
+       style='font-size:10.0pt;font-family:Arial'>&nbsp;</span></li>
+  </ul>
+  </span></i></b></td>
+ </tr>
+ <tr style='height:13.85pt'>
+  <td width=209 valign=top style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:13.85pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b><i><span
+  style='font-size:10.0pt;font-family:Arial;color:#66CCFF'>Repairs</span></i></b></p>
+  </td>
+ </tr>
+ <tr style='height:28.25pt'>
+  <td width=209 style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:28.25pt'><b><i><span style='font-size:
+  10.0pt;font-family:Arial;color:#66CCFF'>
+  <ul style='margin-top:0in' type=disc>
+   <li class=MsoNormal style='color:#66CCFF;text-align:center'><span
+       style='font-size:10.0pt;font-family:Arial'>&nbsp;</span></li>
+  </ul>
+  </span></i></b></td>
+ </tr>
+ <tr style='height:13.85pt'>
+  <td width=209 valign=top style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:13.85pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b><i><span
+  style='font-size:10.0pt;font-family:Arial;color:#66CCFF'>Inventories</span></i></b></p>
+  </td>
+ </tr>
+ <tr style='height:27.5pt'>
+  <td width=209 style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:27.5pt'><b><i><span style='font-size:10.0pt;
+  font-family:Arial;color:#66CCFF'>
+  <ul style='margin-top:0in' type=disc>
+   <li class=MsoNormal style='color:#66CCFF;text-align:center'><span
+       style='font-size:10.0pt;font-family:Arial'>&nbsp;</span></li>
+  </ul>
+  </span></i></b></td>
+ </tr>
+ <tr style='height:13.95pt'>
+  <td width=209 valign=top style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:13.95pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b><i><span
+  style='font-size:10.0pt;font-family:Arial;color:#66CCFF'>Art Installation</span></i></b></p>
+  </td>
+ </tr>
+ <tr style='height:27.5pt'>
+  <td width=209 style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:27.5pt'><span style='font-size:10.0pt;
+  font-family:Arial;color:#66CCFF'>
+  <ul style='margin-top:0in' type=disc>
+   <li class=MsoNormal style='color:#66CCFF;text-align:center'><span
+       style='font-size:10.0pt;font-family:Arial'>&nbsp;</span></li>
+  </ul>
+  </span></td>
+ </tr>
+ <tr style='height:13.85pt'>
+  <td width=209 valign=top style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:13.85pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b><i><span
+  style='font-size:10.0pt;font-family:Arial;color:#66CCFF'>Panel Cleaning </span></i></b></p>
+  <p class=MsoNormal align=center style='text-align:center'><b><i><span
+  style='font-size:10.0pt;font-family:Arial;color:#66CCFF'>&amp; Recovery</span></i></b></p>
+  </td>
+ </tr>
+ <tr style='height:28.25pt'>
+  <td width=209 style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:28.25pt'><span style='font-size:10.0pt;
+  font-family:Arial;color:#66CCFF'>
+  <ul style='margin-top:0in' type=disc>
+   <li class=MsoNormal style='color:#66CCFF;text-align:center'><span
+       style='font-size:10.0pt;font-family:Arial'>&nbsp;</span></li>
+  </ul>
+  </span></td>
+ </tr>
+ <tr style='height:13.85pt'>
+  <td width=209 valign=top style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:13.85pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b><i><span
+  style='font-size:10.0pt;font-family:Arial;color:#66CCFF'>Electrostatic <br>
+  Painting</span></i></b></p>
+  </td>
+ </tr>
+ <tr style='height:28.25pt'>
+  <td width=209 style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:28.25pt'><span style='font-size:10.0pt;
+  font-family:Arial;color:#66CCFF'>
+  <ul style='margin-top:0in' type=disc>
+   <li class=MsoNormal style='color:#66CCFF;text-align:center'><span
+       style='font-size:10.0pt;font-family:Arial'>&nbsp;</span></li>
+  </ul>
+  </span></td>
+ </tr>
+ <tr style='height:13.85pt'>
+  <td width=209 valign=top style='width:156.6pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:13.85pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b><i><span
+  style='font-size:10.0pt;font-family:Arial;color:#66CCFF'>Reupholstery</span></i></b></p>
+  </td>
+ </tr>
+ <tr style='height:26.5pt'>
+  <td width=209 valign=top style='width:156.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt;height:26.5pt'>
+  <p class=MsoNormal>&nbsp;</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,386 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+
+<script language="JavaScript">
+<!--
+function runFilter()
+{
+	var href = {!s:showPage.toJavaScriptString()!} + 'enet/lists/punchlist?punchlist_id={!p:punchlist_id!}&prev_template={!p:prev_template!}&statusFilter=' + document.filterForm.statusFilter.value;
+	location.replace(href);
+}
+
+function createIssue()
+{
+	var href = {!s:showPage.toJavaScriptString()!} + 'enet/lists/issue_edit?punchlist_id={!p:punchlist_id!}&prev_template={!p:prev_template!}';
+	location.replace(href);
+}
+
+-->
+</script>
+
+<body class="BodyTag" onload="requestIdChanged();">
+
+	<!--#SMARTFORM name="lists/punchlist" table="punchlists" key="punchlist_id"
+				preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+				postHandler=""
+				buttons="Save,Cancel"
+				nextTemplate="enet/lists/punchlist.html"
+				prevTemplate="enet/docs/doc_list.html"
+	-->
+		<input type="hidden" name="project_id" value="{!s:project_id!}">
+
+	<!--#EMBED template="enet/embeds/project_header.html"-->
+
+	<table border="0">
+
+<!--#IF undefined="<?p:punchlist_id?>" -->
+	<tr><td><span class="HeaderLabel">The punchlist must be saved before you can add issues to it.</span></td></tr>
+<!--#/IF-->
+
+	<tr><td valign="top"><table>
+		<tr>
+			<td>
+			<!--#IF evaluate="<?d:mode?>" compare="Update" -->
+				<!--#SMARTFIELD name="request_id" title="<span class='MandatoryLabel'>Request#</span>:" type="droplist" mandatory="true"
+					  query="SELECT request_id, project_request_no FROM punchlist_requests_v WHERE punchlist_id = <?p:punchlist_id.toPStmtInt()?> ) ORDER BY r.request_no"
+					  style="width:100"
+					  div="&nbsp;</td><td>"
+					  onChange="requestIdChanged()"
+				-->
+			<!--#ELSE-->
+				<!--#SMARTFIELD name="request_id" title="<span class='MandatoryLabel'>Request#</span>:" type="droplist" mandatory="true" value="<?s:request_id?>"
+					  query="SELECT request_id, project_request_no FROM punchlist_requests_v WHERE project_id = <?s:project_id.toPStmtInt()?> AND punchlist_id is null ORDER BY request_no"
+					  style="width:100"
+					  div="&nbsp;</td><td>"
+					  onChange="requestIdChanged()"
+				-->
+			<!--#/IF-->
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<!--#SMARTFIELD name="walkthrough_date" type="date" title="Walkthrough Date:" div="&nbsp;</td><td>" -->
+				<script>makeButton('selectDate', 'calendar_off', 'calendar_on', 'chooseDate(walkthrough_date)')</script>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<!--#SMARTFIELD name="print_location" type="text" title="Print Location:" div="&nbsp;</td><td>" -->
+			</td>
+		</tr>
+		<tr>
+			<td valign="bottom" height="30">
+				Description:
+			</td>
+		</tr>
+	</table></td>
+
+	<td valign="top"><table>
+		<tr>
+			<td>
+				<!--#SMARTFIELD title="Dealer Sales Rep:" div="</td><td>" name="sales_rep_contact_name" type="text" value="" readOny="true" class="readOnly"-->
+	   	   		<input type="button" name="sales_rep_button" value="View" class="button2" onClick="viewSalesRepContact()">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<!--#SMARTFIELD title="Service Provider Contact:" div="</td><td>" name="am_contact_name" type="text" value="" readOny="true" class="readOnly"-->
+				<input type="button" name="am_button" value="View" class="button2" onClick="viewAMContact()">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<!--#SMARTFIELD title="Customer Contact:" div="</td><td>" name="customer_contact_name" type="text" value="" readonly="true" class="readOnly"-->
+	  	   		<input type="button" name="customer_button" value="View" class="button2" onClick="viewCustomerContact()">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<!--#SMARTFIELD title="Dealer Sales Support:" div="</td><td>" name="sales_sup_contact_name" type="text" value="" readonly="true" class="readOnly"-->
+				<input type="button" name="sales_sup_button" value="View" class="button2" onClick="viewSalesSupContact()">
+			</td>
+		</tr>
+	</table></td>
+	</tr>
+
+	<tr><td valign="top" colspan="2"><table>
+		<tr>
+			<td>
+				<!--#SMARTFIELD name="description" type="textarea" rows="5" cols="80" readonly="true" class="readOnly"-->
+			</td>
+		</tr>
+	</table></td></tr>
+
+</table>
+
+
+
+	<!--#/SMARTFORM-->
+
+
+
+<!--#IF defined="<?p:punchlist_id?>"-->
+
+	<form name="filterForm">
+	<table border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			<td class="HeaderLabel">
+				Punchlist Issues
+			</td>
+			<td style="padding-left:40">
+				View
+			</td>
+			<td style="padding-left:20">
+				<!--#SELECT currentValue="<?p:statusFilter?>" name="statusFilter" autoselect="true" class="regular" query="SELECT lookup_id,  lookup_name FROM lookups_v WHERE type_code = 'punchlist_issue_status' ORDER BY sequence_no" firstOption="Show All" firstOptionValue=""  style="width:114"  onChange="runFilter();"-->
+			</td>
+		</tr>
+	</table>
+	</form>
+
+	<!--#SMARTFORM name="issues" table="punchlist_issues" key="punchlist_issue_id"
+				postHandler="ims.handlers.lists.PunchlistIssuePostHandler"	buttons=""
+	-->
+		<!--#SMARTFIELD name="punchlist_id" type="hidden" value="<?p:punchlist_id?>" -->
+		<!--#SMARTFIELD name="object_type" type="hidden" value="punchlist_issue" -->
+		<!--#SMARTFIELD name="new_status" type="hidden" value="closed" -->
+
+	<!--#IF defined="<?p:statusFilter?>"-->
+
+		<!--#SMARTTABLE name="issues"
+			class="SmartTable"
+			query="SELECT punchlist_issue_id, punchlist_no, issue_no, station_area, problem_desc, solution_desc, issue_date_created, status_code, status_name, solution_date, install_date
+				FROM punchlist_issues_v
+				WHERE punchlist_id = <?p:punchlist_id.isNull('-1')?>
+				AND status_id = <?p:statusFilter?>"
+		-->
+
+		 <!--#SMARTCOLUMN name="punchlist_no" sort="punchlist_no" title="Punchlist#" width="5%" align="center" -->
+		 <!--#SMARTCOLUMN name="issue_no" sort="issue_no" title="Issue#" width="5%" align="center" href="<?s:showPage?>enet/lists/issue_edit.html?punchlist_id=<?p:punchlist_id?>&punchlist_issue_id=<?r:issues:punchlist_issue_id?>&prev_template=<?p:prev_template?>"-->
+		 <!--#SMARTCOLUMN name="station_area" sort="station_area" title="Workstation" width="5%"-->
+		 <!--#SMARTCOLUMN name="problem_desc" sort="problem_desc" title="Problem" width="30%"-->
+		 <!--#SMARTCOLUMN name="issue_date_created" sort="issue_date_created" format="date" title="Date Created" width="5%"-->
+		 <!--#SMARTCOLUMN name="solution_desc" sort="solution_desc" title="Solution" width="30%"-->
+		 <!--#SMARTCOLUMN name="solution_date" sort="solution_date" format="date" title="Solution Date" width="5%"-->
+		 <!--#SMARTCOLUMN name="install_date" sort="install_date" format="date" title="Install Date" width="5%"-->
+		 <!--#SMARTCOLUMN name="status_name" sort="status_name" title="Status" width="5%" -->
+	<!--#IF evaluate="<?r:issues:status_code?>" compare="closed" -->
+		 <!--#SMARTCOLUMN value="Yes" title="Completed" width="10%" align="center" -->
+	<!--#ELSE-->
+		 <!--#SMARTCOLUMN value="<input type='checkbox' name='completed' value='<?r:issues:punchlist_issue_id?>'> Yes" title="Completed" width="10%" -->
+	<!--#/IF-->
+	<!--#/SMARTTABLE -->
+
+	<!--#ELSE-->
+
+		<!--#SMARTTABLE name="issues"
+			class="SmartTable"
+			query="SELECT punchlist_issue_id, punchlist_no, issue_no, station_area, problem_desc, solution_desc, issue_date_created, status_code, status_name, solution_date, install_date
+				FROM punchlist_issues_v
+				WHERE punchlist_id = <?p:punchlist_id.isNull('-1')?>"
+		-->
+		 <!--#SMARTCOLUMN name="punchlist_no" sort="punchlist_no" title="Punchlist#" width="5%" align="center" -->
+		 <!--#SMARTCOLUMN name="issue_no" sort="issue_no" title="Issue#" width="5%" align="center" href="<?s:showPage?>enet/lists/issue_edit.html?punchlist_id=<?p:punchlist_id?>&punchlist_issue_id=<?r:issues:punchlist_issue_id?>&prev_template=<?p:prev_template?>"-->
+		 <!--#SMARTCOLUMN name="station_area" sort="station_area" title="Workstation" width="5%"-->
+		 <!--#SMARTCOLUMN name="problem_desc" sort="problem_desc" title="Problem" width="30%"-->
+		 <!--#SMARTCOLUMN name="issue_date_created" sort="issue_date_created" format="date" title="Date Created" width="5%"-->
+		 <!--#SMARTCOLUMN name="solution_desc" sort="solution_desc" title="Solution" width="30%"-->
+		 <!--#SMARTCOLUMN name="solution_date" sort="solution_date" format="date" title="Solution Date" width="5%"-->
+		 <!--#SMARTCOLUMN name="install_date" sort="install_date" format="date" title="Install Date" width="5%"-->
+		 <!--#SMARTCOLUMN name="status_name" sort="status_name" title="Status" width="5%" -->
+	<!--#IF evaluate="<?r:issues:status_code?>" compare="closed" -->
+		 <!--#SMARTCOLUMN value="Yes" title="Completed" width="10%" align="center" -->
+	<!--#ELSE-->
+		 <!--#SMARTCOLUMN value="<input type='checkbox' name='completed' value='<?r:issues:punchlist_issue_id?>'> Yes" title="Completed" width="10%" -->
+	<!--#/IF-->
+
+	<!--#/SMARTTABLE -->
+
+	<!--#/IF-->
+<BR>
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td align="left">
+			<input type="button" name="create_button" value="Create Issue" class="Button" onClick="createIssue()">
+		</td>
+		<td align="center">
+			<input type="button" name="print_button" value="Print List" class="Button" onClick="window.print();return false;">
+		</td>
+		<td align="right">
+			<input type="submit" name="button" value="Mark as Complete" class="Button" >
+		</td>
+	</tr>
+	</table>
+	<!--#/SMARTFORM-->
+
+<!--#/IF-->
+
+
+</body>
+
+<script language="javascript1.2">
+<!--
+	var index = 0;
+	var requestArray = new Array();
+	var reqObj = new RequestDataObj('', '', '', '', '', '', '', '', '', '', '');
+	requestArray[index++] = reqObj;
+
+<!--#IF defined="<?p:punchlist_id?>" -->
+
+	<!--#SQLLOOP
+	     name="r1"
+	     query="SELECT DISTINCT request_id, project_request_no, description, d_sales_rep_contact_id, d_sales_rep_contact_name, d_sales_sup_contact_id, d_sales_sup_contact_name, customer_contact_id, customer_contact_name, a_m_contact_id, a_m_contact_name
+				FROM punchlist_requests_v
+				WHERE punchlist_id = <?p:punchlist_id.toPStmtInt()?>
+				ORDER BY project_request_no"
+	-->
+	var reqObj = new RequestDataObj({!r:r1:request_id.toJavaScriptString()!}, {!r:r1:project_request_no.toJavaScriptString()!}, {!r:r1:description.toJavaScriptString()!}, {!r:r1:d_sales_rep_contact_id.toJavaScriptString()!}, {!r:r1:d_sales_rep_contact_name.toJavaScriptString2()!}, {!r:r1:d_sales_sup_contact_id.toJavaScriptString()!}, {!r:r1:d_sales_sup_contact_name.toJavaScriptString2()!}, {!r:r1:customer_contact_id.toJavaScriptString()!}, {!r:r1:customer_contact_name.toJavaScriptString2()!}, {!r:r1:a_m_contact_id.toJavaScriptString()!}, {!r:r1:a_m_contact_name.toJavaScriptString2()!});
+	requestArray[{!r:r1:request_id!}] = reqObj;
+	<!--#/SQLLOOP-->
+	var test;
+
+<!--#ELSE-->
+
+	<!--#SQLLOOP
+	     name="r1"
+	     query="SELECT DISTINCT request_id, project_request_no, description, d_sales_rep_contact_id, d_sales_rep_contact_name, d_sales_sup_contact_id, d_sales_sup_contact_name, customer_contact_id, customer_contact_name, a_m_contact_id, a_m_contact_name
+				FROM punchlist_requests_v prv
+				WHERE project_id = <?s:project_id.toPStmtInt()?> AND punchlist_id is null
+				ORDER BY project_request_no"
+	-->
+	var reqObj = new RequestDataObj({!r:r1:request_id.toJavaScriptString()!}, {!r:r1:project_request_no.toJavaScriptString()!}, {!r:r1:description.toJavaScriptString()!}, {!r:r1:d_sales_rep_contact_id.toJavaScriptString()!}, {!r:r1:d_sales_rep_contact_name.toJavaScriptString2()!}, {!r:r1:d_sales_sup_contact_id.toJavaScriptString()!}, {!r:r1:d_sales_sup_contact_name.toJavaScriptString2()!}, {!r:r1:customer_contact_id.toJavaScriptString()!}, {!r:r1:customer_contact_name.toJavaScriptString2()!}, {!r:r1:a_m_contact_id.toJavaScriptString()!}, {!r:r1:a_m_contact_name.toJavaScriptString2()!});
+	requestArray[{!r:r1:request_id!}] = reqObj;
+	<!--#/SQLLOOP-->
+	var test1;
+
+<!--#/IF-->
+
+	function requestIdChanged()
+	{
+		var selectedIndex = document.punchlist.request_id.options[document.punchlist.request_id.selectedIndex].value;
+		if (requestArray[selectedIndex])
+		{
+			var requestData = requestArray[selectedIndex];
+			document.punchlist.description.value = requestData.description;
+
+			if (requestData.salesRepContactID)
+			{
+				document.punchlist.sales_rep_contact_name.value = requestData.salesRepContactName;
+				document.punchlist.sales_rep_button.disabled = false;
+				document.punchlist.sales_rep_button.className = 'button2';
+			}
+			else
+			{
+				document.punchlist.sales_rep_contact_name.value = "";
+				document.punchlist.sales_rep_button.disabled = true;
+				document.punchlist.sales_rep_button.className = 'buttonDisabled2';
+			}
+
+
+			if (requestData.salesSupContactID)
+			{
+				document.punchlist.sales_sup_contact_name.value = requestData.salesSupContactName;
+				document.punchlist.sales_sup_button.disabled = false;
+				document.punchlist.sales_sup_button.className = 'button2';
+			}
+			else
+			{
+				document.punchlist.sales_sup_contact_name.value = "";
+				document.punchlist.sales_sup_button.disabled = true;
+				document.punchlist.sales_sup_button.className = 'buttonDisabled2';
+			}
+
+
+			if (requestData.amContactID)
+			{
+				document.punchlist.am_contact_name.value = requestData.amContactName;
+				document.punchlist.am_button.disabled = false;
+				document.punchlist.am_button.className = 'button2';
+			}
+			else
+			{
+				document.punchlist.am_contact_name.value = "";
+				document.punchlist.am_button.disabled = true;
+				document.punchlist.am_button.className = 'buttonDisabled2';
+			}
+
+
+			if (requestData.customerContactID)
+			{
+				document.punchlist.customer_contact_name.value = requestData.customerContactName;
+				document.punchlist.customer_button.disabled = false;
+				document.punchlist.customer_button.className = 'button2';
+			}
+			else
+			{
+				document.punchlist.customer_contact_name.value = "";
+				document.punchlist.customer_button.disabled = true;
+				document.punchlist.customer_button.className = 'buttonDisabled2';
+			}
+
+		}
+	}
+
+	function RequestDataObj(requestIDIn, requestNoIn, descriptionIn, salesRepContactIDIn, salesRepContactNameIn, salesSupContactIDIn, salesSupContactNameIn, customerContactIDIn, customerContactNameIn, amContactIDIn, amContactNameIn)
+	{
+		this.requestID = requestIDIn;
+		this.requestNo = requestNoIn;
+		this.description = descriptionIn;
+		this.salesRepContactID = salesRepContactIDIn;
+		this.salesRepContactName = salesRepContactNameIn;
+		this.salesSupContactID = salesSupContactIDIn;
+		this.salesSupContactName = salesSupContactNameIn;
+		this.customerContactID = customerContactIDIn;
+		this.customerContactName = customerContactNameIn;
+		this.amContactID = amContactIDIn;
+		this.amContactName = amContactNameIn;
+	}
+
+	function viewSalesRepContact()
+	{
+			var selectedIndex = document.punchlist.request_id.options[document.punchlist.request_id.selectedIndex].value;
+			if (selectedIndex < requestArray.length)
+			{
+				var requestData = requestArray[selectedIndex];
+				var url = '{!s:showPage!}job/contact_edit.html?contact_id=' + requestData.salesRepContactID;
+				newWindow(url,'contacts', 450, 490);
+			}
+	}
+
+	function viewSalesSupContact()
+	{
+			var selectedIndex = document.punchlist.request_id.options[document.punchlist.request_id.selectedIndex].value;
+			if (selectedIndex < requestArray.length)
+			{
+				var requestData = requestArray[selectedIndex];
+				var url = '{!s:showPage!}job/contact_edit.html?contact_id=' + requestData.salesSupContactID;
+				newWindow(url,'contacts', 450, 490);
+			}
+	}
+
+	function viewAMContact()
+	{
+			var selectedIndex = document.punchlist.request_id.options[document.punchlist.request_id.selectedIndex].value;
+			if (selectedIndex < requestArray.length)
+			{
+				var requestData = requestArray[selectedIndex];
+				var url = '{!s:showPage!}job/contact_edit.html?contact_id=' + requestData.amContactID;
+				newWindow(url,'contacts', 450, 490);
+			}
+	}
+
+	function viewCustomerContact()
+	{
+			var selectedIndex = document.punchlist.request_id.options[document.punchlist.request_id.selectedIndex].value;
+			if (selectedIndex < requestArray.length)
+			{
+				var requestData = requestArray[selectedIndex];
+				var url = '{!s:showPage!}job/contact_edit.html?contact_id=' + requestData.customerContactID;
+				newWindow(url,'contacts', 450, 490);
+			}
+	}
+
+
+//-->
+</script>
+
+
+<!--#EMBED template="enet/embeds/footer.html" -->

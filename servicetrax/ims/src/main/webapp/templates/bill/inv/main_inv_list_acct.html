@@ -1,0 +1,162 @@
+<!--#EMBED template="embeds/header.html"-->
+<!-- $Header: main_inv_list_acct.html, 19, 4/7/2005 9:30:46 AM, Greg Case$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<script type="text/javascript">
+<!--
+function exportInvoices(form)
+{
+	if (form.submit_action.options[form.submit_action.selectedIndex].value == 'changeInvoiceStatus4')
+	{
+		if (form.batch_id.value == null || form.batch_id.value < 1)
+		{
+			alert("Please Enter Batch ID.");
+			return;
+		}
+		else
+		{
+			form.submit();
+		}
+
+	}
+	else
+	{
+		form.submit();
+	}
+}
+-->
+</script>
+
+<body class="BodyTag">
+
+
+<table cellspacing="0" cellpadding="0" border="0" width="300">
+	<tr>
+		<td width="100" align="middle">
+			Process Invoices
+		</td>
+		<td width="100" align="middle">
+			<A href="{!s:showPage!}bill/inv/main_inv_list_acct_query.html">Query Invoices</A>
+		</td>
+	</tr>
+	<tr height="5"><td>&nbsp;</td></tr>
+</table>
+
+
+<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0"><tr><td class="HeaderBar">Process Invoices</td></tr></TABLE>
+<!--#SQLLOOP query="SELECT status_id, name status FROM invoice_statuses where status_id > 1 and status_id < 4" name="status_inv"-->
+<FORM ACTION="{!s:action!}setServiceLineStatus" METHOD="POST" name="InvoiceForm">
+<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0"> <tr><td height="25" class="tableTitle">{!r:status_inv:status!}</td></tr></TABLE>
+	<input type="hidden" name="level" value="invoice">
+	<input type="hidden" name="template_name" value="bill/inv/main_inv_list_acct.html">
+
+
+	<!--#SMARTTABLE name="invoice_lines"
+		 class="SmartTable" totalClass="TableTotal"
+		 query="SELECT IsNull(custom_il.custom_total, 0) custom_tot,
+                       IsNull(sl.bill_hourly_total, 0) hours_total,
+                       IsNull(sl.bill_exp_total, 0) exp_tot,
+                       IsNull(sl.bill_total, 0) + IsNull(custom_il.custom_total, 0) total_tot,
+                       u.first_name + ' ' + u.last_name assigned_to_name,
+                       j.job_no,
+                       i.job_id,
+                       ib.name batch_status_name,
+                       i_trk.invoice_id_trk,
+                       i.invoice_id,
+                       i.description invoice_description,
+                       invoice_type.name invoice_type_name,
+                       i.status_id invoice_status_id,
+                       i.date_sent,
+                       j.customer_name,
+                       j.END_user_name,
+                       jt.name job_type_name,
+                       i.po_no,
+                       i.date_created invoice_date_created
+                  FROM invoices i LEFT JOIN
+                       (SELECT i2.invoice_id,
+                               CASE (SELECT COUNT(*) FROM invoice_tracking WHERE invoice_id = i2.invoice_id) WHEN 0 THEN CONVERT(VARCHAR, i2.invoice_id) ELSE CONVERT(VARCHAR, i2.invoice_id) + '*' END invoice_id_trk
+                          FROM invoices i2) i_trk ON i.invoice_id = i_trk.invoice_id LEFT JOIN
+                       lookups invoice_type ON i.invoice_type_id = invoice_type.lookup_id JOIN
+                       (SELECT j.job_id,
+                               j.job_no,
+                               j.billing_user_id,
+                               j.job_type_id,
+                               CASE WHEN customer_type.code = 'END_user' THEN (SELECT customer_name FROM customers WHERE customer_id = c.END_user_parent_id) ELSE c.customer_name END customer_name,
+                               CASE WHEN customer_type.code = 'END_user' THEN c.customer_name ELSE eu.customer_name END END_user_name
+                          FROM jobs j JOIN customers c ON j.customer_id = c.customer_id JOIN
+                               lookups customer_type ON c.customer_type_id = customer_type.lookup_id LEFT JOIN
+                               projects p ON p.project_id = j.project_id LEFT JOIN
+                               customers eu ON	eu.customer_id = p.END_user_id) j ON i.job_id = j.job_id LEFT JOIN
+                       (SELECT il.invoice_id,
+                               SUM(il.unit_price * il.qty) custom_total
+                          FROM invoice_lines il JOIN
+                               lookups l ON il.invoice_line_type_id = l.lookup_id JOIN
+                               lookup_types lt ON l.lookup_type_id = lt.lookup_type_id
+                         WHERE lt.code = 'invoice_line_type'
+                           AND lt.active_flag <> 'N'
+                           AND l.active_flag <> 'N'
+                           AND l.code = 'custom'
+                      GROUP BY il.invoice_id) custom_il ON i.invoice_id = custom_il.invoice_id LEFT JOIN
+                       (SELECT invoice_id,
+                               SUM(bill_hourly_total) bill_hourly_total,
+                               SUM(bill_exp_total) bill_exp_total,
+                               SUM(bill_total) bill_total
+                          FROM service_lines
+                         WHERE status_id > 3
+                           AND internal_req_flag = 'N'
+                      GROUP BY invoice_id) sl ON i.invoice_id = sl.invoice_id LEFT JOIN
+                       users u ON u.user_id = i.assigned_to_user_id LEFT JOIN
+                       invoice_batch_statuses ib ON i.batch_status_id = ib.status_id LEFT JOIN
+                       lookups jt ON jt.lookup_id = j.job_type_id
+                 WHERE i.organization_id = <?s:org_id.toPStmtString()?>
+                   AND i.status_id = <?r:status_inv:status_id.toPStmtString()?>
+                   AND (j.billing_user_id = <?s:user_id.toPStmtString()?> OR 'true' = <?s:rights.view_all_jobs.view.toPStmtString()?>)
+              ORDER BY i.invoice_id" -->
+
+			<!--#SMARTCOLUMN value="<INPUT TYPE='checkbox' name='statusCheckBox' value='<?r:invoice_lines:invoice_id?>'>" title="<INPUT TYPE='checkbox' name='CheckAllBox' onclick='checkAllBoxes(this.form.CheckAllBox,this.form.statusCheckBox)'>" align="center" width="2%" -->
+			<!--#SMARTCOLUMN name="invoice_id_trk" sort="i.invoice_id" title="Invoice#" width="5%" href="<?s:action?>setupSession/bill/inv/job_inv_main.html?invoice_id=<?r:invoice_lines:invoice_id?>&status_id=<?r:invoice_lines:invoice_status_id?>&readonly=false&job_id=<?r:invoice_lines:job_id?>&prev_template=bill/inv/main_inv_list_acct.html"-->
+			<!--#SMARTCOLUMN name="job_no" sort="job_no" title="Job#" width="3%"-->
+			<!--#SMARTCOLUMN name="po_no" sort="po_no" title="PO#" width="5%"-->
+			<!--SMARTCOLUMN name="end_user_name" sort="end_user_name" title="End User" width="10%"-->
+			<!--#SMARTCOLUMN name="customer_name" sort="customer_name" title="Customer" width="5%" value="<input readonly='true' class='smartTableDisplay' size='15' value='<?r:invoice_lines:customer_name.replaceString('\'','&#39;')?>'>" -->
+			<!--#SMARTCOLUMN name="end_user_name" sort="end_user_name" title="End User" width="5%" value="<input readonly='true' class='smartTableDisplay' size='15' value='<?r:invoice_lines:end_user_name.replaceString('\'','&#39;')?>'>" -->
+			<!--#SMARTCOLUMN name="invoice_description" sort="invoice_description" title="Description" width="10%" value="<input readonly='true' class='smartTableDisplay' size='30' value='<?r:invoice_lines:invoice_description.replaceString('\'','&#39;')?>'>" -->
+			<!--#SMARTCOLUMN name="hours_total" sort="hours_total" title="Hours Total" align="right" total="true" format="money" width="5%" -->
+			<!--#SMARTCOLUMN name="exp_tot" sort="exp_tot" title="Exp Total" align="right" total="true" format="money" width="5%" -->
+			<!--#SMARTCOLUMN name="custom_tot" sort="custom_tot" title="Custom Total" align="right" total="true" format="money" width="5%" -->
+			<!--#SMARTCOLUMN name="total_tot" sort="total_tot" title="Total" align="right" total="true" format="money" width="5%" -->
+			<!--#SMARTCOLUMN name="invoice_type_name" sort="invoice_type_name" title="Type" width="5%"-->
+			<!--#SMARTCOLUMN name="assigned_to_name" sort="assigned_to_name" title="Assigned To" width="5%"-->
+			<!--#SMARTCOLUMN name="job_type_name" sort="job_type_name" title="Job Type" width="5%"-->
+			<!--#SMARTCOLUMN name="invoice_date_created" sort="invoice_date_created" title="Date Created" format="date" width="5%" -->
+	<!--#/SMARTTABLE -->
+
+	<!--#IF EVALUATE="<?r:status_inv:status_id?>" COMPARE="1"-->
+	<select NAME="submit_action" class="regular">
+		<option VALUE="changeInvoiceStatus2">Send to Processing Dept</option>
+	</select>
+	<input type="submit" value="Submit" name="button" class="button2">
+	<!--#ELSEIF EVALUATE="<?r:status_inv:status_id?>" COMPARE="2"-->
+	<select NAME="submit_action" class="regular">
+		<option VALUE="changeInvoiceStatus3">Complete</option>
+		<option VALUE="changeInvoiceStatus1">Change to New</option>
+	</select>
+	<input type="submit" value="Submit" name="button" class="button2">
+	<!--#ELSEIF EVALUATE="<?r:status_inv:status_id?>" COMPARE="3"-->
+	<select NAME="submit_action" class="regular">
+		<option VALUE="changeInvoiceStatus4">Send to Great Plains</option>
+		<option VALUE="changeInvoiceStatus2">Change to Pending</option>
+		<option VALUE="changeInvoiceStatus1">Change to New</option>
+	Batch ID <input type="text" name="batch_id" class="regular" maxLength="15" size="20">
+		<!--#IF DEFINED="<?d:integrationManagerMsg?>" -->
+			<TABLE width="100%"><tr><td class="error">{!d:integrationManagerMsg!}</td><tr></table>
+		<!--#/IF-->
+	</select>
+	<input type="button" value="Submit" name="button" class="button2" onClick="exportInvoices(this.form)">
+	<!--#/IF-->
+
+
+ <BR> <BR>
+</FORM>
+<!--#/SQLLOOP-->
+* Contains Invoice Tracking
+<!--#EMBED template="embeds/footer.html" -->

@@ -1,0 +1,1437 @@
+<excel>
+	<sheet number="2">
+		<table name="quotes">
+			<item name="systems_shipping_method">
+				<field>[SYSTEMS_SHIPPING_METHOD]</field>
+				<column>4</column>
+				<row>20</row>
+			</item>
+			<item name="casegoods_shipping_method">
+				<field>[CASEGOODS_SHIPPING_METHOD]
+				</field>
+				<column>4</column>
+				<row>21</row>
+			</item>
+			<item name="select_job_site_move-stage_environment">
+				<field>[SELECT_JOB_SITE_MOVE-STAGE_ENVIRONMENT]
+				</field>
+				<column>4</column>
+				<row>24</row>
+			</item>
+			<item name="">
+				<field>[ESTIMATOR_COMMENTS]</field>
+				<column>5</column>
+				<row>30</row>
+			</item>
+			<item name="omni_bill_$_std_hours_@_discounted_bill_rate">
+				<field>[OMNI_BILL_STD_HOURS_DISCOUNTED_BILL_RATE]
+				</field>
+				<column>13</column>
+				<row>116</row>
+			</item>
+			<item name="net_effective_billing_rate_$_per_hour">
+				<field>[NET_EFFECTIVE_BILLING_RATE_PER_HOUR]
+				</field>
+				<column>13</column>
+				<row>117</row>
+			</item>
+			<item name="">
+				<field>[QUOTE_TOTAL]</field>
+				<column>8</column>
+				<row>135</row>
+			</item>
+		</table>
+		<table name="quote_other_furniture">
+			<set number="1">
+				<item name="" required="true">
+					<field>[DESCRIPTION]</field>
+					<column>2</column>
+					<row>59</row>
+				</item>
+				<item name="">
+					<field>[QTY]</field>
+					<column>5</column>
+					<row>59</row>
+				</item>
+			</set>
+			<set number="2">
+				<item name="" required="true">
+					<field>[DESCRIPTION]</field>
+					<column>2</column>
+					<row>60</row>
+				</item>
+				<item name="">
+					<field>[QTY]</field>
+					<column>5</column>
+					<row>60</row>
+				</item>
+			</set>
+			<set number="3">
+				<item name="" required="true">
+					<field>[DESCRIPTION]</field>
+					<column>2</column>
+					<row>61</row>
+				</item>
+				<item name="">
+					<field>[QTY]</field>
+					<column>5</column>
+					<row>61</row>
+				</item>
+			</set>
+			<set number="4">
+				<item name="" required="true">
+					<field>[DESCRIPTION]</field>
+					<column>2</column>
+					<row>62</row>
+				</item>
+				<item name="">
+					<field>[QTY]</field>
+					<column>5</column>
+					<row>62</row>
+				</item>
+			</set>
+			<set number="5">
+				<item name="" required="true">
+					<field>[DESCRIPTION]</field>
+					<column>2</column>
+					<row>63</row>
+				</item>
+				<item name="">
+					<field>[QTY]</field>
+					<column>5</column>
+					<row>63</row>
+				</item>
+			</set>
+			<set number="6">
+				<item name="" required="true">
+					<field>[DESCRIPTION]</field>
+					<column>2</column>
+					<row>64</row>
+				</item>
+				<item name="">
+					<field>[QTY]</field>
+					<column>5</column>
+					<row>64</row>
+				</item>
+			</set>
+			<set number="7">
+				<item name="" required="true">
+					<field>[DESCRIPTION]</field>
+					<column>2</column>
+					<row>65</row>
+				</item>
+				<item name="">
+					<field>[QTY]</field>
+					<column>5</column>
+					<row>65</row>
+				</item>
+			</set>
+			<set number="8">
+				<item name="" required="true">
+					<field>[DESCRIPTION]</field>
+					<column>2</column>
+					<row>66</row>
+				</item>
+				<item name="">
+					<field>[QTY]</field>
+					<column>5</column>
+					<row>66</row>
+				</item>
+			</set>
+			<set number="9">
+				<item name="" required="true">
+					<field>[DESCRIPTION]</field>
+					<column>2</column>
+					<row>67</row>
+				</item>
+				<item name="">
+					<field>[QTY]</field>
+					<column>5</column>
+					<row>67</row>
+				</item>
+			</set>
+			<set number="10">
+				<item name="" required="true">
+					<field>[DESCRIPTION]</field>
+					<column>2</column>
+					<row>68</row>
+				</item>
+				<item name="">
+					<field>[QTY]</field>
+					<column>5</column>
+					<row>68</row>
+				</item>
+			</set>
+			<set number="11">
+				<item name="" required="true">
+					<field>[DESCRIPTION]</field>
+					<column>2</column>
+					<row>69</row>
+				</item>
+				<item name="">
+					<field>[QTY]</field>
+					<column>5</column>
+					<row>69</row>
+				</item>
+			</set>
+			<set number="12">
+				<item name="" required="true">
+					<field>[DESCRIPTION]</field>
+					<column>2</column>
+					<row>70</row>
+				</item>
+				<item name="">
+					<field>[QTY]</field>
+					<column>5</column>
+					<row>70</row>
+				</item>
+			</set>
+			<set number="13">
+				<item name="" required="true">
+					<field>[DESCRIPTION]</field>
+					<column>2</column>
+					<row>71</row>
+				</item>
+				<item name="">
+					<field>[QTY]</field>
+					<column>5</column>
+					<row>71</row>
+				</item>
+			</set>
+		</table>
+		<table name="quote_specify_other_services">
+			<set number="1">
+				<item name="" required="true">
+					<field>[specify_service]</field>
+					<column>7</column>
+					<row>59</row>
+				</item>
+				<item name="">
+					<field>[bill]</field>
+					<column>11</column>
+					<row>59</row>
+				</item>
+			</set>
+			<set number="2">
+				<item name="" required="true">
+					<field>[specify_service]</field>
+					<column>7</column>
+					<row>60</row>
+				</item>
+				<item name="">
+					<field>[bill]</field>
+					<column>11</column>
+					<row>60</row>
+				</item>
+			</set>
+			<set number="3">
+				<item name="" required="true">
+					<field>[specify_service]</field>
+					<column>7</column>
+					<row>61</row>
+				</item>
+				<item name="">
+					<field>[bill]</field>
+					<column>11</column>
+					<row>61</row>
+				</item>
+			</set>
+			<set number="4">
+				<item name="" required="true">
+					<field>[specify_service]</field>
+					<column>7</column>
+					<row>62</row>
+				</item>
+				<item name="">
+					<field>[bill]</field>
+					<column>11</column>
+					<row>62</row>
+				</item>
+			</set>
+			<set number="5">
+				<item name="" required="true">
+					<field>[specify_service]</field>
+					<column>7</column>
+					<row>63</row>
+				</item>
+				<item name="">
+					<field>[bill]</field>
+					<column>11</column>
+					<row>63</row>
+				</item>
+			</set>
+			<set number="6">
+				<item name="" required="true">
+					<field>[specify_service]</field>
+					<column>7</column>
+					<row>64</row>
+				</item>
+				<item name="">
+					<field>[bill]</field>
+					<column>11</column>
+					<row>64</row>
+				</item>
+			</set>
+			<set number="7">
+				<item name="" required="true">
+					<field>[specify_service]</field>
+					<column>7</column>
+					<row>65</row>
+				</item>
+				<item name="">
+					<field>[bill]</field>
+					<column>11</column>
+					<row>65</row>
+				</item>
+			</set>
+			<set number="8">
+				<item name="" required="true">
+					<field>[specify_service]</field>
+					<column>7</column>
+					<row>66</row>
+				</item>
+				<item name="">
+					<field>[bill]</field>
+					<column>11</column>
+					<row>66</row>
+				</item>
+			</set>
+		</table>
+		<table name="quote_other_furniture_ad_hoc">
+			<set number="1">
+				<item name="" required="true" maxlength="150">
+					<field>[description]</field>
+					<column>7</column>
+					<row>68</row>
+				</item>
+				<item name="">
+					<field>[bill]</field>
+					<column>11</column>
+					<row>68</row>
+				</item>
+			</set>
+			<set number="2">
+				<item name="" required="true" maxlength="150">
+					<field>[description]</field>
+					<column>7</column>
+					<row>69</row>
+				</item>
+				<item name="">
+					<field>[bill]</field>
+					<column>11</column>
+					<row>69</row>
+				</item>
+			</set>
+			<set number="3">
+				<item name="" required="true" maxlength="150">
+					<field>[description]</field>
+					<column>7</column>
+					<row>70</row>
+				</item>
+				<item name="">
+					<field>[bill]</field>
+					<column>11</column>
+					<row>70</row>
+				</item>
+			</set>
+		</table>
+		<table name="quote_workstation_configurations">
+			<set number="1">
+				<item name="" required="true">
+					<field>[TYPICAL]</field>
+					<column>3</column>
+					<row>30</row>
+				</item>
+				<item name="">
+					<field>[WORKSTATION_COUNT]</field>
+					<column>5</column>
+					<row>38</row>
+				</item>
+				<item name="">
+					<field>[DOMINANT_WORKSTATION]</field>
+					<column>5</column>
+					<row>39</row>
+				</item>
+				<item name="">
+					<field>[BELTLINE_POWER]</field>
+					<column>5</column>
+					<row>40</row>
+				</item>
+				<item name="">
+					<field>[PANELS_NON-POWERED]</field>
+					<column>5</column>
+					<row>43</row>
+				</item>
+				<item name="">
+					<field>[PANELS_POWERED]</field>
+					<column>5</column>
+					<row>44</row>
+				</item>
+				<item name="">
+					<field>[TILES]</field>
+					<column>5</column>
+					<row>45</row>
+				</item>
+				<item name="">
+					<field>[STACK-ON_FRAME_FABRIC]</field>
+					<column>5</column>
+					<row>46</row>
+				</item>
+				<item name="">
+					<field>[STACK-ON_FRAME_GLASS]</field>
+					<column>5</column>
+					<row>47</row>
+				</item>
+				<item name="">
+					<field>[WORKSURFACES]</field>
+					<column>5</column>
+					<row>48</row>
+				</item>
+				<item name="">
+					<field>[OVERHEADS]</field>
+					<column>5</column>
+					<row>49</row>
+				</item>
+				<item name="">
+					<field>[PEDESTALS]</field>
+					<column>5</column>
+					<row>50</row>
+				</item>
+				<item name="">
+					<field>[TASKLIGHTS]</field>
+					<column>5</column>
+					<row>51</row>
+				</item>
+				<item name="">
+					<field>[KEYBOARD_TRAYS]</field>
+					<column>5</column>
+					<row>52</row>
+				</item>
+				<item name="">
+					<field>[WALLTRACK]</field>
+					<column>5</column>
+					<row>53</row>
+				</item>
+				<item name="">
+					<field>[DOORS]</field>
+					<column>5</column>
+					<row>54</row>
+				</item>
+				<item name="">
+					<field>[ACCESSORIES]</field>
+					<column>5</column>
+					<row>55</row>
+				</item>
+				<item name="">
+					<field>[TYPICAL_PRICE]</field>
+					<column>5</column>
+					<row>118</row>
+				</item>
+				<item name="">
+					<field>[TYPICAL_EXTENDED_PRICE]</field>
+					<column>5</column>
+					<row>116</row>
+				</item>
+			</set>
+			<set number="2">
+				<item name="" required="true">
+					<field>[TYPICAL]</field>
+					<column>3</column>
+					<row>31</row>
+				</item>
+				<item name="">
+					<field>[WORKSTATION_COUNT]</field>
+					<column>6</column>
+					<row>38</row>
+				</item>
+				<item name="">
+					<field>[DOMINANT_WORKSTATION]</field>
+					<column>6</column>
+					<row>39</row>
+				</item>
+				<item name="">
+					<field>[BELTLINE_POWER]</field>
+					<column>6</column>
+					<row>40</row>
+				</item>
+				<item name="">
+					<field>[PANELS_NON-POWERED]</field>
+					<column>6</column>
+					<row>43</row>
+				</item>
+				<item name="">
+					<field>[PANELS_POWERED]</field>
+					<column>6</column>
+					<row>44</row>
+				</item>
+				<item name="">
+					<field>[TILES]</field>
+					<column>6</column>
+					<row>45</row>
+				</item>
+				<item name="">
+					<field>[STACK-ON_FRAME_FABRIC]</field>
+					<column>6</column>
+					<row>46</row>
+				</item>
+				<item name="">
+					<field>[STACK-ON_FRAME_GLASS]</field>
+					<column>6</column>
+					<row>47</row>
+				</item>
+				<item name="">
+					<field>[WORKSURFACES]</field>
+					<column>6</column>
+					<row>48</row>
+				</item>
+				<item name="">
+					<field>[OVERHEADS]</field>
+					<column>6</column>
+					<row>49</row>
+				</item>
+				<item name="">
+					<field>[PEDESTALS]</field>
+					<column>6</column>
+					<row>50</row>
+				</item>
+				<item name="">
+					<field>[TASKLIGHTS]</field>
+					<column>6</column>
+					<row>51</row>
+				</item>
+				<item name="">
+					<field>[KEYBOARD_TRAYS]</field>
+					<column>6</column>
+					<row>52</row>
+				</item>
+				<item name="">
+					<field>[WALLTRACK]</field>
+					<column>6</column>
+					<row>53</row>
+				</item>
+				<item name="">
+					<field>[DOORS]</field>
+					<column>6</column>
+					<row>54</row>
+				</item>
+				<item name="">
+					<field>[ACCESSORIES]</field>
+					<column>6</column>
+					<row>55</row>
+				</item>
+				<item name="">
+					<field>[TYPICAL_PRICE]</field>
+					<column>6</column>
+					<row>118</row>
+				</item>
+				<item name="">
+					<field>[TYPICAL_EXTENDED_PRICE]</field>
+					<column>6</column>
+					<row>116</row>
+				</item>
+			</set>
+			<set number="3">
+				<item name="" required="true">
+					<field>[TYPICAL]</field>
+					<column>3</column>
+					<row>32</row>
+				</item>
+				<item name="">
+					<field>[WORKSTATION_COUNT]</field>
+					<column>7</column>
+					<row>38</row>
+				</item>
+				<item name="">
+					<field>[DOMINANT_WORKSTATION]</field>
+					<column>7</column>
+					<row>39</row>
+				</item>
+				<item name="">
+					<field>[BELTLINE_POWER]</field>
+					<column>7</column>
+					<row>40</row>
+				</item>
+				<item name="">
+					<field>[PANELS_NON-POWERED]</field>
+					<column>7</column>
+					<row>43</row>
+				</item>
+				<item name="">
+					<field>[PANELS_POWERED]</field>
+					<column>7</column>
+					<row>44</row>
+				</item>
+				<item name="">
+					<field>[TILES]</field>
+					<column>7</column>
+					<row>45</row>
+				</item>
+				<item name="">
+					<field>[STACK-ON_FRAME_FABRIC]</field>
+					<column>7</column>
+					<row>46</row>
+				</item>
+				<item name="">
+					<field>[STACK-ON_FRAME_GLASS]</field>
+					<column>7</column>
+					<row>47</row>
+				</item>
+				<item name="">
+					<field>[WORKSURFACES]</field>
+					<column>7</column>
+					<row>48</row>
+				</item>
+				<item name="">
+					<field>[OVERHEADS]</field>
+					<column>7</column>
+					<row>49</row>
+				</item>
+				<item name="">
+					<field>[PEDESTALS]</field>
+					<column>7</column>
+					<row>50</row>
+				</item>
+				<item name="">
+					<field>[TASKLIGHTS]</field>
+					<column>7</column>
+					<row>51</row>
+				</item>
+				<item name="">
+					<field>[KEYBOARD_TRAYS]</field>
+					<column>7</column>
+					<row>52</row>
+				</item>
+				<item name="">
+					<field>[WALLTRACK]</field>
+					<column>7</column>
+					<row>53</row>
+				</item>
+				<item name="">
+					<field>[DOORS]</field>
+					<column>7</column>
+					<row>54</row>
+				</item>
+				<item name="">
+					<field>[ACCESSORIES]</field>
+					<column>7</column>
+					<row>55</row>
+				</item>
+				<item name="">
+					<field>[TYPICAL_PRICE]</field>
+					<column>7</column>
+					<row>118</row>
+				</item>
+				<item name="">
+					<field>[TYPICAL_EXTENDED_PRICE]</field>
+					<column>7</column>
+					<row>116</row>
+				</item>
+			</set>
+			<set number="4">
+				<item name="" required="true">
+					<field>[TYPICAL]</field>
+					<column>3</column>
+					<row>33</row>
+				</item>
+				<item name="">
+					<field>[WORKSTATION_COUNT]</field>
+					<column>8</column>
+					<row>38</row>
+				</item>
+				<item name="">
+					<field>[DOMINANT_WORKSTATION]</field>
+					<column>8</column>
+					<row>39</row>
+				</item>
+				<item name="">
+					<field>[BELTLINE_POWER]</field>
+					<column>8</column>
+					<row>40</row>
+				</item>
+				<item name="">
+					<field>[PANELS_NON-POWERED]</field>
+					<column>8</column>
+					<row>43</row>
+				</item>
+				<item name="">
+					<field>[PANELS_POWERED]</field>
+					<column>8</column>
+					<row>44</row>
+				</item>
+				<item name="">
+					<field>[TILES]</field>
+					<column>8</column>
+					<row>45</row>
+				</item>
+				<item name="">
+					<field>[STACK-ON_FRAME_FABRIC]</field>
+					<column>8</column>
+					<row>46</row>
+				</item>
+				<item name="">
+					<field>[STACK-ON_FRAME_GLASS]</field>
+					<column>8</column>
+					<row>47</row>
+				</item>
+				<item name="">
+					<field>[WORKSURFACES]</field>
+					<column>8</column>
+					<row>48</row>
+				</item>
+				<item name="">
+					<field>[OVERHEADS]</field>
+					<column>8</column>
+					<row>49</row>
+				</item>
+				<item name="">
+					<field>[PEDESTALS]</field>
+					<column>8</column>
+					<row>50</row>
+				</item>
+				<item name="">
+					<field>[TASKLIGHTS]</field>
+					<column>8</column>
+					<row>51</row>
+				</item>
+				<item name="">
+					<field>[KEYBOARD_TRAYS]</field>
+					<column>8</column>
+					<row>52</row>
+				</item>
+				<item name="">
+					<field>[WALLTRACK]</field>
+					<column>8</column>
+					<row>53</row>
+				</item>
+				<item name="">
+					<field>[DOORS]</field>
+					<column>8</column>
+					<row>54</row>
+				</item>
+				<item name="">
+					<field>[ACCESSORIES]</field>
+					<column>8</column>
+					<row>55</row>
+				</item>
+				<item name="">
+					<field>[TYPICAL_PRICE]</field>
+					<column>8</column>
+					<row>118</row>
+				</item>
+				<item name="">
+					<field>[TYPICAL_EXTENDED_PRICE]</field>
+					<column>8</column>
+					<row>116</row>
+				</item>
+			</set>
+			<set number="5">
+				<item name="" required="true">
+					<field>[TYPICAL]</field>
+					<column>3</column>
+					<row>34</row>
+				</item>
+				<item name="">
+					<field>[WORKSTATION_COUNT]</field>
+					<column>9</column>
+					<row>38</row>
+				</item>
+				<item name="">
+					<field>[DOMINANT_WORKSTATION]</field>
+					<column>9</column>
+					<row>39</row>
+				</item>
+				<item name="">
+					<field>[BELTLINE_POWER]</field>
+					<column>9</column>
+					<row>40</row>
+				</item>
+				<item name="">
+					<field>[PANELS_NON-POWERED]</field>
+					<column>9</column>
+					<row>43</row>
+				</item>
+				<item name="">
+					<field>[PANELS_POWERED]</field>
+					<column>9</column>
+					<row>44</row>
+				</item>
+				<item name="">
+					<field>[TILES]</field>
+					<column>9</column>
+					<row>45</row>
+				</item>
+				<item name="">
+					<field>[STACK-ON_FRAME_FABRIC]</field>
+					<column>9</column>
+					<row>46</row>
+				</item>
+				<item name="">
+					<field>[STACK-ON_FRAME_GLASS]</field>
+					<column>9</column>
+					<row>47</row>
+				</item>
+				<item name="">
+					<field>[WORKSURFACES]</field>
+					<column>9</column>
+					<row>48</row>
+				</item>
+				<item name="">
+					<field>[OVERHEADS]</field>
+					<column>9</column>
+					<row>49</row>
+				</item>
+				<item name="">
+					<field>[PEDESTALS]</field>
+					<column>9</column>
+					<row>50</row>
+				</item>
+				<item name="">
+					<field>[TASKLIGHTS]</field>
+					<column>9</column>
+					<row>51</row>
+				</item>
+				<item name="">
+					<field>[KEYBOARD_TRAYS]</field>
+					<column>9</column>
+					<row>52</row>
+				</item>
+				<item name="">
+					<field>[WALLTRACK]</field>
+					<column>9</column>
+					<row>53</row>
+				</item>
+				<item name="">
+					<field>[DOORS]</field>
+					<column>9</column>
+					<row>54</row>
+				</item>
+				<item name="">
+					<field>[ACCESSORIES]</field>
+					<column>9</column>
+					<row>55</row>
+				</item>
+				<item name="">
+					<field>[TYPICAL_PRICE]</field>
+					<column>9</column>
+					<row>118</row>
+				</item>
+				<item name="">
+					<field>[TYPICAL_EXTENDED_PRICE]</field>
+					<column>9</column>
+					<row>116</row>
+				</item>
+			</set>
+			<set number="6">
+				<item name="" required="true">
+					<field>[TYPICAL]</field>
+					<column>3</column>
+					<row>35</row>
+				</item>
+				<item name="">
+					<field>[WORKSTATION_COUNT]</field>
+					<column>10</column>
+					<row>38</row>
+				</item>
+				<item name="">
+					<field>[DOMINANT_WORKSTATION]</field>
+					<column>10</column>
+					<row>39</row>
+				</item>
+				<item name="">
+					<field>[BELTLINE_POWER]</field>
+					<column>10</column>
+					<row>40</row>
+				</item>
+				<item name="">
+					<field>[PANELS_NON-POWERED]</field>
+					<column>10</column>
+					<row>43</row>
+				</item>
+				<item name="">
+					<field>[PANELS_POWERED]</field>
+					<column>10</column>
+					<row>44</row>
+				</item>
+				<item name="">
+					<field>[TILES]</field>
+					<column>10</column>
+					<row>45</row>
+				</item>
+				<item name="">
+					<field>[STACK-ON_FRAME_FABRIC]</field>
+					<column>10</column>
+					<row>46</row>
+				</item>
+				<item name="">
+					<field>[STACK-ON_FRAME_GLASS]</field>
+					<column>10</column>
+					<row>47</row>
+				</item>
+				<item name="">
+					<field>[WORKSURFACES]</field>
+					<column>10</column>
+					<row>48</row>
+				</item>
+				<item name="">
+					<field>[OVERHEADS]</field>
+					<column>10</column>
+					<row>49</row>
+				</item>
+				<item name="">
+					<field>[PEDESTALS]</field>
+					<column>10</column>
+					<row>50</row>
+				</item>
+				<item name="">
+					<field>[TASKLIGHTS]</field>
+					<column>10</column>
+					<row>51</row>
+				</item>
+				<item name="">
+					<field>[KEYBOARD_TRAYS]</field>
+					<column>10</column>
+					<row>52</row>
+				</item>
+				<item name="">
+					<field>[WALLTRACK]</field>
+					<column>10</column>
+					<row>53</row>
+				</item>
+				<item name="">
+					<field>[DOORS]</field>
+					<column>10</column>
+					<row>54</row>
+				</item>
+				<item name="">
+					<field>[ACCESSORIES]</field>
+					<column>10</column>
+					<row>55</row>
+				</item>
+				<item name="">
+					<field>[TYPICAL_PRICE]</field>
+					<column>10</column>
+					<row>118</row>
+				</item>
+				<item name="">
+					<field>[TYPICAL_EXTENDED_PRICE]</field>
+					<column>10</column>
+					<row>116</row>
+				</item>
+			</set>
+		</table>
+	</sheet>
+	<sheet number="3">
+		<table name="quotes">
+			<item name="">
+				<field>[ROC_OMNI_DISCOUNTED_HOURS-RECEIVE]
+				</field>
+				<column>13</column>
+				<row>23</row>
+			</item>
+			<item name="">
+				<field>[ROC_OMNI_DISCOUNTED_HOURS-RELOAD]
+				</field>
+				<column>13</column>
+				<row>24</row>
+			</item>
+			<item name="">
+				<field>[ROC_OMNI_DISCOUNTED_HOURS-TRUCK]
+				</field>
+				<column>13</column>
+				<row>25</row>
+			</item>
+			<item name="">
+				<field>[ROC_OMNI_DISCOUNTED_HOURS-DRIVER]
+				</field>
+				<column>13</column>
+				<row>26</row>
+			</item>
+			<item name="">
+				<field>[ROC_OMNI_DISCOUNTED_HOURS-UNLOAD]
+				</field>
+				<column>13</column>
+				<row>27</row>
+			</item>
+			<item name="">
+				<field>[ROC_OMNI_DISCOUNTED_HOURS-MOVE_STAGE]
+				</field>
+				<column>13</column>
+				<row>28</row>
+			</item>
+			<item name="">
+				<field>[ROC_OMNI_DISCOUNTED_HOURS-INSTALL]
+				</field>
+				<column>13</column>
+				<row>29</row>
+			</item>
+			<item name="">
+				<field>[ROC_OMNI_DISCOUNTED_HOURS-ELECTRICAL]
+				</field>
+				<column>13</column>
+				<row>30</row>
+			</item>
+			<item name="">
+				<field>[ROC_OMNI_DISCOUNTED_HOURS-TOTAL]
+				</field>
+				<column>13</column>
+				<row>31</row>
+			</item>
+			<item name="">
+				<field>[ROC_INDUSTRY_STD_BILL-RECEIVE]
+				</field>
+				<column>13</column>
+				<row>46</row>
+			</item>
+			<item name="">
+				<field>[ROC_INDUSTRY_STD_BILL-RELOAD]
+				</field>
+				<column>13</column>
+				<row>47</row>
+			</item>
+			<item name="">
+				<field>[ROC_INDUSTRY_STD_BILL-TRUCK]
+				</field>
+				<column>13</column>
+				<row>48</row>
+			</item>
+			<item name="">
+				<field>[ROC_INDUSTRY_STD_BILL-DRIVER]
+				</field>
+				<column>13</column>
+				<row>49</row>
+			</item>
+			<item name="">
+				<field>[ROC_INDUSTRY_STD_BILL-UNLOAD]
+				</field>
+				<column>13</column>
+				<row>50</row>
+			</item>
+			<item name="">
+				<field>[ROC_INDUSTRY_STD_BILL-MOVE_STAGE]
+				</field>
+				<column>13</column>
+				<row>51</row>
+			</item>
+			<item name="">
+				<field>[ROC_INDUSTRY_STD_BILL-INSTALL]
+				</field>
+				<column>13</column>
+				<row>52</row>
+			</item>
+			<item name="">
+				<field>[ROC_INDUSTRY_STD_BILL-ELECTRICAL]
+				</field>
+				<column>13</column>
+				<row>53</row>
+			</item>
+			<item name="">
+				<field>[ROC_INDUSTRY_STD_BILL-TOTAL]
+				</field>
+				<column>13</column>
+				<row>54</row>
+			</item>
+			<item name="">
+				<field>[ROC_OMNI_DIRECT_COST-RECEIVE]
+				</field>
+				<column>13</column>
+				<row>72</row>
+			</item>
+			<item name="">
+				<field>[ROC_OMNI_DIRECT_COST-RELOAD]
+				</field>
+				<column>13</column>
+				<row>73</row>
+			</item>
+			<item name="">
+				<field>[ROC_OMNI_DIRECT_COST-TRUCK]
+				</field>
+				<column>13</column>
+				<row>74</row>
+			</item>
+			<item name="">
+				<field>[ROC_OMNI_DIRECT_COST-DRIVER]
+				</field>
+				<column>13</column>
+				<row>75</row>
+			</item>
+			<item name="">
+				<field>[ROC_OMNI_DIRECT_COST-UNLOAD]
+				</field>
+				<column>13</column>
+				<row>76</row>
+			</item>
+			<item name="">
+				<field>[ROC_OMNI_DIRECT_COST-MOVE-STAGE]
+				</field>
+				<column>13</column>
+				<row>77</row>
+			</item>
+			<item name="">
+				<field>[ROC_OMNI_DIRECT_COST-INSTALL]
+				</field>
+				<column>13</column>
+				<row>78</row>
+			</item>
+			<item name="">
+				<field>[ROC_OMNI_DIRECT_COST-ELECTRICAL]
+				</field>
+				<column>13</column>
+				<row>79</row>
+			</item>
+			<item name="">
+				<field>[ROC_OMNI_DIRECT_COST-TOTAL]
+				</field>
+				<column>13</column>
+				<row>80</row>
+			</item>
+		</table>
+	</sheet>
+	<sheet number="4">
+		<table name="quotes">
+			<item name="">
+				<field>[IND_INDUSTRY_STD_HOURS-RECEIVE]
+				</field>
+				<column>13</column>
+				<row>10</row>
+			</item>
+			<item name="">
+				<field>[IND_INDUSTRY_STD_HOURS-RELOAD]
+				</field>
+				<column>13</column>
+				<row>11</row>
+			</item>
+			<item name="">
+				<field>[IND_INDUSTRY_STD_HOURS-TRUCK]
+				</field>
+				<column>13</column>
+				<row>12</row>
+			</item>
+			<item name="">
+				<field>[IND_INDUSTRY_STD_HOURS-DRIVER]
+				</field>
+				<column>13</column>
+				<row>13</row>
+			</item>
+			<item name="">
+				<field>[IND_INDUSTRY_STD_HOURS-UNLOAD]
+				</field>
+				<column>13</column>
+				<row>14</row>
+			</item>
+			<item name="">
+				<field>[IND_INDUSTRY_STD_HOURS-MOVE_STAGE]
+				</field>
+				<column>13</column>
+				<row>15</row>
+			</item>
+			<item name="">
+				<field>[IND_INDUSTRY_STD_HOURS-INSTALL]
+				</field>
+				<column>13</column>
+				<row>16</row>
+			</item>
+			<item name="">
+				<field>[IND_INDUSTRY_STD_HOURS-ELECTRICAL]
+				</field>
+				<column>13</column>
+				<row>17</row>
+			</item>
+			<item name="">
+				<field>[IND_INDUSTRY_STD_HOURS-TOTAL]
+				</field>
+				<column>13</column>
+				<row>18</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DISCOUNTED_HOURS-RECEIVE]
+				</field>
+				<column>13</column>
+				<row>23</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DISCOUNTED_HOURS-RELOAD]
+				</field>
+				<column>13</column>
+				<row>24</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DISCOUNTED_HOURS-TRUCK]
+				</field>
+				<column>13</column>
+				<row>25</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DISCOUNTED_HOURS-DRIVER]
+				</field>
+				<column>13</column>
+				<row>26</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DISCOUNTED_HOURS-UNLOAD]
+				</field>
+				<column>13</column>
+				<row>27</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DISCOUNTED_HOURS-MOVE_STAGE]
+				</field>
+				<column>13</column>
+				<row>28</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DISCOUNTED_HOURS-INSTALL]
+				</field>
+				<column>13</column>
+				<row>29</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DISCOUNTED_HOURS-ELECTRICAL]
+				</field>
+				<column>13</column>
+				<row>30</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DISCOUNTED_HOURS-TOTAL]
+				</field>
+				<column>13</column>
+				<row>31</row>
+			</item>
+			<item name="">
+				<field>[IND_INDUSTRY_STD_BILL-RECEIVE]
+				</field>
+				<column>13</column>
+				<row>46</row>
+			</item>
+			<item name="">
+				<field>[IND_INDUSTRY_STD_BILL-RELOAD]
+				</field>
+				<column>13</column>
+				<row>47</row>
+			</item>
+			<item name="">
+				<field>[IND_INDUSTRY_STD_BILL-TRUCK]
+				</field>
+				<column>13</column>
+				<row>48</row>
+			</item>
+			<item name="">
+				<field>[IND_INDUSTRY_STD_BILL-DRIVER]
+				</field>
+				<column>13</column>
+				<row>49</row>
+			</item>
+			<item name="">
+				<field>[IND_INDUSTRY_STD_BILL-UNLOAD]
+				</field>
+				<column>13</column>
+				<row>50</row>
+			</item>
+			<item name="">
+				<field>[IND_INDUSTRY_STD_BILL-MOVE_STAGE]
+				</field>
+				<column>13</column>
+				<row>51</row>
+			</item>
+			<item name="">
+				<field>[IND_INDUSTRY_STD_BILL-INSTALL]
+				</field>
+				<column>13</column>
+				<row>52</row>
+			</item>
+			<item name="">
+				<field>[IND_INDUSTRY_STD_BILL-ELECTRICAL]
+				</field>
+				<column>13</column>
+				<row>53</row>
+			</item>
+			<item name="">
+				<field>[IND_INDUSTRY_STD_BILL-TOTAL]
+				</field>
+				<column>13</column>
+				<row>54</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DISCOUNTED_BILL-RECEIVE]
+				</field>
+				<column>13</column>
+				<row>57</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DISCOUNTED_BILL-RELOAD]
+				</field>
+				<column>13</column>
+				<row>58</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DISCOUNTED_BILL-TRUCK]
+				</field>
+				<column>13</column>
+				<row>59</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DISCOUNTED_BILL-DRIVER]
+				</field>
+				<column>13</column>
+				<row>60</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DISCOUNTED_BILL-UNLOAD]
+				</field>
+				<column>13</column>
+				<row>61</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DISCOUNTED_BILL-MOVE_STAGE]
+				</field>
+				<column>13</column>
+				<row>62</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DISCOUNTED_BILL-INSTALL]
+				</field>
+				<column>13</column>
+				<row>63</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DISCOUNTED_BILL-ELECTRICAL]
+				</field>
+				<column>13</column>
+				<row>64</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DISCOUNTED_BILL-TOTAL]
+				</field>
+				<column>13</column>
+				<row>65</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DIRECT_COST-RECEIVE]
+				</field>
+				<column>13</column>
+				<row>83</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DIRECT_COST-RELOAD]
+				</field>
+				<column>13</column>
+				<row>84</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DIRECT_COST-TRUCK]
+				</field>
+				<column>13</column>
+				<row>85</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DIRECT_COST-DRIVER]
+				</field>
+				<column>13</column>
+				<row>86</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DIRECT_COST-UNLOAD]
+				</field>
+				<column>13</column>
+				<row>87</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DIRECT_COST-MOVE_STAGE]
+				</field>
+				<column>13</column>
+				<row>88</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DIRECT_COST-INSTALL]
+				</field>
+				<column>13</column>
+				<row>89</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DIRECT_COST-ELECTRICAL]
+				</field>
+				<column>13</column>
+				<row>90</row>
+			</item>
+			<item name="">
+				<field>[IND_OMNI_DIRECT_COST-TOTAL]
+				</field>
+				<column>13</column>
+				<row>91</row>
+			</item>
+		</table>
+	</sheet>
+	<sheet number="7">
+		<table name="quotes">
+			<item name="">
+				<field>[TOTAL-PANELS_NON-POWERED]</field>
+				<column>10</column>
+				<row>62</row>
+			</item>
+			<item name="">
+				<field>[TOTAL-PANELS_POWERED]</field>
+				<column>10</column>
+				<row>63</row>
+			</item>
+			<item name="">
+				<field>[TOTAL-BELTLINE_POWER]</field>
+				<column>10</column>
+				<row>64</row>
+			</item>
+			<item name="">
+				<field>[TOTAL-TILES]</field>
+				<column>10</column>
+				<row>65</row>
+			</item>
+			<item name="">
+				<field>[TOTAL-STACK_FABRIC]</field>
+				<column>10</column>
+				<row>66</row>
+			</item>
+			<item name="">
+				<field>[TOTAL-STACK_GLASS]</field>
+				<column>10</column>
+				<row>67</row>
+			</item>
+			<item name="">
+				<field>[TOTAL-WORKSURFACES]</field>
+				<column>10</column>
+				<row>68</row>
+			</item>
+			<item name="">
+				<field>[TOTAL-OVERHEADS]</field>
+				<column>10</column>
+				<row>69</row>
+			</item>
+			<item name="">
+				<field>[TOTAL-PEDESTALS]</field>
+				<column>10</column>
+				<row>70</row>
+			</item>
+			<item name="">
+				<field>[TOTAL-TASKLIGHTS]</field>
+				<column>10</column>
+				<row>71</row>
+			</item>
+			<item name="">
+				<field>[TOTAL-KEYBOARD_TRAYS]</field>
+				<column>10</column>
+				<row>72</row>
+			</item>
+			<item name="">
+				<field>[TOTAL-WALLTRACKS]</field>
+				<column>10</column>
+				<row>73</row>
+			</item>
+			<item name="">
+				<field>[TOTAL-DOORS]</field>
+				<column>10</column>
+				<row>74</row>
+			</item>
+			<item name="">
+				<field>[TOTAL-ACCESSORIES]</field>
+				<column>10</column>
+				<row>75</row>
+			</item>
+		</table>
+	</sheet>
+</excel>

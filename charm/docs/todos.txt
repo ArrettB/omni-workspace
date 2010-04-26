@@ -1,0 +1,66 @@
+To Dos:
+
+
+remove skeleton from helloworld test
+
+Make serviceName case insensitive for namedQueries
+
+Create gui/script to prompt user about project when creating a skeleton project
+
+
+
+
+Tags:
+<charm:invokeService
+	serviceName=""
+	methodName=""
+	var=""
+	scope=""
+>
+	<charm:parameter name="" value=""/>
+	<charm:parameter name="" value=""/>
+<charm:invokeService/>
+
+<!-- Works similar to c:set but accepts a default value -->
+<charm:set 
+	var=""
+	scope=""
+	value=""
+	default=""
+/>
+
+<charm:clickLogger
+	pageId=""
+	userId=""
+	loggerService=""
+>
+	<charm:parameter name="" value=""/>
+	<charm:parameter name="" value=""/>
+<charm:clickLogger/>
+
+
+<charm:select>
+	name - passthrough
+	style - passthrough
+	class - passthrough
+	query
+	namedQueryId
+	dataService
+	accepts <charm:parameter>
+	accepts <charm:passthru>
+>	
+	<charm:parameter name="" value=""/>
+	<charm:parameter name="" value=""/>
+	<charm:passthru name="" value=""/>
+	<charm:passthru name="" value=""/>
+</charm:select>	
+
+
+
+
+<charm:passthru name="" value=""/>
+works identically to <charm:parameter>, but is intended to simply passthrough html attributes to generated html elements
+	
+	
+	
+	

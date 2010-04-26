@@ -1,0 +1,1968 @@
+<!-- $Header: service_request.html, 1, 7/1/2007, David Zhao$ -->
+<!--#EMBED template="enet/embeds/req_header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#EXEC handler="ims.handlers.proj.SetProjectDatumHandler" project_id="<?p:project_id?>" request_id="<?p:request_id?>" quote_id="<?p:quote_id?>" -->
+
+<script type="text/javascript">
+  YAHOO.namespace("ims.service_request");
+
+  function init() {
+
+  /*********************************************************
+   *       Define various event handlers for Dialog        *
+   ********************************************************/
+    var handleSubmit = function() {
+      if (this.validate())
+      {
+        this.submit();
+      }
+    };
+
+    var handleCancel = function() {
+      this.cancel();
+    };
+
+    var handleFailure = function(o) {
+      alert("Submission failed: " + o.status);
+    };
+
+    var handleContactSuccess = function(o) {
+      var response = o.responseText;
+      response = response.split("<!")[0];
+      var type = document.getElementById("contact_param3").value;
+      var jl_id = document.getElementById("job_location_id").value;
+      var currentId = document.getElementById("contact_param4").value;
+      var button = document.getElementById("contact_param6").value;
+
+      if (type == "job_location")
+      {
+        if (button == "new")
+        {
+
+          $("#jobLocationContactDiv").load("{!s:showPage!}enet/embeds/job_location_contacts.html?parameter=" + jl_id + "&action=new", function () {
+            updateContact("job_location", 1);
+            document.getElementById("viewJobLocContactButtonDiv").style.display="block";
+          });
+
+          $("#jobLocationContactInfoDiv").load("{!s:showPage!}enet/embeds/contact_info.html?action=new");
+
+        }
+        else if (button == "view")
+        {
+          $("#jobLocationContactDiv").load("{!s:showPage!}enet/embeds/job_location_contacts.html?parameter=" + jl_id + "&current_val=" + currentId);
+                    $("#jobLocationContactInfoDiv").load("{!s:showPage!}enet/embeds/contact_info.html?parameter=" + currentId);
+        }
+      }
+      else if (type == "customer")
+      {
+        var index = document.getElementById("contact_param5").value;
+
+        if (button == "new")
+        {
+           $("#contact" + index + "Div").load("{!s:showPage!}enet/embeds/customer_contact" + index + ".html?type=contact&action=new", function () {
+             updateContact("customer", index);
+                       document.getElementById("viewCustContact" + index + "ButtonDiv").style.display="block";
+          });
+
+        }
+        else if (button == "view")
+        {
+           $("#contact" + index + "Div").load("{!s:showPage!}enet/embeds/customer_contact" + index + ".html?parameter=" + currentId + "&type=contact");
+          }
+
+          reloadCustomerContacts(index);
+      }
+
+    };
+
+    var handleCustomerSuccess = function(o) {
+      var response = o.responseText;
+      response = response.split("<!")[0];
+      var type = document.getElementById("cust_param1").value;
+      var c_id = document.getElementById("customer_id").value;
+      var currentId = document.getElementById("cust_param3").value;
+      var button = document.getElementById("cust_param4").value;
+
+      if (type == "end_user")
+      {
+
+        if (button == "new")
+        {
+          $("#endUsersDiv").load("{!s:showPage!}enet/embeds/end_users.html?parameter=" + c_id + "&action=new", function() {
+            updateEndUser();
+            document.getElementById("viewEndUserButtonDiv").style.display="block";
+            onEndUserChange();
+           });
+
+        }
+        else if (button == "view")
+        {
+          $("#endUsersDiv").load("{!s:showPage!}enet/embeds/end_users.html?parameter=" + c_id + "&current_val=" + currentId);
+        }
+      }
+      else
+      {
+        if (button == "new")
+        {
+          $("#customersDiv").load("{!s:showPage!}enet/embeds/customers.html?parameter=" + c_id + "&action=new", function() {
+            updateCustomer();
+            document.getElementById("viewCustomerButtonDiv").style.display="block";
+            onCustomerChange();
+            $("#endUsersDiv").load("{!s:showPage!}enet/embeds/end_users.html?parameter=" + c_id + "&action=new", function() {
+              updateEndUser();
+              document.getElementById("viewEndUserButtonDiv").style.display="block";
+              onEndUserChange();
+             });
+           });
+
+        }
+        else if (button == "view")
+        {
+          $("#customersDiv").load("{!s:showPage!}enet/embeds/customers.html?current_val=" + currentId);
+        }
+
+      }
+
+    };
+
+    var handleJobLocationSuccess = function(o) {
+      var response = o.responseText;
+      response = response.split("<!")[0];
+      var eu_id = document.getElementById("job_loc_param1").value;
+      var currentId = document.getElementById("job_location_id").value;
+      var button = document.getElementById("job_loc_param3").value;
+
+            if (button == "new")
+      {
+        $("#jobLocationsDiv").load("{!s:showPage!}enet/embeds/job_locations.html?parameter=" + eu_id + "&action=new",function() {
+          updateJobLocation();
+          document.getElementById("viewJobLocationButtonDiv").style.display="block";
+          onJobLocationChange();
+         });
+
+      }
+      else if (button == "view")
+      {
+        $("#jobLocationsDiv").load("{!s:showPage!}enet/embeds/job_locations.html?parameter=" + eu_id + "&current_val=" + currentId);
+        onJobLocationChange();
+
+      }
+
+    };
+
+
+  /*********************************************************
+   *       Instantiate Contact Dialog                      *
+   ********************************************************/
+    contactDialog = new YAHOO.widget.Dialog("contactDialogDiv",
+                          { width : "300px",
+                          fixedcenter : true,
+                          visible : false,
+                          constraintoviewport : true,
+                          buttons : [ { text:"Submit", handler:handleSubmit, isDefault:true },
+                                  { text:"Cancel", handler:handleCancel } ]
+                           } );
+
+    // Validate the entries in the form to require that both first and last name are entered
+    contactDialog.validate = function() {
+      var data = this.getData();
+      if (data.contact_name == "") {
+        alert("Please enter a full name.");
+        return false;
+      } else if (data.phone_work == "" && data.phone_cell == "" && data.phone_home == "") {
+        alert("Please enter at least one phone number.");
+        return false;
+      } else if (data.email != "")
+      {
+        if (!validateEmail(data.email))
+        {
+          alert('Invalid Email Address');
+          return false;
+        }else{
+          return true;
+        }
+      } else {
+        return true;
+      }
+    };
+
+    // Wire up the success and failure handlers
+    contactDialog.callback = {success: handleContactSuccess,
+                  failure: handleFailure };
+
+    // Render the Dialog
+    contactDialog.render();
+
+    YAHOO.util.Event.addListener("hide", "click", contactDialog.hide, contactDialog, true);
+
+  /*********************************************************
+   *       Instantiate Customer Dialog                     *
+   ********************************************************/
+    customerDialog = new YAHOO.widget.Dialog("customerDialogDiv",
+                          { width : "300px",
+                          fixedcenter : true,
+                          visible : false,
+                          constraintoviewport : true,
+                          buttons : [ { text:"Submit", handler:handleSubmit, isDefault:true },
+                                  { text:"Cancel", handler:handleCancel } ]
+                           } );
+
+		// Validate the entries in the form to require that both first and last name are entered
+		customerDialog.validate = function() {
+			var data = this.getData();
+			if (data.customer_name == "") {
+				alert("Please enter a full name.");
+				return false;
+			} else {
+				return true;
+			}
+		};
+
+    // Wire up the success and failure handlers
+    customerDialog.callback = {success: handleCustomerSuccess,
+                   failure: handleFailure };
+
+    // Render the Dialog
+    customerDialog.render();
+
+    YAHOO.util.Event.addListener("hide2", "click", customerDialog.hide, customerDialog, true);
+
+  /*********************************************************
+   *       Instantiate Job Location Dialog                 *
+   ********************************************************/
+    jobLocationDialog = new YAHOO.widget.Dialog("jobLocationDialogDiv",
+                          { width : "300px",
+                          fixedcenter : true,
+                          visible : false,
+                          constraintoviewport : true,
+                          buttons : [ { text:"Submit", handler:handleSubmit, isDefault:true },
+                                  { text:"Cancel", handler:handleCancel } ]
+                           } );
+
+    // Validate the entries in the form to require that job location name and location type are entered
+    jobLocationDialog.validate = function() {
+      var data = this.getData();
+      if (data.job_location_name == "") {
+        alert("Please enter job location name.");
+        return false;
+      } else if (data.street1 == "") {
+        alert("Please enter Address.");
+        return false;
+      } else if (data.city == "") {
+        alert("Please enter city.");
+        return false;
+      } else if (data.county == "") {
+        alert("Please enter county.");
+        return false;
+      } else if (data.state == "" || data.state == "XXX") {
+        alert("Please select state.");
+        return false;
+      } else if (data.zip == "") {
+        alert("Please enter zip code.");
+        return false;
+      } else {
+        return true;
+      }
+    };
+
+    // Wire up the success and failure handlers
+    jobLocationDialog.callback = {success: handleJobLocationSuccess,
+                      failure: handleFailure };
+
+    // Render the Dialog
+    jobLocationDialog.render();
+
+    YAHOO.util.Event.addListener("hide3", "click", jobLocationDialog.hide, jobLocationDialog, true);
+
+
+	/***********************************
+	 *    Other Furniture description  *
+	 ***********************************/	
+
+		function onOtherFurnitureChange()
+		{
+		  var y_n_type_n_id = $("#yes_no_type_no").val();
+		  var deliv_type_na_id = $("#delivery_type_na").val();
+		  var other_furn_type = $("#other_furniture_type_id").val();
+
+		  if (other_furn_type == '')
+		  {
+			  $("#other_furniture_desc_row").hide();
+			  $("#other_furniture_desc").text('');
+			  $("#other_delivery_type_id").val('');
+		  }
+		  else if (other_furn_type == y_n_type_n_id)
+		  {
+			  $("#other_furniture_desc_row").hide();
+			  $("#other_furniture_desc").text('');
+			  $("#other_delivery_type_id").val(deliv_type_na_id);
+		  }
+		  else
+		  {
+			  $("#other_furniture_desc_row").show();
+		  }
+
+		}
+		
+		onOtherFurnitureChange();
+
+		$("#other_furniture_type_id").change(onOtherFurnitureChange);
+
+
+  }
+
+	$(document).ready(init);
+
+
+
+/******************************
+ *        Old Functions       *
+ ******************************/
+
+function setDefaults()
+{
+  <!--#IF evaluate="<?s:request_readonly?>" compare="true" -->
+    setFormEdit('N');
+    if( {!d:is_lock_date.isNull('false')!} == true )
+      alert("This Service Request is past or within {!a:num_service_req_lock_days.isNull('0')!} days of the Install Start Date.");
+  <!--#/IF-->
+}
+
+function deleteDocument(requestDocumentId, documentName)
+{
+  if (confirm("Delete the document " + documentName + "?"))
+  {
+    var url = {!s:action.toJavaScriptString()!} + 'requestDocumentDelete/enet/req/quote_request.html'
+    + '?request_document_id=' + requestDocumentId;
+    document.location.replace(url);
+  }
+}
+
+function download(requestDocumentId)
+{
+  var url = {!s:action.toJavaScriptString()!} + 'requestDocumentDownload'
+  + '?request_document_id=' + requestDocumentId;
+  window.open(url, 'chooser', ##-WIN-##);
+}
+
+function validate(requestId)
+{
+  var result = true;
+  if (requestId === '')
+  {
+    alert("The service request must be saved before documents may be added.");
+    result = false;
+  }
+  return result;
+}
+
+function textCounter(field, countfield, maxlimit, action)
+{
+  if (field.value.length > maxlimit)
+  {
+    field.value = field.value.substring(0, maxlimit);
+    alert ("You can only type " + maxlimit + " letters in this field.");
+  }
+  else
+  {
+    countfield.value = maxlimit - field.value.length;
+  }
+}
+
+
+function exitFunction(button)
+{
+  if( isLoaded() == false)
+  {
+    //isLoaded handles error message
+  }
+  else
+  {
+    if( button == 'Save' || button == 'Send')
+    {
+      fixTime(sr_edit.est_start_date, sr_edit.est_start_time);
+      fixTime(sr_edit.prod_del_to_wh_date, sr_edit.truck_arrival_time);
+      document.sr_edit.redisplay.value = 'false';
+      document.sr_edit.button.value = 'Save';
+      document.sr_edit.req_button.value = button;
+      if( button == 'Save' )
+      {
+        sr_edit.is_sent.value = 'N';
+      }
+      else
+      {
+        sr_edit.is_sent.value = 'Y';
+      }
+
+	  if( button == 'Send' && validateSendServiceRequest())
+	  {
+		newWindow('{!s:showPage!}enet/req/wait.html','acknowledge_window',360,450);
+		sr_edit.submit();
+	  }
+	  else if (button == 'Save' && validateSave())
+	  {
+	 	sr_edit.submit();
+	  }
+	}
+	else if( button == 'create_service_request' )
+	{
+		sr_edit.button.value = 'Copy'; //want to save in both cases
+		sr_edit.req_button.value = button;
+		sr_edit.request_type_code.value = 'service_request';
+		sr_edit.redisplay.value = 'false';
+		sr_edit.redisplayTemplate.value='enet/req/service_request.html';
+		sr_edit.is_sent.value = 'N'; //need to clear so service request does not get screwed up.
+		sr_edit.request_no.value = ''; //need to clear so service request does not get screwed up.
+		sr_edit.version_no.value = ''; //need to clear so service request does not get screwed up.
+		sr_edit.request_id.value = ''; //need to clear so service request does not get screwed up.
+		sr_edit.is_quoted.value = 'N'; //need to clear since no longer referencing quote.
+		sr_edit.quote_request_id.value = ''; //need to clear since no longer referencing quote.
+		sr_edit.clear_request_id.value = 'true'; //need also to clear session of request_id
+		sr_edit.submit();
+	}
+	else if( button == 'create_quote_request' )
+	{
+		sr_edit.button.value = 'Copy'; //want to save in both cases
+		sr_edit.req_button.value = button;
+		sr_edit.request_type_code.value = 'quote_request';
+		sr_edit.redisplay.value = 'false';
+		sr_edit.redisplayTemplate.value='enet/req/qr_edit.html';
+		sr_edit.is_sent.value = 'N'; //need to reset so quote request does not get screwed up.
+		sr_edit.is_quoted.value = 'N'; //need to reset so quote request does not get screwed up.
+		sr_edit.request_no.value = ''; //need to clear so quote request does not get screwed up.
+		sr_edit.version_no.value = ''; //need to clear so quote request does not get screwed up.
+		sr_edit.request_id.value = ''; //need to clear so quote request does not get screwed up.
+		sr_edit.clear_request_id.value = 'true'; //need also to clear session of request_id
+		sr_edit.submit();
+	}
+	else if( button == 'print_service_request')
+	{
+      //newWindow('{!s:showPage!}enet/rep/sr_report_new.html?request_id='+sr_edit.request_id.value,"_target");
+      newWindow('{!s:showPage!}enet/rep/sr_report_new.html?request_id='+sr_edit.request_id.value,'print_frame');
+    }
+    else if( button == 'archive' )
+    {
+      if( confirm("Archiving will close this Service Request and disable any further activity.\n\n"+
+              "              Are you sure you want to archive this Service Request?") )
+      {
+        sr_edit.redisplay.value = 'false';
+        sr_edit.button.value = 'Cancel';
+        sr_edit.req_button.value = 'archive';
+        sr_edit.prevTemplate.value = 'enet/proj/pf_list.html';
+        sr_edit.submit();
+      }
+    }
+    else if( button == 'Cancel' )
+    {
+    <!--#IF defined="<?s:project_id?>" -->
+      newWindow("{!s:showPage!}setProjectDatum/enet/proj/pf_main.html?loc=pf","_top");
+    <!--#ELSE-->
+      newWindow("{!s:action!}setProjectDatum?templateName=enet/main.html&clear_session=true", "_top");
+    <!--#/IF-->
+    }
+  }
+}
+
+
+function isLoaded()
+{
+  var result = true;
+
+  if( document.sr_edit.form_loaded === undefined || document.sr_edit.form_loaded.value == 'false' )
+  {
+    result = false;
+    alert("Please wait for the page to completely load (address box will blink).");
+  }
+
+  return result;
+}
+
+function fixTime(dateField, timeField)
+{
+  if( !(timeField == null) && !(timeField.value == '') )
+  {
+    if( timeField.value.length < 12 )  //only add if not already added
+    {
+      if( !(dateField == null) && !(dateField.value == '') )
+      {
+        timeField.value = dateField.value + ' ' + timeField.value;
+      }
+      else
+      {
+      <!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) as to_date" name="dateQuery"-->
+        timeField.value = {!r:dateQuery:to_date.toJavaScriptString()!} + ' ' + timeField.value;
+      <!--#/SQLLOOP-->
+      }
+    }
+  }
+}
+
+function fieldValidator(field, type)
+{
+  var failure = false;
+  var value = "";
+  if( type == "number" )
+  {
+    var c = null;
+    for( var i = 0; i < field.value.length; i++)
+    {
+      c = field.value.charAt(i);
+      if( isNaN(c) ) //&& c!= '.' && c != ' ' && c != ',' && c != '&')
+      {
+        failure = true;
+      }
+      else
+      {
+        value += c;
+      }
+    }
+    if( failure )
+    {
+      field.value = value;
+      alert("This field only accepts " + type + "s...");
+    }
+  }
+}
+
+/******************************
+*         New Functions       *
+******************************/
+
+$(document).ready(function()
+{
+   var c_id = document.getElementById("customer_id").value;
+<!--#IF defined="<?s:end_user_id?>" -->
+   $("#endUsersDiv").load("{!s:showPage!}enet/embeds/end_users.html?parameter=" + c_id + "&current_val=" + {!s:end_user_id!});
+
+  <!--#IF defined="<?d:job_location_id?>"-->
+    $("#jobLocationsDiv").load("{!s:showPage!}enet/embeds/job_locations.html?parameter=" + {!s:end_user_id!} + "&current_val=" + {!d:job_location_id!});
+    $("#addressDiv").load("{!s:showPage!}enet/embeds/job_location_address.html?parameter=" + {!d:job_location_id!});
+
+    <!--#IF defined="<?d:job_location_contact_id?>"-->
+      $("#jobLocationContactDiv").load("{!s:showPage!}enet/embeds/job_location_contacts.html?parameter=" + {!d:job_location_id!}  + "&current_val=" + {!d:job_location_contact_id!});
+      $("#jobLocationContactInfoDiv").load("{!s:showPage!}enet/embeds/contact_info.html?parameter=" + {!d:job_location_contact_id!});
+    <!--#/IF-->
+  <!--#/IF-->
+<!--#ELSE-->
+   $("#endUsersDiv").load("{!s:showPage!}enet/embeds/end_users.html?parameter=" + c_id + "&current_val=");
+<!--#/IF-->
+
+
+  <!--#IF defined="<?s:request_id?>" -->
+    textCounter(document.sr_edit.description,document.sr_edit.remLen,1000,'up');
+    textCounter(document.sr_edit.other_conditions,document.sr_edit.remLen2,1000,'up');
+    onJobLocationContactChange();
+  <!--#/IF-->
+
+<!--#IF evaluate="<?s:request_readonly?>" compare="true" -->
+<!--#ELSE-->
+  <!--#CHECKSECURITY right="rights.enet/proj/customer_edit.update" -->
+    showHideViewCustomerButton();
+  <!--#/CHECKSECURITY-->
+<!--#CHECKSECURITY right="rights.enet/req/end_user_edit.insert" -->
+   showHideNewEndUserButton();
+<!--#/CHECKSECURITY-->
+<!--#CHECKSECURITY right="rights.enet/req/end_user_edit.update" -->
+  showHideViewEndUserButton();
+<!--#/CHECKSECURITY-->
+
+  showHideNewJobLocationtButton();
+  showHideViewJobLocationtButton();
+  showHideNewCustomerContactButton();
+  showHideNewJobLocationContactButton();
+  showHideViewJobLocationContactButton();
+
+  onloadCustomerContacts();
+<!--#/IF-->
+  //if validation errs then close the waiting window.
+  if( {!p:validation_error.toJavaScriptString()!} == 'true' && sr_edit.req_button.value == 'Send')
+  {
+    var ref = newWindow('{!s:showPage!}enet/req/wait.html','acknowledge_window',320,450);
+    ref.close();
+  }
+
+  $("#newCustomerButton").click(function() {
+
+    document.getElementById("customerLabelDiv").style.display="block";
+    document.getElementById("endUserLabelDiv").style.display="none";
+
+    document.customer_frm.customer_type.value = "";
+    document.customer_frm.end_user_parent_id.value = "";
+    document.customer_frm.current_id.value = document.getElementById("customer_id").value;
+      document.customer_frm.button.value = "new";
+
+      $("#customerFormDiv").load("{!s:showPage!}enet/embeds/customer.html", function() {
+      customerDialog.show();
+    });
+  });
+
+  $("#newEndUserButton").click(function() {
+
+    document.getElementById("customerLabelDiv").style.display="none";
+    document.getElementById("endUserLabelDiv").style.display="block";
+
+    document.customer_frm.customer_type.value = "end_user";
+    document.customer_frm.end_user_parent_id.value = document.getElementById("customer_id").value;
+    document.customer_frm.current_id.value = document.getElementById("end_user_id").value;
+    document.customer_frm.button.value = "new";
+
+      $("#customerFormDiv").load("{!s:showPage!}enet/embeds/end_user.html", function() {
+      customerDialog.show();
+    });
+  });
+
+  $("#newJobLocationButton").click(function() {
+
+    var eu_id = document.getElementById("end_user_id").value;
+
+        document.job_loc_frm.end_user_id.value = document.getElementById("end_user_id").value;
+      document.job_loc_frm.current_id.value = document.getElementById("job_location_id").value;
+      document.job_loc_frm.button.value = "new";
+
+      $("#jobLocationFormDiv").load("{!s:showPage!}enet/embeds/job_location.html", function() {
+      jobLocationDialog.show();
+    });
+  });
+
+  $("#viewJobLocationButton").click(function() {
+
+    var eu_id = document.getElementById("end_user_id").value;
+    var id = document.getElementById("job_location_id").value;
+
+        document.job_loc_frm.end_user_id.value = document.getElementById("end_user_id").value;
+      document.job_loc_frm.current_id.value = id;
+      document.job_loc_frm.button.value = "view";
+
+      $("#jobLocationFormDiv").load("{!s:showPage!}enet/embeds/job_location.html?parameter=" + id, function() {
+      jobLocationDialog.show();
+    });
+  });
+
+
+  $("#newCustContact1Button").click(function() {
+
+    var c_id = document.getElementById("customer_id").value;
+
+      document.contact_frm.customer_id.value = c_id;
+     document.contact_frm.param_type.value = "customer";
+      document.contact_frm.index.value = "1";
+      document.contact_frm.button.value = "new";
+
+      $("#contactFormDiv").load("{!s:showPage!}enet/embeds/customer_contact.html?customer_id=" + c_id, function() {
+      contactDialog.show();
+    });
+  });
+
+  $("#viewCustContact1Button").click(function() {
+
+        var c_id = document.getElementById("customer_id").value;
+    var id = document.getElementById("customer_contact_id").value;
+
+      document.contact_frm.customer_id.value = c_id;
+     document.contact_frm.param_type.value = "customer";
+      document.contact_frm.current_id.value = id;
+      document.contact_frm.index.value = "1";
+      document.contact_frm.button.value = "view";
+
+      $("#contactFormDiv").load("{!s:showPage!}enet/embeds/customer_contact.html?customer_id=" + c_id + "&contact_id=" + id, function() {
+      contactDialog.show();
+    });
+  });
+
+  $("#newCustContact2Button").click(function() {
+
+    var c_id = document.getElementById("customer_id").value;
+
+      document.contact_frm.customer_id.value = c_id;
+     document.contact_frm.param_type.value = "customer";
+      document.contact_frm.index.value = "2";
+      document.contact_frm.button.value = "new";
+
+      $("#contactFormDiv").load("{!s:showPage!}enet/embeds/customer_contact.html?customer_id=" + c_id, function() {
+      contactDialog.show();
+    });
+  });
+
+  $("#viewCustContact2Button").click(function() {
+
+        var c_id = document.getElementById("customer_id").value;
+    var id = document.getElementById("customer_contact2_id").value;
+
+      document.contact_frm.customer_id.value = c_id;
+     document.contact_frm.param_type.value = "customer";
+      document.contact_frm.current_id.value = id;
+      document.contact_frm.index.value = "2";
+      document.contact_frm.button.value = "view";
+
+      $("#contactFormDiv").load("{!s:showPage!}enet/embeds/customer_contact.html?customer_id=" + c_id + "&contact_id=" + id, function() {
+      contactDialog.show();
+    });
+  });
+
+  $("#newCustContact3Button").click(function() {
+
+    var c_id = document.getElementById("customer_id").value;
+
+      document.contact_frm.customer_id.value = c_id;
+     document.contact_frm.param_type.value = "customer";
+      document.contact_frm.index.value = "3";
+      document.contact_frm.button.value = "new";
+
+      $("#contactFormDiv").load("{!s:showPage!}enet/embeds/customer_contact.html?customer_id=" + c_id, function() {
+      contactDialog.show();
+    });
+  });
+
+  $("#viewCustContact3Button").click(function() {
+
+        var c_id = document.getElementById("customer_id").value;
+    var id = document.getElementById("customer_contact3_id").value;
+
+      document.contact_frm.customer_id.value = c_id;
+     document.contact_frm.param_type.value = "customer";
+      document.contact_frm.current_id.value = id;
+      document.contact_frm.index.value = "3";
+      document.contact_frm.button.value = "view";
+
+      $("#contactFormDiv").load("{!s:showPage!}enet/embeds/customer_contact.html?customer_id=" + c_id + "&contact_id=" + id, function() {
+      contactDialog.show();
+    });
+  });
+
+  $("#newCustContact4Button").click(function() {
+
+    var c_id = document.getElementById("customer_id").value;
+
+      document.contact_frm.customer_id.value = c_id;
+     document.contact_frm.param_type.value = "customer";
+      document.contact_frm.index.value = "4";
+      document.contact_frm.button.value = "new";
+
+      $("#contactFormDiv").load("{!s:showPage!}enet/embeds/customer_contact.html?customer_id=" + c_id, function() {
+      contactDialog.show();
+    });
+  });
+
+  $("#viewCustContact4Button").click(function() {
+
+        var c_id = document.getElementById("customer_id").value;
+    var id = document.getElementById("customer_contact4_id").value;
+
+      document.contact_frm.customer_id.value = c_id;
+     document.contact_frm.param_type.value = "customer";
+      document.contact_frm.current_id.value = id;
+      document.contact_frm.index.value = "4";
+      document.contact_frm.button.value = "view";
+
+      $("#contactFormDiv").load("{!s:showPage!}enet/embeds/customer_contact.html?customer_id=" + c_id + "&contact_id=" + id, function() {
+      contactDialog.show();
+    });
+  });
+
+  $("#newJobLocContactButton").click(function() {
+
+    document.contact_frm.job_location_id.value = document.getElementById("job_location_id").value;
+    document.contact_frm.param_type.value = "job_location";
+        document.contact_frm.current_id.value = "";
+        document.contact_frm.button.value = "new";
+
+      $("#contactFormDiv").load("{!s:showPage!}enet/embeds/job_location_contact.html", function() {
+      contactDialog.show();
+    });
+  });
+
+  $("#viewJobLocContactButton").click(function() {
+
+    var id = document.getElementById("job_location_contact_id").value;
+
+    document.contact_frm.job_location_id.value = document.getElementById("job_location_id").value;
+    document.contact_frm.param_type.value = "job_location";
+        document.contact_frm.current_id.value = id;
+        document.contact_frm.button.value = "view";
+
+      $("#contactFormDiv").load("{!s:showPage!}enet/embeds/job_location_contact.html?parameter=" + id, function() {
+      contactDialog.show();
+    });
+  });
+
+});
+
+function onloadCustomerContacts()
+{
+  id1 = document.sr_edit.customer_contact_id.value;
+  id2 = document.sr_edit.customer_contact2_id.value;
+  id3 = document.sr_edit.customer_contact3_id.value;
+  id4 = document.sr_edit.customer_contact4_id.value;
+  c_id = document.getElementById("customer_id").value;
+
+  if (id1 != null && id1 != "")
+  {
+    $("#contact1Div").load("{!s:showPage!}enet/embeds/customer_contact1.html?parameter=" + id1 + "&type=contact");
+    document.getElementById("viewCustContact1ButtonDiv").style.display="block";
+  }
+  else
+  {
+   if (c_id != "")
+   {
+     showCustomerContact(1);
+   }
+  }
+
+  if (id2 != null && id2 != "")
+  {
+    $("#contact2Div").load("{!s:showPage!}enet/embeds/customer_contact2.html?parameter=" + id2 + "&type=contact");
+    document.getElementById("viewCustContact2ButtonDiv").style.display="block";
+  }
+  else
+  {
+   if (c_id != "")
+   {
+     showCustomerContact(2);
+     }
+  }
+
+  if (id3 != null && id3 != "")
+  {
+    $("#contact3Div").load("{!s:showPage!}enet/embeds/customer_contact3.html?parameter=" + id3 + "&type=contact");
+    document.getElementById("viewCustContact3ButtonDiv").style.display="block";
+  }
+  else
+  {
+     if (c_id != "")
+   {
+     showCustomerContact(3);
+   }
+  }
+
+  if (id4 != null && id4 != "")
+  {
+    $("#contact4Div").load("{!s:showPage!}enet/embeds/customer_contact4.html?parameter=" + id4 + "&type=contact");
+    document.getElementById("viewCustContact4ButtonDiv").style.display="block";
+  }
+  else
+  {
+   if (c_id != "")
+   {
+      showCustomerContact(4);
+   }
+  }
+}
+
+function onCustomerChange()
+{
+   c_id = document.getElementById("customer_id").value;
+
+   if (c_id != null && c_id != "")
+   {
+     document.getElementById("customer_type").value = "customer";
+
+   }
+
+   $("#hiddenDiv").load("{!s:showPage!}enet/embeds/ext_customer_id.html?parameter="+c_id);
+   resetCustomerContacts();
+   $("#endUsersDiv").load("{!s:showPage!}enet/embeds/end_users.html?parameter=" + c_id + "&current_val=");
+   $("#jobLocationsDiv").load("{!s:showPage!}enet/embeds/job_locations.html?parameter=&current_val=");
+   $("#addressDiv").load("{!s:showPage!}enet/embeds/job_location_address.html?parameter=");
+   $("#jobLocationContactDiv").load("{!s:showPage!}enet/embeds/job_location_contacts.html?parameter=&current_val=");
+   $("#jobLocationContactInfoDiv").load("{!s:showPage!}enet/embeds/contact_info.html?parameter=");
+
+<!--#CHECKSECURITY right="rights.enet/proj/customer_edit.update" -->
+   showHideViewCustomerButton();
+<!--#/CHECKSECURITY-->
+<!--#CHECKSECURITY right="rights.enet/req/end_user_edit.insert" -->
+   showHideNewEndUserButton();
+<!--#/CHECKSECURITY-->
+   showHideNewCustomerContactButton();
+
+   document.getElementById("viewEndUserButtonDiv").style.display="none";
+   document.getElementById("newJobLocationButtonDiv").style.display="none";
+   document.getElementById("viewJobLocationButtonDiv").style.display="none";
+   document.getElementById("newJobLocContactButtonDiv").style.display="none";
+   document.getElementById("viewJobLocContactButtonDiv").style.display="none";
+   for (i=1; i<5; i++)
+   {
+     document.getElementById("viewCustContact" + i + "ButtonDiv").style.display="none";
+   }
+}
+
+function onEndUserChange()
+{
+   eu_id = document.getElementById("end_user_id").value;
+
+   $("#hiddenDiv2").load("{!s:showPage!}enet/embeds/ext_end_user_id.html?parameter="+eu_id);
+   $("#jobLocationsDiv").load("{!s:showPage!}enet/embeds/job_locations.html?parameter=" + eu_id + "&current_val=");
+   $("#addressDiv").load("{!s:showPage!}enet/embeds/job_location_address.html?parameter=");
+   $("#jobLocationContactDiv").load("{!s:showPage!}enet/embeds/job_location_contacts.html?parameter=&current_val=");
+   $("#jobLocationContactInfoDiv").load("{!s:showPage!}enet/embeds/contact_info.html?parameter=");
+<!--#CHECKSECURITY right="rights.enet/proj/customer_edit.update" -->
+   showHideViewEndUserButton();
+<!--#/CHECKSECURITY-->
+   showHideNewJobLocationtButton();
+   document.getElementById("viewJobLocationButtonDiv").style.display="none";
+   document.getElementById("newJobLocContactButtonDiv").style.display="none";
+   document.getElementById("viewJobLocContactButtonDiv").style.display="none";
+}
+
+function onJobLocationChange()
+{
+    jl_id = document.getElementById("job_location_id").value;
+    $("#addressDiv").load("{!s:showPage!}enet/embeds/job_location_address.html?parameter=" + jl_id);
+    $("#jobLocationContactDiv").load("{!s:showPage!}enet/embeds/job_location_contacts.html?parameter=" + jl_id  + "&current_val=");
+    $("#jobLocationContactInfoDiv").load("{!s:showPage!}enet/embeds/contact_info.html?parameter=");
+    showHideViewJobLocationtButton();
+    showHideNewJobLocationContactButton();
+    document.getElementById("viewJobLocContactButtonDiv").style.display="none";
+}
+
+function onJobLocationContactChange()
+{
+  id = document.getElementById("job_location_contact_id").value;
+  $("#jobLocationContactInfoDiv").load("{!s:showPage!}enet/embeds/contact_info.html?parameter=" + id);
+  showHideViewJobLocationContactButton();
+}
+
+
+function onCustomerContactChange(index)
+{
+  id = document.getElementById("customer_contact_id" + index).value;
+
+  if (id == "")
+  {
+    document.getElementById("viewCustContact" + index + "ButtonDiv").style.display="none";
+  }
+  else
+  {
+    document.getElementById("viewCustContact" + index + "ButtonDiv").style.display="block";
+  }
+
+  if (index == 1)
+  {
+  document.getElementById("customer_contact_id").value = id;
+  }
+  else
+  {
+    document.getElementById("customer_contact" + index + "_id").value = id;
+  }
+
+  $("#contact" + index + "Div").load("{!s:showPage!}enet/embeds/customer_contact" + index + ".html?parameter=" + id + "&type=contact");
+ // alert("In onCustomerContactChange and id = " + id + " and type = " + type);
+ reloadCustomerContacts();
+}
+
+function onCustomerCountryChange()
+{
+    co = document.getElementById("country").value;
+  $("#customerStatesDiv").load("{!s:showPage!}enet/embeds/states.html?parameter=" + co);
+}
+
+function onJobLocationCountryChange()
+{
+    co = document.getElementById("country").value;
+  $("#jobLocationStatesDiv").load("{!s:showPage!}enet/embeds/states.html?parameter=" + co);
+}
+
+function loadCustomerContact(cust_id, index)
+{
+  id1 = document.getElementById("customer_contact_id").value;
+  id2 = document.getElementById("customer_contact2_id").value;
+  id3 = document.getElementById("customer_contact3_id").value;
+  id4 = document.getElementById("customer_contact4_id").value;
+
+  $("#contact"+index+"Div").load("{!s:showPage!}enet/embeds/customer_contact"+index + ".html?parameter="+cust_id+"&type=customer&id1="+id1+"&id2="+id2+"&id3="+id3+"&id4="+id4);
+}
+
+function showCustomerContact(index)
+{
+  c_id = document.getElementById("customer_id").value;
+
+  if (c_id == "")
+  {
+    alert("Please select a customer first1.");
+    return;
+  }
+
+  id1 = document.getElementById("customer_contact_id").value;
+  id2 = document.getElementById("customer_contact2_id").value;
+  id3 = document.getElementById("customer_contact3_id").value;
+  id4 = document.getElementById("customer_contact4_id").value;
+
+  $("#contact"+index+"Div").load("{!s:showPage!}enet/embeds/customer_contact"+index + ".html?parameter="+c_id+"&type=customer&id1="+id1+"&id2="+id2+"&id3="+id3+"&id4="+id4);
+}
+
+function refreshCustomerContact(index, contactId)
+{
+  $("#contact" + index + "Div").load("{!s:showPage!}enet/embeds/customer_contact" + index + ".html?parameter=" + contactId + "&type=contact");
+}
+
+function reloadCustomerContacts(index)
+{
+  c_id = document.getElementById("customer_id").value;
+
+  if (c_id == "")
+  {
+    alert("Please select a customer first2.");
+    return;
+  }
+
+  id1 = document.getElementById("customer_contact_id").value;
+  id2 = document.getElementById("customer_contact2_id").value;
+  id3 = document.getElementById("customer_contact3_id").value;
+  id4 = document.getElementById("customer_contact4_id").value;
+
+  if (id1 == "" && index != "1")
+  {
+      $("#contact1Div").load("{!s:showPage!}enet/embeds/customer_contact1.html?parameter="+c_id+"&type=customer&id2="+id2+"&id3="+id3+"&id4="+id4);
+  }
+
+  if (id2 == "" && index != "2")
+  {
+      $("#contact2Div").load("{!s:showPage!}enet/embeds/customer_contact2.html?parameter="+c_id+"&type=customer&id1="+id1+"&id3="+id3+"&id4="+id4);
+  }
+
+  if (id3 == "" && index != "3")
+  {
+      $("#contact3Div").load("{!s:showPage!}enet/embeds/customer_contact3.html?parameter="+c_id+"&type=customer&id1="+id1+"&id2="+id2+"&id4="+id4);
+  }
+
+  if (id4 == "" && index != "4")
+  {
+      $("#contact4Div").load("{!s:showPage!}enet/embeds/customer_contact4.html?parameter="+c_id+"&type=customer&id1="+id1+"&id2="+id2+"&id3="+id3);
+  }
+
+}
+
+function view_customer()
+{
+  c_id = document.getElementById("customer_id").value;
+
+  if( isLoaded() )
+  {
+    var attribs = {!a:Window2Attribs!} + ',height= 500,width=520';
+    return window.open('{!s:showPage!}enet/proj/customer_detail.html?customer_id='+c_id+'&theForm=sr_edit', 'customers', attribs);
+  }
+}
+
+function view_end_user()
+{
+  eu_id = document.getElementById("end_user_id").value;
+  ext_customer_id= document.getElementById("ext_customer_id").value;
+
+  if( isLoaded() )
+  {
+    var attribs = {!a:Window2Attribs!} + ',height= 500,width=520';
+    return window.open('{!s:showPage!}enet/proj/end_user_detail.html?customer_id='+eu_id+'&theForm=sr_edit&ext_customer_id='+ext_customer_id, 'customers', attribs);
+  }
+}
+
+function loadExtCustomerId()
+{
+var c_id = document.getElementById("customer_id").value;
+var eu_id = document.getElementById("end_user_id").value;
+  if (c_id != null && c_id != "")
+  {
+	$("#hiddenDiv").load("{!s:showPage!}enet/embeds/ext_customer_id.html?parameter="+ c_id);
+  }
+
+  if (eu_id != null && eu_id != "")
+  {
+	$("#hiddenDiv2").load("{!s:showPage!}enet/embeds/ext_end_user_id.html?parameter="+ eu_id);
+  }
+
+}
+
+function setExtCustomerId(val)
+{
+  document.getElementById("ext_customer_id").value=val;
+}
+
+function new_po()
+{
+	document.getElementById("redisplay").value="true";
+	var attribs = {!a:Window2Attribs!} + ',height=580,width=580';
+	return window.open('{!s:showPage!}enet/po/po_detail.html', 'po', attribs);
+}
+
+function view_po(po_id)
+{
+	document.getElementById("redisplay").value="true";
+	var attribs = {!a:Window2Attribs!} + ',height=580,width=580';
+	window.open('{!s:showPage!}enet/po/po_detail.html?po_id='+po_id, 'po', attribs);
+	return false;
+}
+
+function refresh_pos()
+{
+	$("#poListDiv").load("{!s:showPage!}enet/embeds/po_list.html?parameter={!s:request_id!}");
+}
+
+function new_estimate()
+{
+  //var _quote = {!s:request_id!};
+  window.open('/ims/action/quoteDownload?action=1&requestid=' + {!s:request_id!} + '&estimator=null');
+}
+
+function sendQuote(){
+
+  //var _quote = {!s:request_id!};
+  var radios = document.getElementsByName('r_quote');
+  var _estimate = 0;
+
+  for(i = 0; i < radios.length; i++)
+  {
+    if (radios[i].checked) _estimate = radios[i].value;
+  }
+  window.location = '/ims/action/quoteDownload?action=4&requestid=' + {!s:request_id!} + '&estimator=' + _estimate;
+}
+
+function validateEmail(str){
+  return (str.indexOf(".") > 0) && (str.indexOf("@") > 0);
+}
+
+</script>
+
+<body  onload="window.focus();setDefaults();on_load_request();loadExtCustomerId();"> <!--class="BodyTag" onLoad="window.focus();"-->
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="tan">
+  <tr><td>
+    <table width="100%" border="0" cellspacing="0">
+    <tr><td class="HeaderRow">Service Request Detail</td></tr>
+  </table>
+  </td></tr>
+</table>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="tan">
+  <!--#SMARTFORM name="enet/req/sr_edit" security="rights" table="requests" key="request_id"
+           preHandler="ims.handlers.job_processing.SmartFormPreHandler,ims.handlers.proj.NewPDSPreHandler"
+           postHandler="ims.handlers.proj.NewPDSPostHandler"
+                   buttons=""
+  -->
+  <!--#SMARTFIELD name="redisplay" type="hidden" value="false" -->
+  <!--#SMARTFIELD name="project_id" type="hidden" value="<?s:project_id?>" -->
+  <!--#SMARTFIELD name="request_type_code" type="hidden" value="service_request" --> <!-- used in PDSPreHandler -->
+  <!--#SMARTFIELD name="request_status_type_code" type="hidden" -->  <!-- used in setDefaults() javascript function -->
+  <!--#SMARTFIELD name="show_more_fields" type="hidden" value="false" -->
+  <!--#SMARTFIELD name="is_sent" type="hidden" value="<?p:is_sent.isNull('N')?>" --> <!-- passed from previous request -->
+  <!--#SMARTFIELD name="csc_wo_field_flag" type="hidden" value="<?p:csc_wo_field_flag.isNull('N')?>" -->  <!-- required by request table, not used here -->
+  <!--#SMARTFIELD name="is_quoted" type="hidden" value="<?p:is_sent.isNull('N')?>" -->  <!-- passed from quote_request -->
+  <!--#SMARTFIELD name="quote_request_id" type="hidden" value="<?p:quote_request_id?>" -->  <!-- passed from quote_request -->
+  <!--#SMARTFIELD name="button" type="hidden" --> <!-- used in exitFunction to inform PDSPreHandler -->
+  <!--#SMARTFIELD name="req_button" type="hidden" --> <!-- used in exitFunction to inform PDSPreHandler -->
+  <!--#SMARTFIELD name="converting" type="hidden" value="<?p:converting.isNull('false')?>"--> <!--used to indicate when to convert from project_foldef in PDSPostHandler-->
+  <!--#SMARTFIELD name="clear_request_id" type="hidden" value="false" --> <!-- used for creating another request, clear request_id from session -->
+  <!--#SMARTFIELD name="clear_quote_id" type="hidden" value="false" --> <!-- used for creating quote, clear quote_id from session -->
+
+<!-- These fields grab the value off of site_info iframe for prehandler validation -->
+  <!--#SMARTFIELD name="loading_dock_type_id" type="hidden" -->
+  <!--#SMARTFIELD name="dock_reserv_req_type_id" type="hidden" -->
+  <!--#SMARTFIELD name="semi_access_type_id" type="hidden" -->
+  <!--#SMARTFIELD name="elevator_reserv_req_type_id" type="hidden" -->
+  <!--#SMARTFIELD name="stair_carry_type_id" type="hidden" -->
+  <!--#SMARTFIELD name="floor_protection_type_id" type="hidden" -->
+  <!--#SMARTFIELD name="wall_protection_type_id" type="hidden" -->
+  <!--#SMARTFIELD name="doorway_prot_type_id" type="hidden" -->
+<!-- David's fields -->
+  <!--#SMARTFIELD name="ims_action" type="hidden" -->
+  <!--#SMARTFIELD name="customer_type" id="customer_type" type="hidden" -->
+  <!--#SMARTFIELD name="customer_contact_id" id="customer_contact_id" type="hidden" -->
+  <!--#SMARTFIELD name="customer_contact2_id" id="customer_contact2_id" type="hidden" -->
+  <!--#SMARTFIELD name="customer_contact3_id" id="customer_contact3_id" type="hidden" -->
+  <!--#SMARTFIELD name="customer_contact4_id" id="customer_contact4_id" type="hidden" -->
+  <!--#SMARTFIELD name="furniture_line_type_na" id="furniture_line_type_na" type="hidden" value="<?d:furniture_line_type_na?>" -->
+  <!--#SMARTFIELD name="delivery_type_na" id="delivery_type_na" type="hidden" value="<?d:delivery_type_na?>" -->
+  <!--#SMARTFIELD name="yes_no_type_no" id="yes_no_type_no" type="hidden" value="<?d:yes_no_type_no?>" -->
+    <!--#SMARTFIELD name="request_no" type="hidden" -->
+  <!--#SMARTFIELD name="version_no" type="hidden" value="<?r:enet/req/sr_edit:version_no?>"-->
+    <!--#SMARTFIELD name="request_status_type_id" type="hidden" value="<?r:enet/req/sr_edit:request_status_type_id?>" -->
+    <!--#SMARTFIELD name="is_new" type="hidden" value="Y" -->
+    <!--#SMARTFIELD name="po_count" type="hidden" value="<?d:po_count?>" -->
+<div id="hiddenDiv"><input type="hidden" name="ext_customer_id" id="ext_customer_id" value="{!d:ext_customer_id!}" ></div>
+<div id="hiddenDiv2"><input type="hidden" name="ext_end_user_id" id="ext_end_user_id" value="{!d:ext_end_user_id!}" ></div>
+
+<!--
+<tr>
+  <td>&nbsp;</td>
+  <td>Left side</td>
+  <td>Middle</td>
+  <td>Right side</td>
+</tr>-->
+
+<!--#IF evaluate="<?d:mode?>" compare="Update" -->
+  <!--#IF evaluate="<?s:project_status_type_code?>" compare="folder_closed" -->
+  <!--#ELSE-->
+  <tr>
+    <td colspan="4">
+    <table width="100%" border="0">
+    <!--#SQLLOOP query="SELECT 'x' FROM jobs_v WHERE project_id=<?r:enet/req/sr_edit:project_id.toPStmtInt()?> AND job_status_type_code='closed'" resourceName="SQLServer" name="jobClosedQuery"-->
+      <tr><td colspan="3">This job is closed in the Intranet.</td></tr>
+  <!--#SQLNODATA-->
+      <tr>
+    <!--#IF evaluate="<?s:request_is_sent?>" compare="Y" -->
+        <td><a href="" onClick="exitFunction('create_service_request');return false;">Create&nbsp;New&nbsp;Request&nbsp;Number</a></td>
+    <!--#ELSE-->
+      <td><a href="" onClick="exitFunction('create_quote_request');return false;">Create&nbsp;Quote&nbsp;Request</a></td>
+    <!--#/IF-->
+          <!--<td ><a href="" onClick="window.print();return false;">Print&nbsp;Service&nbsp;Request</a></td>-->
+          <td align="left"><a href="" onClick="exitFunction('print_service_request');return false;">Print&nbsp;Service&nbsp;Request</a></td>
+    <!-- iframe: print -->
+          <td><iframe name="print_frame" height="0" width="0" marginheight="0" marginwidth="0"></iframe></td></tr>
+  <!--#/SQLNODATA-->
+  <!--#/SQLLOOP-->
+  <!--#/IF-->
+    </table>
+  </td>
+</tr>
+<!--#ELSE--> <!-- insert mode -->
+<!--#/IF-->
+
+
+<tr>
+  <td><table width="1px" border="0" cellspacing="0" cellpadding="0" ><tr><td>&nbsp;</td></tr></table><br/><br/></td>
+
+  <td valign="top">
+
+<!--  Left Side  -->
+    <table width="490px" border=0" cellspacing="5" cellpadding="0">
+<!--#IF evaluate="<?d:mode?>" compare="Update" -->
+      <tr>
+      <td width="200px"><!--#SMARTFIELD title="<span class='mandatoryLabel'>Quote Number</span>:" div="&nbsp;</td>
+      <td>" style="width:230px" name="project_request_no" type="chooser" table="requests" display="<?s:project_no.toSQLString()?>+'-'+CAST(request_no as varchar)+'.'+CAST(version_no as varchar)" key="request_id" readonly class="readonly" value="<?r:enet/req/sr_edit:request_id?>" --></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+<!--#ELSE--> <!-- mode is Insert" -->
+<!--#/IF-->
+
+      <tr  valign="top">
+        <td width="200px"><!--#SMARTFIELD title="<span class='mandatoryLabel'>Project Manager</span>:" div="&nbsp;</td>
+        <td>" name="a_m_contact_id" style="width:230" type="droplist" table="contacts_v" display="contact_name" key="contact_id" filter="organization_id=<?s:org_id.toPStmtInt()?> AND (contact_type_code='a_m' AND cont_status_type_code='active') or contact_id=<?d:a_m_contact_id.toPStmtInt()?>" --></td>
+         <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      </tr>
+
+<!--#IF defined="<?s:project_id?>" -->
+      <tr  valign="top">
+        <td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Project Name</span>:" div="&nbsp;</td>
+                            <td>" style="width:230" name="job_name" class="readonly" readonly value="<?s:job_name?>" maxlength="50"-->
+  <!--#SQLLOOP name="project"
+               query="SELECT top 1 'x' FROM requests_v
+                       WHERE (project_id = <?s:project_id.toPStmtString()?> AND request_type_code = 'service_request' AND is_sent = 'Y')
+                          OR (project_id = <?s:project_id.toPStmtString()?> AND project_status_type_code = 'folder_closed')"-->
+  <!--#SQLNODATA-->
+        </td>
+        <td colspan="2"><input name="job_name_update" type="button" value="Update" class="button2" onClick="newWindow('{!s:showPage!}enet/proj/job_name_edit.html?project_id={!s:project_id!}','job_name_edit',130,300);">
+  <!--#/SQLNODATA-->
+  <!--#/SQLLOOP-->
+          <input name="project_type_id" type="hidden" value="{!s:project_type_id!}">
+        </td>
+        <td></td>
+      </tr>
+<!--#ELSE-->
+   <!--#IF evaluate="<?d:mode?>" compare="Insert" -->
+      <tr  valign="top">
+        <td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Project Name</span>:" div="&nbsp;</td><td>" style="width:230" name="job_name" maxlength="50"--></td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+   <!--#ELSE-->
+   <!--#/IF-->
+<!--#/IF-->
+      <tr  valign="top"><td class="formButtonSpacing">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<!-- Customer -->
+      <tr  valign="top"><td><span class="mandatoryLabel">Customer Name</span>:</td>
+<!--#IF defined="<?s:project_id?>" -->
+        <td class="readonly">{!s:customer_name!}</td>
+        <td>&nbsp;</td>
+        <input type="hidden"  name="customer_id" id="customer_id" value="{!s:customer_id!}">
+  <!--#IF evaluate="<?s:request_is_sent?>" compare="Y" -->
+        <td>&nbsp;</td>
+        <input type="hidden" id="viewCustomerButtonDiv" >
+  <!--#ELSE-->
+      <!--#CHECKSECURITY right="rights.enet/proj/customer_edit.update" -->
+        <td><div id="viewCustomerButtonDiv" style="display:none;"><input type="button" class="button2" value="View" id="viewCustomerButton" onClick="view_customer();"></div></td>
+      <!--#/CHECKSECURITY-->
+  <!--#/IF-->
+<!--#ELSE-->
+        <td><div id="customersDiv">
+
+		<!--#SQLLOOP name="custQuery" resourceName="SQLServer"
+		             query="SELECT COUNT(customer_id) numCustomers
+		                      FROM user_customers
+		                     WHERE user_id = <?s:user.userID.toPStmtString()?>"-->
+		<!--#IF evaluate="<?r:custQuery:numCustomers?>" compare="0"-->
+		  <!--#IF evaluate="<?s:rights.enet/proj/multidealer.view?>" compare="true" -->
+		    <!--#SELECT name="customer_id" id="customer_id"
+		                class="regular"
+		                style="width:230"
+		                onChange="onCustomerChange()"
+						firstOption=""
+						firstOptionValue=""
+						currentValue="<?s:customer_id?>"
+						resourceName="SQLServer"
+						query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id
+							    WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                UNION
+                   SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+                 FROM customers c INNER JOIN
+                      lookups l ON c.customer_type_id = l.lookup_id
+                WHERE l.code IN ('commercial','corporate','government')
+                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                  AND c.ext_dealer_id = <?s:ext_direct_dealer_id.toPStmtString()?>
+                  AND c.active_flag = 'Y'
+                             ORDER BY customer_name"  -->
+
+          <!--#ELSEIF evaluate="<?s:rights.enet/proj/non_a_m_dealers.view?>" compare="true" -->
+		    <!--#SELECT name="customer_id" id="customer_id"
+		                class="regular"
+		                style="width:230"
+		                onChange="onCustomerChange()"
+						firstOption=""
+						firstOptionValue=""
+						currentValue="<?s:customer_id?>"
+						resourceName="SQLServer"
+						query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id
+							    WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                UNION
+                   SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+                 FROM customers c INNER JOIN
+                      lookups l ON c.customer_type_id = l.lookup_id
+                WHERE (l.code IN ('commercial','corporate','government')
+                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                  AND c.ext_dealer_id = <?s:ext_dealer_id.toPStmtString()?>
+                  AND c.active_flag = 'Y')
+                  AND c.ext_dealer_id <> <?s:ext_direct_dealer_id.toPStmtString()?>
+                             ORDER BY customer_name"  -->
+
+      <!--#ELSE-->
+        <!--#SELECT name="customer_id" id="customer_id"
+                    class="regular"
+                    style="width:230"
+                    onChange="onCustomerChange()"
+            currentValue="<?s:customer_id?>"
+            resourceName="SQLServer"
+            query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+                   FROM customers c INNER JOIN
+                        lookups l ON c.customer_type_id = l.lookup_id
+                  WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                                  AND c.ext_customer_id = <?s:ext_dealer_id.toPStmtString()?>
+                UNION
+                   SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+                 FROM customers c INNER JOIN
+                      lookups l ON c.customer_type_id = l.lookup_id
+                WHERE l.code IN ('commercial','corporate','government')
+                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                  AND c.ext_dealer_id = <?s:ext_dealer_id.toPStmtString()?>
+                  AND c.active_flag = 'Y'
+                             ORDER BY customer_name"  -->
+
+        <!--#/IF-->
+      <!--#ELSE-->
+           <!--#IF evaluate="<?s:rights.enet/proj/multidealer.view?>" compare="true" -->
+		    <!--#SELECT name="customer_id" id="customer_id"
+		                class="regular"
+		                style="width:230"
+		                onChange="onCustomerChange()"
+					    firstOption=""
+					    firstOptionValue=""
+					    currentValue="<?s:customer_id?>"
+					    query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN lookups l ON c.customer_type_id = l.lookup_id
+							    WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                UNION
+                 SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+                   FROM customers c INNER JOIN
+                        lookups l ON c.customer_type_id = l.lookup_id INNER JOIN
+                        user_customers_v v ON c.customer_id = v.customer_id
+                WHERE l.code IN ('commercial','corporate','government')
+                    AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                    AND c.ext_dealer_id = <?s:ext_direct_dealer_id.toPStmtString()?>
+                    AND c.active_flag = 'Y'
+                    AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                    AND v.user_id = <?s:user.userID.toPStmtString()?>
+                 ORDER BY customer_name"  -->
+
+          <!--#ELSEIF evaluate="<?s:rights.enet/proj/non_a_m_dealers.view?>" compare="true" -->
+		    <!--#SELECT name="customer_id" id="customer_id"
+		                class="regular"
+		                style="width:230"
+		                onChange="onCustomerChange()"
+						firstOption=""
+						firstOptionValue=""
+						currentValue="<?s:customer_id?>"
+						resourceName="SQLServer"
+						query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id
+							    WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                UNION
+                 SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+                   FROM customers c INNER JOIN
+                        lookups l ON c.customer_type_id = l.lookup_id INNER JOIN
+                        user_customers_v v ON c.customer_id = v.customer_id
+                WHERE (l.code IN ('commercial','corporate','government')
+                    AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                    AND c.ext_dealer_id = <?s:ext_dealer_id.toPStmtString()?>
+                    AND c.active_flag = 'Y'
+                    AND v.user_id = <?s:user.userID.toPStmtString()?>)
+                    AND c.ext_dealer_id <> <?s:ext_direct_dealer_id.toPStmtString()?>
+                             ORDER BY customer_name"  -->
+
+          <!--#ELSE-->
+         <!--#SELECT name="customer_id" id="customer_id"
+                     class="regular"
+                     style="width:230"
+                     onChange="onCustomerChange()"
+              firstOption=""
+              firstOptionValue=""
+              currentValue="<?s:customer_id?>"
+              query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+                   FROM customers c INNER JOIN
+                        lookups l ON c.customer_type_id = l.lookup_id
+                  WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                                  AND c.ext_customer_id = <?s:ext_dealer_id.toPStmtString()?>
+                UNION
+                 SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+                   FROM customers c INNER JOIN
+                        lookups l ON c.customer_type_id = l.lookup_id INNER JOIN
+                        user_customers_v v ON c.customer_id = v.customer_id
+                WHERE l.code IN ('commercial','corporate','government')
+                    AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                    AND c.ext_dealer_id = <?s:ext_dealer_id.toPStmtString()?>
+                    AND c.active_flag = 'Y'
+                    AND v.user_id = <?s:user.userID.toPStmtString()?>
+                             ORDER BY customer_name"  -->
+        <!--#/IF-->
+      <!--#/IF-->
+      <!--#/SQLLOOP-->
+        </div></td>
+     <!--#CHECKSECURITY right="rights.enet/proj/customer_edit.insert" -->
+        <td><input type="button" class="button2" value="New" id="newCustomerButton"></td>
+     <!--#/CHECKSECURITY-->
+     <!--#CHECKSECURITY right="rights.enet/proj/customer_edit.update" -->
+        <td><div id="viewCustomerButtonDiv" style="display:none;"><input type="button" class="button2" value="View" id="viewCustomerButton" onClick="view_customer();"></div></td>
+     <!--#/CHECKSECURITY-->
+<!--#/IF-->
+      </tr>
+<!-- Customer Contacts -->
+      <tr>
+        <td colspan="4"><div id="contactsDiv">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr style="height:20px">
+          <td  colspan="3" class="HeaderLabel" align="left">Contacts</td>
+        </tr>
+
+        <tr style="height:20px">
+          <td style="width:408px"><div id="contact1Div">
+            <table width="100%" cellspacing="0" border="0">
+
+              <tr style="height:20px"><td class="viewonly" style="width:300px">{!d:contact_name1!}</td><td style="width:20px">&nbsp;</td></tr>
+  <!--#IF  evaluate="<?d:contact_phone1?>" compare=""-->
+  <!--#ELSE-->
+          <tr style="height:20px"><td colspan="2" class="viewonly" style="width:300px">{!d:contact_phone1!}</td></tr>
+  <!--#/IF-->
+  <!--#IF  evaluate="<?d:contact_email1?>" compare=""-->
+  <!--#ELSE-->
+                  <tr style="height:20px"><td colspan="2" class="viewonly" style="width:300px">{!d:contact_email1!}</td></tr>
+  <!--#/IF-->
+            </table>
+          </div></td>
+          <td valign="top"><div id="newCustContact1ButtonDiv" style="display:none;"><input type="button" class="button2" value="New" id="newCustContact1Button"></div></td>
+          <td align="right" valign="top"><div id="viewCustContact1ButtonDiv" style="display:none;"><input type="button" class="button2" value="View" id="viewCustContact1Button"></div></td>
+        </tr>
+
+        <tr><td colspan="3"></td></tr>
+
+        <tr style="height:20px">
+          <td><div id="contact2Div">
+            <table width="100%" cellspacing="0" border="0">
+              <tr style="height:20px"><td class="viewonly2" style="width:300px">{!d:contact_name2!}</td><td style="width:20px">&nbsp;</td></tr>
+  <!--#IF  evaluate="<?d:contact_phone2?>" compare=""-->
+  <!--#ELSE-->
+          <tr style="height:20px"><td colspan="2" class="viewonly2" style="width:300px">{!d:contact_phone2!}</td></tr>
+  <!--#/IF-->
+  <!--#IF  evaluate="<?d:contact_email2?>" compare=""-->
+  <!--#ELSE-->
+                  <tr style="height:20px"><td colspan="2" class="viewonly"2 style="width:300px">{!d:contact_email2!}</td></tr>
+  <!--#/IF-->
+            </table>
+          </div></td>
+          <td valign="top"><div id="newCustContact2ButtonDiv" style="display:none;"><input type="button" class="button2" value="New" id="newCustContact2Button"></div></td>
+          <td valign="top"><div id="viewCustContact2ButtonDiv" style="display:none;"><input type="button" class="button2" value="View" id="viewCustContact2Button"></div></td>
+        </tr>
+
+        <tr><td colspan="3"></td></tr>
+
+        <tr style="height:20px">
+          <td><div id="contact3Div">
+            <table width="100%" cellspacing="0" border="0">
+              <tr style="height:20px"><td class="viewonly" style="width:300px">{!d:contact_name3!}</td><td style="width:20px">&nbsp;</td></tr>
+  <!--#IF  evaluate="<?d:contact_phone3?>" compare=""-->
+  <!--#ELSE-->
+          <tr style="height:20px"><td colspan="2" class="viewonly" style="width:300px">{!d:contact_phone3!}</td></tr>
+  <!--#/IF-->
+  <!--#IF  evaluate="<?d:contact_email3?>" compare=""-->
+  <!--#ELSE-->
+                  <tr style="height:20px"><td colspan="2" class="viewonly" style="width:300px">{!d:contact_email3!}</td></tr>
+  <!--#/IF-->
+            </table>
+          </div></td>
+          <td valign="top"><div id="newCustContact3ButtonDiv" style="display:none;"><input type="button" class="button2" value="New" id="newCustContact3Button"></div></td>
+          <td valign="top"><div id="viewCustContact3ButtonDiv" style="display:none;"><input type="button" class="button2" value="View" id="viewCustContact3Button"></div></td>
+        </tr>
+
+        <tr><td colspan="3"></td></tr>
+
+        <tr style="height:20px">
+          <td><div id="contact4Div">
+            <table width="100%" cellspacing="0" border="0">
+              <tr style="height:20px"><td class="viewonly2" style="width:300px">{!d:contact_name4!}</td><td style="width:20px">&nbsp;</td></tr>
+  <!--#IF  evaluate="<?d:contact_phone4?>" compare=""-->
+  <!--#ELSE-->
+          <tr style="height:20px"><td colspan="2" class="viewonly2" style="width:300px">{!d:contact_phone4!}</td></tr>
+  <!--#/IF-->
+  <!--#IF  evaluate="<?d:contact_email4?>" compare=""-->
+  <!--#ELSE-->
+                  <tr style="height:20px"><td colspan="2" class="viewonly2" style="width:300px">{!d:contact_email4!}</td></tr>
+  <!--#/IF-->
+            </table>
+          </div></td>
+          <td valign="top"><div id="newCustContact4ButtonDiv" style="display:none;"><input type="button" class="button2" value="New" id="newCustContact4Button"></div></td>
+          <td valign="top"><div id="viewCustContact4ButtonDiv" style="display:none;"><input type="button" class="button2" value="View" id="viewCustContact4Button"></div></td>
+        </tr>
+
+        <tr><td colspan="4"></td></tr>
+      </table>
+        </div></td>
+      </tr>
+      <!--<tr>
+        <td>&nbsp;</td><td align="right"><div id="newCustomerContactDiv" style="display:none;">
+          <input type="button" class="button2" value="New Contact" id="newCustContactButton" >
+        </div></td>
+      </tr>-->
+      <tr><td class="formButtonSpacing">&nbsp;</td><td>&nbsp;</td></tr>
+    <tr><td class="HeaderLabelMandatory">Job Scope</td><td>&nbsp;</td></tr>
+
+    <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="Schedule with Client:" div="&nbsp;</td><td>" style="width:230" name="schedule_with_client_flag" type="boolean" --></td></tr>
+    <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="&nbsp;&nbsp;&nbsp;Schedule Type:" div="&nbsp;</td><td>" style="width:230" name="schedule_type_id" type="droplist" table="schedule_types_enet_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
+
+
+    <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="&nbsp;&nbsp;&nbsp;Requested Service Date:" div="&nbsp;</td><td>" style="width:210"  name="est_start_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(est_start_date)')</script>"--></td></tr>
+    <tr><td class="regularLabel"><!--#SMARTFIELD title="&nbsp;&nbsp;&nbsp;Requested Start Time:" div="&nbsp;</td><td>" style="width:210" name="est_start_time" type="time" --></td></tr>
+    <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="&nbsp;&nbsp;&nbsp;Requested Completion Date:" div="&nbsp;</td><td>" style="width:210" name="est_end_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(est_end_date)')</script>"--></td></tr>
+    <tr  valign="top"><td class="mandatoryLabel"><!--#SMARTFIELD title="&nbsp;&nbsp;&nbsp;Number of Days to Complete:" div="&nbsp;</td><td>" style="width:230" name="days_to_complete" onKeyUp="fieldValidator(this,'number')" -->
+    <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="Systems Furniture:" div="&nbsp;</td><td>" style="width:230" name="system_furniture_line_type_id" type="droplist" onChange="onSystemFurnitureChange()"
+                            query="SELECT lookup_id pri_furn_line_type_id,
+                                            l.name
+                                  FROM lookups l INNER JOIN
+                                            lookup_types lt ON l.lookup_type_id=lt.lookup_type_id
+                                 WHERE lt.code='furniture_line_type'
+                                        AND l.attribute2 = 'system'
+                                        AND l.active_flag='Y'
+                                   ORDER BY l.name" --></td></tr>
+
+      <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="&nbsp;&nbsp;&nbsp;Shipping Method:" div="&nbsp;</td><td>" style="width:230" name="delivery_type_id" type="droplist"
+                query="SELECT l.lookup_id delivery_type_id, l.name
+                     FROM lookups l INNER JOIN
+                          lookup_types lt ON l.lookup_type_id = lt.lookup_type_id
+                    WHERE lt.code='delivery_type'
+                      AND l.active_flag='Y'
+                   ORDER BY l.sequence_no" --></td></tr>
+
+
+    <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="Other:" div="&nbsp;</td><td>" style="width:230" name="other_furniture_type_id" id="other_furniture_type_id" type="droplist"
+                            query="SELECT l.lookup_id other_furniture_type_id, l.name
+                                     FROM lookups l INNER JOIN
+                                          lookup_types lt ON l.lookup_type_id=lt.lookup_type_id
+                                    WHERE lt.code='yes_no_type'
+                                      AND l.active_flag='Y'
+                                 ORDER BY l.name DESC" --></td></tr>
+
+	<tr id="other_furniture_desc_row" style="display: none;"><td class="regularLabel">
+		<!--#SMARTFIELD title="&nbsp;&nbsp;&nbsp;OtherDescription:&nbsp;&nbsp;&nbsp;240 characters max" div="&nbsp;</td><td>" style="width:230" name="other_furniture_desc" id="other_furniture_desc" type="textarea" cols="180" rows="4" wrap="virtual"-->
+	</td></tr>
+
+    <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="&nbsp;&nbsp;&nbsp;Shipping Method:" div="&nbsp;</td><td>" style="width:230" name="other_delivery_type_id" type="droplist"
+                            query="SELECT l.lookup_id other_delivery_type_id, l.name
+                                     FROM lookups l INNER JOIN
+                                          lookup_types lt ON l.lookup_type_id=lt.lookup_type_id
+                                    WHERE lt.code='delivery_type'
+                                      AND l.active_flag='Y'
+                                 ORDER BY l.sequence_no" --></td></tr>
+
+      <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="Extra Product Disposition:" div="&nbsp;</td><td>" style="width:230" name="prod_disp_id" type="droplist" table="product_disposition_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" value="<?d:defaultProdDispType?>" --></td></tr>
+      <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="Wall Mount:" div="&nbsp;</td><td>" style="width:230" name="wall_mount_type_id" type="droplist" table="wall_mount_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
+      <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="Delivery Conditions:" div="&nbsp;</td><td>" style="width:230" name="elevator_avail_type_id" type="droplist" table="elevator_available_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+      <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="Stair Carry Required:" div="&nbsp;</td><td>" style="width:230" name="is_stair_carry_required" type="boolean" --></td></tr>
+      <tr><td class="regularLabel"><!--#SMARTFIELD title="Plan Location:" div="&nbsp;</td><td>" style="width:230" name="plan_location" type="text" --></td></tr>
+   </table>
+  </td>
+
+  <td><table width="10px" border="0" cellspacing="0" cellpadding="0"><tr><td> &nbsp;</td></tr></table><br/></td>
+
+<!--  Right Side  -->
+  <td valign="top">
+    <table width="450px" border="0" cellspacing="5" cellpadding="0">
+      <tr>
+        <td width="230px"><span class="mandatoryLabel">Type of Service:</span></td>
+<!--#IF defined="<?s:project_id?>" -->
+        <td class="readonly">{!s:project_type_name!}</td>
+<!--#ELSE-->
+      <td><!--#SELECT name="project_type_id" class="regular" style="width:230"
+                      query="SELECT pt.lookup_id, pt.lookup_name
+                               FROM job_types_v pt, user_job_types u
+                              WHERE u.lookup_id = pt.lookup_id
+                                AND u.user_id = <?s:user_id.toPStmtString()?>
+                           ORDER BY pt.lookup_name"
+                      currentValue="<?s:project_type_id?>"
+                      firstOption=""
+                      firstOptionValue=""
+                      autoSelect="true"  -->
+      </td>
+      <td width="30px">&nbsp;</td>
+      <td width="30px">&nbsp;</td>
+    </tr>
+<!--#/IF-->
+
+      <tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Sales Person</span>:" div="&nbsp;</td><td>" style="width:230" name="a_m_sales_contact_id" type="droplist" table="contacts_v" display="contact_name" key="contact_id" filter="organization_id=<?s:org_id.toPStmtInt()?> AND (contact_type_code='service_provider_sales' AND cont_status_type_code='active') or contact_id=<?d:a_m_sales_contact_id.toPStmtInt()?>" --></td><td></td></tr>
+      <tr><td class="formButtonSpacing">&nbsp;</td><td>&nbsp;</td><td></td></tr>
+
+
+<!-- End User -->
+    <tr><td><span class="mandatoryLabel">End User Name</span>:</td>
+<!--#IF defined="<?s:project_id?>" -->
+      <td class="readonly">{!s:end_user_name!}</td>
+      <td>&nbsp;</td>
+      <input type="hidden" name="end_user_id" id="end_user_id" value="{!s:end_user_id!}">
+      <input type="hidden" id="newEndUserButtonDiv">
+  <!--#IF evaluate="<?s:request_is_sent?>" compare="Y" -->
+        <td>&nbsp;</td>
+        <input type="hidden" id="viewEndUserButtonDiv" >
+  <!--#ELSE-->
+      <!--#CHECKSECURITY right="rights.enet/req/end_user_edit.update" -->
+        <td><div id="viewEndUserButtonDiv" style="display:none;"><input type="button" class="button2" value="View" id="viewEndUserButton" onClick="view_end_user();"></div></td>
+      <!--#ELSE-->
+        <td>&nbsp;</td>
+        <input type="hidden" id="viewEndUserButtonDiv" >
+      <!--#/CHECKSECURITY-->
+  <!--#/IF-->
+<!--#ELSE-->
+        <td><div id="endUsersDiv">
+         <!--#SELECT name="end_user_id" id="end_user_id" class="regular" style="width:230"
+                     firstOption="" firstOptionValue=""
+                     currentValue="<?s:end_user_id?>"
+                     onChange="onEndUserChange()"
+             query="SELECT c.customer_id end_user_id, LTRIM(c.customer_name) end_user_name
+                FROM customers c INNER JOIN lookups l ON c.customer_type_id = l.lookup_id
+                                               INNER JOIN lookup_types lt ON l.lookup_type_id = lt.lookup_type_id
+               WHERE lt.code='customer_type'
+                               AND l.code='end_user'
+                               AND c.active_flag = 'Y'
+                               AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                               AND c.end_user_parent_id = <?s:customer_id.toPStmtInt()?>
+                          ORDER BY c.customer_name" -->
+      </div></td>
+     <!--#CHECKSECURITY right="rights.enet/req/end_user_edit.insert" -->
+        <td><div id="newEndUserButtonDiv" style="display:none;"><input type="button" class="button2" value="New" id="newEndUserButton"></div></td>
+     <!--#ELSE-->
+        <td>&nbsp;</td>
+        <input type="hidden" id="newEndUserButton" >
+     <!--#/CHECKSECURITY-->
+     <!--#CHECKSECURITY right="rights.enet/req/end_user_edit.update" -->
+        <td><div id="viewEndUserButtonDiv" style="display:none;"><input type="button" class="button2" value="View" id="viewEndUserButton" onClick="view_end_user();"></div></td>
+     <!--#ELSE-->
+        <td>&nbsp;</td>
+        <input type="hidden" id="viewEndUserButtonDiv" >
+     <!--#/CHECKSECURITY-->
+<!--#/IF-->
+      </tr>
+
+<!-- Job Location -->
+      <tr>
+<!--#IF evaluate="<?s:request_readonly?>" compare="true" -->
+        <td><!--#SMARTFIELD title="<span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;Job Location</span>:" div="&nbsp;</td><td>" style="width:230" name="job_location_id" type="droplist"
+                               query="SELECT job_location_id, job_location_name
+                                    FROM job_locations
+                                   WHERE job_location_id = <?d:job_location_id.toPStmtInt()?>" --></td>
+        <td>&nbsp;</td><td>&nbsp;</td>
+        <input type="hidden" id="newJobLocationButtonDiv">
+        <input type="hidden" id="viewJobLocationButtonDiv">
+<!--#ELSE-->
+        <td><span class="mandatoryLabel">&nbsp;&nbsp;&nbsp;Job Location</span>:</td>
+        <td><div id="jobLocationsDiv">
+        <!--#SELECT name="job_location_id" id="job_location_id" class="regular" style="width:230"
+                    firstOption="" firstOptionValue=""
+                    currentValue="<?d:job_location_id?>"
+                    onChange="onJobLocationChange()"
+            query="SELECT job_location_id, job_location_name
+                     FROM job_locations
+                WHERE customer_id = <?s:end_user_id.toPStmtInt()?>
+               ORDER BY job_location_name"  -->
+      </div></td>
+      <td><div id="newJobLocationButtonDiv" style="display:none;"><input type="button" class="button2" value="New" id="newJobLocationButton"></div></td>
+      <td><div id="viewJobLocationButtonDiv" style="display:none;"><input type="button" class="button2" value="View" id="viewJobLocationButton"></div></td>
+<!--#/IF-->
+    </tr>
+<!-- Address -->
+      <tr><td colspan="4"><div id="addressDiv">
+        <table border="0" cellspacing="5" cellpadding="0">
+          <tr><td><span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;Address</span>:&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td><span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;City/State/Zip</span>:&nbsp;</td><td>&nbsp;</td></tr>
+        </table>
+      </div></td></tr>
+
+<!-- Job Location Contact -->
+      <tr>
+<!--#IF evaluate="<?s:request_readonly?>" compare="true" -->
+        <td><!--#SMARTFIELD title="<span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;Contact</span>:" div="&nbsp;</td><td>" style="width:230" name="job_location_contact_id" type="droplist"
+                               query="SELECT contact_id, contact_name
+                                    FROM contacts
+                                   WHERE contact_id = <?d:job_location_contact_id.toPStmtInt()?>" --></td>
+      <td>&nbsp;</td>
+      <td width="15%">&nbsp;</td>
+        <input type="hidden" id="newJobLocContactButtonDiv">
+        <input type="hidden" id="viewJobLocContactButtonDiv">
+<!--#ELSE-->
+        <td><span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;Contact</span>:&nbsp;</td>
+        <td><div id="jobLocationContactDiv">
+        <!--#SELECT name="job_location_contact_id" id="job_location_contact_id" class="regular" style="width:230"
+                    firstOption="" firstOptionValue=""
+          currentValue="<?d:job_location_contact_id?>"
+                    onChange="onJobLocationContactChange()"
+          query="SELECT c.contact_id job_location_contact_id, c.contact_name
+                   FROM contacts c INNER JOIN
+                        job_location_contacts jlc ON c.contact_id=jlc.contact_id INNER JOIN
+                                  lookups l ON c.cont_status_type_id = l.lookup_id
+                        WHERE l.code='active'
+                              AND c.contact_name IS NOT NULL
+                          AND c.contact_name NOT LIKE '%N/A%'
+                          AND c.contact_name <> 'NA'
+                          AND jlc.job_location_id = <?d:job_location_id.toPStmtInt()?>
+                     ORDER BY c.contact_name"  -->
+      </div></td>
+      <td><div id="newJobLocContactButtonDiv" style="display:none;"><input type="button" class="button2" value="New" id="newJobLocContactButton"></div></td>
+      <td><div id="viewJobLocContactButtonDiv" style="display:none;"><input type="button" class="button2" value="View" id="viewJobLocContactButton"></div></td>
+<!--#/IF-->
+    </tr>
+
+<!-- Job Location Contact Info -->
+      <tr><td colspan="4">
+        <div id="jobLocationContactInfoDiv"><table border="0" cellspacing="5" cellpadding="0">
+          <tr><td><span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;Phone</span>:&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td><span class='regularLabel'>&nbsp;&nbsp;&nbsp;Email</span>:&nbsp;</td><td>&nbsp;</td></tr>
+        </table>
+      </div></td></tr>
+      <!--<tr><td width="30%">&nbsp;</td><td><div id="buttonDiv2" style="display:block;" align="right"><input type="button" class="button" value="New Contact" id="show2" onclick="onShowContact2()"></div></td></tr>-->
+
+      <tr><td class="formButtonSpacing">&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td><span class='HeaderLabelMandatory'>Billing Information</span></td><td>&nbsp;</td></tr>
+      <tr  valign="top"><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;Purchase Order</span>:" div="&nbsp;</td><td>" style="width:230" name="dealer_po_no"-->
+      <tr  valign="top"><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;PO Line Number</span>:" div="&nbsp;</td><td>" style="width:230" name="dealer_po_line_no" onKeyUp="fieldValidator(this,'number')" -->
+
+      <tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;Billing Type</span>:" div="&nbsp;</td><td>" style="width:230" name="quote_type_id" type="droplist" table="billing_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
+      <tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;Sales Tax</span>:" div="&nbsp;</td><td>" style="width:230" name="taxable_flag" type="boolean" --></td></tr>
+      <tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;Order Type</span>:" div="&nbsp;</td><td>" style="width:230" name="order_type_id" type="droplist"
+                              query="SELECT lookup_id order_type_id, l.name
+                                  FROM lookups l INNER JOIN lookup_types lt ON l.lookup_type_id=lt.lookup_type_id
+                                 WHERE lt.code='order_type'
+                                   ORDER BY l.sequence_no" --></td></tr>
+      <tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;Customer Costing</span>:" div="&nbsp;</td><td>" style="width:230" name="customer_costing_type_id" type="droplist"
+                              query="SELECT lookup_id customer_costing_type_id, l.name
+                                  FROM lookups l INNER JOIN lookup_types lt ON l.lookup_type_id=lt.lookup_type_id
+                                 WHERE lt.code='customer_costing_type'
+                                   ORDER BY l.sequence_no" --></td></tr>
+      <!--<tr><td class="formButtonSpacing">&nbsp;</td><td>&nbsp;</td></tr>-->
+
+<!-- Attachment Begin -->
+      <tr><td><div id="attachmentCountDiv"><span class="HeaderLabel">Attachment Upload</span></div></td>
+<!--#IF evaluate="<?d:mode?>" compare="Update" -->
+          <td></td></tr>
+      <tr><td colspan="4">
+   <iframe id="showDocuments" name="documentFrame"
+           src="{!s:showPage!}enet/req/documents.html"
+           height="150" width="100%" frameborder="0"
+           marginwidth="0" marginheight="0">
+   </iframe>
+      </td></tr>
+<!--#ELSE-->
+          <td colspan="3"><div id="showAttachmentDiv"><input type="button" class="button2" value="Add Attachment" onclick="saveAndRedisplay()" ></div></td></tr>
+<!--#/IF-->
+<!-- Attachment End -->
+
+<!-- PO Begin -->
+<!--#CHECKSECURITY right="rights.enet/po/po_detail.view" -->
+	<tr><td class="HeaderLabel">Vendor PO</td>
+  <!--#IF evaluate="<?d:mode?>" compare="Update" -->
+	</tr>
+    <tr><td colspan="4"><div id="poListDiv">
+
+	<!--#SMARTTABLE name="po_list" class="smartTable"
+					query="SELECT po.po_id, po.vendor_name, l.name status, po.date_created,
+					              CONVERT(VARCHAR, p.project_no) + '-' + CONVERT(VARCHAR, r.request_no) + '-' + CONVERT(VARCHAR, po.po_no) project_request_po_no
+							 FROM purchase_orders po INNER JOIN
+							      lookups l ON po.po_status_id=l.lookup_id INNER JOIN
+							      requests r ON po.request_id = r.request_id INNER JOIN
+							      projects p ON r.project_id = p.project_id
+							WHERE po.request_id = <?s:request_id.toPStmtInt()?>
+						 ORDER BY po_id" -->
+
+		<!--#SMARTCOLUMN style="border-width:1;border-right-color:#FFFFFF;border-bottom-color:#FFFFFF;width:30%;" name="project_request_po_no" title="PO#" href="" onclick="return view_po(<?r:po_list:po_id.toJavaScriptString()?>)"  align="center" nowrap-->
+		<!--#SMARTCOLUMN style="border-width:1;border-right-color:#FFFFFF;border-bottom-color:#FFFFFF;width:30%;" name="vendor_name" title="Vendor"  align="left" nowrap-->
+		<!--#SMARTCOLUMN style="border-width:1;border-right-color:#FFFFFF;border-bottom-color:#FFFFFF;width:15%;" name="status" title="Status"  align="center" nowrap-->
+		<!--#SMARTCOLUMN style="border-width:1;border-right-color:#FFFFFF;border-bottom-color:#FFFFFF;width:15%;" name="date_created" title="Date Created" format="date" -->
+
+	<!--#/SMARTTABLE -->
+    </div>
+  <!--#CHECKSECURITY right="rights.enet/po/po_detail.insert" -->
+		<div><input type="button" value="Create PO" onclick="javascript:new_po();" class="button2"></div>
+  <!--#/CHECKSECURITY-->
+	</td></tr>
+  <!--#ELSE-->
+    <!--#CHECKSECURITY right="rights.enet/po/po_detail.insert" -->
+          <td><input type="button" class="button2" value="Add PO" onclick="saveAndRedisplay()" ></td>
+    <!--#/CHECKSECURITY-->
+  <!--#/IF-->
+    </tr>
+<!--#/CHECKSECURITY-->
+<!-- PO End -->
+
+<tr>
+  <td colspan="4">&nbsp;</td>
+<tr>
+    </table>
+  </td>
+</tr>
+
+<tr><td colspan="4">&nbsp;</td></tr>
+<p>
+<tr>
+  <td>&nbsp;</td>
+  <td colspan="3"><span class="HeaderLabelMandatory">Narrative Work Request</span>&nbsp;<input readonly type="text" name="remLen" size="4" maxlength="4" value="1000" class="HeaderLabel"><span class="regularLabel">&nbsp;characters left.</span></td></tr>
+<tr>
+<tr>
+  <td>&nbsp;</td>
+  <td colspan="3"><!--#SMARTFIELD name="description" type="textarea" cols="180" rows="9" wrap="virtual" onKeyDown="textCounter(this.form.description,this.form.remLen,1000,'down');" onKeyUp="textCounter(this.form.description,this.form.remLen,1000,'up');"-->
+
+</td></tr>
+</p>
+<tr><td colspan="4">&nbsp;</td></tr>
+<p>
+<tr>
+  <td>&nbsp;</td>
+  <td colspan="3" ><span class="HeaderLabel">Additional Conditions</span>&nbsp;<input readonly type="text" name="remLen2" size="4" maxlength="4" value="1000" class="HeaderLabel"><span class="regularLabel">&nbsp;characters left.</span></td></tr>
+<tr>
+  <td>&nbsp;</td>
+  <td colspan="3"><!--#SMARTFIELD name="other_conditions" type="textarea" cols="180" rows="9" wrap="virtual" onKeyDown="textCounter(this.form.other_conditions,this.form.remLen2,1000,'down');" onKeyUp="textCounter(this.form.other_conditions,this.form.remLen2,1000,'up');"-->
+</td></tr>
+</p>
+<tr><td colspan="4">&nbsp;</td></tr>
+<tr><td></td><td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0" >
+<tr>
+ <td width="12%"><!--#SMARTFIELD title="Date Created:" div="&nbsp;</td><td style=align:left'>" name="date_created" type="datetime" mode="Update" readonly class="readonly" size="22" --></td>
+ <td width="12%"><!--#SMARTFIELD title="Created By:" div="&nbsp;</td><td>" name="created_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+</tr>
+<tr>
+ <td width="12%"><!--#SMARTFIELD title="Date Modified:" div="&nbsp;</td><td>" name="date_modified" type="datetime" mode="Update" readonly class="readonly" size="22"--></td>
+ <td width="12%"><!--#SMARTFIELD title="Modified By:" div="&nbsp;</td><td>" name="modified_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+</tr>
+</table></td></tr>
+</table>
+<table width="100%" border="0" cellspacing="10" cellpadding="3" bgcolor="tan">
+
+  <tr><td><table border="0" width="100%">
+    <tr>
+      <td align="left">
+      </td>
+
+		<!--#IF evaluate="<?s:request_readonly?>" compare="true"-->
+		<!--#ELSE-->
+			<td align="right">
+				<input type="button" class="button" value="Cancel" name="Cancel" onClick="exitFunction('Cancel');">
+				<input type="button" class="button" value="Next" name ="Next" onClick="if( isLoaded() ) newWindow('{!s:showPage!}enet/req/confirm.html?request_type_code='+document.sr_edit.request_type_code.value,'confirm_qr',200,450);">
+			</td>
+		<!--#/IF-->
+		</tr>
+	</table></td></tr>
+
+  <!--#SMARTFIELD name="form_loaded" type="hidden" value="true" -->
+
+   <!--#/SMARTFORM-->
+</table>
+
+<!-- Contact Dialog Begin -->
+<div id="contactDialogDiv" class="yui-panel"><div class="hd">Please enter contact information</div>
+  <div class="bd">
+  <form name="contact_frm" method="POST" action="{!s:action!}newContact/enet/embeds/contact_response.html">
+  <div id="contactFormDiv"></div>
+  <input name="customer_id" id="contact_param1" type="hidden" />
+  <input name="job_location_id" id="contact_param2" type="hidden" />
+  <input name="param_type" id="contact_param3" type="hidden" />
+  <input name="current_id" id="contact_param4" type="hidden" />
+  <input name="index" id="contact_param5" type="hidden" />
+  <input name="button" id="contact_param6" type="hidden" />
+  </form>
+  </div>
+</div>
+<!-- Contact Dialog End -->
+
+<!-- Customer Dialog Begin -->
+<div id="customerDialogDiv" class="yui-panel">
+  <div id="customerLabelDiv" class="hd">Please enter customer information</div>
+  <div id="endUserLabelDiv" class="hd">Please enter end user information</div>
+  <div class="bd">
+
+    <form name="customer_frm" id="customer_frm" method="POST" action="{!s:action!}newCustomer/enet/embeds/customer_response.html">
+    <div id ="customerFormDiv"></div>
+    <input name="customer_type" id="cust_param1" type="hidden" />
+    <input name="end_user_parent_id" id="cust_param2" type="hidden" />
+    <input name="current_id" id="cust_param3" type="hidden" />
+    <input name="button" id="cust_param4" type="hidden" />
+    </form>
+
+  </div>
+</div>
+<!-- Customer Dialog End -->
+
+<!-- Job Locaton Dialog Begin -->
+<div id="jobLocationDialogDiv" class="yui-panel">
+  <div class="hd">Please enter job location information</div>
+  <div class="bd">
+
+    <form name="job_loc_frm" id="job_loc_frm" method="POST" action="{!s:action!}newJobLocation/enet/embeds/job_loc_response.html">
+    <div id="jobLocationFormDiv"></div>
+    <input name="end_user_id" id="job_loc_param1" type="hidden" />
+    <input name="current_id" id="job_loc_param2" type="hidden" />
+    <input name="button" id="job_loc_param3" type="hidden" />
+    </form>
+
+  </div>
+</div>
+<!-- Job Location Dialog End -->
+
+</body>
+
+<!--#EMBED template="enet/embeds/footer.html" -->

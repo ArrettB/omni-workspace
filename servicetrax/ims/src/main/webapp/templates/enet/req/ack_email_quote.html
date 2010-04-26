@@ -1,0 +1,55 @@
+
+<!--#SQLLOOP name="c"
+		query="SELECT sales_name, sales_sup_name, designer_name, proj_mgr_name, am_name
+		FROM quote_mail_v
+		WHERE record_id = <?p:request_id.toPStmtString()?>"
+-->
+
+<table width="100%" >
+	<tr>
+		<td width="50" class="HeaderLabel">
+			Dealer&nbsp;Sales&nbsp;Rep:&nbsp;
+		</td>
+		<td width="300">
+			{!r:c:sales_name!}
+	<!--#IF evaluate="<?p:sales_rep?>" compare="false" -->
+			<span class="mandatoryLabel">[missing email]</span>
+	<!--#/IF-->
+		</td>
+	</tr>
+	<tr>
+		<td width="50" class="HeaderLabel">
+			Dealer&nbsp;Sales&nbsp;Support:&nbsp;
+		</td>
+		<td width="300">
+			{!r:c:sales_sup_name!}
+	<!--#IF evaluate="<?p:sales_sup?>" compare="false" -->
+			<span class="mandatoryLabel">[missing email]</span>
+	<!--#/IF-->
+		</td>
+	</tr>
+	<tr>
+		<td width="50" class="HeaderLabel">
+			Project&nbsp;Mgr:
+		</td>
+		<td width="300">
+			{!r:c:proj_mgr_name!}
+	<!--#IF evaluate="<?p:proj_mgr?>" compare="false" -->
+			<span class="mandatoryLabel">[missing email]</span>
+	<!--#/IF-->
+		</td>
+	</tr>
+	<tr>
+		<td width="50" class="HeaderLabel">
+			Service Provider Contact:
+		</td>
+		<td width="300">
+			{!r:c:am_name!}
+	<!--#IF evaluate="<?p:a_m?>" compare="false" -->
+			<span class="mandatoryLabel">[missing email]</span>
+	<!--#/IF-->
+		</td>
+	</tr>
+</table>
+
+<!--#/SQLLOOP-->

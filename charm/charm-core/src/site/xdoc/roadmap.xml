@@ -1,0 +1,14 @@
+<document>
+  <properties>
+    <title>Road Map</title>
+    <author email="greg.case@apexit.com">Greg Case</author>
+  </properties>
+  <body>
+    <section name="Development Road Map for Charm">
+      <p>
+        This document discusses the release plans and current roadmap for Charm.
+      </p>
+    </section>
+  </body>
+</document>
+

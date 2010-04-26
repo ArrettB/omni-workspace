@@ -1,0 +1,73 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: job_inv_lines_sum_item.html, 15, 1/7/2005 5:09:59 PM, Lee A. Gunderson$ -->
+
+
+<body class="BodyTag" onLoad="updateInvoiceHeader()">
+
+
+
+<FORM ACTION="{!s:action!}setServiceLineStatus" METHOD="POST" name="LinesForm">
+
+	<input type="hidden" name="level" value="bill_job_item">
+	<input type="hidden" name="invoice_id" value="{!p:invoice_id!}">
+	<input type="hidden" name="on_invoice" value="false"> <!-- used in SetServiceLineStatusHandler to determine if lines are on invoice or unassigned -->
+	<input type="hidden" name="template_name" value="bill/inv/job_inv_lines_sum_item.html">
+
+<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0"> <tr><td height="25" class="tableTitle">Assigned</td></tr></TABLE>
+
+<!--#SMARTTABLE name="inv_lines"
+	class="SmartTable" TableTotal="true" totalClass="TableTotal"
+	query="SELECT b.bill_rate, b.item_id, b.item_name, b.job_item_status_id, b.bill_job_id,
+	sum(b.bill_hourly_qty) sum_bill_hourly_qty, sum(b.payroll_qty) sum_tc_hours_tot,
+	sum(b.bill_hourly_total) sum_bill_hourly_total, sum(b.bill_exp_total) sum_bill_exp_total,
+	sum(b.bill_total) sum_bill_total, sum(b.bill_exp_qty) sum_bill_exp_qty
+	FROM billing_v b
+	WHERE b.invoice_id = <?p:invoice_id.toPStmtString()?> AND b.billable_flag = 'Y'
+	GROUP BY b.item_id, b.item_name, b.bill_rate, b.job_item_status_id, b.bill_job_id
+	ORDER BY b.item_name"
+-->
+  <!--#SMARTCOLUMN value="<INPUT TYPE='checkbox' name='statusCheckBox' value='<?r:inv_lines:job_item_status_id?>'>" title="<INPUT TYPE='checkbox' name='CheckAllBox' onclick='checkAllBoxes(this.form.CheckAllBox,this.form.statusCheckBox)'>" align="center" width="2%" -->
+  <!--#SMARTCOLUMN name="item_name" sort="item_name" title="Item" width="10%" -->
+  <!--#SMARTCOLUMN name="sum_tc_hours_tot" sort="sum_tc_hours_tot" title="TC Hours" align="right" format="###,###,###,##0.00" width="5%" total="true" -->
+  <!--#SMARTCOLUMN name="sum_bill_hourly_qty" sort="sum_bill_hourly_qty" title="Bill Hours" align="right" format="###,###,###,##0.00" width="5%" total="true" -->
+  <!--#SMARTCOLUMN name="sum_bill_exp_qty" sort="sum_bill_exp_qty" title="Exp Qty" align="right" format="###,###,###,##0.00" width="5%" total="true" -->
+  <!--#SMARTCOLUMN name="bill_rate" sort="bill_rate" title="Bill Rate" align="right" format="money" width="5%" -->
+  <!--#SMARTCOLUMN name="sum_bill_hourly_total" sort="sum_bill_hourly_total" title="Hours$" align="right" total="true" format="money" width="5%" -->
+  <!--#SMARTCOLUMN name="sum_bill_exp_total" sort="sum_bill_exp_total" title="Exp $" align="right" total="true" format="money" width="5%" -->
+  <!--#SMARTCOLUMN name="sum_bill_total" sort="sum_bill_total" title="Total" align="right" total="true" format="money" width="5%" -->
+<!--#/SMARTTABLE -->
+
+		<select NAME="submit_action" class="regular">
+			<option VALUE="move_submit_billing">Remove from Invoice</option>
+				<!--#SQLLOOP query="SELECT ('moveToInvoice'+cast(invoice_id as varchar)) invoice_id, ('Assign to Invoice # '+cast(invoice_id as varchar)) invoice_no FROM invoices WHERE status_id = 1 and invoice_id != <?p:invoice_id.toPStmtString()?> and job_id=<?s:job_id.toPStmtString()?>" name="new_inv"-->
+			<option VALUE="{!r:new_inv:invoice_id!}">{!r:new_inv:invoice_no!}</option>
+				<!--#/SQLLOOP-->
+		<!--#CHECKSECURITY right="rights.bill/post_lines.view"-->
+			<option VALUE="move_posted">Post</option>
+		<!--#/CHECKSECURITY-->
+		</select>
+		<input type="submit" value="Submit" class="button2" name="button" onClick="LinesForm.on_invoice.value='true';">
+</FORM>
+
+<!--#EMBED template="bill/inv/job_inv_cust_lines.html" -->
+
+<!--#EMBED template="bill/job_bill_lines_sum_item.html" temp_name="bill/inv/job_inv_lines_sum_item.html" -->
+
+</body>
+
+<script type="text/javascript">
+<!--
+	function updateInvoiceHeader()
+	{
+	<!--#IF defined="<?d:invoice_po?>" -->
+		parent.job_inv_header.inv_edit.po_no.value = {!d:invoice_po.toJavaScriptString()!};
+	<!--#/IF-->
+	<!--#IF defined="<?d:service_description?>" -->
+		parent.job_inv_header.inv_edit.description.value = {!d:service_description.toJavaScriptString()!};
+	<!--#/IF-->
+	}
+-->
+</script>
+
+
+<!--#EMBED template="embeds/footer.html" -->

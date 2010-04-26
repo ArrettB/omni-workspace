@@ -1,0 +1,174 @@
+<html>
+<!-- $Header: -->
+
+<head>
+<title>Choose Date</title>
+<link rel="stylesheet" type="text/css" href="/ims/styles/ims.css">
+<script src="/ims/js/dynlayer.js" language="JavaScript"></script>
+<script src="/ims/js/calendar.js" language="JavaScript"></script>
+<script language="JavaScript">
+
+<!--//
+onload=init
+
+mycalendar = new Calendar(0,23,26,15)
+mycalendar.build()
+mycalendar.onChange = updateDisplay
+
+function init()
+{
+	mycalendar.activate()
+
+	var dateString = {!p:value.toJavaScriptString()!};
+	if (dateString != null && dateString.length > 0)
+	{
+		var findfirst = dateString.indexOf('/', 1);
+		var month = (dateString.substring(0 , findfirst)-1);
+		var findnext = dateString.indexOf('/', findfirst+1);
+		var day = dateString.substring(findfirst+1 , findnext);
+		var year = dateString.substring(findnext+1 , findnext+5);
+
+		if (month >= 0 && day && year && year > 1900)
+		{
+			document.calform.year.value = year;
+			document.calform.month.value = month;
+			document.calform.day.value = day;
+			mycalendar.setDate(document.calform.year.value, document.calform.month.value, document.calform.day.value);
+		}
+	}
+}
+
+function updateDisplay()
+{
+	document.calform.year.value = this.year
+	document.calform.month.value = this.month
+	document.calform.day.value = this.day
+}
+
+writeCSS (
+mycalendar.css
+)
+
+function getDate()
+{
+	var d = new Date(document.calform.year.value, document.calform.month.value, document.calform.day.value);
+	value =  d.getMonth()+1 + '/' + d.getDate() + '/' + d.getFullYear();
+	return value;
+}
+
+function chooseDate(action)
+{
+<!--#IF defined="<?p:form?>" -->
+	if (window.opener.{!p:form!}.{!p:field!})
+	{
+		if (action == 'cancel')
+			window.opener.{!p:form!}.{!p:field!}.value = '';
+		else
+			window.opener.{!p:form!}.{!p:field!}.value = getDate();
+	}
+	document.body.onunload = null;
+<!--#/IF -->
+}
+
+function changeYear(dy)
+{
+	document.calform.year.value = document.calform.year.value - 0 + dy;
+}
+
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.cal {}
+.calDay {font-family: Verdana, Arial, Helvetica, sans-serif;
+	background-color :  #333333;
+	color : #FFFFFF;
+	cursor : hand;
+	font-size : 12px;
+	font-weight : bold;
+	width : 26;
+	height : 15;
+}
+.calNormal {font-size : 8pt; font-family : Verdana, Arial, Helvetica, sans-serif; font-style : normal; width : 26; height : 15; background-color: #D1D1D1; color: #666666; cursor : hand;}
+.calShaded {font-size : 8pt; font-family : Verdana, Arial, Helvetica, sans-serif; font-style : normal;  width : 26; height : 15; background-color: #FFFFFF; color: #999999; cursor : hand;}
+.calHighlighted {font-size : 8pt; font-family : Verdana, Arial, Helvetica, sans-serif; font-style : normal;  width : 26; height : 15; color:#ffffff; background-color: #999999; font-weight:bold; cursor : hand;}
+-->
+</style>
+
+<body onunload="chooseDate('cancel')" class="chooser">
+
+<form name="calform">
+<input type="hidden" name="day" value="" size=4>
+
+<table border=0 cellpadding=0 cellspacing=0>
+<tr>
+	<td><select name="month" onChange="mycalendar.setMonth(this.value)" style="width: 132">
+	<option value="0"> January
+	<option value="1"> February
+	<option value="2"> March
+	<option value="3"> April
+	<option value="4"> May
+	<option value="5"> June
+	<option value="6"> July
+	<option value="7"> August
+	<option value="8"> September
+	<option value="9"> October
+	<option value="10"> November
+	<option value="11"> December
+	</select></td>
+
+	<td>
+	<table border=0 cellpadding=0 cellspacing=0>
+	<tr><td><img name="box_top" border=0
+	src="/ims/images/yearbox_top.gif"
+	onmousedown="this.src='/ims/images/yearbox_pressed_top.gif'"
+	onmouseup="this.src='/ims/images/yearbox_top.gif'"
+	onmouseout="this.src='/ims/images/yearbox_top.gif'"
+	onclick="mycalendar.changeYear(1)" ondblclick="mycalendar.changeYear(1)"></td></tr>
+	<tr><td><img name="box_bottom" border=0
+	src="/ims/images/yearbox_bottom.gif"
+	onmousedown="this.src='/ims/images/yearbox_pressed_bottom.gif'"
+	onmouseup="this.src='/ims/images/yearbox_bottom.gif'"
+	onmouseout="this.src='/ims/images/yearbox_bottom.gif'"
+	onclick="mycalendar.changeYear(-1)" ondblclick="mycalendar.changeYear(-1)"></td></tr>
+	<tr><td></td></tr>
+	</table>
+	<div style="position: absolute; top: 2; left: 134">
+	<input name="year" maxlength="4" value="2000" style="width: 30; border-style: none">
+	</div>
+	</td>
+</tr>
+<tr>
+	<td>
+	<script language="JavaScript">
+		document.write(mycalendar.div)
+	</script>
+	</td>
+</tr>
+</table>
+
+<!--#IF defined="<?p:form?>" -->
+<table border="0" cellpadding="0" cellspacing="0" width="182">
+	<tr height="107">
+		<td height="107"></td>
+	<tr>
+	<tr width="100%">
+		<td width="100%" align="center">
+			<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td><input type="button" class="button" value="OK" onClick="chooseDate();window.close()"></td>
+					<td width="4"></td>
+					<td><input type="button" class="button" value="Cancel" onClick="chooseDate('cancel');window.close()"></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<!--#/IF -->
+
+</form>
+
+</body>
+
+</html>

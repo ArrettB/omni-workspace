@@ -1,0 +1,28 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: item_costing_history.html, 1, 6/10/2005 9:14:55 AM, Blake Von Haden$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.mnt/item_costing.view?>"-->
+<body class="BodyTag">
+
+	<span class="HeaderLabel">
+		Item Costing history for {!p:item_name.toHTML()!}
+	</span>
+
+	<!--#SMARTTABLE class="SmartTable" name="item_costs" style="width:480"
+		   query="SELECT i.cost_per_uom, i.percent_margin, i.created_by, i.date_created
+	   			  FROM item_costing_history i
+	   			  WHERE i.item_id = <?p:item_id.toPStmtString()?>
+	   			  ORDER BY i.date_created DESC"
+	   -->
+	   <!--#SMARTCOLUMN name="cost_per_uom" sort="cost_per_uom" title="Cost per UOM" format="money" width="20%" -->
+	   <!--#SMARTCOLUMN name="percent_margin" sort="percent_margin" title="% Margin" width="20%" -->
+	   <!--#SMARTCOLUMN name="created_by" title="Modifier" width="20%" -->
+	   <!--#SMARTCOLUMN name="date_created" title="Date Modified" format="datetime" width="25%" -->
+	<!--#/SMARTTABLE -->
+
+	<br>
+
+	<input type="submit" class="button" name="button" value="Cancel" onClick="location='{!s:showPage!}mnt/item_costing.html'">
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

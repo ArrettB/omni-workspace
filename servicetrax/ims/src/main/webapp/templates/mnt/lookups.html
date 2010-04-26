@@ -1,0 +1,212 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: lookups.html, 18, 1/7/2005 5:10:14 PM, Lee A. Gunderson$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.mnt/lookup_types.view?>"-->
+<!--#REQUIRED data="<?s:rights.mnt/lookups.view?>"-->
+
+<body class="BodyTag">
+
+<!--#SQLLOOP name="updatable_type" query="SELECT updatable_flag flag FROM lookup_types WHERE lookup_type_id=<?p:lookup_type_id.toPStmtString()?>" -->
+
+
+	<table width="100%" cellspacing="0" cellpadding="0">
+		<tr>
+		<!--#IF evaluate="<?r:updatable_type:flag?>" compare="Y"-->
+			<td  class="HeaderBar">Edit Lookup Type Name</td>
+		<!--#ELSE-->
+			<td  class="HeaderBar">Lookup Type Name</td>
+		<!--#/IF-->
+		</tr>
+	</table>
+
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<!--#SMARTFORM name="mnt/lookup_types"	security="rights" table="lookup_types_v"	key="lookup_type_id"
+						sequence="@@IDENTITY" buttons="Save"
+						preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+	-->
+
+		<tr><td height="3">&nbsp;</td><tr>
+	<!--#IF evaluate="<?r:updatable_type:flag?>" compare="Y"-->
+		<tr><td width="45"><!--#SMARTFIELD title="Name:" name="type_name" type="text" div="</td><td>"--></td></tr>
+	<!--#ELSE-->
+		<tr><td width="45"><!--#SMARTFIELD title="Name:" name="type_name" type="text" div="</td><td>" disabled="true"--></td></tr>
+	<!--#/IF-->
+		<tr><td height="3">&nbsp;</td><tr>
+	</table>
+
+	<!--#EMBED template="embeds/audit.html" table_name="lookup_types" table_key="lookup_type_id" key_value="<?p:lookup_type_id?>"-->
+
+
+	<!--#/SMARTFORM -->
+
+<!--#IF evaluate="<?p:show_lookup?>" compare="true" -->
+
+	<table width="100%" cellspacing="0" cellpadding="0">
+		<tr>
+		<!--#IF defined="<?p:lookup_id?>"-->
+			<td  class="HeaderBar">Edit Lookup Information</td>
+		<!--#ELSE-->
+			<td  class="HeaderBar">Enter New Lookup Information</td>
+		<!--#/IF-->
+		</tr>
+	</table>
+
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<!--#SMARTFORM name="mnt/lookups" security="rights" table="lookups" key="lookup_id" sequence="@@IDENTITY"
+						nextTemplate="mnt/clear.html"	buttons=""
+						preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+						postHandler="ims.handlers.maintenance.ClearIDPostHandler"
+	-->
+		<!--#SMARTFIELD name="clear_id" type="hidden" value="lookup_id" -->
+		<!--#SMARTFIELD name="lookup_type_id" value="<?p:lookup_type_id?>" type="hidden" -->
+		<!--#SMARTFIELD name="active_flag" mode="Insert" value="Y" type="hidden" -->
+		<!--#SMARTFIELD name="code" mode="Insert" type="hidden" -->
+		<!--#SMARTFIELD name="caller" value="mnt/lookups.html?lookup_type_id=<?p:lookup_type_id?>" type="hidden" -->
+		<!--#SMARTFIELD name="button" type="hidden"-->
+
+	<!--#IF evaluate="<?r:updatable_type:flag?>" compare="Y"-->
+		<!--#IF defined="<?p:lookup_id?>"-->
+			<!--#IF evaluate="<?r:mnt/lookups:updatable_flag?>" compare="Y"-->
+		<tr><td width="75"><!--#SMARTFIELD title="Name" name="name" type="text" div="</td><td>" --></td></tr>
+		<tr><td width="75"><!--#SMARTFIELD title="Sequence" name="sequence_no" type="text" div="</td><td>" --></td></tr>
+		<tr><td width="75"><!--#SMARTFIELD title="Attribute 1" name="attribute1" type="text" div="</td><td>" --></td></tr>
+		<tr><td width="75"><!--#SMARTFIELD title="Attribute 2" name="attribute2" type="text" div="</td><td>" --></td></tr>
+		<tr><td width="75"><!--#SMARTFIELD title="Attribute 3" name="attribute3" type="text" div="</td><td>" --></td></tr>
+		<tr><td width="75"><!--#SMARTFIELD title="Active Flag" name="active_flag" type="boolean" div="</td><td>" --></td></tr>
+			<!--#ELSE-->
+		<tr><td width="75"><!--#SMARTFIELD title="Name" name="name" type="text" div="</td><td>" disabled="true" --></td></tr>
+		<tr><td width="75"><!--#SMARTFIELD title="Sequence" name="sequence_no" type="text" div="</td><td>" disabled="true" --></td></tr>
+		<tr><td width="75"><!--#SMARTFIELD title="Attribute 1" name="attribute1" type="text" div="</td><td>" disabled="true" --></td></tr>
+		<tr><td width="75"><!--#SMARTFIELD title="Attribute 2" name="attribute2" type="text" div="</td><td>" disabled="true" --></td></tr>
+		<tr><td width="75"><!--#SMARTFIELD title="Attribute 3" name="attribute3" type="text" div="</td><td>" disabled="true" --></td></tr>
+			<!--#/IF-->
+		<!--#ELSE-->
+		<tr><td width="75"><!--#SMARTFIELD title="Name" name="name" type="text" div="</td><td>" --></td></tr>
+		<tr><td width="75"><!--#SMARTFIELD title="Sequence" name="sequence_no" type="text" div="</td><td>" --></td></tr>
+		<tr><td width="75"><!--#SMARTFIELD title="Attribute 1" name="attribute1" type="text" div="</td><td>" --></td></tr>
+		<tr><td width="75"><!--#SMARTFIELD title="Attribute 2" name="attribute2" type="text" div="</td><td>" --></td></tr>
+		<tr><td width="75"><!--#SMARTFIELD title="Attribute 3" name="attribute3" type="text" div="</td><td>" --></td></tr>
+		<!--#/IF-->
+		<tr><td width="75"><!--#SMARTFIELD title="Updateable" mode="Insert" name="updatable_flag" type="boolean" div="</td><td>" --></td></tr>
+		<tr><td width="75"><!--#SMARTFIELD title="Updateable" mode="Update" name="updatable_flag" type="boolean" div="</td><td>" disabled="true"--></td></tr>
+	<!--#ELSE-->
+		<tr><td width="75"><!--#SMARTFIELD title="Name" name="name" type="text" div="</td><td>" disabled="true" --></td></tr>
+		<tr><td width="75"><!--#SMARTFIELD title="Sequence" name="sequence_no" type="text" div="</td><td>" disabled="true" --></td></tr>
+		<tr><td width="75"><!--#SMARTFIELD title="Attribute 1" name="attribute1" type="text" div="</td><td>" disabled="true" --></td></tr>
+		<tr><td width="75"><!--#SMARTFIELD title="Attribute 2" name="attribute2" type="text" div="</td><td>" disabled="true" --></td></tr>
+		<tr><td width="75"><!--#SMARTFIELD title="Attribute 3" name="attribute3" type="text" div="</td><td>" disabled="true" --></td></tr>
+		<tr><td width="75"><!--#SMARTFIELD title="Active Flag" name="active_flag" type="boolean" div="</td><td>" disabled="true" --></td></tr>
+	<!--#/IF-->
+	</table>
+
+	<!--#/SMARTFORM -->
+
+	<!--#IF evaluate="<?r:updatable_type:flag?>" compare="Y"-->
+		<!--#IF undefined="<?p:lookup_id?>"-->
+	<table>
+		<tr><form>
+			<!--#IF defined="<?s:rights.mnt/lookups.insert?>"-->
+			<td><input type="button" id="Save" class="button" name="button" value="Save New" onclick="customSave()"></td>
+			<!--#/IF-->
+			<td><input type="button" id="Cancel" class="button" name="button" value="Cancel" onclick="customCancel()"></td>
+		</tr></form>
+	</table>
+		<!--#ELSE-->
+	<table>
+		<tr><form>
+			<!--#IF defined="<?s:rights.mnt/lookups.update?>"-->
+			<td><input type="button" id="Save" class="button" name="button" value="Save" onclick="customSave()"></td>
+			<!--#/IF-->
+			<!--#IF defined="<?s:rights.mnt/lookups.delete?>"-->
+			<td><input type="button" id="Save" class="button" name="button" value="Delete" onclick="customDelete()"></td>
+			<!--#/IF-->
+			<td><input type="button" id="Cancel" class="button" name="button" value="Cancel" onclick="customCancel()"></td>
+		</tr></form>
+	</table>
+		<!--#/IF-->
+
+	<!--#/IF-->
+
+	<br>
+
+<!--#/IF-->
+
+	<table width="100%" cellspacing="0" cellpadding="0">
+		<tr>
+			<td  class="HeaderBar">Select a lookup to edit:</td>
+		</tr>
+	</table>
+
+	<!--#SMARTTABLE class="SmartTable" name="lookup_list"
+				query="SELECT lookup_id, code, name, attribute1, attribute2, attribute3, sequence_no, active_flag
+				         FROM lookups
+				        WHERE lookup_type_id = <?p:lookup_type_id.toPStmtString()?>
+				     ORDER BY active_flag desc, sequence_no, name"
+	-->
+		<!--#SMARTCOLUMN name="active_flag" sort="active_flag" title="Active?" width="10%" align="center" -->
+	<!--#IF defined="<?s:rights.mnt/lookups.update?>"-->
+		<!--#SMARTCOLUMN name="name" sort="name" title="Lookup" width="30%" href="<?s:showPage?>mnt/lookups.html?lookup_id=<?r:lookup_list:lookup_id?>&lookup_type_id=<?p:lookup_type_id?>&show_lookup=true" target="main_frame" -->
+	<!--#ELSE-->
+		<!--#SMARTCOLUMN name="name" sort="name" title="Lookup" width="20%" -->
+	<!--#/IF-->
+		<!--#SMARTCOLUMN name="code" sort="code" title="Code" width="20%" -->
+		<!--#SMARTCOLUMN name="sequence_no" sort="sequence_no" title="Seq#" width="10%" align="center" -->
+		<!--#SMARTCOLUMN name="attribute1" sort="attribute1" title="Attribute1" width="20%" -->
+		<!--#SMARTCOLUMN name="attribute2" sort="attribute2" title="Attribute2" width="20%" -->
+		<!--#SMARTCOLUMN name="attribute3" sort="attribute3" title="Attribute3" width="20%" -->
+	<!--#/SMARTTABLE -->
+	<br>
+	<table>
+		<tr><form>
+			<td><input type="button" class="button" name="button" value="Back" onClick="location='{!s:showPage!}mnt/lookup_types.html'"></td>
+			<!--#IF defined="<?s:rights.mnt/lookups.insert?>"-->
+			<td><input type="button" id="Save" class="button" name="button" value="New Lookup" onClick="location='{!s:showPage!}mnt/lookups.html?lookup_type_id={!p:lookup_type_id!}&show_lookup=true'"></td>
+			<!--#/IF-->
+		</tr></form>
+	</table>
+
+	<!--#/SQLLOOP-->
+
+</body>
+
+<script language="JavaScript">
+<!--
+
+	function customSave()
+	{
+		document.lookups.button.value = 'Save';
+		//Set code on Insert only
+		<!--#IF undefined="<?p:lookup_id?>"-->
+		document.lookups.code.value = getCode(document.lookups.name.value);
+		<!--#/IF-->
+		document.lookups.submit();
+	}
+
+	function customDelete()
+	{
+		document.lookups.active_flag.value = 'N';
+		document.lookups.button.value = 'Save';
+		document.lookups.submit();
+	}
+
+	function customCancel()
+	{
+		location='{!s:showPage!}mnt/clear.html?lookup_clear=true&caller=mnt/lookups.html&lookup_type_id={!p:lookup_type_id!}'
+	}
+
+	function getCode(sString)
+	{
+		for (i=0; i<sString.length; i++)
+		{
+			sString = sString.replace(' ','_');
+			sString = sString.replace('&','_');
+			sString = sString.replace('\\','_');
+			sString = sString.replace('/','_');
+		}
+		return sString.toLowerCase();
+	}
+
+//-->
+</script>
+
+<!--#EMBED template="embeds/footer.html" -->

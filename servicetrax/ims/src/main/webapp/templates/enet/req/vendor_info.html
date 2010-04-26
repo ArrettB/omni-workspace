@@ -1,0 +1,146 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!-- $Header: vendor_info.html, 8, 1/12/2005 9:02:04 AM, Lee A. Gunderson$ -->
+
+<body class="BodyTag" onLoad="setDefaults()">
+
+   <table class="" cellpadding="0" cellspacing="3" border="0">
+   <!--#SMARTFORM name="enet/nav/vendor_view" table="request_vendors" key="request_vendor_id"
+   		buttons=""
+   		nextTemplate="enet/req/vendor_info.html"
+		preHandler="ims.handlers.job_processing.SmartFormPreHandler,ims.handlers.proj.SaveVendorWOsHandler"
+		postHandler="ims.handlers.proj.SaveVendorWOsPostHandler"
+		validate="false"
+   	-->
+		<!--#SMARTFIELD name="button" type="hidden" value="Save" -->
+		<!--#SMARTFIELD name="complete" type="hidden" value="<?p:complete?>" -->
+		<!--#SMARTFIELD name="invoicing" type="hidden" value="<?p:invoicing?>" -->
+		<!--#SMARTFIELD name="redisplay" type="hidden" value="false" -->
+		<!--#SMARTFIELD name="vendor_saved" type="hidden" value="false" -->
+
+		<tr>
+			<td><!--#SMARTFIELD title="Sch Start Date:" div="&nbsp;</td><td>" name="sch_start_date" type="date" style="width:90" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(sch_start_date)')</script>"--></td>
+			<td><!--#SMARTFIELD title="Sch End Date:" div="&nbsp;</td><td>" name="sch_end_date" type="date" style="width:90" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(sch_end_date)')</script>"--></td>
+			<td><!--#SMARTFIELD title="Sch Start Time:" div="&nbsp;</td><td>" name="sch_start_time" type="time" style="width:90" --></td>
+		</tr>
+		<tr>
+<!--#IF evaluate="<?p:complete?>" compare="true" -->
+			<td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Actual Start Date:</span>" div="&nbsp;</td><td>" name="act_start_date" type="date" style="width:90" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(act_start_date)')</script>"--></td>
+			<td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Actual End Date:</span>" div="&nbsp;</td><td>" name="act_end_date" type="date" style="width:90" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(act_end_date)')</script>"--></td>
+<!--#ELSE-->
+			<td><!--#SMARTFIELD title="Actual Start Date:" div="&nbsp;</td><td>" name="act_start_date" type="date" style="width:90" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(act_start_date)')</script>"--></td>
+			<td><!--#SMARTFIELD title="Actual End Date:" div="&nbsp;</td><td>" name="act_end_date" type="date" style="width:90" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(act_end_date)')</script>"--></td>
+<!--#/IF-->
+			<td><!--#SMARTFIELD title="Actual Start Time:" div="&nbsp;</td><td>" name="act_start_time" type="time" style="width:90" --></td>
+		</tr>
+		<tr>
+			<td><!--#SMARTFIELD title="Estimated Cost$:" div="&nbsp;</td><td>" name="estimated_cost" style="width:90" --></td>
+<!--#IF evaluate="<?p:invoicing?>" compare="true" -->
+			<td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Total Cost$</span>:" div="&nbsp;</td><td>" name="total_cost" style="width:90" --></td>
+<!--#ELSE-->
+			<td><!--#SMARTFIELD title="Total Cost$:" div="&nbsp;</td><td>" name="total_cost" type="money" style="width:90" --></td>
+<!--#/IF-->
+			<td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Number of Visits:</span>" div="&nbsp;</td><td>" name="visit_count" style="width:90"  --></td>
+		</tr>
+		<tr>
+<!--#IF evaluate="<?p:invoicing?>" compare="true" -->
+			<td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Invoice Date</span>:" div="&nbsp;</td><td>" name="invoice_date" type="date" style="width:90" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(invoice_date)')</script>"--></td>
+<!--#ELSE-->
+			<td><!--#SMARTFIELD title="Invoice Date:" div="&nbsp;</td><td>" name="invoice_date" type="date" style="width:90" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(invoice_date)')</script>"--></td>
+<!--#/IF-->
+			<td>
+				<!--#SMARTFIELD title="Invoice #s:" div="&nbsp;</td><td colspan='3'>" name="invoice_numbers" style="width:275" -->
+			</td>
+		</tr>
+		<tr>
+<!--#IF evaluate="<?p:invoicing?>" compare="true" -->
+			<td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Invoicing Complete:</span>" div="&nbsp;</td><td>" name="invoiced_flag" style="width:90" type="boolean" value="N" onChange="determineMandatory(this,'invoicing')" --></td>
+<!--#ELSE-->
+			<td><!--#SMARTFIELD title="Invoiced Complete:</span>" div="&nbsp;</td><td>" name="invoiced_flag" style="width:90" type="boolean" value="N" onChange="determineMandatory(this,'invoicing')" --></td>
+<!--#/IF-->
+			<td rowspan="3" colspan="4"><table cellspacing="0" cellpadding="0"><tr>
+				<td valign="top">Notes:&nbsp;&nbsp;</td>
+				<td>
+				<!--#SMARTFIELD name="vendor_notes" type="textarea" cols="65" rows="5" wrap="virtual" -->
+				</td>
+			</tr></table></td>
+		</tr>
+		<tr>
+<!--#IF evaluate="<?p:complete?>" compare="true" -->
+			<td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Workorder Complete:</span>" div="&nbsp;</td><td>" name="complete_flag" style="width:90" type="boolean" value="N" onChange="determineMandatory(this,'complete')" --></td>
+<!--#ELSE-->
+			<td><!--#SMARTFIELD title="Workorder Complete:" div="&nbsp;</td><td>" name="complete_flag" style="width:90" type="boolean" value="N" onChange="determineMandatory(this,'complete')" --></td>
+<!--#/IF-->
+		</tr>
+		<tr>
+			<td><!--#SMARTFIELD title="Emailed Date:" div="&nbsp;</td><td>" name="emailed_date" style="width:90" type="date" readonly class="readonly" --></td>
+		</tr>
+   <!--#/SMARTFORM-->
+   </table>
+
+</body>
+
+<script language="JavaScript">
+<!--
+	function setDefaults()
+	{
+//alert(vendor_view.vendor_saved.value);
+		if( vendor_view.vendor_saved.value == 'true' )
+			parent.exitFunction('Cancel');
+	}
+
+	function exitFunction( action )
+	{
+		if( !(action == null ) && action == 'Save')
+		{
+			fixTime(vendor_view.sch_start_date, vendor_view.sch_start_time);
+			fixTime(vendor_view.act_start_date, vendor_view.act_start_time);
+			vendor_view.submit();
+		}
+	}
+
+	function determineMandatory(field, mandatory_parameter)
+	{//expecting field to be the complete flag droplist
+
+		if( field )
+		{
+			if( field.options[field.selectedIndex].text == 'Yes' )
+			{
+				eval("vendor_view."+mandatory_parameter+".value = 'true'");
+			}
+			else
+			{
+				eval("vendor_view."+mandatory_parameter+".value = 'false'");
+				vendor_view.submit();
+			}
+			vendor_view.redisplay.value = 'true';
+			fixTime(vendor_view.sch_start_date, vendor_view.sch_start_time);
+			fixTime(vendor_view.act_start_date, vendor_view.act_start_time);
+			vendor_view.submit();
+		}
+	}
+
+	function fixTime(dateField, timeField)
+	{
+		if( !(timeField == null) && !(timeField.value == '') )
+		{
+			if( timeField.value.length < 12 )  //only add if not already added
+			{
+				if( !(dateField == null) && !(dateField.value == '') )
+				{
+					timeField.value = dateField.value + ' ' + timeField.value;
+				}
+				else
+				{
+				<!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) as to_date" name="dateQuery"-->
+					timeField.value = {!r:dateQuery:to_date.toJavaScriptString()!} + ' ' + timeField.value;
+				<!--#/SQLLOOP-->
+				}
+			}
+		}
+	}
+
+
+-->
+</script>
+
+<!--#EMBED template="enet/embeds/footer.html" -->

@@ -1,0 +1,68 @@
+<!--#EMBED template="embeds/header.html" -->
+
+</head>
+
+<body class="BodyTag" onLoad="showPage()">
+
+<FORM name="posted_form" >
+<table width="95%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+	<td width="50%" align="right" class="Label">
+	Posted Or Billed
+		<SELECT name="line_status" class="regular" >
+			<OPTION value="posted_or_billed">Posted Or Billed</OPTION-->
+			<OPTION value="billed">Billed</OPTION>
+			<OPTION value="posted">Posted</OPTION>
+		</SELECT>
+	View
+		<SELECT name="the_page" class="regular" >
+			<OPTION value="{!s:showPage!}bill/post/posted_sum_det.html" selected>Detail</OPTION>
+			<OPTION value="{!s:showPage!}bill/post/posted_sum_item.html">Item Summary</OPTION>
+			<OPTION value="{!s:showPage!}bill/post/posted_sum_req.html">Req Summary</OPTION>
+			<OPTION value="{!s:showPage!}bill/post/posted_sum_req_item.html">Req/Item Summary</OPTION>
+		</SELECT>
+		<NOSCRIPT>
+			<INPUT type="submit" value="Go">
+		</NOSCRIPT>
+
+	<input name="go_button" type="button" value=" Go " class="button2" onClick="showPage()">
+	<input name="level" type="hidden" value="{!p:level!}">
+	</td>
+</tr>
+</table>
+<hr>
+</FORM>
+
+</body>
+
+<script lang="JavaScript">
+<!--
+	function showPage()
+	{
+		var l_status = posted_form.line_status.options[posted_form.line_status.selectedIndex].value;
+		var b_flag = 'Y';
+		var p_flag = 'Y';
+
+		if (l_status == 'billed')
+		{
+			p_flag = 'N';
+		}
+		else if (l_status == 'posted')
+		{
+			b_flag = 'N';
+		}
+		// else posted_or_billed
+
+
+		var the_url = posted_form.the_page.options[posted_form.the_page.selectedIndex].value;
+		the_url += "?line_status=" + l_status;
+		the_url += "&level=" + posted_form.level.value;
+		the_url += "&billed_flag=" + b_flag;
+		the_url += "&posted_flag=" + p_flag;
+		parent.posted_frame.location = the_url;
+	}
+-->
+</script>
+
+<!--#EMBED template="embeds/footer.html" -->
+

@@ -1,0 +1,346 @@
+<!--#EMBED template="embeds/header.html"-->
+<!-- $Header: tc_edit.html, 41, 12/21/2005 4:40:01 PM, Blake Von Haden$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.time/tc_edit.view?>"-->
+
+<!--#EXEC handler="ims.handlers.time_capture.ServiceLineFieldHandler" --> <!-- Determines which fields to display -->
+
+<script type="text/javascript">
+<!--
+
+	var empIDs = new Array(0);
+	var resIDs = new Array(0);
+	var empNames = new Array(0);
+	var length = 0;
+
+	function checkName(empIDField, resourceField)
+	{
+		var index = binarySearch(empIDs, length, empIDField.value);
+		var not_found = true;
+		if (index >= 0)
+		{
+			var resource_id = resIDs[index];
+
+			for( i = 0; i < resourceField.length; i++)
+			{//see if resource in list, if so select
+
+				if( resourceField.options[i].value == resource_id )
+				{
+					resourceField.options[i].selected = true;
+					not_found = false;
+					resourceField.onchange();
+					break;
+				}
+			}
+		}
+
+		if( not_found )
+		{
+			resourceField.selectedIndex = 0;
+			resourceField.options[0].text = "**NO MATCH**";
+			resourceField.focus();
+		}
+	}
+
+	function readOnly()
+	{
+		<!--#IF evaluate="<?p:readonly?>" compare="true" -->
+			setFormEdit('N');
+		<!--#/IF-->
+	}
+
+	function getNameForID(empID)
+	{
+		var index = binarySearch(empIDs, length, empID);
+		if (index >= 0)
+		{
+			return empNames[index];
+		}
+		else
+		{
+			return "NO MATCH";
+		}
+	}
+
+	function binarySearch(a, N, key)
+	{
+		var i, lo, hi;
+
+		lo = 0;  hi = N+1;
+
+		while( lo-0 < hi-1)// at least two elements
+		{
+			// INVARIANT: key is in a[] iff it is in a[lo..hi-1]
+
+			var mid = Math.floor((lo+hi)/2);
+			// lo < mid < hi
+			if( key-0 >= a[mid]-0 )
+				lo=mid;
+			else // key < a[mid]
+				hi=mid;
+		}
+		// lo == hi-1
+
+		if( N-0 > 0 && a[lo]-0 == key )
+			return lo;
+		else
+			return -1;
+	}
+
+	function addToArrays(empID, name, resID)
+	{
+		empIDs[length] = empID;
+		empNames[length] = name;
+		resIDs[length] = resID;
+		length++;
+	}
+
+//-->
+</script>
+
+<body class="BodyTag" onload="loadColors();checkSecurity();readOnly()">
+<!--#IF defined="<?d:error_msg?>" -->
+	<table><tr><td class="errorInfo">{!d:error_msg!}</td></tr></table>
+<!--#/IF-->
+
+<!--
+Debug Info:<br>
+res_cat = {!p:res_cat!}<br>
+module = {!p:module!}<br>
+module_mode = {!p:module_mode!}<br>
+item_type_code = {!p:item_type_code!}<br>
+mode = {!d:mode!}<br>
+p:service_id = {!p:service_id!}<br>
+s:job_id = {!s:job_id!}<br>
+
+--->
+
+
+<!--#IF evaluate="<?p:module_mode?>" compare="create" -->
+<!--#IF evaluate="<?p:module?>" compare="time" -->
+	<!--#IF EVALUATE="<?p:item_type_code?>" COMPARE="expense"-->
+		<table cellspacing="0" cellpadding="0" border="0">
+			<tr>
+				<td width="100" align="middle">
+					<a href="{!s:action!}launchCharm?address=time.html%3FjobId={!s:job_id!}" target="_new">Add Hours</a>
+				</td>
+				<td width="100" align="middle">
+					Add&nbsp;Expenses
+				</td>
+				<!--#IF EVALUATE="<?p:level?>" COMPARE="job"-->
+				<td width="100" align="middle">
+					<A href="{!s:showPage!}time/expense_express_entry.html?prev_template=time/job_tc_main.html">Expense Express</A>
+				</td>
+				<td width="100" align="middle">
+					<A href="{!s:showPage!}time/express_entry.html?prev_template={!p:prev_template!}">Hrs Multi Member</A>
+				</td>
+				<td width="100" align="middle">
+					<A href="{!s:showPage!}time/express_entry_mr.html?prev_template={!p:prev_template!}">Hrs Multi Req</A>
+				</td>
+				<!--#/IF-->
+			</tr>
+			<tr height="5"><td>&nbsp;</td></tr>
+		</table>
+
+	<!--#ELSEIF EVALUATE="<?p:item_type_code?>" COMPARE="hours"-->
+
+		<table cellspacing="0" cellpadding="0" border="0">
+			<tr>
+				<td width="100" align="middle">
+					Add&nbsp;Hours
+				</td>
+				<td width="100" align="middle">
+					<A href="{!s:showPage!}time/tc_edit.html?item_type_code=expense&amp;prev_template={!p:prev_template!}&amp;p_job_id={!s:job_id!}&amp;module=time&amp;module_mode=create&amp;level={!p:level!}">Add&nbsp;Expenses</A>
+				</td>
+				<!--#IF EVALUATE="<?p:level?>" COMPARE="job"-->
+				<td width="100" align="middle">
+					<A href="{!s:showPage!}time/expense_express_entry.html?prev_template=time/job_tc_main.html">Expense Express</A>
+				</td>
+				<td width="100" align="middle">
+					<A href="{!s:showPage!}time/express_entry.html?prev_template={!p:prev_template!}">Hrs Multi Member</A>
+				</td>
+				<td width="100" align="middle">
+					<A href="{!s:showPage!}time/express_entry_mr.html?prev_template={!p:prev_template!}">Hrs Multi Req</A>
+				</td>
+				<!--#/IF-->
+			</tr>
+			<tr height="5"><td>&nbsp;</td></tr>
+		</table>
+
+	<!--#/IF-->
+<!--#/IF-->
+<!--#/IF-->
+
+<table border="0" cellpadding="0" cellspacing="0" class="SmartTable">
+	<tr>
+	<!--#IF EVALUATE="<?p:item_type_code?>" COMPARE="expense"-->
+		<td class="TableTitle">Expense Line Info</td>
+	<!--#ELSE-->
+		<td class="TableTitle">Hours Line Info</td>
+	<!--#/IF-->
+	</tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<!--#IF defined="<?d:PayCodeWarning?>"-->
+	<tr>
+		<td colspan="20" class="warningText">
+			Warning - The paycode {!p:ext_pay_code!} should not be allowed for this work code.
+		</td>
+	</tr>
+<!--#/IF-->
+<!--#IF defined="<?p:PayCodeWarning?>"-->
+<table>
+	<tr>
+		<td colspan="20" class="warningText">
+			Warning - The paycode {!p:ext_pay_code!} should not be allowed for this work code.
+		</td>
+	</tr>
+</table>
+<!--#/IF-->
+
+<!-------------------------------------------- LINE FIELDS ARE EMBEDDED HERE ------------------------------>
+
+	<!--#IF evaluate="<?p:module?>" compare="bill" -->
+    	<!--#EMBED template="time/serv_line_bill.html" -->
+	<!--#ELSE -->
+    	<!--#EMBED template="time/serv_line_tc.html" -->
+	<!--#/IF-->
+
+<!---------------------------------------------------------------------------------------------------->
+
+</table>
+
+	<!--#IF evaluate="<?p:module_mode?>" compare="create" -->
+
+			<FORM ACTION="{!s:action!}setServiceLineStatus" METHOD="POST" name="enterHoursForm">
+				<input type="hidden" name="level" value="line"> <!-- needed to change status -->
+				<input type="hidden" name="status_id" value=""> <!-- needed to change status -->
+				<input type="hidden" name="template_name" value="{!p:prev_template!}"> <!-- needed to change status -->
+				<input type="hidden" name="invoice_id" value="{!p:invoice_id!}" > <!-- needed to change status -->
+				<input type="hidden" name="p_invoice_id" value="{!p:p_invoice_id!}" > <!-- needed to return to invoice if came from billable section of invoice -->
+				<input type="hidden" name="pin" value=""> <!-- needed to verify -->
+				<input type="hidden" name="verify_type" value=""> <!-- needed to verify -->
+				<input type="hidden" name="override_reason" value=""> <!-- needed to verify -->
+
+			<!-- need to duplicate, YUCK!, this code below because of ability to verify in payroll or expenses and return to prev_template-->
+			<!--#IF evaluate="<?p:module?>" compare="payroll" -->
+				<input type="hidden" name="user_id" value="{!p:user_id!}" >
+				<input type="hidden" name="emp_name" value="{!p:emp_name!}" >
+				<input type="hidden" name="service_line_week" value="{!p:service_line_week!}" calculated="true" >
+				<input type="hidden" name="begin_week" value="{!p:begin_week!}" >
+				<input type="hidden" name="end_week" value="{!p:end_week!}" >
+				<input type="hidden" name="ext_batch_id" value="{!p:ext_batch_id!}" >
+			<!--#/IF-->
+			<!--#IF evaluate="<?p:module?>" compare="expenses" -->
+				<input type="hidden" name="user_id" value="{!p:user_id!}" >
+				<input type="hidden" name="emp_name" value="{!p:emp_name!}" >
+				<input type="hidden" name="service_line_week" value="{!p:service_line_week!}" calculated="true" >
+				<input type="hidden" name="begin_week" value="{!p:begin_week!}" >
+				<input type="hidden" name="end_week" value="{!p:end_week!}" >
+				<input type="hidden" name="ext_batch_id" value="{!p:ext_batch_id!}" >
+			<!--#/IF-->
+
+				<!--
+					I really dont like having to do this
+
+					If we are at the job level, add the job_id to the query for the smarttable
+				-->
+			<HR>
+
+			<!--#IF evaluate="<?p:module?>" compare="bill"-->
+
+					<!--#SMARTTABLE name="service_lines"
+						class="SmartTable" TableTotal="true" totalClass="TableTotal"
+						query="SELECT bill_job_no, bill_service_no, bill_service_line_no, bill_job_id, bill_service_id, service_line_id,
+									  service_line_date, service_description, resource_name, item_name, ext_pay_code, item_type_code,
+									  bill_hourly_qty, bill_hourly_rate, bill_hourly_total, bill_exp_qty, bill_exp_rate, bill_exp_total
+								FROM time_capture_v
+								WHERE status_code = 'temp'
+								AND organization_id = <?s:org_id.toPStmtInt()?>
+								AND (created_by = <?s:user_id.toPStmtInt()?> or billing_user_id = <?s:user_id.toPStmtInt()?> or 'true' = <?s:rights.verify_any.view.toPStmtString()?> )
+								ORDER BY bill_job_no, bill_service_no, bill_service_line_no, resource_name, service_line_date"
+						filter="tc_edit(bill_job_id,bill_service_id,item_type_code)"
+					-->
+						<!--#SMARTCOLUMN value="<INPUT TYPE='checkbox' name='statusCheckBox' value='<?r:service_lines:service_line_id?>'>" title="<INPUT TYPE='checkbox' name='CheckAllBox' onclick='checkAllBoxes(this.form.CheckAllBox,this.form.statusCheckBox)'>" width="2%" -->
+						<!--#SMARTCOLUMN name="bill_job_no" sort="bill_job_no" title="Job#" width="5%" -->
+						<!--#SMARTCOLUMN name="bill_service_no" sort="bill_service_no" title="Req#" width="5%" align="center" -->
+						<!--#SMARTCOLUMN name="bill_service_line_no" sort="bill_service_line_no" title="Line#" width="5%" align="center" href="<?s:showPage?>time/tc_edit.html?service_line_id=<?r:service_lines:service_line_id?>&service_id=<?r:service_lines:bill_service_id?>&job_id=<?r:service_lines:bill_job_id?>&item_type_code=<?r:service_lines:item_type_code?>&prev_template=<?p:prev_template?>&module=<?p:module?>&module_mode=<?p:module_mode?>&level=<?p:level?>"-->
+						<!--#SMARTCOLUMN name="resource_name" sort="resource_name" title="Resource" width="10%" -->
+						<!--#SMARTCOLUMN name="service_line_date" sort="service_line_date" title="Date" width="6%" format="date" -->
+						<!--#SMARTCOLUMN name="service_description" sort="service_description" title="Req Desc" width="20%" value="<input readonly='true' class='smartTableDisplay' size='55' value='<?r:service_lines:service_description.replaceString('\'','&#39;')?>'>" -->
+						<!--#SMARTCOLUMN name="item_name" sort="item_name" title="Work Code" width="10%" -->
+	<!--#IF evaluate="<?d:rowid?>" greaterthan="0" -->
+	    <input type="hidden" id="{!r:service_lines:service_line_id!}" value="{!r:service_lines:bill_hourly_qty!}">
+	<!--#/IF-->
+					<!--#IF evaluate="<?p:item_type_code?>" compare="hours" -->
+						<!--#SMARTCOLUMN name="bill_hourly_qty" sort="bill_hourly_qty" title="Bill Hours" width="5%" align="right" total="true" format="###,###,###,##0.00"-->
+						<!--#SMARTCOLUMN name="bill_hourly_rate" sort="bill_hourly_rate" title="Bill Hourly Rate" width="5%" align="right" format="###,###.00#" -->
+						<!--#SMARTCOLUMN name="bill_hourly_total" sort="bill_hourly_total" title="Bill Hourly Total" align="right" total="true" format="money" -->
+					<!--#ELSE-->
+						<!--#SMARTCOLUMN name="bill_exp_qty" sort="bill_exp_qty" title="Bill Exp Qty" width="5%" align="right" total="true" format="###,###,###,##0.00"-->
+						<!--#SMARTCOLUMN name="bill_exp_rate" sort="bill_exp_rate" title="Bill Exp Rate" width="5%" align="right" format="###,###.00#" -->
+						<!--#SMARTCOLUMN name="bill_exp_total" sort="bill_exp_total" title="Bill Exp Total" width="6%" align="right" total="true" format="money" -->
+					<!--#/IF-->
+
+					<!--#/SMARTTABLE-->
+
+			<!--#ELSE-->
+
+					<!--#SMARTTABLE name="service_lines"
+						class="SmartTable" TableTotal="true" totalClass="TableTotal"
+						query="SELECT tc_job_no, tc_service_no, tc_service_line_no, tc_job_id, tc_service_id, service_line_id,
+									  service_line_date, service_description, resource_name, item_name, ext_pay_code, item_type_code,
+									  payroll_qty, payroll_rate, payroll_total, expense_qty, expense_rate, expense_total, bill_exp_rate,
+									  tc_qty, tc_rate, tc_total
+								FROM time_capture_v
+								WHERE status_code = 'temp'
+								AND organization_id = <?s:org_id.toPStmtInt()?>
+								AND (created_by = <?s:user_id.toPStmtInt()?> or billing_user_id = <?s:user_id.toPStmtInt()?> or 'true' = <?s:rights.verify_any.view.toPStmtString()?> )
+								ORDER BY tc_job_no, tc_service_no, tc_service_line_no, resource_name, service_line_date"
+						filter="tc_edit(tc_job_id,tc_service_id,item_type_code)"
+					-->
+						<!--#SMARTCOLUMN value="<INPUT TYPE='checkbox' name='statusCheckBox' value='<?r:service_lines:service_line_id?>'>" title="<INPUT TYPE='checkbox' name='CheckAllBox' onclick='checkAllBoxes(this.form.CheckAllBox,this.form.statusCheckBox)'>" width="2%" -->
+						<!--#SMARTCOLUMN name="tc_job_no" sort="tc_job_no" title="Job#" width="5%" -->
+						<!--#SMARTCOLUMN name="tc_service_no" sort="tc_service_no" title="Req#" width="5%" align="center" -->
+						<!--#SMARTCOLUMN name="tc_service_line_no" sort="tc_service_line_no" title="Line#" width="5%" align="center" href="<?s:showPage?>time/tc_edit.html?service_line_id=<?r:service_lines:service_line_id?>&service_id=<?r:service_lines:tc_service_id?>&job_id=<?r:service_lines:tc_job_id?>&item_type_code=<?r:service_lines:item_type_code?>&prev_template=<?p:prev_template?>&module=<?p:module?>&module_mode=<?p:module_mode?>&level=<?p:level?>"-->
+						<!--#SMARTCOLUMN name="resource_name" sort="resource_name" title="Resource" width="10%" -->
+						<!--#SMARTCOLUMN name="service_line_date" sort="service_line_date" title="Date" width="6%" format="date" -->
+						<!--#SMARTCOLUMN name="service_description" sort="service_description" title="Req Desc" width="20%" value="<input readonly='true' class='smartTableDisplay' size='55' value='<?r:service_lines:service_description.replaceString('\'','&#39;')?>'>" -->
+						<!--#SMARTCOLUMN name="item_name" sort="item_name" title="Work Code" width="10%" -->
+	<!--#IF evaluate="<?d:rowid?>" greaterthan="0" -->
+	    <input type="hidden" id="{!r:service_lines:service_line_id!}" value="{!r:service_lines:payroll_qty!}">
+	<!--#/IF-->
+					<!--#IF evaluate="<?p:module?>" compare="payroll" -->
+						<!--#SMARTCOLUMN name="payroll_qty" sort="payroll_qty" title="Payroll Hours" width="6%" align="right" total="true" format="###,###,###,##0.00"-->
+						<!--#SMARTCOLUMN name="ext_pay_code" sort="ext_pay_code" title="Pay Code" width="5%" align="center" -->
+					<!--#ELSEIF evaluate="<?p:module?>" compare="expenses" -->
+						<!--#SMARTCOLUMN name="expense_qty" sort="expense_qty" title="Exp Qty" width="5%" align="right" total="true" format="###,###,###,##0.00"-->
+						<!--#SMARTCOLUMN name="expense_rate" sort="expense_rate" title="Exp Rate" width="5%" align="right" format="###,###.00#" -->
+						<!--#SMARTCOLUMN name="expense_total" sort="expense_total" title="Exp Total" width="6%" align="right" total="true" format="money" -->
+						<!--#SMARTCOLUMN name="bill_exp_rate" sort="bill_exp_rate" title="Bill Rate" width="5%" align="right" format="money" -->
+					<!--#ELSE -->
+						<!--#IF evaluate="<?p:item_type_code?>" compare="hours" -->
+						<!--#SMARTCOLUMN name="tc_qty" sort="tc_qty" title="TC Qty" width="5%" align="right" total="true" format="###,###,###,##0.00"-->
+						<!--#SMARTCOLUMN name="ext_pay_code" sort="ext_pay_code" title="Pay Code" width="5%" align="center" -->
+						<!--#ELSE-->
+						<!--#SMARTCOLUMN name="expense_qty" sort="expense_qty" title="Exp Qty" width="5%" align="right" total="true" format="###,###,###,##0.00"-->
+						<!--#SMARTCOLUMN name="expense_rate" sort="expense_rate" title="Exp Rate" width="5%" align="right" format="###,###.00#" -->
+						<!--#SMARTCOLUMN name="expense_total" sort="expense_total" title="Exp Total" width="6%" align="right" total="true" format="money" -->
+						<!--#/IF-->
+					<!--#/IF-->
+
+					<!--#/SMARTTABLE-->
+			<!--#/IF-->
+				<BR>
+					<input type="hidden" name="submit_action" value="move_submit_billing">
+					<input type="submit" value="Submit Records" name="button" class="Button">
+
+			</FORM>
+
+	<!--#/IF-->
+
+</body>
+
+
+<!--#EMBED template="embeds/footer.html" -->

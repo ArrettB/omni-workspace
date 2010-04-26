@@ -1,0 +1,11 @@
+CREATE VIEW dbo.VAR_JOB_ACT_HOURS_V
+AS
+SELECT     dbo.JOBS.JOB_ID, SUM(ISNULL(dbo.SERVICE_LINES.PAYROLL_QTY, 0)) AS sum_payroll_qty, SUM(ISNULL(dbo.SERVICE_LINES.EXPENSE_QTY, 0)) 
+                      AS sum_expense_qty
+FROM         dbo.SERVICES LEFT OUTER JOIN
+                      dbo.JOBS ON dbo.SERVICES.JOB_ID = dbo.JOBS.JOB_ID LEFT OUTER JOIN
+                      dbo.SERVICE_LINES ON dbo.SERVICES.SERVICE_ID = dbo.SERVICE_LINES.TC_SERVICE_ID
+GROUP BY dbo.JOBS.JOB_ID
+
+
+

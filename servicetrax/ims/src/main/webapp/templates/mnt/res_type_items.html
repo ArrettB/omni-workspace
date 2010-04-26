@@ -1,0 +1,111 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: res_type_items.html, 9, 1/7/2005 5:11:14 PM, Lee A. Gunderson$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.mnt/res_type_items.update?>"-->
+
+<body class="BodyTag">
+
+	<table width="100%" cellspacing="0" cellpadding="0">
+		<tr><td colspan="5" class="TableTitle">Associate Resource Types to Bill Rates</td></tr>
+	</table>
+
+	<table width="100%">
+	<!--#SMARTFORM name="mnt/res_type_items"
+			security="rights"
+			table="resource_type_items"
+			key="res_type_item_id"
+			buttons="Save,New,Delete,Cancel"
+			onClickFunction="exitFunction"
+			preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+			postHandler="ims.handlers.maintenance.ClearIDPostHandler"
+	-->
+		<input type="hidden" name="redisplay" value="false">
+		<input type="hidden" name="clear_id" value="res_type_item_id" >
+		<input type="hidden" name="next_item_name" value="false">
+		<input type="hidden" name="returnPage" value="{!p:returnPage!}">
+
+		<tr><td width="150"><!--#SMARTFIELD title="Select Resource Type:" div="</td><td colspan='3'>" name="resource_type_id" type="droplist" table="resource_types_v" display="resource_type_name" key="resource_type_id" onChange="redisplayWindow(this.options[this.selectedIndex].value);" value="<?p:resource_type_id?>" --></td></tr>
+		<tr><td><!--#SMARTFIELD title="Associate Bill Rate:" div="</td><td colspan='3'>" name="item_id"  type="droplist" table="items" display="name" key="item_id" filter="organization_id=<?s:org_id.toSQLString()?>" --></td></tr>
+		<tr><td><!--#SMARTFIELD title="Default Bill Rate?:" div="</td><td colspan='3'>" name="default_item_flag" type="boolean" value="N"--></td></tr>
+
+		<tr><td colspan="4">
+			<!--#EMBED template="embeds/audit.html" table_name="resource_type_items" table_key="res_type_item_id" key_value="<?p:res_type_item_id?>"-->
+		</td></tr>
+
+	</table>
+	<!--#/SMARTFORM -->
+
+	<table width="100%" cellspacing="0" cellpadding="0">
+		<tr><td  class="tableHeader">Associated Bill Rates</td></tr>
+	</table>
+	<!--#SMARTTABLE width="100%"  name="resource_type_items_v" query="SELECT res_type_item_id, resource_type_id, default_item_flag, item_name, item_desc, ext_item_id, item_type_name, item_status_type_name FROM resource_type_items_v WHERE organization_id=<?s:org_id.toPStmtString()?> AND resource_type_id=<?p:resource_type_id.toPStmtString()?> ORDER BY item_name" -->
+		<!--#SMARTCOLUMN width="5%" title="Default" name="default_item_flag" sort="default_item_flag" align="center" -->
+		<!--#IF defined="<?s:rights.mnt/res_type_items.update?>"-->
+			<!--#SMARTCOLUMN width="15%" title="Bill Rate" name="item_name" sort="item_name" href="<?s:showPage?>mnt/res_type_items.html?res_type_item_id=<?r:resource_type_items_v:res_type_item_id?>&resource_type_id=<?r:resource_type_items_v:resource_type_id?>" target="main_frame" -->
+		<!--#ELSE-->
+			<!--#SMARTCOLUMN width="15%" title="Bill Rate" name="item_name" sort="item_name" -->
+		<!--#/IF-->
+		<!--#SMARTCOLUMN width="30%" title="Description" name="item_desc" sort="item_desc" -->
+		<!--#SMARTCOLUMN width="20%" title="External Item ID" name="ext_item_id" sort="ext_item_id" -->
+		<!--#SMARTCOLUMN width="15%" title="Item Type" name="item_type_name" sort="item_type_name" -->
+		<!--#SMARTCOLUMN width="15%" title="Item Status" name="item_status_type_name" sort="item_status_type_name" -->
+	<!--#/SMARTTABLE-->
+	</form>
+
+</body>
+
+<script language="JavaScript">
+<!--
+   <!-- determine if default bill rate exists for this resource_type_id -->
+ 	<!--#SQLLOOP query="SELECT DISTINCT 'X' found
+ 	                    FROM resource_type_items_v
+ 	                    WHERE resource_type_id = <?p:resource_type_id.toPStmtString()?>
+ 	                    AND organization_id=<?s:org_id.toPStmtString()?> AND default_item_flag = 'Y'"
+					resourceName="SQLServer"
+					name="defaultQuery"
+   -->
+   var default_exists = 'Y';
+   <!--#SQLNODATA-->
+   var default_exists = 'N';
+   <!--#/SQLNODATA-->
+   <!--#/SQLLOOP-->
+
+
+function exitFunction(button)
+{
+	if( button == 'Cancel' )
+	{
+		if( res_type_items.returnPage.value != '' )
+			res_type_items.prevTemplate.value = {!p:returnPage.toJavaScriptString()!};
+		else
+			res_type_items.prevTemplate.value = 'mnt/main_mnt.html';
+
+		return true;
+	}
+	else if( button == 'Save' )
+	{
+
+		//make sure user sets only one default flag
+		if( default_exists == 'Y' &&
+			 res_type_items.default_item_flag.options[res_type_items.default_item_flag.selectedIndex].value == 'Y')
+		{
+			alert("You can not set a second Bill Rate as default, only one default allowed.");
+			res_type_items.redisplay.value = 'true';
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+}
+
+function redisplayWindow(resourceTypeID)
+{
+	document.location= '{!s:showPage!}mnt/res_type_items.html?resource_type_id=' + resourceTypeID + '&returnPage={!p:returnPage!}';
+}
+
+-->
+</script>
+
+<!--#EMBED template="embeds/footer.html" -->

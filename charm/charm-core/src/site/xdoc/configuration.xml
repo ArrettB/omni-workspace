@@ -1,0 +1,39 @@
+<document>
+  <properties>
+    <title>Configuring Charm</title>
+    <author email="greg.case@apexit.com">Greg Case</author>
+  </properties>
+  <body>
+    <section name="Configuring Maven">
+      <p>
+        Charm configuration occurs at 4 levels:
+      </p>
+      <ul>
+        <li>
+		Project Settings - This describes how to configure <code>pom.xml</code>
+        </li>
+        <li>
+        	JDBC Settings - This describes how to configure <code>project.properties</code>
+        </li>
+        <li>
+         	User Settings - This describes how to configure <code>build.properties</code>, on a user basis
+        </li>
+        <li>
+         	User Settings - This describes how to configure <code>build.properties</code>, on a per user basis
+        </li>
+      </ul>
+      <p>
+       Here is some an example of something:
+      </p>
+      <source><![CDATA[
+
+middlegen.home = C:/middlegen-2.1
+hibernate.home = C:/hibernate/hibernate-2.1.8
+hibernate-tools.home = C:/hibernate/hibernate-extensions-2.1.2/tools
+
+  .]]></source>
+     
+    </section>
+  </body>
+</document>
+

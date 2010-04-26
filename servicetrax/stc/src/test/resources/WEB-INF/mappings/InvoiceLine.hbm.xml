@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.InvoiceLine" table="INVOICE_LINES" schema="dbo" catalog="">
+        <id name="invoiceLineId" type="java.lang.Long">
+            <column name="INVOICE_LINE_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="item" class="com.dynamic.servicetrax.orm.Item" fetch="select">
+            <column name="ITEM_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookup" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="INVOICE_LINE_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="invoice" class="com.dynamic.servicetrax.orm.Invoice" fetch="select">
+            <column name="INVOICE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="invoiceLineNo" type="java.lang.Long">
+            <column name="INVOICE_LINE_NO" precision="18" scale="0" />
+        </property>
+        <property name="description" type="string">
+            <column name="DESCRIPTION" />
+        </property>
+        <property name="unitPrice" type="big_decimal">
+            <column name="UNIT_PRICE" precision="20" not-null="true" />
+        </property>
+        <property name="qty" type="big_decimal">
+            <column name="QTY" precision="18" not-null="true" />
+        </property>
+        <property name="extendedPrice" type="big_decimal">
+            <column name="EXTENDED_PRICE" precision="38" scale="4" not-null="true" />
+        </property>
+        <property name="poNo" type="string">
+            <column name="PO_NO" length="100" />
+        </property>
+        <property name="taxableFlag" type="string">
+            <column name="TAXABLE_FLAG" length="1" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="createdBy" type="java.lang.Long">
+            <column name="CREATED_BY" precision="18" scale="0" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <property name="modifiedBy" type="java.lang.Long">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </property>
+        <set name="servInvLines" inverse="true">
+            <key>
+                <column name="INVOICE_LINE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ServInvLine" />
+        </set>
+    </class>
+</hibernate-mapping>

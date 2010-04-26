@@ -1,0 +1,16 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<frameset rows="21,1*" framespacing="0" frameborder="no">
+	<frame name="header_bar" src="{!s:action!}enet/embeds/header_bar.html" scrolling="NO" marginwidth="0" marginheight="0">
+	<frame name="body_frame" src="{!s:showPage!}enet/main_frame.html">
+</frameset>
+
+<noframes>
+
+<body>
+   Your browser does not support frames.
+</body>
+
+</noframes>
+
+<!--#EMBED template="enet/embeds/footer.html" -->

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ShowPlanXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0" Build="9.00.3054.00" xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan">
+  <BatchSequence>
+    <Batch>
+      <Statements>
+        <StmtSimple StatementCompId="1" StatementEstRows="10.5209" StatementId="1" StatementOptmLevel="FULL" StatementOptmEarlyAbortReason="GoodEnoughPlanFound" StatementSubTreeCost="0.041107" StatementText="SELECT l.lookup_id, l.name FROM lookups l, lookup_types lt WHERE lt.code = 'job_type' AND l.lookup_type_id = lt.lookup_type_id ORDER BY l.name" StatementType="SELECT">
+          <StatementSetOptions ANSI_NULLS="false" ANSI_PADDING="false" ANSI_WARNINGS="false" ARITHABORT="true" CONCAT_NULL_YIELDS_NULL="false" NUMERIC_ROUNDABORT="false" QUOTED_IDENTIFIER="false" />
+          <QueryPlan DegreeOfParallelism="1" MemoryGrant="128" CachedPlanSize="30" CompileTime="4" CompileCPU="4" CompileMemory="296">
+            <RelOp AvgRowSize="70" EstimateCPU="0.000155794" EstimateIO="0.0112613" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="10.5209" LogicalOp="Sort" NodeId="0" Parallel="false" PhysicalOp="Sort" EstimatedTotalSubtreeCost="0.041107">
+              <OutputList>
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="LOOKUP_ID" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="NAME" />
+              </OutputList>
+              <MemoryFractions Input="1" Output="1" />
+              <RunTimeInformation>
+                <RunTimeCountersPerThread Thread="0" ActualRebinds="1" ActualRewinds="0" ActualRows="10" ActualEndOfScans="1" ActualExecutions="1" />
+              </RunTimeInformation>
+              <Sort Distinct="false">
+                <OrderBy>
+                  <OrderByColumn Ascending="true">
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="NAME" />
+                  </OrderByColumn>
+                </OrderBy>
+                <RelOp AvgRowSize="70" EstimateCPU="4.39775E-05" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="10.5209" LogicalOp="Inner Join" NodeId="1" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.02969">
+                  <OutputList>
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="LOOKUP_ID" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="NAME" />
+                  </OutputList>
+                  <RunTimeInformation>
+                    <RunTimeCountersPerThread Thread="0" ActualRows="10" ActualEndOfScans="1" ActualExecutions="1" />
+                  </RunTimeInformation>
+                  <NestedLoops Optimized="false">
+                    <OuterReferences>
+                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="LOOKUP_ID" />
+                    </OuterReferences>
+                    <RelOp AvgRowSize="16" EstimateCPU="4.39775E-05" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="10.5209" LogicalOp="Inner Join" NodeId="2" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.00747985">
+                      <OutputList>
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="LOOKUP_ID" />
+                      </OutputList>
+                      <RunTimeInformation>
+                        <RunTimeCountersPerThread Thread="0" ActualRows="10" ActualEndOfScans="1" ActualExecutions="1" />
+                      </RunTimeInformation>
+                      <NestedLoops Optimized="false">
+                        <OuterReferences>
+                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUP_TYPES]" Alias="[lt]" Column="LOOKUP_TYPE_ID" />
+                        </OuterReferences>
+                        <RelOp AvgRowSize="35" EstimateCPU="0.0002373" EstimateIO="0.00386574" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1.01389" LogicalOp="Clustered Index Scan" NodeId="3" Parallel="false" PhysicalOp="Clustered Index Scan" EstimatedTotalSubtreeCost="0.00410304">
+                          <OutputList>
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUP_TYPES]" Alias="[lt]" Column="LOOKUP_TYPE_ID" />
+                          </OutputList>
+                          <RunTimeInformation>
+                            <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                          </RunTimeInformation>
+                          <IndexScan Ordered="false" ForcedIndex="false" NoExpandHint="false">
+                            <DefinedValues>
+                              <DefinedValue>
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUP_TYPES]" Alias="[lt]" Column="LOOKUP_TYPE_ID" />
+                              </DefinedValue>
+                            </DefinedValues>
+                            <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUP_TYPES]" Index="[PK_LOOKUP_TYPES]" Alias="[lt]" />
+                            <Predicate>
+                              <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[LOOKUP_TYPES].[CODE] as [lt].[CODE]='job_type'">
+                                <Compare CompareOp="EQ">
+                                  <ScalarOperator>
+                                    <Identifier>
+                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUP_TYPES]" Alias="[lt]" Column="CODE" />
+                                    </Identifier>
+                                  </ScalarOperator>
+                                  <ScalarOperator>
+                                    <Const ConstValue="'job_type'" />
+                                  </ScalarOperator>
+                                </Compare>
+                              </ScalarOperator>
+                            </Predicate>
+                          </IndexScan>
+                        </RelOp>
+                        <RelOp AvgRowSize="16" EstimateCPU="0.000168414" EstimateIO="0.003125" EstimateRebinds="0.0138889" EstimateRewinds="0" EstimateRows="10.3768" LogicalOp="Index Seek" NodeId="4" Parallel="false" PhysicalOp="Index Seek" EstimatedTotalSubtreeCost="0.00329779">
+                          <OutputList>
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="LOOKUP_ID" />
+                          </OutputList>
+                          <RunTimeInformation>
+                            <RunTimeCountersPerThread Thread="0" ActualRows="10" ActualEndOfScans="1" ActualExecutions="1" />
+                          </RunTimeInformation>
+                          <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                            <DefinedValues>
+                              <DefinedValue>
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="LOOKUP_ID" />
+                              </DefinedValue>
+                            </DefinedValues>
+                            <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Index="[IX_L_LOOKUP_TYPES]" Alias="[l]" />
+                            <SeekPredicates>
+                              <SeekPredicate>
+                                <Prefix ScanType="EQ">
+                                  <RangeColumns>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="LOOKUP_TYPE_ID" />
+                                  </RangeColumns>
+                                  <RangeExpressions>
+                                    <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[LOOKUP_TYPES].[LOOKUP_TYPE_ID] as [lt].[LOOKUP_TYPE_ID]">
+                                      <Identifier>
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUP_TYPES]" Alias="[lt]" Column="LOOKUP_TYPE_ID" />
+                                      </Identifier>
+                                    </ScalarOperator>
+                                  </RangeExpressions>
+                                </Prefix>
+                              </SeekPredicate>
+                            </SeekPredicates>
+                          </IndexScan>
+                        </RelOp>
+                      </NestedLoops>
+                    </RelOp>
+                    <RelOp AvgRowSize="61" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="9.52093" EstimateRewinds="0" EstimateRows="1" LogicalOp="Clustered Index Seek" NodeId="6" Parallel="false" PhysicalOp="Clustered Index Seek" EstimatedTotalSubtreeCost="0.0221661">
+                      <OutputList>
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="NAME" />
+                      </OutputList>
+                      <RunTimeInformation>
+                        <RunTimeCountersPerThread Thread="0" ActualRows="10" ActualEndOfScans="0" ActualExecutions="10" />
+                      </RunTimeInformation>
+                      <IndexScan Lookup="true" Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                        <DefinedValues>
+                          <DefinedValue>
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="NAME" />
+                          </DefinedValue>
+                        </DefinedValues>
+                        <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Index="[PK_LOOKUPS]" Alias="[l]" TableReferenceId="-1" />
+                        <SeekPredicates>
+                          <SeekPredicate>
+                            <Prefix ScanType="EQ">
+                              <RangeColumns>
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="LOOKUP_ID" />
+                              </RangeColumns>
+                              <RangeExpressions>
+                                <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[LOOKUPS].[LOOKUP_ID] as [l].[LOOKUP_ID]">
+                                  <Identifier>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="LOOKUP_ID" />
+                                  </Identifier>
+                                </ScalarOperator>
+                              </RangeExpressions>
+                            </Prefix>
+                          </SeekPredicate>
+                        </SeekPredicates>
+                      </IndexScan>
+                    </RelOp>
+                  </NestedLoops>
+                </RelOp>
+              </Sort>
+            </RelOp>
+          </QueryPlan>
+        </StmtSimple>
+      </Statements>
+    </Batch>
+  </BatchSequence>
+</ShowPlanXML>

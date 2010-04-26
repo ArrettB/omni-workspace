@@ -1,0 +1,89 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+
+<body class="BodyTag" onUnload="window.focus();closeProgress();">
+	<script language="JavaScript">
+	<!--
+		var progressWindow;
+
+		function startUpload()
+		{
+	//		document.UploadImage.src = "/ims/images/uploadMoving.gif";
+			var aHeight = 150;
+			var aWidth = 250;
+			var attribs =  'titlebar=no,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no'  +
+	   		 ',height=' + aHeight + ',width=' + aWidth;
+
+			progressWindow = window.open('{!s:showPage!}enet/docs/doc_upload_progress.html', 'progress' ,attribs);
+
+			window.setTimeout('doSubmit()', 1000);
+
+		}
+
+		function doSubmit()
+		{
+			document.UploadForm.submit();
+		}
+
+
+		function closeProgress()
+		{
+			if (progressWindow != null)
+			{
+				progressWindow.close();
+			}
+		}
+
+		function exitFunction(button)
+		{
+			if( button == 'Cancel' )
+			{
+				window.opener.focus();
+				window.close();
+			}
+		}
+	-->
+	</script>
+	<form action="{!s:action!}documentUpload" method="post" enctype="multipart/form-data" name="UploadForm" id="UploadForm">
+	<input type="hidden" name="project_id" value="{!p:project_id!}">
+	<input type="hidden" name="name" value="{!p:name!}">
+	<input type="hidden" name="format_id" value="{!p:format_id!}">
+	<input type="hidden" name="comments" value="{!p:comments!}">
+	<input type="hidden" name="return_page" value="{!p:return_page!}">
+	<input type="hidden" name="document_id" value="{!p:document_id!}">
+	<input type="hidden" name="version_label" value="{!p:version_label!}">
+	<table width="100%">
+		<tr>
+			<td class="HeaderLabel">
+				Please click on the &quot;Browse&quot; button to locate the file on your computer.
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="file" name="uploadedFile" size="50">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLabel">
+				Once you have found it, click on the &quot;Upload&quot; button.
+			</td>
+		</tr>
+		<tr>
+		<!--#IF defined="<?d:error_message?>"-->
+		<tr>
+			<td class="error">
+				{!d:error_message!}
+			</td>
+		</tr>
+		<!--#/IF-->
+		</tr>
+		<tr>
+			<td align="right" style="padding-right: 30;"> 
+				<input type="button" value="Upload" class="button" onClick="startUpload()">
+				<input type="button" value="Cancel" class="button" onClick="exitFunction('Cancel')">
+			</td>
+		</tr>
+	</table>
+	</form>
+</body>
+
+<!--#EMBED template="enet/embeds/footer.html" -->

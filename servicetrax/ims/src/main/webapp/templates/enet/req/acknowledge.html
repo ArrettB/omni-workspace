@@ -1,0 +1,181 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!-- $Header: acknowledge.html, 21, 9/4/2003 1:12:46 PM, Chad Ryan$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+
+<body class="BodyTag" onLoad="window.focus();">
+
+<form name="ack_form"><input type="hidden" name="go_to_tab" value="pf"-->
+
+	<table align="center" valign="middle" width="100%" border="0" cellspacing="0" cellpadding="3">
+
+<!--#IF evaluate="<?p:request_type_code?>" compare="project_folder" -->
+	<script>ack_form.go_to_tab.value='pf'</script>
+	<tr><td width="100%"><table width="100%">
+		<tr>
+			<td class="HeaderRow">Project Folder Acknowledgement</td>
+		</tr>
+		<tr><td>&nbsp;</td></tr>
+		<tr><td>&nbsp;</td></tr>
+		<tr><td align="center" class="HeaderLabel">You have created a Project Folder:</td></tr>
+		<tr><td>&nbsp;</td></tr>
+		<tr><td align="center" class="HeaderLabel">Project Folder #:  {!s:project_no!}</td></tr>
+		<tr><td>&nbsp;</td></tr>
+		<tr><td>&nbsp;</td></tr>
+		<tr><td>&nbsp;</td></tr>
+		<tr>
+			<td colspan="4" align="right">
+				<input type="button" class="button" value="Ok" name ="button" onClick="exitFunction('Ok');">
+			</td>
+		</tr>
+	</table></td></tr>
+<!--#/IF-->
+
+<!--#IF evaluate="<?p:request_type_code?>" compare="workorder" -->
+	<!--#IF evaluate="<?s:quoting?>" compare="true"-->
+	<script>ack_form.go_to_tab.value='sr'</script>
+	<!--#ELSE-->
+	<script>ack_form.go_to_tab.value='sr'</script>
+	<!--#/IF-->
+	<tr><td><table width="100%">
+		<tr><td colspan="3" class="HeaderRow">Workorder Acknowledgement</td></tr>
+		<tr><td colspan="3">&nbsp;</td></tr>
+		<tr><td colspan="3" class="HeaderLabel">You have created or sent a Workorder:</td></tr>
+		<tr><td colspan="3">&nbsp;</td></tr>
+		<tr><td width="50">&nbsp;</td><td width="50" class="HeaderLabel">Project&nbsp;Folder&nbsp;#:</td><td width="200">{!s:project_no!}</td></tr>
+		<tr><td>&nbsp;</td><td class="HeaderLabel">Workorder #:&nbsp;</td><td>{!s:project_no!}.{!p:request_no!}</td><tr>
+		<tr><td>&nbsp;</td><td class="HeaderLabel">Version #:&nbsp;</td><td>{!p:version_no!}</td><tr>
+
+		<tr><td colspan="3">&nbsp;</td></tr>
+		<tr><td colspan="3" class="HeaderLabel">The Workorder has been sent.</td></tr>
+		<tr><td colspan="3">&nbsp;</td></tr>
+	<!--#IF evaluate="<?p:email_failed?>" compare="true"-->
+		<tr><td colspan="3" class="errorText">Did not send email to (email server might be down):</td></tr>
+	<!--#ELSE-->
+		<tr><td colspan="3" class="HeaderLabel">Sent email to:</td></tr>
+	<!--#/IF-->
+		<tr><td colspan="3">&nbsp;</td></tr>
+	  <!--#IF evaluate="<?p:is_new?>" compare="Y" -->
+		<tr><td>&nbsp;</td><td colspan="2"><!--#EMBED template="enet/req/new_ack_email.html" request_type_code="<?p:request_type_code?>" --></td></tr>
+      <!--#ELSE-->
+		<tr><td>&nbsp;</td><td colspan="2"><!--#EMBED template="enet/req/ack_email_workorder.html" --></td></tr>
+      <!--#/IF-->
+		<tr><td colspan="3" align="right"><input type="button" class="button" value="Ok" name ="button" onClick="exitFunction('Ok');"></td></tr>
+	</table></td></tr>
+<!--#/IF-->
+
+<!--#IF evaluate="<?p:request_type_code?>" compare="service_request" -->
+	<script>ack_form.go_to_tab.value='sr'</script>
+	<tr><td><table width="100%">
+		<tr><td colspan="3" class="HeaderRow">Service Request Acknowledgement</td></tr>
+		<tr><td colspan="3">&nbsp;</td></tr>
+		<tr><td colspan="3" class="HeaderLabel">You have created or sent a Service Request:</td></tr>
+		<tr><td colspan="3">&nbsp;</td></tr>
+		<tr><td width="50">&nbsp;</td><td width="50" class="HeaderLabel">Project&nbsp;Folder&nbsp;#:</td><td width="200">{!s:project_no!}</td></tr>
+		<tr><td>&nbsp;</td><td class="HeaderLabel">Service Request #:&nbsp;</td><td>{!s:project_no!}.{!p:request_no!}</td><tr>
+		<tr><td>&nbsp;</td><td class="HeaderLabel">Version #:&nbsp;</td><td>{!p:version_no!}</td><tr>
+	<!--#IF evaluate="<?p:is_sent?>" compare="Y" -->
+		<tr><td colspan="3">&nbsp;</td></tr>
+		<tr><td colspan="3" class="HeaderLabel">The Service Request has been sent.</td></tr>
+		<tr><td colspan="3">&nbsp;</td></tr>
+	<!--#IF evaluate="<?p:email_failed?>" compare="true"-->
+		<tr><td colspan="3" class="errorText">Did not send email to (email server might be down):</td></tr>
+	<!--#ELSE-->
+		<tr><td colspan="3" class="HeaderLabel">Sent email to:</td></tr>
+	<!--#/IF-->
+		<tr><td colspan="3">&nbsp;</td></tr>
+	  <!--#IF evaluate="<?p:is_new?>" compare="Y" -->
+		<tr><td>&nbsp;</td><td colspan="2"><!--#EMBED template="enet/req/new_ack_email.html" request_type_code="<?p:request_type_code?>" --></td></tr>
+      <!--#ELSE-->
+		<tr><td>&nbsp;</td><td colspan="2"><!--#EMBED template="enet/req/ack_email.html" request_type_code="<?p:request_type_code?>" --></td></tr>
+      <!--#/IF-->
+	<!--#/IF-->
+		<tr><td colspan="3" align="right"><input type="button" class="button" value="Ok" name ="button" onClick="exitFunction('Ok');"></td></tr>
+	</table></td></tr>
+<!--#/IF-->
+
+<!--#IF evaluate="<?p:request_type_code?>" compare="quote_request" -->
+	<script>ack_form.go_to_tab.value='qr'</script>
+	<tr><td><table width="100%">
+		<tr><td colspan="3" class="HeaderRow">Quote Request Acknowledgement</td></tr>
+		<tr><td colspan="3">&nbsp;</td></tr>
+		<tr><td colspan="3" class="HeaderLabel">You have created or sent a Quote Request:</td></tr>
+		<tr><td colspan="3">&nbsp;</td></tr>
+		<tr><td width="50">&nbsp;</td><td width="50" class="HeaderLabel">Project&nbsp;Folder&nbsp;#:</td><td width="200">{!s:project_no!}</td></tr>
+		<tr><td>&nbsp;</td><td class="HeaderLabel">Quote Request #:&nbsp;</td><td>{!s:project_no!}.{!p:request_no!}</td><tr>
+		<tr><td>&nbsp;</td><td class="HeaderLabel">Version #:&nbsp;</td><td>{!p:version_no!}</td><tr>
+	<!--#IF evaluate="<?p:is_sent?>" compare="Y" -->
+		<tr><td colspan="3">&nbsp;</td></tr>
+		<tr><td colspan="3" class="HeaderLabel">The Quote Request has been sent.</td></tr>
+		<tr><td colspan="3">&nbsp;</td></tr>
+	<!--#IF evaluate="<?p:email_failed?>" compare="true"-->
+		<tr><td colspan="3" class="errorText">Did not send email to (email server might be down):</td></tr>
+	<!--#ELSE-->
+		<tr><td colspan="3" class="HeaderLabel">Sent email to:</td></tr>
+	<!--#/IF-->
+		<tr><td colspan="3">&nbsp;</td></tr>
+	  <!--#IF evaluate="<?p:is_new?>" compare="Y" -->
+		<tr><td>&nbsp;</td><td colspan="2"><!--#EMBED template="enet/req/new_ack_email.html" request_type_code="<?p:request_type_code?>" --></td></tr>
+      <!--#ELSE-->
+		<tr><td>&nbsp;</td><td colspan="2"><!--#EMBED template="enet/req/ack_email.html" request_type_code="<?p:request_type_code?>" --></td></tr>
+      <!--#/IF-->
+	<!--#/IF-->
+		<tr><td colspan="3" align="right"><input type="button" class="button" value="Ok" name ="button" onClick="exitFunction('Ok');"></td></tr>
+	</table></td></tr>
+<!--#/IF-->
+
+<!--#IF evaluate="<?p:request_type_code?>" compare="quote" -->
+	<script>ack_form.go_to_tab.value='q_create&quote_id={!p:quote_id!}'</script>
+	<tr><td><table width="100%">
+		<tr><td colspan="3" class="HeaderRow">Quote Acknowledgement</td></tr>
+		<tr><td colspan="3">&nbsp;</td></tr>
+		<tr><td colspan="3" class="HeaderLabel">You have created or sent a Quote:</td></tr>
+		<tr><td colspan="3">&nbsp;</td></tr>
+		<tr><td width="50">&nbsp;</td><td width="50" class="HeaderLabel">Project&nbsp;Folder&nbsp;#:</td><td width="200">{!s:project_no!}</td></tr>
+		<tr><td>&nbsp;</td><td class="HeaderLabel">Quote #:&nbsp;</td><td>{!s:project_no!}.{!p:request_no!}</td><tr>
+	<!--#IF evaluate="<?p:is_sent?>" compare="Y" -->
+		<tr><td colspan="3">&nbsp;</td></tr>
+		<tr><td colspan="3" class="HeaderLabel">The Quote has been sent.</td></tr>
+		<tr><td colspan="3">&nbsp;</td></tr>
+	<!--#IF evaluate="<?p:email_failed?>" compare="true"-->
+		<tr><td colspan="3" class="errorText">Did not send email to (email server might be down):</td></tr>
+	<!--#ELSE-->
+		<tr><td colspan="3" class="HeaderLabel">Sent email to:</td></tr>
+	<!--#/IF-->
+		<tr><td colspan="3">&nbsp;</td></tr>
+	  <!--#IF evaluate="<?p:is_new?>" compare="Y" -->
+		<tr><td>&nbsp;</td><td colspan="2"><!--#EMBED template="enet/req/new_ack_email.html" request_type_code="<?p:request_type_code?>" --></td></tr>
+      <!--#ELSE-->
+		<tr><td>&nbsp;</td><td colspan="2"><!--#EMBED template="enet/req/ack_email_quote.html" --></td></tr>
+      <!--#/IF-->
+	<!--#/IF-->
+		<tr><td colspan="3" align="right"><input type="button" class="button" value="Ok" name ="button" onClick="exitFunction('Ok');"></td></tr>
+	</table></td></tr>
+<!--#/IF-->
+
+ 	</table>
+
+</body>
+
+<script type="text/javascript">
+
+	function exitFunction(button)
+	{
+    	parent.window.opener.focus();
+		if( {!p:request_type_code.toJavaScriptString()!} == 'quote' && {!p:is_sent.toJavaScriptString()!} == 'N') //refresh back to quote edit screen
+		{
+			parent.window.opener.parent.location='{!s:showPage!}setProjectDatum/enet/proj/pf_main.html?project_id={!s:project_id!}&loc='+ack_form.go_to_tab.value;
+		}
+		else if(parent.window.opener.parent.tab_frame != null && parent.window.opener.parent.tab_frame.tab_table.locked.value == 'true' )
+		{
+			parent.window.opener.parent.location='{!s:showPage!}setProjectDatum/enet/proj/pf_main.html?project_id={!s:project_id!}&loc='+ack_form.go_to_tab.value;
+		}
+		else if(parent.window.opener.parent.tab_frame == null)
+		{
+			parent.window.opener.parent.close();
+		}
+		parent.close();
+	}
+
+</script>
+
+<!--#EMBED template="enet/embeds/footer.html" -->

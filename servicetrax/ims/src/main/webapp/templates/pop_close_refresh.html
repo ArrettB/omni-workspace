@@ -1,0 +1,23 @@
+<html>
+<head></head>
+<body onload="closeRefreshParent()">
+
+<script language="javascript1.2">
+<!--
+
+	function closeRefreshParent()
+	{
+		<!--#IF defined="<?p:close_only?>" -->
+		<!--#ELSEIF defined="<?p:refresh_url?>" -->
+			opener.location = {!p:refresh_url.toJavaScriptString()!};
+		<!--#ELSE-->
+			opener.location.reload(true);
+		<!--#/IF-->
+			opener.focus();
+			window.close();
+	}
+
+//-->
+</script>
+
+</body></html>

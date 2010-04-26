@@ -1,0 +1,1 @@
+SELECT status_id, name status FROM invoice_statuses where status_id = 4

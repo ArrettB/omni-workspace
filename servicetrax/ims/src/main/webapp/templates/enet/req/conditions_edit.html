@@ -1,0 +1,23 @@
+<html>
+<head>
+	<title></title>
+</head>
+	<body class="BodyTag">
+
+			<input name="request_id" type="hidden" value="{!p:request_id!}">
+			<!--#SMARTTABLE class="SmartTable" name="conditions_v" maxRows="1000"
+			    query="SELECT name, c.standard_condition_id condition_id, sequence_no, CASE WHEN iqc.standard_condition_id IS NOT NULL THEN 'Y' ELSE 'N' END use_flag
+			    	, CASE WHEN iqc.standard_condition_id IS NOT NULL THEN 'checked' ELSE '' END checked
+					FROM standard_conditions c LEFT OUTER JOIN (SELECT qc.standard_condition_id 
+			        FROM quote_standard_conditions qc INNER JOIN quotes q ON qc.quote_id = q.quote_id
+					 AND q.request_id = <?p:request_id.toSQLString()?>) iqc ON iqc.standard_condition_id = c.standard_condition_id"
+			 -->
+			<input type="hidden" name="originalStatus" value="{!r:conditions_v:use_flag!}:{!r:conditions_v:condition_id!}" />
+			<!--#SMARTCOLUMN title="Use?" value="<INPUT TYPE='checkbox' name='statusCheckBox' value='<?r:conditions_v:condition_id?>' class='Checkbox' <?r:conditions_v:checked?> >" width="2%" align="center"-->
+			<!--#SMARTCOLUMN title="Condition" name="name"  -->
+			<!--#/SMARTTABLE -->
+			<BR>
+
+	</body>
+
+</html>

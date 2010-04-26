@@ -1,0 +1,109 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: jp_edit.html, 6, 2/13/2006 10:17:23 AM, Blake Von Haden$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.enet/prog/jp_edit.view?>"-->
+
+<body class="BodyTag" >
+
+	<!--#EMBED template="enet/embeds/project_header.html" -->
+
+<!--#SQLLOOP name="jpQuery" query="SELECT jp.job_status_type_name, punchlist, CONVERT(VARCHAR(12),min_start_date,101) start_date,
+					 percent_complete,
+					(CASE WHEN ISNULL(act_percent_complete,0) < 0 THEN 0
+							WHEN ISNULL(act_percent_complete,0) > 1 THEN 1
+							ELSE ISNULL(act_percent_complete,0) END) act_percent_complete
+				FROM job_progress_v jp
+				WHERE project_id = <?s:project_id.toPStmtString()?>"
+ -->
+	<table>
+		<tr>
+			<td class="HeaderLabel">Current Job Status:&nbsp;</td>
+			<td class="Label">{!r:jpQuery:job_status_type_name!}</td>
+		</tr>
+		<!--#CHECKSECURITY right="rights.enet/prog/jp_edit.update"-->
+		   <!--#SMARTFORM name="enet/prog/jp_edit" table="projects" key="project_id" security="rights"
+								buttons="Save,Cancel"
+		   -->
+		<tr>
+			<td class="HeaderLabel">Punch List:&nbsp;</td>
+			<td class="Label">{!r:jpQuery:punchlist!}</td>
+		</tr>
+		<tr>
+			<td class="HeaderLabel">Start Date:&nbsp;</td>
+			<td class="Label">{!r:jpQuery:start_date!}</td>
+		</tr>
+		<tr>
+			<td class="HeaderLabel">Actual Complete:&nbsp;</td>
+			<td><!--#SMARTFIELD name="act_percent_complete" type="act_percent_complete" style="width:60" type="percent" numDecimals="0" readonly class="readonly" value="<?r:jpQuery:act_percent_complete?>" --></td>
+		</tr>
+		<tr>
+			<td class="HeaderLabel">Override Percent:&nbsp;</td>
+			<td><!--#SMARTFIELD name="percent_complete" type="percent" style="width:60" type="percent" numDecimals="0" value="<?r:jpQuery:percent_complete?>" --></td>
+		</tr>
+			<!--#/SMARTFORM-->
+		<!--#ELSE-->
+		<tr>
+			<td class="HeaderLabel">Percent Complete:&nbsp;</td>
+<!--#IF evaluate="<?r:jpQuery:percent_complete.isNullSQLString('0')?>" greaterthan="1" -->
+			<td class="Label">100%</td>
+<!--#ELSEIF evaluate="<?r:jpQuery:percent_complete.isNullSQLString('0')?>" lessthan="0" -->
+			<td class="Label">0%</td>
+<!--#ELSE -->
+			<td class="Label">{!r:jpQuery:percent_complete!}</td>
+<!--#/IF-->
+		</tr>
+		<tr>
+			<td class="HeaderLabel">Start Date:&nbsp;</td>
+			<td class="Label">{!r:jpQuery:start_date!}</td>
+		</tr>
+		<tr>
+			<td class="HeaderLabel">Punch List:&nbsp;</td>
+			<td class="Label">{!r:jpQuery:punchlist!}</td>
+		</tr>
+		<!--#/CHECKSECURITY-->
+	</table>
+	<!--#/SQLLOOP-->
+
+	<br>
+
+	<table width="300" border="0" cellpadding="0" cellspacing="3">
+	   <tr>
+	   	<td class="HeaderLabel" align="left">Status Notes:&nbsp;</td>
+		<!--#CHECKSECURITY right="rights.enet/prog/jp_edit.insert" -->
+	   	<td class="Label"><a href="" onClick="newWindow('{!s:showPage!}enet/prog/project_notes.html?project_id={!s:project_id!}','project_notes',200,400);return false">Add New Status Note</a></td>
+		<!--#/CHECKSECURITY-->
+	   </tr>
+	</table>
+
+	<!--#SMARTTABLE name="notes_list"
+			class="SmartTable"
+			query="SELECT project_note_id, created_by_name, date_created, note
+					FROM project_notes_v
+					WHERE project_id = <?s:project_id.toPStmtString()?>
+					ORDER BY date_created"
+	-->
+
+		<!--#SMARTCOLUMN name="created_by_name" sort="created_by_name" title="Created&nbsp;By" width="10%" -->
+		<!--#SMARTCOLUMN name="date_created" sort="date_created" title="Date&nbsp;Created" format="date" width="10%" align="center" -->
+	<!--#CHECKSECURITY right="rights.enet/prog/jp_edit.update" -->
+		<!--#SMARTCOLUMN name="note" sort="note" title="Note" width="800" href="" onClick="newWindow('<?s:showPage?>enet/prog/project_notes.html?project_id=<?s:project_id?>&project_note_id=<?r:notes_list:project_note_id?>','project_notes',200,400);return false;" -->
+	<!--#ELSE-->
+		<!--#SMARTCOLUMN name="note" sort="note" title="Note" width="800" -->
+	<!--#/CHECKSECURITY-->
+
+<!--#/SMARTTABLE -->
+
+</body>
+
+<script language="JavaScript">
+<!--
+
+	function redisplayPage()
+	{
+		location = '{!s:showPage!}enet/prog/jp_edit.html';
+	}
+-->
+</script>
+
+
+<!--#EMBED template="embeds/footer.html" -->

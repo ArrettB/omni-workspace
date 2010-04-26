@@ -1,0 +1,1 @@
+SELECT uc.user_customer_id, uceu.customer_id end_user_id   FROM user_customers uc LEFT OUTER JOIN        user_customer_end_users uceu ON uc.user_customer_id = uceu.user_customer_id  WHERE uc.user_id =  2250

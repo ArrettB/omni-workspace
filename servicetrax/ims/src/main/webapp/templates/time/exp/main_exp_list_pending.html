@@ -1,0 +1,89 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: main_exp_list_pending.html, 4, 1/23/2006 3:02:17 PM, Blake Von Haden$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.time/exp/expenses.view?>"-->
+
+<script type="text/javascript">
+<!--
+function exportExpenses(form)
+{
+	if (form.ext_batch_id.value == null || form.ext_batch_id.value < 1)
+	{
+		alert("Please Enter Batch ID.");
+		return;
+	}
+	else if (form.begin_date.value == null || form.begin_date.value < 1)
+	{
+		alert("Please Enter Begin Date.");
+		return;
+	}
+	else if (form.end_date.value == null || form.end_date.value < 1)
+	{
+		alert("Please Enter End Date.");
+		return;
+	}
+	else
+	{
+		form.submit();
+	}
+}
+//-->
+</script>
+
+<body class="BodyTag">
+<table><tr><td class="errorText">{!d:error_msg!}</td></tr></table>
+
+<FORM ACTION="{!s:action!}exportExpenses" METHOD="POST" name="expForm">
+   	<input type="button" value="Export" name="button" class="button2" onClick="exportExpenses(this.form)">
+	Begin Date
+	<input type="text" name="begin_date" size="12" class="regular"><script type="text/javascript">makeButton('selectDate','calendar_off','calendar_on','chooseDate(begin_date)')</script>
+	End Date
+	<input type="text" name="end_date" size="12" class="regular"><script type="text/javascript">makeButton('selectDate','calendar_off','calendar_on','chooseDate(end_date)')</script>
+	Batch ID
+	<input type="text" name="ext_batch_id" class="regular">
+	<input type="hidden" name="template_name" value="time/exp/main_exp_list_pending.html">
+
+		<!--#IF DEFINED="<?d:integrationManagerMsg?>" -->
+			<TABLE width="100%"><tr><td class="error">{!d:integrationManagerMsg!}</td><tr></table>
+		<!--#/IF-->
+</FORM>
+
+
+<!--#SQLLOOP name="weekQry"
+			query="SELECT DISTINCT DATEPART(dy, service_line_week) unique_key,
+					convert(varchar(12), service_line_week, 101) begin_week,
+					convert(varchar(12), DATEADD(day, 6, service_line_week), 101) end_week,
+					service_line_week
+					FROM expenses_export_v
+					WHERE expenses_exported_flag = 'N'
+					AND organization_id = <?s:org_id.toPStmtString()?>
+					ORDER BY service_line_week"
+-->
+<TABLE width="450" border="0" cellpadding="0" cellspacing="0"> <tr><td class="tableHeader">{!r:weekQry:begin_week!} - {!r:weekQry:end_week!}</td></tr></TABLE>
+   <!--#SMARTTABLE style="width:450" name="expensesQry_<?r:weekQry:unique_key?>"
+	   query="SELECT resource_name, user_id, ext_employee_id, item_name, SUM(expense_qty) sum_expense_qty, expense_rate, sum(expense_total) sum_expense_total
+		FROM expenses_export_v
+		WHERE expenses_exported_flag = 'N'
+		AND organization_id = <?s:org_id.toPStmtString()?>
+		AND service_line_week = <?r:weekQry:service_line_week.toPStmtString()?>
+		AND status_id > 1
+		GROUP BY service_line_week, user_id, ext_employee_id, resource_name, item_name, expense_rate
+        ORDER BY resource_name, item_name"
+   -->
+		<!--#SMARTCOLUMN name="resource_name" sort="resource_name" title="Employee" nowrap href="<?s:showPage?>time/exp/main_exp_user_det.html?user_id=<?r:expensesQry_<?r:weekQry:unique_key?>:user_id?>&service_line_week=<?r:weekQry:service_line_week?>&begin_week=<?r:weekQry:begin_week?>&end_week=<?r:weekQry:end_week?>&emp_name=<?r:expensesQry_<?r:weekQry:unique_key?>:resource_name?>" filter="resource_name:resource_name" -->
+		<!--#SMARTCOLUMN name="ext_employee_id" sort="ext_employee_id" title="Emp ID" align="center" filter="ext_employee_id:ext_employee_id" -->
+		<!--#SMARTCOLUMN name="item_name" sort="item_name" title="Item" nowrap filter="item_name:item_name" -->
+		<!--#SMARTCOLUMN name="sum_expense_qty" sort="sum_expense_qty" title="Qty" format="###,###,##0.00" align="right" total="true" -->
+		<!--#SMARTCOLUMN name="expense_rate" sort="expense_rate" title="Rate" format="money" align="right" -->
+		<!--#SMARTCOLUMN name="sum_expense_total" sort="sum_expense_total" title="Total" format="money" align="right" total="true" -->
+   <!--#/SMARTTABLE -->
+
+<BR><BR>
+<!--#SQLNODATA-->
+   <table><tr><td class="HeaderLabel">No Expenses Found</td></tr></table>
+<!--#/SQLNODATA-->
+<!--#/SQLLOOP-->
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

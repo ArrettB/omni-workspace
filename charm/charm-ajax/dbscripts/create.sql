@@ -1,0 +1,8 @@
+CREATE  TABLE cities 
+(
+city_id INT NOT NULL IDENTITY,
+name VARCHAR(200) NOT NULL,
+state VARCHAR(200)
+);
+
+SHUTDOWN;

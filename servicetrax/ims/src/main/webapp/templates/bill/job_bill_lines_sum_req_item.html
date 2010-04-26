@@ -1,0 +1,110 @@
+<!-- $Id$ -->
+
+<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0"> <tr><td class="HeaderBar">Unbilled</td></tr></TABLE>
+<!--#SQLLOOP query="SELECT yes_no_type_code code, (case yes_no_type_code when 'Y' then 'Billable' when 'N' then 'NonBillable' end) type FROM yes_no_type_v" resourceName="SQLServer" name="yes_no"-->
+<!--#SQLLOOP query="SELECT status_id, name status FROM service_line_statuses WHERE status_id = 4" resourceName="SQLServer" name="status"-->
+<FORM ACTION="{!s:action!}setServiceLineStatus" METHOD="POST" name="{!r:yes_no:type!}">
+<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0"> <tr><td height="25" class="tableTitle">{!r:yes_no:type!}</td></tr></TABLE>
+	<input type="hidden" name="level" value="bill_req_item">
+	<input type="hidden" name="invoice_id" value="{!p:invoice_id!}">
+	<input type="hidden" name="bill_job_id" value="">
+	<input type="hidden" name="bill_service_id" value="">
+	<input type="hidden" name="template_name" value="{!p:temp_name!}">
+	<input type="hidden" name="cur_status_id" value="{!r:status:status_id!}">
+
+<!--#SMARTTABLE name="service_lines"
+	class="SmartTable" totalClass="TableTotal"
+	query="SELECT bill_service_no, service_description, bill_job_id, item_name, bill_service_id, bill_rate, service_item_status_id,
+	              po_no, billing_type_name, quote_total, quote_id, quoted_total, is_new,
+	              cust_col_1, cust_col_2, cust_col_3, cust_col_4, cust_col_5, cust_col_6, cust_col_7, cust_col_8, cust_col_9, cust_col_10,
+	              sum(bill_hourly_qty) sum_bill_hourly_total,
+	              sum(payroll_qty) sum_payroll_qty,
+				  sum(bill_hourly_total) hours_total,
+				  sum(bill_exp_qty) sum_bill_exp_qty,
+				  sum(bill_exp_total) exp_tot,
+				  sum(bill_total) total_tot
+			 FROM billing_v
+			WHERE bill_job_id = <?s:job_id.toPStmtString()?> and status_id = <?r:status:status_id.toPStmtString()?> AND invoice_id IS NULL and billable_flag = <?r:yes_no:code.toPStmtString()?>
+		      AND (item_type_code = <?p:item_type_code.toPStmtString()?> or <?p:item_type_code.toPStmtString()?> is null)
+		 GROUP BY bill_service_no, service_description, bill_job_id, bill_service_id, service_item_status_id, item_name, bill_rate, po_no,
+		          billing_type_name, quote_total, quote_id, quoted_total, is_new,
+				  cust_col_1, cust_col_2, cust_col_3, cust_col_4, cust_col_5, cust_col_6,	cust_col_7, cust_col_8, cust_col_9, cust_col_10
+		 ORDER BY bill_service_no, item_name"-->
+
+	  <!--#SMARTCOLUMN value="<INPUT TYPE='checkbox' name='statusCheckBox' value='<?r:service_lines:service_item_status_id?>'>" title="<INPUT TYPE='checkbox' name='CheckAllBox' onclick='checkAllBoxes(this.form.CheckAllBox,this.form.statusCheckBox)'>" align="center" width="2%" -->
+
+	  <!--#SMARTCOLUMN name="bill_service_no" sort="bill_service_no" title="Req#" width="5%" align="center" href="<?s:action?>setupSession/job/job_main.html?service_id=<?r:service_lines:bill_service_id?>&job_id=<?r:service_lines:bill_job_id?>&loc=req_edit" target="main_frame"-->
+
+
+	  <!--#SMARTCOLUMN name="po_no" sort="po_no" title="PO" width="5%" -->
+	  <!--#SMARTCOLUMN name="billing_type_name" sort="billing_type_name" title="Bill&nbsp;Type" width="5%" -->
+	  <!--#SMARTCOLUMN value="<INPUT TYPE='text' name='desc' value='<?r:service_lines:service_description.replaceString('\'','&#39;')?>' readonly='true' class='smartTableDisplay' size='30'>" title="Description" width="10%" -->
+	  <!--#SMARTCOLUMN name="item_name" sort="item_name" title="Item" width="10%" -->
+	  <!--#SMARTCOLUMN name="sum_payroll_qty" sort="sum_payroll_qty" title="TC Hours" align="right" format="###,###,###,##0.00" width="5%" total="true"-->
+	  <!--#SMARTCOLUMN name="sum_bill_hourly_total" sort="sum_bill_hourly_total" title="Bill Hours" align="right" format="###,###,###,##0.00" width="5%" total="true" -->
+	  <!--#SMARTCOLUMN name="sum_bill_exp_qty" sort="sum_bill_exp_qty" title="Exp Qty" align="right" format="###,###,###,##0.00" width="5%" total="true" -->
+	  <!--#SMARTCOLUMN name="bill_rate" sort="bill_rate" title="Bill Rate" align="right" format="money" width="5%" -->
+	  <!--#SMARTCOLUMN name="hours_total" sort="hours_total" title="Hours $" align="right" total="true" format="money" width="5%" -->
+	  <!--#SMARTCOLUMN name="exp_tot" sort="exp_tot" title="Exp $" align="right" total="true" format="money" width="5%" -->
+	  <!--#SMARTCOLUMN name="total_tot" sort="total_tot" title="Total" align="right" total="true" format="money" width="5%" -->
+
+<!--#IF evaluate="<?d:rowid?>" greaterthan="0" -->
+  <!--#IF evaluate="<?r:service_lines:quote_id?>" compare="" -->
+      <!--#SMARTCOLUMN name="quoted_total" sort="quoted_total" title="Quote Total" align="right" total="true" format="money" width="5%" -->
+  <!--#ELSE-->
+    <!--#IF evaluate="<?r:service_lines:is_new?>" compare="Y" -->
+	  <!--#SMARTCOLUMN name="quoted_total" sort="quoted_total" title="Quote Total" align="right" total="true" format="money" width="5%" href="<?s:showPage?>quoteReports?quote_id=<?r:service_lines:quote_id?>" target="_blank" nowrap -->
+    <!--#ELSE-->
+      <!--#SMARTCOLUMN name="quoted_total" sort="quoted_total" title="Quote Total" align="right" total="true" format="money" width="5%" href="" onClick="newWindowScrollBars('<?s:action?>quoteReport?quote_id=<?r:service_lines:quote_id?>','quote_window',600,780);return false;" -->
+    <!--#/IF-->
+  <!--#/IF-->
+<!--#ELSE-->
+    <!--#SMARTCOLUMN name="quoted_total" sort="quoted_total" title="Quote Total" align="right" total="true" format="money" width="5%" -->
+<!--#/IF-->
+
+<!--#IF evaluate="<?d:rowid?>" greaterthan="0" -->
+	<!--#SQLLOOP query="SELECT col_title, col_sequence FROM custom_cols c WHERE c.active_flag = 'Y' AND c.service_id = <?r:service_lines:bill_service_id.toPStmtString()?> ORDER BY col_sequence" name="cust_col" -->
+	<!--#SMARTCOLUMN name="cust_col_<?r:cust_col:col_sequence?>" sort="cust_col_<?r:cust_col:col_sequence?>" title="<?r:cust_col:column_desc?>" width="15" -->
+	<!--#/SQLLOOP-->
+<!--#ELSE-->
+	<!--#SQLLOOP query="SELECT column_desc, col_sequence FROM custom_cust_columns c, jobs_effective_customer_v j WHERE c.active_flag = 'Y' AND c.customer_id = j.effective_customer_id AND j.job_id=<?s:job_id.toPStmtString()?> ORDER BY col_sequence" name="cust_col" -->
+	<!--#SMARTCOLUMN name="cust_col_<?r:cust_col:col_sequence?>" sort="cust_col_<?r:cust_col:col_sequence?>" title="<?r:cust_col:column_desc?>" width="15" -->
+	<!--#/SQLLOOP-->
+<!--#/IF-->
+
+<!--#/SMARTTABLE -->
+
+	<select NAME="submit_action" class="regular">
+		<!--#IF EVALUATE="<?r:yes_no:code?>" COMPARE="Y"-->
+			<!--#IF defined="<?p:invoice_id?>"-->
+				<!--#SQLLOOP query="SELECT invoice_id, invoice_id AS invoice_no FROM invoices WHERE status_id <= 2 AND job_id = <?s:job_id.toPStmtString()?> AND invoice_id = <?p:invoice_id.toPStmtString()?>" name="new_inv"-->
+					<option value="assignInvoice{!r:new_inv:invoice_id!}">Assign to Invoice #{!r:new_inv:invoice_no!}</option>
+					<!--#CHECKSECURITY right="rights.bill/post_lines.view"-->
+						<option value="assignPostInvoice{!r:new_inv:invoice_id!}">Assign &amp; Post to Invoice # {!r:new_inv:invoice_no!}</option>
+					<!--#/CHECKSECURITY-->
+				<!--#/SQLLOOP-->
+			<!--#ELSE-->
+				<!--#SQLLOOP query="SELECT invoice_id, invoice_id AS invoice_no FROM invoices WHERE status_id <= 2 AND job_id = <?s:job_id.toPStmtString()?>" name="new_inv"-->
+					<option value="assignInvoice{!r:new_inv:invoice_id!}">Assign to Invoice #{!r:new_inv:invoice_no!}</option>
+					<!--#CHECKSECURITY right="rights.bill/post_lines.view"-->
+						<option value="assignPostInvoice{!r:new_inv:invoice_id!}">Assign &amp; Post to Invoice # {!r:new_inv:invoice_no!}</option>
+					<!--#/CHECKSECURITY-->
+				<!--#/SQLLOOP-->
+			<!--#/IF-->
+
+			<option VALUE="nonbillable">Mark as Non-Billable</option>
+		<!--#ELSEIF EVALUATE="<?r:yes_no:code?>" COMPARE="N"-->
+			<option VALUE="billable">Mark as Billable</option>
+		<!--#/IF-->
+		<!--#CHECKSECURITY right="rights.bill/move_lines.view"-->
+			<option VALUE="changeBillServiceId">Move Lines</option>
+		<!--#/CHECKSECURITY-->
+		<!--#CHECKSECURITY right="rights.bill/post_lines.view"-->
+			<option VALUE="move_posted">Post</option>
+		<!--#/CHECKSECURITY-->
+	</select>
+	<input type="button" value="Submit" name="button" class="button2" onClick="move_billing_lines(this.form)">
+
+</FORM>
+<!--#/SQLLOOP-->
+<!--#/SQLLOOP-->

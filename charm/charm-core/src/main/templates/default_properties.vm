@@ -1,0 +1,8 @@
+#foreach($table in $tables)
+#set ($alias = $table.destinationClassName) 
+${alias}_listing.title = Navigation - {alias} List
+${alias}_listing.heading = Select the you wish to edit.
+${alias}_detail.title = Navigation - {alias} Detail
+${alias}_detail.heading = Edit this stuff.
+
+#end

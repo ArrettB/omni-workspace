@@ -1,0 +1,314 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: user_job_types.html, 1, 12/12/2005 5:01:29 PM, Blake Von Haden$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.mnt/user_edit.view?>"-->
+
+<body class="BodyTag">
+
+	<table width="100%" cellspacing="0" cellpadding="0">
+		<tr><td class="HeaderBar">User Project Types Permissions</td></tr>
+	</table>
+
+
+
+<form name="pt_form" action="{!s:action!}userJobType" method="post">
+<input type="hidden" name="user_id" value="{!p:user_id!}">
+<input type="hidden" name="job_type_id_list" value="">
+
+<table border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td class="formLabel">
+			All Project Types
+		</td>
+		<td class="formLabel" colspan="3">
+		</td>
+		<td class="formLabel">
+			Availabe Project Types:
+		</td>
+	</tr>
+	<tr>
+		<td class="formLabel" nowrap>
+			<input class="regular" type="text" name="job_type_search" value="" style="width:200"
+			onKeyUp="performSearch(values, document.pt_form.all_job_types, this.value, document.pt_form.selected_job_types)">
+		</td>
+	</tr>
+	<tr>
+
+		<td rowspan="4">
+
+		<!--#SELECT class="regular"
+			name="all_job_types"
+			query="SELECT c.lookup_id, c.lookup_name
+			     FROM job_types_v c
+			     WHERE c.lookup_id NOT IN
+			     (
+			     	SELECT uv.lookup_id
+			     	FROM user_job_types uv
+			        WHERE uv.user_id = <?p:user_id.toPStmtString()?>
+			     )
+			     ORDER BY c.lookup_name"
+			onDblClick="addJobTypes()"
+			size="10"
+			style="width:200"
+			multiple
+		-->
+		</td>
+		<td valign="middle" width="10">
+		</td>
+		<td valign="middle">
+		</td>
+		<td valign="middle" width="10">
+		</td>
+		<td rowspan="4">
+
+		<!--#SELECT class="regular"
+			name="selected_job_types"
+			query="SELECT c.lookup_id, c.lookup_name
+			     FROM job_types_v c, user_job_types uv
+			     WHERE uv.user_id = <?p:user_id.toPStmtString()?>
+			     AND uv.lookup_id = c.lookup_id
+			ORDER BY c.lookup_name"
+			onDblClick="removeJobTypes()"
+			 size="10"
+			 style="width:200"
+			 multiple
+		-->
+		</td>
+	</tr>
+	<tr>
+		<td valign="middle" width="10">
+		</td>
+		<td valign="middle">
+			<input type="button" name="Add" value=" > > " class="button2" onClick="addJobTypes()">
+		</td>
+		<td valign="middle" width="10">
+		</td>
+	</tr>
+	<tr>
+		<td valign="middle" width="10">
+		</td>
+		<td valign="middle">
+			<input type="button" name="Remove" value=" < < " class="button2" onClick="removeJobTypes()">
+		</td>
+		<td valign="middle" width="10">
+		</td>
+	</tr>
+	<tr>
+		<td class="formLabel" colspan="3">
+		</td>
+	</tr>
+	<!--#EMBED template="embeds/spacer_row.html" spacer_height="10"-->
+	<tr>
+		<td class="formLabel" colspan="3">
+			<input type="submit"  class="button" name="button" value="Save" onClick="onSaveClick();">
+			<input type="button"  class="button" name="button" value="Cancel" onClick="window.close()">
+		</td>
+	</tr>
+
+	<!--#IF defined="<?d:error?>" -->
+	<!--#EMBED template="embeds/spacer_row.html" spacer_height="10"-->
+	<tr>
+		<td colspan="3"><span class="errorText">{!d:error!}</span></td>
+	</tr>
+	<!--#/IF-->
+
+
+</table>
+
+
+
+</form>
+<script type="text/javascript" language="JavaScript">
+<!--
+
+function Choice(_key, _text)
+{
+  this.key=_key;
+  this.text=_text;
+  this.searchText = _text.toLowerCase();
+}
+
+var values = new Array();
+var index = 0;
+<!--#SQLLOOP
+     name="job_types"
+     query="SELECT lookup_id, lookup_name
+     FROM job_types_v
+	ORDER BY lookup_name"
+-->
+values[index++] = new Choice({!r:job_types:lookup_id.toJavaScriptString()!}, {!r:job_types:lookup_name.toJavaScriptString()!});
+<!--#/SQLLOOP-->
+
+
+function addChoice(choiceObj, selectObj)
+{
+	selectObj.options[selectObj.options.length] = new Option(choiceObj.text, choiceObj.key, false, false);
+}
+
+function clearOptions2(selectObj)
+{
+	if (selectObj.options)
+	{
+		var length = selectObj.options.length;
+		for (var i = length -1; i >= 0; i--)
+		{
+			selectObj.options[i] = null;
+		}
+	}
+}
+
+function clearOptions(selectObj)
+{
+	selectObj.options.length = 0;
+}
+
+function performSearch(choiceArray, selectObj, searchValue, checkSelectObj)
+{
+	clearOptions(selectObj);
+
+	var expr =  "^" + searchValue.toLowerCase();
+	for (var i = 0; i < choiceArray.length; i++)
+	{
+	   if (choiceArray[i].searchText.search(expr) != -1 && !contains(checkSelectObj, choiceArray[i].key))
+	   {
+	   		addChoice(choiceArray[i], selectObj);
+	   }
+	}
+}
+
+function moveItems(fromSelect, toSelect)
+{
+	var fromOptions = fromSelect.options;
+    var toOptions = toSelect.options;
+	var index;
+	var tempText;
+	var tempValue;
+	for (var i = fromOptions.length - 1; i >= 0; i--)
+	{
+		if (fromOptions[i].selected)
+		{
+			var moveMe = fromOptions[i];
+			index = toOptions.length;
+			toOptions[index] = new Option(moveMe.text, moveMe.value, false, false);
+			fromOptions[i] = null;
+
+			// Re-sort the select list
+			while (index > 0 && toOptions[index].text < toOptions[index-1].text)
+			{
+				tempText = toOptions[index-1].text;
+				tempValue = toOptions[index-1].value;
+				toOptions[index-1].text = toOptions[index].text;
+				toOptions[index-1].value = toOptions[index].value;
+				toOptions[index].text = tempText;
+				toOptions[index].value = tempValue;
+				index -= 1;
+			}
+		}
+	}
+}
+
+function contains(selectObj, value)
+{
+	for (var i = 0; i < selectObj.options.length; i++)
+	{
+	   if (selectObj.options[i].value == value)
+	   {
+	   		return true;
+	   }
+	}
+	return false;
+}
+
+
+function addJobTypes()
+{
+	var fromSelect = document.pt_form.all_job_types;
+	var toSelect = document.pt_form.selected_job_types;
+	var fromOptions = fromSelect.options;
+    var toOptions = toSelect.options;
+	var index;
+	var tempText;
+	var tempValue;
+	for (var i = fromOptions.length - 1; i >= 0; i--)
+	{
+		if (fromOptions[i].selected)
+		{
+			var moveMe = fromOptions[i];
+			index = toOptions.length;
+			toOptions[index] = new Option(moveMe.text, moveMe.value, false, false);
+			fromOptions[i] = null;
+
+			// Re-sort the select list
+			while (index > 0 && toOptions[index].text < toOptions[index-1].text)
+			{
+				tempText = toOptions[index-1].text;
+				tempValue = toOptions[index-1].value;
+				toOptions[index-1].text = toOptions[index].text;
+				toOptions[index-1].value = toOptions[index].value;
+				toOptions[index].text = tempText;
+				toOptions[index].value = tempValue;
+				index -= 1;
+			}
+		}
+	}
+}
+
+function removeJobTypes()
+{
+	var fromSelect = document.pt_form.selected_job_types;
+	var toSelect = document.pt_form.all_job_types;
+	var fromOptions = fromSelect.options;
+    var toOptions = toSelect.options;
+	var index;
+	var tempText;
+	var tempValue;
+	var expr =  "^" + document.pt_form.job_type_search.value.toLowerCase();
+	for (var i = fromOptions.length - 1; i >= 0; i--)
+	{
+		if (fromOptions[i].selected)
+		{
+			var moveMe = fromOptions[i];
+			fromOptions[i] = null;
+
+
+			if (moveMe.text.toLowerCase().search(expr) != -1)
+			{
+				index = toOptions.length;
+				toOptions[index] = new Option(moveMe.text, moveMe.value, false, false);
+
+				// Re-sort the select list
+				while (index > 0 && toOptions[index].text < toOptions[index-1].text)
+				{
+					tempText = toOptions[index-1].text;
+					tempValue = toOptions[index-1].value;
+					toOptions[index-1].text = toOptions[index].text;
+					toOptions[index-1].value = toOptions[index].value;
+					toOptions[index].text = tempText;
+					toOptions[index].value = tempValue;
+					index -= 1;
+				}
+			}
+		}
+	}
+}
+
+	function getSelectedItemList(selectObj)
+	{
+		var result = "";
+		var length = selectObj.options.length;
+		for (var i = 0; i < length;  i++)
+		{
+			result += selectObj.options[i].value + ";";
+		}
+		return result;
+
+	}
+
+	function onSaveClick()
+	{
+		pt_form.job_type_id_list.value = getSelectedItemList(pt_form.selected_job_types);
+	}
+//-->
+</script>
+
+<!--#EMBED template="embeds/footer.html" -->

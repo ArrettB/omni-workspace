@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.Customer" table="CUSTOMERS" schema="dbo" catalog="">
+        <id name="customerId" type="java.lang.Long">
+            <column name="CUSTOMER_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="customer" class="com.dynamic.servicetrax.orm.Customer" fetch="select">
+            <column name="PARENT_CUSTOMER_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="organization" class="com.dynamic.servicetrax.orm.Organization" fetch="select">
+            <column name="ORGANIZATION_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="extDealerId" type="string">
+            <column name="EXT_DEALER_ID" length="15" not-null="true" />
+        </property>
+        <property name="dealerName" type="string">
+            <column name="DEALER_NAME" length="65" />
+        </property>
+        <property name="extCustomerId" type="string">
+            <column name="EXT_CUSTOMER_ID" length="15" />
+        </property>
+        <property name="customerName" type="string">
+            <column name="CUSTOMER_NAME" length="65" not-null="true" />
+        </property>
+        <property name="activeFlag" type="string">
+            <column name="ACTIVE_FLAG" length="1" not-null="true" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="createdBy" type="long">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <property name="modifiedBy" type="java.lang.Long">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </property>
+        <property name="AMFurniture1ContactId" type="java.lang.Long">
+            <column name="A_M_FURNITURE1_CONTACT_ID" precision="18" scale="0" />
+        </property>
+        <property name="surveyFrequency" type="java.lang.Long">
+            <column name="SURVEY_FREQUENCY" precision="18" scale="0" />
+        </property>
+        <property name="surveyLastCount" type="java.lang.Long">
+            <column name="SURVEY_LAST_COUNT" precision="18" scale="0" />
+        </property>
+        <property name="surveyLocation" type="string">
+            <column name="SURVEY_LOCATION" length="50" />
+        </property>
+        <property name="refusalEmailInfo" type="string">
+            <column name="REFUSAL_EMAIL_INFO" length="500" />
+        </property>
+        <set name="projects" inverse="true">
+            <key>
+                <column name="CUSTOMER_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Project" />
+        </set>
+        <set name="jobLocations" inverse="true">
+            <key>
+                <column name="CUSTOMER_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.JobLocation" />
+        </set>
+        <set name="jobs" inverse="true">
+            <key>
+                <column name="CUSTOMER_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Job" />
+        </set>
+        <set name="users" inverse="true">
+            <key>
+                <column name="CUSTOMER_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.User" />
+        </set>
+        <set name="userApprovers" inverse="true">
+            <key>
+                <column name="customer_id" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.UserApprover" />
+        </set>
+        <set name="contacts" inverse="true">
+            <key>
+                <column name="CUSTOMER_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Contact" />
+        </set>
+        <set name="customers" inverse="true">
+            <key>
+                <column name="PARENT_CUSTOMER_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Customer" />
+        </set>
+        <set name="invoices" inverse="true">
+            <key>
+                <column name="BILL_CUSTOMER_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Invoice" />
+        </set>
+        <set name="customCustColumns" inverse="true">
+            <key>
+                <column name="CUSTOMER_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.CustomCustColumn" />
+        </set>
+    </class>
+</hibernate-mapping>

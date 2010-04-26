@@ -1,0 +1,79 @@
+<!-- $Header: main_unbill_ops_jobs.html, 19, 9/19/2006 11:18:00 AM, Greg Case$ -->
+<!--#EMBED template="embeds/header.html" -->
+
+</head>
+
+<body class="BodyTag">
+
+<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0"> <tr><td class="HeaderBar">Unbilled Jobs</td></tr></TABLE>
+
+<!--#SMARTTABLE name="bill_jobs"
+	class="SmartTable" totalClass="TableTotal"
+	query="SELECT billing_user_id,
+		          bill_job_no,
+		          bill_job_id,
+		          non_billable_total,
+		          billable_total,
+		          invoiced_total,
+		          customer_name,
+		          end_user_name,
+		          max_est_end_date_varchar,
+		          billing_user_name,
+		          job_name,
+		          organization_id,
+		          po_count,
+		          received_po_count
+	         FROM bill_jobs_v 
+	        WHERE organization_id = <?s:org_id.toPStmtString()?>
+	          AND (billing_user_id = <?s:user_id.toPStmtString()?> OR 'true' = <?s:rights.view_all_jobs.view.isNull('false').toPStmtString()?>)
+	     ORDER BY billing_user_name, bill_job_no"
+-->
+	<!--#SMARTCOLUMN name="bill_job_no" sort="bill_job_no" title="Job#"	href="<?s:action?>setupSession/job/job_main.html?job_id=<?r:bill_jobs:bill_job_id?>&level=invoice&loc=job_unbilled_ops" target="main_frame" width="5%" align="center" filter="bill_job_no:bill_job_no" -->
+	<!--#SMARTCOLUMN name="customer_name" sort="customer_name" title="Customer" filter="customer_name:customer_name"  -->
+		<!--filterQuery="SELECT DISTINCT customer_name id, customer_name FROM bill_jobs_v WHERE (billing_user_id = <?s:user_id?> OR 'true' = <?s:rights.view_all_jobs.view.isNullSQLString('false')?>) and organization_id = <?s:org_id?> ORDER BY customer_name" filterQuick="true" -->
+	<!--#SMARTCOLUMN name="end_user_name" sort="end_user_name" title="End User" filter="end_user_name:end_user_name"  -->
+		<!--filterQuery="SELECT DISTINCT end_user_name id, end_user_name FROM bill_jobs_v WHERE (billing_user_id = <?s:user_id?> OR 'true' = <?s:rights.view_all_jobs.view.isNullSQLString('false')?>) and organization_id = <?s:org_id?> ORDER BY end_user_name" filterQuick="true" -->
+
+	<!--#SMARTCOLUMN name="job_name" sort="job_name" title="Job Name" width="15%" align="center" filter="job_name:job_name"  -->
+
+	<!--#SMARTCOLUMN name="billing_user_name" sort="billing_user_name" title="Project&nbsp;Manager" filter="billing_user_name:billing_user_name"
+					 filterQuery="select
+	ub.billing_user_name id,
+	ub.billing_user_name
+from
+(
+	select
+		u.first_name + ' ' + u.last_name billing_user_name
+from
+	service_lines sl
+	join jobs j on
+		j.job_id = sl.bill_job_id	
+	left join users u on
+		u.user_id = j.billing_user_id
+	left join invoices i on
+		i.invoice_id = sl.invoice_id
+	left join invoice_lines il on
+		i.invoice_id = il.invoice_id
+where
+	(billing_user_id = <?s:user_id.toPStmtString()?> OR 'true' = <?s:rights.view_all_jobs.view.isNull('false').toPStmtString()?>)
+	and sl.organization_id = <?s:org_id.toPStmtString()?>
+	and (i.status_id = 1 OR i.status_id IS NULL)
+	and sl.status_id = 4
+	and sl.internal_req_flag = 'N') ub
+group by
+	ub.billing_user_name
+order by
+	ub.billing_user_name" filterQuick="true" -->
+
+	<!--#SMARTCOLUMN name="max_est_end_date_varchar" width="5%"  sort="max_est_end_date_varchar" title="Max End Date" filter="max_est_end_date_varchar:max_est_end_date_varchar LIKE '%<?p:max_est_end_date_varchar?>%'" -->
+	<!--#SMARTCOLUMN name="po_count" width="3%" sort="po_count" title="# PO" align="right" -->
+	<!--#SMARTCOLUMN name="received_po_count" width="3%" sort="received_po_count" title="# PO Rec" align="right" -->
+	<!--#SMARTCOLUMN name="invoiced_total" width="7%" sort="invoiced_total" title="Invoiced Total" total="true" align="right" format="money" -->
+	<!--#SMARTCOLUMN name="non_billable_total" width="7%" sort="non_billable_total" title="Non-Billable Total" total="true" align="right" format="money" -->
+	<!--#SMARTCOLUMN name="billable_total" width="7%" sort="billable_total" title="Billable Total" align="right" total="true" format="money"  -->
+
+<!--#/SMARTTABLE -->
+
+<!--#EMBED template="bill/inv/main_inv_list_ops.html" temp_name="bill/main_unbill_ops_jobs.html" -->
+
+<!--#EMBED template="embeds/footer.html" -->

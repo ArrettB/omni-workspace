@@ -1,0 +1,94 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: search_form.html, 15, 1/20/2005 10:27:59 AM, Lee A. Gunderson$ -->
+<body class="BodyTag" onLoad="loadColors()">
+<script language="JavaScript">
+<!--
+	function AdvancedFrame()
+	{
+		top.main_frame.location.replace('{!s:action!}nav/advanced_nav');
+	}
+
+	function updateEndDate()
+	{
+		searchForm.end_create_date.value = searchForm.begin_create_date.value;
+	}
+
+	<!--#IF evaluate="<?d:queryGood?>" compare="true"-->
+		parent.navigator_results.location.replace('{!s:showPage!}nav/search_results.html');
+	<!--#/IF-->
+-->
+</script>
+
+
+<FORM METHOD="POST" name="searchForm" action="{!s:action!}navSearch">
+<input type="hidden" name="display_table" value="{!s:display_table.isNull('jobs')!}">
+<input type="hidden" name="search_page" value="nav/search_form.html">
+	<table width="100%" cellspacing="3" cellpadding="0" border="0" align="center">
+		<tr>
+			<td colspan="2" nowrap><b>Job Criteria:</b></td>
+		</tr>
+		<tr>
+			<td nowrap>Job#</td>
+			<td><input type="text" size="20" name="job_no" value="{!d:job_no!}" style="width:204" class="regular"></td>
+		</tr>
+		<tr>
+			<td nowrap>Job Name</td>
+			<td><input type="text" size="20" name="job_name" value="{!d:job_name!}" style="width:204" class="regular"></td>
+		</tr>
+		<tr>
+			<td nowrap>Customer</td>
+			<td><input type="text" size="20" name="customer" value="{!d:customer!}" style="width:204" class="regular"></td>
+		</tr>
+		<tr>
+			<td>Job Status</td>
+			<td><!--#SELECT name="job_status_id"
+							query="SELECT lookup_id, lookup_name FROM job_status_types_v"
+							firstOption="All Statuses"
+							firstOptionValue=""
+							style="width:204" class="regular"
+							currentValue="<?d:job_status_id?>"
+							-->
+			</td>
+		</tr>
+		<tr>
+			<td nowrap>Job Type</td>
+			<td><!--#SELECT name="job_type_id"
+							query="SELECT lookup_id, lookup_name FROM job_types_v"
+							firstOption="All Types"
+							firstOptionValue=""
+							style="width:204" class="regular"
+							currentValue="<?d:job_type_id?>"
+							-->
+			</td>
+		</tr>
+		<tr>
+			<td nowrap>Work Site</td>
+			<td><input type="text" size="20" name="work_site" value="{!d:work_site!}" style="width:204" class="regular"></td>
+		</tr>
+		<!--#IF defined="<?d:err@dates?>"-->
+		<tr>
+			<td nowrap>&nbsp;</td>
+			<td nowrap class="error">{!d:err@dates!}</td>
+		</tr>
+		<!--#/IF-->
+		<tr>
+			<td nowrap>Date Created</td>
+			<td nowrap>
+				<input type="text" size="10" name="begin_create_date" value="{!d:begin_create_date!}" class="regular">
+				<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(begin_create_date);')</script>
+				&nbsp;to&nbsp;
+				<input type="text" size="10" name="end_create_date" value="{!d:end_create_date!}" class="regular">
+				<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(end_create_date)')</script>
+			</td>
+		</tr>
+		<tr>
+			<td nowrap>Invoice#</td>
+			<td><input type="text" size="20" name="invoice_no" value="{!d:invoice_no!}" style="width:204" class="regular"></td>
+		</tr>
+		<tr>
+			<td colspan="2"><input type="submit" value="Search" name="button" class="button">
+			<input type="button" value="Advanced" onClick="AdvancedFrame()" class="button"></td>
+		</tr>
+	</table>
+</FORM>
+<!--#EMBED template="embeds/footer.html" -->

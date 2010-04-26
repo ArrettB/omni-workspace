@@ -1,0 +1,76 @@
+<!--#EMBED template="pocket/embeds/header.html"  title="Req Search"-->
+
+<!--#EMBED template="pocket/embeds/title_bar.html" title="Req Search"-->
+
+<!--#EMBED template="embeds/spacer_table.html" spacer_height="5"-->
+
+
+
+<form name="searchForm" action="{!s:action!}pocketReqSearch/pocket/project_list.html" method="post">
+	<input type="hidden" name="job_id" value="{!p:job_id!}">
+	<input type="hidden" name="dest_template" value="{!p:dest_template!}">
+	<table cellspacing="2" cellpadding="0" width="100%">
+		<tr>
+			<td>
+				<font color="#000000" size="-2" face="Verdana"><b>Req No</b></font>
+			</td>
+			<td>
+				<input type="text" name="reqSearch_number" size="17" value="{!s:reqSearch_number!}">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<font color="#000000" size="-2" face="Verdana"><b>Location</b></font>
+			</td>
+			<td>
+				<input type="text" name="reqSearch_location" size="17" value="{!s:reqSearch_location!}">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<font color="#000000" size="-2" face="Verdana"><b>Description</b></font>
+			</td>
+			<td>
+				<input type="text" name="reqSearch_description" size="17" value="{!s:reqSearch_description!}">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<font color="#000000" size="-2" face="Verdana"><b>Start Date</b></font>
+			</td>
+			<td>
+				<input type="text" name="reqSearch_start_date" size="17" value="{!s:reqSearch_start_date!}">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<font color="#000000" size="-2" face="Verdana"><b>Customer</b></font>
+			</td>
+			<td>
+				<input type="text" name="reqSearch_customer" size="17" value="{!s:reqSearch_customer!}">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<font color="#000000" size="-2" face="Verdana"><b>Priority</b></font>
+			</td>
+			<td>
+				<!--#SELECT name="reqSearch_priority"
+					query="SELECT lookup_name, lookup_name FROM lookups_v WHERE type_code = 'priority_type' ORDER BY lookup_name"
+					firstOptionValue=""
+					firstOption=""
+					value="<?s:reqSearch_priority?>"
+				-->
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="submit" name="Search" value="Search">
+			</td>
+		</tr>
+	</table>
+
+</form>
+
+
+<!--#EMBED template="pocket/embeds/footer.html"-->

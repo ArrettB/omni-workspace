@@ -1,0 +1,186 @@
+<!-- $Header: customer_ontact1.html, 8/1/2007, David Zhaon$ -->
+<html>
+<head>
+<title>Customer Contact 1</title>
+</head>
+<script type="text/javascript">
+
+</script>
+<body>
+
+<!--#IF evaluate="<?p:type?>" compare="customer" -->
+
+  <!--#SQLLOOP name="cust_tye"
+               query="SELECT l.code
+                        FROM customers c INNER JOIN
+                             lookups l ON c.customer_type_id=l.lookup_id
+                       WHERE l.active_flag='Y'
+                         AND c.customer_id=<?p:parameter.toPStmtString()?>"-->
+    <!--#IF evaluate="<?r:cust_tye:code?>" compare="dealer"-->
+      <!--#SELECT name="customer_contactd_id1" id="customer_contact_id1" class="regular" style="width:380"
+	  			  onChange="onCustomerContactChange(1)"
+				  onBlur="onCustomerContactChange(1)"
+				  firstOption="" firstOptionValue=""
+				  query="SELECT c.contact_id customer_contact_id1, c.contact_name
+				  		   FROM contacts c INNER JOIN
+				  		        contact_groups cg ON c.contact_id=cg.contact_id INNER JOIN
+                                lookups l ON c.cont_status_type_id = l.lookup_id INNER JOIN
+                                lookups l2 ON cg.contact_type_id=l2.lookup_id
+		                  WHERE l.code='active'
+		                    AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                            AND c.contact_name IS NOT NULL
+		                    AND c.contact_name NOT LIKE '%N/A%'
+		                    AND c.contact_name <> 'NA'
+		                    AND c.customer_id =<?p:parameter.toPStmtString()?>
+		                    AND (c.contact_id != <?p:id2.toPStmtString()?> OR <?p:id2.toPStmtString()?> IS NULL)
+		                    AND (c.contact_id != <?p:id3.toPStmtString()?> OR <?p:id3.toPStmtString()?> IS NULL)
+		                    AND (c.contact_id != <?p:id4.toPStmtString()?> OR <?p:id4.toPStmtString()?> IS NULL)
+		                    AND l2.code IN ('sales','designer','support','project_mgr')
+		                UNION
+                         SELECT c.contact_id customer_contact_id1, c.contact_name
+				  		   FROM contacts c INNER JOIN
+				  		        contact_groups cg ON c.contact_id=cg.contact_id INNER JOIN
+                                lookups l ON c.cont_status_type_id = l.lookup_id INNER JOIN
+                                lookups l2 ON cg.contact_type_id=l2.lookup_id INNER JOIN
+                                customers cust ON c.ext_dealer_id=cust.ext_customer_id
+		                  WHERE l.code='active'
+		                    AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                            AND c.contact_name IS NOT NULL
+		                    AND c.contact_name NOT LIKE '%N/A%'
+		                    AND c.contact_name <> 'NA'
+		                    AND cust.customer_id = <?p:parameter.toPStmtString()?>
+		                    AND (c.contact_id != <?p:id2.toPStmtString()?> OR <?p:id2.toPStmtString()?> IS NULL)
+		                    AND (c.contact_id != <?p:id3.toPStmtString()?> OR <?p:id3.toPStmtString()?> IS NULL)
+		                    AND (c.contact_id != <?p:id4.toPStmtString()?> OR <?p:id4.toPStmtString()?> IS NULL)
+		                    AND l2.code IN ('sales','designer','support','project_mgr')
+		               ORDER BY c.contact_name"  -->
+
+    <!--#ELSE-->
+      <!--#SELECT name="customer_contactd_id1" id="customer_contact_id1" class="regular" style="width:380"
+	  			  onChange="onCustomerContactChange(1)"
+				  onBlur="onCustomerContactChange(1)"
+				  firstOption="" firstOptionValue=""
+				  query="SELECT DISTINCT c.contact_id customer_contact_id1, c.contact_name
+				  		   FROM contacts c INNER JOIN
+				  		        contact_groups cg ON c.contact_id=cg.contact_id INNER JOIN
+                                lookups l ON c.cont_status_type_id = l.lookup_id INNER JOIN
+                                lookups l2 ON cg.contact_type_id=l2.lookup_id
+		                  WHERE l.code='active'
+		                    AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                            AND c.contact_name IS NOT NULL
+		                    AND c.contact_name NOT LIKE '%N/A%'
+		                    AND c.contact_name <> 'NA'
+		                    AND c.customer_id =<?p:parameter.toPStmtString()?>
+		                    AND (c.contact_id != <?p:id2.toPStmtString()?> OR <?p:id2.toPStmtString()?> IS NULL)
+		                    AND (c.contact_id != <?p:id3.toPStmtString()?> OR <?p:id3.toPStmtString()?> IS NULL)
+		                    AND (c.contact_id != <?p:id4.toPStmtString()?> OR <?p:id4.toPStmtString()?> IS NULL)
+		                    AND l2.code = 'customer'
+		               ORDER BY c.contact_name"  -->
+    <!--#/IF-->
+
+  <!--#SQLNODATA-->
+    <table width="100%" cellspacing="0" border="0">
+      <tr style="height:20px"><td class="regular" style="width:300px">&nbsp;</td><td style="width:20px"><img src="/ims/images/choose_on.gif" onclick="showCustomerContact(1)"></img></td></tr>
+	</table>
+  <!--#/SQLNODATA-->
+
+  <!--#/SQLLOOP-->
+
+<!--#ELSEIF evaluate="<?p:type?>" compare="contact" -->
+  <!--#IF defined="<?p:action?>" -->
+    <!--#IF evaluate="<?p:action?>" compare="new"-->
+
+	  <!--#SQLLOOP name="cc" resourceName="SQLServer" maxRows="1"
+				   query="SELECT c.contact_name,
+								 dbo.sp_contact_phone(<?s:current_contact_id.toPStmtString()?>) phone,
+								 c.email
+							FROM contacts c INNER JOIN
+								 lookups l ON c.cont_status_type_id = l.lookup_id
+						   WHERE l.code='active'
+							 AND c.contact_id = <?s:current_contact_id.toPStmtString()?>"-->
+		<input type="hidden" id="current_customer_contact_id1" value="{!s:current_contact_id!}">
+		<table width="100%" cellspacing="0" border="0">
+		  <tr style="height:20px"><td class="viewonly" style="width:300px">{!r:cc:contact_name!}</td><td style="width:20px"><img src="/ims/images/choose_on.gif" onclick="showCustomerContact(1)"></img></td></tr>
+	  <!--#IF  evaluate="<?r:cc:phone?>" compare=""-->
+	  <!--#ELSE-->
+		  <tr style="height:20px"><td colspan="2" class="viewonly" style="width:300px">{!r:cc:phone!}</td></tr>
+	  <!--#/IF-->
+	  <!--#IF  evaluate="<?r:cc:email?>" compare=""-->
+	  <!--#ELSE-->
+		  <tr style="height:20px"><td colspan="2" class="viewonly" style="width:300px">{!r:cc:email!}</td></tr>
+	  <!--#/IF-->
+		</table>
+	  <!--#SQLNODATA-->
+		<table width="100%" cellspacing="0" border="0">
+		  <tr style="height:20px"><td class="regular" style="width:300px">&nbsp;</td><td style="width:20px"><img src="/ims/images/choose_on.gif" onclick="showCustomerContact(1)"></img></td></tr>
+		</table>
+	  <!--#/SQLNODATA-->
+	  <!--#/SQLLOOP-->
+
+	<!--#ELSE-->
+
+	  <!--#SQLLOOP name="cc" resourceName="SQLServer" maxRows="1"
+				   query="SELECT c.contact_name,
+								 dbo.sp_contact_phone(<?p:parameter.toPStmtString()?>) phone,
+								 c.email
+							FROM contacts c INNER JOIN
+								 lookups l ON c.cont_status_type_id = l.lookup_id
+						   WHERE l.code='active'
+							 AND c.contact_id = <?p:parameter.toPStmtString()?>"-->
+		<table width="100%" cellspacing="0" border="0">
+		  <tr style="height:20px"><td class="viewonly" style="width:300px">{!r:cc:contact_name!}</td><td style="width:20px"><img src="/ims/images/choose_on.gif" onclick="showCustomerContact(1)"></img></td></tr>
+	  <!--#IF  evaluate="<?r:cc:phone?>" compare=""-->
+	  <!--#ELSE-->
+		  <tr style="height:20px"><td colspan="2" class="viewonly" style="width:300px">{!r:cc:phone!}</td></tr>
+	  <!--#/IF-->
+	  <!--#IF  evaluate="<?r:cc:email?>" compare=""-->
+	  <!--#ELSE-->
+		  <tr style="height:20px"><td colspan="2" class="viewonly" style="width:300px">{!r:cc:email!}</td></tr>
+	  <!--#/IF-->
+		</table>
+	  <!--#SQLNODATA-->
+		<table width="100%" cellspacing="0" border="0">
+		  <tr style="height:20px"><td class="regular" style="width:300px">&nbsp;</td><td style="width:20px"><img src="/ims/images/choose_on.gif" onclick="showCustomerContact(1)"></img></td></tr>
+		</table>
+	  <!--#/SQLNODATA-->
+	  <!--#/SQLLOOP-->
+
+    <!--#/IF-->
+  <!--#ELSE-->
+
+ 	  <!--#SQLLOOP name="cc" resourceName="SQLServer" maxRows="1"
+ 				   query="SELECT c.contact_name,
+ 								 dbo.sp_contact_phone(<?p:parameter.toPStmtString()?>) phone,
+ 								 c.email
+ 							FROM contacts c INNER JOIN
+ 								 lookups l ON c.cont_status_type_id = l.lookup_id
+ 						   WHERE l.code='active'
+ 							 AND c.contact_id = <?p:parameter.toPStmtString()?>"-->
+ 		<table width="100%" cellspacing="0" border="0">
+ 		  <tr style="height:20px"><td class="viewonly" style="width:300px">{!r:cc:contact_name!}</td><td style="width:20px"><img src="/ims/images/choose_on.gif" onclick="showCustomerContact(1)"></img></td></tr>
+ 	  <!--#IF  evaluate="<?r:cc:phone?>" compare=""-->
+ 	  <!--#ELSE-->
+ 		  <tr style="height:20px"><td colspan="2" class="viewonly" style="width:300px">{!r:cc:phone!}</td></tr>
+ 	  <!--#/IF-->
+ 	  <!--#IF  evaluate="<?r:cc:email?>" compare=""-->
+ 	  <!--#ELSE-->
+ 		  <tr style="height:20px"><td colspan="2" class="viewonly" style="width:300px">{!r:cc:email!}</td></tr>
+ 	  <!--#/IF-->
+ 		</table>
+ 	  <!--#SQLNODATA-->
+ 		<table width="100%" cellspacing="0" border="0">
+ 		  <tr style="height:20px"><td class="regular" style="width:300px">&nbsp;</td><td style="width:20px"><img src="/ims/images/choose_on.gif" onclick="showCustomerContact(1)"></img></td></tr>
+ 		</table>
+ 	  <!--#/SQLNODATA-->
+	  <!--#/SQLLOOP-->
+
+  <!--#/IF-->
+
+<!--#ELSE-->
+    <table width="100%" cellspacing="0" border="0">
+      <tr style="height:20px"><td class="regular" style="width:300px">&nbsp;</td><td style="width:20px"><img src="/ims/images/choose_on.gif" onclick="showCustomerContact(1)"></img></td></tr>
+	</table>
+<!--#/IF-->
+
+</body>
+</html>

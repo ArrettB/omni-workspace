@@ -1,0 +1,292 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Id: mnt\user_customer_end_users.html, 1, 4/28/2008, David Zhao$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.mnt/user_edit.view?>"-->
+
+<body class="BodyTag">
+
+	<table width="100%" cellspacing="0" cellpadding="0">
+		<tr><td  class="HeaderBar">User End User Permissions</td></tr>
+	</table>
+
+
+
+<form name="uc_form" action="{!s:action!}userCustomerEndUser" method="post">
+  <input type="hidden" name="user_id" value="{!p:user_id!}">
+  <input type="hidden" name="customer_id_list" value="">
+  <input type="hidden" name="customer_type" value="end_user">
+
+<table border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td class="formLabel" colspan="5">Work for Customer&nbsp;&nbsp;<!--</td>
+		<td class="formLabel" colspan="4" align="left">-->
+
+		<!--#SELECT class="regular"
+			name="user_customer_id"
+			query="SELECT uc.user_customer_id, c.customer_name
+				     FROM customers c INNER JOIN
+						  lookups customer_type ON c.customer_type_id = customer_type.lookup_id INNER JOIN
+						  user_customers uc ON c.customer_id = uc.customer_id
+					WHERE customer_type.code <> 'end_user'
+					  AND c.active_flag = 'Y'
+					  AND c.organization_id = <?s:org_id.toPStmtString()?>
+					  AND uc.user_id = <?p:user_id.toPStmtString()?>
+				 ORDER BY c.customer_name"
+			onChange="onCustomerChange()"
+			style="width:200" -->
+		</td>
+	</tr>
+    <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+    <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+	<tr>
+		<td class="formLabel">
+			All End Users
+		</td>
+		<td class="formLabel" colspan="3">
+		</td>
+		<td class="formLabel">
+			Works For End Users:
+		</td>
+	</tr>
+	<tr>
+		<td class="formLabel" nowrap>
+			<input class="regular" type="text" name="customer_search" value="" style="width:200"
+			onKeyUp="performSearch(values, document.uc_form.all_customers, this.value, document.uc_form.selected_customers)">
+		</td>
+	</tr>
+	<tr>
+
+		<td rowspan="4"><div id="availableEndUserDiv">
+
+		<!--#SELECT class="regular"
+			name="all_customers"
+			query="SELECT eu.customer_id, eu.customer_name
+				     FROM customers eu INNER JOIN
+				          user_customers uc ON eu.end_user_parent_id = uc.customer_id
+					WHERE eu.active_flag = 'Y'
+					  AND eu.organization_id = <?s:org_id.toPStmtString()?>
+					  AND NOT EXISTS (SELECT 'x' FROM user_customer_end_users
+						               WHERE user_customer_id = uc.user_customer_id
+						                 AND customer_id = eu.customer_id)
+                      AND uc.user_customer_id = <?p:user_customer_id.toPStmtString()?>
+				 ORDER BY eu.customer_id"
+			onDblClick="addCustomers()"
+			size="10"
+			style="width:200"
+			multiple -->
+		</div></td>
+		<td valign="middle" width="10">
+		</td>
+		<td valign="middle">
+		</td>
+		<td valign="middle" width="10">
+		</td>
+		<td rowspan="4"><div id="selectedEndUserDiv">
+
+		<!--#SELECT class="regular"
+			name="selected_customers"
+			query="SELECT eu.customer_id, eu.customer_name
+			         FROM customers eu INNER JOIN
+			              lookups customer_type ON eu.customer_type_id = customer_type.lookup_id INNER JOIN
+			              user_customer_end_users uceu ON eu.customer_id = uceu.customer_id
+			        WHERE customer_type.code = 'end_user'
+			          AND eu.organization_id = <?s:org_id.toPStmtString()?>
+			     ORDER BY eu.customer_name"
+			onDblClick="removeCustomers()"
+			 size="10"
+			 style="width:200"
+			 multiple -->
+		</div></td>
+		<td>
+				<input type="button" name="customer_view" value="View" class="button2" onClick="newWindow('{!s:showPage!}enet/proj/customer_edit.html?ext_dealer_id={!d:ext_dealer_id!}&theForm=uc_form&theDroplist=selected_customers&customer_id=','customers', 570, 520, selected_customers);">
+	</td>
+	</tr>
+	<tr>
+		<td valign="middle" width="10">
+		</td>
+		<td valign="middle">
+			<input type="button" name="Add" value=" &gt; &gt; " class="button2" onClick="addCustomers()">
+		</td>
+		<td valign="middle" width="10">
+		</td>
+	</tr>
+	<tr>
+		<td valign="middle" width="10">
+		</td>
+		<td valign="middle">
+			<input type="button" name="Remove" value=" &lt; &lt; " class="button2" onClick="removeCustomers()">
+		</td>
+		<td valign="middle" width="10">
+		</td>
+	</tr>
+	<tr>
+		<td class="formLabel" colspan="3">
+		</td>
+	</tr>
+	<!--#EMBED template="embeds/spacer_row.html" spacer_height="10"-->
+	<tr>
+		<td class="formLabel" colspan="3">
+			<input type="submit"  class="button" name="button" value="Save" onClick="onSaveClick();">
+			<input type="button"  class="button" name="button" value="Cancel" onClick="window.close()">
+		</td>
+	</tr>
+
+	<!--#IF defined="<?d:error?>" -->
+	<!--#EMBED template="embeds/spacer_row.html" spacer_height="10"-->
+	<tr>
+		<td colspan="3"><span class="errorText">{!d:error!}</span></td>
+	</tr>
+	<!--#/IF-->
+
+
+</table>
+
+
+
+</form>
+<script type="text/javascript">
+
+var values = new Array();
+var index = 0;
+
+<!--#IF defined="<?r:uc_form:user_customer_id?>" -->
+  <!--#SQLLOOP name="customers"
+               query="SELECT eu.customer_id, eu.customer_name
+                        FROM customers eu INNER JOIN
+				            user_customers uc ON eu.end_user_parent_id = uc.customer_id
+                       WHERE eu.active_flag = 'Y'
+                         AND eu.organization_id = <?s:org_id.toPStmtString()?>
+                         AND NOT EXISTS (SELECT 'x' FROM user_customer_end_users
+                                          WHERE user_customer_id = uc.user_customer_id
+                                            AND customer_id = eu.customer_id)
+                         AND uc.user_customer_id = <?r:uc_form:user_customer_id.toPStmtString()?>
+                    ORDER BY eu.customer_name" -->
+    values[index++] = new Choice({!r:customers:customer_id.toJavaScriptString()!}, {!r:customers:customer_name.toJavaScriptString()!});
+  <!--#/SQLLOOP-->
+<!--#/IF-->
+$(document).ready(function()
+{
+   var uc_id = document.getElementById("user_customer_id").value;
+   $("#availableEndUserDiv").load("{!s:showPage!}embeds/available_end_users.html?parameter=" + uc_id);
+   $("#selectedEndUserDiv").load("{!s:showPage!}embeds/selected_end_users.html?parameter=" + uc_id);
+});
+
+function onCustomerChange()
+{
+	uc_id = document.getElementById("user_customer_id").value;
+	$("#availableEndUserDiv").load("{!s:showPage!}embeds/available_end_users.html?parameter=" + uc_id);
+	$("#selectedEndUserDiv").load("{!s:showPage!}embeds/selected_end_users.html?parameter=" + uc_id);
+}
+
+function Choice(_key, _text)
+{
+  this.key=_key;
+  this.text=_text;
+  this.searchText = _text.toLowerCase();
+}
+
+	function addChoice(choiceObj, selectObj)
+	{
+		selectObj.options[selectObj.options.length] = new Option(choiceObj.text, choiceObj.key, false, false);
+	}
+
+	function clearOptions(selectObj)
+	{
+		selectObj.options.length = 0;
+	}
+
+	function performSearch(choiceArray, selectObj, searchValue, checkSelectObj)
+	{
+		clearOptions(selectObj);
+
+		var expr =  "^" + searchValue.toLowerCase();
+		for (var i = 0; i < choiceArray.length; i++)
+		{
+		   if (choiceArray[i].searchText.search(expr) != -1 && !contains(checkSelectObj, choiceArray[i].key))
+		   {
+				addChoice(choiceArray[i], selectObj);
+		   }
+		}
+	}
+
+	function moveItems(fromSelect, toSelect)
+	{
+		var fromOptions = fromSelect.options;
+		var toOptions = toSelect.options;
+		var index;
+		var tempText;
+		var tempValue;
+		for (var i = fromOptions.length - 1; i >= 0; i--)
+		{
+			if (fromOptions[i].selected)
+			{
+				var moveMe = fromOptions[i];
+				index = toOptions.length;
+				toOptions[index] = new Option(moveMe.text, moveMe.value, false, false);
+				fromOptions[i] = null;
+
+				// Re-sort the select list
+				while (index > 0 && toOptions[index].text < toOptions[index-1].text)
+				{
+					tempText = toOptions[index-1].text;
+					tempValue = toOptions[index-1].value;
+					toOptions[index-1].text = toOptions[index].text;
+					toOptions[index-1].value = toOptions[index].value;
+					toOptions[index].text = tempText;
+					toOptions[index].value = tempValue;
+					index -= 1;
+				}
+			}
+		}
+	}
+
+	function contains(selectObj, value)
+	{
+		for (var i = 0; i < selectObj.options.length; i++)
+		{
+		   if (selectObj.options[i].value == value)
+		   {
+				return true;
+		   }
+		}
+		return false;
+	}
+
+	function addCustomers()
+	{
+		var fromSelect = document.uc_form.all_customers;
+		var toSelect = document.uc_form.selected_customers;
+		moveItems(fromSelect, toSelect);
+	}
+
+
+	function removeCustomers()
+	{
+		var fromSelect = document.uc_form.selected_customers;
+		var toSelect = document.uc_form.all_customers;
+		moveItems(fromSelect, toSelect);
+	}
+
+
+	function getSelectedItemList(selectObj)
+	{
+		var result = "";
+		var length = selectObj.options.length;
+		for (var i = 0; i < length;  i++)
+		{
+			result += selectObj.options[i].value + ";";
+		}
+		return result;
+
+	}
+
+	function onSaveClick()
+	{
+		uc_form.customer_id_list.value = getSelectedItemList(uc_form.selected_customers);
+	}
+
+
+</script>
+
+<!--#EMBED template="embeds/footer.html" -->
+'

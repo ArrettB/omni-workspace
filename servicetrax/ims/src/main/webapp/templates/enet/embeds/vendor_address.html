@@ -1,0 +1,77 @@
+<!-- $Header: vendor_address.html, 4/8/2008, David Zhaon$ -->
+<html>
+<head>
+<title>Vendor Address</title>
+</head>
+<body>
+<!--#SQLLOOP name="address" resourceName="<?s:org_resource?>" maxRows="1"
+      		 query="SELECT LTRIM(RTRIM(address1)) address1,
+      		               LTRIM(RTRIM(address2)) address2,
+      		               LTRIM(RTRIM(address3)) address3,
+      		               LTRIM(RTRIM(city)) city,
+      		               LTRIM(RTRIM(state)) state,
+      		               zipcode
+                      FROM pm00300
+                     WHERE LTRIM(RTRIM(address1)) + LTRIM(RTRIM(address2)) + LTRIM(RTRIM(address3)) <> ''
+                       AND LTRIM(RTRIM(city))  <> ''
+                       AND LTRIM(RTRIM(state)) <> ''
+                       AND vendorid = <?p:vendor_id.toPStmtString()?>
+                       AND adrscode = <?p:address_code.toPStmtString()?>"-->
+  <table width="100%" cellspacing="2" cellpadding="0" border="0">
+<!--#IF evaluate="<?r:address:address1?>" compare=""-->
+  <!--#IF evaluate="<?r:address:address2?>" compare=""-->
+    <tr>
+      <td width="35%"><span class='mandatoryLabel'>&nbsp;&nbsp;Vednor&nbsp;Address</span>:</td>
+      <td class="regularLabel">{!r:address:address3!}</td>
+    </tr>
+  <!--#ELSE-->
+    <tr>
+      <td width="35%"><span class='mandatoryLabel'>&nbsp;&nbsp;Vednor&nbsp;Address</span>:</td>
+      <td class="regularLabel">{!r:address:address2!}</td>
+    </tr>
+    <!--#IF evaluate="<?r:address:address3?>" compare=""-->
+    <!--#ELSE-->
+     <tr>
+       <td width="35%"><span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;</span></td>
+       <td class="regularLabel">{!r:address:address3!}</td>
+     </tr>
+    <!--#/IF-->
+  <!--#/IF-->
+<!--#ELSE-->
+    <tr>
+      <td width="35%"><span class='mandatoryLabel'>&nbsp;&nbsp;Vednor&nbsp;Address</span>:</td>
+      <td class="regularLabel">{!r:address:address1!}</td>
+    </tr>
+  <!--#IF evaluate="<?r:address:address2?>" compare=""-->
+    <!--#IF evaluate="<?r:address:address3?>" compare=""-->
+    <!--#ELSE-->
+     <tr>
+       <td width="35%"><span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;</span></td>
+       <td class="regularLabel">{!r:address:address3!}</td>
+     </tr>
+    <!--#/IF-->
+  <!--#ELSE-->
+    <tr>
+      <td width="35%"><span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;</span></td>
+      <td class="regularLabel">{!r:address:address2!}</td>
+    </tr>
+    <!--#IF evaluate="<?r:address:address3?>" compare=""-->
+    <!--#ELSE-->
+    <tr>
+       <td width="35%"><span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;</span></td>
+       <td class="regularLabel">{!r:address:address3!}</td>
+    </tr>
+    <!--#/IF-->
+  <!--#/IF-->
+<!--#/IF-->
+    <tr><td width="35%"><span class='mandatoryLabel'>&nbsp;&nbsp;City/State/Zip</span>:&nbsp;</td><td class="regularLabel">{!r:address:city!}&nbsp;&nbsp;{!r:address:state!}&nbsp;&nbsp;{!r:address:zipcode!}</td></tr>
+    </table>
+  <!--#SQLNODATA-->
+    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+      <tr><td width="35%"><span class='mandatoryLabel'>&nbsp;&nbsp;Vednor&nbsp;Address</span>:&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td width="35%"><span class='mandatoryLabel'>&nbsp;&nbsp;City/State/Zip</span>:&nbsp;</td><td>&nbsp;</td></tr>
+    </table>
+  <!--#/SQLNODATA-->
+<!--#/SQLLOOP-->
+</body>
+</html>

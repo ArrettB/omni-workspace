@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+
+<!-- 
+The DOCTYPE declaration declares the location of product-specific parts of the
+Ant build file. You can change the values of these declarations to point to
+other available files. This gives you an opportunity to choose what database
+and EJB container to use for the Middlegen samples.
+
+Note that this syntax has nothing to do with Ant or Middlegen. This
+is the standard way defined by w3c to dynamically include external
+files in an XML document. Any decent XML parser will do the include
+transparently. Try to open this file in Internet Explorer and see
+for yourself.
+-->
+
+<!DOCTYPE project [
+   
+]>
+
+
+
+<project name="Charm Based Project" basedir="." xmlns:ivy="antlib:fr.jayasoft.ivy.ant" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+	<target name="clean_svn">
+		<delete includeEmptyDirs="true">
+			<fileset dir="." defaultExcludes="false">
+				<include name="**/*.svn" />
+				<include name="**/*.svn/**" />
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="clean_thumbs">
+		<delete>
+			<fileset dir=".">
+				<include name="**/Thumbs.db" />
+			</fileset>
+		</delete>
+	</target>
+
+
+	<target name="maven_install">
+		<artifact:pom id="maven.project" file="pom.xml" />
+
+		<artifact:install file="pom.xml" >
+			<pom refid="maven.project"/>
+		</artifact:install>
+
+	</target>
+
+	<target name="maven_deploy">
+		<artifact:pom id="maven.project" file="pom.xml" />
+
+		<artifact:deploy file="pom.xml" >
+			<pom refid="maven.project"/>
+		</artifact:deploy>
+
+	</target>
+
+
+</project>

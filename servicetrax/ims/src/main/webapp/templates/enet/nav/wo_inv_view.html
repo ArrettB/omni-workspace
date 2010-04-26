@@ -1,0 +1,173 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<body class="BodyTag" onLoad="">
+
+<span class="Label">
+You may choose a project folder to view that Project's details.
+</span>
+
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="data" var="mainQuery"
+		  query="SELECT data.project_id,
+						data.project_no,
+						data.ext_dealer_id,
+						data.ext_direct_dealer_id,
+						data.ext_dci_dealer_id,
+						data.dealer_name,
+						data.customer_name,
+						data.invoice_id,
+						data.invoice_total,
+						data.po_no,
+						data.date_sent,
+						data.empty
+				   FROM (SELECT p.project_id,
+								p.project_no,
+								c.ext_dealer_id,
+								o.ext_direct_dealer_id,
+								o.ext_dci_dealer_id,
+								c.dealer_name,
+								c.customer_name,
+								i.invoice_id,
+								SUM(IsNull(il.unit_price, 0) * IsNull(il.qty, 0)) invoice_total,
+								i.po_no,
+								i.date_sent,
+								null empty
+						   FROM invoices i LEFT JOIN
+						        invoice_lines il ON	i.invoice_id = il.invoice_id LEFT JOIN
+						        lookups lt ON lt.lookup_id = il.invoice_line_type_id JOIN
+						        jobs j ON i.job_id = j.job_id JOIN
+						        projects p ON p.project_id = j.project_id JOIN
+						        invoice_statuses s ON s.status_id = i.status_id JOIN
+						        lookups pt ON pt.lookup_id = p.project_type_id JOIN
+						        customers c ON p.customer_id = c.customer_id JOIN
+						        organizations o ON o.organization_id = i.organization_id
+						  WHERE i.organization_id = <?s:org_id.toPStmtString()?>
+							AND s.code = 'invoiced'
+							AND pt.code = 'service_account'
+							AND p.project_id LIKE <?p:r_project_id.isNull('%').toPStmtString()?>
+					   GROUP BY	p.project_id,
+								p.project_no,
+								i.invoice_id,
+								c.ext_dealer_id,
+								o.ext_direct_dealer_id,
+								o.ext_dci_dealer_id,
+								c.dealer_name,
+								c.customer_name,
+								i.po_no,
+								i.date_sent,
+								lt.code
+						) data
+			   ORDER BY data.project_no DESC,
+						data.invoice_id DESC" -->
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="c" var="customerQuery"
+		  query="SELECT DISTINCT
+						c.customer_id,
+						c.customer_name
+				   FROM invoices i JOIN
+				        jobs j ON i.job_id = j.job_id JOIN
+				        projects p ON p.project_id = j.project_id JOIN
+				        invoice_statuses s ON s.status_id = i.status_id	JOIN
+				        lookups pt ON pt.lookup_id = p.project_type_id JOIN
+				        customers c ON c.customer_id = p.customer_id
+				  WHERE	i.organization_id = <?s:org_id.toPStmtString()?>
+					AND s.code = 'invoiced'
+					AND pt.code = 'service_account'
+					AND p.project_id like <?p:r_project_id.isNull('%').toPStmtString()?>
+			   ORDER BY c.customer_name" -->
+
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="c" var="dealerQuery"
+		  query="SELECT DISTINCT
+						c.dealer_name,
+						c.dealer_name
+				   FROM invoices i JOIN
+				        jobs j ON i.job_id = j.job_id JOIN
+				        projects p ON p.project_id = j.project_id JOIN
+				        invoice_statuses s ON s.status_id = i.status_id	JOIN
+				        lookups pt ON pt.lookup_id = p.project_type_id JOIN
+				        customers c ON c.customer_id = p.customer_id
+				  WHERE i.organization_id = <?s:org_id.toPStmtString()?>
+					AND s.code = 'invoiced'
+					AND pt.code = 'service_account'
+					AND p.project_id like <?p:r_project_id.isNull('%').toPStmtString()?>
+			   ORDER BY	c.dealer_name" -->
+
+
+<!--#SMARTTABLE name="wo_inv_view"
+		class="SmartTable"
+		query="<?d:mainQuery?>"
+-->
+	<!--#SMARTCOLUMN name="project_no" sort="project_no" title="Project#" width="10%" align="center" nowrap href="<?s:action?>setProjectDatum?project_id=<?r:wo_inv_view:project_id?>&templateName=enet/proj/pf_main.html&request_id=" target="_top" filter="a_project_no:project_no" -->
+<!--#IF evaluate="<?r:wo_inv_view:ext_dealer_id?>" compare="<?s:user.extDealerID?>"-->
+	<!--#SMARTCOLUMN name="invoice_id" sort="invoice_id" title="Invoice#" width="10%" align="center" nowrap filter="a_invoice_id:invoice_id" -->
+<!--#ELSE-->
+	<!--#SMARTCOLUMN name="invoice_id" sort="invoice_id" title="Invoice#" width="10%" align="center" nowrap href="" onClick="showDetail('<?r:wo_inv_view:invoice_id?>');return false;" filter="a_invoice_id:invoice_id" -->
+<!--#/IF-->
+	<!--#SMARTCOLUMN name="customer_name" sort="customer_name" title="Customer" width="25%"
+		filter="customer_name:customer_name" filterQuery="<?d:customerQuery?>" filterQuick="true"
+	-->
+	<!--#SMARTCOLUMN name="po_no" sort="po_no" title="PO&nbsp;#" width="10%" value="<?r:wo_inv_view:po_no.isNull('None')?>" align="center" filter="a_po_no:po_no" -->
+	<!--#SMARTCOLUMN name="date_sent" sort="date_sent" title="Invoice&nbsp;Date" format="date" width="5%" filter="a_date_sent:convert(varchar(12), date_sent, 101) like '%'+<?p:a_date_sent.toPStmtString()?>+'%'" -->
+	<!--#SMARTCOLUMN name="invoice_total" sort="invoice_total" title="Total Amt$" format="money" width="10%" align="right" filter="a_invoice_total:invoice_total" -->
+<!--#IF evaluate="<?s:rights.enet/proj/multidealer.view?>" compare="true" --><!-- Show only if user can see multiple dealers -->
+	<!--#SMARTCOLUMN name="dealer_name" sort="dealer_name" title="Dealer" width="5%" align="center"
+		filter="dealer_name:dealer_name" filterQuery="<?d:dealerQuery?>" filterQuick="true"
+	-->
+<!--#ELSEIF evaluate="<?s:rights.enet/proj/non_a_m_dealers.view?>" compare="true" --><!-- Show only if user can see non a_m dealers -->
+	<!--#SMARTCOLUMN name="dealer_name" sort="dealer_name" title="Dealer" width="5%" align="center"
+		filter="dealer_name:dealer_name" filterQuery="<?d:dealerQuery?>" filterQuick="true"
+	-->
+<!--#/IF-->
+<!--#IF evaluate="<?s:user.extDealerID.trim()?>" compare="<?r:wo_inv_view:ext_dci_dealer_id.trim()?>"-->
+	<!--#IF evaluate="<?r:wo_inv_view:ext_dealer_id.trim()?>" compare="<?r:wo_inv_view:ext_dci_dealer_id.trim()?>"-->
+		<!--#SMARTCOLUMN name="empty" sort="empty" title="" width="5%" value="DCI Spreadsheet" href="http://www.ambis.com/servicetrax/interactiveViewer.asp?reportName=c:/servicetrax/dci_invoice.rpt" target="dci_a_m_spreadsheet"-->
+		<!--#SMARTCOLUMN name="empty" sort="empty" title="" width="5%" value="SP Spreadsheet" href="http://www.ambis.com/servicetrax/interactiveViewer.asp?reportName=c:/servicetrax/a_m_invoice.rpt" target="a_m_spreadsheet" -->
+	<!--#ELSE-->
+		<!--#SMARTCOLUMN name="empty" sort="empty" title="" width="5%" value="DCI Spreadsheet" href="http://www.ambis.com/servicetrax/interactiveViewer.asp?reportName=c:/servicetrax/dci_invoice.rpt" target="dci_spreadsheet"-->
+	<!--#/IF-->
+<!--#ELSEIF evaluate="<?s:user.extDealerID.trim()?>" compare="<?r:wo_inv_view:ext_direct_dealer_id.trim()?>"-->
+	<!--#IF evaluate="<?r:wo_inv_view:ext_dealer_id.trim()?>" compare="<?r:wo_inv_view:ext_direct_dealer_id.trim()?>"-->
+		<!--#SMARTCOLUMN name="empty" sort="empty" title="" width="5%" value="SP Spreadsheet" href="http://www.ambis.com/servicetrax/interactiveViewer.asp?reportName=c:/servicetrax/a_m_invoice.rpt" target="a_m_spreadsheet" -->
+	<!--#ELSE-->
+		<!--#SMARTCOLUMN name="empty" sort="empty" title="" width="5%" -->
+	<!--#/IF-->
+<!--#ELSE-->
+	<!--#SMARTCOLUMN name="empty" sort="empty" title="" width="5%" -->
+<!--#/IF-->
+
+<!--#/SMARTTABLE -->
+
+<script type="text/javascript">
+<!--
+
+	function showDetail(invoice_id) //display inv detail popup window
+	{
+		if( invoice_id == null )
+			invoice_id = '';
+		newWindowScrollBars("{!s:showPage!}enet/nav/inv_detail.html?invoice_id="+invoice_id, "invoice_detail_window",400,700);
+	}
+
+	function redisplayPage()
+	{//used by report
+
+		var r_project_id = escape(report.r_project_id.options[report.r_project_id.selectedIndex].value);
+		if( r_project_id == null )
+			 r_project_id = '';
+
+		var r_from_date = escape(report.r_from_date.value);
+		if( r_from_date == null )
+			 r_from_date = '';
+
+		var r_to_date = escape(report.r_to_date.value);
+		if( r_to_date == null )
+			 r_to_date = '';
+
+		location='{!s:showPage!}enet/nav/wo_inv_view.html?r_project_id='+r_project_id+'&r_from_date='+r_from_date+'&r_to_date='+r_to_date+'&r_show_report=true';
+	}
+
+//-->
+</script>
+
+<!--#EMBED template="enet/embeds/footer.html" -->
+

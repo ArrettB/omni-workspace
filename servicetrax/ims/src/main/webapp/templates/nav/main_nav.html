@@ -1,0 +1,17 @@
+<!--#EMBED template="embeds/header.html" -->
+
+<frameset rows="240,*">
+<frameset cols="50%,50%">
+	<frame name="function_frame" src="{!s:showPage!}nav/func_list.html" >
+	<frame name="search_frame" src="{!s:showPage!}nav/search_form.html" >
+</frameset>
+	<frame name="navigator_results" src="{!s:action!}nav/search_results.html">
+</frameset>
+
+<noframes>
+<body>
+   Your browser does not support frames.
+</body>
+</noframes>
+
+<!--#EMBED template="embeds/footer.html" -->

@@ -1,0 +1,223 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!-- $Header: search_form.html, 18, 10/2/2006 10:04:47 AM, Greg Case$ -->
+
+<body onLoad="searchForm.customer_name.focus();">
+
+<script language="JavaScript">
+<!--
+	var a_destination = "navigator_results";
+	var today = new Date()
+	var unique = today.getTime();
+
+<!--#IF evaluate="<?d:queryGood?>" compare="true"-->
+
+	<!--#IF evaluate="<?d:result_type?>" compare="pf"-->
+		newWindowScrollBars('{!s:showPage!}enet/nav/pf_results.html?z=' + unique, a_destination, 400,700);
+
+	<!--#ELSEIF evaluate="<?d:result_type?>" compare="wo"-->
+		<!--#CHECKSECURITY right="rights.enet/multi_vendor.view" -->
+			newWindowScrollBars('{!s:showPage!}enet/nav/wo_results.html?z=' + unique, a_destination, 400,700);
+		<!--#ELSE-->
+			<!--vendor is logged in so only show View/Update Vendor Workorders-->
+			newWindowScrollBars('{!s:showPage!}enet/nav/vendor_view.html?status={!d:status!}&status_seq_no={!d:status_seq_no!}', a_destination, 400,700);
+		<!--#/CHECKSECURITY-->
+
+	<!--#ELSEIF evaluate="<?d:result_type?>" compare="sr"-->
+		newWindowScrollBars('{!s:showPage!}enet/nav/sr_results.html?z=' + unique, a_destination, 400,700);
+
+	<!--#ELSEIF evaluate="<?d:result_type?>" compare="qr"-->
+		newWindowScrollBars('{!s:showPage!}enet/nav/qr_results.html?z=' + unique, a_destination, 400,700);
+
+	<!--#ELSEIF evaluate="<?d:result_type?>" compare="q"-->
+		newWindowScrollBars('{!s:showPage!}enet/nav/q_results.html?z=' + unique, a_destination, 400,700);
+
+	<!--#ELSEIF evaluate="<?d:result_type?>" compare="all"-->
+		newWindowScrollBars('{!s:showPage!}enet/nav/all_results.html?z=' + unique, a_destination, 400,700);
+
+	<!--#ELSE-->
+		newWindowScrollBars('{!s:showPage!}enet/nav/no_results.html?z=' + unique, a_destination, 400,700);
+	<!--#/IF-->
+
+<!--#/IF-->
+
+	function versionNoUpdated()
+	{
+		if (searchForm.version_no)
+		{
+			if (searchForm.version_no.value > 0)
+				searchForm.current_version.checked=false;
+			else
+				searchForm.current_version.checked=true;
+		}
+	}
+
+	function currentUpdated()
+	{
+		if (searchForm.current_version)
+		{
+			if (searchForm.current_version.checked)
+			{
+				searchForm.version_no.value = "";
+				searchForm.version_no.className = "readonly";
+				searchForm.version_no.disabled = true;
+			}
+			else
+			{
+				searchForm.version_no.className = "regular";
+				searchForm.version_no.disabled = false;
+			}
+		}
+	}
+
+	function searchClicked()
+	{
+		if( parent.parent.body_frame )
+		{
+			if (!searchForm.current_version.checked && searchForm.version_no.value == '')
+			{
+				alert('You must enter a version number if "Current Version" is not selected');
+			}
+			else
+			{
+				parent.parent.body_frame.navigator_results.location = '{!s:showPage!}enet/req/wait.html';
+				searchForm.submit();
+			}
+		}
+	}
+
+	function archive_access(obj)
+	{
+		var value = obj.value;
+		var archive_div = document.getElementById('archive_div');
+		var archive = document.getElementById('record_status_type_name');
+
+		if((value=='sr')||(value=='qr'))
+		{
+			archive_div.style.display='block';
+		}
+		else
+		{
+			archive.checked=false;
+			archive_div.style.display='none';
+		}
+	}
+
+-->
+</script>
+
+<form method="POST" name="searchForm" action="{!s:action!}enetNavSearch" >
+	<table width="100%" cellspacing="3" cellpadding="0" border="0" align="center">
+		<tr>
+			<td class="Label" nowrap><b>Search By:</b></td>
+		</tr>
+		<tr>
+			<td><table border="0" cellspacing="0" cellpadding="0"><tr>
+			<td class="HeaderLabel" style="padding-left: 12px" nowrap valign="bottom">
+				Project #:&nbsp;&nbsp;<input type="text" size="15" name="project_no" value="{!d:project_no!}" class="regular">&nbsp;&nbsp;
+				Request #:&nbsp;&nbsp;<input type="text" size="4"  name="request_no" value="{!d:request_no!}" class="regular">&nbsp;&nbsp;
+				Current Version:&nbsp;&nbsp; <input type="checkbox" name="current_version" value="checked" onClick="currentUpdated();">&nbsp;&nbsp;
+				Version #: <input type="text" size="3"  name="version_no" value="{!d:version_no!}" class="regular" onChange="versionNoUpdated();">&nbsp;&nbsp;
+			<script language="javascript1.2">
+			<!--
+			<!--#IF defined="<?p:current_version?>"-->
+			searchForm.current_version.checked = true;
+			<!--#ELSEIF defined="<?p:version_no?>" -->
+			searchForm.current_version.checked = false;
+			<!--#ELSE -->
+			//must be first time we came in, default to checked
+			searchForm.current_version.checked = true;
+			<!--#/IF-->
+				currentUpdated();
+			//-->
+			</script>
+			</td>
+			</tr></table></td>
+		</tr>
+		<tr>
+			<td><table border="0" cellspacing="0" cellpadding="0"><tr>
+			<td class="HeaderLabel" style="padding-left: 12px" nowrap>
+				Customer Name:&nbsp;&nbsp;<input type="text" size="30" name="customer_name" value="{!d:customer_name!}" class="regular">
+				&nbsp;&nbsp;
+				End User Name:&nbsp;&nbsp;<input type="text" size="30" name="end_user_name" value="{!d:end_user_name!}" class="regular">
+			</td>
+			</tr></table></td>
+		</tr>
+		<tr>
+			<td><table border="0" cellspacing="0" cellpadding="0"><tr>
+			<td class="HeaderLabel" style="padding-left: 12px" nowrap>
+				Job Name:&nbsp;&nbsp;<input type="text" size="37" name="job_name" value="{!d:job_name!}" class="regular">
+			</td>
+			</tr></table></td>
+		</tr>
+		<tr>
+			<td><table border="0" cellspacing="0" cellpadding="0"><tr>
+			<td class="HeaderLabel" style="padding-left: 12px" nowrap>
+				Customer PO #:&nbsp;&nbsp;<input type="text" size="20" name="dealer_po_no" value="{!d:dealer_po_no!}" class="regular">&nbsp;&nbsp;&nbsp;&nbsp;
+				End User PO #:&nbsp;&nbsp;<input type="text" size="20" name="customer_po_no" value="{!d:customer_po_no!}" class="regular">
+			</td>
+			</tr></table></td>
+		</tr>
+		<tr>
+			<td><table border="0" cellspacing="0" cellpadding="0"><tr>
+			<td class="HeaderLabel" style="padding-left: 12px" nowrap>
+				Project Contact:&nbsp;&nbsp;<select name="contact_type" class="regular">
+					<option value="ALL" <!--#IF evaluate="<?d:contact_type?>" compare="ALL"-->selected<!--#/IF-->>All Contacts</option>
+					<option value="a_d_designer_contact_id" <!--#IF evaluate="<?d:contact_type?>" compare="a_d_designer_contact_id"-->selected<!--#/IF-->>A&D Designer</option>
+					<option value="a_m_contact_id" <!--#IF evaluate="<?d:contact_type?>" compare="a_m_contact_id"-->selected<!--#/IF-->>Service Provider Contact</option>
+					<option value="a_m_install_sup_contact_id" <!--#IF evaluate="<?d:contact_type?>" compare="a_m_install_sup_contact_id"-->selected<!--#/IF-->>Service Provider Foreman</option>
+					<option value="customer_contact_id" <!--#IF evaluate="<?d:contact_type?>" compare="customer_contact_id"-->selected<!--#/IF-->>Customer</option>
+					<option value="data_phone_contact_id" <!--#IF evaluate="<?d:contact_type?>" compare="data_phone_contact_id"-->selected<!--#/IF-->>Data</option>
+					<option value="d_designer_contact_id" <!--#IF evaluate="<?d:contact_type?>" compare="d_designer_contact_id"-->selected<!--#/IF-->>Dealer Design Rep</option>
+					<option value="d_proj_mgr_contact_id" <!--#IF evaluate="<?d:contact_type?>" compare="d_proj_mgr_contact_id"-->selected<!--#/IF-->>Dealer Project Mgr</option>
+					<option value="d_sales_rep_contact_id" <!--#IF evaluate="<?d:contact_type?>" compare="d_sales_rep_contact_id"-->selected<!--#/IF-->>Dealer Sales Rep</option>
+					<option value="d_sales_sup_contact_id" <!--#IF evaluate="<?d:contact_type?>" compare="d_sales_sup_contact_id"-->selected<!--#/IF-->>Dealer Sales Support</option>
+					<option value="electrician_contact_id" <!--#IF evaluate="<?d:contact_type?>" compare="electrician_contact_id"-->selected<!--#/IF-->>Electrician</option>
+					<option value="carpet_layer_contact_id" <!--#IF evaluate="<?d:contact_type?>" compare="carpet_layer_contact_id"-->selected<!--#/IF-->>Floor Coverer</option>
+					<option value="furniture1_contact_id" <!--#IF evaluate="<?d:contact_type?>" compare="furniture1_contact_id"-->selected<!--#/IF-->>Furniture Vendor 1</option>
+					<option value="furniture2_contact_id" <!--#IF evaluate="<?d:contact_type?>" compare="furniture2_contact_id"-->selected<!--#/IF-->>Furniture Vendor 2</option>
+					<option value="gen_contractor_contact_id" <!--#IF evaluate="<?d:contact_type?>" compare="gen_contractor_contact_id"-->selected<!--#/IF-->>General Contractor</option>
+					<option value="mover_contact_id" <!--#IF evaluate="<?d:contact_type?>" compare="mover_contact_id"-->selected<!--#/IF-->>Mover</option>
+					<option value="other_contact_id" <!--#IF evaluate="<?d:contact_type?>" compare="other_contact_id"-->selected<!--#/IF-->>Other</option>
+					<option value="phone_contact_id" <!--#IF evaluate="<?d:contact_type?>" compare="phone_contact_id"-->selected<!--#/IF-->>Phone</option>
+					</select>&nbsp;&nbsp;&nbsp;&nbsp;
+				Contact Name:&nbsp;&nbsp;<input type="text" size="20" name="contact_name" value="{!d:contact_name!}" class="regular">
+			</td>
+			</tr></table></td>
+		</tr>
+		<tr>
+			<td><table border="0" cellspacing="0" cellpadding="0"><tr>
+			<td class="HeaderLabel" style="padding-left: 12px" nowrap>
+				Result Type:&nbsp;&nbsp;<select name="result_type" class="regular" onchange="javascript:archive_access(this);">
+<!--#CHECKSECURITY right="rights.enet/multi_vendor.view" -->
+					<option value="pf"  <!--#IF evaluate="<?d:result_type?>" compare="pf" -->selected<!--#/IF-->>Project Folder</option>
+					<option value="wo" <!--#IF evaluate="<?d:result_type?>" compare="wo"-->selected<!--#/IF-->>Workorder</option>
+					<option value="sr"  <!--#IF evaluate="<?d:result_type?>" compare="sr" -->selected<!--#/IF-->>Service Request</option>
+					<option value="qr"  <!--#IF evaluate="<?d:result_type?>" compare="qr" -->selected<!--#/IF-->>Quote Request</option>
+					<option value="q"   <!--#IF evaluate="<?d:result_type?>" compare="q"  -->selected<!--#/IF-->>Quote</option>
+					<option value="all" <!--#IF evaluate="<?d:result_type?>" compare="all"-->selected<!--#/IF-->>All</option>
+<!--#ELSE-->
+<!--case when vendor is viewing-->
+					<option value="wo" <!--#IF evaluate="<?d:result_type?>" compare="wo"-->selected<!--#/IF-->>Workorder</option>
+<!--#/CHECKSECURITY-->
+					</select>
+					&nbsp;&nbsp;&nbsp;
+					<div id="archive_div" style="width: 100px;display: none;<!--#IF evaluate="<?d:result_type?>" compare="sr" -->display: block;<!--#/IF--><!--#IF evaluate="<?d:result_type?>" compare="qr" -->display: block;<!--#/IF-->">
+					Archive: <input type="checkbox" name="record_status_type_name" value="Closed" <!--#IF evaluate="<?d:record_status_type_name?>" compare="Closed"-->checked="true"<!--#/IF--> />
+					</div>
+			</td>
+			</tr></table></td>
+		</tr>
+		<tr><td>&nbsp;</td></tr>
+		<tr>
+			<td><table border="0" cellspacing="0" cellpadding="0"><tr>
+			<td class="HeaderLabel" style="padding-left: 12px" nowrap>
+				<input type="button" class="Button" name="search" Value="Search" class="regular" onClick="searchClicked()">
+			</td>
+			</tr></table></td>
+		</tr>
+
+		</tr>
+	</table>
+
+</form>
+<!--#EMBED template="enet/embeds/footer.html" -->

@@ -1,0 +1,97 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: rate_edit.html, 8, 10/3/2005 8:35:20 AM, Greg Case$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.job/rate_edit.view?>"-->
+
+<body class="BodyTag" onLoad="window.focus()">
+
+<!-- Only display when a id is passed in -->
+<!--#IF defined="<?p:job_item_rate_id?>"-->
+
+   <!--#SMARTFORM name="job/rate_edit" table="job_item_rates" key="job_item_rate_id"
+                  security="rights" onClickFunction="exitFunction"
+                  preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+				  postHandler="ims.handlers.maintenance.ClearIDPostHandler"
+                  buttons="Save,Cancel"
+   -->
+      <!--#SMARTFIELD name="loc" type="hidden" value="<?p:loc?>" -->
+		<!--#SMARTFIELD name="clear_id" type="hidden" value="job_item_rate_id"-->
+
+   <table width="100%">
+      <tr><td class="TableTitle" colspan="4">Edit Job Item Rates</td></tr>
+      <tr>
+         <td><!--#SMARTFIELD title="Item:" div="</td><td>" name="item_id" type="chooser" table="items" display="name" key="item_id" filter="organization_id=<?s:org_id.toPStmtInt()?>" readonly class="readonly" --></td>
+         <td><!--#SMARTFIELD title="Rate:" div="</td><td>" name="rate" type="text" format="money" align="right"--></td>
+      </tr>
+      <!--#IF evaluate="<?d:mode?>" compare="Update"-->
+      <tr>
+          <td class="TableTitle" colspan="4">System Info</td>
+      </tr>
+      <!--#/IF-->
+      <tr>
+         <td><!--#SMARTFIELD title="Date Created" div="</td><td>" name="date_created" type="datetime"
+                             mode="Update" readonly class="readonly" size="22" --></td>
+         <td><!--#SMARTFIELD title="Created By" div="</td><td>" name="created_by" type="chooser"
+                             mode="Update" table="users" display="first_name+' '+last_name" key="user_id"
+                             readonly class="readonly"--></td>
+      </tr>
+      <tr>
+         <td><!--#SMARTFIELD title="Date Modified" div="</td><td>" name="date_modified" type="datetime"
+                             mode="Update" readonly class="readonly" size="22"--></td>
+         <td><!--#SMARTFIELD title="Modified By" div="</td><td>" name="modified_by" type="chooser"
+                             mode="Update" table="users" display="first_name+' '+last_name" key="user_id"
+                             readonly class="readonly"-->
+      </tr>
+   </table>
+
+   <!--#/SMARTFORM -->
+
+<!--#/IF-->
+
+	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	   <tr><td class="tableHeader">Job Item Rates List</td></tr>
+	</table>
+
+   <!--#SMARTTABLE name="rate_edit" class="SmartTable" maxRows="100"
+    	   query="SELECT job_item_rate_id, item_id, item_name, item_type_name, rate, uom_type_name, billable_flag, expense_export_code
+             	 FROM job_item_rates_v
+                WHERE job_id = <?s:job_id.toPStmtString()?>
+                  AND organization_id = <?s:org_id.toPStmtString()?>
+                ORDER BY item_name"
+
+   -->
+<!--#CHECKSECURITY right="rights.job/rate_edit.update" -->
+	<!--#SMARTCOLUMN title="Item" name="item_name" sort="item_name" href="<?s:showPage?>job/rate_edit.html?loc=rate_edit&job_item_rate_id=<?r:rate_edit:job_item_rate_id?>" -->
+<!--#ELSE-->
+	<!--#SMARTCOLUMN title="Item" name="item_name" sort="item_name"-->
+<!--#/CHECKSECURITY-->
+	<!--#SMARTCOLUMN title="Item Type" name="item_type_name" sort="item_type_name" -->
+	<!--#SMARTCOLUMN title="Rate" name="rate" sort="rate" format="$###,###.00#" align="right" -->
+	<!--#SMARTCOLUMN title="U of M" name="uom_type_name" sort="uom_type_name" -->
+	<!--#SMARTCOLUMN title="Billable" name="billable_flag" sort="billable_flag" align="center"-->
+	<!--#SMARTCOLUMN title="Exp Code" name="expense_export_code" sort="expense_export_code" align="center"-->
+   <!--#/SMARTTABLE -->
+
+<!--#IF undefined="<?p:job_item_rate_id?>"-->
+	<br>
+	<input name="cancel" type="button" value="Cancel" class="button" onClick="window.opener.focus();parent.window.close();">
+<!--#/IF-->
+
+</body>
+
+<script language="JavaScript">
+<!--
+
+	function exitFunction(button)
+	{
+	   if( button == 'Cancel' )
+	   {
+	      parent.window.opener.focus();
+	      parent.close();
+	   }
+	}
+
+-->
+</script>
+
+<!--#EMBED template="embeds/footer.html" -->

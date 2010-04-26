@@ -1,0 +1,1 @@
+SELECT yes_no_type_code code, (case yes_no_type_code when 'Y' then 'Billable' else 'NonBillable' end) type FROM yes_no_type_v

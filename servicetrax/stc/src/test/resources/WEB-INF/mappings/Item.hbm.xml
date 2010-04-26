@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.Item" table="ITEMS" schema="dbo" catalog="">
+        <id name="itemId" type="java.lang.Long">
+            <column name="ITEM_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="lookupByItemStatusTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ITEM_STATUS_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByItemTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ITEM_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="organization" class="com.dynamic.servicetrax.orm.Organization" fetch="select">
+            <column name="ORGANIZATION_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByJobTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="JOB_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <property name="name" type="string">
+            <column name="NAME" length="200" not-null="true" />
+        </property>
+        <property name="code" type="string">
+            <column name="CODE" length="10" />
+        </property>
+        <property name="description" type="string">
+            <column name="DESCRIPTION" length="100" />
+        </property>
+        <property name="extItemId" type="string">
+            <column name="EXT_ITEM_ID" length="30" not-null="true" />
+        </property>
+        <property name="billableFlag" type="string">
+            <column name="BILLABLE_FLAG" length="1" not-null="true" />
+        </property>
+        <property name="sequenceNo" type="java.lang.Long">
+            <column name="SEQUENCE_NO" precision="18" scale="0" />
+        </property>
+        <property name="expenseExportCode" type="string">
+            <column name="EXPENSE_EXPORT_CODE" length="10" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="createdBy" type="long">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <property name="modifiedBy" type="java.lang.Long">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </property>
+        <property name="costPerUom" type="big_decimal">
+            <column name="COST_PER_UOM" precision="18" />
+        </property>
+        <property name="percentMargin" type="java.lang.Short">
+            <column name="PERCENT_MARGIN" precision="3" scale="0" />
+        </property>
+        <property name="columnPosition" type="string">
+            <column name="COLUMN_POSITION" length="13" />
+        </property>
+        <set name="resourceTypeItems" inverse="true">
+            <key>
+                <column name="ITEM_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ResourceTypeItem" />
+        </set>
+        <set name="itemCostingHistories" inverse="true">
+            <key>
+                <column name="ITEM_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ItemCostingHistory" />
+        </set>
+        <set name="invoiceLines" inverse="true">
+            <key>
+                <column name="ITEM_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.InvoiceLine" />
+        </set>
+        <set name="serviceLines" inverse="true">
+            <key>
+                <column name="ITEM_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ServiceLine" />
+        </set>
+        <set name="jobItemRates" inverse="true">
+            <key>
+                <column name="ITEM_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.JobItemRate" />
+        </set>
+        <set name="resourceItems" inverse="true">
+            <key>
+                <column name="ITEM_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ResourceItem" />
+        </set>
+    </class>
+</hibernate-mapping>

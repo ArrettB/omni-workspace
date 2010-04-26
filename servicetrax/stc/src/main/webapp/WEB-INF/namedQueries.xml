@@ -1,0 +1,585 @@
+<?xml version="1.0"?>
+
+<namedQueries>
+
+	<namedQuery>
+		<id>openJobsByNumber</id>
+		<service>JDBCService</service>
+		<query> <![CDATA[
+				SELECT j.job_id, j.job_no, l.code, j.job_name, c.customer_name
+				FROM jobs j, lookups l, customers c
+				WHERE j.job_status_type_id = l.lookup_id
+				AND j.customer_id = c.customer_id
+				AND l.code <> 'closed'
+				AND j.job_no LIKE :number
+				AND c.organization_id = :organization_id
+				ORDER BY j.job_no
+			]]>
+		</query>
+		<parameter name="organization_id" type="Integer"/>
+		<parameter name="number" type="String"/>
+	</namedQuery>
+
+	<namedQuery>
+		<id>openJobsByCustomer</id>
+		<service>JDBCService</service>
+		<query> <![CDATA[
+				SELECT j.job_id, j.job_no, l.code, j.job_name, c.customer_name
+				FROM jobs j, lookups l, customers c
+				WHERE j.job_status_type_id = l.lookup_id
+				AND j.customer_id = c.customer_id
+				AND l.code <> 'closed'
+				AND LOWER(c.customer_name) LIKE LOWER(:customer)
+				AND c.organization_id = :organization_id
+				ORDER BY j.job_no
+			]]>
+		</query>
+		<parameter name="organization_id" type="Integer"/>
+		<parameter name="customer" type="String"/>
+	</namedQuery>
+
+	<namedQuery>
+		<id>reqsByJob</id>
+		<service>JDBCService</service>
+		<query> <![CDATA[
+				SELECT s.service_id, s.service_no, s.description, l.code
+				FROM services s, lookups l
+				WHERE s.serv_status_type_id = l.lookup_id
+				AND l.code <> 'closed'
+				AND s.job_id = :job_id
+				ORDER BY s.service_no
+			]]>
+		</query>
+		<parameter name="job_id" type="Integer"/>
+	</namedQuery>
+
+	<namedQuery>
+		<id>resourcesByName</id>
+		<service>JDBCService</service>
+		<query> <![CDATA[
+			SELECT resource_id, name AS resource_name
+			FROM resources
+			WHERE active_flag = 'Y'
+			AND organization_id = :organization_id
+			AND LOWER(name) LIKE lower(:name)
+			ORDER BY name
+			]]>
+		</query>
+		<parameter name="organization_id" type="Integer"/>
+		<parameter name="name" type="String"/>
+	</namedQuery>
+
+	<namedQuery>
+		<id>resourcesByEmployeeNo</id>
+		<service>JDBCService</service>
+		<query> <![CDATA[
+			SELECT DISTINCT resource_id, resource_name, employee_no
+			FROM tcn_resources_v
+			WHERE organization_id = :organization_id
+			AND employee_no LIKE :employee_no
+			ORDER BY resource_name
+			]]>
+		</query>
+		<parameter name="organization_id" type="Integer"/>
+		<parameter name="employee_no" type="String"/>
+	</namedQuery>
+
+	<namedQuery>
+		<id>itemsByResourceJob</id>
+		<service>JDBCService</service>
+		<query> <![CDATA[
+            SELECT DISTINCT i.item_id, i.name item_name
+			  FROM items i INNER JOIN 
+                   lookups item_type ON i.item_type_id = item_type.lookup_id INNER JOIN
+                   resource_items ri ON i.item_id = ri.item_id INNER JOIN
+                   job_item_rates jir ON i.item_id = jir.item_id INNER JOIN
+                   jobs j ON i.job_type_id = j.job_type_id
+		     WHERE j.job_id = jir.job_id
+			   AND item_type.code = 'hours'
+               AND i.organization_id = :organization_id
+			   AND ri.resource_id = :resource_id
+			   AND j.job_id = :job_id
+		  ORDER BY i.name
+			]]>
+		</query>
+		<parameter name="organization_id" type="Integer"/>
+		<parameter name="resource_id" type="String"/>
+		<parameter name="job_id" type="Integer"/>
+	</namedQuery>
+
+	<namedQuery>
+		<id>serviceNoFromId</id>
+		<service>JDBCService</service>
+		<query> <![CDATA[
+			SELECT service_no
+			FROM services
+			WHERE service_id = :service_id
+			]]>
+		</query>
+		<parameter name="service_id" type="String"/>
+	</namedQuery>
+
+	<namedQuery>
+		<id>payCodes</id>
+		<service>JDBCService</service>
+		<query> <![CDATA[
+			SELECT payrcord, dscriptn
+			FROM :tableName
+			ORDER BY payrcord
+			]]>
+		</query>
+		<parameter name="tableName" type="String"/>
+	</namedQuery>
+
+	<namedQuery>
+		<id>hibernate.openJobsByNumber</id>
+		<service>hibernateService</service>
+		<query> <![CDATA[
+				SELECT new com.dynamic.servicetrax.tc.JobInfo(j)
+				  FROM Job j
+				 WHERE convert(varchar, j.jobNo) LIKE :number
+				   AND j.lookupByJobStatusTypeId.code <> 'closed'
+				   AND j.customer.organization.organizationId = :organization_id
+			  ORDER BY j.jobNo
+			]]>
+		</query>
+		<parameter name="organization_id" type="Long"/>
+		<parameter name="number" type="String"/>
+	</namedQuery>
+
+	<namedQuery>
+		<id>hibernate.openJobsByEndUser</id>
+		<service>hibernateService</service>
+		<query> <![CDATA[
+				SELECT new com.dynamic.servicetrax.tc.JobInfo(j)
+				  FROM Job j
+				 WHERE j.endUser.customerName LIKE :endUserName
+				   AND j.lookupByJobStatusTypeId.code <> 'closed'
+				   AND j.customer.organization.organizationId = :organization_id
+		      ORDER BY j.jobNo
+			]]>
+		</query>
+		<parameter name="organization_id" type="Long"/>
+		<parameter name="endUserName" type="String"/>
+	</namedQuery>
+
+	<namedQuery>
+		<id>hibernate.lookups</id>
+		<service>hibernateService</service>
+		<query> <![CDATA[
+				SELECT l
+				FROM Lookup l
+				WHERE l.lookupType.code = :lookupTypeCode
+				AND l.activeFlag = 'Y'
+			]]>
+		</query>
+		<parameter name="lookupTypeCode" type="String"/>
+	</namedQuery>
+
+	<namedQuery>
+		<id>hibernate.lookup</id>
+		<service>hibernateService</service>
+		<query> <![CDATA[
+				SELECT l
+				FROM Lookup l
+				WHERE l.lookupType.code = :lookupTypeCode
+				AND l.code = :lookupCode
+				AND l.activeFlag = 'Y'
+			]]>
+		</query>
+		<parameter name="lookupTypeCode" type="String"/>
+		<parameter name="lookupCode" type="String"/>
+	</namedQuery>
+
+	<namedQuery>
+		<id>hibernate.invoiceAssignedTos</id>
+		<service>hibernateService</service>
+		<query> <![CDATA[
+					SELECT u
+					FROM com.dynamic.servicetrax.orm.User u
+					INNER JOIN u.roles as role
+					INNER JOIN role.roleFunctionRights as rfr
+					INNER JOIN u.organizations as org
+					WHERE rfr.function.code = 'bill_acct'
+					AND rfr.rightType.code = 'insert'
+					AND org.organizationId = :organizationId
+					ORDER BY u.lastName
+			]]>
+		</query>
+		<parameter name="organizationId" type="Long"/>
+	</namedQuery>
+
+	<namedQuery>
+		<id>hibernate.auditInfo</id>
+		<service>hibernateService</service>
+		<query> <![CDATA[
+					SELECT u.fullName as fullName, u.contactByContactId.email as email
+					FROM com.dynamic.servicetrax.orm.User u
+					WHERE userId = :userId
+			]]>
+		</query>
+		<parameter name="userId" type="Long"/>
+	</namedQuery>
+
+	<namedQuery>
+		<id>invoiceManager.items.hibernate</id>
+		<service>hibernateService</service>
+		<query> <![CDATA[
+				SELECT item.itemId, item.name
+				FROM com.dynamic.servicetrax.orm.Item as item,
+					 com.dynamic.servicetrax.orm.Job as job
+				INNER JOIN job.lookupByJobTypeId jobType
+				INNER JOIN item.lookupByJobTypeId itemJobType
+				WHERE jobType = itemJobType
+				AND job.jobId = :jobId
+				AND item.organization.organizationId = :organizationId
+				AND item.name LIKE :itemName
+				ORDER BY item.name
+				]]>
+		</query>
+		<parameter name="jobId" type="Long"/>
+		<parameter name="organizationId" type="Long"/>
+		<parameter name="itemName" type="String"/>
+	</namedQuery>
+
+	<namedQuery>
+			<id>invoiceManager.items.jdbc</id>
+			<service>JDBCService</service>
+			<query> <![CDATA[
+					SELECT i.item_id, RTRIM(i.name) item_name
+					FROM items_v i, items_by_job_types_v ijt, invoices inv
+					WHERE inv.invoice_id = :invoice_id
+					AND inv.job_id = ijt.job_id
+					AND i.item_id = ijt.item_id
+					AND i.organization_id = :organization_id
+					AND i.name LIKE :item_name
+					ORDER BY i.name
+				]]>
+			</query>
+			<parameter name="invoice_id" type="Integer"/>
+			<parameter name="organization_id" type="Integer"/>
+			<parameter name="item_name" type="String"/>
+	</namedQuery>
+
+	<namedQuery>
+			<id>invoiceManager.services.jdbc</id>
+			<service>JDBCService</service>
+			<query> <![CDATA[
+			SELECT s.service_id, 
+			       CONVERT(VARCHAR, s.service_no) + ' - ' + ISNULL(s.description,'') service_no
+			  FROM services s INNER JOIN
+			       invoices i ON s.job_id = i.job_id
+			 WHERE i.invoice_id = :invoice_id
+			   AND s.service_no LIKE :service_no
+		  ORDER BY s.service_no
+					]]>
+			</query>
+			  <parameter name="invoice_id" type="Integer"/>
+			  <parameter name="service_no" type="String"/>
+	</namedQuery>
+
+		<namedQuery>
+			<id>invoiceManager.invoiceLineItems.hibernate</id>
+			<service>hibernateService</service>
+			<query> <![CDATA[
+		select new com.dynamic.servicetrax.invoice.InvoiceLineRecord
+(
+  il.invoiceLineId,
+  il.invoiceLineNo,
+  il.poNo,
+  il.description,
+  il.item.id,
+  il.item.name,
+  il.service.serviceId,
+  il.service.serviceNo,
+  il.qty,
+  il.unitPrice,
+  il.taxableFlag
+ )
+ FROM
+  com.dynamic.servicetrax.orm.InvoiceLine il
+ WHERE
+  il.invoice.id = :invoiceId
+			]]>
+			</query>
+			<parameter name="invoiceId" type="Long"/>
+
+	</namedQuery>
+	<namedQuery>
+			<id>invoiceManager.invoiceLineItemsRaw.hibernate</id>
+			<service>hibernateService</service>
+			<query> <![CDATA[
+						SELECT il
+						 FROM
+						  com.dynamic.servicetrax.orm.InvoiceLine il
+						 WHERE
+						  il.invoice.id = :invoiceId
+			]]>
+			</query>
+			<parameter name="invoiceId" type="Long"/>
+
+	</namedQuery>
+
+	<namedQuery>
+			<id>common.organizations</id>
+			<service>JDBCService</service>
+			<query> <![CDATA[
+				SELECT organization_id, name as organization_name
+				FROM organizations
+				ORDER BY sequence_no
+				]]>
+			</query>
+	</namedQuery>
+
+	<namedQuery>
+		<id>reports.job_cost.all_orgs</id>
+		<service>JDBCService</service>
+		<query> <![CDATA[
+			SELECT [organization name], [job no], [job type], [customer name], [end user name], [job owner], [job supervisor], [sp sales],
+			SUM([total invoiced]) AS [total invoiced],
+			SUM([labor cost] + [truck cost] + [expense cost] + [sub cost]) AS [total cost],
+			SUM([labor cost]) AS [labor cost],
+			SUM([truck cost]) AS [truck cost],
+			SUM([expense cost]) AS [expense cost],
+			SUM([sub cost]) AS [sub cost],
+			SUM([Total Invoiced]) - SUM([labor cost] + [truck cost] + [expense cost] + [sub cost]) AS gross_profit,
+			CASE WHEN SUM([Total Invoiced]) > 0
+			     THEN (SUM([Total Invoiced]) - SUM([labor cost] + [truck cost] + [expense cost] + [sub cost])) / SUM([Total Invoiced])
+			     ELSE 0
+			     END
+				AS gross_profit_pct,
+			CASE WHEN SUM([Total Invoiced]) > 0
+			     THEN SUM([labor cost] + [truck cost] + [expense cost] + [sub cost]) / SUM([Total Invoiced])
+			     ELSE 1
+			     END
+			 	AS cost_pct
+			FROM
+			(
+				    SELECT [organization name], [job no], [job type], [customer name], [end user name], [job owner], [job supervisor], [sp sales],
+				    [total invoiced], [labor cost], [truck cost], [expense cost], [sub cost], [invoice no]
+				    FROM jobs_with_costs_v
+				    WHERE CAST(FLOOR(CAST([invoiced date] AS FLOAT))AS DATETIME) BETWEEN :start_date AND :end_date
+				    AND [Total Invoiced] > 0
+			    UNION ALL
+				    SELECT [organization name], [job no], [job type], [customer name], [end user name], [job owner], [job supervisor], [sp sales],
+				    [total invoiced], [labor cost], [truck cost], [expense cost], [sub cost], NULL AS [invoice no]
+				    FROM jobs_with_posted_costs_v
+				    WHERE CAST(FLOOR(CAST([invoiced date] AS FLOAT))AS DATETIME) BETWEEN :start_date AND :end_date
+			) AS tempTable
+			GROUP BY [organization name], [job no], [job type], [customer name], [end user name], [job owner], [job supervisor], [sp sales]
+			ORDER BY [organization name], [job no]
+		]]>
+		</query>
+		<parameter name="start_date" type="Date" />
+		<parameter name="end_date" type="Date" />
+	</namedQuery>
+
+
+	<namedQuery>
+		<id>reports.job_cost.single_org</id>
+		<service>JDBCService</service>
+		<query> <![CDATA[
+			SELECT [job no], [job type], [customer name], [end user name], [job owner], [job supervisor], [sp sales],
+			       SUM([total invoiced]) AS [total invoiced],
+			       SUM([labor cost] + [truck cost] + [expense cost] + [sub cost]) AS [total cost],
+			       SUM([labor cost]) AS [labor cost],
+			       SUM([truck cost]) AS [truck cost],
+			       SUM([expense cost]) AS [expense cost],
+			       SUM([sub cost]) AS [sub cost],
+			       SUM([Total Invoiced]) - SUM([labor cost] + [truck cost] + [expense cost] + [sub cost]) AS gross_profit,
+			       CASE WHEN SUM([Total Invoiced]) > 0
+			            THEN (SUM([Total Invoiced]) - SUM([labor cost] + [truck cost] + [expense cost] + [sub cost])) / SUM([Total Invoiced])
+			            ELSE 0
+			            END AS gross_profit_pct,
+			       CASE WHEN SUM([Total Invoiced]) > 0
+			            THEN SUM([labor cost] + [truck cost] + [expense cost] + [sub cost]) / SUM([Total Invoiced])
+			            ELSE 1
+			            END AS cost_pct
+			  FROM (SELECT [job no], [job type], [customer name], [end user name], [job owner], [job supervisor], [sp sales],
+				           [total invoiced], [labor cost], [truck cost], [expense cost], [sub cost], [invoice no]
+				      FROM jobs_with_costs_v
+				     WHERE CAST(FLOOR(CAST([invoiced date] AS FLOAT))AS DATETIME) BETWEEN :start_date AND :end_date
+				       AND [Total Invoiced] > 0
+				       AND organization_id = :organization_id
+			       UNION ALL
+				    SELECT [job no], [job type], [customer name], [end user name], [job owner], [job supervisor], [sp sales],
+				           [total invoiced], [labor cost], [truck cost], [expense cost], [sub cost], NULL AS [invoice no]
+				      FROM jobs_with_posted_costs_v
+				     WHERE CAST(FLOOR(CAST([invoiced date] AS FLOAT))AS DATETIME) BETWEEN :start_date AND :end_date
+				       AND organization_id = :organization_id
+			       ) AS tempTable
+		  GROUP BY [job no], [job type], [customer name], [end user name], [job owner], [job supervisor], [sp sales]
+		  ORDER BY [job no]
+		]]>
+		</query>
+		<parameter name="organization_id" type="Integer"/>
+		<parameter name="start_date" type="Date" />
+		<parameter name="end_date" type="Date" />
+	</namedQuery>
+	
+
+	<namedQuery>
+		<id>reports.posted_job_cost.all_orgs</id>
+		<service>JDBCService</service>
+		<query> <![CDATA[
+	 SELECT [organization name], [job no], [job type], [customer name], [end user name], [job owner], [job supervisor], [sp sales],
+            [posted date], [posted by],
+			SUM([total invoiced]) AS [total invoiced],
+			SUM([labor cost] + [truck cost] + [expense cost] + [sub cost]) AS [total cost],
+			SUM([labor cost]) AS [labor cost],
+			SUM([truck cost]) AS [truck cost],
+			SUM([expense cost]) AS [expense cost],
+			SUM([sub cost]) AS [sub cost],
+			SUM([Total Invoiced]) - SUM([labor cost] + [truck cost] + [expense cost] + [sub cost]) AS gross_profit,
+			CASE WHEN SUM([Total Invoiced]) > 0
+			     THEN (SUM([Total Invoiced]) - SUM([labor cost] + [truck cost] + [expense cost] + [sub cost])) / SUM([Total Invoiced])
+			     ELSE 0
+			     END AS gross_profit_pct,
+			CASE WHEN SUM([Total Invoiced]) > 0
+			     THEN SUM([labor cost] + [truck cost] + [expense cost] + [sub cost]) / SUM([Total Invoiced])
+			     ELSE 1
+			     END AS cost_pct
+	   FROM (SELECT [organization name], [job no], [job type], [customer name], [end user name], [job owner], [job supervisor], [sp sales],
+	                [invoiced date] AS [posted date], [posted by],
+				    [total invoiced], [labor cost], [truck cost], [expense cost], [sub cost], NULL AS [invoice no]
+			   FROM jobs_with_posted_costs_v jwpc INNER JOIN
+                    service_line_statuses sls ON jwpc.status_id = sls.status_id
+			  WHERE CAST(FLOOR(CAST(jwpc.[invoiced date] AS FLOAT))AS DATETIME) BETWEEN :start_date AND :end_date
+                AND jwpc.invoice_id IS NULL
+                AND sls.code = 'Posted'
+                AND jwpc.[invoiced date] IS NOT NULL
+                AND jwpc.[posted by] IS NOT NULL
+			) AS tempTable
+   GROUP BY [organization name], [job no], [job type], [customer name], [end user name], [job owner], [job supervisor], [sp sales], [posted date], [posted by]
+   ORDER BY [organization name], [job no]
+		]]>
+		</query>
+		<parameter name="start_date" type="Date" />
+		<parameter name="end_date" type="Date" />
+	</namedQuery>
+
+	<namedQuery>
+		<id>reports.posted_job_cost.single_org</id>
+		<service>JDBCService</service>
+		<query> <![CDATA[
+	 SELECT [job no], [job type], [customer name], [end user name], [job owner], [job supervisor], [sp sales],
+            [posted date], [posted by],
+			SUM([total invoiced]) AS [total invoiced],
+			SUM([labor cost] + [truck cost] + [expense cost] + [sub cost]) AS [total cost],
+			SUM([labor cost]) AS [labor cost],
+			SUM([truck cost]) AS [truck cost],
+			SUM([expense cost]) AS [expense cost],
+			SUM([sub cost]) AS [sub cost],
+			SUM([Total Invoiced]) - SUM([labor cost] + [truck cost] + [expense cost] + [sub cost]) AS gross_profit,
+			CASE WHEN SUM([Total Invoiced]) > 0
+			     THEN (SUM([Total Invoiced]) - SUM([labor cost] + [truck cost] + [expense cost] + [sub cost])) / SUM([Total Invoiced])
+			     ELSE 0
+			     END AS gross_profit_pct,
+			CASE WHEN SUM([Total Invoiced]) > 0
+			     THEN SUM([labor cost] + [truck cost] + [expense cost] + [sub cost]) / SUM([Total Invoiced])
+			     ELSE 1
+			     END AS cost_pct
+	   FROM (SELECT [job no], [job type], [customer name], [end user name], [job owner], [job supervisor], [sp sales],[invoiced date] AS [posted date], [Posted By],
+				    [total invoiced], [labor cost], [truck cost], [expense cost], [sub cost], NULL AS [invoice no]
+			   FROM jobs_with_posted_costs_v jwpc INNER JOIN
+                    service_line_statuses sls ON jwpc.status_id = sls.status_id
+			  WHERE CAST(FLOOR(CAST(jwpc.[invoiced date] AS FLOAT))AS DATETIME) BETWEEN :start_date AND :end_date
+				AND jwpc.organization_id = :organization_id
+                AND jwpc.invoice_id IS NULL
+                AND sls.code = 'Posted'
+                AND jwpc.[invoiced date] IS NOT NULL
+                AND jwpc.[posted by] IS NOT NULL
+			) AS tempTable
+   GROUP BY [job no], [job type], [customer name], [end user name], [job owner], [job supervisor], [sp sales], [posted date], [posted by]
+   ORDER BY [job no]
+		]]>
+		</query>
+		<parameter name="organization_id" type="Integer"/>
+		<parameter name="start_date" type="Date" />
+		<parameter name="end_date" type="Date" />
+	</namedQuery>
+
+
+
+
+	<namedQuery>
+			<id>securityService.rights</id>
+			<service>JDBCService</service>
+			<query> <![CDATA[
+				SELECT DISTINCT f.code AS function_code, rt.CODE AS right_type_code
+				FROM FUNCTIONS f
+				        INNER JOIN ROLE_FUNCTION_RIGHTS rfr
+				        ON f.function_id = rfr.function_id
+				        INNER JOIN right_types rt
+				        ON rfr.RIGHT_TYPE_ID = rt.RIGHT_TYPE_ID
+				        INNER JOIN roles r
+				        ON rfr.ROLE_ID = r.role_id
+				        INNER JOIN user_roles ur
+				        ON r.role_id = ur.role_id
+				WHERE ur.user_id = :user_id
+				ORDER BY f.code, rt.code
+				]]>
+			</query>
+			<parameter name="user_id" type="Integer"/>
+	</namedQuery>
+
+		<namedQuery>
+			<id>lookupsupport.itemJobRate</id>
+			<service>JDBCService</service>
+			<query> <![CDATA[
+				SELECT rate
+				FROM job_item_rates
+				WHERE item_id = :item_id
+				AND job_id = :job_id
+				]]>
+			</query>
+			<parameter name="item_id" type="Integer"/>
+			<parameter name="job_id" type="Integer"/>
+	</namedQuery>
+
+	<namedQuery>
+			<id>lookupsupport.itemCost</id>
+			<service>JDBCService</service>
+			<query> <![CDATA[
+				SELECT cost_per_uom
+				FROM items
+				WHERE item_id = :item_id
+				]]>
+			</query>
+			<parameter name="item_id" type="Integer"/>
+	</namedQuery>
+
+		<namedQuery>
+			<id>lookupsupport.reqsForJob</id>
+			<service>JDBCService</service>
+			<query> <![CDATA[
+				SELECT service_id, service_no_desc
+				FROM tc_services_v
+				WHERE (job_id = :job_id AND serv_status_type_code != 'closed')
+				OR service_id = :service_id
+				ORDER BY service_no
+				]]>
+			</query>
+			<parameter name="job_id" type="Integer"/>
+			<parameter name="service_id" type="Integer"/>
+	</namedQuery>
+
+			<namedQuery>
+			<id>lookupsupport.resourceIdFromEmpNo</id>
+			<service>JDBCService</service>
+			<query> <![CDATA[
+				SELECT resource_id
+				FROM user_resources_v
+				WHERE active_flag = 'Y'
+				AND emp_no = :emp_no
+				AND organization_id = :organization_id
+				]]>
+			</query>
+			<parameter name="emp_no" type="String"/>
+			<parameter name="organization_id" type="Integer"/>
+	</namedQuery>
+
+
+
+
+</namedQueries>

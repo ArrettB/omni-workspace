@@ -1,0 +1,69 @@
+/*
+*               Dynamic Information Systems, LLC
+*
+* This software can only be used with the expressed written
+* consent of Dynamic Information Systems. All rights reserved.
+
+* Copyright 2005, Dynamic Information Systems, LLC
+* $Id: BaseDecorator.java 199 2006-11-14 23:38:41Z gcase $
+
+* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED.  IN NO EVENT SHALL DYNAMIC INFORMATIONS SYTEMS, LLC
+* BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+* LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+* USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+* ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+* OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+* SUCH DAMAGE.
+* ====================================================================
+*/
+
+
+package com.dynamic.charm.web.form.tag.decorator;
+
+import org.springframework.util.StringUtils;
+
+import com.dynamic.charm.web.builder.HTMLElement;
+import com.dynamic.charm.web.form.tag.AbstractFieldTag;
+
+
+public class BaseDecorator
+{
+    public String getLabel(AbstractFieldTag tag)
+    {
+        if (StringUtils.hasText(tag.getLabel()))
+        {
+            return tag.getMessage(tag.getLabel());
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public String getLabelTooltip(AbstractFieldTag tag)
+    {
+        if (StringUtils.hasText(tag.getLabeltooltip()))
+        {
+            return tag.getMessage(tag.getLabeltooltip());
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public HTMLElement createLabelElement(AbstractFieldTag tag, HTMLElement enclosingElement)
+    {
+        HTMLElement labelElement = enclosingElement.createElement("label");
+        labelElement.setAttribute("for", tag.getControlName());
+        labelElement.setAttribute("title", getLabelTooltip(tag));
+        labelElement.setText(getLabel(tag));
+
+        return labelElement;
+    }
+}

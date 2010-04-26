@@ -1,0 +1,236 @@
+<!--#SMARTFORM
+	name="time/tc_edit"
+	security="rights"
+	table="service_lines"
+	key="service_line_id"
+	value="<?p:service_line_id?>"
+	sequence="@@identity"
+	prevTemplate="<?p:prev_template?>"
+	nextTemplate="time/tc_edit.html"
+	resourceName="SQLServer"
+	preHandler="ims.handlers.time_capture.TimeCapturePreHandler;ims.handlers.job_processing.SmartFormPreHandler;ims.handlers.billing.PoolingHandler;"
+	postHandler="ims.handlers.maintenance.ClearIDPostHandler;ims.handlers.job_processing.ClearItemTypeCodePostHandler"
+	onClickFunction="return exitFunction"
+	validate="false"
+-->
+<input type="hidden" name="clear_action" value="on_delete"> <!-- clears service_line_id on a delete -->
+<input type="hidden" name="clear_id" value="service_line_id"> <!-- clears service_line_id on a delete -->
+
+<input type="hidden" name="pool_action" value="deallocate"> <!-- on a delete, deallocates if pooled -->
+
+<input type="hidden" name="module" value="{!p:module!}">
+<input type="hidden" name="module_mode" value="{!p:module_mode!}">
+<input type="hidden" name="level" value="{!p:level!}">
+<input type="hidden" name="prev_template" value="{!p:prev_template!}">
+<input type="hidden" name="nextTemplate" value="{!p:prev_template!}">
+
+<input type="hidden" name="item_type_code" value="{!p:item_type_code!}">
+<input type="hidden" name="invoice_id" value="{!p:invoice_id!}">
+<input type="hidden" name="p_invoice_id" value="{!p:p_invoice_id!}">
+<input type="hidden" name="res_cat" value="{!p:res_cat!}">
+<input type="hidden" name="redisplay" value="false"> <!-- SmartForm -->
+<input type="hidden" name="redisplayed" value="false"> <!-- ServiceLineFieldHandler -->
+
+<!--<script>alert("='{!p:module!}'");</script>-->
+
+	<tr><td><table border="0"><tr>
+	<!--#IF defined="<?d:sl_no?>" -->
+		<td><table><tr><td><!--#SMARTFIELD title="Line#" div="</td></tr><tr><td>" readonly class="readonly" name="bill_service_line_no" size="6"--></td></tr></table></td>
+	<!--#/IF-->
+
+	<!--#IF defined="<?d:sl_status?>" -->
+		<td><table><tr><td><!--#SMARTFIELD title="Status" div="</td></tr><tr><td>" readonly class="readonly" name="status_id" type="chooser" table="service_line_statuses" display="name" key="status_id" value="<?d:status_id.isNull('0')?>"--></td></tr></table></td>
+	<!--#/IF-->
+
+	<!--#IF defined="<?d:sl_job?>" -->
+		<!--#IF defined="<?d:sl_job_r?>" -->
+		<td><table><tr><td><!--#SMARTFIELD title="Open Jobs <?d:sl_job_msg?>" div="</td></tr><tr><td>" class="<?d:sl_job?>" name="bill_job_id" type="chooser"  style="width:150" query="SELECT job_id, job_no_name FROM jobs_v WHERE (organization_id = <?s:org_id.toPStmtInt()?> AND job_status_type_code != 'closed') or job_id = <?d:bill_job_id.toPStmtInt()?> ORDER BY job_no" readonly class="readonly" --></td></tr></table></td>
+		<!--#ELSEIF defined="<?s:rights.view_all_jobs.view?>"-->
+		<td><table><tr><td><!--#SMARTFIELD title="Open Jobs <?d:sl_job_msg?>" div="</td></tr><tr><td>" class="<?d:sl_job?>" name="bill_job_id" type="droplist" style="width:150" onChange="redisplaySmartForm(tc_edit.bill_service_id)" query="SELECT job_id, job_no_name FROM jobs_v WHERE (organization_id = <?s:org_id.toPStmtInt()?> AND job_status_type_code != 'closed') ORDER BY job_no" value="<?d:job_id?>" --></td></tr></table></td>
+		<!--#ELSE-->
+		<td><table><tr><td><!--#SMARTFIELD title="Open Jobs <?d:sl_job_msg?>" div="</td></tr><tr><td>" class="<?d:sl_job?>" name="bill_job_id" type="droplist" style="width:150" onChange="redisplaySmartForm(tc_edit.bill_service_id)" query="SELECT job_id, job_no_name FROM jobs_v WHERE (organization_id = <?s:org_id.toPStmtInt()?> AND job_status_type_code != 'closed' AND foreman_user_id = <?s:user_id.toPStmtInt()?>) OR job_id = <?d:bill_job_id.toPStmtInt()?> ORDER BY job_no" value="<?d:job_id?>" --></td></tr></table></td>
+		<!--#/IF-->
+	<!--#/IF-->
+
+	<!--#IF defined="<?d:sl_service?>" -->
+		<!--#IF defined="<?d:sl_service_r?>" -->
+		<td><table><tr><td><!--#SMARTFIELD title="Open Reqs <?d:sl_service_msg?>" div="</td></tr><tr><td>" class="<?d:sl_service?>" name="bill_service_id" type="chooser" query="SELECT service_id, service_no_desc FROM tc_services_v WHERE (job_id = <?d:bill_job_id.toPStmtInt()?> AND serv_status_type_code != 'closed') OR service_id = <?d:bill_service_id.toPStmtInt()?> ORDER BY service_no" style="width:250" readonly class="readonly" --></td></tr></table></td>
+		<!--#ELSE-->
+		<td><table><tr><td><!--#SMARTFIELD title="Open Reqs <?d:sl_service_msg?>" div="</td></tr><tr><td>" class="<?d:sl_service?>" name="bill_service_id" type="droplist" query="SELECT service_id, service_no_desc FROM tc_services_v WHERE (job_id = <?d:bill_job_id.toPStmtInt()?> AND serv_status_type_code != 'closed') OR service_id = <?d:bill_service_id.toPStmtInt()?> ORDER BY service_no" style="width:250" value="<?d:bill_service_id?>" --></td></tr></table></td>
+		<!--#/IF-->
+	<!--#/IF-->
+
+	</tr></table></td></tr>
+	<tr><td><table border="0"><tr>
+
+<!--#IF defined="<?d:sl_resource?>" -->
+		<td><table><tr><td><!--#SMARTFIELD title="Member ID <?d:sl_resource_msg?>" div="</td></tr><tr><td>" class="<?d:sl_resource?>" name="emp_id" type="text" size="15" onChange="checkName(this, resource_id);" --></td></tr></table></td>
+		<script>document.tc_edit.emp_id.readOnly = {!d:sl_resource_r!}; </script>
+
+	<!--#IF defined="<?d:sl_resource_r?>" -->
+		<td><table><tr><td><!--#SMARTFIELD title="Resource <?d:sl_resource_msg?>" div="</td></tr><tr><td>" class="<?d:sl_resource?>" name="resource_id" type="chooser" query="SELECT resource_id, name FROM resources WHERE resource_id = <?d:resource_id.toPStmtInt()?> ORDER BY name" readonly class="readonly"--></td></tr></table></td>
+	<!--#ELSEIF evaluate="<?p:item_type_code?>" compare="hours" -->
+		<td><table><tr><td><!--#SMARTFIELD title="Resource <?d:sl_resource_msg?>" div="</td></tr><tr><td>" class="<?d:sl_resource?>" name="resource_id" type="droplist" onChange="redisplaySmartForm(tc_edit.item_id)" query="SELECT distinct resource_id, resource_name FROM resource_items_v WHERE (organization_id=<?s:org_id.toPStmtInt()?> AND active_flag='Y' AND item_type_code='hours') OR resource_id=<?d:resource_id.toPStmtInt()?> ORDER BY resource_name" --></td></tr></table></td>
+	<!--#ELSEIF evaluate="<?p:item_type_code?>" compare="expense" -->
+		<td><table><tr><td><!--#SMARTFIELD title="Resource <?d:sl_resource_msg?>" div="</td></tr><tr><td>" class="<?d:sl_resource?>" name="resource_id" type="droplist" onChange="redisplaySmartForm(tc_edit.item_id)" query="SELECT distinct resource_id, resource_name FROM resource_items_v WHERE (organization_id=<?s:org_id.toPStmtInt()?> AND active_flag='Y' AND item_type_code='expense') OR resource_id=<?d:resource_id.toPStmtInt()?> ORDER BY resource_name" --></td></tr></table></td>
+	<!--#ELSEIF evaluate="<?p:res_cat?>" compare="employee" -->
+		<td><table><tr><td><!--#SMARTFIELD title="Resource <?d:sl_resource_msg?>" div="</td></tr><tr><td>" class="<?d:sl_resource?>" name="resource_id" type="droplist" onChange="redisplaySmartForm(tc_edit.item_id)" query="SELECT distinct resource_id, resource_name FROM resource_items_v WHERE (organization_id=<?s:org_id.toPStmtInt()?> AND active_flag='Y' AND res_cat_type_code = 'employee') OR resource_id=<?d:resource_id.toPStmtInt()?> ORDER BY resource_name" --></td></tr></table></td>
+	<!--#ELSE -->
+		<td><table><tr><td><!--#SMARTFIELD title="Resource <?d:sl_resource_msg?>" div="</td></tr><tr><td>" class="<?d:sl_resource?>" name="resource_id" type="droplist" onChange="redisplaySmartForm(tc_edit.item_id)" query="SELECT distinct resource_id, resource_name FROM resource_items_v WHERE (organization_id=<?s:org_id.toPStmtInt()?> AND active_flag='Y') OR resource_id=<?d:resource_id.toPStmtInt()?> ORDER BY resource_name" --></td></tr></table></td>
+	<!--#/IF-->
+<!--#/IF-->
+
+<!--#IF defined="<?d:sl_item?>" -->
+	<!--#IF defined="<?d:sl_item_r?>" -->
+		<td><table><tr><td><!--#SMARTFIELD title="Item <?d:sl_item_msg?>" div="</td></tr><tr><td>" class="<?d:sl_item?>" name="item_id" type="chooser" query="SELECT item_id, name FROM items_v WHERE item_id = <?d:item_id.toPStmtInt()?> ORDER BY name" readonly class="readonly"--></td></tr></table></td>
+	<!--#ELSE-->
+		<td><table><tr><td><!--#SMARTFIELD title="Item <?d:sl_item_msg?>" div="</td></tr><tr><td>" class="<?d:sl_item?>" name="item_id" type="droplist" onChange="redisplaySmartForm('checkRate')"
+		   query="SELECT item_id, item_name
+			        FROM (SELECT rir.item_id, rir.item_name
+							FROM resource_item_rates_v rir, items_by_job_types_v ijt
+						   WHERE rir.organization_id = <?s:org_id.toPStmtInt()?>
+							 AND rir.job_id = <?d:bill_job_id.toPStmtInt()?>
+							 AND rir.item_type_code = <?p:item_type_code.toPStmtString()?>
+							 AND rir.resource_id = <?d:resource_id.toPStmtInt()?>
+							 AND rir.job_id = ijt.job_id
+		                     AND rir.item_id = ijt.item_id
+		                 UNION
+		                  SELECT item_id, name item_name
+		                    FROM items
+		                   WHERE item_id = <?d:item_id.toPStmtInt()?>) v
+		        ORDER BY item_name" --></td></tr></table></td>
+	<!--#/IF-->
+<!--#/IF-->
+
+		<td><table><tr><td><!--#SMARTFIELD title="TC Qty" div="</td></tr><tr><td>" readonly class="readonly" name="tc_qty" size="6" value="<?d:tc_qty.isNull('0')?>" --></td></tr></table></td>
+	<!--#IF defined="<?d:sl_bill_qty?>" -->
+		<td><table><tr><td><!--#SMARTFIELD title="Bill Qty <?d:sl_bill_qty_msg?>" div="</td></tr><tr><td>" class="<?d:sl_bill_qty?>" name="bill_qty" size="6" --></td></tr></table></td>
+		<script type="text/javascript">document.tc_edit.bill_qty.readOnly = {!d:sl_bill_qty_r!}; </script>
+	<!--#/IF-->
+	<!--#IF defined="<?d:sl_bill_rate?>" -->
+		<td><table><tr><td><!--#SMARTFIELD title="Bill Rate$ <?d:sl_bill_rate_msg?>" div="</td></tr><tr><td>" class="<?d:sl_bill_rate?>" name="bill_rate" size="10" align="right" --></td></tr></table></td>
+		<script type="text/javascript">document.tc_edit.bill_rate.readOnly = {!d:sl_bill_rate_r!}; </script>
+	<!--#/IF-->
+
+<!--#IF defined="<?d:sl_date?>" -->
+	<!--#IF defined="<?d:sl_date_r?>" -->
+		<td><table><tr><td><!--#SMARTFIELD title="Date <?d:sl_date_msg?>" div="</td></tr><tr><td>" class="<?d:sl_date?>" name="service_line_date" type="date" size="12" value="<?d:service_line_date?>" readonly class="readonly" --></td></tr></table></td>
+	<!--#ELSE-->
+		<td><table><tr><td><!--#SMARTFIELD title="Date <?d:sl_date_msg?>" div="</td></tr><tr><td>" class="<?d:sl_date?>" name="service_line_date" type="date" size="12" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(service_line_date)')</script>" value="<?d:service_line_date?>" --></td></tr></table></td>
+	<!--#/IF-->
+<!--#/IF-->
+
+	</tr></table></td></tr>
+
+	<!--#IF evaluate="<?d:mode?>" compare="Update" -->
+	<tr><td><table border="0">
+			<tr><td class="TableTitle" colspan="6">System Info</td></tr>
+			<tr>
+				<td><!--#SMARTFIELD title="Entered By"   div="</td><td>" name="entered_by"     type="chooser"  readonly class="readonly" table="users" display="first_name+' '+last_name" key="user_id" --></td>
+				<td><!--#SMARTFIELD title="Date Entered" div="</td><td>" name="entered_date"   type="datetime" readonly class="readonly" size="22"--></td>
+				<td><!--#SMARTFIELD title="Entry Method" div="</td><td>" name="entry_method"   mode="Update"   readonly class="readonly" size="22" --></td>
+			</tr>
+			<tr>
+				<td><!--#SMARTFIELD title="Verified By"   div="</td><td>" name="verified_by"   type="chooser"  readonly class="readonly" table="users" display="first_name+' '+last_name" key="user_id" --></td>
+				<td><!--#SMARTFIELD title="Date Verified" div="</td><td>" name="verified_date" type="datetime" readonly class="readonly" size="22" --></td>
+			</tr>
+			<tr>
+				<td><!--#SMARTFIELD title="Override By"   div="</td><td>" name="override_by"   type="chooser"  readonly class="readonly" table="users" display="first_name+' '+last_name" key="user_id" --></td>
+				<td><!--#SMARTFIELD title="Date Overridden" div="</td><td>" name="override_date" type="datetime" readonly class="readonly" size="22" --></td>
+				<td><!--#SMARTFIELD title="Override Reason" div="</td><td>" name="override_reason" type="chooser" readonly class="readonly" table="lookups" display="name" key="lookup_id" size="22" --></td>
+			</tr>
+			<tr>
+				<td><!--#SMARTFIELD title="Created By"   div="</td><td>" name="created_by"     type="chooser"  readonly class="readonly" table="users" display="first_name+' '+last_name" key="user_id" --></td>
+				<td><!--#SMARTFIELD title="Date Created" div="</td><td>" name="date_created"   type="datetime" readonly class="readonly" size="22" --></td>
+			</tr>
+			<tr>
+				<td><!--#SMARTFIELD title="Modified By"   div="</td><td>" name="modified_by"   type="chooser"  readonly class="readonly"table="users" display="first_name+' '+last_name" key="user_id" --></td>
+				<td><!--#SMARTFIELD title="Date Modified" div="</td><td>" name="date_modified" type="datetime" readonly class="readonly" size="22"--></td>
+			</tr>
+	</table></td></tr>
+	<!--#/IF-->
+
+<!--#IF evaluate="<?p:module?>" compare="payroll" -->
+	<table>
+	    <tr><td><!--#SMARTFIELD type="hidden" name="user_id" value="<?p:user_id?>" --></td></tr>
+	    <tr><td><!--#SMARTFIELD type="hidden" name="emp_name" value="<?p:emp_name?>" --></td></tr>
+	    <tr><td><!--#SMARTFIELD type="hidden" name="service_line_week" value="<?p:service_line_week?>" calculated="true" --></td></tr>
+	    <tr><td><!--#SMARTFIELD type="hidden" name="begin_week" value="<?p:begin_week?>" --></td></tr>
+	    <tr><td><!--#SMARTFIELD type="hidden" name="end_week" value="<?p:end_week?>" --></td></tr>
+	    <tr><td><!--#SMARTFIELD type="hidden" name="ext_batch_id" value="<?p:ext_batch_id?>" --></td></tr>
+	<!--#IF evaluate="<?p:ext_batch_id?>" compare="" -->
+	<!--#ELSE-->
+		<tr><td><input type="button" name="button" value="Back to Batch" class="button" onClick="location='{!s:showPage!}time/pay/main_pay_batch_det?ext_batch_id={!p:ext_batch_id!}'"></td></tr>
+	<!--#/IF-->
+	</table>
+<!--#/IF-->
+
+<!--#/SMARTFORM -->
+
+<script type="text/javascript">
+<!--
+
+	function exitFunction(button)
+	{
+		if( !(button == null) && button == 'Save')
+		{
+			if( document.tc_edit.bill_service_id.selectedIndex == 0 )
+			{
+				alert("You must select a req before you Save...");
+				return false;
+			}
+		}
+		if( !(button == null) && button == 'Delete')
+		{
+			document.tc_edit.nextTemplate.value = '{!p:prev_template!}';
+		}
+	<!--#IF evaluate="<?d:mode?>" compare="Updatedx"-->  <!--Not Using right now, would return user to previews screen after update, remove x from Updatedx to turn on-->
+		document.tc_edit.nextTemplate.value="{!p:prev_template!}"; <!-- if updating, when done, return to where you came from -->
+	<!--#/IF-->
+	}
+
+	function redisplaySmartForm(field)
+	{
+//alert("field.name='"+field.name+"'");
+		if( !(field == null) && (field.name == 'bill_service_id' || field.name == 'item_id') )
+			field.selectedIndex = 0; //means job must have been changed so unselect service
+		if( !(field == null) && field == 'checkRate' && {!p:module.isNullSQLString('false')!} == 'time' && {!p:item_type_code.isNullSQLString('false')!} == 'hours' )
+		{
+			//do nothing
+		}
+		else
+		{
+			document.tc_edit.redisplay.value='true';
+			document.tc_edit.redisplayed.value='true';
+			document.tc_edit.submit();
+		}
+		return true;
+	}
+
+	function checkSecurity()
+	{
+		if (document.tc_edit.status_id.value > '9' )
+		{
+			setFormEdit2('n');
+			var items = document.all.item('button');
+			for (i = 0; i < items.length; i++)
+			{
+				if( items[i].value == 'New')	items[i].disabled = true;
+				if( items[i].value == 'Copy')	items[i].disabled = true;
+				if( items[i].value == 'Save')	items[i].disabled = true;
+				if( items[i].value == 'Delete') items[i].disabled = true;
+				if( items[i].value == 'Cancel') items[i].disabled = false;
+			}
+		}
+		if( false == {!d:sl_delete.isNull('true')!} )
+		{
+			var items = document.all.item('button');
+			for (i = 0; i < items.length; i++)
+			{
+				if( items[i].value == 'Delete')
+					items[i].disabled = true;
+			}
+		}
+	}
+//-->
+</script>

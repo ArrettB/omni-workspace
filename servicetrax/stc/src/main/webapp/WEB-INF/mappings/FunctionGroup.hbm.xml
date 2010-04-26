@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.FunctionGroup" table="FUNCTION_GROUPS" schema="dbo" catalog="">
+        <id name="functionGroupId" type="java.lang.Long">
+            <column name="FUNCTION_GROUP_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <property name="name" type="string">
+            <column name="NAME" length="50" not-null="true" />
+        </property>
+        <property name="code" type="string">
+            <column name="CODE" length="50" />
+        </property>
+        <set name="functions" inverse="true">
+            <key>
+                <column name="FUNCTION_GROUP_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Function" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,15 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: job_inv_main.html, 7, 6/3/2002 12:35:58 PM, Chad Ryan$ -->
+
+<frameset rows="212,*" framespacing="0" frameborder="no">
+	<frame name="job_inv_header" src="{!s:showPage!}bill/inv/job_inv_head.html?invoice_id={!p:invoice_id!}&status_id={!p:status_id!}&batch_status_id={!p:batch_status_id!}&readonly={!p:readonly!}&prev_template={!p:prev_template!}&level={!p:level!}" scrolling="NO" noresize marginheight="5" marginwidth="5">
+	<frame name="job_inv_frame" marginheight="5" marginwidth="5">
+</frameset>
+
+<noframes>
+<body>
+   Your browser does not support frames.
+</body>
+</noframes>
+
+<!--#EMBED template="embeds/footer.html" -->

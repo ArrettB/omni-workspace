@@ -1,0 +1,168 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<body class="BodyTag" onLoad="">
+
+
+<span class="Label">
+The following QUOTE REQUESTS matched your search criteria:
+<BR><BR>
+</span>
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="r" var="mainQuery"
+		  query="SELECT r.project_id, r.project_no, r.record_seq_no, r.record_type_seq_no,
+		                r.record_id, r.record_no,
+		                r.ext_dealer_id,
+		                r.customer_name,
+		                r.end_user_name,
+		                r.job_name,
+		                r.record_created,
+		                r.record_status_type_name,
+		                r.dealer_project_no,
+		                r.is_quoted,
+		                r.is_new
+			  	   FROM projects_all_requests_v r <?s:contacts_table?>
+				  WHERE r.record_type_code = 'quote_request'
+				    AND r.organization_id = <?s:org_id.toPStmtString()?>
+				    <?s:enetNavQuery?>
+		  	   ORDER BY r.project_no, r.record_seq_no, r.record_type_seq_no" -->
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="r" var="customerQuery"
+		  query="SELECT DISTINCT r.customer_id, r.customer_name
+				   FROM projects_all_requests_v r <?s:contacts_table?>
+				  WHERE r.record_type_code = 'quote_request'
+				    AND r.organization_id = <?s:org_id.toPStmtString()?>
+				    <?s:enetNavQuery?>
+		  	   ORDER BY r.customer_name" -->
+
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="r" var="endUserQuery"
+		  query="SELECT DISTINCT r.end_user_id, r.end_user_name
+			  	   FROM projects_all_requests_v r <?s:contacts_table?>
+				  WHERE r.record_type_code = 'quote_request'
+				    AND r.organization_id = <?s:org_id.toPStmtString()?>
+				    <?s:enetNavQuery?>
+		   	   ORDER BY r.end_user_name" -->
+
+
+<!--#SMARTTABLE name="result_list" class="SmartTable" query="<?d:mainQuery?>" -->
+
+	 <!--#IF defined="<?d:result_list:firstRow?>"-->
+	 <form name="frm_checkbox" action="{!s:action!}unarchive/enet/nav/qr_results.html" method="post" style="margin:0;">
+	 <!--#/IF-->
+
+	<!--#IF evaluate="<?s:archive?>" compare="Closed"-->
+  	<!--#SMARTCOLUMN title="<input type='checkbox' name='selectall' onClick='javascript:selectAll(this);' >"
+			         value="<input type='checkbox' name='archiveCheckbox' value='<?r:result_list:record_id?>' >"
+			         name="foo" align="center" width="2%"-->
+  	<!--#/IF-->
+
+  <!--#IF evaluate="<?r:result_list:is_new?>" compare="Y" -->
+    <!--#SMARTCOLUMN name="record_no" sort="record_no" title="QR#" width="10%" align="center" href="<?s:action?>setProjectDatum?project_id=<?r:result_list:project_id?>&templateName=enet/proj/pf_main.html&request_id=<?r:result_list:record_id?>&loc=quote_request" target="_top" filter="record_no:record_no" -->
+  <!--#ELSE-->
+    <!--#SMARTCOLUMN name="record_no" sort="record_no" title="QR#" width="10%" align="center" href="<?s:action?>setProjectDatum?project_id=<?r:result_list:project_id?>&templateName=enet/proj/pf_main.html&request_id=<?r:result_list:record_id?>&loc=qr_create" target="_top" filter="record_no:record_no" -->
+  <!--#/IF-->
+
+	 <!--#SMARTCOLUMN name="customer_name" sort="r.customer_name" title="Customer" width="20%" filter="customer_name:r.customer_name" filterQuery="<?d:customerQuery?>" filterQuick="true" -->
+	 <!--#SMARTCOLUMN name="end_user_name" sort="r.end_user_name" title="End User" width="20%" filter="end_user_name:r.end_user_name" filterQuery="<?d:endUserQuery?>" filterQuick="true" -->
+	 <!--#SMARTCOLUMN name="job_name" sort="job_name" title="Job Name" width="20%" filter="job_name:job_name" -->
+	 <!--#SMARTCOLUMN name="record_status_type_name" sort="record_status_type_name" title="Status" width="10%" filter="request_status_type_name:request_status_type_name"
+		              filterQuery="SELECT lookup_name id, lookup_name FROM quote_req_status_types_v" filterQuick="true" -->
+	 <!--#SMARTCOLUMN name="dealer_project_no" sort="dealer_project_no" title="Dealer&nbsp;Project&nbsp;#" width="10%" nowrap filter="dealer_project_no:dealer_project_no"-->
+	 <!--#SMARTCOLUMN name="is_quoted" sort="is_quoted" title="Quoted?" width="5%" filter="is_quoted:is_quoted" align="center"-->
+	 <!--#SMARTCOLUMN name="record_created" sort="record_created" format="date" title="Date Created" width="10%"-->
+
+<!--#/SMARTTABLE -->
+<br />
+<!--#IF evaluate="<?s:archive?>" compare="Closed"-->
+	<input type="hidden" name="archiveIds" id="archiveIds" value="">
+	<input type="hidden" name="record_type" id="record_type" value="service_request">
+	<table border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			<td width="100">
+				<input type="button" name="btnUnArchive" value="UnArchive" onClick="return unarchive()" class="button" />
+			</td>
+		</tr>
+	</table>
+<!--#/IF-->
+
+</form>
+
+<script language="javascript">
+<!--
+var totalChecked = 0;
+var f = document.frm_checkbox;
+
+function unarchive()
+{
+	var foundOne = false;
+	var boxList = "";
+	var boxes = document.getElementsByName("archiveCheckbox");
+	for (var i = 0; i < boxes.length; i++)
+	{
+		var theBox = boxes[i];
+		if (theBox.checked)
+		{
+			boxList += "," + theBox.value;
+			foundOne = true;
+		}
+	}
+	if (foundOne)
+	{
+		if (confirm("Do you want to open / unarchive the quote requests?"))
+		{
+			f.archiveIds.value = boxList.substring(1);
+			f.submit();
+			return true;
+		}
+		else
+		{
+			unSelectAll();
+		}
+	}
+	else
+	{
+		alert("You must select at least one quote request to unarchive.");
+	}
+}
+
+
+function selectAll(theitem)
+{
+	var check = theitem.checked;
+    var all_inv = 0;
+	for (i = 0; i < f.elements.length; i++)
+	{
+		if (f.elements[i].type == 'checkbox')
+		{
+				f.elements[i].checked = check;
+				all_inv += 1;
+		}
+
+	}
+
+	// update the overall counter
+	if (check)
+		totalChecked = all_inv;
+	else
+		totalChecked = 0;
+
+}
+
+function unSelectAll()
+{
+	for (i = 0; i < f.elements.length; i++)
+	{
+		if (f.elements[i].type == 'checkbox')
+		{
+				f.elements[i].checked = null;
+		}
+
+	}
+}
+
+//-->
+</script>
+
+
+<!--#EMBED template="enet/embeds/footer.html" -->
+

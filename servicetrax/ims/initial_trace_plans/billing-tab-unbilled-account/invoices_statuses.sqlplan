@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ShowPlanXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0" Build="9.00.3054.00" xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan">
+  <BatchSequence>
+    <Batch>
+      <Statements>
+        <StmtSimple StatementCompId="1" StatementEstRows="2" StatementId="1" StatementOptmLevel="FULL" StatementOptmEarlyAbortReason="GoodEnoughPlanFound" StatementSubTreeCost="0.0032864" StatementText="SELECT [status_id],[name] [status] FROM [invoice_statuses] WHERE [status_id]&gt;@1 AND [status_id]&lt;@2" StatementType="SELECT">
+          <StatementSetOptions ANSI_NULLS="false" ANSI_PADDING="false" ANSI_WARNINGS="false" ARITHABORT="true" CONCAT_NULL_YIELDS_NULL="false" NUMERIC_ROUNDABORT="false" QUOTED_IDENTIFIER="false" />
+          <QueryPlan DegreeOfParallelism="1" CachedPlanSize="14" CompileTime="1" CompileCPU="1" CompileMemory="184">
+            <RelOp AvgRowSize="45" EstimateCPU="0.0001614" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="2" LogicalOp="Table Scan" NodeId="0" Parallel="false" PhysicalOp="Table Scan" EstimatedTotalSubtreeCost="0.0032864">
+              <OutputList>
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_STATUSES]" Column="STATUS_ID" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_STATUSES]" Column="NAME" />
+              </OutputList>
+              <RunTimeInformation>
+                <RunTimeCountersPerThread Thread="0" ActualRows="2" ActualEndOfScans="1" ActualExecutions="1" />
+              </RunTimeInformation>
+              <TableScan Ordered="false" ForcedIndex="false" NoExpandHint="false">
+                <DefinedValues>
+                  <DefinedValue>
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_STATUSES]" Column="STATUS_ID" />
+                  </DefinedValue>
+                  <DefinedValue>
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_STATUSES]" Column="NAME" />
+                  </DefinedValue>
+                </DefinedValues>
+                <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_STATUSES]" />
+                <Predicate>
+                  <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[INVOICE_STATUSES].[STATUS_ID]&gt;(1.) AND [servicetrax_dev].[dbo].[INVOICE_STATUSES].[STATUS_ID]&lt;(4.)">
+                    <Logical Operation="AND">
+                      <ScalarOperator>
+                        <Compare CompareOp="GT">
+                          <ScalarOperator>
+                            <Identifier>
+                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_STATUSES]" Column="STATUS_ID" />
+                            </Identifier>
+                          </ScalarOperator>
+                          <ScalarOperator>
+                            <Const ConstValue="(1.)" />
+                          </ScalarOperator>
+                        </Compare>
+                      </ScalarOperator>
+                      <ScalarOperator>
+                        <Compare CompareOp="LT">
+                          <ScalarOperator>
+                            <Identifier>
+                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_STATUSES]" Column="STATUS_ID" />
+                            </Identifier>
+                          </ScalarOperator>
+                          <ScalarOperator>
+                            <Const ConstValue="(4.)" />
+                          </ScalarOperator>
+                        </Compare>
+                      </ScalarOperator>
+                    </Logical>
+                  </ScalarOperator>
+                </Predicate>
+              </TableScan>
+            </RelOp>
+            <ParameterList>
+              <ColumnReference Column="@2" ParameterCompiledValue="(4)" ParameterRuntimeValue="(4)" />
+              <ColumnReference Column="@1" ParameterCompiledValue="(1)" ParameterRuntimeValue="(1)" />
+            </ParameterList>
+          </QueryPlan>
+        </StmtSimple>
+      </Statements>
+    </Batch>
+  </BatchSequence>
+</ShowPlanXML>

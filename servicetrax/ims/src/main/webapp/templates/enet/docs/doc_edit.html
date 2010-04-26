@@ -1,0 +1,254 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#EXEC handler="ims.handlers.docs.DocumentEditPreFlighHandler" -->
+
+
+<script>
+<!--
+function openUploadWindow()
+{
+
+	var href= {!s:showPage.toJavaScriptString()!} +
+	'enet/docs/doc_upload.html' +
+	 '?return_page=' + 'enet/docs/doc_edit.html' +
+	 '&project_id=' + {!p:project_id.toJavaScriptString()!} +
+	 '&document_id=' + {!p:document_id.toJavaScriptString()!} +
+	 '&name=' + document.doc_edit.name.value +
+	 '&format_id=' + document.doc_edit.format_id.value +
+	 '&comments=' + document.lockVersionForm.comments.value +
+	 '&version_label=' + document.lockVersionForm.version_label.value;
+	newWindow(href, 'DocumentUpload', 200, 425);
+}
+
+function lockDocument()
+{
+document.location.replace({!s:action.toJavaScriptString()!} +
+                          'documentLock' +
+						  '?document_id=' + {!p:document_id.toJavaScriptString()!} +
+						  '&project_id=' + {!p:project_id.toJavaScriptString()!} +
+						  '&mode=lock'
+						  );
+}
+
+function unlockDocument()
+{
+document.location.replace({!s:action.toJavaScriptString()!} +
+                          'documentLock' +
+						  '?document_id=' + {!p:document_id.toJavaScriptString()!} +
+						  '&project_id=' + {!p:project_id.toJavaScriptString()!} +
+						  '&mode=unlock'
+						  );
+}
+
+-->
+</script>
+<body class="BodyTag">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+	<!--LEFT SIDE---->
+	<td>
+	      <!--#SMARTFORM name="doc/doc_edit" table="documents" key="document_id"
+				preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+				buttons="Save,Cancel"
+				nextTemplate="enet/docs/doc_list.html"
+				prevTemplate="enet/docs/doc_list.html"
+
+	-->
+		<!--#SMARTFIELD name="project_id" value="<?p:project_id?>" type="hidden"-->
+	   <table>
+			<tr>
+				<td>
+					<!--#SMARTFIELD name="name" type="text" title="Document Name" div="</td><td>" -->
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<!--#SMARTFIELD name="format_id" div="</td><td>" type="droplist" title="Format" table="formats" display="name" key="format_id" orderBy="name" style="width:114" -->
+				</td>
+			</tr>
+		</table>
+		<!--#/SMARTFORM-->
+	</td>
+
+	<td width="20"></td>
+
+	 <!--RIGHT SIDE---->
+	<td>
+		<!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Add Version" bo_width="500" -->
+		<form action="{!s:action!}documentAddVersion" method="post" name="lockVersionForm" id="lockVersionForm">
+		<input type="hidden" name="filename" value="{!p:filename!}">
+		<input type="hidden" name="project_id" value="{!p:project_id!}">
+		<input type="hidden" name="document_id" value="{!p:document_id!}">
+		<table border="0" cellspacing="0" cellpadding="0">
+		<!--#IF defined="<?d:lockedByCurrentUser?>" -->
+			<tr>
+				<td colspan="2" width="300" height="40">
+					This file is currently locked by you.
+				</td>
+				<td style="padding-left:30">
+					<input type="button" value="UnLock" name="Unlock" class="Button" style="width:75;" onClick="unlockDocument()">
+				</td>
+			</tr>
+			<tr>
+				<td class="mandatoryLabel">
+					Version Label
+				</td>
+				<td>
+					<input type="text" name="version_label" value="{!p:version_label!}" class="mandatory">
+				</td>
+				<td>
+				</td>
+			</tr>
+			<tr>
+				<td class="mandatoryLabel">
+					Version Comments
+				</td>
+				<td>
+					<textarea cols="40" rows="3" name="comments" class="mandatory">{!p:comments!}</textarea>
+				</td>
+				<td>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Filename
+				</td>
+				<!--#IF defined="<?p:filename?>"-->
+				<td class="mandatoryLabel">
+					{!p:filename!}
+				</td>
+				<!--#ELSE-->
+				<td class="mandatory">
+					&lt;&lt;Not uploaded&gt;&gt;
+				</td>
+				<!--#/IF-->
+				<td style="padding-left:30">
+					<input type="button" value="Upload..." class="button" name="Upload" onClick="openUploadWindow();">
+				</td>
+			</tr>
+			<tr>
+				<td height="20">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+				</td>
+				<!--#IF defined="<?p:filename?>"-->
+				<td>
+					<input type="submit" value="Add Version" class="button" name="AddVersion" onClick="">
+				</td>
+				<!--#ELSE-->
+				<td>
+					<input type="submit" value="Add Version" class="buttonDisabled" name="AddVersion">
+					<script>document.lockVersionForm.AddVersion.disabled=true; </script>
+				</td>
+				<!--#/IF-->
+			</tr>
+			<!--#ELSE-->
+			<tr>
+				<!--#IF defined="<?d:lockedByName?>" -->
+				<td colspan="2" width="300" height="40">
+					This file is currently locked by {!d:lockedByName!}.  You may not add a version until they unlock the document.
+				</td>
+				<td style="padding-left:30">
+					<input type="button" value="Lock" name="Lock" class="ButtonDisabled" style="width:75;">
+					<script>document.lockVersionForm.Lock.disabled=true;</script>
+				</td>
+				<!--#ELSE--->
+				<td colspan="2" width="300" height="40">
+					This file is currently unlocked. You may not add a version until you lock the document.
+				</td>
+				<td style="padding-left:30">
+					<input type="button" value="Lock" name="Lock" class="Button" style="width:75;" onClick="lockDocument()">
+				</td>
+				<!--#/IF--->
+			</tr>
+			<tr>
+				<td>
+					Version Label
+				</td>
+				<td>
+					<input type="text" name="version_label" value="{!p:version_label!}" class="readonly" readonly>
+				</td>
+				<td>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Version Comments
+				</td>
+				<td>
+					<textarea cols="40" rows="3" name="comments" class="readonly" readonly>{!p:comments!}</textarea>
+				</td>
+				<td>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Filename
+				</td>
+				<td class="readonly">
+					&lt;&lt;Not uploaded&gt;&gt;
+				</td>
+				<td style="padding-left:30">
+					<input type="button" value="Upload..." class="buttonDisabled" name="Upload">
+					<script>document.lockVersionForm.Upload.disabled=true; </script>
+				</td>
+			</tr>
+			<tr>
+				<td height="20">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+				</td>
+				<td>
+					<input type="submit" value="Add Version" class="buttonDisabled" name="AddVersion" onClick="">
+					<script>document.lockVersionForm.AddVersion.disabled=true; </script>
+				</td>
+			</tr>
+			<!--#/IF-->
+		</table>
+		</form>
+		<!--#EMBED template="enet/embeds/boxout_footer.html" bo_title="Locking Info" bo_width="500"-->
+	</td>
+</tr>
+</table>
+
+
+
+
+
+
+		<table width="100%">
+			<tr height="25">
+				<td height="25">
+				</td>
+			</tr>
+			<tr>
+				<td class="HeaderBar">
+					Document Versions
+				</td>
+			</tr>
+		</table>
+
+	<!--#SMARTTABLE name="versions"
+		class="SmartTable"
+		query="SELECT document_id, version_id, document_name, format_name, version_code, version_created_by_name, version_comments, version_date_created, extension
+			FROM documents_v
+			WHERE document_id = <?p:document_id.toPStmtString()?>
+			ORDER BY version_date_created DESC"
+	-->
+
+	 <!--#SMARTCOLUMN name="version_code" sort="version_code" title="Version" width="10%"-->
+	 <!--#SMARTCOLUMN name="version_comments" sort="version_comments" title="Comments" width="40%"-->
+	 <!--#SMARTCOLUMN name="version_date_created" sort="version_date_created" format="date" title="Date" width="20%"-->
+	 <!--#SMARTCOLUMN name="version_created_by_name" sort="version_created_by_name" title="Uploaded By" width="10%"-->
+	 <!--#SMARTCOLUMN value="Download" title="Action" width="10%" value="<A target='new_window' href='<?s:action?>documentDownload/<?r:versions:document_name?><?r:versions:extension?>?document_id=<?r:versions:document_id?>&version_id=<?r:versions:version_id?>'>Download</A>"-->
+<!--#/SMARTTABLE -->
+
+
+</body>
+
+<!--#EMBED template="enet/embeds/footer.html" -->

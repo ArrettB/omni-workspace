@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering SYSTEM "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	<type-mapping>
+		<sql-type jdbc-type="DOUBLE"  hibernate-type="java.lang.Long" /> 
+		<sql-type jdbc-type="DECIMAL"  hibernate-type="java.lang.Long" /> 
+	</type-mapping>
+		<table name="TEST_INSTANCES">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">TEST_INSTANCES_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="TOPICS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">TOPICS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="STEPS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">STEPS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="TEST_PLAN_USERS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">TEST_PLAN_USERS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="ISSUES">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">ISSUES_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="LOOKUP_TYPES">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">LOOKUP_TYPES_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="DEPARTMENTS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">DEPARTMENTS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="ATTACHMENTS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">ATTACHMENTS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="ORGANIZATIONS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">ORGANIZATIONS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="ROLES">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">ROLES_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="USER_ABSTRACT_USERS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">USER_ABSTRACT_USERS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="DEPENDENCIES">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">DEPENDENCIES_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="TEST_TYPE_FIELDS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">TEST_TYPE_FIELDS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="TOCS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">TOCS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="FAVORITES">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">FAVORITES_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="SECURITY_QUESTIONS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">SECURITY_QUESTIONS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="PROJECTS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">PROJECTS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="LOOKUP_VALUES">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">LOOKUP_VALUES_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="REPORTS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">REPORTS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="USER_NOTIFICATIONS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">USER_NOTIFICATIONS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="NOTIFICATION_TEMPLATES">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">NOTIFICATION_TEMPLATES_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="TEST_PLANS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">TEST_PLANS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="PROJECT_SERVERS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">PROJECT_SERVERS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="USERS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">USERS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="REPORT_COLUMNS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">REPORT_COLUMNS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="TOPIC_RELATED_TOPICS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">TOPIC_RELATED_TOPICS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="TEST_LOCKS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">TEST_LOCKS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="MODULES">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">MODULES_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="NOTIFICATIONS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">NOTIFICATIONS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="STEP_RESULTS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">STEP_RESULTS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="NOTIFICATION_TYPES">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">NOTIFICATION_TYPES_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="TEST_USERS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">TEST_USERS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="SERVERS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">SERVERS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="TESTS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">TESTS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="STEP_USERS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">STEP_USERS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+		<table name="NOTIFICATION_SETTINGS">
+			<primary-key>
+				<generator class="sequence">
+					<param name="sequence">NOTIFICATION_SETTINGS_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+</hibernate-reverse-engineering>
+

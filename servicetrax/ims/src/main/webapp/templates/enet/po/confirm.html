@@ -1,0 +1,78 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!-- $Header: enet/po/confirm.html, 1, 4/7/2008, David Zhao$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+
+<body class="BodyTag" onLoad="window.focus();">
+
+	<table align="center" valign="middle" width="100%" border="0" cellspacing="0" cellpadding="3">
+	<form name="confirm_form">
+
+	<tr><td><table>
+		<tr>
+			<td colspan="4" class="HeaderRow">Confirm PO Creation</td>
+		</tr>
+		<tr>
+			<td><BR></td>
+		</tr>
+		<tr>
+			<td colspan="3" valign="top"><span class="HeaderLabel">&nbsp;&nbsp;You are about to create/update a Vendor Purchase Order: </td>
+		    <td width="25">&nbsp;</td>
+		</tr>
+		<tr><td colspan="4">&nbsp;</td></tr>
+<!--#IF evaluate="<?p:po_id?>" compare="" -->
+<!--#ELSE-->
+		<tr>
+			<td width="25">&nbsp;</td>
+			<td valign="top"><span class="HeaderLabel">Cancel&nbsp;- </td>
+			<td class="HeaderLabel">Click the 'Cancel' button to cancel the PO.</span></td>
+			<td width="25">&nbsp;</td>
+		</tr>
+		<tr><td colspan="4">&nbsp;</td></tr>
+<!--#/IF-->
+		<tr>
+			<td width="25">&nbsp;</td>
+			<td valign="top"><span class="HeaderLabel">Save&nbsp;- </td>
+			<td class="HeaderLabel">Click the 'Save' button to save without sending the PO. You can submit later by searching for this PO and then clicking the 'Submit' button.</span></td>
+			<td width="25">&nbsp;</td>
+		</tr>
+		<tr><td colspan="4">&nbsp;</td></tr>
+		<tr>
+			<td width="25">&nbsp;</td>
+			<td valign="top"><span class="HeaderLabel">Send&nbsp;- </td>
+			<td class="HeaderLabel">Click the 'Send' button to save your details and also to submit the PO.</span></td>
+			<td width="25">&nbsp;</td>
+		</tr>
+		<tr>
+			<td><BR></td>
+		</tr>
+		<tr>
+			<td colspan="4" align="right">
+<!--#IF evaluate="<?p:po_id?>" compare="" -->
+<!--#ELSE-->
+				<input type="button" class="button" value="Cancel" name="button" onClick="exitFunction('Cancel');">
+<!--#/IF-->
+				<input type="button" class="button" value="Save" name ="button" onClick="exitFunction('Save');">
+				<input type="button" class="button" value="Send" name ="button" onClick="exitFunction('Send');">
+			</td>
+		</tr>
+	</table></td></tr>
+
+
+	</form>
+ 	</table>
+</body>
+
+<script language="JavaScript">
+<!--
+
+	function exitFunction(button)
+	{
+	   	parent.window.opener.focus();
+		parent.window.opener.exitFunction(button);
+    	parent.close();
+	}
+
+-->
+</script>
+
+<!--#EMBED template="enet/embeds/footer.html" -->

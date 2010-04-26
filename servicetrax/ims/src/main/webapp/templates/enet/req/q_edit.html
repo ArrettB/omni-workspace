@@ -1,0 +1,267 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!-- $Header: C:\work\ims\templates\enet\req\q_edit.html, 24, 4/13/2006 9:59:59 AM, Blake Von Haden$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.enet/req/q_edit.view?>"-->
+
+<!--#EXEC handler="ims.handlers.proj.SetProjectDatumHandler" project_id="<?p:project_id?>" request_id="<?p:request_id?>" quote_id="<?p:quote_id?>" -->
+
+<script language="JavaScript">
+<!--
+
+	function setDefaults()
+	{
+	<!--#IF evaluate="<?s:quote_readonly?>" compare="true" -->
+		setFormEdit('N');
+	<!--#/IF-->
+
+	<!--#IF defined="<?p:project_id?>"-->
+		<!--#IF evaluate="<?d:mode?>" compare="Update"-->
+			if( {!d:acknowledgement.toJavaScriptString()!} == "true" )
+			{
+			<!--#SQLLOOP name="q1" query="SELECT project_no FROM projects p WHERE p.project_id = <?s:project_id.toPStmtString()?>"	-->
+				newWindow("{!s:showPage!}enet/req/acknowledge.html?request_type_code=quote&request_id={!p:request_id!}&project_no={!r:q1:project_no!}&request_no={!d:quote_no!}&is_sent={!d:is_sent!}","acknowledge_window",300,450)
+			<!--#/SQLLOOP-->
+			}
+		<!--#/IF-->
+	<!--#/IF-->
+
+		//if validation errs then close the waiting window.
+		if( {!p:validation_error.toJavaScriptString()!} == 'true' && q_edit.req_button.value == 'Send')
+		{
+			var ref = newWindow('{!s:showPage!}enet/req/wait.html','acknowledge_window',320,450);
+			ref.close();
+		}
+
+	}
+
+	function redisplaySmartForm()
+	{
+		<!-- need to convert quote_total from a varchar amount $0.00 to a decimal amount 0.00 -->
+		document.q_edit.quote_total.value = {!d:quote_total.getDigits(true).toJavaScriptString()!};
+		if( q_edit.quote_total )
+			document.q_edit.taxable_amount.value = {!d:taxable_amount.getDigits(true).toJavaScriptString()!};
+		document.q_edit.redisplay.value='true';
+		document.q_edit.submit();
+	}
+
+	function exitFunction(button)
+	{
+		if( q_edit.form_loaded === undefined )
+		{
+			alert("Please wait for the page to load before selecting a link.");
+			return false;
+		}
+		else
+		{
+			if( button == 'Save' || button == 'Send' )
+			{
+				q_edit.button.value = 'Save'; //want to save in both cases
+				q_edit.req_button.value = button;
+				q_edit.redisplay.value='false';
+				if( button == 'Save' )
+					q_edit.is_sent.value = 'N';
+				else
+					q_edit.is_sent.value = 'Y';
+
+				if( button == 'Send' )
+					newWindow('{!s:showPage!}enet/req/wait.html','acknowledge_window',320,450);
+
+				q_edit.submit();
+			}
+			else if( button == 'archive' )
+			{
+				if( confirm("Archiving will close this Quote and disable any further activity.\n\n"+
+								"              Are you sure you want to archive this Quote?") )
+				{
+					q_edit.redisplay.value = 'false';
+					q_edit.button.value = 'Cancel';
+					q_edit.req_button.value = 'archive';
+					q_edit.prevTemplate.value = 'enet/proj/pf_list.html';
+					q_edit.submit();
+				}
+			}
+			else if( button == 'view_quote')
+			{
+				newWindowScrollBars('{!s:action!}quoteReport?quote_id='+q_edit.quote_id.value,'quote_window',600,780);
+			}
+			else if( button == 'print_quote')
+			{
+				var new_window = newWindow('{!s:action!}quoteReport?print_quote=true&quote_id='+q_edit.quote_id.value,'print_frame');
+			}
+			else if( button == 'Cancel' )
+			{
+			<!--#IF evaluate="<?d:mode?>" compare="Update"-->
+				newWindow("{!s:showPage!}setProjectDatum/enet/proj/pf_main.html?loc=pf","_top");
+			<!--#ELSE-->
+				newWindow("{!s:showPage!}setProjectDatum/enet/proj/pf_main.html?loc=qr_create","_top");
+			<!--#/IF-->
+			}
+		}
+	}
+
+-->
+</script>
+
+
+<body class="BodyTag" onLoad="setDefaults();"><!-- removed secureButtons() from onLoad after adding security-->
+
+   <table width="100%">
+      <!--#SMARTFORM name="enet/req/q_edit" security="rights" table="quotes" key="quote_id"
+							prevTemplate="enet/req/q_edit.html"
+                     preHandler="ims.handlers.job_processing.SmartFormPreHandler,ims.handlers.proj.QuotePreHandler"
+							postHandler="ims.handlers.proj.QuotePostHandler"
+							onClickFunction="exitFunction" buttons=""
+      -->
+      <!--#SMARTFIELD name="redisplay" type="hidden" value="false" -->
+      <!--#SMARTFIELD name="button" type="hidden" -->
+      <!--#SMARTFIELD name="req_button" type="hidden" -->
+      <!--#SMARTFIELD name="request_type_code" type="hidden" value="quote" -->
+      <!--#SMARTFIELD name="quote_status_type_code" type="hidden" -->  <!-- used in setDefaults() javascript function -->
+      <!--#SMARTFIELD name="is_sent" type="hidden" value="N" -->
+      <!--#SMARTFIELD name="request_id" type="hidden" value="<?p:request_id?>" -->
+
+<!--#EMBED template="enet/embeds/project_header.html"-->
+
+	<!--#IF evaluate="<?d:mode?>" compare="Update" -->
+		<tr><td>
+			<table width="100%" border="0" cellspacing="0">
+				<tr><td colspan="4" class="HeaderRow">View/Update Quote</td></tr>
+			</table>
+		</td></tr>
+	<!--#ELSE-->
+		<tr><td>
+			<table width="100%" border="0" cellspacing="0">
+				<tr><td colspan="4" class="HeaderRow">Create Quote</td></tr>
+			</table>
+		</td></tr>
+	<!--#/IF-->
+
+	<!--#IF evaluate="<?d:mode?>" compare="Update" -->
+		<tr><td><table width="100%" cellspacing="3">
+			<tr>
+				<td><a href="" onClick="exitFunction('view_quote');return false;">View Quote</a></td>
+				<td><a href="" onClick="exitFunction('print_quote');return false;">Print&nbsp;Quote</a></td>
+				<td><iframe name="print_frame" height="0" width="0" marginheight="0" marginwidth="0"></iframe></td>
+			</tr>
+		</table></td></tr>
+	<!--#/IF-->
+
+	<tr><td><!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Quote&nbsp;Details" -->
+	<!--#IF defined="<?r:enet/req/q_edit:quote_id?>" -->
+      <tr>
+			<!--#SMARTFIELD name="quote_no" type="hidden" -->
+      	<td><!--#SMARTFIELD title="Quote&nbsp;#:" div="&nbsp;</td><td>" name="project_quote_no" type="chooser" table="quotes" display="<?s:project_no.toSQLString()?>+'-'+CAST(quote_no as varchar)" key="quote_id" readonly class="readonly" value="<?r:enet/req/q_edit:quote_id?>" --></td>
+      	<td><!--#SMARTFIELD title="Quote&nbsp;Status:" div="&nbsp;</td><td>" name="quote_status_type_id" type="chooser" table="quote_status_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" readonly class="readonly" --></td>
+		</tr>
+	<!--#ELSE-->
+		<!--#SMARTFIELD name="quote_no" type="hidden" value="<?p:request_no?>" -->
+	<!--#/IF-->
+      <tr>
+   		<td width="100"><!--#SMARTFIELD title="Quote&nbsp;Type:" div="&nbsp;</td><td width='150'>" name="quote_type_id" type="droplist" table="billing_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" value="<?p:quote_type_id?>" style="width:114" --></td>
+			<td width="100">&nbsp;</td><td width="500">&nbsp;</td>
+		</tr>
+		<tr>
+	     	<td><!--#SMARTFIELD title="Quote Total$:" div="&nbsp;</td><td>" name="quote_total" type="money" --></td>
+			<td><!--#SMARTFIELD title="Warehouse Fee:" div="&nbsp;</td><td>" name="warehouse_fee_flag" type="boolean" value="N"--></td>
+		</tr>
+		<!--#SMARTFIELD name="taxable_flag" type="hidden" value="<?p:taxable_flag?>"-->
+	<!--#IF evaluate="<?d:taxable_flag?>" compare="Y"-->
+		<tr>
+	     	<td><!--#SMARTFIELD title="Taxable Amount$:" div="&nbsp;</td><td>" name="taxable_amount" type="money" --></td>
+		</tr>
+	<!--#/IF-->
+		<tr>
+			<td><!--#SMARTFIELD title="Quoted&nbsp;By:" div="&nbsp;</td><td>" name="quoted_by_user_id" type="chooser" table="users" display="first_name+' '+last_name" key="user_id" value="<?s:user_id?>" readonly class="readonly"--></td>
+			<td>&nbsp;</td><td>&nbsp;</td>
+		</tr>
+		<tr>
+         <td><!--#SMARTFIELD mode="Update" title="Date&nbsp;Quoted:" div="&nbsp;</td><td>" name="date_quoted" type="datetime" mode="Update" readonly class="readonly" --></td>
+			<td>&nbsp;</td><td>&nbsp;</td>
+      </tr>
+		<tr>
+			<td><BR></td>
+		</tr>
+      <tr><td colspan="4" class="HeaderLabel">Description of work to be done</td></tr>
+	   <tr>
+	   	<td colspan="4">
+	   		<!--#SMARTFIELD title="" name="description" type="textarea" cols="130" rows="10" -->
+				<BR><BR>
+	   	</td>
+	   </tr>
+
+	<!--#EMBED template="enet/embeds/boxout_footer.html" --></td></tr>
+	<tr><td><!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Quote&nbsp;Conditions" -->
+
+	<!--#IF defined="<?s:rights.enet/req/cond_edit.view?>" -->
+		<tr>
+			<td colspan="4" align="center">
+				<!--#SMARTTABLE class="SmartTable" name="quote_conditions_v" query="SELECT name, sequence_no FROM quote_conditions_v WHERE quote_id=<?d:quote_id.toSQLString()?> ORDER BY sequence_no"  -->
+					<!--#SMARTCOLUMN title="Seq#" name="sequence_no" sort="sequence_no" align="center"-->
+					<!--#SMARTCOLUMN title="Standard Quote Conditions" name="name" sort="name" -->
+				<!--#/SMARTTABLE -->
+				<BR>
+				<!--#IF evaluate="<?d:mode?>" compare="Update" -->
+					<!--#IF evaluate="<?s:quote_is_sent?>" compare="N"-->
+
+				      <input name="condition_button" type="button" value="Add/Remove Standard Conditions" class="button"
+				      	onClick="if(document.q_edit.quote_id.value=='')
+	      	   						alert('Please save quote first...');
+	         						else newWindowScrollBars('{!s:showPage!}enet/req/cond_edit.html?quote_id='+escape(q_edit.quote_id.value),'conditions',550,700);">
+					<!--#/IF-->
+				<!--#ELSE-->
+					<span class="HeaderLabel">To add Standard Quote Conditions, please save quote first.</span>
+				<!--#/IF-->
+   		</td>
+   	</tr>
+   <!--#ELSE-->
+	  	<tr><td colspan="4" class="HeaderLabel">You Don't have the security rights to Add/Remove Quote Conditions.</td></tr>
+	<!--#/IF-->
+      <tr><td colspan="4" class="HeaderLabel">Additional Conditions</td></tr>
+	   <tr>
+	   	<td colspan="4">
+	   		<!--#SMARTFIELD title="" name="extra_conditions" type="textarea" cols="130" rows="6" -->
+				<BR><BR>
+	   	</td>
+	   </tr>
+	<!--#EMBED template="enet/embeds/boxout_footer.html" --></td></tr>
+		<tr><td><table width="100%">
+			<tr>
+				<td><BR></td>
+			</tr>
+			<tr>
+			<!--#IF evaluate="<?d:mode?>" compare="Update" -->
+				<!--#IF evaluate="<?s:quote_status_type_code?>" compare="closed"-->
+				<!--#ELSE-->
+					<!--#CHECKSECURITY right="rights.enet/req/q_edit.delete"-->
+				<td>
+					<input type="button" class="button" name="Archive" value="Archive" class="button" onClick="exitFunction('archive');">
+				</td>
+					<!--#/CHECKSECURITY-->
+				<!--#/IF-->
+			<!--#/IF-->
+
+			<!--#IF evaluate="<?s:quote_readonly?>" compare="true"-->
+			<!--#ELSE-->
+				<!--#IF evaluate="<?d:mode?>" compare="Insert"-->
+				<td align="right">
+					<input type="button" class="button" name="Cancel" value="Cancel" onClick="exitFunction('Cancel');">
+					<input type="button" class="button" value="Save" name ="Save" onClick="exitFunction('Save');">
+				</td>
+				<!--#ELSE-->
+				<td align="right">
+					<input type="button" class="button" name="Cancel" value="Cancel" onClick="exitFunction('Cancel');">
+					<input type="button" class="button" value="Next" name ="Next" onClick="newWindow('{!s:showPage!}enet/req/confirm.html?request_type_code='+q_edit.request_type_code.value,'confirm_quote',200,450);">
+				</td>
+				<!--#/IF-->
+			<!--#/IF-->
+			</tr>
+		</table></td></tr>
+	</td></tr>
+
+		<!--#SMARTFIELD name="form_loaded" type="hidden" value="true" -->
+
+	   <!--#/SMARTFORM -->
+   </table>
+
+
+<!--#EMBED template="enet/embeds/footer.html" -->

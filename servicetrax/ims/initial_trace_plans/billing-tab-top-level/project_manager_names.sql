@@ -1,0 +1,1 @@
+SELECT DISTINCT billing_user_name, billing_user_name FROM bill_jobs_v WHERE billing_user_id is not null AND (billing_user_id =  2250  OR 'true' =  'true' ) and organization_id =  2  ORDER BY billing_user_name

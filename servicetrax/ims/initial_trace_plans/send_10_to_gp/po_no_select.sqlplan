@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ShowPlanXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0" Build="9.00.3068.00" xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan">
+  <BatchSequence>
+    <Batch>
+      <Statements>
+        <StmtSimple StatementCompId="1" StatementEstRows="116.817" StatementId="1" StatementOptmLevel="FULL" StatementOptmEarlyAbortReason="GoodEnoughPlanFound" StatementSubTreeCost="0.815195" StatementText="SELECT DISTINCT po_no, service_description FROM billing_v WHERE invoice_id = '164325'" StatementType="SELECT">
+          <StatementSetOptions ANSI_NULLS="false" ANSI_PADDING="false" ANSI_WARNINGS="false" ARITHABORT="true" CONCAT_NULL_YIELDS_NULL="false" NUMERIC_ROUNDABORT="false" QUOTED_IDENTIFIER="false" />
+          <QueryPlan DegreeOfParallelism="1" MemoryGrant="72" CachedPlanSize="52" CompileTime="64" CompileCPU="21" CompileMemory="1360">
+            <RelOp AvgRowSize="147" EstimateCPU="0.00135175" EstimateIO="0.0112613" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="116.817" LogicalOp="Distinct Sort" NodeId="0" Parallel="false" PhysicalOp="Sort" EstimatedTotalSubtreeCost="0.815195">
+              <OutputList>
+                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="DESCRIPTION" />
+                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="PO_NO" />
+              </OutputList>
+              <MemoryFractions Input="0.5" Output="1" />
+              <RunTimeInformation>
+                <RunTimeCountersPerThread Thread="0" ActualRebinds="1" ActualRewinds="0" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+              </RunTimeInformation>
+              <Sort Distinct="true">
+                <OrderBy>
+                  <OrderByColumn Ascending="true">
+                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="PO_NO" />
+                  </OrderByColumn>
+                  <OrderByColumn Ascending="true">
+                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="DESCRIPTION" />
+                  </OrderByColumn>
+                </OrderBy>
+                <RelOp AvgRowSize="147" EstimateCPU="0.000488294" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="116.817" LogicalOp="Left Outer Join" NodeId="1" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.802582">
+                  <OutputList>
+                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="DESCRIPTION" />
+                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="PO_NO" />
+                  </OutputList>
+                  <RunTimeInformation>
+                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                  </RunTimeInformation>
+                  <NestedLoops Optimized="true" WithUnorderedPrefetch="true">
+                    <OuterReferences>
+                      <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_ID" />
+                      <ColumnReference Column="Expr1068" />
+                    </OuterReferences>
+                    <RelOp AvgRowSize="16" EstimateCPU="0.000113151" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="116.817" LogicalOp="Filter" NodeId="4" Parallel="false" PhysicalOp="Filter" EstimatedTotalSubtreeCost="0.422874">
+                      <OutputList>
+                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_ID" />
+                      </OutputList>
+                      <RunTimeInformation>
+                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                      </RunTimeInformation>
+                      <Filter StartupExpression="false">
+                        <RelOp AvgRowSize="30" EstimateCPU="0.000537469" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="128.581" LogicalOp="Inner Join" NodeId="5" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.422761">
+                          <OutputList>
+                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="STATUS_ID" />
+                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_ID" />
+                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INTERNAL_REQ_FLAG" />
+                          </OutputList>
+                          <RunTimeInformation>
+                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                          </RunTimeInformation>
+                          <NestedLoops Optimized="false" WithUnorderedPrefetch="true">
+                            <OuterReferences>
+                              <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_ID" />
+                              <ColumnReference Column="Expr1067" />
+                            </OuterReferences>
+                            <RelOp AvgRowSize="16" EstimateCPU="0.000298439" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="128.581" LogicalOp="Index Seek" NodeId="7" Parallel="false" PhysicalOp="Index Seek" EstimatedTotalSubtreeCost="0.00342344">
+                              <OutputList>
+                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_ID" />
+                              </OutputList>
+                              <RunTimeInformation>
+                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                              </RunTimeInformation>
+                              <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                <DefinedValues>
+                                  <DefinedValue>
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_ID" />
+                                  </DefinedValue>
+                                </DefinedValues>
+                                <Object Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Index="[IX_SL_INVOICES]" Alias="[sl]" />
+                                <SeekPredicates>
+                                  <SeekPredicate>
+                                    <Prefix ScanType="EQ">
+                                      <RangeColumns>
+                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                                      </RangeColumns>
+                                      <RangeExpressions>
+                                        <ScalarOperator ScalarString="(164325.)">
+                                          <Const ConstValue="(164325.)" />
+                                        </ScalarOperator>
+                                      </RangeExpressions>
+                                    </Prefix>
+                                  </SeekPredicate>
+                                </SeekPredicates>
+                              </IndexScan>
+                            </RelOp>
+                            <RelOp AvgRowSize="29" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="127.581" EstimateRewinds="0" EstimateRows="1" LogicalOp="Clustered Index Seek" NodeId="9" Parallel="false" PhysicalOp="Clustered Index Seek" EstimatedTotalSubtreeCost="0.4188">
+                              <OutputList>
+                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="STATUS_ID" />
+                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_ID" />
+                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INTERNAL_REQ_FLAG" />
+                              </OutputList>
+                              <RunTimeInformation>
+                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                              </RunTimeInformation>
+                              <IndexScan Lookup="true" Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                <DefinedValues>
+                                  <DefinedValue>
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="STATUS_ID" />
+                                  </DefinedValue>
+                                  <DefinedValue>
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_ID" />
+                                  </DefinedValue>
+                                  <DefinedValue>
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INTERNAL_REQ_FLAG" />
+                                  </DefinedValue>
+                                </DefinedValues>
+                                <Object Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Index="[PK_SERVICE_LINES]" Alias="[sl]" TableReferenceId="-1" />
+                                <SeekPredicates>
+                                  <SeekPredicate>
+                                    <Prefix ScanType="EQ">
+                                      <RangeColumns>
+                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_ID" />
+                                      </RangeColumns>
+                                      <RangeExpressions>
+                                        <ScalarOperator ScalarString="[ims_new].[dbo].[SERVICE_LINES].[SERVICE_LINE_ID] as [sl].[SERVICE_LINE_ID]">
+                                          <Identifier>
+                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="SERVICE_LINE_ID" />
+                                          </Identifier>
+                                        </ScalarOperator>
+                                      </RangeExpressions>
+                                    </Prefix>
+                                  </SeekPredicate>
+                                </SeekPredicates>
+                              </IndexScan>
+                            </RelOp>
+                          </NestedLoops>
+                        </RelOp>
+                        <Predicate>
+                          <ScalarOperator ScalarString="[ims_new].[dbo].[SERVICE_LINES].[STATUS_ID] as [sl].[STATUS_ID]&gt;(3.) AND [ims_new].[dbo].[SERVICE_LINES].[INTERNAL_REQ_FLAG] as [sl].[INTERNAL_REQ_FLAG]='N'">
+                            <Logical Operation="AND">
+                              <ScalarOperator>
+                                <Compare CompareOp="GT">
+                                  <ScalarOperator>
+                                    <Identifier>
+                                      <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="STATUS_ID" />
+                                    </Identifier>
+                                  </ScalarOperator>
+                                  <ScalarOperator>
+                                    <Const ConstValue="(3.)" />
+                                  </ScalarOperator>
+                                </Compare>
+                              </ScalarOperator>
+                              <ScalarOperator>
+                                <Compare CompareOp="EQ">
+                                  <ScalarOperator>
+                                    <Identifier>
+                                      <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INTERNAL_REQ_FLAG" />
+                                    </Identifier>
+                                  </ScalarOperator>
+                                  <ScalarOperator>
+                                    <Const ConstValue="'N'" />
+                                  </ScalarOperator>
+                                </Compare>
+                              </ScalarOperator>
+                            </Logical>
+                          </ScalarOperator>
+                        </Predicate>
+                      </Filter>
+                    </RelOp>
+                    <RelOp AvgRowSize="147" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="115.817" EstimateRewinds="0" EstimateRows="1" LogicalOp="Clustered Index Seek" NodeId="18" Parallel="false" PhysicalOp="Clustered Index Seek" EstimatedTotalSubtreeCost="0.379219">
+                      <OutputList>
+                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="DESCRIPTION" />
+                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="PO_NO" />
+                      </OutputList>
+                      <RunTimeInformation>
+                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                      </RunTimeInformation>
+                      <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                        <DefinedValues>
+                          <DefinedValue>
+                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="DESCRIPTION" />
+                          </DefinedValue>
+                          <DefinedValue>
+                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="PO_NO" />
+                          </DefinedValue>
+                        </DefinedValues>
+                        <Object Database="[ims_new]" Schema="[dbo]" Table="[SERVICES]" Index="[PK_SERVICES]" Alias="[s]" />
+                        <SeekPredicates>
+                          <SeekPredicate>
+                            <Prefix ScanType="EQ">
+                              <RangeColumns>
+                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICES]" Alias="[s]" Column="SERVICE_ID" />
+                              </RangeColumns>
+                              <RangeExpressions>
+                                <ScalarOperator ScalarString="[ims_new].[dbo].[SERVICE_LINES].[BILL_SERVICE_ID] as [sl].[BILL_SERVICE_ID]">
+                                  <Identifier>
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_SERVICE_ID" />
+                                  </Identifier>
+                                </ScalarOperator>
+                              </RangeExpressions>
+                            </Prefix>
+                          </SeekPredicate>
+                        </SeekPredicates>
+                      </IndexScan>
+                    </RelOp>
+                  </NestedLoops>
+                </RelOp>
+              </Sort>
+            </RelOp>
+          </QueryPlan>
+        </StmtSimple>
+      </Statements>
+    </Batch>
+  </BatchSequence>
+</ShowPlanXML>

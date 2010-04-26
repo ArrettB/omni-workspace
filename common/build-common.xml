@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+<project name="build-common.xml" default="dist" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+	
+	<description>Common properties and targets</description>
+	
+	<!-- my.basedir property can be used to refer to files/directories relatively to the common-build.xml file -->
+	<dirname property="common-build.basedir" file="${ant.file.common-build}"/>
+	
+	<!-- Give user a chance to override without editing this file
+      (and without typing -D each time it compiles it) -->
+	<property file="${common-build.basedir}/build.properties"/>
+	<property file="${user.home}/.ant.properties"/>
+	<property name="target.dir" value="target"/>
+	
+	<artifact:remoteRepository id="dynamic.repo" url="http://maven.apexit.com/repository" />
+
+	
+	<!-- =================================================================== -->
+	<!-- JDBC SETUP                                                          -->
+	<!-- =================================================================== -->
+	<target name="jdbc_dependencies">
+		<artifact:dependencies pathId="jdbc.classpath" filesetId="jdbc.fileset">
+			<remoteRepository refid="dynamic.repo"/>
+			<dependency groupId="${jdbc.org}" artifactId="${jdbc.artifact}" version="${jdbc.version}"/>
+		</artifact:dependencies>
+	</target>
+	
+	<target name="init_jdbc" depends="verify_jdbc, panic_no_jdbc_driver">
+		<echo message="Using JDBC Library: ${jdbc.org} : ${jdbc.artifact} - ${jdbc.version}"/>
+		<echo message="JDBC Driver found: ${jdbc.driver}"/>
+		<echo message="Connecting to: ${jdbc.url}"/>
+		<echo message="User: ${jdbc.user}"/>
+		<echo message="Password: ${jdbc.password}"/>
+	</target>
+	
+	<target name="verify_jdbc" depends="jdbc_dependencies">
+		<available classname="${jdbc.driver}" classpathref="jdbc.classpath" property="driver.class.present"/>
+	</target>
+	
+	<!-- TO DO Clean up these warning messages -->
+	<target name="panic_no_jdbc_driver" unless="driver.class.present">
+		<fail>
+					The JDBC driver could not be found.  How to resolve:		
+					Edit  ${basedir}cfg/project.properties	
+					Looked in: ${jdbc.jar.location}			
+					Current settings: 	    jdbc.driver = ${jdbc.driver} 
+					jdbc.classpath = ${jdbc.classpath}		
+		</fail>
+	</target>
+	
+	
+	
+	
+	<!-- =================================================================== -->
+	<!-- HIBERNATE TOOLS                                                     -->
+	<!-- =================================================================== -->
+	<target name="hibernate_dependencies">
+		
+		<artifact:dependencies pathId="sandbox.classpath">
+			<remoteRepository refid="dynamic.repo"/>
+			<dependency groupId="org.hibernate" artifactId="hibernate" version="3.2.6.ga" /> 
+			<dependency groupId="com.dynamic.charm" artifactId="charm-sandbox" version="1.1" /> 
+			<dependency groupId="freemarker" artifactId="freemarker" version="2.3.4" />
+			<dependency groupId="jtidy" artifactId="jtidy" version="4aug2000r7-dev" />
+ 		</artifact:dependencies>
+	</target>
+	
+	<target name="init_hibernate_tools" depends="init_jdbc, hibernate_dependencies">
+				
+		<path id="hibernate-tools.classpath">
+			<path refid="jdbc.classpath" />
+			<path refid="sandbox.classpath" />
+		</path>
+		
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="hibernate-tools.classpath" />	
+	</target>
+
+
+
+
+	<!-- =================================================================== -->
+	<!-- XDOCLET                                                             -->
+	<!-- =================================================================== -->
+	<target name="xdoclet_dependencies">
+
+		<artifact:pom file="pom.xml" id="maven.project" />
+
+		<artifact:dependencies pathId="xdoclet.classpath" filesetId="xdoclet.fileset">
+			<remoteRepository refid="dynamic.repo"/>
+			<dependency groupId="xdoclet" artifactId="xdoclet" version="1.2.3" />
+			<dependency groupId="xdoclet" artifactId="xdoclet-web-module" version="1.2.3" />
+			<dependency groupId="xdoclet" artifactId="xjavadoc" version="1.0.2" />
+			<dependency groupId="commons-logging" artifactId="commons-logging" version="1.0.4" />
+			<dependency groupId="commons-collections" artifactId="commons-collections" version="3.0" />
+			<dependency groupId="javax.servlet" artifactId="servlet-api" version="2.3" />
+		</artifact:dependencies>
+	</target>
+
+	<target name="init_xdoclet" depends="xdoclet_dependencies">
+		<taskdef name="webdoclet" classname="xdoclet.modules.web.WebDocletTask" classpathref="xdoclet.classpath" />
+	</target>
+
+	
+	
+	<!-- =================================================================== -->
+	<!-- MIDDLEGEN                                                           -->
+	<!-- =================================================================== -->
+	<target name="middlegen_depencies">
+
+		<artifact:pom file="pom.xml" id="maven.project" />
+
+		<artifact:dependencies pathId="middlegen.classpath" filesetId="middlegen.fileset">
+			<remoteRepository refid="dynamic.repo"/>
+			<dependency groupId="${jdbc.org}" artifactId="${jdbc.artifact}" version="${jdbc.version}"/>
+			<dependency groupId="middlegen" artifactId="middlegen" version="2.1" />
+			<dependency groupId="middlegen" artifactId="middlegen-hibernate-plugin" version="2.1" />
+			<dependency groupId="xdoclet" artifactId="xdoclet" version="1.2.3" />
+		</artifact:dependencies>
+		
+	</target>
+
+	<target name="init_middlegen" depends="init_jdbc, middlegen_depencies">
+		<taskdef name="middlegen" classname="middlegen.MiddlegenTask" classpathref="middlegen.classpath" />
+	</target>	
+	
+	
+	<target name="clean_svn" description="Deletes all of the .svn files from the current directory and subdirectories">
+
+		<input
+		    message="This will delete all of your subversion files from ${build.dir} Continue ?(y/n)?"
+		    validargs="y,n"
+		    addproperty="do.delete"
+		  />
+		  
+		<condition property="do.abort">
+			<equals arg1="n" arg2="${do.delete}"/>
+		</condition>
+		<fail if="do.abort">Clean SVN Task aborted.</fail>
+  
+  
+  		<delete includeEmptyDirs="true">
+			<fileset dir="." defaultExcludes="false">
+				<include name="**/*.svn"/>
+				<include name="**/*.svn/**"/>
+			</fileset>
+		</delete>
+	</target>
+	
+	<target name="clean_thumbs" description="Deletes all of the Thumbs.db files that windows generates">
+		<delete>
+			<fileset dir=".">
+				<include name="**/Thumbs.db"/>
+			</fileset>
+		</delete>
+	</target>
+		
+	<target name="hsqldb_gui" depends="init_jdbc" description="HSQLDB Database GUI">
+		  <java classpathref="jdbc.classpath" classname="org.hsqldb.util.DatabaseManagerSwing" fork="yes" >
+		    <arg value="--url"/>
+		  	<arg value="${jdbc.url}" />
+		  </java>
+		
+	</target>
+	
+	
+</project>

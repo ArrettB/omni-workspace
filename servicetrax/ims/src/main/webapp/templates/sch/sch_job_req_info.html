@@ -1,0 +1,339 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: sch_job_req_info.html, 35, 4/7/2005 9:31:05 AM, Greg Case$ -->
+
+<!--#IF undefined="<?p:service_type_name?>"-->
+	<!--#EXEC handler="ims.handlers.job_processing.InitReqHandler" -->
+<!--#/IF-->
+
+<!--#REQUIRED data="<?s:user?>"-->
+
+<body class="BodyTag" onLoad="setupSch()">
+
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <!--#SMARTFORM name="sch/sch_job_req_info" action="<?s:action?>schedule" security="rights"
+                 table="sch_job_req_info_v" key="service_id"
+                 buttons="" -->
+
+      <!--#SMARTFIELD name="redisplay" type="hidden" value="true" --></td>
+      <!--#SMARTFIELD name="sch_action" type="hidden" value="" --></td>
+      <!--#SMARTFIELD name="updated_job" type="hidden" value="<?p:updated_job.isNull('false')?>" --></td>
+      <!--#SMARTFIELD name="job_type_id" type="hidden" value="<?p:job_type_id?>" --></td>
+      <!--#SMARTFIELD name="distribute_job" type="hidden" value="false" --></td>
+      <!--#SMARTFIELD name="return_page" type="hidden" value="sch/sch_job_req_info" --></td> <!-- used by EmailSchedulerHandler -->
+      <!--#SMARTFIELD name="request_id" type="hidden" value="<?p:request_id?>" --></td>
+
+      <tr>
+			<td colspan="6" class="tableHeader">Job Detail</td>
+      </tr>
+      <tr>
+         <td><!--#SMARTFIELD title="Job#:" div="&nbsp</td><td>" name="job_no" readonly class="readonly" --></td>
+         <td><!--#SMARTFIELD title="&nbsp;Req#:" div="&nbsp</td><td>" name="service_no" readonly class="readonly" --></td>
+         <td><!--#SMARTFIELD title="&nbsp;Job&nbsp;Type:" div="&nbsp</td><td>" name="job_type"  readonly class="readonly" --></td>
+      </tr>
+      <tr>
+        <td><!--#SMARTFIELD title="Customer:" div="&nbsp</td><td>" name="customer_name" readonly class="readonly" --></td>
+        <td><!--#SMARTFIELD title="&nbsp;PO#:" div="&nbsp;</td><td>" name="po_no" readonly class="readonly" --></td>
+        <td><!--#SMARTFIELD title="&nbsp;Project&nbsp;Mgr:" div="&nbsp</td><td>" name="omni_proj_mgr" readonly class="readonly" --></td>
+      </tr>
+      <tr>
+         <td><!--#SMARTFIELD title="End &nbsp;User:" div="&nbsp</td><td>" name="end_user_name" readonly class="readonly" --></td>
+         <td><!--#SMARTFIELD title="&nbsp;Billing&nbsp;Type:" div="&nbsp</td><td>" name="billing_type" readonly class="readonly" --></td>
+         <td><!--#SMARTFIELD title="&nbsp;Contact&nbsp;Info:" div="&nbsp</td><td>" name="customer_contact" readonly class="readonly" --></td>
+      </tr>
+      <tr>
+         <td><!--#SMARTFIELD title="System&nbsp;Info:" div="&nbsp</td><td>" name="system_furniture" readonly class="readonly" --></td>
+         <td><!--#SMARTFIELD title="&nbsp;Prod&nbsp;Disposi:" div="&nbsp</td><td>" name="product_disposition" readonly class="readonly" --></td>
+         <td><!--#SMARTFIELD title="&nbsp;Contact&nbsp;Info2:" div="&nbsp</td><td>" name="customer_contact2" readonly class="readonly" --></td>
+      <tr>
+         <td><!--#SMARTFIELD title="Shipping&nbsp;Method:" div="&nbsp</td><td>" name="delivery_type" readonly class="readonly" --></td>
+         <td><!--#SMARTFIELD title="&nbsp;Wall&nbsp;Mount:" div="&nbsp</td><td>" name="wall_mount_type" readonly class="readonly" --></td>
+         <td><!--#SMARTFIELD title="&nbsp;Contact&nbsp;Info3:" div="&nbsp</td><td>" name="customer_contact3" readonly class="readonly" --></td>
+	  </tr>
+	  <tr>
+         <td><!--#SMARTFIELD title="Casegood&nbsp;Info:" div="&nbsp</td><td>" name="other_furniture_type" readonly class="readonly" --></td>
+         <td><!--#SMARTFIELD title="&nbsp;Site&nbsp;Condition:" div="&nbsp</td><td>" name="elevator_available_type" readonly class="readonly" --></td>
+         <td><!--#SMARTFIELD title="&nbsp;Contact&nbsp;Info4:" div="&nbsp</td><td>" name="customer_contact4" readonly class="readonly" --></td>
+	  </tr>
+      <tr>
+         <td><!--#SMARTFIELD title="Shipping&nbsp;Method:" div="&nbsp</td><td>" name="other_delivery_type" readonly class="readonly" --></td>
+         <td><!--#SMARTFIELD title="&nbsp;Job&nbsp;Location:" div="&nbsp</td><td>" name="job_location_name" readonly class="readonly" --></td>
+         <td>&nbsp;&nbsp;<input type="button" class="button2" value="View Map" onclick="showMap('{!r:sch/sch_job_req_info:street1!}','{!r:sch/sch_job_req_info:street2!}','{!r:sch/sch_job_req_info:city!}','{!r:sch/sch_job_req_info:state!}','{!r:sch/sch_job_req_info:zip!}'); return false;"></td>
+	  </tr>
+	  <tr>
+	   	<td class="HeaderLabel" colspan="6">&nbsp;</td>
+      </tr>
+
+	  <tr>
+	   	<td class="HeaderLabel" colspan="6">Description</td>
+      </tr>
+	  <tr>
+		<td colspan="6" rowspan="1"><!--#SMARTFIELD title="" name="description" type="textarea" cols="110" rows="3" readonly class="readonly" --></td>
+	  </tr>
+	  <tr>
+	   	<td class="HeaderLabel" colspan="6">&nbsp;</td>
+      </tr>
+<!-- Hours  BEGIN -->
+	  <tr>
+		<td colspan="6">
+		  <table>
+		    <tr>
+		      <td class="TableTitle">&nbsp;</td>
+		      <td class="TableTitle">Warehouse</td>
+		      <td class="TableTitle">Delivery</td>
+		      <td class="TableTitle">Install</td>
+		    </tr>
+		    <tr>
+		      <td class="TableTitle">Estimated Hours</td>
+		      <td><!--#SMARTFIELD title="" div="&nbsp</td><td>" name="est_warehouse_hours" readonly class="readonly" --></td>
+		      <td><!--#SMARTFIELD title="" div="&nbsp</td><td>" name="est_delivery_hours" readonly class="readonly" --></td>
+		      <td><!--#SMARTFIELD title="" div="&nbsp</td><td>" name="est_install_hours" readonly class="readonly" --></td>
+		    </tr>
+		    <tr>
+		      <td class="TableTitle">Hours To Date</td>
+		      <td><!--#SMARTFIELD title="" div="&nbsp</td><td>" name="warehouse_hours_to_date" readonly class="readonly" --></td>
+		      <td><!--#SMARTFIELD title="" div="&nbsp</td><td>" name="delivery_hours_to_date" readonly class="readonly" --></td>
+		      <td><!--#SMARTFIELD title="" div="&nbsp</td><td>" name="installer_hours_to_date" readonly class="readonly" --></td>
+		    </tr>
+		  </table>
+		</td>
+	  </tr>
+
+<!-- HOURS END -->
+	  <tr>
+	   	<td class="HeaderLabel" colspan="6">&nbsp;</td>
+      </tr>
+
+<!--#IF evaluate="<?p:service_type_name?>" compare="Short View"-->
+	 <!--#IF evaluate="<?d:mode?>" compare="Insert"-->
+	 <!--#SQLLOOP name="schedule_types" query="SELECT lookup_id FROM schedule_types_v WHERE lookup_name = 'DATE & TIME'" -->
+    <!--#SMARTFIELD name="schedule_type_id" type="hidden" value="<?r:schedule_types:lookup_id?>"-->
+	 <!--#/SQLLOOP-->
+	 <!--#/IF-->
+
+   <!--#SMARTFIELD name="wood_product_type_id" type="hidden" -->
+
+	<!--#SQLLOOP query="SELECT customer_id, end_user_id
+	                    FROM jobs_v
+	                    WHERE job_id = <?s:job_id.toPStmtInt()?>"
+					 resourceName="SQLServer"
+					 name="jobQuery2"	-->
+
+   <!--#SQLLOOP
+   	query="SELECT column_desc, col_sequence
+   	       FROM custom_cust_columns
+   	       WHERE ((<?r:jobQuery2:end_user_id.toPStmtInt()?> IS NOT NULL AND <?r:jobQuery2:end_user_id.toPStmtInt()?> = c.customer_id) OR (<?r:jobQuery2:end_user_id.toPStmtInt()?> IS NULL AND <?r:jobQuery2:customer_id.toPStmtInt()?> = c.customer_id)) 
+   	       AND active_flag = 'Y'
+   	       ORDER BY col_sequence"
+		resourceName="SQLServer"
+   	name="custQuery"
+   -->
+   <!--#SQLHEADER-->
+		<tr>
+			<td colspan="6" class="tableHeader">Custom Fields</td>
+		</tr>
+		<tr>
+	<!--#/SQLHEADER-->
+			<td><!--#SMARTFIELD title="<?r:custQuery:column_desc?>:" div="</td><td>" name="cust_col_<?r:custQuery:col_sequence?>" readonly class="readonly" --></td>
+		<!--#IF EVALUATE="<?r:custQuery:col_sequence?>" COMPARE="3"-->
+		</tr>
+		<tr>
+		<!--#/IF-->
+		<!--#IF EVALUATE="<?r:custQuery:col_sequence?>" COMPARE="6"-->
+		</tr>
+		<tr>
+		<!--#/IF-->
+		<!--#IF EVALUATE="<?r:custQuery:col_sequence?>" COMPARE="9"-->
+		</tr>
+		<tr>
+		<!--#/IF-->
+   <!--#SQLFOOTER-->
+	   </tr>
+   <!--#/SQLFOOTER-->
+   <!--#/SQLLOOP-->
+   <!--#/SQLLOOP-->
+
+<!--#/IF-->
+      <!--<tr><td class="tableHeader" colspan="6">Attachment</td></tr>-->
+
+      <tr>
+        <td colspan="3" align="left"><span class="HeaderLabel">&nbsp;&nbsp;Attachment</span>:</td>
+        <td colspan="3" align="left"><span class="HeaderLabel">&nbsp;&nbsp;Vendor PO</span>:</td>
+      </tr>
+      <tr>
+        <td colspan="3"><iframe id="showDocuments" name="documentFrame" src="{!s:showPage!}sch/view_documents.html"
+                                height="120" width="100%" frameborder="0" marginwidth="0" marginheight="0"></iframe></td>
+        <td colspan="3"  valign="top"><div id="poListDiv">
+	      <!--#SMARTTABLE name="po_list" class="smartTable"
+	                      query="SELECT po.po_id, po.vendor_name, l.name status, po.date_created,
+	                                    CONVERT(VARCHAR, p.project_no) + '-' + CONVERT(VARCHAR, r.request_no) + '-' + CONVERT(VARCHAR, po.po_no) project_request_po_no
+                                   FROM purchase_orders po INNER JOIN
+                                        lookups l ON po.po_status_id = l.lookup_id INNER JOIN
+                                        requests r ON po.request_id = r.request_id INNER JOIN
+                                        services s ON r.request_id = s.request_id INNER JOIN
+                                        projects p ON r.project_id = p.project_id
+                                  WHERE s.service_id = <?s:service_id.toPStmtInt()?>
+						       ORDER BY po_id" -->
+
+		<!--#SMARTCOLUMN style="border-width:1;border-right-color:#FFFFFF;border-bottom-color:#FFFFFF;width:30%;" name="project_request_po_no" title="PO#" href="" onclick="return view_po(<?r:po_list:po_id.toJavaScriptString()?>); return false;"  align="center" nowrap-->
+		<!--#SMARTCOLUMN style="border-width:1;border-right-color:#FFFFFF;border-bottom-color:#FFFFFF;width:30%;" name="vendor_name" title="Vendor"  align="left" nowrap-->
+		<!--#SMARTCOLUMN style="border-width:1;border-right-color:#FFFFFF;border-bottom-color:#FFFFFF;width:15%;" name="status" title="Status"  align="center" nowrap-->
+		<!--#SMARTCOLUMN style="border-width:1;border-right-color:#FFFFFF;border-bottom-color:#FFFFFF;width:15%;" name="date_created" title="Date Created" format="date" -->
+		<!--SMARTCOLUMN style="border-width:1;border-right-color:#FFFFFF;border-bottom-color:#FFFFFF;width:15%;" name="total" title="Total"  align="center" nowrap-->
+		<!--SMARTCOLUMN style="border-width:1;border-bottom-color:#FFFFFF;width:10%;" name="total" title="Print"  align="center" nowrap-->
+
+	<!--#/SMARTTABLE -->
+	</div></td>
+      </tr>
+
+    <!--  <tr>
+          <td colspan="6" class="tableHeader">&nbsp;</td>
+      </tr>  -->
+      <tr>
+         <td colspan="6">
+			<!--#CHECKSECURITY right="rights.sch/sch_job_req_info.update"-->
+ 	           <input name="fully_sch_button" type="button" value="Fully Scheduled" class="button" onClick="updateStatus(this);">
+            <!--#/CHECKSECURITY-->
+			<!--#CHECKSECURITY right="rights.sch/sch_distribution.view"-->
+				<input type="button" name="dis_sch_button" value="Distribute Schedule" class="button" onClick="doubleCheck();">
+			<!--#/CHECKSECURITY-->
+			</td>
+		</tr>
+		<tr>
+			<td colspan="6">
+				<!--#CHECKSECURITY right="rights.job/job_edit.view"-->
+               <input name="job_edit_button" type="button" value="View Job" class="button" onClick="newWindowScrollBars('{!s:showPage!}job/job_edit.html?closeOnCancel=true','job_window',400,650);">
+            	<!--#/CHECKSECURITY-->
+<!--#IF defined="<?s:service_id?>"-->
+					<!--#CHECKSECURITY right="rights.job/req_edit.view"-->
+               <input name="req_edit_button" type="button" value="View Req" class="button" onClick="newWindowScrollBars('{!s:showPage!}job/req_edit.html?closeOnCancel=true','req_window',550,750);">
+      	      		<!--#/CHECKSECURITY-->
+					<!--#CHECKSECURITY right="rights.enet/req/sr_edit.view"-->
+  <!--#IF evaluate="<?r:sch/sch_job_req_info:request_id?>" compare="" -->
+  <!--#ELSE-->
+    <!--#IF evaluate="<?r:sch/sch_job_req_info:is_new?>" compare="Y" -->
+    		<input name="sr_edit_button" type="button" value="View SR" class="button" onClick="newWindowScrollBars('{!s:showPage!}enet/req/service_request.html?closeOnCancel=true&project_id={!r:sch/sch_job_req_info:project_id!}&request_id={!r:sch/sch_job_req_info:request_id!}','sr_window',550,800);">
+    <!--#ELSE-->
+            <input name="sr_edit_button" type="button" value="View SR" class="button" onClick="newWindowScrollBars('{!s:showPage!}enet/req/sr_edit.html?closeOnCancel=true&project_id={!r:sch/sch_job_req_info:project_id!}&request_id={!r:sch/sch_job_req_info:request_id!}','sr_window',550,800);">
+    <!--#/IF-->
+  <!--#/IF-->
+      	      <!--#/CHECKSECURITY-->
+<!--#/IF-->
+
+<!--#IF evaluate="<?p:service_type_name?>" compare="Long View" -->
+	<!--#SQLLOOP query="SELECT lookup_code FROM service_status_types_v WHERE lookup_id=<?d:serv_status_type_id.toPStmtInt()?> AND lookup_code='closed'"-->
+	  <!--#CHECKSECURITY right="rights.close_req.view"-->
+   		  <input name="close_req_button" type="button" value="Open Req" class="button" onClick="newWindow('{!s:showPage!}changeStatus/sch/sch_job_req_info.html?object_type=req&new_status=pending&updated_job=true&object_id={!s:service_id!}', 'sch_job_req_info_frame');">
+   	  <!--#/CHECKSECURITY-->
+	<!--#SQLNODATA-->
+	  <!--#CHECKSECURITY right="rights.close_req.view"-->
+           <input name="close_req_button" type="button" value="Close Req" class="button" onClick="newWindow('{!s:showPage!}changeStatus/sch/sch_job_req_info.html?object_type=req&new_status=closed&updated_job=true&object_id={!s:service_id!}', 'sch_job_req_info_frame');">
+	  <!--#/CHECKSECURITY-->
+	<!--#/SQLNODATA-->
+	<!--#/SQLLOOP-->
+<!--#/IF-->
+    <!--<input type="button" class="button" value="View Job Loc Map" onclick="showMap('{!r:sch/sch_job_req_info:street1!}','{!r:sch/sch_job_req_info:street2!}','{!r:sch/sch_job_req_info:city!}','{!r:sch/sch_job_req_info:state!}','{!r:sch/sch_job_req_info:zip!}'); return false;">-->
+         </td>
+      </tr>
+
+
+
+<script language="JavaScript">
+<!--
+
+	function setupSch()
+	{
+	<!--#CHECKSECURITY right="rights.sch/sch_job_req_info.view"-->
+		if( sch_job_req_info.updated_job.value == 'true' )
+		{
+		//refresh job list
+			parent.frames.sch_job_list_frame.location.reload();
+		}
+		else
+		{
+			sch_job_req_info.updated_job.value = 'false';
+			newWindow('{!s:action!}setupSchSession/sch/schd_res_list?sch_action=set_job_dates&est_start_date={!r:sch/sch_job_req_info:est_start_date!}&est_start_time={!r:sch/sch_job_req_info:est_start_time!}&est_end_date={!r:sch/sch_job_req_info:est_end_date!}&job_type_id={!r:sch/sch_job_req_info:job_type_id!}','schd_res_list_frame');
+		}
+	<!--#/CHECKSECURITY-->
+
+	}
+
+	function updateWatchFlag(field)
+	{
+		eval(field.form.name+".sch_action.value='watch'");
+		eval(field.form.name+".updated_job.value='true'");
+		eval(field.form.name+".submit()");
+	}
+
+	function updateStatus(field)
+	{
+		eval(field.form.name+".sch_action.value='fully_schedule'");
+		eval(field.form.name+".updated_job.value='true'");
+		eval(field.form.name+".submit()");
+	}
+
+	function doubleCheck(field)
+	{
+		if( confirm("Are you sure you want to notify this job's Foreman with tomorrow's job locations?") )
+		{
+			sch_job_req_info.distribute_job.value = 'true';
+			sch_job_req_info.action='{!s:action!}emailSchedule';
+			sch_job_req_info.submit();
+		}
+	}
+
+	function redisplayPage()
+	{
+		newWindow('{!s:showPage!}sch/sch_job_req_info','sch_job_req_info_frame');
+	}
+
+function showMap(p1, p2, p3, p4, p5)
+{
+  url = "http://www.mapquest.com/maps/map.adp?formtype=address&addtohistory=&address=";
+  addr = p1;
+  if (p2 != null && p2 != "")
+  {
+	  addr = addr + " " + p2;
+  }
+
+  url += escape(addr);
+  url += "&city=" + escape(p3);
+  url += "&state=" + p4;
+  if(p5 != null && p5 != "")
+  {
+	  url += "&zipcode=" + escape(p5);
+  }
+  url += "&country=US&geodiff=1";
+
+ // alert("url = " + url);
+
+  newWindow(url,'map');
+}
+
+function view_po(po_id)
+{
+	var attribs = {!a:Window2Attribs!} + ',height=580,width=580';
+	window.open('{!s:showPage!}enet/po/po_detail.html?po_id='+po_id, 'po', attribs);
+	return false;
+}
+
+function refresh_pos()
+{
+	$("#poListDiv").load("{!s:showPage!}enet/embeds/po_list.html?parameter="+ document.getElementById("request_id").value);
+}
+
+-->
+</script>
+
+ <!--#/SMARTFORM-->
+   </table>
+
+	<!--#CHECKSECURITY right="rights.sch/sch_job_req_info.view" -->
+	<!--#ELSE-->
+	<table width="100%" cellspacing="0" cellpadding="0">
+		<tr>
+			<td  class="HeaderBar">You Do Not Have Access To This Form</td>
+		</tr>
+	</table>
+	<!--#/CHECKSECURITY-->
+
+<!--#EMBED template="embeds/footer.html" -->

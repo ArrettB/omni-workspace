@@ -1,0 +1,9 @@
+
+CREATE VIEW dbo.TABS_V
+AS
+SELECT     dbo.TEMPLATES.TEMPLATE_NAME, dbo.TABS.NAME, dbo.TABS.SEQUENCE, dbo.TABS.TYPE_CODE, dbo.TABS.DEFAULT_TAB, 
+                      dbo.TABS.TABLE_ID
+FROM         dbo.TABS INNER JOIN
+                      dbo.TEMPLATES ON dbo.TABS.TEMPLATE_ID = dbo.TEMPLATES.TEMPLATE_ID
+
+

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 27, 2006 11:54:33 AM by Hibernate Tools 3.2.0.beta8 -->
+<hibernate-mapping>
+    <class name="com.dynamic.charm.examples.orm.State" table="STATES">
+        <id name="stateId" type="int">
+            <column name="STATE_ID" />
+            <generator class="identity" />
+        </id>
+        <property name="stateCode" type="string">
+            <column name="STATE_CODE" length="2" not-null="true" />
+        </property>
+        <property name="stateName" type="string">
+            <column name="STATE_NAME" length="200" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

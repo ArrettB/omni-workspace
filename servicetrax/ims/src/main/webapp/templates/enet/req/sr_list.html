@@ -1,0 +1,131 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<body class="BodyTag" onLoad="acknowledge()">
+
+<!--#EMBED template="enet/embeds/project_header.html"-->
+
+<table width="100%" border="0" cellspacing="0">
+	<tr><td class="HeaderLabel">To <font size="2">CREATE</font> a new Service Request: Select a Service Request from the list, </td></tr>
+	<tr><td class="HeaderLabel">click "Create Additional Service Request" link, and edit fields as necessary...</td></tr>
+	<tr><td><br></td></tr>
+</table>
+
+<!--#CHECKSECURITY right="rights.enet/multi_vendor.view" -->
+
+<!--#SMARTTABLE name="sr_list"
+		class="SmartTable"
+		query="SELECT r.record_id, r.record_no, r.record_seq_no, r.record_type_seq_no, r.record_type_name, r.record_type_code,
+		              r.record_status_type_name, r.record_created, r.record_last_modified, r.dealer_po_no, r.customer_po_no,
+		              r.est_start_date_varchar, is_new
+				 FROM projects_all_requests_v r
+				WHERE r.project_id = <?s:project_id.toPStmtInt()?>
+				  AND (r.record_type_code = 'service_request' OR r.record_type_code = 'workorder')
+				  AND r.record_status_type_code <> 'closed'
+				ORDER BY r.record_seq_no DESC, r.record_type_seq_no DESC"
+	-->
+
+<!--#IF evaluate="<?r:sr_list:record_type_code?>" compare="service_request" -->
+  <!--#IF evaluate="<?r:sr_list:is_new?>" compare="Y" -->
+	<!--#SMARTCOLUMN name="record_no" sort="record_seq_no" title="Request&nbsp;#" width="10%" align="center" href="<?s:action?>setProjectDatum/enet/req/service_request.html?request_id=<?r:sr_list:record_id?>" filter="a_record_no:record_no like '%<?p:a_record_no?>'" nowrap-->
+  <!--#ELSE-->
+	<!--#SMARTCOLUMN name="record_no" sort="record_seq_no" title="Request&nbsp;#" width="10%" align="center" href="<?s:action?>setProjectDatum/enet/req/sr_edit.html?request_id=<?r:sr_list:record_id?>" filter="a_record_no:record_no like '%<?p:a_record_no?>'" nowrap-->
+  <!--#/IF-->
+<!--#ELSE-->
+	<!--#SMARTCOLUMN name="record_no" sort="record_seq_no" title="Request&nbsp;#" width="10%" align="center" href="<?s:action?>setProjectDatum/enet/req/wo_edit.html?request_id=<?r:sr_list:record_id?>" filter="a_record_no:record_no like '%<?p:a_record_no?>'" nowrap-->
+<!--#/IF-->
+	<!--#SMARTCOLUMN name="record_type_name" sort="record_type_name" title="Type" width="10%" nowrap
+		filter="record_type_name:record_type_name" filterQuery="SELECT lookup_name id, lookup_name FROM request_types_v WHERE lookup_code='service_request' OR lookup_code='workorder' ORDER BY lookup_name" filterQuick="true"
+	-->
+	<!--#SMARTCOLUMN name="record_status_type_name" sort="record_status_type_name" title="Status" width="5%" nowrap
+		filter="record_status_type_name:record_status_type_name" filterQuery="SELECT DISTINCT request_status_type_name id, request_status_type_name FROM project_requests_v WHERE project_id = <?s:project_id.toPStmtString()?> ORDER BY request_status_type_name" filterQuick="true"
+	-->
+	<!--#SMARTCOLUMN name="est_start_date_varchar" sort="est_start_date_varchar" title="Start Date" width="10%" filter="a_est_start_date_varchar:est_start_date_varchar"  -->
+	<!--#SMARTCOLUMN name="dealer_po_no" sort="dealer_po_no" title="Dealer PO" width="10%" align="left" filter="a_dealer_po_no:dealer_po_no" -->
+	<!--#SMARTCOLUMN name="customer_po_no" sort="customer_po_no" title="End&nbsp;User&nbsp;PO" width="10%" align="left" filter="a_customer_po_no:customer_po_no" -->
+	<!--#SMARTCOLUMN name="record_last_modified" sort="record_last_modified" title="Last&nbsp;Modified" format="datetime" width="15%" -->
+<!--#/SMARTTABLE -->
+
+	<!--#CHECKSECURITY right="rights.enet/req/wo_edit.insert"-->
+		<!--#IF evaluate="<?s:project_type_code?>" compare="service_account"-->
+			<!--#IF evaluate="<?s:project_status_type_code?>" compare="folder_closed"-->
+			<!--#ELSE-->
+
+	    <!--#EMBED template="embeds/spacer_table.html" spacer_height="10"-->
+		<table>
+			<tr>
+				<td align="left">
+					<input type="button" class="button" value="Create New Workorder" name="wo_button" onClick="return newWorkorder();">
+				</td>
+			</tr>
+		</table>
+		<!--#/IF-->
+		<!--#/IF-->
+	<!--#/CHECKSECURITY-->
+<!--#ELSE-->
+
+<!--#SMARTTABLE name="sr_list"
+		class="SmartTable"
+		query="SELECT DISTINCT r.record_id, r.record_no, r.record_seq_no, r.record_type_seq_no, r.record_type_name, r.record_type_code, r.record_status_type_name, r.record_created, r.record_last_modified, r.dealer_po_no, r.customer_po_no,
+				      r.est_start_date_varchar, rv.sch_start_date_varchar, rv.sch_start_time, rv.sch_end_date_varchar
+				  FROM projects_all_requests_v r, request_vendors_v rv
+				 WHERE r.project_id = <?s:project_id.toPStmtInt()?>
+				   AND (r.record_type_code = 'service_request' OR r.record_type_code = 'workorder')
+				   AND record_type_code = 'workorder'
+				   AND r.request_id = rv.request_id
+				   AND (rv.vendor_contact_id = <?s:user.contactID.toPStmtString()?>
+				       OR r.furniture1_contact_id = <?s:user.contactID.toPStmtInt()?>
+					   OR r.furniture2_contact_id = <?s:user.contactID.toPStmtInt()?>
+					   )
+				  AND record_status_type_code <> 'closed'
+				ORDER BY r.record_seq_no DESC, r.record_type_seq_no DESC"
+	-->
+
+<!--#IF evaluate="<?r:sr_list:record_type_code?>" compare="service_request" -->
+	<!--#SMARTCOLUMN name="record_no" sort="record_seq_no" title="Request&nbsp;#" width="5%" align="center" href="<?s:action?>setProjectDatum/enet/req/service_request.html?request_id=<?r:sr_list:record_id?>" filter="a_record_no:record_no" nowrap-->
+<!--#ELSE-->
+	<!--#SMARTCOLUMN name="record_no" sort="record_seq_no" title="Request&nbsp;#" width="5%" align="center" href="<?s:action?>setProjectDatum/enet/req/wo_edit.html?request_id=<?r:sr_list:record_id?>" filter="a_record_no:record_no" nowrap-->
+<!--#/IF-->
+	<!--#SMARTCOLUMN name="record_type_name" sort="record_type_name" title="Type" width="10%" nowrap
+		filter="a_record_type_name:record_type_name" filterQuery="SELECT lookup_id, lookup_name FROM request_types_v WHERE lookup_code='service_request' OR lookup_code='workorder' ORDER BY lookup_name" filterQuick="true"
+	-->
+	<!--#SMARTCOLUMN name="record_status_type_name" sort="record_status_type_name" title="Status" width="12%" nowrap
+		filter="a_request_status_type_name:request_status_type_name" filterQuery="SELECT DISTINCT request_status_type_id, request_status_type_name FROM project_requests_v WHERE project_id = <?s:project_id.toPStmtString()?> ORDER BY request_status_type_name" filterQuick="true"
+	-->
+	<!--#SMARTCOLUMN name="est_start_date_varchar" sort="est_start_date_varchar" title="Est&nbsp;Start&nbsp;Date" width="10%" filter="est_start_date_varchar:est_start_date_varchar" -->
+	<!--#SMARTCOLUMN name="sch_start_date_varchar" sort="sch_start_date_varchar" title="Sch&nbsp;Start&nbsp;Date" width="10%" filter="sch_start_date_varchar:sch_start_date_varchar" -->
+	<!--#SMARTCOLUMN name="sch_start_time" sort="sch_start_time" title="Start&nbsp;Time" width="7%" format="time" -->
+	<!--#SMARTCOLUMN name="sch_end_date_varchar" sort="sch_end_date_varchar" title="Sch&nbsp;End&nbsp;Date" width="10%" filter="sch_end_date_varchar:sch_end_date_varchar" -->
+	<!--#SMARTCOLUMN name="customer_po_no" sort="customer_po_no" title="End&nbsp;User&nbsp;PO" width="10%" align="left" filter="a_customer_po_no:customer_po_no" -->
+<!--#/SMARTTABLE -->
+
+
+
+<!--#/CHECKSECURITY-->
+
+<script language="JavaScript">
+<!--
+
+	function newWorkorder()
+	{
+		location="{!s:action!}setProjectDatum/enet/req/wo_edit.html?request_id=";
+	}
+
+	function acknowledge()
+	{
+		if( {!d:acknowledgement.toJavaScriptString()!} == "true" )
+		{
+			var email_msg = '';
+		<!--#IF defined="<?d:email_failed?>"-->
+			email_msg = "&email_failed=true";
+		<!--#/IF-->
+			newWindowScrollBars("{!s:showPage!}enet/req/acknowledge.html?request_type_code={!d:request_type_code!}&request_no={!d:request_no!}&is_sent={!d:is_sent!}&is_new={!d:is_new!}"+
+						"&sales_rep={!d:d_sales_rep_contact_id_sent!}&sales_sup={!d:d_sales_sup_contact_id_sent!}&proj_mgr={!d:d_proj_mgr_contact_id_sent!}&designer={!d:d_designer_contact_id_sent!}&a_m={!d:a_m_contact_id_sent!}"+
+						"&request_id={!d:request_id!}&version_no={!d:version_no!}"+email_msg,"acknowledge_window",320,450)
+		}
+	}
+
+-->
+</script>
+
+<!--#EMBED template="enet/embeds/footer.html" -->
+

@@ -1,0 +1,48 @@
+<!-- $Header: job_locations.html, 8/1/2007, David Zhaon$ -->
+<html>
+<head>
+<title>Job Locations</title>
+</head>
+<body>
+<!--#IF defined="<?p:action?>" -->
+  <!--#IF evaluate="<?p:action?>" compare="new"-->
+
+    <input type="hidden" id="current_job_location_id" value="{!s:current_job_location_id!}">
+
+	  <!--#SELECT name="job_location_id" id="job_location_id" class="regular" style="width:230"
+				  onChange="onJobLocationChange()"
+				  firstOption="" firstOptionValue=""
+				  currentValue="<?s:current_job_location_id?>"
+				  query="SELECT job_location_id, job_location_name
+						   FROM job_locations
+						  WHERE customer_id = <?p:parameter.toPStmtInt()?>
+							AND active_flag = 'Y'
+					   ORDER BY job_location_name"  -->
+
+  <!--#ELSE-->
+
+	  <!--#SELECT name="job_location_id" id="job_location_id" class="regular" style="width:230"
+				  onChange="onJobLocationChange()"
+				  firstOption="" firstOptionValue=""
+				  currentValue="<?p:current_val?>"
+				  query="SELECT job_location_id, job_location_name
+						   FROM job_locations
+						  WHERE customer_id = <?p:parameter.toPStmtInt()?>
+							AND active_flag = 'Y'
+					   ORDER BY job_location_name"  -->
+  <!--#/IF-->
+<!--#ELSE-->
+
+	  <!--#SELECT name="job_location_id" id="job_location_id" class="regular" style="width:230"
+				  onChange="onJobLocationChange()"
+				  firstOption="" firstOptionValue=""
+				  currentValue="<?p:current_val?>"
+				  query="SELECT job_location_id, job_location_name
+						   FROM job_locations
+						  WHERE customer_id = <?p:parameter.toPStmtInt()?>
+							AND active_flag = 'Y'
+					   ORDER BY job_location_name"  -->
+
+<!--#/IF-->
+</body>
+</html>

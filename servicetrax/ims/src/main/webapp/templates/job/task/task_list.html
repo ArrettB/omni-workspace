@@ -1,0 +1,25 @@
+<!--#EMBED template="embeds/header.html" -->
+
+	<table class="SmartTable" border="0" cellpadding="0" cellspacing="0"> 
+		<tr><td class="tableHeader">Task List</td></tr>
+	</table>
+	
+   <!--#SMARTTABLE class="SmartTable" name="tasks" 
+      query="SELECT stv.service_task_id, stv.phase, stv.phase_no, stv.phase_type_name, stv.sequence_no,
+                    stv.sub_act_type_name, stv.vendor_responsible, stv.description
+         	 FROM serv_tasks_v stv
+		   	 WHERE stv.service_id = <?s:service_id.toSQLString()?>
+  	          ORDER BY stv.phase_no, stv.sequence_no"
+   -->
+      <!--#SMARTCOLUMN width="10%" title="Phase" name="phase" sort="phase" class="TableRow1Link,TableRow2Link" 
+         href="<?s:showPage?>job/task/task_edit.html?loc=task_edit&service_task_id=<?r:tasks:service_task_id?>&service_id=<?s:service_id?>" target="task_edit_frame"
+      -->
+      <!--#SMARTCOLUMN width="10%" title="Phase Type" name="phase_type_name" sort="phase_type_name" -->
+      <!--#SMARTCOLUMN width="10%" title="Sub-Activity" name="sub_act_type_name" sort="sub_act_type_name" -->
+      <!--#SMARTCOLUMN width="15%" title="Vendor Responsible" name="vendor_responsible" sort="vendor_responsible" -->                                    
+      <!--#SMARTCOLUMN width="53%" title="Description" name="description" -->
+   <!--#/SMARTTABLE -->
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

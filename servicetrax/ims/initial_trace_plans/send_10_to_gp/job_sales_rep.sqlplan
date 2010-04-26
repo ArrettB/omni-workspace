@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ShowPlanXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0" Build="9.00.3068.00" xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan">
+  <BatchSequence>
+    <Batch>
+      <Statements>
+        <StmtSimple StatementCompId="1" StatementEstRows="1" StatementId="1" StatementOptmLevel="FULL" StatementOptmEarlyAbortReason="GoodEnoughPlanFound" StatementSubTreeCost="0.103807" StatementText="SELECT sales_rep_name, cost_to_cust, cost_to_vend, cost_to_job, warehouse_fee FROM invoice_cost_codes_job_v WHERE invoice_id = 164325 AND (date_created = (SELECT MAX(date_created) FROM invoice_cost_codes_job_v WHERE invoice_id = 164325))" StatementType="SELECT">
+          <StatementSetOptions ANSI_NULLS="false" ANSI_PADDING="false" ANSI_WARNINGS="false" ARITHABORT="true" CONCAT_NULL_YIELDS_NULL="false" NUMERIC_ROUNDABORT="false" QUOTED_IDENTIFIER="false" />
+          <QueryPlan DegreeOfParallelism="1" MemoryGrant="68" CachedPlanSize="61" CompileTime="107" CompileCPU="85" CompileMemory="1656">
+            <RelOp AvgRowSize="82" EstimateCPU="4.18E-06" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Left Outer Join" NodeId="0" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.103807">
+              <OutputList>
+                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Column="CODE" />
+                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_1]" Column="CODE" />
+                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_2]" Column="CODE" />
+                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_3]" Column="CODE" />
+                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[CONTACTS]" Column="CONTACT_NAME" />
+              </OutputList>
+              <RunTimeInformation>
+                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+              </RunTimeInformation>
+              <NestedLoops Optimized="false">
+                <OuterReferences>
+                  <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="D_SALES_REP_CONTACT_ID" />
+                </OuterReferences>
+                <RelOp AvgRowSize="78" EstimateCPU="1E-07" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Top" NodeId="2" Parallel="false" PhysicalOp="Top" EstimatedTotalSubtreeCost="0.10052">
+                  <OutputList>
+                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Column="CODE" />
+                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="D_SALES_REP_CONTACT_ID" />
+                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_1]" Column="CODE" />
+                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_2]" Column="CODE" />
+                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_3]" Column="CODE" />
+                  </OutputList>
+                  <RunTimeInformation>
+                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                  </RunTimeInformation>
+                  <Top RowCount="false" IsPercent="false" WithTies="true">
+                    <TieColumns>
+                      <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="DATE_CREATED" />
+                    </TieColumns>
+                    <TopExpression>
+                      <ScalarOperator ScalarString="(1)">
+                        <Const ConstValue="(1)" />
+                      </ScalarOperator>
+                    </TopExpression>
+                    <RelOp AvgRowSize="86" EstimateCPU="0.000100089" EstimateIO="0.0112613" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Sort" NodeId="3" Parallel="false" PhysicalOp="Sort" EstimatedTotalSubtreeCost="0.10052">
+                      <OutputList>
+                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Column="CODE" />
+                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="D_SALES_REP_CONTACT_ID" />
+                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="DATE_CREATED" />
+                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_1]" Column="CODE" />
+                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_2]" Column="CODE" />
+                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_3]" Column="CODE" />
+                      </OutputList>
+                      <MemoryFractions Input="0.5" Output="1" />
+                      <RunTimeInformation>
+                        <RunTimeCountersPerThread Thread="0" ActualRebinds="1" ActualRewinds="0" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                      </RunTimeInformation>
+                      <Sort Distinct="false">
+                        <OrderBy>
+                          <OrderByColumn Ascending="false">
+                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="DATE_CREATED" />
+                          </OrderByColumn>
+                        </OrderBy>
+                        <RelOp AvgRowSize="86" EstimateCPU="8.65728E-06" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1.00113" LogicalOp="Inner Join" NodeId="4" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.0891585">
+                          <OutputList>
+                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Column="CODE" />
+                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="D_SALES_REP_CONTACT_ID" />
+                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="DATE_CREATED" />
+                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_1]" Column="CODE" />
+                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_2]" Column="CODE" />
+                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_3]" Column="CODE" />
+                          </OutputList>
+                          <RunTimeInformation>
+                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                          </RunTimeInformation>
+                          <NestedLoops Optimized="false">
+                            <OuterReferences>
+                              <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="WAREHOUSE_FEE_TYPE_ID" />
+                            </OuterReferences>
+                            <RelOp AvgRowSize="78" EstimateCPU="1.79714E-05" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="2.07112" LogicalOp="Inner Join" NodeId="5" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.0856974">
+                              <OutputList>
+                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Column="CODE" />
+                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="D_SALES_REP_CONTACT_ID" />
+                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="WAREHOUSE_FEE_TYPE_ID" />
+                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="DATE_CREATED" />
+                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_1]" Column="CODE" />
+                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_2]" Column="CODE" />
+                              </OutputList>
+                              <RunTimeInformation>
+                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                              </RunTimeInformation>
+                              <NestedLoops Optimized="false">
+                                <OuterReferences>
+                                  <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="COST_TO_CUST_TYPE_ID" />
+                                </OuterReferences>
+                                <RelOp AvgRowSize="78" EstimateCPU="3.73431E-05" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="4.29938" LogicalOp="Inner Join" NodeId="6" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.0818747">
+                                  <OutputList>
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="D_SALES_REP_CONTACT_ID" />
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="COST_TO_CUST_TYPE_ID" />
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="WAREHOUSE_FEE_TYPE_ID" />
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="DATE_CREATED" />
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_1]" Column="CODE" />
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_2]" Column="CODE" />
+                                  </OutputList>
+                                  <RunTimeInformation>
+                                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                                  </RunTimeInformation>
+                                  <NestedLoops Optimized="false">
+                                    <OuterReferences>
+                                      <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="COST_TO_VEND_TYPE_ID" />
+                                    </OuterReferences>
+                                    <RelOp AvgRowSize="70" EstimateCPU="7.76368E-05" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="8.93376" LogicalOp="Inner Join" NodeId="7" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.0772999">
+                                      <OutputList>
+                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="D_SALES_REP_CONTACT_ID" />
+                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="COST_TO_CUST_TYPE_ID" />
+                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="COST_TO_VEND_TYPE_ID" />
+                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="WAREHOUSE_FEE_TYPE_ID" />
+                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="DATE_CREATED" />
+                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_2]" Column="CODE" />
+                                      </OutputList>
+                                      <RunTimeInformation>
+                                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                                      </RunTimeInformation>
+                                      <NestedLoops Optimized="false">
+                                        <OuterReferences>
+                                          <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="COST_TO_JOB_TYPE_ID" />
+                                        </OuterReferences>
+                                        <RelOp AvgRowSize="60" EstimateCPU="7.76368E-05" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="18.5734" LogicalOp="Inner Join" NodeId="8" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.0711609">
+                                          <OutputList>
+                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="D_SALES_REP_CONTACT_ID" />
+                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="COST_TO_CUST_TYPE_ID" />
+                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="COST_TO_VEND_TYPE_ID" />
+                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="COST_TO_JOB_TYPE_ID" />
+                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="WAREHOUSE_FEE_TYPE_ID" />
+                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="DATE_CREATED" />
+                                          </OutputList>
+                                          <RunTimeInformation>
+                                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                                          </RunTimeInformation>
+                                          <NestedLoops Optimized="true">
+                                            <OuterReferences>
+                                              <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_ID" />
+                                            </OuterReferences>
+                                            <RelOp AvgRowSize="16" EstimateCPU="7.76368E-05" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="18.5734" LogicalOp="Inner Join" NodeId="10" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.0132377">
+                                              <OutputList>
+                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_ID" />
+                                              </OutputList>
+                                              <RunTimeInformation>
+                                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                                              </RunTimeInformation>
+                                              <NestedLoops Optimized="false">
+                                                <OuterReferences>
+                                                  <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                </OuterReferences>
+                                                <RelOp AvgRowSize="16" EstimateCPU="4.18E-06" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Inner Join" NodeId="11" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.00985766">
+                                                  <OutputList>
+                                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                  </OutputList>
+                                                  <RunTimeInformation>
+                                                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                                                  </RunTimeInformation>
+                                                  <NestedLoops Optimized="false">
+                                                    <OuterReferences>
+                                                      <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[JOBS]" Column="PROJECT_ID" />
+                                                    </OuterReferences>
+                                                    <RelOp AvgRowSize="16" EstimateCPU="4.18E-06" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Inner Join" NodeId="12" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.00657038">
+                                                      <OutputList>
+                                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[JOBS]" Column="PROJECT_ID" />
+                                                      </OutputList>
+                                                      <RunTimeInformation>
+                                                        <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                                                      </RunTimeInformation>
+                                                      <NestedLoops Optimized="false">
+                                                        <OuterReferences>
+                                                          <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Column="JOB_ID" />
+                                                        </OuterReferences>
+                                                        <RelOp AvgRowSize="16" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Clustered Index Seek" NodeId="13" Parallel="false" PhysicalOp="Clustered Index Seek" EstimatedTotalSubtreeCost="0.0032831">
+                                                          <OutputList>
+                                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Column="JOB_ID" />
+                                                          </OutputList>
+                                                          <RunTimeInformation>
+                                                            <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                                                          </RunTimeInformation>
+                                                          <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                                            <DefinedValues>
+                                                              <DefinedValue>
+                                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Column="JOB_ID" />
+                                                              </DefinedValue>
+                                                            </DefinedValues>
+                                                            <Object Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Index="[INV_PK]" TableReferenceId="-1" />
+                                                            <SeekPredicates>
+                                                              <SeekPredicate>
+                                                                <Prefix ScanType="EQ">
+                                                                  <RangeColumns>
+                                                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                                                                  </RangeColumns>
+                                                                  <RangeExpressions>
+                                                                    <ScalarOperator ScalarString="(164325.)">
+                                                                      <Const ConstValue="(164325.)" />
+                                                                    </ScalarOperator>
+                                                                  </RangeExpressions>
+                                                                </Prefix>
+                                                              </SeekPredicate>
+                                                            </SeekPredicates>
+                                                          </IndexScan>
+                                                        </RelOp>
+                                                        <RelOp AvgRowSize="16" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Clustered Index Seek" NodeId="14" Parallel="false" PhysicalOp="Clustered Index Seek" EstimatedTotalSubtreeCost="0.0032831">
+                                                          <OutputList>
+                                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[JOBS]" Column="PROJECT_ID" />
+                                                          </OutputList>
+                                                          <RunTimeInformation>
+                                                            <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="0" ActualExecutions="1" />
+                                                          </RunTimeInformation>
+                                                          <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                                            <DefinedValues>
+                                                              <DefinedValue>
+                                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[JOBS]" Column="PROJECT_ID" />
+                                                              </DefinedValue>
+                                                            </DefinedValues>
+                                                            <Object Database="[ims_new]" Schema="[dbo]" Table="[JOBS]" Index="[PK_JOBS]" TableReferenceId="-1" />
+                                                            <SeekPredicates>
+                                                              <SeekPredicate>
+                                                                <Prefix ScanType="EQ">
+                                                                  <RangeColumns>
+                                                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[JOBS]" Column="JOB_ID" />
+                                                                  </RangeColumns>
+                                                                  <RangeExpressions>
+                                                                    <ScalarOperator ScalarString="[ims_new].[dbo].[INVOICES].[JOB_ID]">
+                                                                      <Identifier>
+                                                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Column="JOB_ID" />
+                                                                      </Identifier>
+                                                                    </ScalarOperator>
+                                                                  </RangeExpressions>
+                                                                </Prefix>
+                                                              </SeekPredicate>
+                                                            </SeekPredicates>
+                                                          </IndexScan>
+                                                        </RelOp>
+                                                      </NestedLoops>
+                                                    </RelOp>
+                                                    <RelOp AvgRowSize="16" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Index Seek" NodeId="15" Parallel="false" PhysicalOp="Index Seek" EstimatedTotalSubtreeCost="0.0032831">
+                                                      <OutputList>
+                                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                      </OutputList>
+                                                      <RunTimeInformation>
+                                                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                                                      </RunTimeInformation>
+                                                      <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                                        <DefinedValues>
+                                                          <DefinedValue>
+                                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                          </DefinedValue>
+                                                        </DefinedValues>
+                                                        <Object Database="[ims_new]" Schema="[dbo]" Table="[PROJECTS]" Index="[IX_project_p_eu]" TableReferenceId="-1" />
+                                                        <SeekPredicates>
+                                                          <SeekPredicate>
+                                                            <Prefix ScanType="EQ">
+                                                              <RangeColumns>
+                                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                              </RangeColumns>
+                                                              <RangeExpressions>
+                                                                <ScalarOperator ScalarString="[ims_new].[dbo].[JOBS].[PROJECT_ID]">
+                                                                  <Identifier>
+                                                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[JOBS]" Column="PROJECT_ID" />
+                                                                  </Identifier>
+                                                                </ScalarOperator>
+                                                              </RangeExpressions>
+                                                            </Prefix>
+                                                          </SeekPredicate>
+                                                        </SeekPredicates>
+                                                      </IndexScan>
+                                                    </RelOp>
+                                                  </NestedLoops>
+                                                </RelOp>
+                                                <RelOp AvgRowSize="16" EstimateCPU="0.000177431" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="18.5734" LogicalOp="Index Seek" NodeId="16" Parallel="false" PhysicalOp="Index Seek" EstimatedTotalSubtreeCost="0.00330243">
+                                                  <OutputList>
+                                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_ID" />
+                                                  </OutputList>
+                                                  <RunTimeInformation>
+                                                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                  </RunTimeInformation>
+                                                  <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                                    <DefinedValues>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_ID" />
+                                                      </DefinedValue>
+                                                    </DefinedValues>
+                                                    <Object Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Index="[IX_REQUEST_PROJECTS]" TableReferenceId="-1" />
+                                                    <SeekPredicates>
+                                                      <SeekPredicate>
+                                                        <Prefix ScanType="EQ">
+                                                          <RangeColumns>
+                                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="PROJECT_ID" />
+                                                          </RangeColumns>
+                                                          <RangeExpressions>
+                                                            <ScalarOperator ScalarString="[ims_new].[dbo].[PROJECTS].[PROJECT_ID]">
+                                                              <Identifier>
+                                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                              </Identifier>
+                                                            </ScalarOperator>
+                                                          </RangeExpressions>
+                                                        </Prefix>
+                                                      </SeekPredicate>
+                                                    </SeekPredicates>
+                                                  </IndexScan>
+                                                </RelOp>
+                                              </NestedLoops>
+                                            </RelOp>
+                                            <RelOp AvgRowSize="60" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="17.5734" EstimateRewinds="0" EstimateRows="1" LogicalOp="Clustered Index Seek" NodeId="18" Parallel="false" PhysicalOp="Clustered Index Seek" EstimatedTotalSubtreeCost="0.0578455">
+                                              <OutputList>
+                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="D_SALES_REP_CONTACT_ID" />
+                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="COST_TO_CUST_TYPE_ID" />
+                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="COST_TO_VEND_TYPE_ID" />
+                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="COST_TO_JOB_TYPE_ID" />
+                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="WAREHOUSE_FEE_TYPE_ID" />
+                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="DATE_CREATED" />
+                                              </OutputList>
+                                              <RunTimeInformation>
+                                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                              </RunTimeInformation>
+                                              <IndexScan Lookup="true" Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                                <DefinedValues>
+                                                  <DefinedValue>
+                                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="D_SALES_REP_CONTACT_ID" />
+                                                  </DefinedValue>
+                                                  <DefinedValue>
+                                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="COST_TO_CUST_TYPE_ID" />
+                                                  </DefinedValue>
+                                                  <DefinedValue>
+                                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="COST_TO_VEND_TYPE_ID" />
+                                                  </DefinedValue>
+                                                  <DefinedValue>
+                                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="COST_TO_JOB_TYPE_ID" />
+                                                  </DefinedValue>
+                                                  <DefinedValue>
+                                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="WAREHOUSE_FEE_TYPE_ID" />
+                                                  </DefinedValue>
+                                                  <DefinedValue>
+                                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="DATE_CREATED" />
+                                                  </DefinedValue>
+                                                </DefinedValues>
+                                                <Object Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Index="[PK_REQUESTS]" TableReferenceId="-1" />
+                                                <SeekPredicates>
+                                                  <SeekPredicate>
+                                                    <Prefix ScanType="EQ">
+                                                      <RangeColumns>
+                                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_ID" />
+                                                      </RangeColumns>
+                                                      <RangeExpressions>
+                                                        <ScalarOperator ScalarString="[ims_new].[dbo].[REQUESTS].[REQUEST_ID]">
+                                                          <Identifier>
+                                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_ID" />
+                                                          </Identifier>
+                                                        </ScalarOperator>
+                                                      </RangeExpressions>
+                                                    </Prefix>
+                                                  </SeekPredicate>
+                                                </SeekPredicates>
+                                              </IndexScan>
+                                            </RelOp>
+                                          </NestedLoops>
+                                        </RelOp>
+                                        <RelOp AvgRowSize="26" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="15.0906" EstimateRewinds="2.48284" EstimateRows="1" LogicalOp="Index Seek" NodeId="32" Parallel="false" PhysicalOp="Index Seek" EstimatedTotalSubtreeCost="0.00606145">
+                                          <OutputList>
+                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_2]" Column="CODE" />
+                                          </OutputList>
+                                          <RunTimeInformation>
+                                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                          </RunTimeInformation>
+                                          <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                            <DefinedValues>
+                                              <DefinedValue>
+                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_2]" Column="CODE" />
+                                              </DefinedValue>
+                                            </DefinedValues>
+                                            <Object Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Index="[IX_L_LID_CODE]" Alias="[LOOKUPS_2]" TableReferenceId="-1" />
+                                            <SeekPredicates>
+                                              <SeekPredicate>
+                                                <Prefix ScanType="EQ">
+                                                  <RangeColumns>
+                                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_2]" Column="LOOKUP_ID" />
+                                                  </RangeColumns>
+                                                  <RangeExpressions>
+                                                    <ScalarOperator ScalarString="[ims_new].[dbo].[REQUESTS].[COST_TO_JOB_TYPE_ID]">
+                                                      <Identifier>
+                                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="COST_TO_JOB_TYPE_ID" />
+                                                      </Identifier>
+                                                    </ScalarOperator>
+                                                  </RangeExpressions>
+                                                </Prefix>
+                                              </SeekPredicate>
+                                            </SeekPredicates>
+                                          </IndexScan>
+                                        </RelOp>
+                                      </NestedLoops>
+                                    </RelOp>
+                                    <RelOp AvgRowSize="26" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="6.57858" EstimateRewinds="1.35518" EstimateRows="1" LogicalOp="Index Seek" NodeId="33" Parallel="false" PhysicalOp="Index Seek" EstimatedTotalSubtreeCost="0.00453743">
+                                      <OutputList>
+                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_1]" Column="CODE" />
+                                      </OutputList>
+                                      <RunTimeInformation>
+                                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                      </RunTimeInformation>
+                                      <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                        <DefinedValues>
+                                          <DefinedValue>
+                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_1]" Column="CODE" />
+                                          </DefinedValue>
+                                        </DefinedValues>
+                                        <Object Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Index="[IX_L_LID_CODE]" Alias="[LOOKUPS_1]" TableReferenceId="-1" />
+                                        <SeekPredicates>
+                                          <SeekPredicate>
+                                            <Prefix ScanType="EQ">
+                                              <RangeColumns>
+                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_1]" Column="LOOKUP_ID" />
+                                              </RangeColumns>
+                                              <RangeExpressions>
+                                                <ScalarOperator ScalarString="[ims_new].[dbo].[REQUESTS].[COST_TO_VEND_TYPE_ID]">
+                                                  <Identifier>
+                                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="COST_TO_VEND_TYPE_ID" />
+                                                  </Identifier>
+                                                </ScalarOperator>
+                                              </RangeExpressions>
+                                            </Prefix>
+                                          </SeekPredicate>
+                                        </SeekPredicates>
+                                      </IndexScan>
+                                    </RelOp>
+                                  </NestedLoops>
+                                </RelOp>
+                                <RelOp AvgRowSize="18" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="3.10921" EstimateRewinds="0.190171" EstimateRows="1" LogicalOp="Index Seek" NodeId="34" Parallel="false" PhysicalOp="Index Seek" EstimatedTotalSubtreeCost="0.00380473">
+                                  <OutputList>
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Column="CODE" />
+                                  </OutputList>
+                                  <RunTimeInformation>
+                                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                  </RunTimeInformation>
+                                  <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                    <DefinedValues>
+                                      <DefinedValue>
+                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Column="CODE" />
+                                      </DefinedValue>
+                                    </DefinedValues>
+                                    <Object Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Index="[IX_L_LID_CODE]" TableReferenceId="-1" />
+                                    <SeekPredicates>
+                                      <SeekPredicate>
+                                        <Prefix ScanType="EQ">
+                                          <RangeColumns>
+                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Column="LOOKUP_ID" />
+                                          </RangeColumns>
+                                          <RangeExpressions>
+                                            <ScalarOperator ScalarString="[ims_new].[dbo].[REQUESTS].[COST_TO_CUST_TYPE_ID]">
+                                              <Identifier>
+                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="COST_TO_CUST_TYPE_ID" />
+                                              </Identifier>
+                                            </ScalarOperator>
+                                          </RangeExpressions>
+                                        </Prefix>
+                                      </SeekPredicate>
+                                    </SeekPredicates>
+                                  </IndexScan>
+                                </RelOp>
+                              </NestedLoops>
+                            </RelOp>
+                            <RelOp AvgRowSize="26" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="1.07112" EstimateRewinds="0" EstimateRows="1" LogicalOp="Index Seek" NodeId="35" Parallel="false" PhysicalOp="Index Seek" EstimatedTotalSubtreeCost="0.00345244">
+                              <OutputList>
+                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_3]" Column="CODE" />
+                              </OutputList>
+                              <RunTimeInformation>
+                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                              </RunTimeInformation>
+                              <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                <DefinedValues>
+                                  <DefinedValue>
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_3]" Column="CODE" />
+                                  </DefinedValue>
+                                </DefinedValues>
+                                <Object Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Index="[IX_L_LID_CODE]" Alias="[LOOKUPS_3]" TableReferenceId="-1" />
+                                <SeekPredicates>
+                                  <SeekPredicate>
+                                    <Prefix ScanType="EQ">
+                                      <RangeColumns>
+                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[LOOKUPS_3]" Column="LOOKUP_ID" />
+                                      </RangeColumns>
+                                      <RangeExpressions>
+                                        <ScalarOperator ScalarString="[ims_new].[dbo].[REQUESTS].[WAREHOUSE_FEE_TYPE_ID]">
+                                          <Identifier>
+                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="WAREHOUSE_FEE_TYPE_ID" />
+                                          </Identifier>
+                                        </ScalarOperator>
+                                      </RangeExpressions>
+                                    </Prefix>
+                                  </SeekPredicate>
+                                </SeekPredicates>
+                              </IndexScan>
+                            </RelOp>
+                          </NestedLoops>
+                        </RelOp>
+                      </Sort>
+                    </RelOp>
+                  </Top>
+                </RelOp>
+                <RelOp AvgRowSize="22" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Index Seek" NodeId="38" Parallel="false" PhysicalOp="Index Seek" EstimatedTotalSubtreeCost="0.0032831">
+                  <OutputList>
+                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[CONTACTS]" Column="CONTACT_NAME" />
+                  </OutputList>
+                  <RunTimeInformation>
+                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                  </RunTimeInformation>
+                  <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                    <DefinedValues>
+                      <DefinedValue>
+                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[CONTACTS]" Column="CONTACT_NAME" />
+                      </DefinedValue>
+                    </DefinedValues>
+                    <Object Database="[ims_new]" Schema="[dbo]" Table="[CONTACTS]" Index="[IX_CONTACTS_NAME1]" TableReferenceId="1" />
+                    <SeekPredicates>
+                      <SeekPredicate>
+                        <Prefix ScanType="EQ">
+                          <RangeColumns>
+                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[CONTACTS]" Column="CONTACT_ID" />
+                          </RangeColumns>
+                          <RangeExpressions>
+                            <ScalarOperator ScalarString="[ims_new].[dbo].[REQUESTS].[D_SALES_REP_CONTACT_ID]">
+                              <Identifier>
+                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[REQUESTS]" Column="D_SALES_REP_CONTACT_ID" />
+                              </Identifier>
+                            </ScalarOperator>
+                          </RangeExpressions>
+                        </Prefix>
+                      </SeekPredicate>
+                    </SeekPredicates>
+                  </IndexScan>
+                </RelOp>
+              </NestedLoops>
+            </RelOp>
+          </QueryPlan>
+        </StmtSimple>
+      </Statements>
+    </Batch>
+  </BatchSequence>
+</ShowPlanXML>

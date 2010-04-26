@@ -1,0 +1,45 @@
+<!-- $Header: req_head.html, 33, 6/3/2002 12:36:31 PM, Chad Ryan$ -->
+<!--#EMBED template="embeds/header.html" -->
+<!--#EMBED template="embeds/tab_scripts.html" tab_type_code="SERVICE" tab_view="template_locations_3_v" -->
+
+
+<body onLoad="selectTab()">
+
+	<!--#SMARTFORM name="job/req_edit" security="rights" table="services_v" key="service_id" buttons="" -->
+	<table cellpadding="0" cellspacing="0">
+		<tr>
+			<td style="padding-right: 20"></td>
+			<td class="Label" style="padding-right: 20">
+				Req#:
+			</td>
+			<td class="viewonly" style="padding-right: 20">
+				{!r:job/req_edit:service_no!}
+			</td>
+			<td class="Label" style="padding-right: 20">
+				Job Location:
+			</td>
+			<td class="viewonly" style="padding-right: 20">
+				{!r:job/req_edit:job_location_name!}
+			</td>
+			<td class="Label" style="padding-right: 20">
+				Req Status:
+			</td>
+			<td class="viewonly" style="padding-right: 20">
+				{!r:job/req_edit:serv_status_type_name!}
+			</td>
+		</tr>
+	<table>
+	<!--#/SMARTFORM-->
+
+<table height="5" cellpadding="0" cellspacing="0">
+	<tr height="5">
+		<td height="5">
+		</td>
+	</tr>
+</table>
+
+<!--#EMBED template="embeds/tab_table.html" tab_type_code="SERVICE" tab_view="template_locations_3_v" -->
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

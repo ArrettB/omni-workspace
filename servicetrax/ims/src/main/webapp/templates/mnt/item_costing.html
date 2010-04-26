@@ -1,0 +1,48 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: item_costing.html, 1, 6/10/2005 9:14:54 AM, Blake Von Haden$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.mnt/item_costing.view?>"-->
+<body class="BodyTag">
+
+	<span class="HeaderLabel">
+		Please select a Item Costing entry you wish to edit:
+	</span>
+
+	<!--#SMARTTABLE class="SmartTable" name="item_costs" style="width:480"
+		   query="SELECT i.item_id, i.name, i.cost_per_uom, i.percent_margin, i.allow_expense_entry, i.item_category_type_name
+	   			  FROM items_v i
+	   			  WHERE i.item_status_type_code = 'active'
+	   			   AND (i.organization_id=<?s:org_id.toPStmtString()?> OR i.organization_id is null)
+	   			  ORDER BY i.sequence_no, i.name"
+	   -->
+	<!--#IF defined="<?s:rights.mnt/item_costing.update?>"-->
+		<!--#SMARTCOLUMN name="name" sort="name" title="Name" width="30%" href="<?s:showPage?>mnt/item_costing_edit.html?item_id=<?r:item_costs:item_id?>" filter="item_name:i.name" -->
+	<!--#ELSE-->
+		<!--#SMARTCOLUMN name="name" sort="name" title="Name" width="30%" filter="item_name:i.name" -->
+	<!--#/IF-->
+	   <!--#SMARTCOLUMN name="cost_per_uom" sort="cost_per_uom" title="Cost per UOM" format="money" width="20%" -->
+	   <!--#SMARTCOLUMN name="percent_margin" sort="percent_margin" title="% Margin" width="20%" -->
+
+	   <!--#SMARTCOLUMN name="item_category_type_name" sort="item_category_type_name" title="Category" width="20%" -->
+
+		<!--#IF evaluate="<?r:item_costs:allow_expense_entry?>" compare="Y" -->
+			 <!--#SMARTCOLUMN value="Yes" sort="allow_expense_entry"  title="Expense Entry" width="10%" align="center" -->
+		<!--#ELSE-->
+			 <!--#SMARTCOLUMN value="No" sort="allow_expense_entry" title="Expense Entry" width="10%" align="center" -->
+		<!--#/IF-->
+
+
+	   <!--#SMARTCOLUMN name="item_id" title="History" width="20%" value="View history" href="<?s:showPage?>mnt/item_costing_history.html?item_id=<?r:item_costs:item_id?>&item_name=<?r:item_costs:name?>"-->
+
+
+
+
+
+	<!--#/SMARTTABLE -->
+
+	<br>
+
+	<input type="submit" class="button" name="button" value="Cancel" onClick="location='{!s:showPage!}mnt/main_mnt.html'">
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

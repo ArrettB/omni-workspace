@@ -1,0 +1,118 @@
+<!-- $Header: end_users.html, 8/1/2007, David Zhaon$ -->
+<html>
+<head>
+<title>End Users</title>
+</head>
+<body>
+
+<!--#SQLLOOP name="endUserQuery" resourceName="SQLServer"
+	         query="SELECT COUNT(uceu.customer_id) numEndUsers
+	                  FROM user_customer_end_users uceu INNER JOIN
+	                       user_customers uc ON uceu.user_customer_id = uc.user_customer_id
+	                 WHERE uc.user_id = <?s:user.userID.toPStmtString()?>
+	                   AND uc.customer_id = <?p:parameter.toPStmtString()?>" -->
+
+  <!--#IF defined="<?p:action?>" -->
+    <!--#IF evaluate="<?p:action?>" compare="new"-->
+
+      <input type="hidden" id="current_end_user_id" value="{!s:current_end_user_id!}">
+
+      <!--#IF evaluate="<?r:endUserQuery:numEndUsers?>" compare="0"-->
+ 	    <!--#SELECT name="end_user_id" id="end_user_id" class="regular" style="width:230"
+		  		    firstOption="" firstOptionValue=""
+				    currentValue="<?s:current_end_user_id?>"
+				    onChange="onEndUserChange()"
+				    query="SELECT c.customer_id end_user_id, LTRIM(c.customer_name) end_user_name
+						     FROM customers c INNER JOIN lookups l ON c.customer_type_id = l.lookup_id
+				  		    WHERE l.code='end_user'
+							  AND c.active_flag = 'Y'
+							  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+							  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							  AND (c.end_user_parent_id = <?p:parameter.toPStmtString()?> OR c.customer_id= <?s:current_end_user_id.toSQLString()?>)
+					     ORDER BY c.customer_name" -->
+      <!--#ELSE-->
+ 	    <!--#SELECT name="end_user_id" id="end_user_id" class="regular" style="width:230"
+				    firstOption="" firstOptionValue=""
+				    currentValue="<?s:current_end_user_id?>"
+				    onChange="onEndUserChange()"
+				    query="SELECT c.customer_id end_user_id, LTRIM(c.customer_name) end_user_name
+						     FROM customers c INNER JOIN
+						          lookups l ON c.customer_type_id = l.lookup_id INNER JOIN
+						          user_customer_end_users uceu ON c.customer_id = uceu.customer_id INNER JOIN
+						          user_customers uc ON uceu.user_customer_id = uc.user_customer_id
+						    WHERE l.code='end_user'
+							  AND c.active_flag = 'Y'
+							  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+							  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							  AND ((uc.customer_id = <?p:parameter.toPStmtString()?> AND uc.user_id = <?s:user.userID.toPStmtString()?>) OR c.customer_id= <?s:current_end_user_id.toSQLString()?>)
+					     ORDER BY c.customer_name" -->
+      <!--#/IF-->
+
+    <!--#ELSE-->
+      <!--#IF evaluate="<?r:endUserQuery:numEndUsers?>" compare="0"-->
+	    <!--#SELECT name="end_user_id" id="end_user_id" class="regular" style="width:230"
+				    firstOption="" firstOptionValue=""
+				    currentValue="<?p:current_val?>"
+				    onChange="onEndUserChange()"
+				    query="SELECT c.customer_id end_user_id, LTRIM(c.customer_name) end_user_name
+						     FROM customers c INNER JOIN lookups l ON c.customer_type_id = l.lookup_id
+						    WHERE l.code='end_user'
+							  AND c.active_flag = 'Y'
+							  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+							  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							  AND (c.end_user_parent_id = <?p:parameter.toPStmtString()?> OR c.customer_id= <?p:current_val.toSQLString()?>)
+					     ORDER BY c.customer_name" -->
+      <!--#ELSE-->
+ 	    <!--#SELECT name="end_user_id" id="end_user_id" class="regular" style="width:230"
+				    firstOption="" firstOptionValue=""
+				    currentValue="<?p:current_val?>"
+				    onChange="onEndUserChange()"
+				    query="SELECT c.customer_id end_user_id, LTRIM(c.customer_name) end_user_name
+						     FROM customers c INNER JOIN
+						          lookups l ON c.customer_type_id = l.lookup_id INNER JOIN
+						          user_customer_end_users uceu ON c.customer_id = uceu.customer_id INNER JOIN
+						          user_customers uc ON uceu.user_customer_id = uc.user_customer_id
+						    WHERE l.code='end_user'
+							  AND c.active_flag = 'Y'
+							  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+							  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							  AND ((uc.customer_id = <?p:parameter.toPStmtString()?> AND uc.user_id = <?s:user.userID.toPStmtString()?>) OR c.customer_id= <?s:current_end_user_id.toSQLString()?>)
+					     ORDER BY c.customer_name" -->
+      <!--#/IF-->
+    <!--#/IF-->
+  <!--#ELSE-->
+      <!--#IF evaluate="<?r:endUserQuery:numEndUsers?>" compare="0"-->
+ 	    <!--#SELECT name="end_user_id" id="end_user_id" class="regular" style="width:230"
+				    firstOption="" firstOptionValue=""
+				    currentValue="<?p:current_val?>"
+				    onChange="onEndUserChange()"
+				    query="SELECT c.customer_id end_user_id, LTRIM(c.customer_name) end_user_name
+						     FROM customers c INNER JOIN lookups l ON c.customer_type_id = l.lookup_id
+						    WHERE l.code='end_user'
+							  AND c.active_flag = 'Y'
+							  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+							  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							  AND (c.end_user_parent_id = <?p:parameter.toPStmtString()?> OR c.customer_id= <?p:current_val.toSQLString()?>)
+					     ORDER BY c.customer_name" -->
+      <!--#ELSE-->
+ 	    <!--#SELECT name="end_user_id" id="end_user_id" class="regular" style="width:230"
+				    firstOption="" firstOptionValue=""
+				    currentValue="<?p:current_val?>"
+				    onChange="onEndUserChange()"
+				    query="SELECT c.customer_id end_user_id, LTRIM(c.customer_name) end_user_name
+						     FROM customers c INNER JOIN
+						          lookups l ON c.customer_type_id = l.lookup_id INNER JOIN
+						          user_customer_end_users uceu ON c.customer_id = uceu.customer_id INNER JOIN
+						          user_customers uc ON uceu.user_customer_id = uc.user_customer_id
+						    WHERE l.code='end_user'
+							  AND c.active_flag = 'Y'
+							  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+							  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							  AND ((uc.customer_id = <?p:parameter.toPStmtString()?> AND uc.user_id = <?s:user.userID.toPStmtString()?>) OR c.customer_id= <?s:current_end_user_id.toSQLString()?>)
+					     ORDER BY c.customer_name" -->
+      <!--#/IF-->
+  <!--#/IF-->
+<!--#/SQLLOOP-->
+
+</body>
+</html>

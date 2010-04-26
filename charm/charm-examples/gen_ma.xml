@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<!-- 
+The DOCTYPE declaration declares the location of product-specific parts of the
+Ant build file. You can change the values of these declarations to point to
+other available files. This gives you an opportunity to choose what database
+and EJB container to use for the Middlegen samples.
+
+Note that this syntax has nothing to do with Ant or Middlegen. This
+is the standard way defined by w3c to dynamically include external
+files in an XML document. Any decent XML parser will do the include
+transparently. Try to open this file in Internet Explorer and see
+for yourself.
+-->
+
+<!DOCTYPE project [
+   
+]>
+
+
+
+<project name="maven_ant" default="maven_ant" basedir="." >
+
+	<target name="maven_ant">
+	
+	<copy file="build.xml" tofile="build-temp.xml"/>
+
+	<exec executable="cmd.exe" dir="${basedir}" spawn="false">
+	    <arg line="/c m2 ant:ant"/>
+	</exec>	
+	
+	<move file="build.xml" tofile="maven-ant.xml"/>
+	<move file="build-temp.xml" tofile="build.xml"/>
+
+	</target>
+
+
+</project>

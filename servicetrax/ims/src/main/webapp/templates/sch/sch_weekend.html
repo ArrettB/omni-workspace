@@ -1,0 +1,156 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: sch_weekend.html, 12, 2/25/2002 8:12:20 AM, Chad Ryan$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+
+<body class="BodyTag" onLoad="this.focus();setupSch();">
+
+	<table width="100%">
+
+	<!--#SMARTFORM name="sch/sch_weekend" action="<?s:action?>schedule" table="sch_resources_v" key="sch_resource_id" buttons="" -->
+		<!--#SMARTFIELD name="weekend_sch_resource_id" type="hidden" value="<?p:weekend_sch_resource_id?>" -->
+		<!--#SMARTFIELD name="weekend_flag" type="hidden" -->
+		<!--#SMARTFIELD name="sch_action" type="hidden" value="" -->
+		<!--#SMARTFIELD name="updated_res" type="hidden" value="<?p:updated_res.isNull('false')?>" -->
+		<!--#SMARTFIELD name="dont_close" type="hidden" value="<?p:dont_close.isNull('false')?>" -->
+		<tr>
+			<td colspan="4" class="TableTitle">Weekend Availability</td>
+		</tr>
+		<tr>
+			<td width="70"><!--#SMARTFIELD title="Name:" div="&nbsp;</td><td>" name="resource_id" type="droplist" style="width:114" table="resources" display="name" key="resource_id" value="<?p:resource_id?>" filter="organization_id=<?s:org_id.toSQLString()?>" --></td>
+			<td>&nbsp;</td><td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td width="70" class="Label">Date&nbsp;Type:&nbsp;</td><td><!--#SELECT name="date_type_id" autoSelect="false" style="width:114" class="regular" query="SELECT lookup_id, lookup_name FROM weekend_date_types_v ORDER BY sequence_no" firstOption="" firstOptionValue="<?p:date_type_id?>" --></td>
+			<td>&nbsp;</td><td>&nbsp;</td>
+		</tr>
+	<!--#IF evaluate="<?p:sch_resource_id?>" compare="" -->
+		<tr>
+			<td width="70"><!--#SMARTFIELD title="Start&nbsp;Date:" div="&nbsp;</td><td>" name="res_start_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(res_start_date)')</script>" --></td>
+			<td width="70"><!--#SMARTFIELD title="Start&nbsp;Time:" div="&nbsp;</td><td>" name="res_start_time" type="time" --></td>
+		</tr>
+		<tr>
+			<td width="70"><!--#SMARTFIELD title="End&nbsp;Date:" div="&nbsp;</td><td>" name="res_end_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(res_end_date)')</script>"  --></td>
+			<td width="70"><!--#SMARTFIELD title="End&nbsp;Time:" div="&nbsp;</td><td>" name="res_end_time" type="time" --></td>
+		</tr>
+	<!--#ELSE-->
+		<tr>
+			<td width="70"><!--#SMARTFIELD title="Start&nbsp;Date:" div="&nbsp;</td><td>" name="res_start_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(res_start_date)')</script>" value=" " --></td>
+			<td width="70"><!--#SMARTFIELD title="Start&nbsp;Time:" div="&nbsp;</td><td>" name="res_start_time" type="time" value="<?s:est_start_time?>" --></td>
+		</tr>
+		<tr>
+			<td width="70"><!--#SMARTFIELD title="End&nbsp;Date:" div="&nbsp;</td><td>" name="res_end_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(res_end_date)')</script>" value=" " --></td>
+			<td width="70"><!--#SMARTFIELD title="End&nbsp;Time:" div="&nbsp;</td><td>" name="res_end_time" type="time" --></td>
+		</tr>
+	<!--#/IF-->
+		<tr>
+			<td>&nbsp;</td><td>&nbsp;</td>
+		</tr>
+	<!--#IF evaluate="<?d:mode?>" compare="Update"-->
+		<tr>
+			<td colspan="4" class="TableTitle">System Info</td>
+		</tr>
+	<!--#/IF-->
+	<!--#IF evaluate="<?p:sch_resource_id?>" compare=""-->
+		<tr>
+			<td width="70"><!--#SMARTFIELD title="Created:" div="&nbsp;</td><td>" name="res_date_created" type="datetime" mode="Update" readonly class="readonly" size="22" --></td>
+			<td><!--#SMARTFIELD title="Created By:" div="&nbsp;</td><td>" name="res_created_by_name" mode="Update" readonly class="readonly"--></td>
+		</tr>
+		<tr>
+			<td width="70"><!--#SMARTFIELD title="Modified:" div="&nbsp;</td><td>" name="res_date_modified" type="datetime" mode="Update" readonly class="readonly" size="22"--></td>
+			<td><!--#SMARTFIELD title="Modified By:" div="&nbsp;</td><td>" name="res_modified_by"  mode="Update" readonly class="readonly"--></td>
+		</tr>
+	<!--#ELSE-->
+		<tr>
+			<td width="70"><!--#SMARTFIELD title="Created:" div="&nbsp;</td><td>" name="sch_date_created" type="datetime" mode="Update" readonly class="readonly" size="22" --></td>
+			<td><!--#SMARTFIELD title="Created By:" div="&nbsp;</td><td>" name="sch_created_by_name" mode="Update" readonly class="readonly"--></td>
+		</tr>
+		<tr>
+			<td width="70"><!--#SMARTFIELD title="Modified:" div="&nbsp;</td><td>" name="sch_date_modified" type="datetime" mode="Update" readonly class="readonly" size="22"--></td>
+			<td><!--#SMARTFIELD title="Modified By:" div="&nbsp;</td><td>" name="sch_modified_by_name" mode="Update" readonly class="readonly"--></td>
+		</tr>
+	<!--#/IF-->
+      <tr>
+         <td colspan="6">
+		<!--#CHECKSECURITY right="rights.sch/sch_weekend.insert"-->
+			<input name="add_weekend" type="button" value="Add" class="button" onClick="scheduleRes(this);" >
+        <!--#/CHECKSECURITY-->
+		<!--#IF evaluate="<?p:sch_resource_id?>" compare="" -->
+		<!--#ELSE-->
+			<!--#CHECKSECURITY right="rights.sch/sch_weekend.delete" -->
+		    <input name="remove_weekend" type="button" value="Remove" class="button" onClick="scheduleRes(this);" >
+      		<!--#/CHECKSECURITY-->
+		<!--#/IF-->
+	       <input name="cancel" type="button" value="Cancel" class="button" onClick="scheduleRes(this);">
+         </td>
+      </tr>
+	<!--#/SMARTFORM -->
+	</table>
+
+</body>
+
+<script language="JavaScript">
+<!--
+	function setupSch()
+	{
+		if( sch_weekend.updated_res.value == 'true' )
+		{//refresh resource lists
+			//first get frames to update, if you don't then window.opener may be undefined by the time the second window goes.
+			var sch_res_list_frame = window.opener.parent.frames.sch_res_list_frame; //opened from sch_res_list
+			if( sch_res_list_frame == null )
+				sch_res_list_frame = window.opener.parent.frames.sch_body_frame.frames.sch_res_list_frame; //opened from sch_head
+			sch_res_list_frame.location='{!s:showPage!}sch/sch_res_list.html?weekend_filter=Y';
+			if( sch_weekend.dont_close.value != 'true' )
+			{
+		 	   window.opener.focus();
+   			window.close();
+				//window.setTimeout('displayList()', 1000); //need to wait before closing, for the windows to refresh action to complete
+			}
+		}
+	}
+
+	function displayList()
+	{
+ 	   window.opener.focus();
+   	window.close();
+	}
+
+	function scheduleRes(field)
+	{
+		fixTime(sch_weekend.res_start_date, sch_weekend.res_start_time);
+		fixTime(sch_weekend.res_end_date, sch_weekend.res_end_time);
+
+		if( field.name == 'cancel' )
+		{
+	      window.opener.focus();
+   	   window.close();
+		}
+		else
+		{
+			eval("sch_weekend.sch_action.value='"+field.name+"'");
+			eval("sch_weekend.submit()");
+		}
+	}
+
+	function fixTime(dateField, timeField)
+	{
+		if( !(timeField == null) && !(timeField.value == '') )
+		{
+			if( !(dateField == null) && !(dateField.value == '') )
+			{
+				if( timeField.value.length < 12 )  //only add if not already added
+					timeField.value = dateField.value + ' ' + timeField.value;
+			}
+			else
+			{
+			<!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) as to_date" name="dateQuery"-->
+				timeField.value = {!r:dateQuery:to_date.toJavaScriptString()!} + ' ' + timeField.value;
+			<!--#/SQLLOOP-->
+			}
+		}
+	}
+
+
+//-->
+</script>
+
+<!--#EMBED template="embeds/footer.html" -->

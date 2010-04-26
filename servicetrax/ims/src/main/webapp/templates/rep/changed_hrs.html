@@ -1,0 +1,135 @@
+<!-- $Header: changed_hrs.html, 6, 5/15/2003 11:54:50 AM, Chad Ryan$ -->
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.rep/changed_hrs.view?>"-->
+
+<body class="BodyTag" onLoad="window.focus()">
+
+
+<table width="100%" cellspacing="0" cellpadding="3">
+
+<body class="BodyTag" onLoad="">
+
+	<table width="100%">
+		<tr><td colspan="16" class="TableTitle">Changed Hours Report (for lines in billing and not posted or sent to GP)</td></tr>
+	</table>
+
+<BR>
+
+	<table border="0" cellspacing="0" cellpadding="3">
+	<form name="report">
+		<tr>
+			<td class="Label">Employee ID:&nbsp</td>
+			<td><!--#SELECT name="r_user_id" class="regular" query="SELECT user_id, ISNULL(CAST(ext_employee_id AS VARCHAR),'')+' : '+first_name+' '+last_name FROM employees_v WHERE organization_id=<?s:org_id.toSQLString()?> AND active_flag='Y' ORDER BY ext_employee_id" firstOption="All" firstOptionValue="" currentValue="<?p:r_user_id?>" --></td>
+		</tr>
+		<tr>
+			<td class="Label">Employee Name:&nbsp</td>
+			<td><!--#SELECT name="r_employee_name" class="regular" query="SELECT user_id, first_name+' '+last_name+' : '+ISNULL(CAST(ext_employee_id AS VARCHAR),'') FROM employees_v WHERE organization_id=<?s:org_id.toSQLString()?> AND active_flag='Y' ORDER BY first_name, last_name" firstOption="All" firstOptionValue="" currentValue="<?p:r_employee_name?>" --></td>
+		</tr>
+		<tr>
+			<td class="Label">Foreman:&nbsp</td>
+			<td><!--#SELECT name="r_foreman_resource_id" class="regular" query="SELECT distinct resource_id, resource_name FROM sch_resources_v WHERE organization_id=<?s:org_id.toSQLString()?> AND sch_foreman_flag = 'Y' ORDER BY resource_name" firstOption="All" firstOptionValue="" currentValue="<?p:r_foreman_resource_id?>" --></td>
+		</tr>
+		<tr>
+			<td class="Label">Job #:&nbsp</td>
+			<td><!--#SELECT name="r_job_id" class="regular" query="SELECT job_id, CAST(job_no as varchar)+' : '+ISNULL(job_name,'') job_no FROM jobs_v WHERE organization_id=<?s:org_id.toSQLString()?> ORDER BY job_no" firstOption="All" firstOptionValue="" currentValue="<?p:r_job_id?>" --></td>
+		</tr>
+		<tr>
+			<td colspan="2"><table border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td class="Label">From Date:&nbsp</td>
+					<td>
+				<!--#IF DEFINED="<?p:r_from_date?>" -->
+						<input name="r_from_date" class="regular" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_from_date)')</script>" value="{!p:r_from_date!}" size="12" -->
+				<!--#ELSE-->
+					<!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) as from_date" name="dateQuery"-->
+			     		<input name="r_from_date" class="regular" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_from_date)')</script>" value="{!r:dateQuery:from_date!}" size="12"-->
+					<!--#/SQLLOOP-->
+				<!--#/IF-->
+						<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_from_date)')</script>
+					</td>
+					<td class="Label">&nbsp;&nbsp;&nbsp;To Date:&nbsp;</td>
+			     	<td>
+				<!--#IF DEFINED="<?p:r_to_date?>" -->
+						<input name="r_to_date" class="regular" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_to_date)')</script>" value="{!p:r_to_date!}" size="12" -->
+				<!--#ELSE-->
+					<!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) as to_date" name="dateQuery"-->
+			     		<input name="r_to_date" class="regular" value="{!r:dateQuery:to_date!}" size="12"-->&nbsp;
+					<!--#/SQLLOOP-->
+				<!--#/IF-->
+						<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_to_date)')</script>
+					</td>
+				</tr>
+			</table></td> 
+		</tr>
+		<tr>
+	   	   <td><input type="button" name="set_button" value="Run Report" onClick="redisplayPage();" class="button2"-->&nbsp;</td>
+		</tr>
+	</form>
+	</table>
+
+<BR>
+   <!--#SMARTTABLE class="SmartTable" name="unverified_hrs_v"
+	   query="SELECT r.ext_employee_id, r.employee_name, r.bill_job_no, r.job_name, r.foreman_resource_name,
+	   			r.payroll_qty, r.bill_hourly_qty, r.hours_difference
+				FROM changed_hrs_v r
+		   	WHERE 'true' = <?p:r_show_report.isNullSQLString('false')?>
+		   		AND r.organization_id = <?s:org_id.toSQLString()?>
+		   		AND ((r.user_id like <?p:r_user_id.isNullSQLString('%')?> AND r.user_id like <?p:r_employee_name.isNullSQLString('%')?>) )
+				AND r.bill_job_id like <?p:r_job_id.isNullSQLString('%')?>
+				AND (r.foreman_resource_id like <?p:r_foreman_resource_id.isNullSQLString('%')?> or r.foreman_resource_id is null)
+				AND pooled_flag = 'N'
+				AND (r.service_line_date between <?p:r_from_date.isNullSQLString('1/1/1901')?> and <?p:r_to_date.isNullSQLString('1/1/2101')?>)
+		   	ORDER BY r.ext_employee_id"
+   -->
+		<!--#SMARTCOLUMN title="Emp&nbsp;ID" name="ext_employee_id" sort="ext_employee_id" align="center" -->
+		<!--#SMARTCOLUMN title="Emp&nbsp;Name" name="employee_name" sort="employee_name" -->
+		<!--#SMARTCOLUMN title="Job#" name="bill_job_no" sort="bill_job_no" align="center"  -->
+		<!--#SMARTCOLUMN title="Foreman" name="foreman_resource_name" sort="foreman_resource_name" -->
+		<!--#SMARTCOLUMN title="TC HRs" name="payroll_qty" sort="payroll_qty" total="true" align="right"-->
+		<!--#SMARTCOLUMN title="Bill HRs" name="bill_hourly_qty" sort="bill_hourly_qty" align="right"-->
+		<!--#SMARTCOLUMN title="Difference" name="hours_difference" sort="hours_difference" align="right"-->
+   <!--#/SMARTTABLE -->
+
+</body>
+
+<script language="JavaScript">
+<!--
+
+	function redisplayPage()
+	{//used by report
+
+		var r_user_id = escape(report.r_user_id.options[report.r_user_id.selectedIndex].value);
+		if( r_user_id == null )
+			 r_user_id = '';
+
+		var r_employee_name = escape(report.r_employee_name.options[report.r_employee_name.selectedIndex].value);
+		if( r_employee_name == null )
+			 r_employee_name = '';
+
+		var r_job_id = escape(report.r_job_id.options[report.r_job_id.selectedIndex].value);
+		if( r_job_id == null )
+			 r_job_id = '';
+
+		var r_foreman_resource_id = escape(report.r_foreman_resource_id.options[report.r_foreman_resource_id.selectedIndex].value);
+		if( r_foreman_resource_id == null )
+			 r_foreman_resource_id = '';
+
+		var r_from_date = escape(report.r_from_date.value);
+		if( r_from_date == null )
+			 r_from_date = '';
+
+		var r_to_date = escape(report.r_to_date.value);
+		if( r_to_date == null )
+			 r_to_date = '';
+
+		location='{!s:showPage!}rep/changed_hrs.html?r_user_id='+r_user_id+'&r_employee_name='+r_employee_name+'&r_job_id='+r_job_id+'&r_foreman_resource_id='+r_foreman_resource_id+'&r_from_date='+r_from_date+'&r_to_date='+r_to_date+'&r_show_report=true';
+	}
+
+-->
+</script>
+
+
+
+<!--#EMBED template="enet/embeds/footer.html" -->
+

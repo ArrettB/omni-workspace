@@ -1,0 +1,58 @@
+
+Value mappings between ServiceTrax and Great Plains:
+
+
+ServiceTrax Location         Great Plains Location
+=====================        =====================
+
+invoices.ext_bill_cust_id <x rm00101.custnmbr
+customers.ext_customer_id <x rm00101.custnmbr
+customers.ext_dealer_id   <x rm00101.custnmbr
+
+job_time_by_emp_v.ext_employee_id <- upr00400.employid
+
+items.item_id             <x iv00101.itemnmbr
+items.ext_item_id         <x iv00101.itemnmbr
+items.description         <- iv00101.itemdesc
+items.expense_export_code <- iv00101.uscatvls_2
+lookups_v.attribute1      <- iv00101.uscatvls_3  (where lookups_v.type_code = 'job_type')
+
+jobs.ext_price_level_id     <- iv00108.prclevel
+job_item_rates.ext_uom_name <- iv00108.uom
+job_item_rates.ext_rate_id  <x IV00101.itemnmbr
+
+service_lines.ext_id      <- pm10000.doctype + '-' + pm10000.vchrnmbr
+                          <- pm10000.pordnmbr
+jobs.job_no before the dash
+services.service_no after the dash
+items.name                <x pm10000.shipmthd
+service_lines.tc_rate     <- pm10000.prchamnt
+
+
+resources.ext_vendor_id <- pm00200.vendorid
+
+
+Hard Coded Values:         Currently in use
+==================         ================
+
+IV00101.itemtype            2
+IV00101.pricegroup          'HOURLY', 'EXPENSE'
+IV00101.uscatvls_1          'Y', 'N'
+IV00101.uscatvls_4          'M', 'SU'
+IV00101.pricmthd            1, 3
+
+RM00101.userdef1            'DEALER'
+RM00101.TAXSCHID            'EXEMPT'
+
+UPR40600.payrcord           1,2,3,4,8,16
+UPR40600.INACTIVE           0
+
+
+Files reviewed:
+
+job_edit.html
+rate_gp_view.html
+ItemHandler.java
+LoadMiscCostHandler.java
+PDSPostHandler.java
+views

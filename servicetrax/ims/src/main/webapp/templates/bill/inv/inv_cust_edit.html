@@ -1,0 +1,160 @@
+<!--#EMBED template="embeds/header.html"-->
+<!-- $Header: C:\work\ims\templates\bill\inv\inv_cust_edit.html, 16, 3/23/2006 2:21:34 PM, Blake Von Haden$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.add_billing_lines.view?>"-->
+<script type="text/javascript">
+<!--
+	function textCounter(field, countfield, maxlimit, action)
+	{
+		if (field.value.length > maxlimit)
+		{
+			field.value = field.value.substring(0, maxlimit);
+			alert ("You can only type " + maxlimit + " letters in this field.");
+		}
+		else
+		{
+			countfield.value = maxlimit - field.value.length;
+		}
+	}
+// -->
+</script>
+
+<body class="BodyTag" onload="loadColors()">
+<table border="0" cellpadding="0" cellspacing="0" class="SmartTable">
+	<tr>
+		<td class="TableTitle" colspan="5">Custom Invoice Line</td>
+	</tr>
+</table>
+<table width="70%" border="0" cellpadding="2" cellspacing="2">
+
+<!--#SMARTFORM name="bill/inv/inv_cust_edit" security="off" table="invoice_lines" key="invoice_line_id" value="<?p:invoice_line_id?>" sequence="@@identity"
+	prevTemplate="<?p:prev_template?>" nextTemplate="bill/inv/inv_cust_edit.html"
+	preHandler="ims.handlers.job_processing.SmartFormPreHandler,ims.handlers.job_processing.CustomLinePreHandler"
+	postHandler="ims.handlers.job_processing.SetServiceLineStatusHandler"
+	buttons="" -->
+
+	<tr>
+		<td valign="top">
+			<table><tr><td>
+				<!--#SQLLOOP name="inv_line_no"
+					query="SELECT MAX(ISNULL(INVOICE_LINES.INVOICE_LINE_NO,0)) + 1 inv_line_no
+							 FROM INVOICE_LINES RIGHT OUTER JOIN
+                      			  INVOICES ON INVOICE_LINES.INVOICE_ID = INVOICES.INVOICE_ID
+							WHERE (INVOICES.INVOICE_ID = <?p:invoice_id.toPStmtString()?>)"
+				-->
+				<!--#SMARTFIELD title="Line #:" div="</td></tr><tr><td>" mode="Insert" readonly="true" class="readonly" name="invoice_line_no" size="10" value="<?r:inv_line_no:inv_line_no?>"-->
+				<!--#/SQLLOOP-->
+				<!--#SMARTFIELD title="Line #:" div="</td></tr><tr><td>" mode="Update" readonly="true" class="readonly" name="invoice_line_no" size="10"-->
+			</td></tr></table>
+		</td>
+
+		<td valign="top">
+			<table><tr><td><!--#SMARTFIELD title="Po #:" div="</td></tr><tr><td>" name="po_no" size="30"--></td></tr></table>
+		</td>
+
+		<td valign="top">
+			<table><tr><td><!--#SMARTFIELD title="Req:" div="</td></tr><tr><td>" name="bill_service_id" size="1" type="droplist" mandatory="true" style="width:180"
+                                           query="SELECT service_id, CONVERT(VARCHAR, service_no) + ' - ' + ISNULL(description, '')
+                                                    FROM services
+                                                   WHERE job_id = <?s:job_id.toPStmtInt()?>
+                                                ORDER BY service_no" --></td></tr></table>
+		</td>
+
+		<td valign="top">
+			<table><tr><td><!--#SMARTFIELD title="Item:" div="</td></tr><tr><td>" name="item_id" size="1" type="droplist" table="job_item_rates_v" mandatory="true"
+                                           query="SELECT i.item_id, i.name
+                                                    FROM items_v i, items_by_job_types_v ijt
+                                                   WHERE <?s:job_id.toPStmtInt()?> = ijt.job_id
+                                                     AND i.item_id = ijt.item_id
+                                                     AND i.organization_id = <?s:org_id.toPStmtInt()?>
+                                                     AND i.ext_item_id NOT LIKE 'old%'
+                                                ORDER BY name" --></td></tr></table>
+		</td>
+
+		<td valign="top">
+			<table><tr><td><!--#SMARTFIELD title="Qty:" div="</td></tr><tr><td>" name="qty" size="5"--></td></tr></table>
+		</td>
+
+		<td valign="top">
+			<table><tr><td><!--#SMARTFIELD title="Rate:" div="</td></tr><tr><td>" name="unit_price" size="15" --></td></tr></table>
+		</td>
+
+		<td valign="top">
+					<table><tr><td><!--#SMARTFIELD  div="</td></tr><tr><td>" name="extended_price" type="hidden" calculated="true"--></td></tr></table>
+		</td>
+
+
+
+		<td valign="top">
+			<table><tr><td><!--#SMARTFIELD title="Taxable:" div="</td></tr><tr><td>" name="taxable_flag" type="boolean" mandatory="true" value="N"--></td></tr></table>
+		</td>
+
+	</tr>
+	<tr>
+		<td valign="top" colspan="5">
+			<table><tr><td><!--#SMARTFIELD title="Description:" div="</td></tr><tr><td>" name="description" type="textarea" rows="5" cols="60" onKeyDown="textCounter(this.form.description,this.form.remLen,100,'down');" onKeyUp="textCounter(this.form.description,this.form.remLen,100,'up');"-->
+			<input readonly type="text" name="remLen" size="3" maxlength="3" value="100" class="HeaderLabel"> characters left.
+			</td></tr></table>
+		</td>
+	</tr>
+
+    <tr><td><input type="hidden" name="prev_template" value="{!p:prev_template!}" ></td></tr>
+	 <tr><td><input type="hidden" name="template_name" value="{!p:prev_template!}"></td></tr>
+	 <tr><td><input type="hidden" name="level" value="bill_job_item"></td></tr>
+    <tr><td><input type="hidden" name="invoice_id" value="{!p:invoice_id!}" ></td></tr>
+    <tr><td><input type="hidden" name="submit_action" value="addCustomLine" ></td></tr> <!-- used for updating invoice PO number right away -->
+
+	<!--#IF evaluate="<?d:mode?>" compare="Insert" -->
+    <tr><td><!--#SMARTFIELD name="invoice_id" type="dbhidden" value="<?p:invoice_id?>" --></td></tr>
+    <tr><td><!--#SMARTFIELD name="invoice_line_type_id" type="dbhidden" value="227" --></td></tr>
+	<!--#/IF-->
+
+
+ 	</table>
+
+
+      <!--#IF evaluate="<?d:mode?>" compare="Update" -->
+		<table width="100%">
+			<tr>
+				<td class="TableTitle" colspan="6">System Info</td>
+			</tr>
+			<tr>
+				<td><!--#SMARTFIELD title="Created By" div="</td><td>" name="created_by" type="chooser"
+							mode="Update" table="users" display="first_name+' '+last_name" key="user_id"
+							readonly class="readonly"--></td>
+				<td><!--#SMARTFIELD title="Date Created" div="</td><td>" name="date_created" type="datetime"
+							mode="Update" readonly class="readonly" size="22" --></td>
+			</tr>
+			<tr>
+				<td><!--#SMARTFIELD title="Modified By" div="</td><td>" name="modified_by" type="chooser"
+							mode="Update" table="users" display="first_name+' '+last_name" key="user_id"
+							readonly class="readonly"--></td>
+				<td><!--#SMARTFIELD title="Date Modified" div="</td><td>" name="date_modified" type="datetime"
+							mode="Update" readonly class="readonly" size="22"--></td>
+			</tr>
+		</table>
+	<!--#/IF-->
+<table><tr>
+	<td><input type="submit" class="button" name="button" value="Save"></td>
+	<td><input type="submit" class="button" name="button" value="Copy"></td>
+	<td><input type="submit" class="button" name="button" value="New"></td>
+	<td><input type="submit" class="button" name="button" value="Cancel"></td>
+
+  <!--#SQLLOOP name="inv_status"  resourceName="SQLServer"
+               query="SELECT ist.code
+                        FROM invoice_statuses ist INNER JOIN
+                             invoices i ON ist.status_id = i.status_id
+                       WHERE i.invoice_id = <?p:invoice_id.toPStmtInt()?>" -->
+	<!--#IF evaluate="<?r:inv_status:code?>" compare="INVOICED" -->
+	<!--#ELSE-->
+      <td><input type="submit" class="button" name="button" value="Delete"></td>
+	<!--#/IF-->
+  <!--#/SQLLOOP-->
+</tr></table>
+<!--#/SMARTFORM -->
+
+
+</body>
+
+
+<!--#EMBED template="embeds/footer.html" -->

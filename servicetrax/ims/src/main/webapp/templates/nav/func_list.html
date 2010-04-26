@@ -1,0 +1,47 @@
+<!--#EMBED template="embeds/header.html" -->
+
+<body class="BodyTag" onLoad="loadColors()">
+
+   <!--#SQLLOOP name="user_org_function_rights_v"
+   	query="SELECT distinct user_name, function_name, location, target, template_name
+			FROM user_org_function_rights_v
+			WHERE user_id=<?s:user_id.toPStmtString()?>
+			AND organization_id=<?s:org_id.toPStmtString()?>
+			AND is_nav_function = 'Y'
+			AND function_group_code <> 'enet'
+			AND right_type_code = 'view'
+			AND has_right = 'Y'"
+		resourceName="SQLServer"-->
+
+   <!--#SQLHEADER-->
+
+   <table>
+      <tr>
+      	<td class="HeaderLabel">Your list of Functions:</td>
+      </tr>
+   <!--#/SQLHEADER-->
+
+      <tr>
+      	<td>
+            <!--#IF evaluate="<?r:user_org_function_rights_v:target?>" compare=""-->
+              	 <a href="{!s:action!}setupSession/main.html?loc={!r:user_org_function_rights_v:location!}" target="tab_frame">
+            <!--#ELSE-->
+              	 <a href="{!s:showPage!}{!r:user_org_function_rights_v:template_name!}" target="{!r:user_org_function_rights_v:target!}">
+            <!--#/IF-->
+           	   {!r:user_org_function_rights_v:function_name!} </a>
+      	</td>
+      </tr>
+
+   <!--#SQLFOOTER-->
+   </table>
+   <!--#/SQLFOOTER-->
+
+   <!--#SQLNODATA-->
+      <span class="ErrorText">You have no functions defined.</span>
+   <!--#/SQLNODATA-->
+
+   <!--#/SQLLOOP-->
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

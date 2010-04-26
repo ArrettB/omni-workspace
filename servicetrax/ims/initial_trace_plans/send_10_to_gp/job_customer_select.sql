@@ -1,0 +1,1 @@
+SELECT j.customer_id, j.ext_dealer_id, j.ext_customer_id, o.ext_direct_dealer_id FROM jobs_v j, organizations o WHERE j.organization_id = o.organization_id AND job_id = (SELECT job_id FROM invoices WHERE invoice_id =  164325 )

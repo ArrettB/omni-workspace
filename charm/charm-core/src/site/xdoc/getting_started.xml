@@ -1,0 +1,14 @@
+<document>
+  <properties>
+    <title>Getting Started</title>
+    <author email="greg.case@apexit.com">Greg Case</author>
+  </properties>
+  <body>
+    <section name="Getting Started">
+      <p>
+        This section will help you check out a skeleton project, generate some hibernate mappings, and install it as a web application
+      </p>
+    </section>
+  </body>
+</document>
+

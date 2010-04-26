@@ -1,0 +1,51 @@
+<!--#EMBED template="pocket/embeds/header.html"  title="Job List"-->
+
+<!--#EMBED template="pocket/embeds/title_bar.html" title="Job List"-->
+
+<!--#EMBED template="embeds/spacer_table.html" spacer_height="5"-->
+
+
+<!--#SQLLOOP
+     name="job_list"
+     query="SELECT DISTINCT substring(end_user_name, 0, 20) + ' - ' + job_name j_name,
+                   job_no,
+                   job_id
+			  FROM pkt_sch_jobs_v
+			  WHERE user_id = <?s:user_id.toPStmtString()?>
+			  ORDER BY job_no"
+	 alternator1="#FFFFFF:#DCDCDC"
+-->
+<!--#SQLHEADER-->
+
+<table cellspacing="2" cellpadding="0" width="100%">
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Job No</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>End User - Job Name</b></font>
+		</td>
+	</tr>
+	<tr height="1">
+		<td bgcolor="black" height="1" colspan="2"><img alt="image" src="/ims/images/spacer.gif" width="1" height="1"></td>
+	</tr>
+
+<!--#/SQLHEADER-->
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><a href="{!s:showPage!}pocket/project_list.html?job_id={!r:job_list:job_id!}&dest_template={!p:dest_template!}">{!r:job_list:job_no!}</a></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana">{!r:job_list:j_name!}</font>
+		</td>
+	</tr>
+<!--#SQLFOOTER-->
+</table>
+<!--#/SQLFOOTER-->
+	<!--#SQLNODATA-->
+	<b>You don't have any jobs.</b>
+	<!--#/SQLNODATA-->
+<!--#/SQLLOOP-->
+
+
+<!--#EMBED template="pocket/embeds/footer.html"-->

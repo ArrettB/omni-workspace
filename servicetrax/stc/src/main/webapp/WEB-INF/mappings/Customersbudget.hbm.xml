@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.Customersbudget" table="CUSTOMERSBUDGET" schema="dbo" catalog="">
+        <id name="customerId" type="java.lang.Long">
+            <column name="CUSTOMER_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <property name="year" type="java.lang.Integer">
+            <column name="YEAR" />
+        </property>
+        <property name="budget" type="big_decimal">
+            <column name="BUDGET" scale="5" />
+        </property>
+    </class>
+</hibernate-mapping>

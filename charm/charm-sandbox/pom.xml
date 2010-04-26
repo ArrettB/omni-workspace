@@ -1,0 +1,88 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<name>Charm Sandbox Components</name>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.dynamic.charm</groupId>
+	<artifactId>charm-sandbox</artifactId>
+	<packaging>jar</packaging>
+	<version>1.2-SNAPSHOT</version>
+	<parent>
+		<groupId>com.dynamic.charm</groupId>
+		<artifactId>charm-parent</artifactId>
+		<version>2.0</version>
+	</parent>
+	
+	<scm>
+		<connection>scm:svn:http://svn.apexit.com/svn/charm/trunk/charm-sandbox</connection>
+		<developerConnection>scm:svn:http://svn.apexit.com/svn/charm/trunk/charm-sandbox</developerConnection>
+		<url>http://svn.apexit.com/svn/charm/trunk/charm-sandbox</url>
+	</scm>
+	
+	<ciManagement>
+		<system>continuum</system>
+		<notifiers>
+			<notifier>
+				<type>mail</type>
+				<configuration>
+					<address>bvonhaden@apexit.com</address>
+				</configuration>
+			</notifier>
+		</notifiers>
+	</ciManagement>	
+	
+	<repositories>
+		<repository>
+			<id>dynamic_repo</id>
+			<name>ApexIT Central Repository</name>
+			<url>http://maven.apexit.com/repository/</url>
+			<layout>default</layout>
+		</repository>
+		<repository>
+			<id>ibiblio</id>
+			<name>Ibiblio Central Repository</name>
+			<url>http://www.ibiblio.org/maven2/</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
+	
+	<distributionManagement>
+		<repository>
+			<id>dynamic_repo_file_deploy</id>
+			<name>Dynamic Repository</name>
+			<url>
+				file:////bentley/home/maven/tomcat/webapps/ROOT/repository</url>
+			<layout>default</layout>
+		</repository>
+		<site>
+			<id>website</id>
+			<url>file:////bentley/home/maven/tomcat/webapps/ROOT/site</url>
+		</site>
+	</distributionManagement>	
+
+	<dependencies>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-tools</artifactId>
+			<version>3.2.0.ga</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dynamic.charm</groupId>
+			<artifactId>charm-core</artifactId>
+			<version>0.9</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+			<version>2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+	</dependencies>
+	
+
+
+</project>

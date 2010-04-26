@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ShowPlanXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0" Build="9.00.3068.00" xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan">
+  <BatchSequence>
+    <Batch>
+      <Statements>
+        <StmtSimple StatementCompId="1" StatementEstRows="1.64439" StatementId="1" StatementOptmLevel="FULL" StatementOptmEarlyAbortReason="GoodEnoughPlanFound" StatementSubTreeCost="0.036643" StatementText="SELECT DISTINCT line_po_no FROM invoice_lines_v WHERE invoice_line_type_code='custom' AND invoice_id = '164325'" StatementType="SELECT">
+          <StatementSetOptions ANSI_NULLS="false" ANSI_PADDING="false" ANSI_WARNINGS="false" ARITHABORT="true" CONCAT_NULL_YIELDS_NULL="false" NUMERIC_ROUNDABORT="false" QUOTED_IDENTIFIER="false" />
+          <QueryPlan DegreeOfParallelism="1" MemoryGrant="64" CachedPlanSize="25" CompileTime="58" CompileCPU="12" CompileMemory="488">
+            <RelOp AvgRowSize="13" EstimateCPU="0.000101854" EstimateIO="0.0112613" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1.64439" LogicalOp="Distinct Sort" NodeId="0" Parallel="false" PhysicalOp="Sort" EstimatedTotalSubtreeCost="0.036643">
+              <OutputList>
+                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_LINES]" Alias="[il]" Column="PO_NO" />
+              </OutputList>
+              <MemoryFractions Input="1" Output="1" />
+              <RunTimeInformation>
+                <RunTimeCountersPerThread Thread="0" ActualRebinds="1" ActualRewinds="0" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+              </RunTimeInformation>
+              <Sort Distinct="true">
+                <OrderBy>
+                  <OrderByColumn Ascending="true">
+                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_LINES]" Alias="[il]" Column="PO_NO" />
+                  </OrderByColumn>
+                </OrderBy>
+                <RelOp AvgRowSize="13" EstimateCPU="6.87355E-06" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1.64439" LogicalOp="Inner Join" NodeId="1" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.0252799">
+                  <OutputList>
+                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_LINES]" Alias="[il]" Column="PO_NO" />
+                  </OutputList>
+                  <RunTimeInformation>
+                    <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                  </RunTimeInformation>
+                  <NestedLoops Optimized="false">
+                    <RelOp AvgRowSize="9" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Clustered Index Seek" NodeId="2" Parallel="false" PhysicalOp="Clustered Index Seek" EstimatedTotalSubtreeCost="0.0032831">
+                      <OutputList />
+                      <RunTimeInformation>
+                        <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                      </RunTimeInformation>
+                      <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                        <DefinedValues />
+                        <Object Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Index="[INV_PK]" Alias="[i]" />
+                        <SeekPredicates>
+                          <SeekPredicate>
+                            <Prefix ScanType="EQ">
+                              <RangeColumns>
+                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Alias="[i]" Column="INVOICE_ID" />
+                              </RangeColumns>
+                              <RangeExpressions>
+                                <ScalarOperator ScalarString="(164325.)">
+                                  <Const ConstValue="(164325.)" />
+                                </ScalarOperator>
+                              </RangeExpressions>
+                            </Prefix>
+                          </SeekPredicate>
+                        </SeekPredicates>
+                      </IndexScan>
+                    </RelOp>
+                    <RelOp AvgRowSize="13" EstimateCPU="2.26676E-05" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1.64439" LogicalOp="Inner Join" NodeId="3" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.0219899">
+                      <OutputList>
+                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_LINES]" Alias="[il]" Column="PO_NO" />
+                      </OutputList>
+                      <RunTimeInformation>
+                        <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                      </RunTimeInformation>
+                      <NestedLoops Optimized="false">
+                        <OuterReferences>
+                          <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_LINES]" Alias="[il]" Column="INVOICE_LINE_TYPE_ID" />
+                        </OuterReferences>
+                        <RelOp AvgRowSize="22" EstimateCPU="2.26676E-05" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="5.42286" LogicalOp="Inner Join" NodeId="4" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.0179849">
+                          <OutputList>
+                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_LINES]" Alias="[il]" Column="INVOICE_LINE_TYPE_ID" />
+                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_LINES]" Alias="[il]" Column="PO_NO" />
+                          </OutputList>
+                          <RunTimeInformation>
+                            <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                          </RunTimeInformation>
+                          <NestedLoops Optimized="false">
+                            <OuterReferences>
+                              <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_LINES]" Alias="[il]" Column="INVOICE_LINE_ID" />
+                            </OuterReferences>
+                            <RelOp AvgRowSize="16" EstimateCPU="0.000162965" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="5.42286" LogicalOp="Index Seek" NodeId="5" Parallel="false" PhysicalOp="Index Seek" EstimatedTotalSubtreeCost="0.00328797">
+                              <OutputList>
+                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_LINES]" Alias="[il]" Column="INVOICE_LINE_ID" />
+                              </OutputList>
+                              <RunTimeInformation>
+                                <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                              </RunTimeInformation>
+                              <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                <DefinedValues>
+                                  <DefinedValue>
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_LINES]" Alias="[il]" Column="INVOICE_LINE_ID" />
+                                  </DefinedValue>
+                                </DefinedValues>
+                                <Object Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_LINES]" Index="[IX_IL_INVOICES]" Alias="[il]" />
+                                <SeekPredicates>
+                                  <SeekPredicate>
+                                    <Prefix ScanType="EQ">
+                                      <RangeColumns>
+                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_LINES]" Alias="[il]" Column="INVOICE_ID" />
+                                      </RangeColumns>
+                                      <RangeExpressions>
+                                        <ScalarOperator ScalarString="(164325.)">
+                                          <Const ConstValue="(164325.)" />
+                                        </ScalarOperator>
+                                      </RangeExpressions>
+                                    </Prefix>
+                                  </SeekPredicate>
+                                </SeekPredicates>
+                              </IndexScan>
+                            </RelOp>
+                            <RelOp AvgRowSize="70" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="4.42286" EstimateRewinds="0" EstimateRows="1" LogicalOp="Clustered Index Seek" NodeId="7" Parallel="false" PhysicalOp="Clustered Index Seek" EstimatedTotalSubtreeCost="0.0146742">
+                              <OutputList>
+                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_LINES]" Alias="[il]" Column="INVOICE_LINE_TYPE_ID" />
+                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_LINES]" Alias="[il]" Column="PO_NO" />
+                              </OutputList>
+                              <RunTimeInformation>
+                                <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="0" ActualExecutions="1" />
+                              </RunTimeInformation>
+                              <IndexScan Lookup="true" Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                <DefinedValues>
+                                  <DefinedValue>
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_LINES]" Alias="[il]" Column="INVOICE_LINE_TYPE_ID" />
+                                  </DefinedValue>
+                                  <DefinedValue>
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_LINES]" Alias="[il]" Column="PO_NO" />
+                                  </DefinedValue>
+                                </DefinedValues>
+                                <Object Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_LINES]" Index="[IL_PK]" Alias="[il]" TableReferenceId="-1" />
+                                <SeekPredicates>
+                                  <SeekPredicate>
+                                    <Prefix ScanType="EQ">
+                                      <RangeColumns>
+                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_LINES]" Alias="[il]" Column="INVOICE_LINE_ID" />
+                                      </RangeColumns>
+                                      <RangeExpressions>
+                                        <ScalarOperator ScalarString="[ims_new].[dbo].[INVOICE_LINES].[INVOICE_LINE_ID] as [il].[INVOICE_LINE_ID]">
+                                          <Identifier>
+                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_LINES]" Alias="[il]" Column="INVOICE_LINE_ID" />
+                                          </Identifier>
+                                        </ScalarOperator>
+                                      </RangeExpressions>
+                                    </Prefix>
+                                  </SeekPredicate>
+                                </SeekPredicates>
+                              </IndexScan>
+                            </RelOp>
+                          </NestedLoops>
+                        </RelOp>
+                        <RelOp AvgRowSize="9" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="2.57053" EstimateRewinds="1.85234" EstimateRows="1" LogicalOp="Index Seek" NodeId="13" Parallel="false" PhysicalOp="Index Seek" EstimatedTotalSubtreeCost="0.00398235">
+                          <OutputList />
+                          <RunTimeInformation>
+                            <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="0" ActualExecutions="1" />
+                          </RunTimeInformation>
+                          <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                            <DefinedValues />
+                            <Object Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Index="[IX_L_CODE]" Alias="[invoice_line_type]" />
+                            <SeekPredicates>
+                              <SeekPredicate>
+                                <Prefix ScanType="EQ">
+                                  <RangeColumns>
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[invoice_line_type]" Column="CODE" />
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[invoice_line_type]" Column="LOOKUP_ID" />
+                                  </RangeColumns>
+                                  <RangeExpressions>
+                                    <ScalarOperator ScalarString="'custom'">
+                                      <Const ConstValue="'custom'" />
+                                    </ScalarOperator>
+                                    <ScalarOperator ScalarString="[ims_new].[dbo].[INVOICE_LINES].[INVOICE_LINE_TYPE_ID] as [il].[INVOICE_LINE_TYPE_ID]">
+                                      <Identifier>
+                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_LINES]" Alias="[il]" Column="INVOICE_LINE_TYPE_ID" />
+                                      </Identifier>
+                                    </ScalarOperator>
+                                  </RangeExpressions>
+                                </Prefix>
+                              </SeekPredicate>
+                            </SeekPredicates>
+                          </IndexScan>
+                        </RelOp>
+                      </NestedLoops>
+                    </RelOp>
+                  </NestedLoops>
+                </RelOp>
+              </Sort>
+            </RelOp>
+          </QueryPlan>
+        </StmtSimple>
+      </Statements>
+    </Batch>
+  </BatchSequence>
+</ShowPlanXML>

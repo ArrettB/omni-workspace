@@ -1,0 +1,55 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: main_exp_batch_det.html, 3, 1/23/2006 3:02:17 PM, Blake Von Haden$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.time/exp/expenses.view?>"-->
+
+<body class="BodyTag">
+
+   <!--#SMARTTABLE name="expensesQry" totalClass="tableTotal"
+	   query="
+			SELECT service_line_week_varchar, service_line_week, e.user_id, e.employee_name, e.item_name, SUM(e.expense_qty) sum_expense_qty, e.expense_rate, sum(expense_total) sum_expense_total, null no_name
+			FROM expenses_batches_v e
+			WHERE e.organization_id = <?s:org_id.toPStmtString()?> and e.ext_batch_id = <?p:ext_batch_id.toPStmtString()?>
+			GROUP BY e.service_line_week_varchar, service_line_week, e.user_id, e.employee_name, e.item_name, e.expense_rate
+			ORDER BY e.service_line_week, e.employee_name, e.item_name"
+   -->
+<!--#IF evaluate="<?d:rowid?>" compare="0" -->
+	<tr class="HeaderBar"><td colspan="6" align="left">Batch - {!p:ext_batch_id!}</td>
+	<form ACTION="{!s:action!}exportExpenses" METHOD="POST" name="resubmitFrm">
+		<td align="right">
+				<input type="hidden" name="template_name" value="time/exp/main_exp_list_exported.html">
+				<input type="hidden" name="submit_type" value="re_export">
+				<input type="hidden" name="ext_batch_id" value="{!p:ext_batch_id!}">
+				<input type="submit" value="Re-Export" name="button" class="button2">
+		</td>
+	</form>
+	</tr>
+<!--#/IF-->
+		<!--#SMARTCOLUMN width="75"  name="service_line_week_varchar" sort="service_line_week_varchar" title="Week&nbsp;Ending" filter="e.service_line_week_varchar:service_line_week_varchar" -->
+		<!--#SMARTCOLUMN width="100" name="employee_name" sort="employee_name" title="Employee" href="" onClick="openNext(<?r:expensesQry:user_id.toJavaScriptString()?>,<?r:expensesQry:employee_name.toJavaScriptString()?>,<?p:ext_batch_id.toJavaScriptString()?>);return false;" filter="e.employee_name:employee_name" -->
+		<!--#SMARTCOLUMN width="75"  name="item_name" sort="item_name" title="Item" filter="e.item_name:item_name" -->
+		<!--#SMARTCOLUMN width="100" name="sum_expense_qty" sort="sum_expense_qty" title="Qty" format="###,###,##0.00" align="right" total="true" -->
+		<!--#SMARTCOLUMN width="100" name="expense_rate" sort="expense_rate" title="Rate" format="money" align="right" -->
+		<!--#SMARTCOLUMN width="100" name="sum_expense_total" sort="sum_expense_total" title="Total" format="money" align="right" total="true" -->
+		<!--#SMARTCOLUMN width="100" name="no_name" title="" -->
+   <!--#/SMARTTABLE -->
+
+<table cellspacing="0" cellpadding="0">
+	<tr><td>&nbsp;</td></tr>
+	<tr><td>
+	<input type="button" value="Cancel" name="button" class="button" onClick="location='{!s:showPage!}time/exp/main_exp_list_exported.html?'">
+	</td></tr>
+</table>
+
+<script type="text/javascript">
+<!--
+
+	function openNext(user_id, emp_name, ext_batch_id)
+	{
+		location='{!s:showPage!}time/exp/main_exp_user_det_batch.html?user_id='+escape(user_id)+'&emp_name='+escape(emp_name)+'&ext_batch_id='+escape(ext_batch_id);
+	}
+//-->
+</script>
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

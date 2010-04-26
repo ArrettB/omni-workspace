@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.Invoice" table="INVOICES" schema="dbo" catalog="">
+        <id name="invoiceId" type="java.lang.Long">
+            <column name="INVOICE_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="lookupByInvoiceTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="INVOICE_TYPE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="lookupByBillingTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="BILLING_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByInvoiceFormatTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="INVOICE_FORMAT_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="invoiceStatus" class="com.dynamic.servicetrax.orm.InvoiceStatus" fetch="select">
+            <column name="STATUS_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="organization" class="com.dynamic.servicetrax.orm.Organization" fetch="select">
+            <column name="ORGANIZATION_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="job" class="com.dynamic.servicetrax.orm.Job" fetch="select">
+            <column name="JOB_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="invoiceBatchStatuse" class="com.dynamic.servicetrax.orm.InvoiceBatchStatuse" fetch="select">
+            <column name="BATCH_STATUS_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="customer" class="com.dynamic.servicetrax.orm.Customer" fetch="select">
+            <column name="BILL_CUSTOMER_ID" precision="18" scale="0" />
+        </many-to-one>
+        <property name="poNo" type="string">
+            <column name="PO_NO" length="200" />
+        </property>
+        <property name="extBatchId" type="string">
+            <column name="EXT_BATCH_ID" length="15" />
+        </property>
+        <property name="assignedToUserId" type="java.lang.Long">
+            <column name="ASSIGNED_TO_USER_ID" precision="18" scale="0" />
+        </property>
+        <property name="extInvoiceId" type="string">
+            <column name="EXT_INVOICE_ID" length="30" />
+        </property>
+        <property name="description" type="string">
+            <column name="DESCRIPTION" length="500" />
+        </property>
+        <property name="gpDescription" type="string">
+            <column name="GP_DESCRIPTION" length="500" />
+        </property>
+        <property name="costCodes" type="string">
+            <column name="COST_CODES" length="50" />
+        </property>
+        <property name="startDate" type="timestamp">
+            <column name="START_DATE" length="23" />
+        </property>
+        <property name="endDate" type="timestamp">
+            <column name="END_DATE" length="23" />
+        </property>
+        <property name="extBillCustId" type="string">
+            <column name="EXT_BILL_CUST_ID" length="15" />
+        </property>
+        <property name="salesReps" type="string">
+            <column name="SALES_REPS" length="100" />
+        </property>
+        <property name="dateSent" type="timestamp">
+            <column name="DATE_SENT" length="23" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="createdBy" type="long">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <property name="modifiedBy" type="java.lang.Long">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </property>
+        <set name="serviceLines" inverse="true">
+            <key>
+                <column name="INVOICE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ServiceLine" />
+        </set>
+        <set name="invoiceLines" inverse="true">
+            <key>
+                <column name="INVOICE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.InvoiceLine" />
+        </set>
+        <set name="invoiceTrackings" inverse="true">
+            <key>
+                <column name="INVOICE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.InvoiceTracking" />
+        </set>
+    </class>
+</hibernate-mapping>

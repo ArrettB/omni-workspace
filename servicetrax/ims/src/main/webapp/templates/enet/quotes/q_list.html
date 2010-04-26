@@ -1,0 +1,30 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+
+<body class="BodyTag" onLoad="">
+
+<!--#IF defined="<?s:project_id?>" -->
+<!--#EMBED template="enet/embeds/project_header.html"-->
+
+<!--#SMARTTABLE name="q_list"
+		class="SmartTable"
+		query="SELECT DISTINCT r.project_id, q.quote_id, r.customer_name, r.job_name, q.quote_status_type_name, q.date_created, q.quote_total
+				FROM requests_v r, quotes_v q
+			    WHERE r.quote_id = q.quote_id
+			    AND r.request_id IN (<?s:enetNavQuery?>)"
+	-->
+
+	 <!--#SMARTCOLUMN name="quote_no" sort="quote" title="Quote No" width="10%" class="TableRow1Link,TableRow2Link" href=""-->
+	 <!--#SMARTCOLUMN name="customer_name" sort="customer_name" title="Customer" width="20%"-->
+	 <!--#SMARTCOLUMN name="job_name" sort="job_name" title="Job Name" width="20%"-->
+	 <!--#SMARTCOLUMN name="quote_status_type_name" sort="quote_status_type_name" title="Status" width="10%"-->
+	 <!--#SMARTCOLUMN name="date_created" type="date" sort="date_created" title="Date Received" width="10%"-->
+	 <!--#SMARTCOLUMN name="quote_total" type="money" sort="quote_total" title="Dollar Amt" width="20%" align="left" -->
+<!--#/SMARTTABLE -->
+
+<!--#ELSE-->
+<span class="Label">
+	Sorry, this is not available until a project folder has been created.
+</span>
+<!--#/IF-->
+
+<!--#EMBED template="enet/embeds/footer.html" -->

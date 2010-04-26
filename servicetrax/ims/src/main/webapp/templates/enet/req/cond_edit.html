@@ -1,0 +1,91 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!-- $Header: cond_edit.html, 8, 2/25/2002 8:10:25 AM, Chad Ryan$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.enet/req/cond_edit.view?>"-->
+
+<body class="BodyTag" onLoad="checkIfDone();window.focus()">
+
+<!--#CHECKSECURITY right="rights.enet/req/cond_edit.update"-->
+<!--#IF evaluate="<?p:condition_id?>" compare="" -->
+<!--#ELSE-->
+   <table width="100%">
+	   <!--#SMARTFORM name="enet/req/cond_edit" table="conditions" key="condition_id"
+                  sequence="@@IDENTITY" security="rights"
+   	            preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+   	            postHandler="ims.handlers.maintenance.ClearIDPostHandler"
+   	            buttons="Cancel,Save"
+	   -->
+
+	     <!--#SMARTFIELD name="quote_id" type="hidden" value="<?p:quote_id?>" -->
+	     <!--#SMARTFIELD name="clear_id" type="hidden" value="condition_id" -->
+		<tr>
+      <!--#IF evaluate="<?d:mode?>" compare="Update"-->
+			<td colspan="4" class="HeaderRow">Edit Quote Condition</td>
+		<!--#ELSE-->
+			<td colspan="4" class="HeaderRow">Create Quote Condition</td>
+		<!--#/IF-->
+		</tr>
+      <tr>
+         <td><!--#SMARTFIELD title="Seq&nbsp;#:&nbsp;" name="sequence_no" size="3" --></td>
+         <td><!--#SMARTFIELD title="Condition:&nbsp;" div="</td><td colspan='2'>" name="name" size="100" --></td>
+      </tr>
+	   <!--#/SMARTFORM -->
+	</table>
+<!--#/IF-->
+<!--#/CHECKSECURITY-->
+
+	<form name="cond_form" action="{!s:action!}condition" method="post" class="SmartTable">
+		<input name="quote_id" type="hidden" value="{!p:quote_id!}">
+		<input name="template" type="hidden" value="enet/req/cond_edit">
+		<input name="updated" type="hidden" value="false">
+   <!--#SMARTTABLE class="SmartTable" name="conditions_v" maxRows="1000" query="SELECT quote_id, condition_id, name, sequence_no, use_flag FROM quote_conditions_v2 WHERE quote_id=<?p:quote_id.toSQLString()?> or quote_id=null ORDER BY sequence_no" -->
+		<!--#SMARTCOLUMN title="Use?" value="<INPUT TYPE='checkbox' name='statusCheckBox' value='<?r:conditions_v:use_flag?>:<?r:conditions_v:condition_id?>' class='Checkbox'>" width="2%" align="center"-->
+		<!--#SMARTCOLUMN title="Seq#" name="sequence_no" sort="sequence_no" align="center"-->
+		<!--#IF defined="<?s:rights.enet/req/cond_edit.update?>"-->
+			<!--#SMARTCOLUMN title="Condition" name="name" sort="name" href="<?s:showPage?>enet/req/cond_edit.html?quote_id=<?r:conditions_v:quote_id?>&condition_id=<?r:conditions_v:condition_id?>" -->
+		<!--#ELSE-->
+			<!--#SMARTCOLUMN title="Condition" name="name" sort="name" -->
+		<!--#/IF-->
+	<!--#/SMARTTABLE -->
+	<BR>
+		<input type="submit" name="button" value="Update" class="button" onClick="exitFunction('Update');">
+		<input type="submit" name="button" value="Cancel" class="button" onClick="exitFunction('Cancel');">
+	</form>
+
+</body>
+
+<script language="JavaScript">
+<!--
+
+	function checkIfDone()
+	{
+		if( {!p:updated.toJavaScriptString()!} == 'true' )
+		{
+			window.opener.focus();
+			window.opener.exitFunction('Save');
+			window.close();
+		}
+		else
+		{
+			setCheckboxes(document.cond_form);
+			focusFirstField();
+		}
+	}
+
+	function exitFunction(button)
+	{
+		if( button == 'Update' )
+		{
+			cond_form.updated.value="true";
+		}
+		if( button == 'Cancel' )
+		{
+			window.opener.focus();
+			window.close();
+		}
+	}
+
+-->
+</script>
+
+<!--#EMBED template="enet/embeds/footer.html" -->

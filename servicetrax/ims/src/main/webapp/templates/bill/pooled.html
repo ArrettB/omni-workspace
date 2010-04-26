@@ -1,0 +1,188 @@
+<!-- $Header: pooled.html, 17, 1/7/2005 5:10:47 PM, Lee A. Gunderson$ -->
+<!--#EMBED template="embeds/header.html" -->
+
+<!--#EXEC handler="ims.handlers.billing.PooledPreFlightHandler" -->
+
+<body class="BodyTag" bgcolor="#EFEFEF">
+
+<script>
+<!--
+
+	function showValue(val, defaultVal, input)
+	{
+		if (val == null || val == '')
+		{
+			input.value=defaultVal;
+		}
+		else
+		{
+			input.value=val;
+		}
+	}
+
+	function redisplayPage()
+	{
+		//place holder for req window to close
+	}
+
+-->
+</script>
+
+<form name="confirmPooling" action="{!s:action!}allocate" method="post">
+<input type="hidden" name="job_id" value="{!p:job_id!}">
+
+<table width="100%" cellspacing="0" cellpadding="0">
+	<tr><td  class="HeaderBar">Internal Requisitions</td></tr>
+</table>
+
+<table class="SmartTable" border="0" cellpadding="0" cellspacing="0">
+<!--#SQLLOOP
+	query="SELECT s.service_id, s.service_no, s.job_id, s.description
+			FROM services s
+			WHERE s.job_id = <?s:job_id.toPStmtString()?>
+			AND s.internal_req_flag = 'Y'
+     	    ORDER BY s.service_no"
+	name="services"
+	alternator1="TableRow1:TableRow2"
+	alternator2="TableRow1Link:TableRow2Link"
+-->
+
+<tr rowid="0" height="22">
+	<td width="10%" name="service_no" height="22" class="TableTitle" align="center">
+		Requisition No
+	</td>
+	<td width="30%" name="service_no" height="22" class="TableTitle" align="center" colspan="5">
+		Desc
+	</td>
+</tr>
+<tr>
+	<a href="{!s:action!}setupSession/job/req_edit.html?closeOnCancel=true&service_id={!r:services:service_id!}&job_id={!r:services:job_id!}&loc=req_edit" target="req_window">
+	<td name="service_no" height="15" class="{!d:services:alt2!}" width="10%" align="center" style="cursor:hand" onMouseOver="this.className='TableRowLinkRollover'" onMouseOut="this.className='{!d:services:alt2!}'">
+		{!r:services:service_no!}
+	</td>
+	</a>
+	<td colspan="5" class="{!d:services:alt1!}">
+		{!r:services:description.isNull('None')!}
+	</td>
+</tr>
+<tr>
+	<td height="22" colspan="6" class="TableTitle" height="0" align="center">
+		Hours
+	</td>
+</tr>
+<tr rowid="0" height="22">
+	<td width="10%" height="22" class="TableTitle" align="center">
+		Item
+	</td>
+	<td width="10%" height="22" class="TableTitle" align="center">
+		Rate
+	</td>
+	<td width="10%" height="22" class="TableTitle" align="center">
+		Qty Total
+	</td>
+	<td width="10%" height="22" class="TableTitle" align="center">
+		Qty Dist
+	</td>
+	<td  width="10%" height="22" class="TableTitle" align="center">
+		Qty Left
+	</td>
+	<td  width="10%" height="22" class="TableTitle" align="center">
+	&nbsp;
+	</td>
+</tr>
+<!--#SQLLOOP name="item_rates"
+		query="SELECT DISTINCT item_id, item_name, rate, qty_pooled, qty_dist, qty_left, isnull(rate, 0) as rate, FLOOR(rate * 100) AS rate_id
+			FROM pooled_hours_calc_v
+			WHERE service_id = <?r:services:service_id.toPStmtString()?>
+			AND item_type_code= 'hours'
+			ORDER BY item_name"
+
+	-->
+<tr>
+	<td class="{!d:services:alt1!}">{!r:item_rates:item_name!}</td>
+	<td class="{!d:services:alt1!}" align="right">{!r:item_rates:rate!}</td>
+	<td class="{!d:services:alt1!}" align="right">{!r:item_rates:qty_pooled!}</td>
+	<td class="{!d:services:alt1!}" align="right">{!r:item_rates:qty_dist!}</td>
+	<td class="{!d:services:alt1!}" align="right">{!r:item_rates:qty_left!}</td>
+<!--#IF evaluate="<?r:item_rates:qty_left?>" greaterthan="0"-->
+	<a href="{!s:showPage!}bill/pooled_detail.html?service_id={!r:services:service_id!}&job_id={!r:services:job_id!}&item_id={!r:item_rates:item_id!}&rate={!r:item_rates:rate!}&rate_id={!r:item_rates:rate_id!}">
+	<td  name="service_no" height="15" class="{!d:services:alt2!}" width="10%" align="center" style="cursor:hand" onMouseOver="this.className='TableRowLinkRollover'" onMouseOut="this.className='{!d:services:alt2!}'">
+		Allocate
+	</td>
+	</a>
+<!--#ELSE-->
+	<td class="{!d:services:alt1!}" align="right">&nbsp;</td>
+<!--#/IF-->
+</tr>
+	<!--#SQLNODATA-->
+		<tr><td colspan="6" class="{!d:services:alt1!}">There are no hours for this req.</td></tr>
+	<!--#/SQLNODATA-->
+<!--#/SQLLOOP-->
+<tr>
+	<td height="22" colspan="6" class="TableTitle" height="0" align="center">
+		Expenses
+	</td>
+</tr>
+<tr rowid="0" height="22">
+	<td width="10%" height="22" class="TableTitle" align="center">
+		Item
+	</td>
+	<td width="10%" height="22" class="TableTitle" align="center">
+		Rate
+	</td>
+	<td width="10%" height="22" class="TableTitle" align="center">
+		Qty Total
+	</td>
+	<td width="10%" height="22" class="TableTitle" align="center">
+		Qty Dist
+	</td>
+	<td  width="10%" height="22" class="TableTitle" align="center">
+		Qty Left
+	</td>
+	<td  width="10%" height="22" class="TableTitle" align="center">
+	&nbsp;
+	</td>
+</tr>
+<!--#SQLLOOP name="item_rates"
+		query="SELECT DISTINCT item_id, item_name, rate, qty_pooled, qty_dist, qty_left, isnull(rate, 0) as rate, FLOOR(rate * 100) AS rate_id
+			FROM pooled_hours_calc_v
+			WHERE service_id = <?r:services:service_id.toPStmtString()?>
+			AND item_type_code= 'expense'
+			ORDER BY item_name"
+	-->
+<tr>
+	<td class="{!d:services:alt1!}">{!r:item_rates:item_name!}</td>
+	<td class="{!d:services:alt1!}" align="right">{!r:item_rates:rate!}</td>
+	<td class="{!d:services:alt1!}" align="right">{!r:item_rates:qty_pooled!}</td>
+	<td class="{!d:services:alt1!}" align="right">{!r:item_rates:qty_dist!}</td>
+	<td class="{!d:services:alt1!}" align="right">{!r:item_rates:qty_left!}</td>
+<!--#IF evaluate="<?r:item_rates:qty_left?>" greaterthan="0"-->
+	<a href="{!s:showPage!}bill/pooled_detail.html?service_id={!r:services:service_id!}&job_id={!r:services:job_id!}&item_id={!r:item_rates:item_id!}&rate={!r:item_rates:rate!}&rate_id={!r:item_rates:rate_id!}">
+	<td  name="service_no" height="15" class="{!d:services:alt2!}" width="10%" align="center" style="cursor:hand" onMouseOver="this.className='TableRowLinkRollover'" onMouseOut="this.className='{!d:services:alt2!}'">
+		Allocate
+	</td>
+	</a>
+<!--#ELSE-->
+	<td class="{!d:services:alt1!}" align="right">&nbsp;</td>
+<!--#/IF-->
+
+</tr>
+	<!--#SQLNODATA-->
+		<tr><td colspan="6" class="{!d:services:alt1!}">There are no hours for this req.</td></tr>
+	<!--#/SQLNODATA-->
+<!--#/SQLLOOP-->
+<tr><td colspan="6">&nbsp;</td></tr>
+<tr><td colspan="6">&nbsp;</td></tr>
+
+	<!--#SQLNODATA-->
+ 		There are no internal requisitions for this job, so there are no pooled hours.
+	<!--#/SQLNODATA-->
+<!--#/SQLLOOP-->
+</table>
+
+
+</body>
+<!--#EMBED template="embeds/footer.html" -->
+
+
+

@@ -1,0 +1,451 @@
+65
+
+
+58 
+Time Capture -> Add Hours
+
+Copy - blank the Item droplist.
+
+
+
+69
+Extranet -> View Job Progress
+	replace column "Project Status" - Install Foreman
+	The Install Foreman may be found on the Intranet -> Jobs -> Job Header
+
+
+
+30A
+
+Time Capture -> load Miscellaneous costs
+	better error logging.
+
+above done 20051208.
+====================
+
+92 - x
+Request Workorder -> pick customer
+too many Project #'s hanging about.
+WFHM
+
+View/Update Service Requests
+	491540
+	
+	Archive
+
+
+
+105 - x - ? - x
+
+
+
+106 - x - ? - x
+
+
+
+
+8 - x
+
+Log in as a dealer
+extranet -> Service Request
+	should be able to only display a subset of the project types.
+
+enet/embeds/project_header.html  is where the filter goes.
+
+
+
+49 - x ? - x
+
+Intranet 591500 - good example
+
+Jobs -> Job Unbilled Ops -> Unbilled Acct
+
+Service Account
+	97059
+
+
+pulled the PO number from the req #1
+
+
+Spreadsheet billing
+591701  -goofy example
+
+
+Intranet -> Job Header -> Create  Requisition
+	Billing Type
+		Spreadsheet
+		Regular
+
+On Jobs -> Job Unbilled Ops -> Unbilled Ops
+	assigning unbilled to the invoice should only show the first PO number
+
+
+
+61 - x
+Service Request/Quote Request - bring Project Manager to the first screen.
+
+
+74 - x - ? - x
+Add Service Provider Sales field after Service Provider Contact
+
+add on service request and on the quote request
+
+Create a new contact group "Service Provider Sales".
+
+
+
+65 x
+
+Make the state on the job location mandatory before sending the request.
+
+
+
+============================
+
+79 - x
+Print everything put in the description field.
+
+Exranet -> View/Update Workorder -> 
+
+
+
+
+102 - x
+dealer example : Hendrickson in Illinois
+
+Service Request -> Dealer drop down is good
+
+Intranet -> Reports -> Variance Report -> Dealer   drop down is not so good.
+
+
+
+62 - x
+job #32979
+
+View/Update service request -> Print Service Request
+Print Service Request - Add the Dealer header field.
+
+
+
+80 - x
+View /Update quote request
+	Need a way to see if a quote request has been converted to a service request.
+	A yes/no field "Service Request?" between Quoted? and Date Created.
+
+
+
+67 - x
+Job #591720
+
+
+unbilled ops -> detail view
+
+save causes bad refresh of date modified.
+Cancel causes the previous detail page to lose the trash.
+
+
+
+
+106 - cannot recreate
+Job#591500
+
+Invoice #93431
+
+Open invoice
+	Select Summary by Item and Invoice Line Det are not footing on the Total
+	something is missing or too much is being displayed somewhere.
+	
+
+
+============Ver1.05=========================================================
+
+#94 - cannot recreate
+CSC auto fill of date doesn’t always work invoice date and amount
+
+On the View/Update Vendor Workorders page, there should not be an entry where there is an Invoice#s but not an Inv Date.
+
+
+#110 - x
+if you open up a custom line in unbilled op chang something and then hit the save button you get a smart handler form. It does the function even though it gives you the message
+
+591701
+Intranet -> Jobs -> Job Unbilled Ops -> Create Invoice -> Save
+Custom Line -> save
+Bring custom line back up, change, and save
+
+
+Error:
+HTTP Status 404 - bill/inv/job_inv_lines_sum_det.hmtl
+--------------------------------------------------------------------------------
+type Status report
+message bill/inv/job_inv_lines_sum_det.hmtl
+description The requested resource (bill/inv/job_inv_lines_sum_det.hmtl) is not available.
+
+
+
+#111 - x
+use check box system to archive project folders
+
+
+#112 - x
+Request Workorder form needs new field called Date Work Order Received.
+
+"View/Update vendor workorders" add column between "Sch End" and "Act Start", called "W.O. Rcd".
+
+On the "Service Request", add the Work Order Received date on a line above the "Est Start Date"
+
+1. Create work order
+ (approve) pfulton/tigger
+
+2. View Update work order
+
+#113 - cannot recreate
+there is some kind of change in a quote request that changes the  version of the quote request so that even if the quote request is quoted is quoted, the link to request service out of that quote request  does not show up. Job 38038-1 in Wisconsin
+
+Log in as Wisconsin
+View/Update quote request
+38038-1
+
+Missing Create Service Request link.
+	correctly - the link should not be there if the quote request has not been quoted.
+
+
+
+===========Ver1.06================================
+
+#52 - x
+ On Move to New - success page should be displayed with the "Job Time Capture" summary
+
+
+#114 - x
+Extranet -> Create Work Order ->
+	pick target commercial interiors
+
+Create Quote Request
+	Add fields 
+		1. sales
+		2. support
+		3. project manager
+		4. service provider contact (A&M contact)
+
+Send Quote Request message
+
+
+#115a,b - x
+when you set up a job
+	create a project
+		as a service account
+
+When creating a service request, set show_in_job_number_list to no
+Allow to be changed on the intranet "CSC Work Order Field" yes/no.
+
+set up the default value to N for everyone.
+retrofit old values with Y for project type Service Account.
+
+
+#67 - checked OK - code not deployed to production
+
+
+#33 - x
+Intranet -> Job unbilled ops -> Create Invoice -> save
+Custom Line
+10:11 AM 2/1/2006
+Filter items by the job type.
+
+
+======================================================
+
+A. On View Update service request
+in Milwaukee, project 40188 should have Create Service Request link, not Create Quote Request link.
+
+B. Create Work order
+	Target Commercical Interiors
+	591701
+
+
+C. Create Work Order request number bleadthrough
+Request Work Order
+	Target Commercial Interiors
+
+creates a Req #1270 which is up where project #591701 should be, but for project #691701 the numbers should have reset to
+zero.
+
+bleading between 691701
+and 591701-1266
+select request_no, date_created, created_by
+from requests
+where project_id = 22045
+order by date_created
+
+
+select s.service_no, s.date_created
+from services s, jobs j
+where j.project_id = 22045
+and s.job_id = j.job_id
+order by s.date_created
+
+select request_no, date_created, date_modified, modified_by
+from requests
+where project_id = 39398
+order by date_created
+
+
+select s.service_no, s.date_created, s.date_modified
+from services s, jobs j
+where j.project_id = 39398
+and s.job_id = j.job_id
+order by s.date_created
+
+
+D. filtering on custom lines
+699004
+
+intranet 
+	jobs
+		job unbilled ops
+			102721
+PieceCnt In-W
+PieceCnt Out-W
+job_id = 34929
+
+
+===========================================================
+
+126 -x 20060316
+the date someone presses send.
+
+
+131 -x 20060315
+ show job number for payables loaded into closed requests, or don't load payable and still say it's closed
+ 
+132 -x 20060315
+ filter job type
+ 
+124 -x 20060315
+ Job -> Job Costing
+
+123 -x 20060316
+ Like View/Update project folders with same permision setup
+
+120 - x 20060322
+ Caps
+
+=============================================================
+
+Blake1 - x 20060331
+
+Intranet Jobs
+35451
+
+Job Costing
+
+Unbilled ops - can move them and they move
+
+boxes (expenses) move but the hours don't
+
+139 - Blake 2 - x 20060330
+
+
+138 -  Blake 3
+on hold - checking with Patty
+
+
+32 - Blake 4 - x 20060330
+Cost Report - sub total of hours and expenses per requisition.
+
+
+130 - Blake 5 - x 20060329
+hide closed.
+
+
+96 - Blake 6
+both dealer and organization switching.
+
+Username /password click login
+
+Select your location (list contains only valid organizations for that user)
+OR if only one - proceed with that location
+
+
+
+==============================================================
+
+- fixed 20060405
+lwagner
+55859
+plymouth
+
+View/Update workorders
+
+Customer: HENRICKSENS - RDP
+
+Customer should be HENRICKSENS - RDP
+
+The customer list is OK on Request Service
+
+- on hold
+scanderson
+
+Intranet
+44528
+Job Unbilled Ops
+Delivery-F-Reg
+	quote total = $0
+
+But there is a quote that has been sent for $400.
+
+
+- completed 20060405
+Under Reports there are two links at the bottom that say Reports(inside) and Reports(outside). Change that to only one kink that reads “Additional Reports” the link should go to www.omniworkspace.com/servicetrax
+
+
+- completed 20060405
+The email "from" should be changed from servicetrax@ambis.com to servicetrax@omniworkspace.com.
+
+
+=============================================================
+
+142 - 
+Job#  Job Status  Customer  Invoice $  Time Exp $  Billed Var $  Billed Var %  Time $  Exp $  Quote $  TC Hours  (Q-TE) $  (Q-TE)/ TE %  (INV-Q) $  (INV-Q)/ INV %  Est Hours  Hours Var  Hours Var %  Dealer  Job Name  Job Type 
+ 5991271 Created LEASED SPACE $23,775.00 $0.00 $23,775.00 100% $0.00 $0.00 $0.00 0.00 $0.00 0% $23,775.00 100% 0 0.00   DIVERSIFIED RES LEASED SPACE service_account 
+
+unbilled ops -> Unbilled Acct
+
+Look in the Invoiced
+	date sent to Great Plains should be the filter field.
+
+
+141 - 
+look for something wierd.
+
+
+57 - completed 20060406
+Intranet -> Billing
+
+Unbilled ops -> Detail
+Open up line
+shows the System Info
+
+Should also show in a line detail in the Posted section.
+
+
+
+122 - completed 20060407
+Job details
+pick a job 16874
+Pick a req
+other conditions ( should show up in the notes field in job unbilled ops)
+
+Should show up:
+intranet -> job unbilled ops -> Notes
+
+Actually the notes saved fine.  The problem was on the display on the Intranet side, the Note was displayed on a page which
+showed the job ID instead of the job No which caused confusion.
+
+
+
+
+- completed 20060407
+File upload with a name too long crashes the upload.  Fixed by adding length check and increasing name length to 256.
+
+

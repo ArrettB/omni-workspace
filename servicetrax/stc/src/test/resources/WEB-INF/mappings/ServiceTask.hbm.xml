@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.ServiceTask" table="SERVICE_TASKS" schema="dbo" catalog="">
+        <id name="serviceTaskId" type="java.lang.Long">
+            <column name="SERVICE_TASK_ID" precision="10" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="lookupBySubActTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="SUB_ACT_TYPE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="service" class="com.dynamic.servicetrax.orm.Service" fetch="select">
+            <column name="SERVICE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="lookupByModifiedBy" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="user" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="lookupByPhaseTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="PHASE_TYPE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="phase" type="string">
+            <column name="PHASE" length="50" not-null="true" />
+        </property>
+        <property name="phaseNo" type="long">
+            <column name="PHASE_NO" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="sequenceNo" type="long">
+            <column name="SEQUENCE_NO" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="vendorResponsible" type="string">
+            <column name="VENDOR_RESPONSIBLE" length="50" />
+        </property>
+        <property name="description" type="string">
+            <column name="DESCRIPTION" length="500" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+    </class>
+</hibernate-mapping>

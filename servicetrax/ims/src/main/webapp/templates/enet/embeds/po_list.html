@@ -1,0 +1,28 @@
+<!-- $Header: po_list.html, 4/18/2008, David Zhaon$ -->
+<html>
+<head>
+<title>PO List</title>
+</head>
+<body>
+
+	<!--#SMARTTABLE name="po_list" class="smartTable"
+					query="SELECT po.po_id,
+					              po.vendor_name,
+					              l.name status,
+					              po.date_created,
+					              CONVERT(VARCHAR, p.project_no) + '-' + CONVERT(VARCHAR, r.request_no) + '-' + CONVERT(VARCHAR, po.po_no) project_request_po_no
+							 FROM purchase_orders po INNER JOIN
+							      lookups l ON po.po_status_id=l.lookup_id INNER JOIN
+							      requests r ON po.request_id = r.request_id INNER JOIN
+							      projects p ON r.project_id = p.project_id
+							WHERE po.request_id = <?p:parameter.toPStmtInt()?>
+						 ORDER BY po_id" -->
+
+		<!--#SMARTCOLUMN style="border-width:1;border-right-color:#FFFFFF;border-bottom-color:#FFFFFF;width:30%;" name="project_request_po_no" title="PO#" href="" onclick="return view_po(<?r:po_list:po_id.toJavaScriptString()?>)"  align="center" nowrap-->
+		<!--#SMARTCOLUMN style="border-width:1;border-right-color:#FFFFFF;border-bottom-color:#FFFFFF;width:30%;" name="vendor_name" title="Vendor"  align="left" nowrap-->
+		<!--#SMARTCOLUMN style="border-width:1;border-right-color:#FFFFFF;border-bottom-color:#FFFFFF;width:15%;" name="status" title="Status"  align="center" nowrap-->
+		<!--#SMARTCOLUMN style="border-width:1;border-right-color:#FFFFFF;border-bottom-color:#FFFFFF;width:15%;" name="date_created" title="Date Created" format="date" -->
+
+	<!--#/SMARTTABLE -->
+</body>
+</html>

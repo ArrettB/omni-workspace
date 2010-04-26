@@ -1,0 +1,236 @@
+<!-- $Header: C:\work\ims\templates\enet\proj\customer_detail.html, 1, 10/1/2007, David Zhao$ -->
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+
+<body class="BodyTag" onLoad="window.focus();testIfCreated()">
+
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+   <!--#SMARTFORM name="enet/proj/customer_edit"
+				security="rights"
+				table="customers"
+				key="customer_id"
+				sequence="@@IDENTITY"
+				preHandler="ims.handlers.job_processing.SmartFormPreHandler;ims.handlers.proj.CustomerPreHandler"
+				postHandler="ims.handlers.proj.CustomerPostHandler"
+				onClickFunction="exitFunction"
+				buttons="Save,Cancel"
+		-->
+		<!--#SMARTFIELD name="redisplay" type="hidden" value="false" -->
+		<!--#SMARTFIELD name="customer_button" type="hidden" -->
+		<!--#SMARTFIELD name="theForm" type="hidden" value="<?p:theForm?>" -->
+		<!--#SMARTFIELD name="theDroplist" type="hidden" value="<?p:theDroplist?>" -->
+		<!--#SMARTFIELD name="created_new_customer" type="hidden" value="<?p:created_new_customer.isNull('false')?>" --></td>
+		<!--#SMARTFIELD name="return_value_flag" type="hidden" value="<?p:return_value_flag.isNull('true')?>" --></td>
+		<!--#SMARTFIELD name="organization_id" type="hidden" value="<?s:org_id?>" -->	<!-- need for converting project to job -->
+
+		<!--#IF evaluate="<?d:mode?>" compare="Insert"-->
+			<tr><td class="HeaderRow">Adding a New Customer</td></tr>
+		 <!--#ELSE-->
+			<tr><td class="HeaderRow">Updating Existing Customer</td></tr>
+		<!--#/IF-->
+
+		<tr><td><table border="0" cellspacing="0" cellpadding="2">
+		<tr><td><!--#SMARTFIELD title="Type:" div="&nbsp;</td><td colspan='3'>" name="customer_type_id" type="droplist" style="width:200" filter="lookup_active_flag='y'" table="customer_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+
+			<tr><td><!--#SMARTFIELD title="Customer&nbsp;Name:" div="&nbsp;</td><td>" name="customer_name" style="width:180" type="text" --></td>
+				<td><!--#SMARTFIELD mode="Update" title="Active:" div="&nbsp;&nbsp;&nbsp;" name="active_flag" type="boolean" value="Y" -->
+					<!--#SMARTFIELD mode="Insert" name="active_flag" type="hidden" value="Y" --></td></tr>
+
+	<!--#CHECKSECURITY right="rights.enet/proj/select_gp_customer.view" -->
+
+		<!--#IF evaluate="<?p:redisplay?>" compare="false" -->
+			<tr><td><!--#SMARTFIELD title="Select&nbsp;If&nbsp;Special&nbsp;Rates:" div="&nbsp;</td><td colspan='3'>" name="ext_customer_id" type="droplist" resourceName="<?s:org_resource?>" style="width:300" filter="((userdef1 = 'customer' AND userdef2=ISNULL(<?s:ext_direct_dealer_id.toSQLString()?>,<?s:ext_dealer_id.toSQLString()?>)) OR userdef1 = 'dealer') AND custnmbr  NOT LIKE 'old%'" table="RM00101" display="ISNULL(custname,'')+':'+custnmbr" key="custnmbr" --></td></tr>
+		<!--#ELSE-->
+			<tr><td><!--#SMARTFIELD title="Select&nbsp;If&nbsp;Special&nbsp;Rates:" div="&nbsp;</td><td colspan='3'>" name="ext_customer_id" type="droplist" resourceName="<?s:org_resource?>" style="width:300" filter="((userdef1 = 'customer' AND userdef2=ISNULL(<?s:ext_direct_dealer_id.toSQLString()?>,<?s:ext_dealer_id.toSQLString()?>)) OR userdef1 = 'dealer') AND custnmbr  NOT LIKE 'old%'" table="RM00101" display="ISNULL(custname,'')+':'+custnmbr" key="custnmbr" --></td></tr>
+		<!--#/IF-->
+	<!--#/CHECKSECURITY-->
+
+			<tr><td><!--#SMARTFIELD title="Survey Frequency: 1 in " div="</td><td colspan='3'>" name="survey_frequency" style="width:50" type="number" -->&nbsp;&nbsp;&nbsp;&nbsp;
+				<!--#SMARTFIELD title="Survey Link:" div="&nbsp;" name="survey_location" style="width:200" type="text" --></td></tr>
+
+
+			<tr><td valign="bottom"><!--#SMARTFIELD title="Refusal Email" div="&nbsp;</td><td colspan='3' rowspan='2'>" name="refusal_email_info" type="textarea" rows="4" cols="50"--></td></tr>
+			<tr><td colspan="4" valign="top">Additional Info:</td><tr>
+		</table></td></tr>
+
+<!--#IF evaluate="<?d:mode?>" compare="Update"-->
+	<tr>
+		<td class="TableTitle" >System Info</td>
+	</tr>
+	<tr><td><table width="100%" cellspacing="0" cellpadding="0">
+	<tr>
+		<td><!--#SMARTFIELD title="Date Created:" div="&nbsp;</td><td>" name="date_created" type="datetime" mode="Update" readonly class="readonly" size="22" --></td>
+		<td><!--#SMARTFIELD title="Created By:" div="&nbsp;</td><td>" name="created_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+	</tr>
+	<tr>
+		<td><!--#SMARTFIELD title="Date&nbsp;Modified:" div="&nbsp;</td><td>" name="date_modified" type="datetime" mode="Update" readonly class="readonly" size="22"--></td>
+		<td><!--#SMARTFIELD title="Modified&nbsp;By:" div="&nbsp;</td><td>" name="modified_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+	</tr>
+	</td></table></tr>
+<!--#/IF-->
+
+		<tr><td><iframe name="cust_email_frame" height="0" width="0"></iframe></td></tr>
+		<tr><td><HR></td></tr>
+	</table>
+
+<!--#IF defined="<?p:custom_cust_col_id?>" -->
+	<table>
+		<tr><td>
+			<table border="0" cellpadding="1" cellspacing="1">
+			<tr>
+				<td width="55" >Field</td>
+				<td width="160">Title</td>
+				<td width="65" >Active</td>
+				<td width="65" >Mandatory</td>
+				<td width="65" >Droplist</td>
+				<td width="65" >&nbsp;</td>
+			</tr>
+			<tr>
+				<td><!--#SMARTFIELD name="col_sequence" readonly="true" class="readonly" size="5" style="text-align:center"--></td>
+				<td><!--#SMARTFIELD name="column_desc" size="25"--></td>
+				<td><!--#SMARTFIELD type="droplist" name="column_active_flag" table="yes_no_type_v" display="name" key="yes_no_type_code" --></td>
+				<td><!--#SMARTFIELD type="droplist" name="is_mandatory" table="yes_no_type_v" display="name" key="yes_no_type_code" --></td>
+				<td><!--#SMARTFIELD type="droplist" name="is_droplist" table="yes_no_type_v" display="name" key="yes_no_type_code" --></td>
+<!--#CHECKSECURITY right="rights.job/job_custom_cols_edit.update" -->
+				<td><input type="button" class="button" value="Update" name="update_column" onClick="updateCustomCol()"></td>
+<!--#/CHECKSECURITY-->
+			</tr>
+	 		</table>
+		</td></tr>
+	</table>
+<!--#/IF-->
+
+	<input name="custom_cust_col_id" type="hidden" value="{!p:custom_cust_col_id!}">  <!-- is set when selecting field to edit -->
+
+<!--#SMARTTABLE name="cust_cols" width="470"
+	query="SELECT custom_cust_col_id, column_desc, col_sequence, active_flag, is_mandatory, is_droplist
+			FROM custom_cust_columns
+			WHERE customer_id = <?d:customer_id.toPStmtString()?>
+			ORDER BY col_sequence"
+
+-->
+
+<!--#CHECKSECURITY right="rights.job/job_custom_cols_edit.update" -->
+	<!--#SMARTCOLUMN name="col_sequence" sort="col_sequence" title="Field#" width="45" align="center"
+  		href="" onClick="prepareColumnEdit('<?r:cust_cols:custom_cust_col_id?>');return false;"
+	-->
+<!--#ELSE-->
+	<!--#SMARTCOLUMN name="col_sequence" sort="col_sequence" title="Field#" width="45" align="center" -->
+<!--#/CHECKSECURITY-->
+
+	<!--#SMARTCOLUMN name="column_desc" sort="column_desc" title="Title" width="160" -->
+	<!--#SMARTCOLUMN name="active_flag" sort="active_flag" title="Active" width="65" align="center" -->
+	<!--#SMARTCOLUMN name="is_mandatory" sort="is_mandatory" title="Mandatory" width="65" align="center" -->
+	<!--#SMARTCOLUMN name="is_droplist" sort="is_droplist" title="DropList" width="65" align="center" -->
+<!--#CHECKSECURITY right="rights.job/modify_custom_droplists.update" -->
+	<!--#IF evaluate="<?r:cust_cols:is_droplist?>" compare="Y"-->
+		<td width="5%"><input type="button" class="button" value="Add" name="dropListModify" style="height:16; padding-top:0;width:40" onClick="modifyDropList({!r:cust_cols:custom_cust_col_id!})"></td>
+	<!--#ELSE-->
+		<td>&nbsp;</td>
+	<!--#/IF-->
+<!--#ELSE-->
+		<td>&nbsp;</td>
+<!--#/CHECKSECURITY-->
+
+<!--#/SMARTTABLE -->
+
+<!--#IF undefined="<?d:customer_id?>" -->
+	<table>
+		<tr><td>&nbsp;</td></tr>
+		<tr><td class="HeaderLabel">You must Save new customer before you can see the custom fields.</td></tr>
+	</table>
+<!--#/IF-->
+
+	<!-- spacing for buttons-->
+
+
+<!--#/SMARTFORM -->
+
+
+
+</body>
+
+<script language="JavaScript">
+<!--
+
+	function testIfCreated()
+	{
+		if( document.customer_edit.created_new_customer.value == 'true' && !(document.customer_edit.customer_id.value == '') )
+		{
+			//we now have a customer_id so return to other caller
+
+			if (!( document.customer_edit.return_value_flag == 'false' ) && !({!p:validation_error.toJavaScriptString()!} == 'true'))
+			{
+				//returnDroplistOption('{!p:theForm!}','{!p:theDroplist!}', customer_edit.customer_name.value, getCustomerID());
+				parent.window.opener.focus();
+
+				//now handle redisplay so job_location is filtered based on this customer
+				//parent.window.opener.redisplaySmartForm();
+				parent.close();
+			}
+
+		}
+	}
+
+	function modifyDropList(customCustColID)
+	{
+			var url = {!s:showPage.toJavaScriptString()!} + 'enet/proj/custom_col_drop_list.html';
+			url += "?custom_cust_col_id=" + customCustColID
+			url += "&return_value_flag=false"
+			newWindow(url,'cust_col_dl',270,300);
+	}
+
+	function redisplaySmartForm()
+	{
+		document.customer_edit.redisplay.value = 'true';
+		document.customer_edit.submit();
+	}
+
+	function updateCustomCol()
+	{
+		document.customer_edit.customer_button.value = "Update Column";
+		document.customer_edit.submit();
+	}
+
+	function prepareColumnEdit(column)
+	{
+		document.customer_edit.customer_button.value = "Prepare Column Edit";
+		document.customer_edit.custom_cust_col_id.value = column;
+		document.customer_edit.submit();
+	}
+
+	function getExtDealerID()
+	{
+		return {!p:ext_dealer_id.toJavaScriptString()!};
+	}
+
+	function getCustomerID()
+	{
+		return {!d:customer_id.toJavaScriptString()!};
+	}
+
+	function exitFunction(button)
+	{
+	   if( button == 'Save' || button == 'Cancel' || button == 'OK')
+	   {
+			if( button == 'Save' )
+			{
+				parent.window.opener.setExtCustomerId(document.customer_edit.ext_customer_id.value);
+				document.customer_edit.customer_button.value = ''; //need to blank so won't fail validation
+				document.customer_edit.created_new_customer.value = 'true';
+				document.customer_edit.redisplay.value = 'false';
+				document.customer_edit.customer_name.value = document.customer_edit.customer_name.value.toUpperCase();
+			}
+			else
+			{//canceling so who cares about id :-)
+				document.customer_edit.customer_button.value = ''; //need to blank so won't fail validation
+				parent.window.opener.focus();
+				parent.close();
+			}
+	   }
+	}
+
+-->
+</script>
+
+<!--#EMBED template="enet/embeds/footer.html" -->

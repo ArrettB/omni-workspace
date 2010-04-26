@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<project name="Custom libs" default="mvn_deploy_all" basedir="." xmlns:ivy="antlib:fr.jayasoft.ivy.ant" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+	<target name="mvn_deploy_all" depends="deploy_jcom" description="Installs jars into the central maven repository, useful for jars not available at ibiblio">
+
+	</target>
+
+	<target name="deploy_jcom" description="Installs jars into the central maven repository, useful for jars not available at ibiblio">
+		<!-- pdfbox (required by springmodules-lucene) -->
+		<!-- used to support Lucene 2.2 -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=jcom-2.2.4.jar"/>
+			<arg line="-DgroupId=jcom"/>
+			<arg line="-DartifactId=jcom"/>
+			<arg line="-Dversion=2.2.4"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+	</target>
+		
+	<!-- iframe-ims -->
+	<target name="deploy_iframe" description="Installs iFrame2 jar into the central maven repository">
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=iFrame2-ims-1.2.jar"/>
+			<arg line="-DgroupId=com.dynamic"/>
+			<arg line="-DartifactId=iFrame2-ims"/>
+			<arg line="-Dversion=1.2"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+	</target>
+
+	
+</project>

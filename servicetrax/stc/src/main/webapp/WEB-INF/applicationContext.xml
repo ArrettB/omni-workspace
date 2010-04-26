@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<!--Configure a message resource -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>charm</value>
+				<value>messages</value>
+				<value>admin</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Load properties from classes/project.properties -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>classpath:application.properties</value>
+		</property>
+	</bean>
+
+	<!-- Hibernate Session Inteceptor Allow Lazy Initialization -->
+	<bean id="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="singleSession" value="true"/>
+	</bean>
+
+	<!--  LoginInterceptor makes sure users proper login crediantials -->
+	<bean id="loginInterceptor" class="com.dynamic.servicetrax.interceptors.LoginInterceptor">
+		<property name="errorPageRedirect" value="notAuthorized.html" />
+		<property name="loginDao" ref="loginDao" />
+		<property name="environment" value="${application.environment}"/>
+		<property name="securityService" ref="securityService" />
+	</bean>
+
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driver}"/>
+		<property name="url" value="${jdbc.url}"/>
+		<property name="username" value="${jdbc.user}"/>
+		<property name="password" value="${jdbc.password}"/>
+	</bean>
+
+	<bean id="namedQueryLoader" class="com.dynamic.charm.query.NamedQueryLoader">
+		<property name="namedQueries">
+			<list>
+				<value>WEB-INF/namedQueries.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="formService" class="com.dynamic.charm.web.form.HibernateFormService">
+		<property name="hibernateService" ref="hibernateService"/>
+	</bean>
+
+	<bean id="hibernateServiceTarget" class="com.dynamic.charm.query.hibernate.DefaultHibernateService">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="isDefault" value="true"/>
+		<property name="defaultPackage" value="com.dynamic.servicetrax.orm" />
+	</bean>
+
+	<bean id="JDBCService" class="com.dynamic.charm.query.jdbc.DefaultJDBCService">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+
+	<bean id="queryServiceTarget" class="com.dynamic.charm.service.DefaultQueryService">
+		<property name="namedQueryLoader" ref="namedQueryLoader"/>
+		<property name="dataServices">
+			<map>
+				<entry key="hibernateService" value-ref="hibernateService"/>
+				<entry key="JDBCService" value-ref="JDBCService"/>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="mappingDirectoryLocations">
+			<list>
+				<value>WEB-INF/mappings</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="org.hibernate.cache.CacheProvider">org.hibernate.cache.EhCacheProvider</prop>
+				<prop key="hibernate.cache.use_query_cache">false</prop>
+			</props>
+		</property>
+	</bean>
+
+
+
+	<!-- The Transaction Manager -->
+	<bean id="myTransactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+
+	<!-- The Fully Transactional Basic Service Controller
+	see org.springframework.transaction.TransactionDefinition for transaction level descriptions -->
+	<bean id="queryService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="myTransactionManager"/>
+		<property name="target" ref="queryServiceTarget"/>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="delete">PROPAGATION_REQUIRED</prop>
+				<prop key="deleteAll">PROPAGATION_REQUIRED</prop>
+				<prop key="get">PROPAGATION_REQUIRED</prop>
+				<prop key="load">PROPAGATION_REQUIRED</prop>
+				<prop key="merge">PROPAGATION_REQUIRED</prop>
+				<prop key="namedQueryFor*">PROPAGATION_REQUIRED</prop>
+				<prop key="queryFor*">PROPAGATION_REQUIRED</prop>
+				<prop key="save">PROPAGATION_REQUIRED</prop>
+				<prop key="saveOrUpdate">PROPAGATION_REQUIRED</prop>
+				<prop key="update">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+
+
+	<bean id="hibernateService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="myTransactionManager"/>
+		<property name="target" ref="hibernateServiceTarget"/>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="delete">PROPAGATION_REQUIRED</prop>
+				<prop key="deleteAll">PROPAGATION_REQUIRED</prop>
+				<prop key="get">PROPAGATION_REQUIRED</prop>
+				<prop key="load">PROPAGATION_REQUIRED</prop>
+				<prop key="merge">PROPAGATION_REQUIRED</prop>
+				<prop key="namedQueryFor*">PROPAGATION_REQUIRED</prop>
+				<prop key="queryFor*">PROPAGATION_REQUIRED</prop>
+				<prop key="save">PROPAGATION_REQUIRED</prop>
+				<prop key="saveOrUpdate">PROPAGATION_REQUIRED</prop>
+				<prop key="update">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+
+
+	<bean id="sessionService" class="com.dynamic.servicetrax.service.SessionService">
+	</bean>
+
+	<bean id="timeManager" class="com.dynamic.servicetrax.tc.TimeManager">
+		<property name="queryService" ref="queryService"/>
+		<property name="lookupsDao" ref="lookupsDao"/>
+	</bean>
+
+	<bean id="invoiceManager" class="com.dynamic.servicetrax.invoice.InvoiceManager">
+		<property name="queryService" ref="queryService"/>
+		<property name="lookupsDao" ref="lookupsDao"/>
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+
+	<bean id="loginDao" class="com.dynamic.servicetrax.dao.LoginDao">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+
+	<bean id="lookupsDao" class="com.dynamic.servicetrax.dao.LookupsDao">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+
+	<bean id="securityService" class="com.dynamic.servicetrax.service.SecurityService">
+		<property name="queryService" ref="queryService" />
+	</bean>
+
+	<bean id="staleKeyTask" class="org.springframework.scheduling.timer.MethodInvokingTimerTaskFactoryBean">
+	  <property name="targetObject" ref="loginDao"/>
+	  <property name="targetMethod" value="removeStaleKeys"/>
+	</bean>
+
+	<bean id="staleKeyTimer" class="org.springframework.scheduling.timer.ScheduledTimerTask">
+		<!-- wait 10 seconds before starting repeated execution -->
+		<property name="delay" value="10000"/>
+		<!-- run every 5 minutes -->
+		<property name="period" value="300000"/>
+		<property name="timerTask" ref="staleKeyTask"/>
+	</bean>
+
+	<bean id="timerFactory" class="org.springframework.scheduling.timer.TimerFactoryBean">
+		<property name="scheduledTimerTasks">
+			<list>
+				<ref bean="staleKeyTimer"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="divDecorator" class="com.dynamic.charm.web.form.tag.decorator.DivDecorator">
+		<property name="divCss" value="formDiv" />
+		<property name="errorCss" value="errorFieldDiv" />
+		<property name="mandatoryDivCss" value="mandatoryFormDiv" />
+		<property name="labelCss" value="label" />
+		<property name="inputCss" value="control" />
+	</bean>
+
+	<bean id="labelOnlyDecorator" class="com.dynamic.charm.web.form.tag.decorator.LabelOnlyDecorator">
+		<property name="labelCss" value="" />
+		<property name="inputCss" value="" />
+		<property name="spanCss" value="" />
+		<property name="mandatorySpanCss" value="mandatory" />
+		<property name="errorSpanCss" value="error" />
+	</bean>
+
+
+	<bean id="rowDecorator" class="com.dynamic.charm.web.form.tag.decorator.RowDecoratorWithLabel">
+		<property name="rowCss" value="formRow" />
+		<property name="errorCss" value="errorFieldRow" />
+		<property name="mandatoryRowCss" value="mandatoryFormRow" />
+		<property name="labelCss" value="label" />
+		<property name="inputCss" value="control" />
+	</bean>
+
+	<bean id="rowDecoratorDate" class="com.dynamic.charm.web.form.tag.decorator.RowDecoratorWithLabel">
+		<property name="rowCss" value="formRow" />
+		<property name="errorCss" value="errorFieldRow" />
+		<property name="mandatoryRowCss" value="mandatoryFormRow" />
+		<property name="labelCss" value="label" />
+		<property name="inputCss" value="date" />
+	</bean>
+
+
+	<bean id="auditInfo" class="com.dynamic.charm.web.form.tag.audit.QueryBasedAuditInfo">
+		<property name="namedQueryId" value="hibernate.auditInfo"/>
+		<property name="dateCreatedProperty" value="dateCreated"/>
+		<property name="createdByIdProperty" value="createdBy"/>
+		<property name="dateModifiedProperty" value="dateModified"/>
+		<property name="modifiedByIdProperty" value="modifiedBy"/>
+
+		<property name="emailColumn" value="email"/>
+		<property name="nameColumn" value="fullName"/>
+
+	</bean>
+
+	<bean id="lookupSupport" class="com.dynamic.servicetrax.dwr.LookupSupport">
+		<property name="queryService" ref="queryService" />
+	</bean>
+
+</beans>

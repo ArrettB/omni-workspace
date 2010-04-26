@@ -1,0 +1,67 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<body class="BodyTag" onLoad="">
+
+<span class="Label">
+You may choose a project folder to view Job Progress details:
+</span>
+
+
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="jp" var="mainQuery"
+		query="SELECT jp.project_id, jp.project_no, jp.customer_name, jp.end_user_name, jp.job_name, jp.install_foreman,
+		              jp.job_status_type_name, punchlist, ISNULL(percent_complete,ISNULL(act_percent_complete,0)) percent_complete,
+		              act_percent_complete, min_start_date_varchar, max_end_date_varchar
+				 FROM job_progress_v jp
+				WHERE jp.organization_id = <?s:org_id.toPStmtString()?>
+				  AND jp.project_status_type_code != 'folder_closed'
+		  	 ORDER BY jp.project_no desc" -->
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="jp" var="customerQuery"
+		query="SELECT DISTINCT jp.customer_id, jp.customer_name
+				FROM job_progress_v jp
+				WHERE jp.organization_id = <?s:org_id.toPStmtString()?>
+				AND jp.project_status_type_code != 'folder_closed'
+		  		ORDER BY jp.customer_name" -->
+
+
+<!--EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="jp" var="dealerQuery"
+		query="SELECT DISTINCT jp.ext_dealer_id, jp.dealer_name
+				FROM job_progress_v jp
+				WHERE jp.organization_id = <?s:org_id.toPStmtString()?>
+				AND jp.project_status_type_code != 'folder_closed'
+		   		ORDER BY jp.dealer_name" -->
+
+
+
+
+<!--#SMARTTABLE name="jp_list"
+		class="SmartTable"
+		query="<?d:mainQuery?>"
+-->
+	<!--#SMARTCOLUMN name="project_no" sort="project_no" title="Project#" width="10%" align="center" href="<?s:action?>setProjectDatum?project_id=<?r:jp_list:project_id?>&templateName=enet/proj/pf_main.html&request_id=&loc=jp" target="_top" filter="jp_project_no:project_no" -->
+	<!--#SMARTCOLUMN name="customer_name" sort="jp.customer_name" title="Customer" width="20%"
+		filter="jp_customer_name:jp.customer_name" filterQuery="<?d:customerQuery?>" filterQuick="true"	-->
+	<!--#SMARTCOLUMN name="end_user_name" sort="end_user_name" title="End User" width="20%" filter="end_user_name:end_user_name" -->
+	<!--#SMARTCOLUMN name="job_name" sort="job_name" title="Job Name" width="20%" filter="jp_job_name:job_name" -->
+	<!--#SMARTCOLUMN name="install_foreman" sort="install_foreman" title="Install Foreman" width="15%" nowrap
+		filter="jp_install_foreman:install_foreman" filterQuery="SELECT user_full_name id, user_full_name FROM resources_v WHERE foreman_flag = 'Y' AND organization_id = <?s:org_id.toPStmtString()?> ORDER BY user_full_name" filterQuick="true"
+	 -->
+	<!--#SMARTCOLUMN name="job_status_type_name" sort="job_status_type_name" title="Job Status" width="15%" nowrap
+		filter="jp_job_status_type_name:job_status_type_name" filterQuery="SELECT lookup_name id, lookup_name FROM job_status_types_v" filterQuick="true"
+	 -->
+	<!--#SMARTCOLUMN name="min_start_date_varchar" sort="min_start_date_varchar" title="Start Date" width="15%" filter="jp_min_start_date_varchar:min_start_date_varchar" -->
+	<!--#SMARTCOLUMN name="max_end_date_varchar" sort="max_end_date_varchar" title="End Date" width="15%" filter="jp_max_end_date_varchar:max_end_date_varchar" -->
+	<!--#SMARTCOLUMN name="punchlist" sort="punchlist" title="Punch List" width="10%" align="center" filter="jp_punchlist:punchlist" -->
+<!--#IF evaluate="<?r:jp_list:percent_complete?>" greaterthan="1" -->
+	<!--#SMARTCOLUMN name="percent_complete" sort="percent_complete" title="%&nbsp;Complete" numDecimals="0" width="10%" align="center" format="percent" value="100%" -->
+<!--#ELSEIF evaluate="<?r:jp_list:percent_complete?>" lessthan="0" -->
+	<!--#SMARTCOLUMN name="percent_complete" sort="percent_complete" title="%&nbsp;Complete" numDecimals="0" width="10%" align="center" format="percent" value="0%" -->
+<!--#ELSE -->
+	<!--#SMARTCOLUMN name="percent_complete" sort="percent_complete" title="%&nbsp;Complete" numDecimals="0" width="10%" align="center" format="percent" -->
+<!--#/IF-->
+
+<!--#/SMARTTABLE -->
+
+<!--#EMBED template="enet/embeds/footer.html" -->
+

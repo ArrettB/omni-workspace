@@ -1,0 +1,29 @@
+1. table changes:
+    	new_quote_request.sql
+    	
+2. lookup setups:
+	/* new_quote_request_setup.docx */
+	update_lookups.sql
+	
+3. re-start web server (this must be done after step 2)
+	
+4. create stored procedures:	
+	create_procedures.sql
+  
+5. new/update views:
+	views.sql
+	
+6. create new QR and SR menu items
+	new_menus.sql
+	
+7. data conversion:
+	ambim_data.sql
+	ammad_data.sql
+	aia_data.sql
+	ciinc_data.sq
+	cillc_data.sql
+	cimn_data.sql
+	ntlsv_data.sql
+	
+8. cleanup:
+     	drop_procedures.sql

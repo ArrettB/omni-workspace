@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+
+<namedQueries>
+	<namedQuery>
+		<id>Foo</id>
+		<query> SELECT name FROM category </query>
+		<parameter name="foo" type="STRING"/>
+		<parameter name="bar" type="STRING"/>
+	</namedQuery>
+</namedQueries>

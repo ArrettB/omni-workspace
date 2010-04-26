@@ -1,0 +1,163 @@
+<!-- $Header: job_po_list.html, 1, 4/14/2008, David Zhao$ -->
+
+<script type="text/javascript">
+
+var totalChecked = 0;
+
+function updatePOStatus()
+{
+	var foundOne = false;
+	var boxList = "";
+	var boxes = document.getElementsByName("aCheckbox");
+	var f = document.frm_checkbox;
+	var status = document.getElementById("submit_status").value;
+// alert("to status = " + status);
+	for (var i = 0; i < boxes.length; i++)
+	{
+		var theBox = boxes[i];
+		if (theBox.checked)
+		{
+			boxList += "," + theBox.value;
+			foundOne = true;
+		}
+	}
+	if (foundOne)
+	{
+		if (confirm("Do you want to update po status to " + status + " ?"))
+		{
+			f.selectedIds.value = boxList.substring(1);
+			f.submit();
+			return true;
+		}
+		else
+		{
+			unSelectAll();
+		}
+	}
+	else
+	{
+		alert("You must select at least one po to submit.");
+	}
+}
+
+function selectAll(theitem)
+{
+	var check = theitem.checked;
+    var all_inv = 0;
+    var f = document.frm_checkbox;
+	for (i = 0; i < f.elements.length; i++)
+	{
+		if (f.elements[i].type == 'checkbox')
+		{
+				f.elements[i].checked = check;
+				all_inv += 1;
+		}
+
+	}
+
+	// update the overall counter
+	if (check)
+		totalChecked = all_inv;
+	else
+		totalChecked = 0;
+
+}
+
+function unSelectAll()
+{
+	var f = document.frm_checkbox;
+	for (i = 0; i < f.elements.length; i++)
+	{
+		if (f.elements[i].type == 'checkbox')
+		{
+				f.elements[i].checked = null;
+		}
+
+	}
+}
+
+function view_po(po_id)
+{
+	var attribs = {!a:Window2Attribs!} + ',height=580,width=580';
+	window.open('{!s:showPage!}enet/po/po_detail.html?po_id='+po_id, 'po', attribs);
+	return false;
+}
+
+</script>
+
+<!--#EMBED template="/embeds/spacer_table.html" spacer_height="15"-->
+<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0"> <tr><td class="HeaderBar">Purchase Orders</td></tr></TABLE>
+
+<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0"> <tr><td height="25" class="tableTitle">Released</td></tr></TABLE>
+	<input type="hidden" name="level" value="bill_job_item">
+	<input type="hidden" name="invoice_id" value="{!p:invoice_id!}">
+	<input type="hidden" name="bill_job_id" value="">
+	<input type="hidden" name="bill_service_id" value="">
+	<input type="hidden" name="template_name" value="{!p:temp_name!}">
+
+<!--#SMARTTABLE name="po_list"
+	class="SmartTable" totalClass="TableTotal"
+	query="SELECT po.po_id,
+	              CONVERT(VARCHAR, j.job_no) + '-' + CONVERT(VARCHAR, r.request_no) + '-' + CONVERT(VARCHAR, po.po_no) project_request_po_no,
+                  po.vendor_name,
+                  j.job_name,
+                  i.name item_name,
+                  po.po_total,
+                  po.date_created,
+                  po_status_type.name status,
+                  billing_type.name billing_type,
+                  re.name resource_name,
+                  '' foo,
+                  '' selected
+             FROM jobs j INNER JOIN
+                  requests r ON j.project_id = r.project_id INNER JOIN
+                  purchase_orders po ON r.request_id = po.request_id INNER JOIN
+                  lookups po_status_type ON po.po_status_id = po_status_type.lookup_id INNER JOIN
+                  lookups billing_type ON po.billing_type_id = billing_type.lookup_id INNER JOIN
+                  items i ON po.item_id=i.item_id LEFT OUTER JOIN
+                  resources re ON po.ext_vendor_id = re.ext_vendor_id
+            WHERE po_status_type.code = 'released'
+              AND j.job_id = <?s:job_id.toPStmtInt()?>
+		 ORDER BY po.po_id"-->
+
+  <!--#IF defined="<?d:po_list:firstRow?>"-->
+	<form name="frm_checkbox" action="{!s:action!}poStatus/bill/{!p:main_page!}?item_type_code={!p:item_type_code!}" method="post" style="margin:0;">
+  <!--#/IF-->
+
+  <!--#IF evaluate="<?d:po_list:rowid?>" compare="total"-->
+	<td height="30" class="TableTitle">&nbsp;</td>
+  <!--#ELSE-->
+	<!--#SMARTCOLUMN title="<input type='checkbox' name='selectall' onClick='javascript:selectAll(this);' >"
+			         value="<input type='checkbox' <?r:po_list:selected?> name='aCheckbox' value='<?r:po_list:po_id?>' >"
+			         name="foo" align="center" width="2%"-->
+  <!--#/IF-->
+
+    <!--SMARTCOLUMN value="<INPUT TYPE='checkbox' name='statusCheckBox' value='<?r:po_list:job_item_status_id?>'>" title="<INPUT TYPE='checkbox' name='CheckAllBox' onclick='checkAllBoxes(this.form.CheckAllBox,this.form.statusCheckBox)'>" align="center" width="2%"-->
+    <!--#SMARTCOLUMN name="project_request_po_no" sort="project_request_po_no" title="PO#" width="5%" href="" onclick="return view_po(<?r:po_list:po_id.toJavaScriptString()?>); return false;"  align="center" nowrap-->
+    <!--#SMARTCOLUMN name="resource_name" sort="resource_name" title="Resource" width="10%"-->
+    <!--#SMARTCOLUMN name="vendor_name" sort="vendor_name" title="Vendor" width="10%"-->
+    <!--#SMARTCOLUMN name="item_name" sort="item_name" title="Work Code" width="10%"-->
+    <!--#SMARTCOLUMN name="po_total" sort="po_total" title="PO Total" align="right" total="true" format="money" width="5%" -->
+    <!--#SMARTCOLUMN name="date_created" sort="date_created" title="Date Created" width="6%" format="date" -->
+	<!--#SMARTCOLUMN name="status" sort="status" title="Status" width="6%" -->
+	<!--#SMARTCOLUMN name="billing_type" sort="billing_type" title="PO Type" width="6%" -->
+
+<!--#/SMARTTABLE -->
+
+	<input type="hidden" name="selectedIds" id="selectedIds" value="">
+	<input type="hidden" name="main_page" id="main_page" value="{!p:main_page!}">
+	<input type="hidden" name="item_type_code" id="item_type_code" value="{!p:item_type_code!}">
+    <SELECT name="submit_status" class="regular">
+		<option VALUE="received">Received</option>
+		<option VALUE="canceled">Canceled</option>
+    </SELECT>
+    <input type="button" value="Submit" name="button" class="button2" onClick="return updatePOStatus()">
+
+	<!--#IF DEFINED="<?d:poErrorMessage?>" -->
+		<TABLE width="100%"><tr><td class="error">{!d:poErrorMessage!}</td><tr></table>
+	<!--#/IF-->
+
+  </form>
+<!--#EMBED template="/embeds/spacer_table.html" spacer_height="15"-->
+
+

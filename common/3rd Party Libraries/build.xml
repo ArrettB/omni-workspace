@@ -1,0 +1,557 @@
+<?xml version="1.0"?>
+<project name="Charm Based Project" default="mvn_deploy_all" basedir="." xmlns:ivy="antlib:fr.jayasoft.ivy.ant" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+
+
+	<target name="mvn_deploy_all" depends="dwr" description="Installs a jar into the central maven repository, useful for jars not available at ibiblio">
+
+		<!-- gnujaxp (required by cewolf chart taglib) -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=gnujaxp-1.0.0.jar"/>
+			<arg line="-DgroupId=gnujaxp"/>
+			<arg line="-DartifactId=gnujaxp"/>
+			<arg line="-Dversion=1.0.0"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		
+		<!-- jasper reports -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=jasperreports-patched-1.3.0.jar"/>
+			<arg line="-DgroupId=jasperreports"/>
+			<arg line="-DartifactId=jasperreports-patched"/>
+			<arg line="-Dversion=1.3.0"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DpomFile=jasperreports-patched-1.3.0.pom"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		
+
+		<!-- iframe-ims -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=iFrame2-ims.jar"/>
+			<arg line="-DgroupId=com.dynamic"/>
+			<arg line="-DartifactId=iFrame2-ims"/>
+			<arg line="-Dversion=1.0"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+
+		<!-- sitemesh 2.3 -->
+		<!--exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=sitemesh-2.3.jar"/>
+			<arg line="-DgroupId=opensymphony"/>
+			<arg line="-DartifactId=sitemesh"/>
+			<arg line="-Dversion=2.3"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\Bmw\maven\jakarta-tomcat-5.5.7\webapps\ROOT\repository"/>
+		</exec-->
+
+		<!-- jnet -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=jnet-1.0.3_03.jar"/>
+			<arg line="-DgroupId=com.sun"/>
+			<arg line="-DartifactId=jnet"/>
+			<arg line="-Dversion=1.0.3_03"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		
+		<!-- jep -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=jep-2.4.0.jar"/>
+			<arg line="-DgroupId=jep"/>
+			<arg line="-DartifactId=jep"/>
+			<arg line="-Dversion=2.4.0"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		
+		<!-- jep ext -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=jep-ext-1.1.0.jar"/>
+			<arg line="-DgroupId=jep"/>
+			<arg line="-DartifactId=jep-ext"/>
+			<arg line="-Dversion=1.1.0"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		
+		<!-- jfreechart -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=jfreechart-0.9.13.jar"/>
+			<arg line="-DgroupId=jfree"/>
+			<arg line="-DartifactId=jfreechart"/>
+			<arg line="-Dversion=0.9.13"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		
+		<!-- jcommon -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=jcommon-0.8.8.jar"/>
+			<arg line="-DgroupId=jfree"/>
+			<arg line="-DartifactId=jcommon"/>
+			<arg line="-Dversion=0.8.8"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		
+		<!-- FckEditor -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=FCKeditor-2.3.jar"/>
+			<arg line="-DgroupId=fckeditor"/>
+			<arg line="-DartifactId=fckeditor"/>
+			<arg line="-Dversion=2.3"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		
+		<!-- Oracle JDBC -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=ojdbc14-10.1.0.4.jar"/>
+			<arg line="-DgroupId=oracle"/>
+			<arg line="-DartifactId=ojdbc14"/>
+			<arg line="-Dversion=10.1.0.4"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=ojdbc14-10.2.0.2.jar"/>
+			<arg line="-DgroupId=oracle"/>
+			<arg line="-DartifactId=ojdbc14"/>
+			<arg line="-Dversion=10.2.0.2"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=ojdbc14-10.2.0.3.jar"/>
+			<arg line="-DgroupId=oracle"/>
+			<arg line="-DartifactId=ojdbc14"/>
+			<arg line="-Dversion=10.2.0.3"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=ojdbc14-10.2.0.4.jar"/>
+			<arg line="-DgroupId=oracle"/>
+			<arg line="-DartifactId=ojdbc14"/>
+			<arg line="-Dversion=10.2.0.4"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+
+		<!-- Netscape live connect plugin from Sun JRE 1.5.0_12 -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=plugin-1.5.jar"/>
+			<arg line="-DgroupId=netscape"/>
+			<arg line="-DartifactId=plugin"/>
+			<arg line="-Dversion=1.5"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+
+		
+		<!-- html parser -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=html-parser-1.1.1.jar"/>
+			<arg line="-DgroupId=html-parser"/>
+			<arg line="-DartifactId=html-parser"/>
+			<arg line="-Dversion=1.1.1"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		
+		<!-- verisign -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=verisign-3.00.jar"/>
+			<arg line="-DgroupId=verisign"/>
+			<arg line="-DartifactId=verisign"/>
+			<arg line="-Dversion=3.00"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		
+		<!-- avalon -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=avalon-framework-20020806.jar"/>
+			<arg line="-DgroupId=avalon-framework"/>
+			<arg line="-DartifactId=avalon-framework"/>
+			<arg line="-Dversion=20020806"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		
+		<!-- javax activation -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=javax/activation/activation/1.0.2/activation-1.0.2.jar"/>
+			<arg line="-DgroupId=javax.activation"/>
+			<arg line="-DartifactId=activation"/>
+			<arg line="-Dversion=1.0.2"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		
+		<!-- javax ejb -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=javax/ejb/ejb/2.0/ejb-2.0.jar"/>
+			<arg line="-DgroupId=javax.ejb"/>
+			<arg line="-DartifactId=ejb"/>
+			<arg line="-Dversion=2.0"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		
+		<!-- javax faces -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=javax/faces/jsf-api/1.1/jsf-api-1.1.jar"/>
+			<arg line="-DgroupId=javax.faces"/>
+			<arg line="-DartifactId=jsf-api"/>
+			<arg line="-Dversion=1.1"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		
+		<!-- javax jms -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=javax/jms/jms/1.1/jms-1.1.jar"/>
+			<arg line="-DgroupId=javax.jms"/>
+			<arg line="-DartifactId=jms"/>
+			<arg line="-Dversion=1.1"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		
+		<!-- javax mail -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=javax/mail/mail/1.3.2/mail-1.3.2.jar"/>
+			<arg line="-DgroupId=javax.mail"/>
+			<arg line="-DartifactId=mail"/>
+			<arg line="-Dversion=1.3.2"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		
+		<!-- javax resource connector -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=javax/resource/connector/1.0/connector-1.0.jar"/>
+			<arg line="-DgroupId=javax.resource"/>
+			<arg line="-DartifactId=connector"/>
+			<arg line="-Dversion=1.0"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		
+		<!-- javax security jacc -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=javax/security/jacc/1.0/jacc-1.0.jar"/>
+			<arg line="-DgroupId=javax.security"/>
+			<arg line="-DartifactId=jacc"/>
+			<arg line="-Dversion=1.0"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		
+		<!-- javax transaction jta -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=javax/transaction/jta/1.0.1B/jta-1.0.1B.jar"/>
+			<arg line="-DgroupId=javax.transaction"/>
+			<arg line="-DartifactId=jta"/>
+			<arg line="-Dversion=1.0.1B"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		
+		<!-- javax xml jaxrpc -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=javax/xml/jaxrpc/1.1/jaxrpc-1.1.jar"/>
+			<arg line="-DgroupId=javax.xml"/>
+			<arg line="-DartifactId=jaxrpc"/>
+			<arg line="-Dversion=1.1"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		
+		<!-- javax xml namespace -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=javax/xml/namespace/1.0.1/namespace-1.0.1.jar"/>
+			<arg line="-DgroupId=javax.xml"/>
+			<arg line="-DartifactId=namespace"/>
+			<arg line="-Dversion=1.0.1"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+
+		<!-- com.sun.jcert -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=jcert-1.0.3_03.jar"/>
+			<arg line="-DgroupId=com.sun"/>
+			<arg line="-DartifactId=jcert"/>
+			<arg line="-Dversion=1.0.3_03"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		
+		<!-- com.sun.jsse -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=jsse-1.0.3_03.jar"/>
+			<arg line="-DgroupId=com.sun"/>
+			<arg line="-DartifactId=jsse"/>
+			<arg line="-Dversion=1.0.3_03"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+									
+		<!-- jgoodies looks -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=looks-1.3.2.jar"/>
+			<arg line="-DgroupId=jgoodies"/>
+			<arg line="-DartifactId=looks"/>
+			<arg line="-Dversion=1.3.2"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+
+		<!-- json -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=json-lib-0.4.jar"/>
+			<arg line="-DgroupId=json-lib"/>
+			<arg line="-DartifactId=json-lib"/>
+			<arg line="-Dversion=0.4"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+
+		<!-- pd4ml tl -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=pd4ml_tl-3.2.3.fx1.jar"/>
+			<arg line="-DgroupId=com.pd4ml"/>
+			<arg line="-DartifactId=pd4ml_tl"/>
+			<arg line="-Dversion=3.2.3.fx1"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+
+		<!-- pd4ml -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=pd4ml-3.2.3.fx1.jar"/>
+			<arg line="-DgroupId=com.pd4ml"/>
+			<arg line="-DartifactId=pd4ml"/>
+			<arg line="-Dversion=3.2.3.fx1"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+		
+		
+		<!-- ss_css2 -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=ss_css2-0.9.4p.jar"/>
+			<arg line="-DgroupId=com.steadystate"/>
+			<arg line="-DartifactId=ss_css2"/>
+			<arg line="-Dversion=0.9.4p"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+
+		<!-- hsqldb -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=hsqldb-1.8.0.10.jar"/>
+			<arg line="-DgroupId=hsqldb"/>
+			<arg line="-DartifactId=hsqldb"/>
+			<arg line="-Dversion=1.8.0.10"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+
+		<!-- Java(TM) Management Extension (JMX) 1.2.1  -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=jmxtools-1.2.1.jar"/>
+			<arg line="-DgroupId=com.sun.jdmk"/>
+			<arg line="-DartifactId=jmxtools"/>
+			<arg line="-Dversion=1.2.1"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=jmxri-1.2.1.jar"/>
+			<arg line="-DgroupId=com.sun.jmx"/>
+			<arg line="-DartifactId=jmxri"/>
+			<arg line="-Dversion=1.2.1"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+
+
+	</target>
+
+
+	<target name="dwr" >
+
+		<!-- dwr -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=dwr-1.1.3.jar"/>
+			<arg line="-DgroupId=uk.ltd.getahead"/>
+			<arg line="-DartifactId=dwr"/>
+			<arg line="-Dversion=1.1.3"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+
+		<!-- dwr -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=dwr-1.1.4.jar"/>
+			<arg line="-DgroupId=uk.ltd.getahead"/>
+			<arg line="-DartifactId=dwr"/>
+			<arg line="-Dversion=1.1.4"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+
+		<!-- dwr -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=dwr-2.0.2.jar"/>
+			<arg line="-DgroupId=uk.ltd.getahead"/>
+			<arg line="-DartifactId=dwr"/>
+			<arg line="-Dversion=2.0.2"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+
+		<!-- dwr -->
+		<exec executable="cmd.exe" dir="." spawn="false">
+			<arg line="/c mvn deploy:deploy-file"/>
+			<arg line="-Dfile=dwr-2.0.5.jar"/>
+			<arg line="-DgroupId=org.directwebremoting"/>
+			<arg line="-DartifactId=dwr"/>
+			<arg line="-Dversion=2.0.5"/>
+			<arg line="-Dpackaging=jar"/>
+			<arg line="-DgeneratePom=true"/>
+			<arg line="-DrepositoryId=apex_central"/>
+			<arg line="-Durl=file:\\bentley\home\maven\tomcat\webapps\ROOT\repository"/>
+		</exec>
+	</target>
+
+</project>

@@ -1,0 +1,1284 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ShowPlanXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0" Build="9.00.3054.00" xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan">
+  <BatchSequence>
+    <Batch>
+      <Statements>
+        <StmtSimple StatementCompId="1" StatementEstRows="17356.4" StatementId="1" StatementOptmLevel="FULL" StatementOptmEarlyAbortReason="TimeOut" StatementSubTreeCost="61.6481" StatementText="SELECT DISTINCT wdv.ext_dealer_id, wdv.dealer_name&#xD;&#xA;				FROM workorder_detail_v wdv&#xD;&#xA;				WHERE wdv.request_type_code = 'workorder'&#xD;&#xA;				AND wdv.request_status_type_code &lt;&gt; 'closed'&#xD;&#xA;				AND wdv.organization_id =  2 &#xD;&#xA;		   		ORDER BY wdv.dealer_name" StatementType="SELECT">
+          <StatementSetOptions ANSI_NULLS="false" ANSI_PADDING="false" ANSI_WARNINGS="false" ARITHABORT="true" CONCAT_NULL_YIELDS_NULL="false" NUMERIC_ROUNDABORT="false" QUOTED_IDENTIFIER="false" />
+          <QueryPlan DegreeOfParallelism="4" MemoryGrant="10408" CachedPlanSize="415" CompileTime="1958" CompileCPU="1951" CompileMemory="24392">
+            <MissingIndexes>
+              <MissingIndexGroup Impact="70.8266">
+                <MissingIndex Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]">
+                  <ColumnGroup Usage="EQUALITY">
+                    <Column Name="[REQUEST_TYPE_ID]" ColumnId="4" />
+                  </ColumnGroup>
+                  <ColumnGroup Usage="INCLUDE">
+                    <Column Name="[PROJECT_ID]" ColumnId="2" />
+                    <Column Name="[REQUEST_NO]" ColumnId="3" />
+                    <Column Name="[REQUEST_STATUS_TYPE_ID]" ColumnId="5" />
+                    <Column Name="[VERSION_NO]" ColumnId="154" />
+                  </ColumnGroup>
+                </MissingIndex>
+              </MissingIndexGroup>
+            </MissingIndexes>
+            <RelOp AvgRowSize="40" EstimateCPU="0.153097" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="17356.4" LogicalOp="Gather Streams" NodeId="0" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="61.6481">
+              <OutputList>
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="EXT_DEALER_ID" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="DEALER_NAME" />
+              </OutputList>
+              <RunTimeInformation>
+                <RunTimeCountersPerThread Thread="0" ActualRows="3" ActualEndOfScans="1" ActualExecutions="1" />
+              </RunTimeInformation>
+              <Parallelism>
+                <OrderBy>
+                  <OrderByColumn Ascending="true">
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="DEALER_NAME" />
+                  </OrderByColumn>
+                </OrderBy>
+                <RelOp AvgRowSize="40" EstimateCPU="0.561023" EstimateIO="0.00563063" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="17356.4" LogicalOp="Distinct Sort" NodeId="1" Parallel="true" PhysicalOp="Sort" EstimatedTotalSubtreeCost="61.495">
+                  <OutputList>
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="EXT_DEALER_ID" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="DEALER_NAME" />
+                  </OutputList>
+                  <MemoryFractions Input="0.166585" Output="1" />
+                  <RunTimeInformation>
+                    <RunTimeCountersPerThread Thread="4" ActualRebinds="1" ActualRewinds="0" ActualRows="2" ActualEndOfScans="1" ActualExecutions="1" />
+                    <RunTimeCountersPerThread Thread="3" ActualRebinds="1" ActualRewinds="0" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                    <RunTimeCountersPerThread Thread="2" ActualRebinds="1" ActualRewinds="0" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                    <RunTimeCountersPerThread Thread="1" ActualRebinds="1" ActualRewinds="0" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                    <RunTimeCountersPerThread Thread="0" ActualRebinds="0" ActualRewinds="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                  </RunTimeInformation>
+                  <Sort Distinct="true">
+                    <OrderBy>
+                      <OrderByColumn Ascending="true">
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="DEALER_NAME" />
+                      </OrderByColumn>
+                      <OrderByColumn Ascending="true">
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="EXT_DEALER_ID" />
+                      </OrderByColumn>
+                    </OrderBy>
+                    <RelOp AvgRowSize="40" EstimateCPU="0.0326322" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="17356.4" LogicalOp="Repartition Streams" NodeId="2" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="60.9283">
+                      <OutputList>
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="EXT_DEALER_ID" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="DEALER_NAME" />
+                      </OutputList>
+                      <RunTimeInformation>
+                        <RunTimeCountersPerThread Thread="4" ActualRows="40455" ActualEndOfScans="1" ActualExecutions="1" />
+                        <RunTimeCountersPerThread Thread="3" ActualRows="1784" ActualEndOfScans="1" ActualExecutions="1" />
+                        <RunTimeCountersPerThread Thread="2" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                        <RunTimeCountersPerThread Thread="1" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                      </RunTimeInformation>
+                      <Parallelism PartitioningType="Hash">
+                        <PartitionColumns>
+                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="DEALER_NAME" />
+                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="EXT_DEALER_ID" />
+                        </PartitionColumns>
+                        <RelOp AvgRowSize="40" EstimateCPU="0.133134" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="17356.4" LogicalOp="Inner Join" NodeId="3" Parallel="true" PhysicalOp="Hash Match" EstimatedTotalSubtreeCost="60.8957">
+                          <OutputList>
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="EXT_DEALER_ID" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="DEALER_NAME" />
+                          </OutputList>
+                          <MemoryFractions Input="0" Output="0" />
+                          <RunTimeInformation>
+                            <RunTimeCountersPerThread Thread="2" ActualRows="15624" ActualEndOfScans="1" ActualExecutions="1" />
+                            <RunTimeCountersPerThread Thread="1" ActualRows="21" ActualEndOfScans="1" ActualExecutions="1" />
+                            <RunTimeCountersPerThread Thread="3" ActualRows="26512" ActualEndOfScans="1" ActualExecutions="1" />
+                            <RunTimeCountersPerThread Thread="4" ActualRows="82" ActualEndOfScans="1" ActualExecutions="1" />
+                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                          </RunTimeInformation>
+                          <Hash>
+                            <DefinedValues />
+                            <HashKeysBuild>
+                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[request_status_types]" Column="LOOKUP_ID" />
+                            </HashKeysBuild>
+                            <HashKeysProbe>
+                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_STATUS_TYPE_ID" />
+                            </HashKeysProbe>
+                            <ProbeResidual>
+                              <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[LOOKUPS].[LOOKUP_ID] as [request_status_types].[LOOKUP_ID]=[servicetrax_dev].[dbo].[REQUESTS].[REQUEST_STATUS_TYPE_ID]">
+                                <Compare CompareOp="EQ">
+                                  <ScalarOperator>
+                                    <Identifier>
+                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[request_status_types]" Column="LOOKUP_ID" />
+                                    </Identifier>
+                                  </ScalarOperator>
+                                  <ScalarOperator>
+                                    <Identifier>
+                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_STATUS_TYPE_ID" />
+                                    </Identifier>
+                                  </ScalarOperator>
+                                </Compare>
+                              </ScalarOperator>
+                            </ProbeResidual>
+                            <RelOp AvgRowSize="16" EstimateCPU="0.0295654" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="712.961" LogicalOp="Repartition Streams" NodeId="4" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="0.0353833">
+                              <OutputList>
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[request_status_types]" Column="LOOKUP_ID" />
+                              </OutputList>
+                              <RunTimeInformation>
+                                <RunTimeCountersPerThread Thread="2" ActualRows="183" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="3" ActualRows="176" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="4" ActualRows="169" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="1" ActualRows="185" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                              </RunTimeInformation>
+                              <Parallelism PartitioningType="Hash">
+                                <PartitionColumns>
+                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[request_status_types]" Column="LOOKUP_ID" />
+                                </PartitionColumns>
+                                <RelOp AvgRowSize="16" EstimateCPU="0.000470628" EstimateIO="0.00534722" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="712.961" LogicalOp="Index Seek" NodeId="5" Parallel="true" PhysicalOp="Index Seek" EstimatedTotalSubtreeCost="0.00581785">
+                                  <OutputList>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[request_status_types]" Column="LOOKUP_ID" />
+                                  </OutputList>
+                                  <RunTimeInformation>
+                                    <RunTimeCountersPerThread Thread="4" ActualRows="34" ActualEndOfScans="1" ActualExecutions="1" />
+                                    <RunTimeCountersPerThread Thread="2" ActualRows="68" ActualEndOfScans="1" ActualExecutions="1" />
+                                    <RunTimeCountersPerThread Thread="3" ActualRows="316" ActualEndOfScans="1" ActualExecutions="1" />
+                                    <RunTimeCountersPerThread Thread="1" ActualRows="295" ActualEndOfScans="1" ActualExecutions="1" />
+                                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                  </RunTimeInformation>
+                                  <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                    <DefinedValues>
+                                      <DefinedValue>
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[request_status_types]" Column="LOOKUP_ID" />
+                                      </DefinedValue>
+                                    </DefinedValues>
+                                    <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Index="[IX_L_CODE]" Alias="[request_status_types]" />
+                                    <SeekPredicates>
+                                      <SeekPredicate>
+                                        <EndRange ScanType="LT">
+                                          <RangeColumns>
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[request_status_types]" Column="CODE" />
+                                          </RangeColumns>
+                                          <RangeExpressions>
+                                            <ScalarOperator ScalarString="'closed'">
+                                              <Const ConstValue="'closed'" />
+                                            </ScalarOperator>
+                                          </RangeExpressions>
+                                        </EndRange>
+                                      </SeekPredicate>
+                                      <SeekPredicate>
+                                        <StartRange ScanType="GT">
+                                          <RangeColumns>
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[request_status_types]" Column="CODE" />
+                                          </RangeColumns>
+                                          <RangeExpressions>
+                                            <ScalarOperator ScalarString="'closed'">
+                                              <Const ConstValue="'closed'" />
+                                            </ScalarOperator>
+                                          </RangeExpressions>
+                                        </StartRange>
+                                      </SeekPredicate>
+                                    </SeekPredicates>
+                                  </IndexScan>
+                                </RelOp>
+                              </Parallelism>
+                            </RelOp>
+                            <RelOp AvgRowSize="49" EstimateCPU="0.0298095" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="17380.4" LogicalOp="Repartition Streams" NodeId="6" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="60.7272">
+                              <OutputList>
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_STATUS_TYPE_ID" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="EXT_DEALER_ID" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="DEALER_NAME" />
+                              </OutputList>
+                              <RunTimeInformation>
+                                <RunTimeCountersPerThread Thread="2" ActualRows="15624" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="3" ActualRows="26513" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="4" ActualRows="82" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="1" ActualRows="41188" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                              </RunTimeInformation>
+                              <Parallelism PartitioningType="Hash">
+                                <PartitionColumns>
+                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_STATUS_TYPE_ID" />
+                                </PartitionColumns>
+                                <RelOp AvgRowSize="49" EstimateCPU="0.152212" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="17380.4" LogicalOp="Inner Join" NodeId="7" Parallel="true" PhysicalOp="Hash Match" EstimatedTotalSubtreeCost="60.6973">
+                                  <OutputList>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_STATUS_TYPE_ID" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="EXT_DEALER_ID" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="DEALER_NAME" />
+                                  </OutputList>
+                                  <MemoryFractions Input="0" Output="0" />
+                                  <RunTimeInformation>
+                                    <RunTimeCountersPerThread Thread="1" ActualRows="477" ActualEndOfScans="1" ActualExecutions="1" />
+                                    <RunTimeCountersPerThread Thread="3" ActualRows="856" ActualEndOfScans="1" ActualExecutions="1" />
+                                    <RunTimeCountersPerThread Thread="4" ActualRows="82074" ActualEndOfScans="1" ActualExecutions="1" />
+                                    <RunTimeCountersPerThread Thread="2" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                  </RunTimeInformation>
+                                  <Hash>
+                                    <DefinedValues />
+                                    <HashKeysBuild>
+                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[project_type]" Column="LOOKUP_ID" />
+                                    </HashKeysBuild>
+                                    <HashKeysProbe>
+                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_TYPE_ID" />
+                                    </HashKeysProbe>
+                                    <ProbeResidual>
+                                      <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[LOOKUPS].[LOOKUP_ID] as [project_type].[LOOKUP_ID]=[servicetrax_dev].[dbo].[PROJECTS].[PROJECT_TYPE_ID] as [p].[PROJECT_TYPE_ID]">
+                                        <Compare CompareOp="EQ">
+                                          <ScalarOperator>
+                                            <Identifier>
+                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[project_type]" Column="LOOKUP_ID" />
+                                            </Identifier>
+                                          </ScalarOperator>
+                                          <ScalarOperator>
+                                            <Identifier>
+                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_TYPE_ID" />
+                                            </Identifier>
+                                          </ScalarOperator>
+                                        </Compare>
+                                      </ScalarOperator>
+                                    </ProbeResidual>
+                                    <RelOp AvgRowSize="16" EstimateCPU="0.029576" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="720" LogicalOp="Repartition Streams" NodeId="8" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="0.0346569">
+                                      <OutputList>
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[project_type]" Column="LOOKUP_ID" />
+                                      </OutputList>
+                                      <RunTimeInformation>
+                                        <RunTimeCountersPerThread Thread="4" ActualRows="169" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="1" ActualRows="187" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="3" ActualRows="177" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="2" ActualRows="187" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                      </RunTimeInformation>
+                                      <Parallelism PartitioningType="Hash">
+                                        <PartitionColumns>
+                                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[project_type]" Column="LOOKUP_ID" />
+                                        </PartitionColumns>
+                                        <RelOp AvgRowSize="16" EstimateCPU="0.0004745" EstimateIO="0.00460648" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="720" LogicalOp="Index Scan" NodeId="9" Parallel="true" PhysicalOp="Index Scan" EstimatedTotalSubtreeCost="0.00508098">
+                                          <OutputList>
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[project_type]" Column="LOOKUP_ID" />
+                                          </OutputList>
+                                          <RunTimeInformation>
+                                            <RunTimeCountersPerThread Thread="4" ActualRows="222" ActualEndOfScans="1" ActualExecutions="1" />
+                                            <RunTimeCountersPerThread Thread="1" ActualRows="337" ActualEndOfScans="1" ActualExecutions="1" />
+                                            <RunTimeCountersPerThread Thread="2" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                                            <RunTimeCountersPerThread Thread="3" ActualRows="161" ActualEndOfScans="1" ActualExecutions="1" />
+                                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                          </RunTimeInformation>
+                                          <IndexScan Ordered="false" ForcedIndex="false" NoExpandHint="false">
+                                            <DefinedValues>
+                                              <DefinedValue>
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[project_type]" Column="LOOKUP_ID" />
+                                              </DefinedValue>
+                                            </DefinedValues>
+                                            <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Index="[IX_L_LOOKUP_TYPES]" Alias="[project_type]" />
+                                          </IndexScan>
+                                        </RelOp>
+                                      </Parallelism>
+                                    </RelOp>
+                                    <RelOp AvgRowSize="58" EstimateCPU="0.0288348" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="17380.4" LogicalOp="Repartition Streams" NodeId="10" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="60.5105">
+                                      <OutputList>
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_STATUS_TYPE_ID" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_TYPE_ID" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="EXT_DEALER_ID" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="DEALER_NAME" />
+                                      </OutputList>
+                                      <RunTimeInformation>
+                                        <RunTimeCountersPerThread Thread="4" ActualRows="82074" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="1" ActualRows="477" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="3" ActualRows="856" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="2" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                      </RunTimeInformation>
+                                      <Parallelism PartitioningType="Hash">
+                                        <PartitionColumns>
+                                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_TYPE_ID" />
+                                        </PartitionColumns>
+                                        <RelOp AvgRowSize="58" EstimateCPU="0.153594" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="17380.4" LogicalOp="Inner Join" NodeId="11" Parallel="true" PhysicalOp="Hash Match" EstimatedTotalSubtreeCost="60.4816">
+                                          <OutputList>
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_STATUS_TYPE_ID" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_TYPE_ID" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="EXT_DEALER_ID" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="DEALER_NAME" />
+                                          </OutputList>
+                                          <MemoryFractions Input="0" Output="0" />
+                                          <RunTimeInformation>
+                                            <RunTimeCountersPerThread Thread="4" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                                            <RunTimeCountersPerThread Thread="1" ActualRows="31108" ActualEndOfScans="1" ActualExecutions="1" />
+                                            <RunTimeCountersPerThread Thread="3" ActualRows="52299" ActualEndOfScans="1" ActualExecutions="1" />
+                                            <RunTimeCountersPerThread Thread="2" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                          </RunTimeInformation>
+                                          <Hash>
+                                            <DefinedValues />
+                                            <HashKeysBuild>
+                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[project_status_type]" Column="LOOKUP_ID" />
+                                            </HashKeysBuild>
+                                            <HashKeysProbe>
+                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_STATUS_TYPE_ID" />
+                                            </HashKeysProbe>
+                                            <ProbeResidual>
+                                              <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[LOOKUPS].[LOOKUP_ID] as [project_status_type].[LOOKUP_ID]=[servicetrax_dev].[dbo].[PROJECTS].[PROJECT_STATUS_TYPE_ID] as [p].[PROJECT_STATUS_TYPE_ID]">
+                                                <Compare CompareOp="EQ">
+                                                  <ScalarOperator>
+                                                    <Identifier>
+                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[project_status_type]" Column="LOOKUP_ID" />
+                                                    </Identifier>
+                                                  </ScalarOperator>
+                                                  <ScalarOperator>
+                                                    <Identifier>
+                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_STATUS_TYPE_ID" />
+                                                    </Identifier>
+                                                  </ScalarOperator>
+                                                </Compare>
+                                              </ScalarOperator>
+                                            </ProbeResidual>
+                                            <RelOp AvgRowSize="16" EstimateCPU="0.029576" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="720" LogicalOp="Repartition Streams" NodeId="12" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="0.0346569">
+                                              <OutputList>
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[project_status_type]" Column="LOOKUP_ID" />
+                                              </OutputList>
+                                              <RunTimeInformation>
+                                                <RunTimeCountersPerThread Thread="4" ActualRows="169" ActualEndOfScans="1" ActualExecutions="1" />
+                                                <RunTimeCountersPerThread Thread="1" ActualRows="187" ActualEndOfScans="1" ActualExecutions="1" />
+                                                <RunTimeCountersPerThread Thread="3" ActualRows="177" ActualEndOfScans="1" ActualExecutions="1" />
+                                                <RunTimeCountersPerThread Thread="2" ActualRows="187" ActualEndOfScans="1" ActualExecutions="1" />
+                                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                              </RunTimeInformation>
+                                              <Parallelism PartitioningType="Hash">
+                                                <PartitionColumns>
+                                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[project_status_type]" Column="LOOKUP_ID" />
+                                                </PartitionColumns>
+                                                <RelOp AvgRowSize="16" EstimateCPU="0.0004745" EstimateIO="0.00460648" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="720" LogicalOp="Index Scan" NodeId="13" Parallel="true" PhysicalOp="Index Scan" EstimatedTotalSubtreeCost="0.00508098">
+                                                  <OutputList>
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[project_status_type]" Column="LOOKUP_ID" />
+                                                  </OutputList>
+                                                  <RunTimeInformation>
+                                                    <RunTimeCountersPerThread Thread="4" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                                                    <RunTimeCountersPerThread Thread="1" ActualRows="337" ActualEndOfScans="1" ActualExecutions="1" />
+                                                    <RunTimeCountersPerThread Thread="3" ActualRows="161" ActualEndOfScans="1" ActualExecutions="1" />
+                                                    <RunTimeCountersPerThread Thread="2" ActualRows="222" ActualEndOfScans="1" ActualExecutions="1" />
+                                                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                  </RunTimeInformation>
+                                                  <IndexScan Ordered="false" ForcedIndex="false" NoExpandHint="false">
+                                                    <DefinedValues>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[project_status_type]" Column="LOOKUP_ID" />
+                                                      </DefinedValue>
+                                                    </DefinedValues>
+                                                    <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Index="[IX_L_LOOKUP_TYPES]" Alias="[project_status_type]" />
+                                                  </IndexScan>
+                                                </RelOp>
+                                              </Parallelism>
+                                            </RelOp>
+                                            <RelOp AvgRowSize="67" EstimateCPU="0.0779943" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="17380.4" LogicalOp="Repartition Streams" NodeId="14" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="60.2934">
+                                              <OutputList>
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_STATUS_TYPE_ID" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_STATUS_TYPE_ID" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_TYPE_ID" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="EXT_DEALER_ID" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="DEALER_NAME" />
+                                              </OutputList>
+                                              <RunTimeInformation>
+                                                <RunTimeCountersPerThread Thread="4" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                                                <RunTimeCountersPerThread Thread="1" ActualRows="31108" ActualEndOfScans="1" ActualExecutions="1" />
+                                                <RunTimeCountersPerThread Thread="3" ActualRows="52299" ActualEndOfScans="1" ActualExecutions="1" />
+                                                <RunTimeCountersPerThread Thread="2" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                              </RunTimeInformation>
+                                              <Parallelism PartitioningType="Hash">
+                                                <PartitionColumns>
+                                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_STATUS_TYPE_ID" />
+                                                </PartitionColumns>
+                                                <RelOp AvgRowSize="67" EstimateCPU="0.116635" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="17380.4" LogicalOp="Inner Join" NodeId="15" Parallel="true" PhysicalOp="Hash Match" EstimatedTotalSubtreeCost="60.2154">
+                                                  <OutputList>
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_STATUS_TYPE_ID" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_STATUS_TYPE_ID" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_TYPE_ID" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="EXT_DEALER_ID" />
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="DEALER_NAME" />
+                                                  </OutputList>
+                                                  <MemoryFractions Input="0.00586071" Output="0.020945" />
+                                                  <RunTimeInformation>
+                                                    <RunTimeCountersPerThread Thread="4" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                                                    <RunTimeCountersPerThread Thread="1" ActualRows="66" ActualEndOfScans="1" ActualExecutions="1" />
+                                                    <RunTimeCountersPerThread Thread="3" ActualRows="75460" ActualEndOfScans="1" ActualExecutions="1" />
+                                                    <RunTimeCountersPerThread Thread="2" ActualRows="7881" ActualEndOfScans="1" ActualExecutions="1" />
+                                                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                  </RunTimeInformation>
+                                                  <Hash>
+                                                    <DefinedValues />
+                                                    <HashKeysBuild>
+                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="USER_ID" />
+                                                    </HashKeysBuild>
+                                                    <HashKeysProbe>
+                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="CREATED_BY" />
+                                                    </HashKeysProbe>
+                                                    <ProbeResidual>
+                                                      <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[PROJECTS].[CREATED_BY] as [p].[CREATED_BY]=[servicetrax_dev].[dbo].[USERS].[USER_ID] as [u].[USER_ID]">
+                                                        <Compare CompareOp="EQ">
+                                                          <ScalarOperator>
+                                                            <Identifier>
+                                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="CREATED_BY" />
+                                                            </Identifier>
+                                                          </ScalarOperator>
+                                                          <ScalarOperator>
+                                                            <Identifier>
+                                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="USER_ID" />
+                                                            </Identifier>
+                                                          </ScalarOperator>
+                                                        </Compare>
+                                                      </ScalarOperator>
+                                                    </ProbeResidual>
+                                                    <RelOp AvgRowSize="16" EstimateCPU="0.0321792" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="2462" LogicalOp="Repartition Streams" NodeId="16" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="0.0419219">
+                                                      <OutputList>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="USER_ID" />
+                                                      </OutputList>
+                                                      <RunTimeInformation>
+                                                        <RunTimeCountersPerThread Thread="4" ActualRows="601" ActualEndOfScans="1" ActualExecutions="1" />
+                                                        <RunTimeCountersPerThread Thread="1" ActualRows="611" ActualEndOfScans="1" ActualExecutions="1" />
+                                                        <RunTimeCountersPerThread Thread="2" ActualRows="640" ActualEndOfScans="1" ActualExecutions="1" />
+                                                        <RunTimeCountersPerThread Thread="3" ActualRows="610" ActualEndOfScans="1" ActualExecutions="1" />
+                                                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                      </RunTimeInformation>
+                                                      <Parallelism PartitioningType="Hash">
+                                                        <PartitionColumns>
+                                                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="USER_ID" />
+                                                        </PartitionColumns>
+                                                        <RelOp AvgRowSize="16" EstimateCPU="0.0014326" EstimateIO="0.00831019" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="2462" LogicalOp="Index Scan" NodeId="17" Parallel="true" PhysicalOp="Index Scan" EstimatedTotalSubtreeCost="0.00974279">
+                                                          <OutputList>
+                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="USER_ID" />
+                                                          </OutputList>
+                                                          <RunTimeInformation>
+                                                            <RunTimeCountersPerThread Thread="1" ActualRows="606" ActualEndOfScans="1" ActualExecutions="1" />
+                                                            <RunTimeCountersPerThread Thread="4" ActualRows="619" ActualEndOfScans="1" ActualExecutions="1" />
+                                                            <RunTimeCountersPerThread Thread="2" ActualRows="621" ActualEndOfScans="1" ActualExecutions="1" />
+                                                            <RunTimeCountersPerThread Thread="3" ActualRows="616" ActualEndOfScans="1" ActualExecutions="1" />
+                                                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                          </RunTimeInformation>
+                                                          <IndexScan Ordered="false" ForcedIndex="false" NoExpandHint="false">
+                                                            <DefinedValues>
+                                                              <DefinedValue>
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="USER_ID" />
+                                                              </DefinedValue>
+                                                            </DefinedValues>
+                                                            <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[USERS]" Index="[IX_USER_LOGINS]" Alias="[u]" />
+                                                          </IndexScan>
+                                                        </RelOp>
+                                                      </Parallelism>
+                                                    </RelOp>
+                                                    <RelOp AvgRowSize="76" EstimateCPU="0.111763" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="17426.1" LogicalOp="Repartition Streams" NodeId="18" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="60.0568">
+                                                      <OutputList>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_STATUS_TYPE_ID" />
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_STATUS_TYPE_ID" />
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="CREATED_BY" />
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_TYPE_ID" />
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="EXT_DEALER_ID" />
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="DEALER_NAME" />
+                                                      </OutputList>
+                                                      <RunTimeInformation>
+                                                        <RunTimeCountersPerThread Thread="4" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                                                        <RunTimeCountersPerThread Thread="1" ActualRows="66" ActualEndOfScans="1" ActualExecutions="1" />
+                                                        <RunTimeCountersPerThread Thread="2" ActualRows="7881" ActualEndOfScans="1" ActualExecutions="1" />
+                                                        <RunTimeCountersPerThread Thread="3" ActualRows="75460" ActualEndOfScans="1" ActualExecutions="1" />
+                                                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                      </RunTimeInformation>
+                                                      <Parallelism PartitioningType="Hash">
+                                                        <PartitionColumns>
+                                                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="CREATED_BY" />
+                                                        </PartitionColumns>
+                                                        <RelOp AvgRowSize="76" EstimateCPU="0.298075" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="17426.1" LogicalOp="Inner Join" NodeId="19" Parallel="true" PhysicalOp="Hash Match" EstimatedTotalSubtreeCost="59.9451">
+                                                          <OutputList>
+                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_STATUS_TYPE_ID" />
+                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_STATUS_TYPE_ID" />
+                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="CREATED_BY" />
+                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_TYPE_ID" />
+                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="EXT_DEALER_ID" />
+                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="DEALER_NAME" />
+                                                          </OutputList>
+                                                          <MemoryFractions Input="0.0209895" Output="0.0750122" />
+                                                          <RunTimeInformation>
+                                                            <RunTimeCountersPerThread Thread="2" ActualRows="15030" ActualEndOfScans="1" ActualExecutions="1" />
+                                                            <RunTimeCountersPerThread Thread="1" ActualRows="5929" ActualEndOfScans="1" ActualExecutions="1" />
+                                                            <RunTimeCountersPerThread Thread="4" ActualRows="46477" ActualEndOfScans="1" ActualExecutions="1" />
+                                                            <RunTimeCountersPerThread Thread="3" ActualRows="15971" ActualEndOfScans="1" ActualExecutions="1" />
+                                                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                          </RunTimeInformation>
+                                                          <Hash>
+                                                            <DefinedValues />
+                                                            <HashKeysBuild>
+                                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="CUSTOMER_ID" />
+                                                            </HashKeysBuild>
+                                                            <HashKeysProbe>
+                                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="CUSTOMER_ID" />
+                                                            </HashKeysProbe>
+                                                            <ProbeResidual>
+                                                              <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[PROJECTS].[CUSTOMER_ID] as [p].[CUSTOMER_ID]=[servicetrax_dev].[dbo].[CUSTOMERS].[CUSTOMER_ID] as [c].[CUSTOMER_ID]">
+                                                                <Compare CompareOp="EQ">
+                                                                  <ScalarOperator>
+                                                                    <Identifier>
+                                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="CUSTOMER_ID" />
+                                                                    </Identifier>
+                                                                  </ScalarOperator>
+                                                                  <ScalarOperator>
+                                                                    <Identifier>
+                                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="CUSTOMER_ID" />
+                                                                    </Identifier>
+                                                                  </ScalarOperator>
+                                                                </Compare>
+                                                              </ScalarOperator>
+                                                            </ProbeResidual>
+                                                            <RelOp AvgRowSize="49" EstimateCPU="0.036064" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="2427.58" LogicalOp="Bitmap Create" NodeId="20" Parallel="true" PhysicalOp="Bitmap" EstimatedTotalSubtreeCost="0.363004">
+                                                              <OutputList>
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="CUSTOMER_ID" />
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="EXT_DEALER_ID" />
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="DEALER_NAME" />
+                                                              </OutputList>
+                                                              <RunTimeInformation>
+                                                                <RunTimeCountersPerThread Thread="1" ActualRows="632" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                <RunTimeCountersPerThread Thread="2" ActualRows="623" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                <RunTimeCountersPerThread Thread="4" ActualRows="597" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                <RunTimeCountersPerThread Thread="3" ActualRows="586" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                              </RunTimeInformation>
+                                                              <Bitmap>
+                                                                <DefinedValues>
+                                                                  <DefinedValue>
+                                                                    <ColumnReference Column="Bitmap1040" />
+                                                                  </DefinedValue>
+                                                                </DefinedValues>
+                                                                <HashKeys>
+                                                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="CUSTOMER_ID" />
+                                                                </HashKeys>
+                                                                <RelOp AvgRowSize="49" EstimateCPU="0.036064" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="2427.58" LogicalOp="Repartition Streams" NodeId="21" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="0.363004">
+                                                                  <OutputList>
+                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="CUSTOMER_ID" />
+                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="EXT_DEALER_ID" />
+                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="DEALER_NAME" />
+                                                                  </OutputList>
+                                                                  <RunTimeInformation>
+                                                                    <RunTimeCountersPerThread Thread="2" ActualRows="623" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                    <RunTimeCountersPerThread Thread="1" ActualRows="632" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                    <RunTimeCountersPerThread Thread="4" ActualRows="597" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                    <RunTimeCountersPerThread Thread="3" ActualRows="586" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                                  </RunTimeInformation>
+                                                                  <Parallelism PartitioningType="Hash">
+                                                                    <PartitionColumns>
+                                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="CUSTOMER_ID" />
+                                                                    </PartitionColumns>
+                                                                    <RelOp AvgRowSize="58" EstimateCPU="0.0083527" EstimateIO="0.314977" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="2427.58" LogicalOp="Clustered Index Scan" NodeId="22" Parallel="true" PhysicalOp="Clustered Index Scan" EstimatedTotalSubtreeCost="0.32333">
+                                                                      <OutputList>
+                                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="CUSTOMER_ID" />
+                                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="EXT_DEALER_ID" />
+                                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="DEALER_NAME" />
+                                                                      </OutputList>
+                                                                      <RunTimeInformation>
+                                                                        <RunTimeCountersPerThread Thread="1" ActualRows="591" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                        <RunTimeCountersPerThread Thread="2" ActualRows="586" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                        <RunTimeCountersPerThread Thread="4" ActualRows="647" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                        <RunTimeCountersPerThread Thread="3" ActualRows="614" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                                      </RunTimeInformation>
+                                                                      <IndexScan Ordered="false" ForcedIndex="false" NoExpandHint="false">
+                                                                        <DefinedValues>
+                                                                          <DefinedValue>
+                                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="CUSTOMER_ID" />
+                                                                          </DefinedValue>
+                                                                          <DefinedValue>
+                                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="EXT_DEALER_ID" />
+                                                                          </DefinedValue>
+                                                                          <DefinedValue>
+                                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="DEALER_NAME" />
+                                                                          </DefinedValue>
+                                                                        </DefinedValues>
+                                                                        <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Index="[PK_CUSTOMERS]" Alias="[c]" />
+                                                                        <Predicate>
+                                                                          <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[CUSTOMERS].[ORGANIZATION_ID] as [c].[ORGANIZATION_ID]=(2.)">
+                                                                            <Compare CompareOp="EQ">
+                                                                              <ScalarOperator>
+                                                                                <Identifier>
+                                                                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[CUSTOMERS]" Alias="[c]" Column="ORGANIZATION_ID" />
+                                                                                </Identifier>
+                                                                              </ScalarOperator>
+                                                                              <ScalarOperator>
+                                                                                <Const ConstValue="(2.)" />
+                                                                              </ScalarOperator>
+                                                                            </Compare>
+                                                                          </ScalarOperator>
+                                                                        </Predicate>
+                                                                      </IndexScan>
+                                                                    </RelOp>
+                                                                  </Parallelism>
+                                                                </RelOp>
+                                                              </Bitmap>
+                                                            </RelOp>
+                                                            <RelOp AvgRowSize="52" EstimateCPU="0.2755" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="59146" LogicalOp="Repartition Streams" NodeId="23" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="59.284">
+                                                              <OutputList>
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_STATUS_TYPE_ID" />
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="CUSTOMER_ID" />
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_STATUS_TYPE_ID" />
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="CREATED_BY" />
+                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_TYPE_ID" />
+                                                              </OutputList>
+                                                              <RunTimeInformation>
+                                                                <RunTimeCountersPerThread Thread="1" ActualRows="6847" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                <RunTimeCountersPerThread Thread="2" ActualRows="15030" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                <RunTimeCountersPerThread Thread="4" ActualRows="46477" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                <RunTimeCountersPerThread Thread="3" ActualRows="15971" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                              </RunTimeInformation>
+                                                              <Parallelism PartitioningType="Hash">
+                                                                <PartitionColumns>
+                                                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="CUSTOMER_ID" />
+                                                                </PartitionColumns>
+                                                                <ProbeColumn>
+                                                                  <ColumnReference Column="Bitmap1040" />
+                                                                </ProbeColumn>
+                                                                <RelOp AvgRowSize="52" EstimateCPU="1.08037" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="59146" LogicalOp="Inner Join" NodeId="24" Parallel="true" PhysicalOp="Hash Match" EstimatedTotalSubtreeCost="59.0085">
+                                                                  <OutputList>
+                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_STATUS_TYPE_ID" />
+                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="CUSTOMER_ID" />
+                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_STATUS_TYPE_ID" />
+                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="CREATED_BY" />
+                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_TYPE_ID" />
+                                                                  </OutputList>
+                                                                  <MemoryFractions Input="0.206351" Output="0.737457" />
+                                                                  <RunTimeInformation>
+                                                                    <RunTimeCountersPerThread Thread="4" ActualRows="31023" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                    <RunTimeCountersPerThread Thread="1" ActualRows="26175" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                    <RunTimeCountersPerThread Thread="3" ActualRows="12604" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                    <RunTimeCountersPerThread Thread="2" ActualRows="18040" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                                  </RunTimeInformation>
+                                                                  <Hash>
+                                                                    <DefinedValues />
+                                                                    <HashKeysBuild>
+                                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                    </HashKeysBuild>
+                                                                    <HashKeysProbe>
+                                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_ID" />
+                                                                    </HashKeysProbe>
+                                                                    <ProbeResidual>
+                                                                      <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[PROJECTS].[PROJECT_ID]=[servicetrax_dev].[dbo].[PROJECTS].[PROJECT_ID] as [p].[PROJECT_ID]">
+                                                                        <Compare CompareOp="EQ">
+                                                                          <ScalarOperator>
+                                                                            <Identifier>
+                                                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                            </Identifier>
+                                                                          </ScalarOperator>
+                                                                          <ScalarOperator>
+                                                                            <Identifier>
+                                                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_ID" />
+                                                                            </Identifier>
+                                                                          </ScalarOperator>
+                                                                        </Compare>
+                                                                      </ScalarOperator>
+                                                                    </ProbeResidual>
+                                                                    <RelOp AvgRowSize="25" EstimateCPU="0.149535" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="59146" LogicalOp="Bitmap Create" NodeId="25" Parallel="true" PhysicalOp="Bitmap" EstimatedTotalSubtreeCost="56.5263">
+                                                                      <OutputList>
+                                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_STATUS_TYPE_ID" />
+                                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                      </OutputList>
+                                                                      <RunTimeInformation>
+                                                                        <RunTimeCountersPerThread Thread="4" ActualRows="31023" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                        <RunTimeCountersPerThread Thread="1" ActualRows="26175" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                        <RunTimeCountersPerThread Thread="2" ActualRows="18040" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                        <RunTimeCountersPerThread Thread="3" ActualRows="12604" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                                      </RunTimeInformation>
+                                                                      <Bitmap>
+                                                                        <DefinedValues>
+                                                                          <DefinedValue>
+                                                                            <ColumnReference Column="Bitmap1039" />
+                                                                          </DefinedValue>
+                                                                        </DefinedValues>
+                                                                        <HashKeys>
+                                                                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                        </HashKeys>
+                                                                        <RelOp AvgRowSize="25" EstimateCPU="0.149535" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="59146" LogicalOp="Repartition Streams" NodeId="26" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="56.5263">
+                                                                          <OutputList>
+                                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_STATUS_TYPE_ID" />
+                                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                          </OutputList>
+                                                                          <RunTimeInformation>
+                                                                            <RunTimeCountersPerThread Thread="4" ActualRows="31023" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                            <RunTimeCountersPerThread Thread="1" ActualRows="26175" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                            <RunTimeCountersPerThread Thread="2" ActualRows="18040" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                            <RunTimeCountersPerThread Thread="3" ActualRows="12604" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                                          </RunTimeInformation>
+                                                                          <Parallelism PartitioningType="Hash">
+                                                                            <PartitionColumns>
+                                                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                            </PartitionColumns>
+                                                                            <RelOp AvgRowSize="25" EstimateCPU="2.03866" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="59146" LogicalOp="Inner Join" NodeId="27" Parallel="true" PhysicalOp="Hash Match" EstimatedTotalSubtreeCost="56.3767">
+                                                                              <OutputList>
+                                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_STATUS_TYPE_ID" />
+                                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                              </OutputList>
+                                                                              <MemoryFractions Input="0.251738" Output="0.268692" />
+                                                                              <RunTimeInformation>
+                                                                                <RunTimeCountersPerThread Thread="3" ActualRows="22082" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                <RunTimeCountersPerThread Thread="2" ActualRows="21813" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                <RunTimeCountersPerThread Thread="1" ActualRows="22186" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                <RunTimeCountersPerThread Thread="4" ActualRows="21761" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                                              </RunTimeInformation>
+                                                                              <Hash>
+                                                                                <DefinedValues />
+                                                                                <HashKeysBuild>
+                                                                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="PROJECT_ID" />
+                                                                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_NO" />
+                                                                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="VERSION_NO" />
+                                                                                </HashKeysBuild>
+                                                                                <HashKeysProbe>
+                                                                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_NO" />
+                                                                                  <ColumnReference Column="Expr1011" />
+                                                                                </HashKeysProbe>
+                                                                                <ProbeResidual>
+                                                                                  <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[REQUESTS].[PROJECT_ID]=[servicetrax_dev].[dbo].[PROJECTS].[PROJECT_ID] AND [servicetrax_dev].[dbo].[REQUESTS].[REQUEST_NO]=[servicetrax_dev].[dbo].[REQUESTS].[REQUEST_NO] AND [servicetrax_dev].[dbo].[REQUESTS].[VERSION_NO]=[Expr1011]">
+                                                                                    <Logical Operation="AND">
+                                                                                      <ScalarOperator>
+                                                                                        <Compare CompareOp="EQ">
+                                                                                          <ScalarOperator>
+                                                                                            <Identifier>
+                                                                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="PROJECT_ID" />
+                                                                                            </Identifier>
+                                                                                          </ScalarOperator>
+                                                                                          <ScalarOperator>
+                                                                                            <Identifier>
+                                                                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                                            </Identifier>
+                                                                                          </ScalarOperator>
+                                                                                        </Compare>
+                                                                                      </ScalarOperator>
+                                                                                      <ScalarOperator>
+                                                                                        <Compare CompareOp="EQ">
+                                                                                          <ScalarOperator>
+                                                                                            <Identifier>
+                                                                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_NO" />
+                                                                                            </Identifier>
+                                                                                          </ScalarOperator>
+                                                                                          <ScalarOperator>
+                                                                                            <Identifier>
+                                                                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_NO" />
+                                                                                            </Identifier>
+                                                                                          </ScalarOperator>
+                                                                                        </Compare>
+                                                                                      </ScalarOperator>
+                                                                                      <ScalarOperator>
+                                                                                        <Compare CompareOp="EQ">
+                                                                                          <ScalarOperator>
+                                                                                            <Identifier>
+                                                                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="VERSION_NO" />
+                                                                                            </Identifier>
+                                                                                          </ScalarOperator>
+                                                                                          <ScalarOperator>
+                                                                                            <Identifier>
+                                                                                              <ColumnReference Column="Expr1011" />
+                                                                                            </Identifier>
+                                                                                          </ScalarOperator>
+                                                                                        </Compare>
+                                                                                      </ScalarOperator>
+                                                                                    </Logical>
+                                                                                  </ScalarOperator>
+                                                                                </ProbeResidual>
+                                                                                <RelOp AvgRowSize="43" EstimateCPU="0.244287" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="59146" LogicalOp="Bitmap Create" NodeId="28" Parallel="true" PhysicalOp="Bitmap" EstimatedTotalSubtreeCost="44.248">
+                                                                                  <OutputList>
+                                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="PROJECT_ID" />
+                                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_NO" />
+                                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_STATUS_TYPE_ID" />
+                                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="VERSION_NO" />
+                                                                                  </OutputList>
+                                                                                  <RunTimeInformation>
+                                                                                    <RunTimeCountersPerThread Thread="1" ActualRows="23156" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                    <RunTimeCountersPerThread Thread="2" ActualRows="22782" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                    <RunTimeCountersPerThread Thread="3" ActualRows="23069" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                    <RunTimeCountersPerThread Thread="4" ActualRows="22698" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                                                  </RunTimeInformation>
+                                                                                  <Bitmap>
+                                                                                    <DefinedValues>
+                                                                                      <DefinedValue>
+                                                                                        <ColumnReference Column="Bitmap1038" />
+                                                                                      </DefinedValue>
+                                                                                    </DefinedValues>
+                                                                                    <HashKeys>
+                                                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="PROJECT_ID" />
+                                                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_NO" />
+                                                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="VERSION_NO" />
+                                                                                    </HashKeys>
+                                                                                    <RelOp AvgRowSize="43" EstimateCPU="0.244287" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="59146" LogicalOp="Repartition Streams" NodeId="29" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="44.248">
+                                                                                      <OutputList>
+                                                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="PROJECT_ID" />
+                                                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_NO" />
+                                                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_STATUS_TYPE_ID" />
+                                                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="VERSION_NO" />
+                                                                                      </OutputList>
+                                                                                      <RunTimeInformation>
+                                                                                        <RunTimeCountersPerThread Thread="1" ActualRows="23156" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                        <RunTimeCountersPerThread Thread="3" ActualRows="23069" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                        <RunTimeCountersPerThread Thread="2" ActualRows="22782" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                        <RunTimeCountersPerThread Thread="4" ActualRows="22698" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                                                      </RunTimeInformation>
+                                                                                      <Parallelism PartitioningType="Hash">
+                                                                                        <PartitionColumns>
+                                                                                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="PROJECT_ID" />
+                                                                                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_NO" />
+                                                                                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="VERSION_NO" />
+                                                                                        </PartitionColumns>
+                                                                                        <RelOp AvgRowSize="43" EstimateCPU="0.888944" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="59146" LogicalOp="Inner Join" NodeId="30" Parallel="true" PhysicalOp="Hash Match" EstimatedTotalSubtreeCost="44.0037">
+                                                                                          <OutputList>
+                                                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="PROJECT_ID" />
+                                                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_NO" />
+                                                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_STATUS_TYPE_ID" />
+                                                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="VERSION_NO" />
+                                                                                          </OutputList>
+                                                                                          <MemoryFractions Input="0" Output="0" />
+                                                                                          <RunTimeInformation>
+                                                                                            <RunTimeCountersPerThread Thread="1" ActualRows="24145" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                            <RunTimeCountersPerThread Thread="3" ActualRows="22232" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                            <RunTimeCountersPerThread Thread="4" ActualRows="22625" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                            <RunTimeCountersPerThread Thread="2" ActualRows="22703" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                                                          </RunTimeInformation>
+                                                                                          <Hash>
+                                                                                            <DefinedValues />
+                                                                                            <HashKeysBuild>
+                                                                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[request_types]" Column="LOOKUP_ID" />
+                                                                                            </HashKeysBuild>
+                                                                                            <HashKeysProbe>
+                                                                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_TYPE_ID" />
+                                                                                            </HashKeysProbe>
+                                                                                            <ProbeResidual>
+                                                                                              <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[REQUESTS].[REQUEST_TYPE_ID]=[servicetrax_dev].[dbo].[LOOKUPS].[LOOKUP_ID] as [request_types].[LOOKUP_ID]">
+                                                                                                <Compare CompareOp="EQ">
+                                                                                                  <ScalarOperator>
+                                                                                                    <Identifier>
+                                                                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_TYPE_ID" />
+                                                                                                    </Identifier>
+                                                                                                  </ScalarOperator>
+                                                                                                  <ScalarOperator>
+                                                                                                    <Identifier>
+                                                                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[request_types]" Column="LOOKUP_ID" />
+                                                                                                    </Identifier>
+                                                                                                  </ScalarOperator>
+                                                                                                </Compare>
+                                                                                              </ScalarOperator>
+                                                                                            </ProbeResidual>
+                                                                                            <RelOp AvgRowSize="16" EstimateCPU="0.0285022" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Distribute Streams" NodeId="31" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="0.0317853">
+                                                                                              <OutputList>
+                                                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[request_types]" Column="LOOKUP_ID" />
+                                                                                              </OutputList>
+                                                                                              <RunTimeInformation>
+                                                                                                <RunTimeCountersPerThread Thread="1" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                <RunTimeCountersPerThread Thread="3" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                <RunTimeCountersPerThread Thread="4" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                <RunTimeCountersPerThread Thread="2" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                                                              </RunTimeInformation>
+                                                                                              <Parallelism PartitioningType="Broadcast">
+                                                                                                <RelOp AvgRowSize="16" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Index Seek" NodeId="32" Parallel="false" PhysicalOp="Index Seek" EstimatedTotalSubtreeCost="0.0032831">
+                                                                                                  <OutputList>
+                                                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[request_types]" Column="LOOKUP_ID" />
+                                                                                                  </OutputList>
+                                                                                                  <RunTimeInformation>
+                                                                                                    <RunTimeCountersPerThread Thread="1" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                                                                  </RunTimeInformation>
+                                                                                                  <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                                                                                    <DefinedValues>
+                                                                                                      <DefinedValue>
+                                                                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[request_types]" Column="LOOKUP_ID" />
+                                                                                                      </DefinedValue>
+                                                                                                    </DefinedValues>
+                                                                                                    <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Index="[IX_L_CODE]" Alias="[request_types]" />
+                                                                                                    <SeekPredicates>
+                                                                                                      <SeekPredicate>
+                                                                                                        <Prefix ScanType="EQ">
+                                                                                                          <RangeColumns>
+                                                                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[request_types]" Column="CODE" />
+                                                                                                          </RangeColumns>
+                                                                                                          <RangeExpressions>
+                                                                                                            <ScalarOperator ScalarString="'workorder'">
+                                                                                                              <Const ConstValue="'workorder'" />
+                                                                                                            </ScalarOperator>
+                                                                                                          </RangeExpressions>
+                                                                                                        </Prefix>
+                                                                                                      </SeekPredicate>
+                                                                                                    </SeekPredicates>
+                                                                                                  </IndexScan>
+                                                                                                </RelOp>
+                                                                                              </Parallelism>
+                                                                                            </RelOp>
+                                                                                            <RelOp AvgRowSize="52" EstimateCPU="0.130223" EstimateIO="42.9528" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="236626" LogicalOp="Clustered Index Scan" NodeId="33" Parallel="true" PhysicalOp="Clustered Index Scan" EstimatedTotalSubtreeCost="43.083">
+                                                                                              <OutputList>
+                                                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="PROJECT_ID" />
+                                                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_NO" />
+                                                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_TYPE_ID" />
+                                                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_STATUS_TYPE_ID" />
+                                                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="VERSION_NO" />
+                                                                                              </OutputList>
+                                                                                              <RunTimeInformation>
+                                                                                                <RunTimeCountersPerThread Thread="1" ActualRows="60996" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                <RunTimeCountersPerThread Thread="3" ActualRows="57414" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                <RunTimeCountersPerThread Thread="4" ActualRows="59241" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                <RunTimeCountersPerThread Thread="2" ActualRows="58976" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                                                              </RunTimeInformation>
+                                                                                              <IndexScan Ordered="false" ForcedIndex="false" NoExpandHint="false">
+                                                                                                <DefinedValues>
+                                                                                                  <DefinedValue>
+                                                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="PROJECT_ID" />
+                                                                                                  </DefinedValue>
+                                                                                                  <DefinedValue>
+                                                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_NO" />
+                                                                                                  </DefinedValue>
+                                                                                                  <DefinedValue>
+                                                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_TYPE_ID" />
+                                                                                                  </DefinedValue>
+                                                                                                  <DefinedValue>
+                                                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_STATUS_TYPE_ID" />
+                                                                                                  </DefinedValue>
+                                                                                                  <DefinedValue>
+                                                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="VERSION_NO" />
+                                                                                                  </DefinedValue>
+                                                                                                </DefinedValues>
+                                                                                                <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Index="[PK_REQUESTS]" TableReferenceId="1" />
+                                                                                              </IndexScan>
+                                                                                            </RelOp>
+                                                                                          </Hash>
+                                                                                        </RelOp>
+                                                                                      </Parallelism>
+                                                                                    </RelOp>
+                                                                                  </Bitmap>
+                                                                                </RelOp>
+                                                                                <RelOp AvgRowSize="34" EstimateCPU="0.760785" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="236498" LogicalOp="Repartition Streams" NodeId="35" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="10.0901">
+                                                                                  <OutputList>
+                                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_NO" />
+                                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                                    <ColumnReference Column="Expr1011" />
+                                                                                  </OutputList>
+                                                                                  <RunTimeInformation>
+                                                                                    <RunTimeCountersPerThread Thread="1" ActualRows="22377" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                    <RunTimeCountersPerThread Thread="3" ActualRows="22314" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                    <RunTimeCountersPerThread Thread="2" ActualRows="21993" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                    <RunTimeCountersPerThread Thread="4" ActualRows="21944" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                                                  </RunTimeInformation>
+                                                                                  <Parallelism PartitioningType="Hash">
+                                                                                    <PartitionColumns>
+                                                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_NO" />
+                                                                                      <ColumnReference Column="Expr1011" />
+                                                                                    </PartitionColumns>
+                                                                                    <ProbeColumn>
+                                                                                      <ColumnReference Column="Bitmap1038" />
+                                                                                    </ProbeColumn>
+                                                                                    <RelOp AvgRowSize="34" EstimateCPU="4.90768" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="236498" LogicalOp="Aggregate" NodeId="36" Parallel="true" PhysicalOp="Hash Match" EstimatedTotalSubtreeCost="9.3293">
+                                                                                      <OutputList>
+                                                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_NO" />
+                                                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                                        <ColumnReference Column="Expr1011" />
+                                                                                      </OutputList>
+                                                                                      <MemoryFractions Input="0.466676" Output="0.498106" />
+                                                                                      <RunTimeInformation>
+                                                                                        <RunTimeCountersPerThread Thread="2" ActualRows="51193" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                        <RunTimeCountersPerThread Thread="3" ActualRows="51295" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                        <RunTimeCountersPerThread Thread="4" ActualRows="50778" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                        <RunTimeCountersPerThread Thread="1" ActualRows="50528" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                                                      </RunTimeInformation>
+                                                                                      <Hash>
+                                                                                        <DefinedValues>
+                                                                                          <DefinedValue>
+                                                                                            <ColumnReference Column="Expr1011" />
+                                                                                            <ScalarOperator ScalarString="MAX([servicetrax_dev].[dbo].[REQUESTS].[VERSION_NO])">
+                                                                                              <Aggregate AggType="MAX" Distinct="false">
+                                                                                                <ScalarOperator>
+                                                                                                  <Identifier>
+                                                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="VERSION_NO" />
+                                                                                                  </Identifier>
+                                                                                                </ScalarOperator>
+                                                                                              </Aggregate>
+                                                                                            </ScalarOperator>
+                                                                                          </DefinedValue>
+                                                                                        </DefinedValues>
+                                                                                        <HashKeysBuild>
+                                                                                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_NO" />
+                                                                                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                                        </HashKeysBuild>
+                                                                                        <BuildResidual>
+                                                                                          <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[REQUESTS].[REQUEST_NO] = [servicetrax_dev].[dbo].[REQUESTS].[REQUEST_NO] AND [servicetrax_dev].[dbo].[PROJECTS].[PROJECT_ID] = [servicetrax_dev].[dbo].[PROJECTS].[PROJECT_ID]">
+                                                                                            <Logical Operation="AND">
+                                                                                              <ScalarOperator>
+                                                                                                <Compare CompareOp="IS">
+                                                                                                  <ScalarOperator>
+                                                                                                    <Identifier>
+                                                                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_NO" />
+                                                                                                    </Identifier>
+                                                                                                  </ScalarOperator>
+                                                                                                  <ScalarOperator>
+                                                                                                    <Identifier>
+                                                                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_NO" />
+                                                                                                    </Identifier>
+                                                                                                  </ScalarOperator>
+                                                                                                </Compare>
+                                                                                              </ScalarOperator>
+                                                                                              <ScalarOperator>
+                                                                                                <Compare CompareOp="IS">
+                                                                                                  <ScalarOperator>
+                                                                                                    <Identifier>
+                                                                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                                                    </Identifier>
+                                                                                                  </ScalarOperator>
+                                                                                                  <ScalarOperator>
+                                                                                                    <Identifier>
+                                                                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                                                    </Identifier>
+                                                                                                  </ScalarOperator>
+                                                                                                </Compare>
+                                                                                              </ScalarOperator>
+                                                                                            </Logical>
+                                                                                          </ScalarOperator>
+                                                                                        </BuildResidual>
+                                                                                        <RelOp AvgRowSize="34" EstimateCPU="0.598144" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="236498" LogicalOp="Repartition Streams" NodeId="37" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="4.42162">
+                                                                                          <OutputList>
+                                                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_NO" />
+                                                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="VERSION_NO" />
+                                                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                                          </OutputList>
+                                                                                          <RunTimeInformation>
+                                                                                            <RunTimeCountersPerThread Thread="2" ActualRows="59488" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                            <RunTimeCountersPerThread Thread="4" ActualRows="58996" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                            <RunTimeCountersPerThread Thread="3" ActualRows="59383" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                            <RunTimeCountersPerThread Thread="1" ActualRows="58760" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                                                          </RunTimeInformation>
+                                                                                          <Parallelism PartitioningType="Hash">
+                                                                                            <PartitionColumns>
+                                                                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_NO" />
+                                                                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                                            </PartitionColumns>
+                                                                                            <RelOp AvgRowSize="34" EstimateCPU="1.73701" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="236498" LogicalOp="Inner Join" NodeId="38" Parallel="true" PhysicalOp="Hash Match" EstimatedTotalSubtreeCost="3.82348">
+                                                                                              <OutputList>
+                                                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_NO" />
+                                                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="VERSION_NO" />
+                                                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                                              </OutputList>
+                                                                                              <MemoryFractions Input="0.721412" Output="0.254736" />
+                                                                                              <RunTimeInformation>
+                                                                                                <RunTimeCountersPerThread Thread="2" ActualRows="55342" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                <RunTimeCountersPerThread Thread="3" ActualRows="49483" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                <RunTimeCountersPerThread Thread="4" ActualRows="68755" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                <RunTimeCountersPerThread Thread="1" ActualRows="63047" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                                                              </RunTimeInformation>
+                                                                                              <Hash>
+                                                                                                <DefinedValues />
+                                                                                                <HashKeysBuild>
+                                                                                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                                                </HashKeysBuild>
+                                                                                                <HashKeysProbe>
+                                                                                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="PROJECT_ID" />
+                                                                                                </HashKeysProbe>
+                                                                                                <ProbeResidual>
+                                                                                                  <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[REQUESTS].[PROJECT_ID]=[servicetrax_dev].[dbo].[PROJECTS].[PROJECT_ID]">
+                                                                                                    <Compare CompareOp="EQ">
+                                                                                                      <ScalarOperator>
+                                                                                                        <Identifier>
+                                                                                                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="PROJECT_ID" />
+                                                                                                        </Identifier>
+                                                                                                      </ScalarOperator>
+                                                                                                      <ScalarOperator>
+                                                                                                        <Identifier>
+                                                                                                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                                                        </Identifier>
+                                                                                                      </ScalarOperator>
+                                                                                                    </Compare>
+                                                                                                  </ScalarOperator>
+                                                                                                </ProbeResidual>
+                                                                                                <RelOp AvgRowSize="16" EstimateCPU="0.149461" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="80944" LogicalOp="Repartition Streams" NodeId="39" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="0.369776">
+                                                                                                  <OutputList>
+                                                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                                                  </OutputList>
+                                                                                                  <RunTimeInformation>
+                                                                                                    <RunTimeCountersPerThread Thread="1" ActualRows="20429" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                    <RunTimeCountersPerThread Thread="2" ActualRows="20293" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                    <RunTimeCountersPerThread Thread="4" ActualRows="20073" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                    <RunTimeCountersPerThread Thread="3" ActualRows="20149" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                                                                  </RunTimeInformation>
+                                                                                                  <Parallelism PartitioningType="Hash">
+                                                                                                    <PartitionColumns>
+                                                                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                                                    </PartitionColumns>
+                                                                                                    <RelOp AvgRowSize="16" EstimateCPU="0.0445977" EstimateIO="0.175718" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="80944" LogicalOp="Index Scan" NodeId="40" Parallel="true" PhysicalOp="Index Scan" EstimatedTotalSubtreeCost="0.220315">
+                                                                                                      <OutputList>
+                                                                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                                                      </OutputList>
+                                                                                                      <RunTimeInformation>
+                                                                                                        <RunTimeCountersPerThread Thread="3" ActualRows="21515" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                        <RunTimeCountersPerThread Thread="4" ActualRows="17697" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                        <RunTimeCountersPerThread Thread="1" ActualRows="20126" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                        <RunTimeCountersPerThread Thread="2" ActualRows="21606" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                                                                      </RunTimeInformation>
+                                                                                                      <IndexScan Ordered="false" ForcedIndex="false" NoExpandHint="false">
+                                                                                                        <DefinedValues>
+                                                                                                          <DefinedValue>
+                                                                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Column="PROJECT_ID" />
+                                                                                                          </DefinedValue>
+                                                                                                        </DefinedValues>
+                                                                                                        <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Index="[IX_PROJECT_STATUS_TYPE_ID]" />
+                                                                                                      </IndexScan>
+                                                                                                    </RelOp>
+                                                                                                  </Parallelism>
+                                                                                                </RelOp>
+                                                                                                <RelOp AvgRowSize="34" EstimateCPU="0.643343" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="236626" LogicalOp="Repartition Streams" NodeId="41" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="1.71669">
+                                                                                                  <OutputList>
+                                                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="PROJECT_ID" />
+                                                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_NO" />
+                                                                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="VERSION_NO" />
+                                                                                                  </OutputList>
+                                                                                                  <RunTimeInformation>
+                                                                                                    <RunTimeCountersPerThread Thread="1" ActualRows="63047" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                    <RunTimeCountersPerThread Thread="2" ActualRows="55342" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                    <RunTimeCountersPerThread Thread="4" ActualRows="68755" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                    <RunTimeCountersPerThread Thread="3" ActualRows="49483" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                                                                  </RunTimeInformation>
+                                                                                                  <Parallelism PartitioningType="Hash">
+                                                                                                    <PartitionColumns>
+                                                                                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="PROJECT_ID" />
+                                                                                                    </PartitionColumns>
+                                                                                                    <RelOp AvgRowSize="34" EstimateCPU="0.130223" EstimateIO="0.943125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="236626" LogicalOp="Index Scan" NodeId="42" Parallel="true" PhysicalOp="Index Scan" EstimatedTotalSubtreeCost="1.07335">
+                                                                                                      <OutputList>
+                                                                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="PROJECT_ID" />
+                                                                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_NO" />
+                                                                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="VERSION_NO" />
+                                                                                                      </OutputList>
+                                                                                                      <RunTimeInformation>
+                                                                                                        <RunTimeCountersPerThread Thread="1" ActualRows="59392" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                        <RunTimeCountersPerThread Thread="2" ActualRows="70025" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                        <RunTimeCountersPerThread Thread="4" ActualRows="47691" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                        <RunTimeCountersPerThread Thread="3" ActualRows="59519" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                                                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                                                                      </RunTimeInformation>
+                                                                                                      <IndexScan Ordered="false" ForcedIndex="false" NoExpandHint="false">
+                                                                                                        <DefinedValues>
+                                                                                                          <DefinedValue>
+                                                                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="PROJECT_ID" />
+                                                                                                          </DefinedValue>
+                                                                                                          <DefinedValue>
+                                                                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="REQUEST_NO" />
+                                                                                                          </DefinedValue>
+                                                                                                          <DefinedValue>
+                                                                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Column="VERSION_NO" />
+                                                                                                          </DefinedValue>
+                                                                                                        </DefinedValues>
+                                                                                                        <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[REQUESTS]" Index="[ncx_product_request_version]" TableReferenceId="2" />
+                                                                                                      </IndexScan>
+                                                                                                    </RelOp>
+                                                                                                  </Parallelism>
+                                                                                                </RelOp>
+                                                                                              </Hash>
+                                                                                            </RelOp>
+                                                                                          </Parallelism>
+                                                                                        </RelOp>
+                                                                                      </Hash>
+                                                                                    </RelOp>
+                                                                                  </Parallelism>
+                                                                                </RelOp>
+                                                                              </Hash>
+                                                                            </RelOp>
+                                                                          </Parallelism>
+                                                                        </RelOp>
+                                                                      </Bitmap>
+                                                                    </RelOp>
+                                                                    <RelOp AvgRowSize="52" EstimateCPU="0.328185" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="80944" LogicalOp="Repartition Streams" NodeId="48" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="1.40183">
+                                                                      <OutputList>
+                                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_ID" />
+                                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="CUSTOMER_ID" />
+                                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_STATUS_TYPE_ID" />
+                                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="CREATED_BY" />
+                                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_TYPE_ID" />
+                                                                      </OutputList>
+                                                                      <RunTimeInformation>
+                                                                        <RunTimeCountersPerThread Thread="4" ActualRows="64" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                        <RunTimeCountersPerThread Thread="1" ActualRows="71" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                        <RunTimeCountersPerThread Thread="2" ActualRows="66" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                        <RunTimeCountersPerThread Thread="3" ActualRows="62" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                                      </RunTimeInformation>
+                                                                      <Parallelism PartitioningType="Hash">
+                                                                        <PartitionColumns>
+                                                                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_ID" />
+                                                                        </PartitionColumns>
+                                                                        <ProbeColumn>
+                                                                          <ColumnReference Column="Bitmap1039" />
+                                                                        </ProbeColumn>
+                                                                        <RelOp AvgRowSize="52" EstimateCPU="0.0445977" EstimateIO="1.02905" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="80944" LogicalOp="Clustered Index Scan" NodeId="49" Parallel="true" PhysicalOp="Clustered Index Scan" EstimatedTotalSubtreeCost="1.07365">
+                                                                          <OutputList>
+                                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_ID" />
+                                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="CUSTOMER_ID" />
+                                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_STATUS_TYPE_ID" />
+                                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="CREATED_BY" />
+                                                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_TYPE_ID" />
+                                                                          </OutputList>
+                                                                          <RunTimeInformation>
+                                                                            <RunTimeCountersPerThread Thread="3" ActualRows="18492" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                            <RunTimeCountersPerThread Thread="4" ActualRows="17717" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                            <RunTimeCountersPerThread Thread="2" ActualRows="22378" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                            <RunTimeCountersPerThread Thread="1" ActualRows="22357" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                                          </RunTimeInformation>
+                                                                          <IndexScan Ordered="false" ForcedIndex="false" NoExpandHint="false">
+                                                                            <DefinedValues>
+                                                                              <DefinedValue>
+                                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_ID" />
+                                                                              </DefinedValue>
+                                                                              <DefinedValue>
+                                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="CUSTOMER_ID" />
+                                                                              </DefinedValue>
+                                                                              <DefinedValue>
+                                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_STATUS_TYPE_ID" />
+                                                                              </DefinedValue>
+                                                                              <DefinedValue>
+                                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="CREATED_BY" />
+                                                                              </DefinedValue>
+                                                                              <DefinedValue>
+                                                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Alias="[p]" Column="PROJECT_TYPE_ID" />
+                                                                              </DefinedValue>
+                                                                            </DefinedValues>
+                                                                            <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[PROJECTS]" Index="[PK_PROJECTS]" Alias="[p]" />
+                                                                          </IndexScan>
+                                                                        </RelOp>
+                                                                      </Parallelism>
+                                                                    </RelOp>
+                                                                  </Hash>
+                                                                </RelOp>
+                                                              </Parallelism>
+                                                            </RelOp>
+                                                          </Hash>
+                                                        </RelOp>
+                                                      </Parallelism>
+                                                    </RelOp>
+                                                  </Hash>
+                                                </RelOp>
+                                              </Parallelism>
+                                            </RelOp>
+                                          </Hash>
+                                        </RelOp>
+                                      </Parallelism>
+                                    </RelOp>
+                                  </Hash>
+                                </RelOp>
+                              </Parallelism>
+                            </RelOp>
+                          </Hash>
+                        </RelOp>
+                      </Parallelism>
+                    </RelOp>
+                  </Sort>
+                </RelOp>
+              </Parallelism>
+            </RelOp>
+          </QueryPlan>
+        </StmtSimple>
+      </Statements>
+    </Batch>
+  </BatchSequence>
+</ShowPlanXML>

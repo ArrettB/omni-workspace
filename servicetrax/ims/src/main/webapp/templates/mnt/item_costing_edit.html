@@ -1,0 +1,38 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: item_costing_edit.html, 1, 6/10/2005 9:14:54 AM, Blake Von Haden$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.mnt/item_costing.view?>"-->
+<body class="BodyTag">
+
+<!--#SMARTFORM name="mnt/item_costing"
+	security="rights"
+	table="items"
+	key="item_id"
+	sequence="@@IDENTITY"
+	useCSS="true"
+	preHandler="ims.handlers.maintenance.ItemCostingPreHandler"
+	postHandler="ims.handlers.maintenance.ItemCostingPostHandler"
+	nextTemplate="mnt/item_costing.html"
+	buttons="Save,Cancel"
+-->
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+	<tr><td width="150"><!--#SMARTFIELD title="Name" name="name" div="</td><td>" --></td></tr>
+	<tr><td width="150"><!--#SMARTFIELD title="Cost per UOM" name="cost_per_uom" div="</td><td>"  --></td></tr>
+	<tr><td width="150"><!--#SMARTFIELD title="% Margin" name="percent_margin" div="</td><td>" --></td></tr>
+	<tr><td width="150"><!--#SMARTFIELD title="Allow Expense Entry" div="&nbsp;</td><td>" name="allow_expense_entry" type="droplist" table="yes_no_type_v" display="name" key="yes_no_type_code" --></td></tr>
+
+	<tr><td width="150"><!--#SMARTFIELD title="Item Category" div="&nbsp;</td><td>" name="item_category_type_id" type="droplist"
+							query="SELECT lookup_id, lookup_name
+								FROM lookups_v
+								WHERE type_code = 'item_category_type'
+								AND lookup_active_flag='Y'
+								ORDER BY sequence_no" -->
+	</td></tr>
+
+</table>
+<!--#/SMARTFORM -->
+
+<!--#EMBED template="embeds/audit.html" table_name="items" table_key="item_id" key_value="<?p:item_id?>"-->
+
+</body>
+<!--#EMBED template="embeds/footer.html" -->

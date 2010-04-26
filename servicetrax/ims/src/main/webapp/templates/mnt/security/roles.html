@@ -1,0 +1,51 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: roles.html, 1, 8/2/2005 3:05:42 PM, Greg Case$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.mnt/security/roles.view?>"-->
+<body class="BodyTag">
+<table width="100%" cellspacing="0" cellpadding="0">
+	<tr><td  class="HeaderBar">{!s:rights.mnt/security/roles.name!}</td></tr>
+</table>
+<!--#SMARTTABLE width="100%"  name="roles" query="SELECT r.role_id, r.name, r.created_by, r.date_created, r.modified_by, r.date_modified FROM roles r ORDER BY r.name" -->
+	<!--#SMARTCOLUMN width="20%" name="name" sort="name" title="Name" href="<?s:action?>mnt/security/role?role_id=<?r:roles:role_id?>&role_name=<?r:roles:name?>"-->
+	<!--#IF evaluate="<?d:rowid?>" compare="0"-->
+	<!--#SMARTCOLUMN width="20%" name="created_by" sort="created_by" title="Created By"-->
+	<!--#ELSE-->
+	<!--#SQLLOOP name="creator" query="SELECT first_name+' '+last_name user_name FROM users WHERE user_id=<?r:roles:created_by.toSQLString()?>" -->
+	<!--#SMARTCOLUMN width="20%" name="created_by" sort="created_by" title="Created By" value="<?r:creator:user_name?>"-->
+	<!--#SQLNODATA-->
+	<!--#SMARTCOLUMN width="20%" name="created_by" sort="created_by" title="Created By"-->
+	<!--#/SQLNODATA-->
+	<!--#/SQLLOOP-->
+	<!--#/IF-->
+	<!--#SMARTCOLUMN width="20%" name="date_created" sort="date_created" title="Date Created" format="date"-->
+	<!--#IF evaluate="<?d:rowid?>" compare="0"-->
+	<!--#SMARTCOLUMN width="20%" name="modified_by" sort="modified_by" title="Modified By"-->
+	<!--#ELSE-->
+	<!--#SQLLOOP name="modifier" query="SELECT first_name+' '+last_name user_name FROM users WHERE user_id=<?r:roles:modified_by.toSQLString()?>" -->
+	<!--#SMARTCOLUMN width="20%" name="modified_by" sort="modified_by" title="Modified By" value="<?r:modifier:user_name?>"-->
+	<!--#SQLNODATA-->
+	<!--#SMARTCOLUMN width="20%" name="modified_by" sort="modified_by" title="Modified By"-->
+	<!--#/SQLNODATA-->
+	<!--#/SQLLOOP-->
+	<!--#/IF-->
+	<!--#SMARTCOLUMN width="20%" name="date_modified" sort="date_modified" title="Date Modified" format="date"-->
+<!--#/SMARTTABLE-->
+<br>
+<table border="0" cellpadding="0" cellspacing="0"><tr>
+	<!--#IF defined="<?s:rights.mnt/security/roles.insert?>"-->
+	<td>
+		<form name="new" action="{!s:action!}mnt/secutity/role" method="get">
+		<input type="submit" value="Add" class="button">
+		</form>
+	</td>
+	<td>&nbsp;</td>
+	<!--#/IF-->
+	<td>
+		<form name="new" action="{!s:action!}mnt/main_mnt" method="post">
+		<input type="submit" value="Cancel" class="button">
+		</form>
+	</td>
+</tr></table>
+</body>
+<!--#EMBED template="embeds/footer.html" -->

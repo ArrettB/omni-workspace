@@ -1,0 +1,74 @@
+<!--#EMBED template="embeds/header.html" -->
+
+<script language="JavaScript">
+<!--
+	function changeLines()
+	{
+		if (window.opener.{!p:form!})
+		{
+			if (bill_move.bill_service_id.value == null || bill_move.bill_service_id.value.length < 1)
+			{
+				alert('Please enter Requisition.');
+				return;
+			}
+			else
+			{
+				window.opener.{!p:form!}.bill_job_id.value = bill_move.bill_job_id.value;
+				window.opener.{!p:form!}.bill_service_id.value = bill_move.bill_service_id.value;
+			}
+			window.opener.{!p:form!}.submit();
+		}
+		document.body.onunload = null;
+		parent.window.focus();
+		parent.window.close();
+	}
+
+	function redisplaySmartForm()
+	{
+		bill_move.bill_service_id.disabled = true;
+		bill_move.redisplay.value='true';
+		bill_move.submit();
+	}
+
+
+// -->
+</script>
+</head>
+
+
+</table>
+<table width="100%"border="0" cellpadding="2" cellspacing="2">
+
+<!--#SMARTFORM name="bill/bill_move"
+		security="off"
+		table="service_lines"
+		key="service_line_id"
+		sequence="@@identity"
+		prevTemplate="<?p:prev_template?>"
+		nextTemplate="time/tc_edit.html"
+		resourceName="SQLServer"
+		preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+		buttons=""
+-->
+	<input name="redisplay" type="hidden" value="false">
+	<input name="form" type="hidden" value="{!p:form!}" -->
+
+	<tr><td>
+		<!--#SMARTFIELD title="Open Jobs" div="</td></tr><tr><td>" name="bill_job_id" type="droplist" style="width:250" onChange="redisplaySmartForm()" query="SELECT job_id, job_no FROM jobs_v WHERE (organization_id = <?s:org_id.toPStmtInt()?> AND job_status_type_code != 'closed') ORDER BY job_no" value="<?p:bill_job_id?>" -->
+	</td></tr>
+	<tr><td>
+		<!--#SMARTFIELD title="Open Reqs" div="</td></tr><tr><td>" name="bill_service_id" type="droplist" query="SELECT service_id, service_no_desc FROM services_v WHERE (job_id = <?p:bill_job_id.toPStmtInt()?> AND serv_status_type_code != 'closed') ORDER BY service_no" style="width:250" value="<?p:bill_service_id?>" -->
+	</td></tr>
+	<tr><td>&nbsp;
+	</td></tr>
+</table>
+
+   	<input name="button" type="button" value="Submit" class="button" onClick="changeLines()">
+
+<!--#/SMARTFORM -->
+
+<!--#EMBED template="embeds/footer.html" -->
+
+
+
+

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.Version" table="VERSIONS" schema="dbo" catalog="">
+        <id name="versionId" type="java.lang.Long">
+            <column name="VERSION_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="document" class="com.dynamic.servicetrax.orm.Document" fetch="select">
+            <column name="DOCUMENT_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="code" type="string">
+            <column name="CODE" length="20" not-null="true" />
+        </property>
+        <property name="comments" type="string">
+            <column name="COMMENTS" length="200" />
+        </property>
+        <property name="numDownloads" type="long">
+            <column name="NUM_DOWNLOADS" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="createdBy" type="long">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="modifiedBy" type="java.lang.Long">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+    </class>
+</hibernate-mapping>

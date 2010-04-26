@@ -1,0 +1,44 @@
+<!--#EMBED template="pocket/embeds/header.html" title="Roster"-->
+
+<!--#EMBED template="pocket/embeds/title_bar.html" title="Roster"-->
+
+<!--#EMBED template="embeds/spacer_table.html" spacer_height="5"-->
+
+
+
+<table cellspacing="2" cellpadding="0" width="100%">
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Resources:</b></font>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<!--#SELECT
+				name="resource_id"
+				size="7"
+				style="width:100%"
+				query="SELECT DISTINCT resource_id, substring(resource_name, 1, 25) resource_name
+				FROM pkt_job_resources_v
+				WHERE job_id = <?p:job_id.toPStmtString()?>
+				ORDER BY resource_name"
+			-->
+		</td>
+	</tr>
+	<tr>
+		<td align="right">
+			<font color="#000000" size="-2" face="Verdana"><b><a href="{!s:showPage!}pocket/project_roster_add.html?job_id={!p:job_id!}&dest_template={!p:dest_template!}&letter=a">Add...</a></b></font>
+		</td>
+	</tr>
+</table>
+<table cellspacing="2" cellpadding="0" width="100%">
+	<!--#EMBED template="embeds/spacer_row.html" spacer_height="10"-->
+	<tr>
+		<td align="center">
+			<font color="#000000" size="-2" face="Verdana"><b><a href="{!s:showPage!}pocket/project_list.html?job_id={!p:job_id!}&dest_template={!p:dest_template!}">Req List</a></b></font>
+		</td>
+	</tr>
+</table>
+
+
+<!--#EMBED template="pocket/embeds/footer.html"-->

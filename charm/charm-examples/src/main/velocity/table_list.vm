@@ -1,0 +1,62 @@
+#set ($name = $table.destinationClassName) 
+#set ($alias = "$name.substring(0,1).toLowerCase()$name.substring(1)")
+#set( $width = 100 / $table.notKeyColumns.size() )
+#macro(rowsRef $ref)rows.$ref#end
+
+<%@ include file="../includes/init.jsp" %>
+
+<html>
+<head>
+<title><fmt:message key="${alias}_list.title"/></title>
+</head>
+
+<body>
+
+<h2><fmt:message key="${alias}_list.heading"/></h2>
+
+<charm:queryService var="result" namedQueryId="all${name}"/>
+
+<display:table name="${result}" export="true" id="row" class="bodytable" requestURI="${alias}_list.html">
+
+#foreach( $column in $table.notKeyColumns )
+#if (${column.javaType} == "java.util.Date" || ${column.javaType} == "java.sql.Date" || ${column.javaType} == "java.sql.Timestamp")
+	<display:column property="${column.variableName}" titleKey="${alias}_list.${column.variableName}" escapeXml="true" sortable="true" format="{0,date,MM/dd/yyyy}" /> 
+#else
+	<display:column property="${column.variableName}" titleKey="${alias}_list.${column.variableName}" escapeXml="true" sortable="true"/> 
+#end
+#end
+
+
+#foreach($relationshipRole in $table.notPrimaryKeyRoles)
+ #if ( $relationshipRole.enabled)
+  #set ( $one2one = $relationshipRole.relation.one2One )
+  #set ( $many2many = $relationshipRole.relation.many2Many )
+  #set ( $bidirectional = $relationshipRole.relation.bidirectional )
+  #set ( $target = $relationshipRole.getTarget($plugin))
+  #if ($table.getCardinalityValue($relationshipRole) == "many-to-one")
+   #foreach ($column in $target.notKeyColumns )
+    #if (${column.variableName} == "name")
+	<display:column property="${table.getVariableName($relationshipRole)}.${column.variableName}" titleKey="${alias}_list.${column.variableName}" escapeXml="true"  /> 
+    #end
+   #end
+  #end
+ #end
+#end
+
+
+#set ($column = $table.pkColumn)  
+	<display:column href="${name}_detail.html" paramId="${column.variableName}" paramProperty="${column.variableName}" sortable="false" >Edit</display:column>
+
+</display:table>
+
+<c:url value="${name}_detail.html" var="new_url"/>
+<form name="new" 
+	  method="POST" 
+	  action="${new_url}"
+>
+<input type="submit" name="submit" value="New ${name}"/>
+</form>
+
+
+</body>
+</html>

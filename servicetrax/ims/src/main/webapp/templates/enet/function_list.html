@@ -1,0 +1,61 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#EXEC handler="ims.handlers.proj.SetProjectDatumHandler" clear_session="true" -->
+
+<body style="background-color: #DED4C6;" >
+
+   <!--#SQLLOOP name="user_org_function_rights_v"
+   	            query="SELECT DISTINCT user_name,
+   	                          function_name,
+   	                          location,
+   	                          target,
+   	                          template_name,
+   	                          sequence_no
+			             FROM user_org_function_rights_v
+			            WHERE user_id=<?s:user_id.toPStmtInt()?>
+			              AND is_nav_function = 'Y'
+			              AND right_type_code = 'view'
+			              AND has_right = 'Y'
+			              AND function_group_code = 'enet'
+			              AND function_name NOT IN ('Request Service','Request Quote')
+			         ORDER BY sequence_no"
+		        resourceName="SQLServer"-->
+
+   <!--#SQLHEADER-->
+
+<table border="0" cellspacing="0" cellpadding="0" class="ButtonTable" width="100%">
+	<tr height="8"><td bgcolor="#DED4C6"></td></tr>
+	<tr class="Function2">
+		<td>
+			What would you like to do?
+		</td>
+	</tr>
+	<tr height="8"><td bgcolor="#DED4C6"></td></tr>
+	<tr>
+		<td class="FunctionDiv2">
+		</td>
+	</tr>
+   <!--#/SQLHEADER-->
+
+	<tr>
+			<td class="function2">
+				<a class="function2" href="{!s:showPage!}setProjectDatum/{!r:user_org_function_rights_v:template_name!}?loc={!r:user_org_function_rights_v:location!}&clear_session=true" target="{!r:user_org_function_rights_v:target.isNull('_top')!}">{!r:user_org_function_rights_v:function_name!}</a>
+			</td>
+	</tr>
+	<tr>
+		<td class="FunctionDiv2">
+		</td>
+	</tr>
+
+   <!--#SQLFOOTER-->
+   </table>
+   <!--#/SQLFOOTER-->
+
+   <!--#SQLNODATA-->
+      <span class="ErrorText">You have no functions defined.</span>
+   <!--#/SQLNODATA-->
+
+   <!--#/SQLLOOP-->
+
+
+<!--#EMBED template="enet/embeds/footer.html" -->

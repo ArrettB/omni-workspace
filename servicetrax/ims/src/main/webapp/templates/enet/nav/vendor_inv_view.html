@@ -1,0 +1,89 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<body class="BodyTag" onLoad="">
+
+<span class="Label">View Vendor Invoices:</span>
+<span class="">Please choose the Workorder to View or Update</span>
+
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="r" var="mainQuery"
+		query="SELECT r.project_id, r.request_id, r.project_no, r.request_no, r.workorder_no, r.status_seq_no, r.ext_dealer_id, r.dealer_name, r.customer_id, r.customer_name,
+					r.vendor_contact_name, r.invoice_date, r.invoice_numbers, r.total_cost, r.invoiced_flag
+				FROM request_vendors_v r
+				WHERE r.request_type_code = 'workorder'
+				AND r.organization_id = <?s:org_id.toPStmtInt()?>
+				AND r.vendor_contact_id <?s:user.contactID.isNullLike('%')?>
+				AND r.request_status_type_code <> 'closed'
+			  ORDER BY r.project_no DESC, r.request_no DESC, status_seq_no"
+
+-->
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="r" var="customerQuery"
+		query="SELECT DISTINCT r.customer_name id, r.customer_name
+				FROM request_vendors_v r
+				WHERE r.request_type_code = 'workorder'
+				AND r.organization_id = <?s:org_id.toPStmtInt()?>
+				AND r.vendor_contact_id <?s:user.contactID.isNullLike('%')?>
+				AND r.request_status_type_code <> 'closed'
+		  		ORDER BY r.customer_name"
+
+-->
+
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="r" var="dealerQuery"
+		query="SELECT DISTINCT r.ext_dealer_id, r.dealer_name
+				FROM request_vendors_v r
+				WHERE r.request_type_code = 'workorder'
+				AND r.organization_id = <?s:org_id.toPStmtInt()?>
+				AND r.vendor_contact_id <?s:user.contactID.isNullLike('%')?>
+				AND r.request_status_type_code <> 'closed'
+		   		ORDER BY r.dealer_name"
+
+-->
+
+
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="r" var="vendorContactQuery"
+		query="SELECT DISTINCT r.vendor_contact_name id, r.vendor_contact_name
+				FROM request_vendors_v r
+				WHERE r.request_type_code = 'workorder'
+				AND r.organization_id = <?s:org_id.toPStmtInt()?>
+				AND r.vendor_contact_id <?s:user.contactID.isNullLike('%')?>
+				AND r.request_status_type_code <> 'closed'
+		  		ORDER BY r.vendor_contact_name"
+
+-->
+
+
+<!--#SMARTTABLE name="vendor_inv_view"
+		class="SmartTable"
+		query="<?d:mainQuery?>"
+	-->
+
+	<!--#SMARTCOLUMN name="workorder_no" sort="workorder_no" title="Workorder#" align="center" width="10%" href="<?s:action?>setProjectDatum?project_id=<?r:vendor_inv_view:project_id?>&templateName=enet/proj/pf_main.html&request_id=<?r:vendor_inv_view:request_id?>&loc=wo_create" target="_top" filter="a_workorder_no:workorder_no like '%'+<?p:a_workorder_no.toPStmtString()?>+'%'" nowrap -->
+	<!--#SMARTCOLUMN name="customer_name" sort="r.customer_name" title="Customer" width="15%"
+		filter="customer_name:r.customer_name" filterQuery="<?d:customerQuery?>" filterQuick="true"
+		value="<INPUT TYPE='text' name='desc' value='<?r:vendor_inv_view:customer_name.replaceString('\'','&#39;')?>' readonly='true' class='smartTableDisplay' size='23'>"
+	-->
+	<!--#SMARTCOLUMN name="vendor_contact_name" sort="vendor_contact_name" title="Vendor" width="15%"
+ 		filter="a_vendor_contact_name:vendor_contact_name" filterQuery="<?d:vendorContactQuery?>" filterQuick="true"
+	-->
+	<!--#SMARTCOLUMN name="invoice_date" sort="invoice_date" title="Invoice Date" nowrap width="10%" format="date" filter="a_invoice_date:convert(varchar(12),invoice_date,101) like '%'+<?p:a_invoice_date.toPStmtString()?>+'%'" -->
+	<!--#SMARTCOLUMN name="invoice_numbers" sort="invoice_numbers" title="Invoice#s" width="15%" filter="a_invoice_numbers:invoice_numbers like '%'+<?p:a_invoice_numbers.toPStmtString()?>+'%'" -->
+	<!--#SMARTCOLUMN name="total_cost" sort="total_cost" title="Total$" width="5%" format="money" align="right" filter="a_total_cost:total_cost" -->
+	<!--#SMARTCOLUMN name="invoiced_flag" sort="invoiced_flag" title="Invoicing" width="5%" align="center" filter="a_invoiced_flag:invoiced_flag" -->
+<!--#IF evaluate="<?s:rights.enet/proj/multidealer.view?>" compare="true" --><!-- Show only if user can see multiple dealers -->
+	<!--#SMARTCOLUMN name="dealer_name" sort="dealer_name" title="Dealer" width="5%" align="center"
+		filter="dealer_name:dealer_name" filterQuery="<?d:dealerQuery?>" filterQuick="true"
+	-->
+<!--#ELSEIF evaluate="<?s:rights.enet/proj/non_a_m_dealers.view?>" compare="true" --><!-- Show only if user can see non a_m dealers -->
+	<!--#SMARTCOLUMN name="dealer_name" sort="dealer_name" title="Dealer" width="5%" align="center"
+		filter="dealer_name:dealer_name" filterQuery="<?d:dealerQuery?>" filterQuick="true"
+	-->
+<!--#/IF-->
+
+<!--#/SMARTTABLE -->
+
+
+<!--#EMBED template="enet/embeds/footer.html" -->
+

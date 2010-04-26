@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<namedQueries>
+	<namedQuery>
+		<id>allCities</id>
+		<service>hibernateService</service>
+		<query><![CDATA[
+				SELECT city 
+				FROM com.dynamic.charm.examples.orm.City city
+		]]>
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>citiesByState</id>
+		<service>hibernateService</service>
+		<query><![CDATA[
+				SELECT city 
+				FROM com.dynamic.charm.examples.orm.City city
+				WHERE city.stateCode = :stateCode
+		]]>
+		</query>
+		<parameter name="stateCode" type="String" />
+	</namedQuery>
+	<namedQuery>
+		<id>allStates</id>
+		<service>hibernateService</service>
+		<query><![CDATA[
+				SELECT state 
+				FROM com.dynamic.charm.examples.orm.State state
+		]]>
+		</query>
+	</namedQuery>
+	<namedQuery>
+		<id>allUsers</id>
+		<service>hibernateService</service>
+		<query><![CDATA[
+				SELECT user 
+				FROM com.dynamic.charm.examples.orm.User user
+		]]>
+		</query>
+	</namedQuery>
+</namedQueries>

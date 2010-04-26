@@ -1,0 +1,864 @@
+<!-- $Header: pf_edit.html, 50, 2/1/2006 10:10:37 AM, Blake Von Haden$ -->
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#EXEC handler="ims.handlers.proj.SetProjectDatumHandler" project_id="<?p:project_id?>" request_id="<?p:request_id?>" quote_id="<?p:quote_id?>" -->
+
+<script type="text/javascript">
+<!--
+	var wood_product_types = new Array();
+	var furniture_types = new Array();
+
+	function setDefaults()
+	{
+
+	<!--#IF defined="<?p:project_id?>"-->
+		<!--#IF evaluate="<?d:mode?>" compare="Update"-->
+			if( {!d:acknowledgement.toJavaScriptString()!} == "true" )
+			{
+			<!--#SQLLOOP name="q1" query="SELECT project_no FROM projects p WHERE p.project_id = <?s:project_id.toPStmtString()?>"	-->
+				newWindow("{!s:showPage!}enet/req/acknowledge.html?request_type_code=project_folder&amp;request_id={!p:request_id!}&amp;project_no={!r:q1:project_no!}&amp;request_no=is_sent=","acknowledge_window",200,450)
+			<!--#/SQLLOOP-->
+			}
+		<!--#/IF-->
+	<!--#/IF-->
+
+	<!-- RETRIEVE WOOD PRODUCT FLAG ids -->
+
+		//now handle default for wood_product_flag
+		<!--#SQLLOOP query="SELECT lookup_id, lookup_name, lookup_code
+		                    FROM lookups_v
+		                    WHERE type_code='wood_product_type'"
+						resourceName="SQLServer"
+						name="woodTypesQuery"
+		-->
+			wood_product_types['{!r:woodTypesQuery:lookup_code!}'] = new typeObject('{!r:woodTypesQuery:lookup_id!}','{!r:woodTypesQuery:lookup_name!}');
+		<!--#/SQLLOOP-->
+
+		<!-- RETRIEVE FURNITURE TYPES, HANDLE WOOD_PRODUCT_FLAG -->
+
+		<!--#SQLLOOP query="SELECT lookup_id, lookup_name, lookup_code
+		                    FROM lookups_v
+		                    WHERE type_code='furniture_type'"
+						resourceName="SQLServer"
+						name="furnTypesQuery"
+		-->
+		furniture_types['{!r:furnTypesQuery:lookup_code!}'] = new typeObject('{!r:furnTypesQuery:lookup_id!}','{!r:furnTypesQuery:lookup_name!}');
+		<!--#/SQLLOOP-->
+
+		textCounter(pf_edit.description,pf_edit.remLen,500,'up')
+		textCounter(pf_edit.other_conditions,pf_edit.remLen2,1000,'up')
+	}
+
+	function loadJobLocation()
+	{
+		var job_loc_id = '';
+		if( !(job_loc_id === undefined ) )
+			job_loc_id = pf_edit.job_location_id.options[pf_edit.job_location_id.selectedIndex].value;
+		newWindow({!s:showPage.toJavaScriptString()!} + 'enet/proj/address.html?job_location_id='+job_loc_id,'address_frame');
+		newWindow({!s:showPage.toJavaScriptString()!} + 'enet/proj/site_info.html?mand_fields=none&amp;job_location_id='+job_loc_id,'site_info_frame');
+	}
+
+	function newJob()
+	{
+		newWindow('{!s:showPage!}job/job_loc_edit.html?job_id={!s:job_id!}&amp;service_id={!s:service_id!}&amp;customer_id='+getCustID()+'&amp;customer_name='+getCustName()+'&amp;theForm=pf_edit&amp;theDroplist=job_location_id&amp;job_location_id=','res_est',520,570);
+	}
+
+	function isLoaded()
+	{
+		var result = true;
+		if( pf_edit.form_loaded === undefined )
+			result = false;
+		else if( pf_edit.form_loaded.value == 'false' )
+			result = false;
+		if( result == false )
+			alert("Please wait for the page to completely load (address box will blink).");
+		return result;
+	}
+
+	function getAMDealerID()
+	{
+		return escape({!s:ext_direct_dealer_id.toJavaScriptString()!});
+	}
+
+	function getContactID(droplist)
+	{
+		var contact_id = '';
+		if( !(droplist == null) && !(droplist.options === undefined) )
+			contact_id = droplist.options[droplist.selectedIndex].value;
+		return contact_id;
+	}
+
+	function getCustID()
+	{
+		return escape({!s:customer_id.toJavaScriptString()!});
+	}
+
+	function getCustName()
+	{
+		return escape({!s:customer_name.toJavaScriptString()!});
+	}
+
+	function getExtDealerID()
+	{
+		return escape({!s:ext_dealer_id.toJavaScriptString()!});
+	}
+
+ 	function getFormName()
+	{
+		return 'pf_edit';
+	}
+
+	function handleFurnType(form, furn_type_field, furniture_type_code)
+	{
+		eval("setSelect("+form+"."+furn_type_field+","+furniture_types[furniture_type_code].id+")");
+
+		var wood = false;
+		var wood_id = furniture_types['wood'].id;
+		if(      eval(form+".pri_furn_type_id.value == " + wood_id) )
+			wood = true;
+		else if( eval(form+".sec_furn_type_id.value == " + wood_id) )
+			wood = true;
+		else if( eval(form+".case_furn_type_id.value == " + wood_id) )
+			wood = true;
+
+		if( wood )
+			setSelect( eval(form+".wood_product_type_id"), wood_product_types['yes'].id);
+		else
+			setSelect( eval(form+".wood_product_type_id"), wood_product_types['no'].id);
+	}
+
+	function choosePriFurnLineType()
+	{
+		url = {!s:showPage.toJavaScriptString()!}+'choosers/choose_pri_furn_line_type.html'
+			+ '?title=List of Furniture Systems'
+			+ '&amp;form=pf_edit'
+			+ '&amp;field=pri_furn_line_type_id'
+			+ '&amp;id=lookup_id'
+			+ '&amp;value=pri_furn_line_type_id_text'
+			+ '&amp;pri_furn_line_type_id_text='+escape(document.pf_edit.pri_furn_line_type_id_text.value)
+			+ '&amp;query='+escape(document.pf_edit.pri_furn_line_type_id_query.value);
+		window.open(url, 'chooser', ##-WIN-##);
+	}
+
+	function chooseSecFurnLineType()
+	{
+		url = {!s:showPage.toJavaScriptString()!}+'choosers/choose_sec_furn_line_type.html'
+			+ '?title=List of Furniture Systems'
+			+ '&amp;form=pf_edit'
+			+ '&amp;field=sec_furn_line_type_id'
+			+ '&amp;id=lookup_id'
+			+ '&amp;value=sec_furn_line_type_id_text'
+			+ '&amp;sec_furn_line_type_id_text='+escape(document.pf_edit.sec_furn_line_type_id_text.value)
+			+ '&amp;query='+escape(document.pf_edit.sec_furn_line_type_id_query.value);
+		window.open(url, 'chooser', ##-WIN-##);
+	}
+
+	function chooseCaseFurnLineType()
+	{
+		url = {!s:showPage.toJavaScriptString()!}+'choosers/choose_case_furn_line_type.html'
+			+ '?title=List of Furniture Systems'
+			+ '&amp;form=pf_edit'
+			+ '&amp;field=case_furn_line_type_id'
+			+ '&amp;id=lookup_id'
+			+ '&amp;value=case_furn_line_type_id_text'
+			+ '&amp;case_furn_line_type_id_text='+escape(document.pf_edit.case_furn_line_type_id_text.value)
+			+ '&amp;query='+escape(document.pf_edit.case_furn_line_type_id_query.value);
+		window.open(url, 'chooser', ##-WIN-##);
+	}
+
+	function redisplaySmartForm()
+	{
+		document.pf_edit.redisplay.value = 'true';
+		document.pf_edit.form_loaded.value = 'false';
+		document.pf_edit.submit();
+	}
+
+	function fixTime(dateField, timeField)
+	{
+		if( !(timeField == null) && !(timeField.value == '') )
+		{
+			if( timeField.value.length < 12 )  //only add if not already added
+			{
+				if( !(dateField == null) && !(dateField.value == '') )
+				{
+					timeField.value = dateField.value + ' ' + timeField.value;
+				}
+				else
+				{
+				<!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) as to_date" name="dateQuery"-->
+					timeField.value = {!r:dateQuery:to_date.toJavaScriptString()!} + ' ' + timeField.value;
+				<!--#/SQLLOOP-->
+				}
+			}
+		}
+	}
+
+	function textCounter(field, countfield, maxlimit, action)
+	{
+		if (field.value.length > maxlimit)
+		{
+			field.value = field.value.substring(0, maxlimit);
+			alert ("You can only type " + maxlimit + " letters in this field.");
+		}
+		else
+		{
+			countfield.value = maxlimit - field.value.length;
+		}
+	}
+
+	function fieldValidator(field, type)
+	{
+		var failure = false;
+		if( type == "number" )
+		{
+			var c = null;
+			for( var i = 0; i < field.value.length; i++)
+			{
+				c = field.value.charAt(i);
+				//alert("test value ='" + c + "'");
+
+				if( isNaN(field.value.charAt(i)) ) //&& c!= '.' && c != ' ' && c != ',' && c != '&')
+				{
+					failure = true;
+					field.value = field.value.substring(0, field.value.length - 1);
+					break;
+				}
+			}
+			if( failure )
+				alert("This field only accepts " + type + "s...");
+		}
+	}
+
+	function exitFunction(button)
+	{
+		if( isLoaded() == false)
+		{
+			//isLoaded handles error message
+		}
+		else
+		{
+			if( button == 'Save' )
+			{
+				fixTime(pf_edit.est_start_date, pf_edit.est_start_time);
+				fixTime(pf_edit.prod_del_to_wh_date, pf_edit.truck_arrival_time);
+				pf_edit.button.value = 'Save'; //want to save in both cases
+				pf_edit.req_button.value = button;
+				pf_edit.redisplay.value = 'false';
+				pf_edit.converting.value = 'false';
+
+				if( site_info_frame.exitFunction )
+					site_info_frame.exitFunction( 'Save' ); //save job location info
+				pf_edit.submit();
+			}
+			else if( button == 'create_service_request' )
+			{
+				pf_edit.button.value = 'Copy'; //want to save in both cases
+				pf_edit.req_button.value = button;
+				pf_edit.request_type_code.value = 'service_request';
+				pf_edit.redisplay.value = 'false';
+				pf_edit.redisplayTemplate.value='enet/req/sr_edit.html';
+				pf_edit.converting.value = 'true';
+				pf_edit.submit();
+			}
+			else if( button == 'create_quote_request' )
+			{
+				pf_edit.button.value = 'Copy'; //want to save in both cases
+				pf_edit.req_button.value = button;
+				pf_edit.request_type_code.value = 'quote_request';
+				pf_edit.redisplay.value = 'false';
+				pf_edit.redisplayTemplate.value='enet/req/qr_edit.html';
+				pf_edit.converting.value = 'true';
+				pf_edit.submit();
+			}
+			else if( button == 'archive_project' )
+			{
+				if( confirm("Archiving will close all associated requests and disable any further activity.\n\n"+
+								"                    Are you sure you want to archive this project?") )
+				{
+					pf_edit.redisplay.value = 'false';
+					pf_edit.button.value = 'Cancel';
+					pf_edit.req_button.value = 'archive_project';
+					pf_edit.prevTemplate.value = 'enet/proj/pf_list.html';
+					pf_edit.submit();
+				}
+			}
+			else if( button == 'Cancel' )
+			{
+			<!--#IF evaluate="<?s:request_type_code?>" compare="project_folder" -->
+				newWindow("{!s:action!}setProjectDatum?templateName=enet/main.html&amp;clear_session=true", "_top");
+			<!--#ELSEIF defined="<?s:project_id?>" -->
+				newWindow("{!s:showPage!}setProjectDatum/enet/proj/pf_main.html?loc=pf","_top");
+			<!--#ELSE-->
+				newWindow("{!s:action!}setProjectDatum?templateName=enet/main.html&amp;clear_session=true", "_top");
+			<!--#/IF-->
+			}
+		}
+	}
+
+-->
+</script>
+
+
+<body class="BodyTag" onLoad="window.focus();setDefaults();loadJobLocation();pf_edit.form_loaded.value='true';">
+
+<table width="100%" cellspacing="0" cellpadding="3" summary="">
+	<!--#SMARTFORM name="enet/proj/pf_edit" security="rights" table="requests" key="request_id"
+						preHandler="ims.handlers.job_processing.SmartFormPreHandler,ims.handlers.proj.PDSPreHandler"
+						postHandler="ims.handlers.proj.PDSPostHandler"
+                  buttons=""
+	-->
+      <!--#SMARTFIELD name="redisplay" type="hidden" value="false" -->
+		<!--#SMARTFIELD name="project_id" type="hidden" value="<?s:project_id?>" --> <!-- used in PDSPreHandler -->
+		<!--#SMARTFIELD name="request_type_code" type="hidden" value="project_folder" --> <!-- used in PDSPreHandler -->
+		<!--#SMARTFIELD name="is_sent" type="hidden" value="<?p:is_sent.isNull('N')?>" --> <!-- required field in table REQUESTS -->
+		<!--#SMARTFIELD name="csc_wo_field_flag" type="hidden" value="<?p:csc_wo_field_flag.isNull('N')?>" -->  <!-- required by request table, not used here -->
+		<!--#SMARTFIELD name="button" type="hidden" value=""-->
+		<!--#SMARTFIELD name="req_button" type="hidden" value=""-->
+		<!--#SMARTFIELD name="converting" type="hidden" value="false"--> <!--used to indicate when to convert in PDSPostHandler-->
+		<!--#SMARTFIELD name="form_loaded" type="hidden" value="false" -->
+		<!--#SMARTFIELD name="request_no" type="hidden" -->
+		<!--#SMARTFIELD name="request_status_type_id" type="hidden" --> <!--needed for PDSPreHandler new version check -->
+
+<!--#EMBED template="enet/embeds/project_header.html"-->
+
+<!--#IF evaluate="<?d:mode?>" compare="Insert" -->
+	<tr><td>
+		<table width="100%" border="0" cellspacing="0" summary="">
+			<tr><td colspan="4" class="HeaderRow">Create Project Folder</td></tr>
+		</table>
+	</td></tr>
+<!--#ELSE-->
+		<table width="100%" border="0" cellspacing="0" summary="">
+			<tr><td colspan="4" class="HeaderRow">View/Update Project Folder</td></tr>
+		</table>
+	</td></tr>
+<!--#/IF-->
+
+	<tr><td><table width="100%" summary="">
+      <!--#IF evaluate="<?d:mode?>" compare="Update" -->
+			<!--#SQLLOOP name="projectQuery" query="SELECT project_no, project_status_type_name FROM projects_v WHERE project_id= <?s:project_id.toPStmtInt()?>" -->
+			<tr>
+				<td><a href="" onClick="exitFunction('create_quote_request');return false;">Create&nbsp;Quote&nbsp;Request</a></td>
+				<td><a href="" onClick="exitFunction('create_service_request');return false;">Create&nbsp;Service&nbsp;Request</a></td>
+			</tr>
+	</table></td></tr>
+
+	<tr><td><!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Header" -->
+			<tr>
+				<td><!--#SMARTFIELD title="Project Folder #:" div="&nbsp;</td><td>" name="project_no" value="<?r:projectQuery:project_no?>" readonly class="readonly" --></td>
+				<td><!--#SMARTFIELD title="Project Status:" div="&nbsp;</td><td colspan=\"3\">" name="project_status_type_name" value="<?r:projectQuery:project_status_type_name?>" readonly class="readonly" --></td>
+			</tr>
+			<!--#/SQLLOOP-->
+		<!--#/IF-->
+		<tr>
+			<td><!--#SMARTFIELD title="Dealer PO #:" div="&nbsp;</td><td>" name="dealer_po_no" onKeyUp="fieldValidator(this,'number')" -->&nbsp;</td>
+			<td><!--#SMARTFIELD title="Dealer&nbsp;PO&nbsp;Line&nbsp;#:" div="&nbsp;</td><td>" name="dealer_po_line_no" onKeyUp="fieldValidator(this,'number')" --></td>
+		</tr>
+		<tr>
+			<td width="90"><!--#SMARTFIELD title="Dealer Project #:" div="&nbsp;</td><td width='50'>" name="dealer_project_no" --></td>
+			<td>
+				<!--#SMARTFIELD mode="Insert" title="Job Location:" div="&nbsp;</td><td width='50'>" name="job_location_id" style="width:140" type="droplist" table="job_locations" display="job_location_name" key="job_location_id" filter="customer_id=<?s:customer_id.toPStmtInt()?> or job_location_id=<?p:job_location_id.toPStmtInt()?>" onChange="loadJobLocation()" --> <!-- redisplay to change show address -->
+				<!--#SMARTFIELD mode="Update" title="Job Location:" div="&nbsp;</td><td width='50'>" name="job_location_id" style="width:140" type="droplist" table="job_locations" display="job_location_name" key="job_location_id" filter="customer_id=<?s:customer_id.toPStmtInt()?> or job_location_id=<?r:enet/proj/pf_edit:job_location_id.toPStmtInt()?>" onChange="loadJobLocation(this)" --> <!-- redisplay to change show address -->
+			</td>
+		<!--#IF defined="<?s:customer_id?>"-->
+			<td colspan="2" width="250">
+		   	<input name="job_loc_button" type="button" value="View" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/job_loc_edit.html?job_id={!s:job_id!}&amp;service_id={!s:service_id!}&amp;customer_id='+getCustID()+'&amp;customer_name='+getCustName()+'&amp;theForm=pf_edit&amp;theDroplist=job_location_id&amp;job_location_id=','job_loc',520,570, pf_edit.job_location_id);">
+		      <input name="job_loc_button" type="button" value="New" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/job_loc_edit.html?job_id={!s:job_id!}&amp;service_id={!s:service_id!}&amp;customer_id='+getCustID()+'&amp;customer_name='+getCustName()+'&amp;theForm=pf_edit&amp;theDroplist=job_location_id&amp;job_location_id=','job_loc',520,570);">
+			</td>
+		<!--#ELSE-->
+			<td width="125">&nbsp;</td><td width="125">&nbsp;</td>
+		<!--#/IF-->
+		</tr>
+			<tr>
+				<td><!--#SMARTFIELD title="Design Project #:" div="&nbsp;</td><td>" name="design_project_no" --></td>
+<!--iframe-->	<td class="Label" colspan="4" rowspan="3">
+					<iframe name="address_frame" height="70" width="400" scrolling="NO" marginheight="0"></iframe>
+				</td>
+			</tr>
+			<tr>
+				<td><!--#SMARTFIELD title="Dealer&nbsp;Cust&nbsp;Code:" div="&nbsp;</td><td width='150'>" name="dealer_cust_id" --></td>
+			</tr>
+			<tr>
+				<td width="90"><!--#SMARTFIELD title="Customer PO #:&nbsp;" div="&nbsp;</td><td width='75'>" name="customer_po_no" --></td>
+			</tr>
+			<tr>
+				<td><!--#SMARTFIELD title="Project Volume:" div="&nbsp;</td><td>" name="project_volume" type="money"--></td>
+				<td><!--#SMARTFIELD title="Account Type:" div="&nbsp;</td><td colspan='3'>" name="account_type_id" type="droplist" table="account_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td>
+			</tr>
+			<tr>
+				<td><!--#SMARTFIELD title="Quote Type:" div="&nbsp;</td><td>" name="quote_type_id" type="droplist" table="billing_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td>
+				<td><!--#SMARTFIELD title="Quote&nbsp;Needed&nbsp;By:" div="&nbsp;</td><td colspan='3'>" name="quote_needed_by" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(quote_needed_by)')</script>"--></td>
+			</tr>
+	<!--#EMBED template="enet/embeds/boxout_footer.html" --></td></tr>
+	<tr><td><!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Contacts" -->
+		<tr><td valign="top"><table>
+				<tr><td>
+					<!--#SMARTFIELD title="Customer Contact:" div="&nbsp;</td><td>" name="customer_contact_id" style="width:114" type="droplist" table="contacts_v" display="contact_name" key="contact_id" filter="organization_id=<?s:org_id.toPStmtInt()?> AND ((ext_dealer_id=<?s:ext_dealer_id.toPStmtString()?> AND customer_id=<?s:customer_id.toPStmtInt()?> AND contact_type_code='customer' AND cont_status_type_code='active') or contact_id=<?d:customer_contact_id.toPStmtInt()?>)" -->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_view" value="View" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;customer_id='+getCustID()+'&amp;contact_type_code=customer&amp;theForm=pf_edit&amp;theDroplist=customer_contact_id&amp;contact_id=','contacts',450,490,pf_edit.customer_contact_id);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.insert?>"-->
+					<input type="button" name="contact_new" value="New" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;customer_id='+getCustID()+'&amp;contact_type_code=customer&amp;theForm=pf_edit&amp;theDroplist=customer_contact_id&amp;contact_id=','contacts',450,490);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_email" value="Email" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}enet/proj/send_email.html?contact_id='+getContactID(pf_edit.customer_contact_id),'email_frame');">
+				<!--#/IF-->
+				</td></tr>
+				<tr><td>
+					<!--#SMARTFIELD title="Alternate Customer:" div="&nbsp;</td><td>" name="alt_customer_contact_id" style="width:114" type="droplist" table="contacts_v" display="contact_name" key="contact_id" filter="organization_id=<?s:org_id.toPStmtInt()?> AND ((ext_dealer_id=<?s:ext_dealer_id.toPStmtString()?> AND customer_id=<?s:customer_id.toPStmtInt()?> AND contact_type_code='customer' AND cont_status_type_code='active') or contact_id=<?d:alt_customer_contact_id.toPStmtInt()?>)" -->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_view2" value="View" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;customer_id='+getCustID()+'&amp;contact_type_code=customer&amp;theForm=pf_edit&amp;theDroplist=alt_customer_contact_id&amp;contact_id=','contacts',450,490,pf_edit.alt_customer_contact_id);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.insert?>"-->
+					<input type="button" name="contact_new2" value="New" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;customer_id='+getCustID()+'&amp;contact_type_code=customer&amp;theForm=pf_edit&amp;theDroplist=alt_customer_contact_id&amp;contact_id=','contacts',450,490);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_email2" value="Email" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}enet/proj/send_email.html?contact_id='+getContactID(pf_edit.alt_customer_contact_id),'email_frame');">
+				<!--#/IF-->
+				</td></tr>
+				<tr><td>
+					<!--#SMARTFIELD title="Dealer Sales Rep:" div="&nbsp;</td><td>" name="d_sales_rep_contact_id" style="width:114" type="droplist" table="contacts_v" display="contact_name" key="contact_id" filter="organization_id=<?s:org_id.toPStmtInt()?> AND ((ext_dealer_id=<?s:ext_dealer_id.toPStmtString()?> AND contact_type_code='sales' AND cont_status_type_code='active') or contact_id=<?d:d_sales_rep_contact_id.toPStmtInt()?>)" -->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_view" value="View" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=sales&amp;theForm=pf_edit&amp;theDroplist=d_sales_rep_contact_id&amp;contact_id=','contacts',450,490,pf_edit.d_sales_rep_contact_id);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.insert?>"-->
+					<input type="button" name="contact_new" value="New" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=sales&amp;theForm=pf_edit&amp;theDroplist=d_sales_rep_contact_id&amp;contact_id=','contacts',450,490);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_email" value="Email" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}enet/proj/send_email.html?contact_id='+getContactID(pf_edit.d_sales_rep_contact_id),'email_frame');">
+				<!--#/IF-->
+				</td></tr>
+				<tr><td>
+					<!--#SMARTFIELD title="Dealer&nbsp;Sales&nbsp;Support:" div="&nbsp;</td><td>" name="d_sales_sup_contact_id" style="width:114" type="droplist" table="contacts_v" display="contact_name" key="contact_id" filter="organization_id=<?s:org_id.toPStmtInt()?> AND ((ext_dealer_id=<?s:ext_dealer_id.toPStmtString()?> AND contact_type_code='support' AND cont_status_type_code='active') or contact_id=<?d:d_sales_sup_contact_id.toPStmtInt()?>)" -->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_view" value="View" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=support&amp;theForm=pf_edit&amp;theDroplist=d_sales_sup_contact_id&amp;contact_id=','contacts',450,490,pf_edit.d_sales_sup_contact_id);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.insert?>"-->
+					<input type="button" name="contact_new" value="New" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=support&amp;theForm=pf_edit&amp;theDroplist=d_sales_sup_contact_id&amp;contact_id=','contacts',450,490);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_email" value="Email" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}enet/proj/send_email.html?contact_id='+getContactID(pf_edit.d_sales_sup_contact_id),'email_frame');">
+				<!--#/IF-->
+				</td></tr>
+				<tr><td>
+					<!--#SMARTFIELD title="Dealer Project Mgr:" div="&nbsp;</td><td>" name="d_proj_mgr_contact_id" style="width:114" type="droplist" table="contacts_v" display="contact_name" key="contact_id" filter="organization_id=<?s:org_id.toPStmtInt()?> AND ((ext_dealer_id=<?s:ext_dealer_id.toPStmtString()?> AND contact_type_code='project_mgr' AND cont_status_type_code='active') or contact_id=<?d:d_proj_mgr_contact_id.toPStmtInt()?>)" -->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_view" value="View" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=project_mgr&amp;theForm=pf_edit&amp;theDroplist=d_proj_mgr_contact_id&amp;contact_id=','contacts',450,490,pf_edit.d_proj_mgr_contact_id);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.insert?>"-->
+					<input type="button" name="contact_new" value="New" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=project_mgr&amp;theForm=pf_edit&amp;theDroplist=d_proj_mgr_contact_id&amp;contact_id=','contacts',450,490);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_email" value="Email" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}enet/proj/send_email.html?contact_id='+getContactID(pf_edit.d_proj_mgr_contact_id),'email_frame');">
+				<!--#/IF-->
+				</td></tr>
+				<tr><td>
+					<!--#SMARTFIELD title="Dealer Design Rep:" div="&nbsp;</td><td>" name="d_designer_contact_id" style="width:114" type="droplist" table="contacts_v" display="contact_name" key="contact_id" filter="organization_id=<?s:org_id.toPStmtInt()?> AND ((ext_dealer_id=<?s:ext_dealer_id.toPStmtString()?> AND contact_type_code='designer' AND cont_status_type_code='active') or contact_id=<?d:d_designer_contact_id.toPStmtInt()?>)" -->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_view" value="View" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=designer&amp;theForm=pf_edit&amp;theDroplist=d_designer_contact_id&amp;contact_id=','contacts',450,490,pf_edit.d_designer_contact_id);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.insert?>"-->
+					<input type="button" name="contact_new" value="New" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=designer&amp;theForm=pf_edit&amp;theDroplist=d_designer_contact_id&amp;contact_id=','contacts',450,490);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_email" value="Email" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}enet/proj/send_email.html?contact_id='+getContactID(pf_edit.d_designer_contact_id),'email_frame');">
+				<!--#/IF-->
+				</td></tr>
+				<tr><td>
+					<!--#SMARTFIELD title="Service Provider Contact:" div="&nbsp;</td><td>" name="a_m_contact_id" style="width:114" type="droplist" table="contacts_v" display="contact_name" key="contact_id" filter="(organization_id=<?s:org_id.toPStmtInt()?> AND (contact_type_code='a_m' AND cont_status_type_code='active')) or contact_id=<?d:a_m_contact_id.toPStmtInt()?>" -->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_view" value="View" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getAMDealerID()+'&amp;contact_type_code=a_m&amp;theForm=pf_edit&amp;theDroplist=a_m_contact_id&amp;contact_id=','contacts',450,490,pf_edit.a_m_contact_id);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.insert?>"-->
+					<input type="button" name="contact_new" value="New" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getAMDealerID()+'&amp;contact_type_code=a_m&amp;theForm=pf_edit&amp;theDroplist=a_m_contact_id&amp;contact_id=','contacts',450,490);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_email" value="Email" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}enet/proj/send_email.html?contact_id='+getContactID(pf_edit.a_m_contact_id),'email_frame');">
+				<!--#/IF-->
+				</td></tr>
+				<tr><td>
+					<!--#SMARTFIELD title="Service Provider Install Sup:" div="&nbsp;</td><td>" name="a_m_install_sup_contact_id" style="width:114" type="droplist" table="contacts_v" display="contact_name" key="contact_id" filter="(organization_id=<?s:org_id.toPStmtInt()?> AND (contact_type_code='supervisor_lead' AND cont_status_type_code='active') or contact_id=<?d:a_m_install_sup_contact_id.toPStmtInt()?>)" -->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_view" value="View" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getAMDealerID()+'&amp;contact_type_code=supervisor_lead&amp;theForm=pf_edit&amp;theDroplist=a_m_install_sup_contact_id&amp;contact_id=','contacts',450,490,pf_edit.a_m_install_sup_contact_id);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.insert?>"-->
+					<input type="button" name="contact_new" value="New" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getAMDealerID()+'&amp;contact_type_code=supervisor_lead&amp;theForm=pf_edit&amp;theDroplist=a_m_install_sup_contact_id&amp;contact_id=','contacts',450,490);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_email" value="Email" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}enet/proj/send_email.html?contact_id='+getContactID(pf_edit.a_m_install_sup_contact_id),'email_frame');">
+				<!--#/IF-->
+				</td></tr>
+<!--iframe-->
+				<tr><td><iframe name="email_frame" height="0" width="0"></iframe></td></tr>
+			</table></td>
+			<td valign="top"><table>
+				<tr><td>
+					<!--#SMARTFIELD title="Independent&nbsp;Designer:" div="&nbsp;</td><td>" name="a_d_designer_contact_id" style="width:114" type="droplist" table="contacts_v" display="contact_name" key="contact_id" filter="organization_id=<?s:org_id.toPStmtInt()?> AND ((ext_dealer_id=<?s:ext_dealer_id.toPStmtString()?> AND contact_type_code='a_d_designer' AND cont_status_type_code='active') or contact_id=<?d:a_d_designer_contact_id.toPStmtInt()?>)" -->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_view" value="View" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=a_d_designer&amp;theForm=pf_edit&amp;theDroplist=a_d_designer_contact_id&amp;contact_id=','contacts',450,490,pf_edit.a_d_designer_contact_id);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.insert?>"-->
+					<input type="button" name="contact_new" value="New" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=a_d_designer&amp;theForm=pf_edit&amp;theDroplist=a_d_designer_contact_id&amp;contact_id=','contacts',450,490);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_email" value="Email" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}enet/proj/send_email.html?contact_id='+getContactID(pf_edit.a_d_designer_contact_id),'email_frame');">
+				<!--#/IF-->
+				</td></tr>
+				<tr><td>
+					<!--#SMARTFIELD title="General Contractor:" div="&nbsp;</td><td>" name="gen_contractor_contact_id" style="width:114" type="droplist" table="contacts_v" display="contact_name" key="contact_id" filter="organization_id=<?s:org_id.toPStmtInt()?> AND ((ext_dealer_id=<?s:ext_dealer_id.toPStmtString()?> AND contact_type_code='gen_contractor' AND cont_status_type_code='active') or contact_id=<?d:gen_contractor_contact_id.toPStmtInt()?>)" -->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_view" value="View" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=gen_contractor&amp;theForm=pf_edit&amp;theDroplist=gen_contractor_contact_id&amp;contact_id=','contacts',450,490,pf_edit.gen_contractor_contact_id);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.insert?>"-->
+					<input type="button" name="contact_new" value="New" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=gen_contractor&amp;theForm=pf_edit&amp;theDroplist=gen_contractor_contact_id&amp;contact_id=','contacts',450,490);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_email" value="Email" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}enet/proj/send_email.html?contact_id='+getContactID(pf_edit.gen_contractor_contact_id),'email_frame');">
+				<!--#/IF-->
+				</td></tr>
+				<tr><td>
+					<!--#SMARTFIELD title="Electrician:" div="&nbsp;</td><td>" name="electrician_contact_id" style="width:114" type="droplist" table="contacts_v" display="contact_name" key="contact_id" filter="organization_id=<?s:org_id.toPStmtInt()?> AND ((ext_dealer_id=<?s:ext_dealer_id.toPStmtString()?> AND contact_type_code='electrician' AND cont_status_type_code='active') or contact_id=<?d:electrician_contact_id.toPStmtInt()?>)" -->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_view" value="View" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=electrician&amp;theForm=pf_edit&amp;theDroplist=electrician_contact_id&amp;contact_id=','contacts',450,490,pf_edit.electrician_contact_id);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.insert?>"-->
+					<input type="button" name="contact_new" value="New" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=electrician&amp;theForm=pf_edit&amp;theDroplist=electrician_contact_id&amp;contact_id=','contacts',450,490);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_email" value="Email" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}enet/proj/send_email.html?contact_id='+getContactID(pf_edit.electrician_contact_id),'email_frame');">
+				<!--#/IF-->
+				</td></tr>
+				<tr><td>
+					<!--#SMARTFIELD title="Data/Phone:" div="&nbsp;</td><td>" name="data_phone_contact_id" style="width:114" type="droplist" table="contacts_v" display="contact_name" key="contact_id" filter="organization_id=<?s:org_id.toPStmtInt()?> AND ((ext_dealer_id=<?s:ext_dealer_id.toPStmtString()?> AND contact_type_code='data_phone' AND cont_status_type_code='active') or contact_id=<?d:data_phone_contact_id.toPStmtInt()?>)" -->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_view" value="View" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=data_phone&amp;theForm=pf_edit&amp;theDroplist=data_phone_contact_id&amp;contact_id=','contacts',450,490,pf_edit.data_phone_contact_id);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.insert?>"-->
+					<input type="button" name="contact_new" value="New" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=data_phone&amp;theForm=pf_edit&amp;theDroplist=data_phone_contact_id&amp;contact_id=','contacts',450,490);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_email" value="Email" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}enet/proj/send_email.html?contact_id='+getContactID(pf_edit.data_phone_contact_id),'email_frame');">
+				<!--#/IF-->
+				</td></tr>
+				<tr><td>
+					<!--#SMARTFIELD title="Floor Covering:" div="&nbsp;</td><td>" name="carpet_layer_contact_id" style="width:114" type="droplist" table="contacts_v" display="contact_name" key="contact_id" filter="organization_id=<?s:org_id.toPStmtInt()?> AND ((ext_dealer_id=<?s:ext_dealer_id.toPStmtString()?> AND contact_type_code='carpet_layer' AND cont_status_type_code='active') or contact_id=<?d:carpet_layer_contact_id.toPStmtInt()?>)" -->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_view" value="View" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=carpet_layer&amp;theForm=pf_edit&amp;theDroplist=carpet_layer_contact_id&amp;contact_id=','contacts',450,490,pf_edit.carpet_layer_contact_id);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.insert?>"-->
+					<input type="button" name="contact_new" value="New" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=carpet_layer&amp;theForm=pf_edit&amp;theDroplist=carpet_layer_contact_id&amp;contact_id=','contacts',450,490);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_email" value="Email" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}enet/proj/send_email.html?contact_id='+getContactID(pf_edit.carpet_layer_contact_id),'email_frame');">
+				<!--#/IF-->
+				</td></tr>
+				<tr><td>
+					<!--#SMARTFIELD title="Building Manager:" div="&nbsp;</td><td>" name="bldg_mgr_contact_id" style="width:114" type="droplist" table="contacts_v" display="contact_name" key="contact_id" filter="organization_id=<?s:org_id.toPStmtInt()?> AND ((ext_dealer_id=<?s:ext_dealer_id.toPStmtString()?> AND contact_type_code='bldg_mgmt_co' AND cont_status_type_code='active') or contact_id=<?d:bldg_mgr_contact_id.toPStmtInt()?>)" -->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_view" value="View" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=bldg_mgmt_co&amp;theForm=pf_edit&amp;theDroplist=bldg_mgr_contact_id&amp;contact_id=','contacts',450,490,pf_edit.bldg_mgr_contact_id);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.insert?>"-->
+					<input type="button" name="contact_new" value="New" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=bldg_mgmt_co&amp;theForm=pf_edit&amp;theDroplist=bldg_mgr_contact_id&amp;contact_id=','contacts',450,490);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_email" value="Email" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}enet/proj/send_email.html?contact_id='+getContactID(pf_edit.bldg_mgr_contact_id),'email_frame');">
+				<!--#/IF-->
+				</td></tr>
+				<tr><td>
+					<!--#SMARTFIELD title="Security:" div="&nbsp;</td><td>" name="security_contact_id" style="width:114" type="droplist" table="contacts_v" display="contact_name" key="contact_id" filter="organization_id=<?s:org_id.toPStmtInt()?> AND ((ext_dealer_id=<?s:ext_dealer_id.toPStmtString()?> AND contact_type_code='security' AND cont_status_type_code='active') or contact_id=<?d:security_contact_id.toPStmtInt()?>)" -->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_view" value="View" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=security&amp;theForm=pf_edit&amp;theDroplist=security_contact_id&amp;contact_id=','contacts',450,490,pf_edit.security_contact_id);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.insert?>"-->
+					<input type="button" name="contact_new" value="New" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=security&amp;theForm=pf_edit&amp;theDroplist=security_contact_id&amp;contact_id=','contacts',450,490);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_email" value="Email" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}enet/proj/send_email.html?contact_id='+getContactID(pf_edit.security_contact_id),'email_frame');">
+				<!--#/IF-->
+				</td></tr>
+				<tr><td>
+					<!--#SMARTFIELD title="Mover:" div="&nbsp;</td><td>" name="mover_contact_id" style="width:114" type="droplist" table="contacts_v" display="contact_name" key="contact_id" filter="organization_id=<?s:org_id.toPStmtInt()?> AND ((ext_dealer_id=<?s:ext_dealer_id.toPStmtString()?> AND contact_type_code='mover' AND cont_status_type_code='active') or contact_id=<?d:mover_contact_id.toPStmtInt()?>)" -->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_view" value="View" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=mover&amp;theForm=pf_edit&amp;theDroplist=mover_contact_id&amp;contact_id=','contacts',450,490,pf_edit.mover_contact_id);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.insert?>"-->
+					<input type="button" name="contact_new" value="New" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=mover&amp;theForm=pf_edit&amp;theDroplist=mover_contact_id&amp;contact_id=','contacts',450,490);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_email" value="Email" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}enet/proj/send_email.html?contact_id='+getContactID(pf_edit.mover_contact_id),'email_frame');">
+				<!--#/IF-->
+				</td></tr>
+				<tr><td>
+					<!--#SMARTFIELD title="Other:" div="&nbsp;</td><td>" name="other_contact_id" style="width:114" type="droplist" table="contacts_v" display="contact_name" key="contact_id" filter="organization_id=<?s:org_id.toPStmtInt()?> AND ((ext_dealer_id=<?s:ext_dealer_id.toPStmtString()?> AND contact_type_code='other' AND cont_status_type_code='active') or contact_id=<?d:other_contact_id.toPStmtInt()?>)" -->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_view" value="View" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=other&amp;theForm=pf_edit&amp;theDroplist=other_contact_id&amp;contact_id=','contacts',450,490,pf_edit.other_contact_id);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.insert?>"-->
+					<input type="button" name="contact_new" value="New" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=other&amp;theForm=pf_edit&amp;theDroplist=other_contact_id&amp;contact_id=','contacts',450,490);">
+				<!--#/IF-->
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+					<input type="button" name="contact_email" value="Email" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}enet/proj/send_email.html?contact_id='+getContactID(pf_edit.other_contact_id),'email_frame');">
+				<!--#/IF-->
+				</td></tr>
+			</table></td>
+		<tr>
+	<!--#EMBED template="enet/embeds/boxout_footer.html" --></td></tr>
+	<tr><td><!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Product&nbsp;Info" -->
+		<tr>
+			<td valign="top"><table summary="Product Info column 1">
+		      <tr><td><!--#SMARTFIELD title="1st Furn. Line:" div="&nbsp;</td><td>" name="pri_furn_line_type_id" type="chooser" query="<?a:choose_pri_furn_line_type/sql?>" table="furniture_line_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" img="<script>makeButton('selectPriFurnLineType','choose_off','choose_on','choosePriFurnLineType()');</script>" --></td></tr>
+		      <tr><td><!--#SMARTFIELD title="2nd Furn. Line:" div="&nbsp;</td><td>" name="sec_furn_line_type_id" type="chooser" query="<?a:choose_sec_furn_line_type/sql?>" table="furniture_line_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" img="<script>makeButton('selectSecFurnLineType','choose_off','choose_on','chooseSecFurnLineType()');</script>" --></td></tr>
+		      <tr><td><!--#SMARTFIELD title="3rd Furn. Line:" div="&nbsp;</td><td>" name="case_furn_line_type_id" type="chooser" query="<?a:choose_case_furn_line_type/sql?>" table="furniture_line_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" img="<script>makeButton('selectCaseFurnLineType','choose_off','choose_on','chooseCaseFurnLineType()');</script>" --></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Wood Product:" div="&nbsp;</td><td>" name="wood_product_type_id" type="droplist" table="wood_product_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Delivery By:" div="&nbsp;</td><td>" name="delivery_type_id" type="droplist" table="delivery_types_v" display="lookup_name" key="lookup_id"  orderBy="sequence_no" --></td></tr>
+			   <tr><td><!--#SMARTFIELD title="Product Location:" div="&nbsp;</td><td>" name="warehouse_loc" --></td>
+			</table></td>
+			<td valign="top"><table summary="Product Info column 2">
+		      <tr><td><!--#SMARTFIELD title="1st Furn. Type:" div="&nbsp;</td><td>" name="pri_furn_type_id" type="droplist" table="furniture_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no"--></td></tr>
+		      <tr><td><!--#SMARTFIELD title="2nd Furn. Type:" div="&nbsp;</td><td>" name="sec_furn_type_id" type="droplist" table="furniture_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no"--></tr>
+		      <tr><td><!--#SMARTFIELD title="3rd Furn. Type:" div="&nbsp;</td><td>" name="case_furn_type_id" type="droplist" table="furniture_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no"--></tr>
+				<tr><td><!--#SMARTFIELD title="Furniture Plan:" div="&nbsp;</td><td>" name="furn_plan_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Plan Location:" div="&nbsp;</td><td>" name="plan_location" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Furniture Spec:" div="&nbsp;</td><td>" name="furn_spec_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+			</table></td>
+			<td valign="top"><table summary="Product Info column 3">
+		      <tr><td><!--#SMARTFIELD title="Workstation Typical:" div="&nbsp;</td><td>" name="workstation_typical_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Power Type:" div="&nbsp;</td><td>" name="power_type" --></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Punch List Item:" div="&nbsp;</td><td>" name="punchlist_item_type_id" type="droplist" table="punchlist_item_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Punch List Line(s):" div="&nbsp;</td><td>" name="punchlist_line" --></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Wall Mount:" div="&nbsp;</td><td>" name="wall_mount_type_id" type="droplist" table="wall_mount_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
+			</table></td>
+		</tr>
+	<!--#EMBED template="enet/embeds/boxout_footer.html" --></td></tr>
+	<tr><td><!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Critical&nbsp;Dates&nbsp;&amp;&nbsp;Logistics" -->
+		<tr>
+			<td width="50%"><table summary="Critical Dates &amp; Logistics column 1">
+		      <tr><td><!--#SMARTFIELD title="Initial Proj Team Meeting:" div="&nbsp;</td><td>" name="init_proj_team_mtg_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(init_proj_team_mtg_date)')</script>"--></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Design Presentation Date:" div="&nbsp;</td><td>" name="design_presentation_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(design_presentation_date)')</script>"--></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Design Completion Date:" div="&nbsp;</td><td>" name="design_completion_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(design_completion_date)')</script>"--></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Spec Check Completion:" div="&nbsp;</td><td>" name="spec_check_cmpl_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(spec_check_cmpl_date)')</script>"--></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Order Placed Date:" div="&nbsp;</td><td>" name="dealer_order_placed_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(dealer_order_placed_date)')</script>"--></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Internal Pre-Install Mtg:" div="&nbsp;</td><td>" name="int_pre_install_mtg_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(int_pre_install_mtg_date)')</script>"--></td></tr>
+		      <tr><td><!--#SMARTFIELD title="External Pre Install Mtg:" div="&nbsp;</td><td>" name="ext_pre_install_mtg_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(ext_pre_install_mtg_date)')</script>"--></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Dealer Installation Plan:" div="&nbsp;</td><td>" name="dealer_install_plan_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(dealer_install_plan_date)')</script>"--></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Manufacturer Ship Date:" div="&nbsp;</td><td>" name="mfg_ship_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(mfg_ship_date)')</script>"--></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Product Del To Warehouse:" div="&nbsp;</td><td>" name="prod_del_to_wh_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(prod_del_to_wh_date)')</script>"--></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Truck Arrival Time:" div="&nbsp;</td><td>" name="truck_arrival_time" type="time" --></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Construction Completion:" div="&nbsp;</td><td>" name="construct_complete_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(construct_complete_date)')</script>"--></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Electric Install Complete:" div="&nbsp;</td><td>" name="electrical_complete_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(electrical_complete_date)')</script>"--></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Cable Install Complete:" div="&nbsp;</td><td>" name="cable_complete_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(cable_complete_date)')</script>"--></td></tr>
+			</table></td>
+			<td width="50%" align="left" valign="bottom"><table summary="Critical Dates &amp; Logistics column 2">
+		      <tr><td><!--#SMARTFIELD title="Carpet Install Complete:" div="&nbsp;</td><td>" name="carpet_complete_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(carpet_complete_date)')</script>"--></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Site Visit Required:" div="&nbsp;</td><td>" name="site_visit_req_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Site Visit Date:" div="&nbsp;</td><td>" name="site_visit_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(site_visit_date)')</script>"--></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Product Del to Site:" div="&nbsp;</td><td>" name="product_del_to_site_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(product_del_to_site_date)')</script>"--></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Schedule Type:" div="</td><td>" name="schedule_type_id" type="droplist" table="schedule_types_enet_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Installation Start Date:" div="&nbsp;</td><td>" name="est_start_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(est_start_date)')</script>"--></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Installation Start Time:" div="&nbsp;</td><td>" name="est_start_time" type="time" --></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Install Complete Target:" div="&nbsp;</td><td>" name="est_end_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(est_end_date)')</script>"--></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Move In Date:" div="&nbsp;</td><td>" name="move_in_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(move_in_date)')</script>"--></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Punch List Completion:" div="&nbsp;</td><td>" name="punchlist_complete_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(punchlist_complete_date)')</script>"--></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Coord. w/ Phone/Data:" div="&nbsp;</td><td>" name="coord_phone_data_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Coord. w/ Wall Covering:" div="&nbsp;</td><td>" name="coord_wall_covr_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Coord. w/ Floor Covering:" div="&nbsp;</td><td>" name="coord_floor_covr_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Coord. w/ Electrical:" div="&nbsp;</td><td>" name="coord_electrical_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Coord. w/ Mover:" div="&nbsp;</td><td>" name="coord_mover_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+			</table></td>
+		</tr>
+	<!--#EMBED template="enet/embeds/boxout_footer.html" --></td></tr>
+	<tr><td><!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Service&nbsp;Description" -->
+		<tr>
+      	<td><!--#SMARTFIELD title="Activity1:" div="&nbsp;</td><td>" name="activity_type_id1" type="droplist" table="activity_types_v" display="lookup_name" key="lookup_id" --></td>
+      	<td><!--#SMARTFIELD title="Qty1:" div="&nbsp;</td><td>" name="qty1" style="width:35" --></td>
+      	<td><!--#SMARTFIELD title="Category1:" div="&nbsp;</td><td>" name="activity_cat_type_id1" type="droplist" table="activity_category_types_v" display="lookup_name" key="lookup_id" --></td>
+		</tr>
+      <tr>
+      	<td><!--#SMARTFIELD title="Activity2:" div="&nbsp;</td><td>" name="activity_type_id2" type="droplist" table="activity_types_v" display="lookup_name" key="lookup_id" --></td>
+      	<td><!--#SMARTFIELD title="Qty2:" div="&nbsp;</td><td>" name="qty2" style="width:35" --></td>
+      	<td><!--#SMARTFIELD title="Category2:" div="&nbsp;</td><td>" name="activity_cat_type_id2" type="droplist" table="activity_category_types_v" display="lookup_name" key="lookup_id" --></td>
+		</tr>
+      <tr>
+      	<td><!--#SMARTFIELD title="Activity3:" div="&nbsp;</td><td>" name="activity_type_id3" type="droplist" table="activity_types_v" display="lookup_name" key="lookup_id" --></td>
+      	<td><!--#SMARTFIELD title="Qty3:" div="&nbsp;</td><td>" name="qty3" style="width:35" --></td>
+      	<td><!--#SMARTFIELD title="Category3:" div="&nbsp;</td><td>" name="activity_cat_type_id3" type="droplist" table="activity_category_types_v" display="lookup_name" key="lookup_id" --></td>
+		</tr>
+      <tr>
+      	<td><!--#SMARTFIELD title="Activity4:" div="&nbsp;</td><td>" name="activity_type_id4" type="droplist" table="activity_types_v" display="lookup_name" key="lookup_id" --></td>
+      	<td><!--#SMARTFIELD title="Qty4:" div="&nbsp;</td><td>" name="qty4" style="width:35" --></td>
+      	<td><!--#SMARTFIELD title="Category4:" div="&nbsp;</td><td>" name="activity_cat_type_id4" type="droplist" table="activity_category_types_v" display="lookup_name" key="lookup_id" --></td>
+		</tr>
+      <tr>
+      	<td><!--#SMARTFIELD title="Activity5:" div="&nbsp;</td><td>" name="activity_type_id5" type="droplist" table="activity_types_v" display="lookup_name" key="lookup_id" --></td>
+      	<td><!--#SMARTFIELD title="Qty5:" div="&nbsp;</td><td>" name="qty5" style="width:35" --></td>
+      	<td><!--#SMARTFIELD title="Category5:" div="&nbsp;</td><td>" name="activity_cat_type_id5" type="droplist" table="activity_category_types_v" display="lookup_name" key="lookup_id" --></td>
+		</tr>
+      <tr>
+      	<td><!--#SMARTFIELD title="Activity6:" div="&nbsp;</td><td>" name="activity_type_id6" type="droplist" table="activity_types_v" display="lookup_name" key="lookup_id" --></td>
+      	<td><!--#SMARTFIELD title="Qty6:" div="&nbsp;</td><td>" name="qty6" style="width:35" --></td>
+      	<td><!--#SMARTFIELD title="Category6:" div="&nbsp;</td><td>" name="activity_cat_type_id6" type="droplist" table="activity_category_types_v" display="lookup_name" key="lookup_id" --></td>
+		</tr>
+      <tr>
+      	<td><!--#SMARTFIELD title="Activity7:" div="&nbsp;</td><td>" name="activity_type_id7" type="droplist" table="activity_types_v" display="lookup_name" key="lookup_id" --></td>
+      	<td><!--#SMARTFIELD title="Qty7:" div="&nbsp;</td><td>" name="qty7" style="width:35" --></td>
+      	<td><!--#SMARTFIELD title="Category7:" div="&nbsp;</td><td>" name="activity_cat_type_id7" type="droplist" table="activity_category_types_v" display="lookup_name" key="lookup_id" --></td>
+		</tr>
+      <tr>
+      	<td><!--#SMARTFIELD title="Activity8:" div="&nbsp;</td><td>" name="activity_type_id8" type="droplist" table="activity_types_v" display="lookup_name" key="lookup_id" --></td>
+      	<td><!--#SMARTFIELD title="Qty8:" div="&nbsp;</td><td>" name="qty8" style="width:35" --></td>
+      	<td><!--#SMARTFIELD title="Category8:" div="&nbsp;</td><td>" name="activity_cat_type_id8" type="droplist" table="activity_category_types_v" display="lookup_name" key="lookup_id" --></td>
+		</tr>
+      <tr>
+      	<td><!--#SMARTFIELD title="Activity9:" div="&nbsp;</td><td>" name="activity_type_id9" type="droplist" table="activity_types_v" display="lookup_name" key="lookup_id" --></td>
+      	<td><!--#SMARTFIELD title="Qty9:" div="&nbsp;</td><td>" name="qty9" style="width:35" --></td>
+      	<td><!--#SMARTFIELD title="Category9:" div="&nbsp;</td><td>" name="activity_cat_type_id9" type="droplist" table="activity_category_types_v" display="lookup_name" key="lookup_id" --></td>
+		</tr>
+      <tr>
+      	<td><!--#SMARTFIELD title="Activity10:" div="&nbsp;</td><td>" name="activity_type_id10" type="droplist" table="activity_types_v" display="lookup_name" key="lookup_id" --></td>
+      	<td><!--#SMARTFIELD title="Qty10:" div="&nbsp;</td><td>" name="qty10" style="width:35" --></td>
+      	<td><!--#SMARTFIELD title="Category10:" div="&nbsp;</td><td>" name="activity_cat_type_id10" type="droplist" table="activity_category_types_v" display="lookup_name" key="lookup_id" --></td>
+		</tr>
+		<tr>
+			<td colspan="6" class="HeaderLabel">Description</td>
+		</tr>
+		<tr>
+	      <td colspan="6" class="HeaderLabel">
+	      	<!--#SMARTFIELD name="description" type="textarea" cols="90" rows="6" wrap="virtual" onKeyDown="textCounter(this.form.description,this.form.remLen,500,'down');" onKeyUp="textCounter(this.form.description,this.form.remLen,500,'up');"-->
+				<input readonly type="text" name="remLen" size="3" maxlength="3" value="500" class="HeaderLabel"> characters left.
+		  </td>
+		</tr>
+	<!--#EMBED template="enet/embeds/boxout_footer.html" --></td></tr>
+	<tr><td><table cellpadding="0" cellspacing="0">
+		<tr>
+			<td valign="top" align="center"><!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Change&nbsp;Order" bo_width="200" -->
+				<tr><td><!--#SMARTFIELD title="Approval Requirement:&nbsp;&nbsp;" name="approval_req_type_id" type="droplist" table="approval_req_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td>Who Can Approve</td></tr>
+				<tr><td><table>
+					<tr><td align="right" width="100"><!--#SMARTFIELD title="Name:" div="&nbsp;</td><td width='100'>" name="who_can_approve_name" --></td></tr>
+					<tr><td align="right"><!--#SMARTFIELD title="Phone:" div="&nbsp;</td><td>" name="who_can_approve_phone" --></td></tr>
+				</table></td></tr>
+			<!--#EMBED template="enet/embeds/boxout_footer.html" --></td>
+
+			<!--#IF defined="<?r:enet/proj/pf_edit:quote_id?>" -->
+			<!--#SQLLOOP name="quote_info" query="SELECT quote_no, quoted_by, date_quoted FROM quotes WHERE quote_id=<?r:enet/proj/pf_edit:quote_id.toPStmtString()?>" -->
+			<td><!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Quote&nbsp;Info" bo_width="300"-->
+				<tr><td>
+					<!--#SMARTFIELD name="quote_id" type="hidden" -->
+					<!--#SMARTFIELD title="Quote #:" div="&nbsp;</td><td>" name="<?r:quote_info:quote_no?>" -->
+			   	<input name="job_loc_button" type="button" value="View" class="button2" onClick="if( isLoaded() ) newWindow({!s:showPage.toJavaScriptString()!} + 'enet/quot/quote_edit?quote_id='+pf_edit.quote_id.value,'quote',800,600);">
+				</td></tr>
+				<tr><td><!--#SMARTFIELD title="Quoted By:" div="&nbsp;</td><td>" name="<?r:quote_info:quoted_by?>" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Date Quoted:" div="&nbsp;</td><td>" name="<?r:quote_info:date_quoted?>" --></td></tr>
+			<!--#EMBED template="enet/embeds/boxout_footer.html" --></td>
+			<!--#/SQLLOOP-->
+		<!--#/IF-->
+		</tr>
+	</table></td></tr>
+	<tr><td><!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Costing" -->
+		<tr>
+			<td><!--#SMARTFIELD title="Regular:" div="&nbsp;</td><td>" name="regular_hours_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td>
+			<td><!--#SMARTFIELD title="Evening:" div="&nbsp;</td><td>" name="evening_hours_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td>
+			<td><!--#SMARTFIELD title="Weekend:" div="&nbsp;</td><td>" name="weekend_hours_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td>
+			<td><!--#SMARTFIELD title="Union Labor Req:" div="&nbsp;</td><td>" name="union_labor_req_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td>
+		</tr>
+		<tr>
+			<td><!--#SMARTFIELD title="Cost To Customer:" div="&nbsp;</td><td>" name="cost_to_cust_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td>
+			<td><!--#SMARTFIELD title="Cost To Vendor:" div="&nbsp;</td><td>" name="cost_to_vend_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td>
+			<td><!--#SMARTFIELD title="Cost To Job:" div="&nbsp;</td><td>" name="cost_to_job_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td>
+			<td><!--#SMARTFIELD title="Warehouse Fee:" div="&nbsp;</td><td>" name="warehouse_fee_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td>
+		</tr>
+      <tr>
+      	<td colspan="8"><table width="100%">
+	      	<tr>
+	      		<td width="350"><!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Duration" bo_width="300" -->
+		      		<tr>
+		      			<td><!--#SMARTFIELD title="Time Unit of Measure:" div="&nbsp;</td><td>" name="duration_time_uom_type_id" type="droplist" table="time_uom_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td>
+		   			   	<td><!--#SMARTFIELD title="Qty:" div="&nbsp;</td><td colspan='3'>" name="duration_qty" style="width:35" --></td>
+					</tr>
+					<!--#EMBED template="enet/embeds/boxout_footer.html" --></td>
+	      				<td align="center"><!--#SMARTFIELD title="Phased Installation:&nbsp;&nbsp;" name="phased_install_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td>
+						<td><!--#SMARTFIELD title="Taxable: " name="taxable_flag" type="boolean" --></td>
+	      	</tr>
+			</table></td>
+		</tr>
+	<!--#EMBED template="enet/embeds/boxout_footer.html" --></td></tr>
+	<tr><td><!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Site&nbsp;Conditions" -->
+		<tr>
+			<td valign="top"><table>
+				<tr><td><!--#SMARTFIELD title="Staging Area Avail:" div="&nbsp;</td><td>" name="staging_area_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Dumpster On Site:" div="&nbsp;</td><td>" name="dumpster_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Walkboard Needed:" div="&nbsp;</td><td>" name="walkboard_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Elev. Avail Time:" div="&nbsp;</td><td>" name="elevator_avail_time" style="width:70"--></td></tr>
+				<tr><td><!--#SMARTFIELD title="Occupied Site:" div="&nbsp;</td><td>" name="occupied_site_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="New Site:" div="&nbsp;</td><td>" name="new_site_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+			</table></td>
+			<td valign="top"><table>
+				<tr>
+<!--iframe: address-->	<td class="Label" colspan="4" rowspan="3">
+					<iframe name="site_info_frame" height="180" width="560" scrolling="NO" marginheight="0"></iframe>
+				</tr>
+			</table></td>
+		</tr>
+		<tr><td colspan="6" class="HeaderLabel">Other Conditions / Notes</td></tr>
+		<tr>
+	      <td colspan="6" class="HeaderLabel">
+	      	<!--#SMARTFIELD name="other_conditions" type="textarea" cols="90" rows="6" wrap="virtual" onKeyDown="textCounter(this.form.other_conditions,this.form.remLen2,1000,'down');" onKeyUp="textCounter(this.form.other_conditions,this.form.remLen2,1000,'up');"-->
+				<input readonly type="text" name="remLen2" size="4" maxlength="4" value="1000" class="HeaderLabel"> characters left.
+			</td>
+		</tr>
+	<!--#EMBED template="enet/embeds/boxout_footer.html" --></td></tr>
+
+<!--#IF evaluate="<?d:mode?>" compare="Update"-->
+	<tr><td><!--#EMBED template="enet/embeds/boxout_header.html" bo_title="System&nbsp;Info" -->
+		<tr><td><table width="500">
+		<tr>
+         <td><!--#SMARTFIELD title="Date Created:" div="&nbsp;</td><td>" name="date_created" type="datetime" mode="Update" readonly class="readonly" size="22" --></td>
+         <td><!--#SMARTFIELD title="Created By:" div="&nbsp;</td><td>" name="created_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+      </tr>
+      <tr>
+         <td><!--#SMARTFIELD title="Date Modified:" div="&nbsp;</td><td>" name="date_modified" type="datetime" mode="Update" readonly class="readonly" size="22"--></td>
+         <td><!--#SMARTFIELD title="Modified By:" div="&nbsp;</td><td>" name="modified_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+      </tr>
+      </table></td></tr>
+	<!--#EMBED template="enet/embeds/boxout_footer.html" --></td></tr>
+<!--#/IF-->
+
+	<tr><td><table width="100%">
+		<tr>
+		<!--#IF evaluate="<?d:mode?>" compare="Update" -->
+			<!--#SQLLOOP name="statusQuery" query="SELECT request_status_type_code FROM requests_v WHERE request_id = <?r:enet/proj/pf_edit:request_id.toPStmtString()?>" -->
+				<!--#IF evaluate="<?r:statusQuery:request_status_type_code?>" compare="folder_closed" -->
+				<!--#ELSE-->
+					<!--#CHECKSECURITY right="rights.enet/proj/pf_edit.delete"-->
+			<td align="left">
+				<input type="submit" class="button" value="Archive Project" name="archive_project" onClick="exitFunction('archive_project');">
+			</td>
+					<!--#/CHECKSECURITY-->
+				<!--#/IF-->
+			<!--#/SQLLOOP-->
+		<!--#/IF-->
+		<!--#IF evaluate="<?d:mode?>" compare="Insert" -->
+			<td align="right">
+				<input type="button" class="button" value="Cancel" name="Cancel" onClick="exitFunction('Cancel');">
+				<input type="button" class="button" value="Save" name ="Save" onClick="exitFunction('Save');">
+			</td>
+		<!--#ELSE-->
+			<!--#SQLLOOP name="statusQuery" query="SELECT request_status_type_code FROM requests_v WHERE request_id = <?r:enet/proj/pf_edit:request_id.toPStmtString()?>" -->
+				<!--#IF evaluate="<?r:statusQuery:request_status_type_code?>" compare="folder_closed" -->
+				<!--#ELSE-->
+			<td align="right">
+				<input type="button" class="button" value="Cancel" name="Cancel" onClick="exitFunction('Cancel');">
+				<input type="button" class="button" value="Save" name ="Save" onClick="exitFunction('Save');">
+			</td>
+				<!--#/IF-->
+			<!--#/SQLLOOP-->
+		<!--#/IF-->
+		</tr>
+	</table></td></tr>
+
+   <!--#/SMARTFORM-->
+	</table>
+
+</body>
+
+<!--#EMBED template="enet/embeds/footer.html" -->

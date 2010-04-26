@@ -1,0 +1,25 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: lookup_types.html, 5, 4/22/2003 10:27:10 AM, Chad Ryan$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.mnt/lookup_types.view?>"-->
+<body class="BodyTag">
+<table width="100%" cellspacing="0" cellpadding="0">
+	<tr>
+		<td  class="HeaderBar">Select the lookup type you wish to edit:</td>
+	</tr>
+</table>
+<!--#SMARTTABLE class="SmartTable" name="lookup_types" maxRows="0"
+			query="SELECT lookup_type_id, code, name, updatable_flag
+			         FROM lookup_types
+			        WHERE active_flag = 'Y'
+			     ORDER BY name"
+-->
+<!--#IF defined="<?s:rights.mnt/lookup_types.update?>"-->
+	<!--#SMARTCOLUMN name="name" sort="name" title="Lookup Type" width="50%" class="TableRow1Link,TableRow2Link" href="<?s:showPage?>mnt/lookups.html?lookup_type_id=<?r:lookup_types:lookup_type_id?>" target="main_frame" -->
+<!--#ELSE-->
+	<!--#SMARTCOLUMN name="name" sort="name" title="Lookup Type" width="50%" -->
+<!--#/IF-->
+	<!--#SMARTCOLUMN name="code" sort="code" title="Code" width="50%" -->
+<!--#/SMARTTABLE -->
+</body>
+<!--#EMBED template="embeds/footer.html" -->

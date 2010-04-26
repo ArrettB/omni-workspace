@@ -1,0 +1,272 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!-- $Header: confirm.html, 10, 5/16/2003 4:37:53 PM, Chad Ryan$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+
+<body class="BodyTag" onLoad="window.focus();">
+
+	<table align="center" valign="middle" width="100%" border="0" cellspacing="0" cellpadding="3">
+	<form name="confirm_form">
+<!--#IF evaluate="<?p:request_type_code?>" compare="workorder" -->
+	<!--#IF evaluate="<?p:show_approval_window?>" compare="false" -->
+	<tr><td><table>
+		<tr>
+			<td colspan="4" class="HeaderRow">Confirm Workorder Creation</td>
+		</tr>
+		<tr>
+			<td><BR></td>
+		</tr>
+		<tr>
+			<td width="25">&nbsp;</td>
+			<td valign="top"><span class="HeaderLabel">Save&nbsp;- </td>
+			<td class="HeaderLabel">Click the 'Save' button to save without sending the Workorder.  You can send later by searching for this Workorder on the View/Update Workorder window, clicking the 'Next' and then the 'Send' buttons.</span></td>
+			<td width="25">&nbsp;</td>
+		</tr>
+		<tr><td colspan="2">&nbsp;</td></tr>
+		<tr>
+			<td width="25">&nbsp;</td>
+			<td valign="top"><span class="HeaderLabel">Send&nbsp;- </td>
+			<td class="HeaderLabel">Click the 'Send' button to save your details and also send the Workorder to the Approver. If the Approver is you, then will auto approve and send emails to the Vendor(s).</span></td>
+			<td width="25">&nbsp;</td>
+		</tr>
+		<tr>
+			<td><BR></td>
+		</tr>
+		<tr>
+			<td colspan="4" align="right">
+				<input type="button" class="button" value="Cancel" name="button" onClick="exitFunction('confirm_cancel');">
+				<input type="button" class="button" value="Save" name ="button" onClick="exitFunction('Save');">
+				<input type="button" class="button" value="Send" name ="button" onClick="exitFunction('Send');">
+			</td>
+		</tr>
+	</table></td></tr>
+
+	<!--#ELSEIF evaluate="<?p:show_approval_window?>" compare="refuse" -->
+
+	<tr><td><table width="100%">
+		<tr>
+			<td class="HeaderRow">You are about to Refuse a Workorder:</td>
+		</tr>
+		<tr>
+			<td><BR></td>
+		</tr>
+		<tr>
+			<td class="HeaderLabel">Please indicate reason for refusal:</td>
+		</tr>
+		<tr>
+			<td><BR></td>
+		</tr>
+		<tr>
+			<td><textarea rows="5" cols="50" name="refusal_reason"></textarea></td>
+		</tr>
+		<tr>
+			<td><BR></td>
+		</tr>
+		<tr>
+			<td align="right">
+				<input type="button" class="button" value="Cancel" name="button" onClick="exitFunction('confirm_cancel');">
+				<input type="button" class="button" value="Refuse" name ="button" onClick="exitFunction('Refuse');">
+			</td>
+		</tr>
+	</table></td></tr>
+
+	<!--#ELSE-->
+
+	<tr><td><table>
+		<tr>
+			<td colspan="4" class="HeaderRow">You are about to Approve, Refuse or Save a Workorder:</td>
+		</tr>
+		<tr>
+			<td><BR></td>
+		</tr>
+		<tr>
+			<td width="25">&nbsp;</td>
+			<td valign="top"><span class="HeaderLabel">Approve&nbsp;- </td>
+			<td class="HeaderLabel">Click the 'Approve' button to save your details and also send the Workorder to selected vendors.</span></td>
+			<td width="25">&nbsp;</td>
+		</tr>
+		<tr><td colspan="2">&nbsp;</td></tr>
+		<tr>
+			<td width="25">&nbsp;</td>
+			<td valign="top"><span class="HeaderLabel">Refuse&nbsp;- </td>
+			<td class="HeaderLabel">Click the 'Refuse' button to save your details and send a rejection email to the customer contact on the Workorder.</span></td>
+			<td width="25">&nbsp;</td>
+		</tr>
+		<tr><td colspan="2" style="height:10">&nbsp;</td></tr>
+		<tr>
+			<td width="25">&nbsp;</td>
+			<td valign="top"><span class="HeaderLabel">Save&nbsp;- </td>
+			<td class="HeaderLabel">Click the 'Save' button to save without sending the Workorder.  You can send later by searching for this Workorder, and approving it.</span></td>
+			<td width="25">&nbsp;</td>
+		</tr>
+		<tr>
+			<td><BR></td>
+		</tr>
+		<tr>
+			<td colspan="4" align="right">
+				<input type="button" class="button" value="Cancel" name="button" onClick="exitFunction('confirm_cancel');">
+				<input type="button" class="button" value="Save" name ="button" onClick="exitFunction('Save');">
+				<input type="button" class="button" value="Refuse" name ="button" onClick="location='{!s:showPage!}enet/req/confirm.html?show_approval_window=refuse&request_type_code={!p:request_type_code!}';">
+				<input type="button" class="button" value="Approve" name ="button" onClick="exitFunction('Approve');">
+			</td>
+		</tr>
+	</table></td></tr>
+	<!--#/IF-->
+
+<!--#ELSEIF evaluate="<?p:request_type_code?>" compare="service_request" -->
+
+	<tr><td><table>
+		<tr>
+			<td colspan="4" class="HeaderRow">Confirm Service Request Creation</td>
+		</tr>
+		<tr>
+			<td><BR></td>
+		</tr>
+		<tr>
+			<td width="25">&nbsp;</td>
+			<td valign="top"><span class="HeaderLabel">Save&nbsp;- </td>
+			<td class="HeaderLabel">Click the 'Save' button to save and view without sending the request.  You can send later by searching for this Service Request and then clicking the 'Send' button.</span></td>
+			<td width="25">&nbsp;</td>
+		</tr>
+		<tr><td colspan="2">&nbsp;</td></tr>
+		<tr>
+			<td width="25">&nbsp;</td>
+			<td valign="top"><span class="HeaderLabel">Send&nbsp;- </td>
+			<td class="HeaderLabel">Click the 'Send' button to save your details and also to send the request.</span></td>
+			<td width="25">&nbsp;</td>
+		</tr>
+		<tr>
+			<td><BR></td>
+		</tr>
+		<tr>
+			<td colspan="4" align="right">
+				<input type="button" class="button" value="Cancel" name="button" onClick="exitFunction('confirm_cancel');">
+				<input type="button" class="button" value="Save" name ="button" onClick="exitFunction('Save');">
+				<input type="button" class="button" value="Send" name ="button" onClick="exitFunction('Send');">
+			</td>
+		</tr>
+	</table></td></tr>
+
+<!--#ELSEIF evaluate="<?p:request_type_code?>" compare="project_folder" -->
+
+	<tr><td><table>
+		<tr>
+			<td colspan="4" class="HeaderRow">Confirm Service Request Creation</td>
+		</tr>
+		<tr>
+			<td><BR></td>
+		</tr>
+		<tr>
+			<td width="25">&nbsp;</td>
+			<td valign="top"><span class="HeaderLabel">Save&nbsp;- </td>
+			<td class="HeaderLabel">Click the 'Save' button to save and view without sending the request.  You can send later by searching for this Service Account and then clicking the 'Send' button.</span></td>
+			<td width="25">&nbsp;</td>
+		</tr>
+		<tr><td colspan="2">&nbsp;</td></tr>
+		<tr>
+			<td width="25">&nbsp;</td>
+			<td valign="top"><span class="HeaderLabel">Send&nbsp;- </td>
+			<td class="HeaderLabel">Click the 'Send' button to save your details and also to send the request.</span></td>
+			<td width="25">&nbsp;</td>
+		</tr>
+		<tr>
+			<td><BR></td>
+		</tr>
+		<tr>
+			<td colspan="4" align="right">
+				<input type="button" class="button" value="Cancel" name="button" onClick="exitFunction('confirm_cancel');">
+				<input type="button" class="button" value="Save" name ="button" onClick="exitFunction('Save');">
+				<input type="button" class="button" value="Send" name ="button" onClick="exitFunction('Send');">
+			</td>
+		</tr>
+	</table></td></tr>
+
+<!--#ELSEIF evaluate="<?p:request_type_code?>" compare="quote_request" -->
+
+	<tr><td><table>
+		<tr>
+			<td colspan="4" class="HeaderRow">Confirm Quote Request Creation</td>
+		</tr>
+		<tr>
+			<td><BR></td>
+		</tr>
+		<tr>
+			<td width="25">&nbsp;</td>
+			<td valign="top"><span class="HeaderLabel">Save&nbsp;- </td>
+			<td class="HeaderLabel">Click the 'Save' button to save and view without sending the request.  You can send later by searching for this Quote Request and then clicking the 'Send' button.</span></td>
+			<td width="25">&nbsp;</td>
+		</tr>
+		<tr><td colspan="2">&nbsp;</td></tr>
+		<tr>
+			<td width="25">&nbsp;</td>
+			<td valign="top"><span class="HeaderLabel">Send&nbsp;- </td>
+			<td class="HeaderLabel">Click the 'Send' button to save your details and also to send the request.</span></td>
+			<td width="25">&nbsp;</td>
+		</tr>
+		<tr>
+			<td><BR></td>
+		</tr>
+		<tr>
+			<td colspan="4" align="right">
+				<input type="button" class="button" value="Cancel" name="button" onClick="exitFunction('confirm_cancel');">
+				<input type="button" class="button" value="Save" name ="button" onClick="exitFunction('Save');">
+				<input type="button" class="button" value="Send" name ="button" onClick="exitFunction('Send');">
+			</td>
+		</tr>
+	</table></td></tr>
+
+<!--#ELSEIF evaluate="<?p:request_type_code?>" compare="quote" -->
+
+	<tr><td><table>
+		<tr>
+			<td colspan="4" class="HeaderRow">Confirm Quote Creation</td>
+		</tr>
+		<tr>
+			<td><BR></td>
+		</tr>
+		<tr>
+			<td width="25">&nbsp;</td>
+			<td valign="top"><span class="HeaderLabel">Save&nbsp;- </td>
+			<td class="HeaderLabel">Click the 'Save' button to save and view without sending the request.  You can send later by searching for this Quote and then clicking the 'Send' button.</span></td>
+			<td width="25">&nbsp;</td>
+		</tr>
+		<tr><td colspan="2">&nbsp;</td></tr>
+		<tr>
+			<td width="25">&nbsp;</td>
+			<td valign="top"><span class="HeaderLabel">Send&nbsp;- </td>
+			<td class="HeaderLabel">Click the 'Send' button to save your details and also to send the request.</span></td>
+			<td width="25">&nbsp;</td>
+		</tr>
+		<tr>
+			<td><BR></td>
+		</tr>
+		<tr>
+			<td colspan="4" align="right">
+				<input type="button" class="button" value="Cancel" name="button" onClick="exitFunction('confirm_cancel');">
+				<input type="button" class="button" value="Save" name ="button" onClick="exitFunction('Save');">
+				<input type="button" class="button" value="Send" name ="button" onClick="exitFunction('Send');">
+			</td>
+		</tr>
+	</table></td></tr>
+
+<!--#/IF-->
+
+	</form>
+ 	</table>
+</body>
+
+<script language="JavaScript">
+<!--
+
+	function exitFunction(button)
+	{
+		if( button == 'Refuse' )
+			parent.window.opener.wo_edit.refusal_reason.value = confirm_form.refusal_reason.value;
+	   	parent.window.opener.focus();
+		parent.window.opener.exitFunction(button);
+    	parent.close();
+	}
+
+-->
+</script>
+
+<!--#EMBED template="enet/embeds/footer.html" -->

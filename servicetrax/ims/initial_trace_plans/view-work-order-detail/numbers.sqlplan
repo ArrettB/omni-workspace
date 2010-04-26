@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ShowPlanXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0" Build="9.00.3054.00" xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan">
+  <BatchSequence>
+    <Batch>
+      <Statements>
+        <StmtSimple StatementCompId="1" StatementEstRows="8.39286" StatementId="1" StatementOptmLevel="TRIVIAL" StatementSubTreeCost="0.00329123" StatementText="SELECT [number] [col_sequence] FROM [numbers] WHERE [number]&gt;=@1 AND [number]&lt;=@2 ORDER BY [number] ASC" StatementType="SELECT">
+          <StatementSetOptions ANSI_NULLS="false" ANSI_PADDING="false" ANSI_WARNINGS="false" ARITHABORT="true" CONCAT_NULL_YIELDS_NULL="false" NUMERIC_ROUNDABORT="false" QUOTED_IDENTIFIER="false" />
+          <QueryPlan DegreeOfParallelism="1" CachedPlanSize="14" CompileTime="1" CompileCPU="1" CompileMemory="168">
+            <RelOp AvgRowSize="16" EstimateCPU="0.000166232" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="8.39286" LogicalOp="Clustered Index Seek" NodeId="0" Parallel="false" PhysicalOp="Clustered Index Seek" EstimatedTotalSubtreeCost="0.00329123">
+              <OutputList>
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[NUMBERS]" Column="number" />
+              </OutputList>
+              <RunTimeInformation>
+                <RunTimeCountersPerThread Thread="0" ActualRows="10" ActualEndOfScans="1" ActualExecutions="1" />
+              </RunTimeInformation>
+              <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                <DefinedValues>
+                  <DefinedValue>
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[NUMBERS]" Column="number" />
+                  </DefinedValue>
+                </DefinedValues>
+                <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[NUMBERS]" Index="[PK_Table1]" />
+                <SeekPredicates>
+                  <SeekPredicate>
+                    <StartRange ScanType="GE">
+                      <RangeColumns>
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[NUMBERS]" Column="number" />
+                      </RangeColumns>
+                      <RangeExpressions>
+                        <ScalarOperator ScalarString="CONVERT_IMPLICIT(numeric(18,0),[@1],0)">
+                          <Identifier>
+                            <ColumnReference Column="ConstExpr1003">
+                              <ScalarOperator>
+                                <Convert DataType="numeric" Precision="18" Scale="0" Style="0" Implicit="true">
+                                  <ScalarOperator>
+                                    <Identifier>
+                                      <ColumnReference Column="@1" />
+                                    </Identifier>
+                                  </ScalarOperator>
+                                </Convert>
+                              </ScalarOperator>
+                            </ColumnReference>
+                          </Identifier>
+                        </ScalarOperator>
+                      </RangeExpressions>
+                    </StartRange>
+                    <EndRange ScanType="LE">
+                      <RangeColumns>
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[NUMBERS]" Column="number" />
+                      </RangeColumns>
+                      <RangeExpressions>
+                        <ScalarOperator ScalarString="CONVERT_IMPLICIT(numeric(18,0),[@2],0)">
+                          <Identifier>
+                            <ColumnReference Column="ConstExpr1004">
+                              <ScalarOperator>
+                                <Convert DataType="numeric" Precision="18" Scale="0" Style="0" Implicit="true">
+                                  <ScalarOperator>
+                                    <Identifier>
+                                      <ColumnReference Column="@2" />
+                                    </Identifier>
+                                  </ScalarOperator>
+                                </Convert>
+                              </ScalarOperator>
+                            </ColumnReference>
+                          </Identifier>
+                        </ScalarOperator>
+                      </RangeExpressions>
+                    </EndRange>
+                  </SeekPredicate>
+                </SeekPredicates>
+              </IndexScan>
+            </RelOp>
+            <ParameterList>
+              <ColumnReference Column="@2" ParameterCompiledValue="(10)" ParameterRuntimeValue="(10)" />
+              <ColumnReference Column="@1" ParameterCompiledValue="(1)" ParameterRuntimeValue="(1)" />
+            </ParameterList>
+          </QueryPlan>
+        </StmtSimple>
+      </Statements>
+    </Batch>
+  </BatchSequence>
+</ShowPlanXML>

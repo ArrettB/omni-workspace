@@ -1,0 +1,41 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: user_list.html, 19, 1/7/2005 5:11:47 PM, Lee A. Gunderson$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.mnt/user_edit.view?>"-->
+<body class="BodyTag">
+
+	<span class="HeaderLabel">
+		Please select a user you wish to edit:
+	</span>
+
+	<!--#SMARTTABLE class="SmartTable" name="jobs"
+		   query="SELECT DISTINCT u.user_id, u.first_name+' '+u.last_name name,  u.first_name, u.last_name, u.login, u.dealer_name
+	   			  FROM user_organizations_v u
+	   			  WHERE (organization_id=<?s:org_id.toPStmtString()?> OR organization_id is null) AND active_flag = 'Y'
+	   			  ORDER BY u.first_name, u.last_name"
+	   -->
+	<!--#IF defined="<?s:rights.mnt/user_edit.update?>"-->
+	   <!--#SMARTCOLUMN name="first_name" sort="first_name" title="First Name" width="10%" href="<?s:showPage?>mnt/user_edit.html?user_id=<?r:jobs:user_id?>" target="main_frame" filter="u.first_name:u.first_name" -->
+		<!--#SMARTCOLUMN name="last_name" sort="last_name" title="Last Name" width="15%" href="<?s:showPage?>mnt/user_edit.html?user_id=<?r:jobs:user_id?>" target="main_frame" filter="u.last_name:u.last_name" -->
+	<!--#ELSE-->
+	   <!--#SMARTCOLUMN name="first_name" sort="first_name" title="First Name" width="15%" filter="u.first_name:u.first_name" -->
+		<!--#SMARTCOLUMN name="last_name" sort="last_name" title="Last Name" width="15%" filter="u.last_name:u.last_name" -->
+	<!--#/IF-->
+	   <!--#SMARTCOLUMN name="login" sort="login" title="Login&nbsp;Name" width="20%" filter="u.login:u.login" -->
+	   <!--#SMARTCOLUMN name="dealer_name" sort="dealer_name" title="Works&nbsp;For&nbsp;Dealer" width="20%"
+			filter="u.dealer_name:u.dealer_name"
+			filterQuery="SELECT DISTINCT dealer_name id, dealer_name FROM user_organizations_v WHERE organization_id=<?s:org_id.toPStmtString()?> ORDER BY dealer_name"
+	 		filterQuick="true"
+	   -->
+
+	<!--#/SMARTTABLE -->
+
+	<br>
+
+<!--#IF defined="<?s:rights.mnt/user_edit.insert?>"-->
+	<input type="submit" class="button" name="button" value="New User" onClick="location='{!s:showPage!}mnt/user_edit.html?user_id='">
+<!--#/IF-->
+	<input type="submit" class="button" name="button" value="Cancel" onClick="location='{!s:showPage!}mnt/main_mnt.html'">
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

@@ -1,0 +1,37 @@
+<!--#EMBED template="embeds/header.html"-->
+
+
+<body class="BodyTag">
+
+<table class="SmartTable" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td class="tableHeader">Submitted TO Billing</td>
+	</tr>
+</table>
+
+<!--#SMARTTABLE name="service_lines"
+	class="SmartTable" TableTotal="true" TotalClass="TableTotal"
+	query="SELECT tc_service_line_no, service_line_id, service_line_date, item_type_code, resource_name, item_name, payroll_qty, expense_rate, expense_qty, expense_total,
+			verified_by_name, override_by_name, tc_job_no, tc_job_id, tc_service_no, tc_service_id, ext_pay_code
+			FROM time_capture_v
+	WHERE status_code = 'submitted'
+		and tc_service_id = <?s:service_id.toPStmtString()?>
+		and (foreman_user_id = <?s:user_id.toPStmtString()?> or billing_user_id = <?s:user_id.toPStmtString()?> OR 'true' = <?s:rights.view_all_jobs.view.isNull('false').toPStmtString()?>)
+		AND ph_service_id is null
+	    AND fully_allocated_flag = 'N'
+		AND organization_id = <?s:org_id.toPStmtString()?>
+		AND billed_flag = 'N'
+	ORDER BY resource_name, item_name, service_line_date"
+-->
+	<!--#SMARTCOLUMN name="resource_name" sort="resource_name" title="Resource Name" width="10%" -->
+	<!--#SMARTCOLUMN name="tc_service_line_no" sort="tc_service_line_no" title="Line#" width="5%" align="center" href="<?s:action?>setServiceLineFields/time/tc_edit.html?job_id=<?r:service_lines:tc_job_id?>&service_id=<?r:service_lines:tc_service_id?>&service_line_id=<?r:service_lines:service_line_id?>&item_type_code=<?r:service_lines:item_type_code?>&prev_template=time/req_tc_main.html&module_mode=edit&module=time&level=line&level=<?p:level?>"target="_parent"-->
+	<!--#SMARTCOLUMN name="service_line_date" sort="service_line_date" title="Date" width="6%" format="date" -->
+	<!--#SMARTCOLUMN name="item_name" sort="item_name" title="Item" width="10%" -->
+	<!--#SMARTCOLUMN name="ext_pay_code" sort="ext_pay_code" title="Paycode" width="5%" align="center" -->
+	<!--#SMARTCOLUMN name="payroll_qty" sort="payroll_qty" title="Hours" width="6%" total="true" align="right" format="###,###,###,##0.00" -->
+	<!--#SMARTCOLUMN name="expense_rate" sort="expense_rate" title="Exp Rate" width="5%" align="right" -->
+	<!--#SMARTCOLUMN name="expense_qty" sort="expense_qty" title="Exp Qty" width="5%" align="right"-->
+	<!--#SMARTCOLUMN name="expense_total" sort="expense_total" title="Exp Tot" width="5%" total="true" align="right" format="money"-->
+<!--#/SMARTTABLE -->
+
+<!--#EMBED template="embeds/footer.html" -->

@@ -1,0 +1,13 @@
+<html>
+<head>
+<title></title>
+</head>
+<body>
+<!--#SQLLOOP name="getIsQuoted"
+	query="SELECT is_quoted FROM requests WHERE request_id = <?s:request_id?>"
+ -->
+	<!--#SET name="requestIsQuoted" value="<?r:getIsQuoted:is_quoted?>" scope="parameter" -->
+<!--#/SQLLOOP  -->
+
+<!--#EMBED template="enet/req/quote_estimator.html" -->
+</body>

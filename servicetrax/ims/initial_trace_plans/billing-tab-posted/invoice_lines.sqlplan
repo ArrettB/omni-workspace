@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ShowPlanXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0" Build="9.00.3054.00" xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan">
+  <BatchSequence>
+    <Batch>
+      <Statements>
+        <StmtSimple StatementCompId="1" StatementEstRows="109342" StatementId="1" StatementOptmLevel="FULL" StatementSubTreeCost="12.6725" StatementText="SELECT [invoice_id],[invoice_line_id],[invoice_line_no],[line_desc],[qty],[unit_price],[qty]*[unit_price] [extended_total] FROM [invoice_lines_v] WHERE [invoice_line_type_code]=@1 ORDER BY [invoice_id] ASC,[invoice_line_no] ASC" StatementType="SELECT">
+          <StatementSetOptions ANSI_NULLS="false" ANSI_PADDING="false" ANSI_WARNINGS="false" ARITHABORT="true" CONCAT_NULL_YIELDS_NULL="false" NUMERIC_ROUNDABORT="false" QUOTED_IDENTIFIER="false" />
+          <QueryPlan DegreeOfParallelism="4" MemoryGrant="6780" CachedPlanSize="142" CompileTime="96" CompileCPU="96" CompileMemory="2104">
+            <MissingIndexes>
+              <MissingIndexGroup Impact="21.3979">
+                <MissingIndex Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]">
+                  <ColumnGroup Usage="EQUALITY">
+                    <Column Name="[INVOICE_LINE_TYPE_ID]" ColumnId="5" />
+                  </ColumnGroup>
+                  <ColumnGroup Usage="INCLUDE">
+                    <Column Name="[INVOICE_LINE_ID]" ColumnId="1" />
+                    <Column Name="[INVOICE_ID]" ColumnId="2" />
+                    <Column Name="[INVOICE_LINE_NO]" ColumnId="4" />
+                    <Column Name="[DESCRIPTION]" ColumnId="6" />
+                    <Column Name="[UNIT_PRICE]" ColumnId="7" />
+                    <Column Name="[QTY]" ColumnId="8" />
+                  </ColumnGroup>
+                </MissingIndex>
+              </MissingIndexGroup>
+            </MissingIndexes>
+            <RelOp AvgRowSize="141" EstimateCPU="1.32647" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="109342" LogicalOp="Gather Streams" NodeId="0" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="12.6725">
+              <OutputList>
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_LINE_ID" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_LINE_NO" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="DESCRIPTION" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="UNIT_PRICE" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="QTY" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                <ColumnReference Column="Expr1040" />
+              </OutputList>
+              <RunTimeInformation>
+                <RunTimeCountersPerThread Thread="0" ActualRows="71987" ActualEndOfScans="1" ActualExecutions="1" />
+              </RunTimeInformation>
+              <Parallelism>
+                <OrderBy>
+                  <OrderByColumn Ascending="true">
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                  </OrderByColumn>
+                  <OrderByColumn Ascending="true">
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_LINE_NO" />
+                  </OrderByColumn>
+                </OrderBy>
+                <RelOp AvgRowSize="141" EstimateCPU="4.2004" EstimateIO="0.00563063" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="109342" LogicalOp="Sort" NodeId="1" Parallel="true" PhysicalOp="Sort" EstimatedTotalSubtreeCost="11.346">
+                  <OutputList>
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_LINE_ID" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_LINE_NO" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="DESCRIPTION" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="UNIT_PRICE" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="QTY" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                    <ColumnReference Column="Expr1040" />
+                  </OutputList>
+                  <MemoryFractions Input="0.524744" Output="1" />
+                  <RunTimeInformation>
+                    <RunTimeCountersPerThread Thread="3" ActualRebinds="1" ActualRewinds="0" ActualRows="17944" ActualEndOfScans="1" ActualExecutions="1" />
+                    <RunTimeCountersPerThread Thread="2" ActualRebinds="1" ActualRewinds="0" ActualRows="17845" ActualEndOfScans="1" ActualExecutions="1" />
+                    <RunTimeCountersPerThread Thread="4" ActualRebinds="1" ActualRewinds="0" ActualRows="17810" ActualEndOfScans="1" ActualExecutions="1" />
+                    <RunTimeCountersPerThread Thread="1" ActualRebinds="1" ActualRewinds="0" ActualRows="18388" ActualEndOfScans="1" ActualExecutions="1" />
+                    <RunTimeCountersPerThread Thread="0" ActualRebinds="0" ActualRewinds="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                  </RunTimeInformation>
+                  <Sort Distinct="false">
+                    <OrderBy>
+                      <OrderByColumn Ascending="true">
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                      </OrderByColumn>
+                      <OrderByColumn Ascending="true">
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_LINE_NO" />
+                      </OrderByColumn>
+                    </OrderBy>
+                    <RelOp AvgRowSize="141" EstimateCPU="1.46344" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="109342" LogicalOp="Right Outer Join" NodeId="2" Parallel="true" PhysicalOp="Hash Match" EstimatedTotalSubtreeCost="7.13997">
+                      <OutputList>
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_LINE_ID" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_LINE_NO" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="DESCRIPTION" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="UNIT_PRICE" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="QTY" />
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                        <ColumnReference Column="Expr1040" />
+                      </OutputList>
+                      <MemoryFractions Input="1" Output="0.475256" />
+                      <RunTimeInformation>
+                        <RunTimeCountersPerThread Thread="3" ActualRows="17944" ActualEndOfScans="1" ActualExecutions="1" />
+                        <RunTimeCountersPerThread Thread="2" ActualRows="17845" ActualEndOfScans="1" ActualExecutions="1" />
+                        <RunTimeCountersPerThread Thread="4" ActualRows="17810" ActualEndOfScans="1" ActualExecutions="1" />
+                        <RunTimeCountersPerThread Thread="1" ActualRows="18388" ActualEndOfScans="1" ActualExecutions="1" />
+                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                      </RunTimeInformation>
+                      <Hash>
+                        <DefinedValues />
+                        <HashKeysBuild>
+                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                        </HashKeysBuild>
+                        <HashKeysProbe>
+                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_ID" />
+                        </HashKeysProbe>
+                        <ProbeResidual>
+                          <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[INVOICE_LINES].[INVOICE_ID]=[servicetrax_dev].[dbo].[INVOICES].[INVOICE_ID]">
+                            <Compare CompareOp="EQ">
+                              <ScalarOperator>
+                                <Identifier>
+                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_ID" />
+                                </Identifier>
+                              </ScalarOperator>
+                              <ScalarOperator>
+                                <Identifier>
+                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                                </Identifier>
+                              </ScalarOperator>
+                            </Compare>
+                          </ScalarOperator>
+                        </ProbeResidual>
+                        <RelOp AvgRowSize="16" EstimateCPU="0.202764" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="116613" LogicalOp="Repartition Streams" NodeId="3" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="0.518252">
+                          <OutputList>
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                          </OutputList>
+                          <RunTimeInformation>
+                            <RunTimeCountersPerThread Thread="2" ActualRows="29236" ActualEndOfScans="1" ActualExecutions="1" />
+                            <RunTimeCountersPerThread Thread="3" ActualRows="29112" ActualEndOfScans="1" ActualExecutions="1" />
+                            <RunTimeCountersPerThread Thread="4" ActualRows="29004" ActualEndOfScans="1" ActualExecutions="1" />
+                            <RunTimeCountersPerThread Thread="1" ActualRows="29261" ActualEndOfScans="1" ActualExecutions="1" />
+                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                          </RunTimeInformation>
+                          <Parallelism PartitioningType="Hash">
+                            <PartitionColumns>
+                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                            </PartitionColumns>
+                            <RelOp AvgRowSize="16" EstimateCPU="0.0642156" EstimateIO="0.251273" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="116613" LogicalOp="Index Scan" NodeId="4" Parallel="true" PhysicalOp="Index Scan" EstimatedTotalSubtreeCost="0.315489">
+                              <OutputList>
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                              </OutputList>
+                              <RunTimeInformation>
+                                <RunTimeCountersPerThread Thread="3" ActualRows="22886" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="4" ActualRows="35068" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="1" ActualRows="28815" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="2" ActualRows="29844" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                              </RunTimeInformation>
+                              <IndexScan Ordered="false" ForcedIndex="false" NoExpandHint="false">
+                                <DefinedValues>
+                                  <DefinedValue>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                                  </DefinedValue>
+                                </DefinedValues>
+                                <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Index="[IX_I_JOBS]" />
+                              </IndexScan>
+                            </RelOp>
+                          </Parallelism>
+                        </RelOp>
+                        <RelOp AvgRowSize="141" EstimateCPU="0.821872" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="109342" LogicalOp="Repartition Streams" NodeId="5" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="5.15828">
+                          <OutputList>
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_LINE_ID" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_ID" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_LINE_NO" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="DESCRIPTION" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="UNIT_PRICE" />
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="QTY" />
+                            <ColumnReference Column="Expr1040" />
+                          </OutputList>
+                          <RunTimeInformation>
+                            <RunTimeCountersPerThread Thread="3" ActualRows="17944" ActualEndOfScans="1" ActualExecutions="1" />
+                            <RunTimeCountersPerThread Thread="2" ActualRows="17845" ActualEndOfScans="1" ActualExecutions="1" />
+                            <RunTimeCountersPerThread Thread="4" ActualRows="17810" ActualEndOfScans="1" ActualExecutions="1" />
+                            <RunTimeCountersPerThread Thread="1" ActualRows="18388" ActualEndOfScans="1" ActualExecutions="1" />
+                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                          </RunTimeInformation>
+                          <Parallelism PartitioningType="Hash">
+                            <PartitionColumns>
+                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_ID" />
+                            </PartitionColumns>
+                            <RelOp AvgRowSize="141" EstimateCPU="1.08368" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="109342" LogicalOp="Inner Join" NodeId="6" Parallel="true" PhysicalOp="Hash Match" EstimatedTotalSubtreeCost="4.33641">
+                              <OutputList>
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_LINE_ID" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_ID" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_LINE_NO" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="DESCRIPTION" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="UNIT_PRICE" />
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="QTY" />
+                                <ColumnReference Column="Expr1040" />
+                              </OutputList>
+                              <MemoryFractions Input="0" Output="0" />
+                              <RunTimeInformation>
+                                <RunTimeCountersPerThread Thread="3" ActualRows="16458" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="4" ActualRows="17868" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="2" ActualRows="19302" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="1" ActualRows="18359" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                              </RunTimeInformation>
+                              <Hash>
+                                <DefinedValues />
+                                <HashKeysBuild>
+                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Column="LOOKUP_ID" />
+                                </HashKeysBuild>
+                                <HashKeysProbe>
+                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_LINE_TYPE_ID" />
+                                </HashKeysProbe>
+                                <ProbeResidual>
+                                  <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[LOOKUPS].[LOOKUP_ID]=[servicetrax_dev].[dbo].[INVOICE_LINES].[INVOICE_LINE_TYPE_ID]">
+                                    <Compare CompareOp="EQ">
+                                      <ScalarOperator>
+                                        <Identifier>
+                                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Column="LOOKUP_ID" />
+                                        </Identifier>
+                                      </ScalarOperator>
+                                      <ScalarOperator>
+                                        <Identifier>
+                                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_LINE_TYPE_ID" />
+                                        </Identifier>
+                                      </ScalarOperator>
+                                    </Compare>
+                                  </ScalarOperator>
+                                </ProbeResidual>
+                                <RelOp AvgRowSize="16" EstimateCPU="0.0285022" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Distribute Streams" NodeId="7" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="0.0716174">
+                                  <OutputList>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Column="LOOKUP_ID" />
+                                  </OutputList>
+                                  <RunTimeInformation>
+                                    <RunTimeCountersPerThread Thread="3" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                                    <RunTimeCountersPerThread Thread="2" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                                    <RunTimeCountersPerThread Thread="1" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                                    <RunTimeCountersPerThread Thread="4" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                  </RunTimeInformation>
+                                  <Parallelism PartitioningType="Broadcast">
+                                    <RelOp AvgRowSize="16" EstimateCPU="4.18E-06" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Inner Join" NodeId="8" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.0431152">
+                                      <OutputList>
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Column="LOOKUP_ID" />
+                                      </OutputList>
+                                      <RunTimeInformation>
+                                        <RunTimeCountersPerThread Thread="1" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                      </RunTimeInformation>
+                                      <NestedLoops Optimized="false">
+                                        <OuterReferences>
+                                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Column="LOOKUP_TYPE_ID" />
+                                        </OuterReferences>
+                                        <RelOp AvgRowSize="25" EstimateCPU="0.0285033" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Gather Streams" NodeId="9" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="0.039827">
+                                          <OutputList>
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Column="LOOKUP_ID" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Column="LOOKUP_TYPE_ID" />
+                                          </OutputList>
+                                          <RunTimeInformation>
+                                            <RunTimeCountersPerThread Thread="1" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                          </RunTimeInformation>
+                                          <Parallelism>
+                                            <RelOp AvgRowSize="39" EstimateCPU="0.0004745" EstimateIO="0.0105324" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Clustered Index Scan" NodeId="10" Parallel="true" PhysicalOp="Clustered Index Scan" EstimatedTotalSubtreeCost="0.0110069">
+                                              <OutputList>
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Column="LOOKUP_ID" />
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Column="LOOKUP_TYPE_ID" />
+                                              </OutputList>
+                                              <RunTimeInformation>
+                                                <RunTimeCountersPerThread Thread="4" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                                                <RunTimeCountersPerThread Thread="3" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                                                <RunTimeCountersPerThread Thread="1" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                                                <RunTimeCountersPerThread Thread="2" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                              </RunTimeInformation>
+                                              <IndexScan Ordered="false" ForcedIndex="false" NoExpandHint="false">
+                                                <DefinedValues>
+                                                  <DefinedValue>
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Column="LOOKUP_ID" />
+                                                  </DefinedValue>
+                                                  <DefinedValue>
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Column="LOOKUP_TYPE_ID" />
+                                                  </DefinedValue>
+                                                </DefinedValues>
+                                                <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Index="[PK_LOOKUPS]" TableReferenceId="2" />
+                                                <Predicate>
+                                                  <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[LOOKUPS].[CODE]='custom' AND [servicetrax_dev].[dbo].[LOOKUPS].[ACTIVE_FLAG]&lt;&gt;'N'">
+                                                    <Logical Operation="AND">
+                                                      <ScalarOperator>
+                                                        <Compare CompareOp="EQ">
+                                                          <ScalarOperator>
+                                                            <Identifier>
+                                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Column="CODE" />
+                                                            </Identifier>
+                                                          </ScalarOperator>
+                                                          <ScalarOperator>
+                                                            <Const ConstValue="'custom'" />
+                                                          </ScalarOperator>
+                                                        </Compare>
+                                                      </ScalarOperator>
+                                                      <ScalarOperator>
+                                                        <Compare CompareOp="NE">
+                                                          <ScalarOperator>
+                                                            <Identifier>
+                                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Column="ACTIVE_FLAG" />
+                                                            </Identifier>
+                                                          </ScalarOperator>
+                                                          <ScalarOperator>
+                                                            <Const ConstValue="'N'" />
+                                                          </ScalarOperator>
+                                                        </Compare>
+                                                      </ScalarOperator>
+                                                    </Logical>
+                                                  </ScalarOperator>
+                                                </Predicate>
+                                              </IndexScan>
+                                            </RelOp>
+                                          </Parallelism>
+                                        </RelOp>
+                                        <RelOp AvgRowSize="29" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Clustered Index Seek" NodeId="11" Parallel="false" PhysicalOp="Clustered Index Seek" EstimatedTotalSubtreeCost="0.0032831">
+                                          <OutputList>
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUP_TYPES]" Column="CODE" />
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUP_TYPES]" Column="ACTIVE_FLAG" />
+                                          </OutputList>
+                                          <RunTimeInformation>
+                                            <RunTimeCountersPerThread Thread="1" ActualRows="1" ActualEndOfScans="0" ActualExecutions="1" />
+                                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                          </RunTimeInformation>
+                                          <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                            <DefinedValues>
+                                              <DefinedValue>
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUP_TYPES]" Column="CODE" />
+                                              </DefinedValue>
+                                              <DefinedValue>
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUP_TYPES]" Column="ACTIVE_FLAG" />
+                                              </DefinedValue>
+                                            </DefinedValues>
+                                            <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUP_TYPES]" Index="[PK_LOOKUP_TYPES]" TableReferenceId="2" />
+                                            <SeekPredicates>
+                                              <SeekPredicate>
+                                                <Prefix ScanType="EQ">
+                                                  <RangeColumns>
+                                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUP_TYPES]" Column="LOOKUP_TYPE_ID" />
+                                                  </RangeColumns>
+                                                  <RangeExpressions>
+                                                    <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[LOOKUPS].[LOOKUP_TYPE_ID]">
+                                                      <Identifier>
+                                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Column="LOOKUP_TYPE_ID" />
+                                                      </Identifier>
+                                                    </ScalarOperator>
+                                                  </RangeExpressions>
+                                                </Prefix>
+                                              </SeekPredicate>
+                                            </SeekPredicates>
+                                            <Predicate>
+                                              <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[LOOKUP_TYPES].[CODE]='invoice_line_type' AND [servicetrax_dev].[dbo].[LOOKUP_TYPES].[ACTIVE_FLAG]&lt;&gt;'N'">
+                                                <Logical Operation="AND">
+                                                  <ScalarOperator>
+                                                    <Compare CompareOp="EQ">
+                                                      <ScalarOperator>
+                                                        <Identifier>
+                                                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUP_TYPES]" Column="CODE" />
+                                                        </Identifier>
+                                                      </ScalarOperator>
+                                                      <ScalarOperator>
+                                                        <Const ConstValue="'invoice_line_type'" />
+                                                      </ScalarOperator>
+                                                    </Compare>
+                                                  </ScalarOperator>
+                                                  <ScalarOperator>
+                                                    <Compare CompareOp="NE">
+                                                      <ScalarOperator>
+                                                        <Identifier>
+                                                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUP_TYPES]" Column="ACTIVE_FLAG" />
+                                                        </Identifier>
+                                                      </ScalarOperator>
+                                                      <ScalarOperator>
+                                                        <Const ConstValue="'N'" />
+                                                      </ScalarOperator>
+                                                    </Compare>
+                                                  </ScalarOperator>
+                                                </Logical>
+                                              </ScalarOperator>
+                                            </Predicate>
+                                          </IndexScan>
+                                        </RelOp>
+                                      </NestedLoops>
+                                    </RelOp>
+                                  </Parallelism>
+                                </RelOp>
+                                <RelOp AvgRowSize="150" EstimateCPU="0.0109366" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="218731" LogicalOp="Compute Scalar" NodeId="12" Parallel="true" PhysicalOp="Compute Scalar" EstimatedTotalSubtreeCost="3.18111">
+                                  <OutputList>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_LINE_ID" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_ID" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_LINE_NO" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_LINE_TYPE_ID" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="DESCRIPTION" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="UNIT_PRICE" />
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="QTY" />
+                                    <ColumnReference Column="Expr1040" />
+                                  </OutputList>
+                                  <ComputeScalar>
+                                    <DefinedValues>
+                                      <DefinedValue>
+                                        <ColumnReference Column="Expr1040" />
+                                        <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[INVOICE_LINES].[QTY]*[servicetrax_dev].[dbo].[INVOICE_LINES].[UNIT_PRICE]">
+                                          <Arithmetic Operation="MULT">
+                                            <ScalarOperator>
+                                              <Identifier>
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="QTY" />
+                                              </Identifier>
+                                            </ScalarOperator>
+                                            <ScalarOperator>
+                                              <Identifier>
+                                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="UNIT_PRICE" />
+                                              </Identifier>
+                                            </ScalarOperator>
+                                          </Arithmetic>
+                                        </ScalarOperator>
+                                      </DefinedValue>
+                                    </DefinedValues>
+                                    <RelOp AvgRowSize="133" EstimateCPU="0.120381" EstimateIO="3.04979" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="218731" LogicalOp="Clustered Index Scan" NodeId="13" Parallel="true" PhysicalOp="Clustered Index Scan" EstimatedTotalSubtreeCost="3.17017">
+                                      <OutputList>
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_LINE_ID" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_ID" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_LINE_NO" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_LINE_TYPE_ID" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="DESCRIPTION" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="UNIT_PRICE" />
+                                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="QTY" />
+                                      </OutputList>
+                                      <RunTimeInformation>
+                                        <RunTimeCountersPerThread Thread="3" ActualRows="50918" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="2" ActualRows="57739" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="1" ActualRows="55833" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="4" ActualRows="54241" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                      </RunTimeInformation>
+                                      <IndexScan Ordered="false" ForcedIndex="false" NoExpandHint="false">
+                                        <DefinedValues>
+                                          <DefinedValue>
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_LINE_ID" />
+                                          </DefinedValue>
+                                          <DefinedValue>
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_ID" />
+                                          </DefinedValue>
+                                          <DefinedValue>
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_LINE_NO" />
+                                          </DefinedValue>
+                                          <DefinedValue>
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="INVOICE_LINE_TYPE_ID" />
+                                          </DefinedValue>
+                                          <DefinedValue>
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="DESCRIPTION" />
+                                          </DefinedValue>
+                                          <DefinedValue>
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="UNIT_PRICE" />
+                                          </DefinedValue>
+                                          <DefinedValue>
+                                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Column="QTY" />
+                                          </DefinedValue>
+                                        </DefinedValues>
+                                        <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_LINES]" Index="[IL_PK]" />
+                                      </IndexScan>
+                                    </RelOp>
+                                  </ComputeScalar>
+                                </RelOp>
+                              </Hash>
+                            </RelOp>
+                          </Parallelism>
+                        </RelOp>
+                      </Hash>
+                    </RelOp>
+                  </Sort>
+                </RelOp>
+              </Parallelism>
+            </RelOp>
+            <ParameterList>
+              <ColumnReference Column="@1" ParameterCompiledValue="'custom'" ParameterRuntimeValue="'custom'" />
+            </ParameterList>
+          </QueryPlan>
+        </StmtSimple>
+      </Statements>
+    </Batch>
+  </BatchSequence>
+</ShowPlanXML>

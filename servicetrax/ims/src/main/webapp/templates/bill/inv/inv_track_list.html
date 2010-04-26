@@ -1,0 +1,48 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: inv_track_list.html, 8, 1/7/2005 5:09:43 PM, Lee A. Gunderson$ -->
+
+<body onLoad="window.focus()">
+
+	<table class="smartTable" border="0" cellpadding="0" cellspacing="0">
+		<form>
+		<tr><td align="right">
+			<input name="save_button" type="button" value="Add" class="button2"
+				onClick="parent.location='{!s:showPage!}bill/inv/inv_track_edit.html?invoice_id={!p:invoice_id!}&loc=inv_track_edit'">
+			<input name="close_button" type="button" value="Close" class="button2"
+				onClick="window.opener.focus();window.opener.exitFunction('Save');window.close();">
+		<hr>
+		</td></tr>
+		</form>
+		<tr><td class="tableHeader">Invoice No {!p:invoice_id!}</td></tr>
+
+
+	</table>
+
+   <!--#SMARTTABLE name="invoice_tracking_v" class="smartTable"
+   	   query="SELECT itv.invoice_tracking_id, itv.invoice_id,
+	                 itv.invoice_tracking_type_name, itv.invoice_tracking_type_code,
+	                 itv.to_contact_id, itv.to_contact_name, itv.email, itv.from_user_id, itv.from_user_name,
+	                 itv.notes, itv.old_status_name, itv.new_status_name,
+	                 itv.date_created, itv.created_by_name, itv.date_modified, itv.modified_by_name, itv.email_sent_flag, 'N/A' not_alert
+	          	 FROM invoice_tracking_v itv
+   	          WHERE itv.invoice_id = <?p:invoice_id.toPStmtString()?>
+      	       ORDER BY date_created desc"
+   -->
+     <!--#SMARTCOLUMN width="9%" title="Date" name="date_created" sort="date_created" format="date" -->
+     <!--#SMARTCOLUMN width="7%" title="Type" name="invoice_tracking_type_name" sort="invoice_tracking_type_name" -->
+     <!--#SMARTCOLUMN width="9%" title="Notified" name="to_contact_name" sort="to_contact_name" -->
+     <!--#SMARTCOLUMN width="11%" title="Notified By" name="from_user_name" sort="from_user_name" -->
+	<!--#IF evaluate="<?r:invoice_tracking_v:invoice_tracking_type_name?>" compare="alert" -->
+     <!--#SMARTCOLUMN width="5%" title="Sent" name="email_sent_flag" sort="email_sent_flag" align="center" -->
+	<!--#ELSE-->
+     <!--#SMARTCOLUMN width="5%" title="Sent" name="not_alert" sort="not_alert" align="center" -->
+	<!--#/IF-->
+     <!--#SMARTCOLUMN width="18%" title="Notes" name="notes" sort="notes" class="TableRow1Link,TableRow2Link"
+	     href="<?s:showPage?>bill/inv/inv_track_edit.html?loc=inv_track_edit&invoice_tracking_id=<?r:invoice_tracking_v:invoice_tracking_id?>&invoice_id=<?r:invoice_tracking_v:invoice_id?>" target="" -->
+   <!--#/SMARTTABLE -->
+
+</script>
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

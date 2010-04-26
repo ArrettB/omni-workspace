@@ -1,0 +1,293 @@
+<!--#EMBED template="pocket/embeds/header.html" title="Hours Entry"-->
+
+<!--#EMBED template="pocket/embeds/title_bar.html" title="Hours Entry"-->
+
+<!--#EMBED template="embeds/spacer_table.html" spacer_height="5"-->
+
+<!--#EXEC handler="ims.handlers.pocket.PocketPreFlightHandler"-->
+
+<!--#SQLLOOP
+     name="detail"
+     query="SELECT job_no, job_name, service_no, substring(service_description, 0, 20) service_description
+			  FROM pkt_services_v
+			  WHERE service_id = <?p:service_id.toPStmtString()?>"
+	 alternator1="#FFFFFF:#DCDCDC"
+-->
+
+<MAP NAME="spinner_Map">
+	<AREA SHAPE="rect" ALT="Increase Date" COORDS="0,0,16,8" HREF="{!s:showPage!}pocket/hours_entry.html?job_id={!p:job_id!}&amp;service_id={!p:service_id!}&amp;service_line_date={!d:next_service_line_date!}">
+	<AREA SHAPE="rect" ALT="Decrease Date" COORDS="0,9,16,17" HREF="{!s:showPage!}pocket/hours_entry.html?job_id={!p:job_id!}&amp;service_id={!p:service_id!}&amp;service_line_date={!d:prev_service_line_date!}">
+</MAP>
+
+<!--Entry Header-->
+<table cellspacing="0" cellpadding="0" width="100%">
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Job</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana">{!r:detail:job_no!} - {!r:detail:job_name!}</font>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Req</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana">{!r:detail:service_no!} - {!r:detail:service_description!}</font>
+		</td>
+	</tr>
+	<tr height="1">
+		<td bgcolor="black" height="1" colspan="2"><img alt="image" src="/ims/images/spacer.gif" width="1" height="1"></td>
+	</tr>
+</table>
+<!--#/SQLLOOP-->
+
+<!--Form-->
+
+
+<!--#SMARTFORM
+  name="tcForm"
+  table="service_lines"
+  key="service_line_id"
+  prevTemplate="pocket/hours_entry.html"
+  nextTemplate="pocket/hours_entry.html"
+  buttons=""
+  sequence="@@identity"
+  validate="false"
+  action="<?s:action?>pocketEntry"
+  useCSS="false"
+-->
+<!--#SMARTFIELD name="job_id" type="hidden" value="<?p:job_id?>"-->
+<!--#SMARTFIELD name="service_id" type="hidden" value="<?p:service_id?>"-->
+
+<!--#SMARTFIELD name="tc_job_id" type="hidden" value="<?p:job_id?>"-->
+<!--#SMARTFIELD name="tc_service_id" type="hidden" value="<?p:service_id?>"-->
+
+<!--#SMARTFIELD name="entry_method" type="hidden" mode="Insert" value="PDA"-->
+<!--#SMARTFIELD name="billable_flag" type="hidden" mode="Insert" value="Y"-->
+
+<!--SMARTFIELD name="entered_date" type="hidden" mode="Insert" value="getDate()"-->
+<!--SMARTFIELD name="entered_by" type="hidden" mode="Insert" value="<?s:user_id?>"-->
+
+<!--SMARTFIELD name="date_created" type="hidden" mode="Insert" value="getDate()"-->
+<!--SMARTFIELD name="created_by" type="hidden" mode="Insert" value="<?s:user_id?>"-->
+
+<!--SMARTFIELD name="date_modified" type="hidden" mode="Update" value="getDate()"-->
+<!--SMARTFIELD name="modified_by" type="hidden" mode="Update" value="<?s:user_id?>"-->
+
+
+<table cellspacing="0" cellpadding="0" width="100%">
+<!--#IF defined="<?d:err@resource_id?>"-->
+	<tr>
+		<td colspan="2">
+			<font color="#FF0000" size="-2" face="Verdana">
+				<b>{!d:err@resource_id!}</b>
+			</font>
+		</td>
+	</tr>
+	<!--#/IF-->
+	<!--#IF defined="<?d:err@service_id?>"-->
+	<tr>
+		<td class="Error" colspan="6">
+			<font color="#FF0000" size="-2" face="Verdana">
+				<b>{!d:err@service_id!}</b>
+			</font>
+		</td>
+	</tr>
+	<!--#/IF-->
+	<!--#IF defined="<?d:err@hours_date?>"-->
+	<tr>
+		<td class="Error" colspan="6">
+			<font color="#FF0000" size="-2" face="Verdana">
+				<b>{!d:err@hours_date!}</b>
+			</font>
+		</td>
+	</tr>
+	<!--#/IF-->
+	<!--#IF defined="<?d:err@num_hours?>"-->
+	<tr>
+		<td class="Error" colspan="6">
+			<font color="#FF0000" size="-2" face="Verdana">
+				<b>{!d:err@num_hours!}</b>
+			</font>
+		</td>
+	</tr>
+	<!--#/IF-->
+	<!--#IF defined="<?d:err@pay_code?>"-->
+	<tr>
+		<td class="Error" colspan="6">
+			<font color="#FF0000" size="-2" face="Verdana">
+				<b>{!d:err@pay_code!}</b>
+			</font>
+		</td>
+	</tr>
+	<!--#/IF-->
+	<!--#IF defined="<?d:err@item_id?>"-->
+	<tr>
+		<td class="Error" colspan="6">
+			<font color="#FF0000" size="-2" face="Verdana">
+				<b>{!d:err@item_id!}</b>
+			</font>
+		</td>
+	</tr>
+	<!--#/IF-->
+
+
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Num</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana">
+				<b>{!r:tcForm:tc_service_line_no!}</b>
+			</font>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Date</b></font>
+		</td>
+		<td valign="middle">
+			<!--#CHECKSECURITY right="rights.time_modify_date.view"-->
+				<!--#SMARTFIELD name="service_line_date" type="date"  size="10"--><IMG SRC="/ims/images/spinner.jpg" WIDTH=16 HEIGHT=17 BORDER=0 USEMAP="#spinner_Map" alt="Increase or decrease date">
+			<!--#ELSE-->
+				<!--#SMARTFIELD name="service_line_date" type="date"  size="10" readonly="true"-->
+			<!--#/CHECKSECURITY-->
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Resource</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana">
+				<!--#SMARTFIELD
+								name="resource_id"
+								type="droplist"
+								size="4"
+								value="dummy"
+								mandatory="true"
+								multiple
+								query="SELECT DISTINCT resource_id, dbo.getShortName(resource_name) resource_name, dbo.getSortName(resource_name)
+									FROM pkt_job_resources_v
+									WHERE job_id = <?p:job_id.toPStmtString()?>
+									ORDER BY dbo.getSortName(resource_name)"
+				-->
+			</font>
+			</td>
+	</tr>
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Item</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana">
+				<!--#SMARTFIELD
+								name="item_id"
+								type="droplist"
+								query="SELECT DISTINCT i.item_id, i.name item_name
+                                         FROM items i INNER JOIN
+                                              jobs j ON i.job_type_id = j.job_type_id
+                                        WHERE i.organization_id = <?s:org_id.toPStmtString()?>
+                                          AND j.job_id = <?p:job_id.toPStmtString()?>
+                                     ORDER BY i.name" -->
+			</font>
+			</td>
+	</tr>
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Qty</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana">
+					<!--#SMARTFIELD name="tc_qty" type="text" size="5" -->
+			</font>
+			</td>
+	</tr>
+</table>
+
+
+<table>
+<tr>
+	<td><input type="submit" class="button" name="button" value="Add"></td>
+<!--#IF defined="<?p:service_line_id?>" -->
+	<td><input type="submit" class="button" name="button" value="Update"></td>
+	<td><input type="submit" class="button" name="button" value="Delete"></td>
+<!--#/IF-->
+</tr>
+</table>
+<!--#/SMARTFORM-->
+
+
+<!--List-->
+
+<!--#SQLLOOP
+     name="time_list"
+     query="SELECT service_line_id, service_line_no, item_name, qty,
+          		LEFT(resource_name, 1) + SUBSTRING(resource_name, CHARINDEX(' ', resource_name), LEN(resource_name) - CHARINDEX(' ', resource_name)+1) resource_name
+
+			  FROM pkt_service_lines_v
+			  WHERE service_id = <?p:service_id.toPStmtInt()?>
+			  AND (status_code = 'New' OR status_code = 'Temp')
+			  AND dbo.truncateDate(service_line_date) = dbo.truncateDate(<?d:service_line_date.toPStmtString()?>)
+			  ORDER BY service_line_no"
+	 alternator1="#FFFFFF:#DCDCDC"
+-->
+<!--#SQLHEADER-->
+
+<table cellspacing="0" cellpadding="0" width="100%">
+	<tr height="1">
+		<td bgcolor="black" height="1" colspan="4"><img alt="image" src="/ims/images/spacer.gif" width="1" height="1"></td>
+	</tr>
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>#</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Resource</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Item</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Qty</b></font>
+		</td>
+	</tr>
+	<tr height="1">
+		<td bgcolor="black" height="1" colspan="4"><img alt="image" src="/ims/images/spacer.gif" width="1" height="1"></td>
+	</tr>
+
+<!--#/SQLHEADER-->
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><a href="{!s:showPage!}pocket/hours_entry.html?job_id={!p:job_id!}&amp;service_id={!p:service_id!}&amp;service_line_id={!r:time_list:service_line_id!}&amp;dest_template={!p:dest_template!}">{!r:time_list:service_line_no!}</a></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana">{!r:time_list:resource_name!}</font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana">{!r:time_list:item_name!}</font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana">{!r:time_list:qty!}</font>
+		</td>
+	</tr>
+<!--#SQLFOOTER-->
+</table>
+<!--#/SQLFOOTER-->
+	<!--#SQLNODATA-->
+	<font color="#000000" size="-2" face="Verdana"><b>No time has been entered for this Req/date</b></font>
+	<!--#/SQLNODATA-->
+<!--#/SQLLOOP-->
+
+
+
+<table cellspacing="0" cellpadding="0" width="100%">
+	<tr>
+		<td align="center">
+			<font color="#000000" size="-2" face="Verdana"><b><a href="{!s:showPage!}pocket/hours_entry_send.html?job_id={!p:job_id!}&amp;service_id={!p:service_id!}&amp;service_line_date={!d:service_line_date!}">Send To Processing</a></b></font>
+		</td>
+	</tr>
+</table>
+<!--#EMBED template="pocket/embeds/footer.html"-->

@@ -1,0 +1,55 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!-- $Header: C:\work\ims\templates\enet\proj\job_name_edit.html, 2, 3/21/2006 6:22:54 PM, Blake Von Haden$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+
+<script language="JavaScript">
+<!--
+
+	function exitFunction(button)
+	{
+		if( button == 'Save' || button == 'Cancel' || button == 'OK')
+		{
+			if( button == 'Save' )
+			{
+				job_name_edit.job_name.value = job_name_edit.job_name.value.toUpperCase();
+				var field = parent.window.opener.document.all.item("job_name");
+				if( !(field == null) )
+					field.value = job_name_edit.job_name.value;
+				job_name_edit.saved.value = 'true';
+			}
+			else
+			{//canceling so who cares about id :-)
+				parent.window.opener.focus();
+				parent.close();
+			}
+		}
+	}
+
+-->
+</script>
+
+<body class="BodyTag" onLoad="document.job_name_edit.job_name.focus()">
+
+	<table width="100%" border="0" cellspacing="0" cellpadding="3">
+	<!--#SMARTFORM name="enet/proj/job_name_edit" table="projects" key="project_id"
+                  sequence="@@IDENTITY" preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+				  onClickFunction="exitFunction" buttons="Save,Cancel"
+      -->
+	<input type="hidden" name="saved" value="<?p:saved.isNull('false')?>"-->
+
+	<tr><td colspan="2" height="20" class="HeaderRow">Updating Job Name</td></tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr><td height="20" class="Label"><!--#SMARTFIELD title="Job Name:&nbsp;" div="</td><td>" name="job_name" size="30" maxlength="50"--></td><td>&nbsp;</td></tr>
+	<tr><td>&nbsp;</td></tr>
+
+<!--#IF evaluate="<?p:saved?>" compare="true" -->
+	<script>exitFunction('Cancel');</script>
+<!--#/IF-->
+
+   <!--#/SMARTFORM -->
+	</table>
+
+</body>
+
+
+<!--#EMBED template="enet/embeds/footer.html" -->

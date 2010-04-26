@@ -1,0 +1,54 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: main_pay_batch_det.html, 3, 1/23/2006 3:02:17 PM, Blake Von Haden$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.time/pay/payroll.view?>"-->
+
+<body class="BodyTag">
+
+   <!--#SMARTTABLE name="payrollQry" totalClass="tableTotal"
+	   query="
+			SELECT service_line_week_varchar, service_line_week, p.user_id, p.employee_name, p.ext_pay_code, p.item_name, SUM(p.payroll_qty) sum_hours_qty, null no_name
+			FROM payroll_batches_v p
+			WHERE p.organization_id = <?s:org_id.toPStmtString()?> and p.ext_batch_id = <?p:ext_batch_id.toPStmtString()?>
+			GROUP BY p.service_line_week_varchar, service_line_week, p.user_id, p.employee_name, p.ext_pay_code,  p.item_name
+			ORDER BY p.service_line_week, p.employee_name, p.ext_pay_code, p.item_name"
+   -->
+<!--#IF evaluate="<?d:rowid?>" compare="0" -->
+	<tr class="HeaderBar"><td colspan="5" align="left">Batch - {!p:ext_batch_id!}</td>
+	<form ACTION="{!s:action!}exportPayroll" METHOD="POST" name="resubmitFrm">
+		<td align="right">
+				<input type="hidden" name="template_name" value="time/pay/main_pay_list_exported.html">
+				<input type="hidden" name="submit_type" value="re_export">
+				<input type="hidden" name="ext_batch_id" value="{!p:ext_batch_id!}">
+				<input type="submit" value="Re-Export" name="button" class="button2">
+		</td>
+	</form>
+	</tr>
+<!--#/IF-->
+		<!--#SMARTCOLUMN width="75" name="service_line_week_varchar" sort="service_line_week_varchar" title="Week&nbsp;Ending" filter="p.service_line_week_varchar:service_line_week_varchar" -->
+		<!--#SMARTCOLUMN width="100" name="employee_name" sort="employee_name" title="Employee" href="" onClick="openNext(<?r:payrollQry:user_id.toJavaScriptString()?>,<?r:payrollQry:employee_name.toJavaScriptString()?>,<?p:ext_batch_id.toJavaScriptString()?>);return false;" filter="p.employee_name:employee_name" -->
+		<!--#SMARTCOLUMN width="75" name="ext_pay_code" sort="ext_pay_code" title="Pay Code" align="center" filter="p.ext_pay_code:ext_pay_code" -->
+		<!--#SMARTCOLUMN width="75" name="item_name" sort="item_name" title="Item" filter="p.item_name:item_name" -->
+		<!--#SMARTCOLUMN width="100" name="sum_hours_qty" sort="sum_hours_qty" title="Hours" format="###,###,##0.00" align="right" total="true" -->
+		<!--#SMARTCOLUMN width="100" name="no_name" title="" -->
+   <!--#/SMARTTABLE -->
+
+<table cellspacing="0" cellpadding="0">
+	<tr><td>&nbsp;</td></tr>
+	<tr><td>
+	<input type="button" value="Cancel" name="button" class="button" onClick="location='{!s:showPage!}time/pay/main_pay_list_exported.html?'">
+	</td></tr>
+</table>
+
+<script type="text/javascript">
+<!--
+
+	function openNext(user_id, emp_name, ext_batch_id)
+	{
+		location='{!s:showPage!}time/pay/main_pay_user_det_batch.html?user_id='+escape(user_id)+'&emp_name='+escape(emp_name)+'&ext_batch_id='+escape(ext_batch_id);
+	}
+//-->
+</script>
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

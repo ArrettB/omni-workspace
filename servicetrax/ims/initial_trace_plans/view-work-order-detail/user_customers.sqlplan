@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ShowPlanXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0" Build="9.00.3054.00" xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan">
+  <BatchSequence>
+    <Batch>
+      <Statements>
+        <StmtSimple StatementCompId="1" StatementEstRows="1" StatementId="1" StatementOptmLevel="FULL" StatementOptmEarlyAbortReason="GoodEnoughPlanFound" StatementSubTreeCost="0.00659858" StatementText="SELECT uc.user_customer_id, uceu.customer_id end_user_id   FROM user_customers uc LEFT OUTER JOIN        user_customer_end_users uceu ON uc.user_customer_id = uceu.user_customer_id  WHERE uc.user_id =  2250" StatementType="SELECT">
+          <StatementSetOptions ANSI_NULLS="false" ANSI_PADDING="false" ANSI_WARNINGS="false" ARITHABORT="true" CONCAT_NULL_YIELDS_NULL="false" NUMERIC_ROUNDABORT="false" QUOTED_IDENTIFIER="false" />
+          <QueryPlan DegreeOfParallelism="1" CachedPlanSize="19" CompileTime="13" CompileCPU="2" CompileMemory="192">
+            <RelOp AvgRowSize="25" EstimateCPU="2.508E-05" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Left Outer Join" NodeId="0" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.00659858">
+              <OutputList>
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[USER_CUSTOMERS]" Alias="[uc]" Column="user_customer_id" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[user_customer_end_users]" Alias="[uceu]" Column="customer_id" />
+              </OutputList>
+              <RunTimeInformation>
+                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+              </RunTimeInformation>
+              <NestedLoops Optimized="false">
+                <Predicate>
+                  <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[USER_CUSTOMERS].[user_customer_id] as [uc].[user_customer_id]=[servicetrax_dev].[dbo].[user_customer_end_users].[user_customer_id] as [uceu].[user_customer_id]">
+                    <Compare CompareOp="EQ">
+                      <ScalarOperator>
+                        <Identifier>
+                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[USER_CUSTOMERS]" Alias="[uc]" Column="user_customer_id" />
+                        </Identifier>
+                      </ScalarOperator>
+                      <ScalarOperator>
+                        <Identifier>
+                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[user_customer_end_users]" Alias="[uceu]" Column="user_customer_id" />
+                        </Identifier>
+                      </ScalarOperator>
+                    </Compare>
+                  </ScalarOperator>
+                </Predicate>
+                <RelOp AvgRowSize="16" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Index Seek" NodeId="1" Parallel="false" PhysicalOp="Index Seek" EstimatedTotalSubtreeCost="0.0032831">
+                  <OutputList>
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[USER_CUSTOMERS]" Alias="[uc]" Column="user_customer_id" />
+                  </OutputList>
+                  <RunTimeInformation>
+                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                  </RunTimeInformation>
+                  <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                    <DefinedValues>
+                      <DefinedValue>
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[USER_CUSTOMERS]" Alias="[uc]" Column="user_customer_id" />
+                      </DefinedValue>
+                    </DefinedValues>
+                    <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[USER_CUSTOMERS]" Index="[IX_USER_CUSTOMERS]" Alias="[uc]" />
+                    <SeekPredicates>
+                      <SeekPredicate>
+                        <Prefix ScanType="EQ">
+                          <RangeColumns>
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[USER_CUSTOMERS]" Alias="[uc]" Column="user_id" />
+                          </RangeColumns>
+                          <RangeExpressions>
+                            <ScalarOperator ScalarString="(2250.)">
+                              <Const ConstValue="(2250.)" />
+                            </ScalarOperator>
+                          </RangeExpressions>
+                        </Prefix>
+                      </SeekPredicate>
+                    </SeekPredicates>
+                  </IndexScan>
+                </RelOp>
+                <RelOp AvgRowSize="25" EstimateCPU="0.0001636" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="6" LogicalOp="Clustered Index Scan" NodeId="2" Parallel="false" PhysicalOp="Clustered Index Scan" EstimatedTotalSubtreeCost="0.0032886">
+                  <OutputList>
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[user_customer_end_users]" Alias="[uceu]" Column="user_customer_id" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[user_customer_end_users]" Alias="[uceu]" Column="customer_id" />
+                  </OutputList>
+                  <RunTimeInformation>
+                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                  </RunTimeInformation>
+                  <IndexScan Ordered="false" ForcedIndex="false" NoExpandHint="false">
+                    <DefinedValues>
+                      <DefinedValue>
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[user_customer_end_users]" Alias="[uceu]" Column="user_customer_id" />
+                      </DefinedValue>
+                      <DefinedValue>
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[user_customer_end_users]" Alias="[uceu]" Column="customer_id" />
+                      </DefinedValue>
+                    </DefinedValues>
+                    <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[user_customer_end_users]" Index="[PK__user_customer_en__067FF0A2]" Alias="[uceu]" />
+                  </IndexScan>
+                </RelOp>
+              </NestedLoops>
+            </RelOp>
+          </QueryPlan>
+        </StmtSimple>
+      </Statements>
+    </Batch>
+  </BatchSequence>
+</ShowPlanXML>

@@ -1,0 +1,44 @@
+<!--#EMBED template="embeds/header.html" -->
+
+
+<body class="BodyTag">
+
+<table class="SmartTable" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td class="tableHeader">Job Summary</td>
+	</tr>
+</table>
+
+<!--#SMARTTABLE name="service_lines" height="22"
+	class="SmartTable" TableTotal="true" TotalClass="TableTotal"
+	query="SELECT tc_job_id, status_id, tc_job_no, job_name,
+					SUM(expense_total) expense_total,
+					SUM(payroll_qty) hours, billing_user_name, foreman_resource_name
+			FROM time_capture_v
+			WHERE status_code = 'submitted'
+			AND (
+				foreman_user_id = <?s:user_id.toPStmtString()?>
+				OR billing_user_id = <?s:user_id.toPStmtString()?>
+				OR 'true' = <?s:rights.view_all_jobs.view.isNull('false').toPStmtString()?>
+				)
+			AND ph_service_id is null
+			AND fully_allocated_flag = 'N'
+			AND organization_id = <?s:org_id.toPStmtString()?>
+			AND billed_flag = 'N'
+			GROUP BY status_id, tc_job_id, tc_job_no, job_name, billing_user_name, foreman_resource_name
+			ORDER BY tc_job_no"
+-->
+  <!--#SMARTCOLUMN name="tc_job_no" sort="tc_job_no" title="Job #" width="5%" align="center" href="<?s:action?>setupSession/main.html?job_id=<?r:service_lines:tc_job_id?>&loc=job_tc_list" target="tab_frame" filter="job_no:job_no" -->
+  <!--#SMARTCOLUMN name="job_name" sort="job_name" title="Job Name" width="20%" filter="job_name:job_name" -->
+  <!--#SMARTCOLUMN name="billing_user_name" sort="billing_user_name" title="Project Manager" width="10%" filter="billing_user_name:billing_user_name" -->
+  <!--#SMARTCOLUMN name="foreman_resource_name" sort="foreman_resource_name" title="Foreman" width="10%" filter="foreman_resource_name:foreman_resource_name" -->
+  <!--#SMARTCOLUMN name="hours" sort="hours" title="Hours" width="5%" align="right" format="###,###,###,##0.00" total="true"  -->
+  <!--#SMARTCOLUMN name="expense_total" sort="exp" title="Expenses" width="5%" format="money" align="right" total="true" height="18" -->
+<!--#/SMARTTABLE -->
+<br>
+
+<!--#EMBED template="time/po/po_list.html" main_page="main_tc_list_sum_det.html"-->
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

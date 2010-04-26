@@ -1,0 +1,148 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<body class="BodyTag" onLoad="">
+
+<span class="Label">View/Update Workorders:</span>
+<span class="">Please choose the Workorder to View or Update</span>
+
+
+<!--#EXEC handler="ims.handlers.query.RecordListQueryHandler" record_type_code="workorder" -->
+
+
+
+<!--#SMARTTABLE name="workorders"
+		class="SmartTable"
+		query="<?d:recordListQuery?>" -->
+
+  <!--#IF defined="<?d:workorders:firstRow?>"-->
+	<form name="frm_checkbox" action="{!s:action!}archive/enet/nav/wo_view.html" method="post" style="margin:0;">
+  <!--#/IF-->
+  <!--#IF evaluate="<?d:workorders:rowid?>" compare="total"-->
+	<td height="30" class="TableTitle">&nbsp;</td>
+  <!--#ELSE-->
+	<!--#SMARTCOLUMN title="<input type='checkbox' name='selectall' onClick='javascript:selectAll(this);' >"
+			         value="<input type='checkbox' <?r:workorders:selected?> name='archiveCheckbox' value='<?r:workorders:request_id?>' >"
+			         name="foo" align="center" width="2%"-->
+  <!--#/IF-->
+
+	<!--#SMARTCOLUMN name="project_request_no" sort="project_request_no" title="WO&nbsp;No" align="center" width="10%" href="<?s:action?>setProjectDatum?project_id=<?r:workorders:project_id?>&templateName=enet/proj/pf_main.html&request_id=<?r:workorders:request_id?>&loc=wo_create" target="_top"
+		filter="a_workorder_no:project_request_no like '%'+<?p:a_workorder_no.toPStmtForceString()?>+'%'" nowrap -->
+
+	<!--#SMARTCOLUMN name="customer_name" sort="pv.customer_name" title="Customer" width="15%"
+		filter="customer_name:pv.customer_id" filterQuery="<?d:customerListQuery?>"
+		filterQuick="true"
+	-->
+	<!--#SMARTCOLUMN name="end_user_name" sort="end_user_name" title="End User" width="15%"
+			filter="end_user_name:pv.end_user_id" filterQuery="<?d:endUserListQuery?>"
+		filterQuick="true"
+	-->
+	<!--#SMARTCOLUMN name="record_status_name" sort="record_status_name" title="Status" width="10%"
+ 		filter="record_status_name:record_status_code"
+ 		filterQuery="SELECT lookup_code, lookup_name FROM workorder_status_types_v" filterQuick="true"
+	-->
+
+	<!--#SMARTCOLUMN name="install_date" sort="install_date" title="Start Date" width="10%" format="date" filter="install_date:convert(varchar(12),ISNULL(pv.est_start_date, ISNULL(pv.min_act_start_date, pv.min_sch_start_date)) ,101) like '%'+<?p:install_date.toPStmtString()?>+'%'" -->
+
+	<!--#SMARTCOLUMN name="description" sort="description" title="Description" width="150" filter="a_description:description like '%'+<?p:a_description.toPStmtString()?>+'%'"
+		value="<INPUT TYPE='text' name='desc' value='<?r:workorders:description.replaceString('\'','&#39;')?>' readonly='true' class='smartTableDisplay' size='30'>"
+	-->
+	<!--#SMARTCOLUMN name="vendor_count" sort="vendor_count" title="#&nbsp;Vendors" width="10%" align="center" filter="vendor_count:vendor_count" -->
+	<!--#SMARTCOLUMN name="vendor_complete_count" sort="vendor_complete_count" title="WO&nbsp;Complete" width="10%" align="center" filter="vendor_complete_count:vendor_complete_count" -->
+	<!--#SMARTCOLUMN name="customer_po_no" sort="customer_po_no" title="End User PO#" width="10%" align="left" nowrap filter="customer_po_no:customer_po_no" nowrap-->
+
+	<!--SMARTCOLUMN value="<INPUT TYPE='checkbox' name='archiveCheckBox' value='<?r:workorders:record_type_code?>|<?r:workorders:request_id?>'>" title="Archive?" align="center" width="2%" -->
+
+
+<!--#/SMARTTABLE -->
+
+
+<!--#EMBED template="/embeds/spacer_table.html" spacer_height="15"-->
+	<input type="hidden" name="archiveIds" id="archiveIds" value="">
+	<input type="hidden" name="record_type" id="record_type" value="workorder">
+<table border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td width="100">
+			<input type="button" name="button" value="Archive" onClick="archive()" class="button">
+		</td>
+	</tr>
+</table>
+</form>
+
+<script type="text/javascript">
+<!--
+var totalChecked = 0;
+var f = document.frm_checkbox;
+
+function archive()
+{
+	var foundOne = false;
+	var boxList = "";
+	var boxes = document.getElementsByName("archiveCheckbox");
+	for (var i = 0; i < boxes.length; i++)
+	{
+		var theBox = boxes[i];
+		if (theBox.checked)
+		{
+			boxList += "," + theBox.value;
+			foundOne = true;
+		}
+	}
+	if (foundOne)
+	{
+		if (confirm("Do you want to close / archive the work orders?"))
+		{
+			f.archiveIds.value = boxList.substring(1);
+			f.submit();
+			return true;
+		}
+		else
+		{
+			unSelectAll();
+		}
+	}
+	else
+	{
+		alert("You must select at least one work order to archive.");
+	}
+}
+
+
+function selectAll(theitem)
+{
+	var check = theitem.checked;
+    var all_inv = 0;
+	for (i = 0; i < f.elements.length; i++)
+	{
+		if (f.elements[i].type == 'checkbox')
+		{
+				f.elements[i].checked = check;
+				all_inv += 1;
+		}
+
+	}
+
+	// update the overall counter
+	if (check)
+		totalChecked = all_inv;
+	else
+		totalChecked = 0;
+
+}
+
+function unSelectAll()
+{
+	for (i = 0; i < f.elements.length; i++)
+	{
+		if (f.elements[i].type == 'checkbox')
+		{
+				f.elements[i].checked = null;
+		}
+
+	}
+}
+
+//-->
+</script>
+</body>
+<!--#EMBED template="enet/embeds/footer.html" -->
+

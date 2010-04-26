@@ -1,0 +1,408 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.dynamic.servicetrax</groupId>
+	<artifactId>ims</artifactId>
+	<packaging>war</packaging>
+	<name>ServiceTrax IMS Module</name>
+	<version>1.38.2-SNAPSHOT</version>
+
+	<parent>
+		<groupId>com.dynamic.servicetrax</groupId>
+		<artifactId>servicetrax-parent</artifactId>
+		<version>1.38.2-SNAPSHOT</version>
+	</parent>
+
+	<developers>
+		<developer>
+			<id>blake.vonhaden</id>
+			<name>Blake VonHaden</name>
+			<email>blake.vonhaden@apexit.com</email>
+			<url>http://www.apexit.com</url>
+			<organization>Apex IT</organization>
+			<roles />
+			<timezone />
+		</developer>
+		<developer>
+			<id>wilson.hendrawan</id>
+			<name>Wilson Hendrawan</name>
+			<email>wilson.hendrawan@apexit.com</email>
+			<url>http://www.apexit.com</url>
+			<organization>Apex IT</organization>
+			<roles />
+			<timezone />
+		</developer>
+		<developer>
+			<id>john.freier</id>
+			<name>John Freier</name>
+			<email>lohn.freier@apexit.com</email>
+			<url>http://www.apexit.com</url>
+			<organization>Apex IT</organization>
+			<roles />
+			<timezone />
+		</developer>
+	</developers>
+	<scm>
+		<connection>scm:svn:http://svn.apexit.com/svn/servicetrax/trunk/</connection>
+		<developerConnection>scm:svn:http://svn.apexit.com/svn/servicetrax/trunk/</developerConnection>
+	</scm>
+	<repositories>
+		<repository>
+			<id>dynamic_repo</id>
+			<name>ApexIT Central Repository</name>
+			<url>http://maven.apexit.com/repository/</url>
+		</repository>
+	</repositories>
+	<distributionManagement>
+		<repository>
+			<id>dynamic_repo_file_deploy</id>
+			<name>ApexIT Repository</name>
+			<url>
+				file:////bentley/home/maven/tomcat/webapps/ROOT/repository
+			</url>
+		</repository>
+	</distributionManagement>
+	<ciManagement>
+		<system>continuum</system>
+		<notifiers>
+			<notifier>
+				<configuration>
+					<address>david.zhao@apexit.com</address>
+				</configuration>
+			</notifier>
+		</notifiers>
+	</ciManagement>
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://jira.apexit.com/jira/browse/ANM</url>
+	</issueManagement>
+	<build>
+		<finalName>ims</finalName>
+		<filters>
+			<filter>
+				src/main/filters/${filter.name}-filter.properties
+			</filter>
+		</filters>
+		<resources>
+			<resource>
+				<directory>src/main/tld</directory>
+				<targetPath>META-INF</targetPath>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<webXml>
+						/src/main/webapp/WEB-INF/web-${filter.name}.xml
+					</webXml>
+					<webResources />
+					<warSourceExcludes>
+						**/ims-*.xml,**/web-*.xml
+					</warSourceExcludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<configuration>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<webDefaultXml>
+						src/main/resources/webdefault.xml
+					</webDefaultXml>
+					<contextPath>/ims</contextPath>
+					<connectors>
+						<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+							<port>80</port>
+							<maxIdleTime>60000</maxIdleTime>
+						</connector>
+					</connectors>
+					<systemProperties>
+						<systemProperty>
+							<name>org.apache.commons.logging.Log</name>
+							<value>
+								org.apache.commons.logging.impl.SimpleLog
+							</value>
+						</systemProperty>
+					</systemProperties>
+				</configuration>
+			</plugin>
+
+
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+					<phase>generate-sources</phase>
+					<configuration>
+						<tasks>
+								<echo message="Copying src/main/webapp/WEB-INF/ims-${filter.name}.xml to src/main/webapp/WEB-INF/ims.xml" />
+								<copy file="src/main/webapp/WEB-INF/ims-${filter.name}.xml" toFile="src/main/webapp/WEB-INF/ims.xml" overwrite="true" />
+
+								<echo message="Copying src/main/webapp/WEB-INF/web-${filter.name}.xml to src/main/webapp/WEB-INF/web.xml" />
+								<copy file="src/main/webapp/WEB-INF/web-${filter.name}.xml" toFile="src/main/webapp/WEB-INF/web.xml" overwrite="true" />
+
+						</tasks>
+					</configuration>
+					<goals>
+						<goal>run</goal>
+					</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>
+								src\main\webapp\WEB-INF\lib
+							</directory>
+						</fileset>
+						<fileset>
+							<directory>
+								src\main\webapp\WEB-INF\classes
+							</directory>
+						</fileset>
+						<fileset>
+							<directory>
+								src\main\webapp\WEB-INF\logs
+							</directory>
+							<includes>
+								<include>*.log</include>
+							</includes>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<configuration>
+					<goals>deploy</goals>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<configuration>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<webDefaultXml>
+						src/main/resources/webdefault.xml
+					</webDefaultXml>
+					<contextPath>/ims</contextPath>
+					<connectors>
+						<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+							<port>80</port>
+							<maxIdleTime>60000</maxIdleTime>
+						</connector>
+					</connectors>
+					<systemProperties>
+						<systemProperty>
+							<name>org.apache.commons.logging.Log</name>
+							<value>
+								org.apache.commons.logging.impl.SimpleLog
+							</value>
+						</systemProperty>
+					</systemProperties>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<configuration>
+					<container>
+						<containerId>tomcat5x</containerId>
+						<home>C:\dev\tools\apache-tomcat-5.5.12</home>
+					</container>
+					<properties>
+						<dir>${project.build.directory}/tomcat</dir>
+						<cargo.servlet.port>8081</cargo.servlet.port>
+					</properties>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<tomcatManagerURL>http://localhost/manager</tomcatManagerURL>
+				<managerUsername>bbyadmin</managerUsername>
+				<managerPassword>1234</managerPassword>
+				<filter.name>dev</filter.name>
+			</properties>
+		</profile>
+		<profile>
+			<id>test</id>
+			<properties>
+				<tomcatManagerURL>http://ims.apexit.com/manager</tomcatManagerURL>
+				<managerUsername>imsadmin</managerUsername>
+				<managerPassword>imspw1</managerPassword>
+				<filter.name>test</filter.name>
+			</properties>
+		</profile>
+		<profile>
+			<id>qa</id>
+			<properties>
+				<tomcatManagerURL>http://xxx.apexit.com/manager</tomcatManagerURL>
+				<managerUsername>bbyadmin</managerUsername>
+				<managerPassword>1234</managerPassword>
+				<filter.name>qa</filter.name>
+			</properties>
+		</profile>
+		<profile>
+			<id>archive</id>
+			<properties>
+				<tomcatManagerURL>http://ims.apexit.com/manager</tomcatManagerURL>
+				<managerUsername>bbyadmin</managerUsername>
+				<managerPassword>1234</managerPassword>
+				<filter.name>archive</filter.name>
+			</properties>
+		</profile>
+		<profile>
+			<id>hni</id>
+			<properties>
+				<tomcatManagerURL>http://ims.apexit.com/manager</tomcatManagerURL>
+				<managerUsername>bbyadmin</managerUsername>
+				<managerPassword>1234</managerPassword>
+				<filter.name>hni</filter.name>
+			</properties>
+		</profile>
+		<profile>
+			<id>qa2008</id>
+			<properties>
+				<tomcatManagerURL>http://ims.apexit.com/manager</tomcatManagerURL>
+				<managerUsername>bbyadmin</managerUsername>
+				<managerPassword>1234</managerPassword>
+				<filter.name>qa2008</filter.name>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<filter.name>prod</filter.name>
+			</properties>
+		</profile>
+	</profiles>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>com.dynamic</groupId>
+			<artifactId>iFrame2-ims</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+		<!-- Servlet, JSP, and JSTL -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.4</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.8.0</version>
+		</dependency>
+
+		
+		<!-- JDBC -->
+		<dependency>
+			<groupId>net.sourceforge.jtds</groupId>
+			<artifactId>jtds</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+
+
+		<!-- mail -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4</version>
+		</dependency>
+
+		<!-- poi -->
+		<dependency>
+			<groupId>poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>2.5.1-final-20040804</version>
+		</dependency>
+
+		<!-- File Upload -->
+		<dependency>
+			<groupId>com.servlets</groupId>
+			<artifactId>cos</artifactId>
+			<version>05Nov2002</version>
+		</dependency>
+		
+		<!-- Commons Collections -->
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2</version>
+		</dependency>
+	
+		<!-- Regular Exprssions -->
+		<dependency>
+			<groupId>oro</groupId>
+			<artifactId>oro</artifactId>
+			<version>2.0.8</version>
+		</dependency>
+
+		<!-- testing -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.4</version>
+			<scope>test</scope>
+		</dependency>
+		  <dependency>
+		   <groupId>jcom</groupId>
+		   <artifactId>jcom</artifactId>
+		   <version>2.2.4</version>
+		  </dependency>
+
+
+		
+	</dependencies>
+
+</project>

@@ -1,0 +1,11 @@
+# DEXVERSION=DEX 6.00m040 2 2
+Logging file 'macro.log'
+CheckActiveWin dictionary 'default'  form Login window Login 
+  MoveTo field Password 
+  TypeTo field Password , 'sa'
+  MoveTo field 'OK Button' 
+  ClickHit field 'OK Button' 
+NewActiveWin dictionary 'default'  form 'Switch Company' window 'Switch Company' 
+  ClickHit field '(L) Company Names' item 1  # 'The World Online, Inc.' 
+  MoveTo field 'OK Button' 
+  ClickHit field 'OK Button' 

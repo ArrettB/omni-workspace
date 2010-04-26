@@ -1,0 +1,142 @@
+div.exportlinks {
+	background-color: #EEEEEE;
+	border: 1px dotted #999999;
+	padding: 2px 4px 2px 4px;
+	margin: 2px 0 10px 0;
+	width: 79%;
+}
+
+div.exportlinks a {
+	background-color: #EEEEEE;
+	color: #000000;
+	text-decoration: none;
+	font-size: .8em;
+}
+span.pagebanner {
+
+	background-color: #eee;
+	border: 1px dotted #999;
+	padding: 2px 4px 2px 4px;
+	width: 79%;
+	margin-top: 10px;
+	display: block;
+	border-bottom: none;
+
+}
+
+span.pagelinks {
+	background-color: #eee;
+	border: 1px dotted #999;
+	padding: 2px 4px 2px 4px;
+	width: 79%;
+	display: block;
+	border-top: none;
+	margin-bottom: -5px;
+}
+
+span.csv {
+	background-image: url(../images/ico_file_csv.png);
+	background-repeat: no-repeat;
+}
+
+span.excel {
+	background-image: url(../images/ico_file_excel.png);
+	background-repeat: no-repeat;
+}
+
+span.export {
+	padding: 0 4px 1px 20px;
+	display: inline;
+	display: inline-block;
+	cursor: pointer;
+}
+
+span.pdf {
+	background-image: url(../images/ico_file_pdf.png);
+	background-repeat: no-repeat;
+}
+
+span.rtf {
+	background-image: url(../images/ico_file_rtf.png);
+	background-repeat: no-repeat;
+}
+
+span.xml {
+	background-image: url(../images/ico_file_xml.png);
+	background-repeat: no-repeat;
+}
+
+table th.sectionTitle {
+	text-align: left;
+}
+
+table.bodytable {
+	border: 1px solid #666666;
+	margin: 15px 0 15px 0;
+	width: 100%;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+}
+
+table.bodytable th a {
+	text-decoration: none;
+	background-color: #E1E8D8;
+}
+
+table.bodytable th a, th a:visited {
+	color: #000000;
+}
+
+table.bodytable th a:hover {
+	text-decoration: underline;
+}
+
+table.bodytable th, table.bodytable td {
+	padding: 2px 4px 2px 4px;
+	text-align: left;
+	vertical-align: top;
+}
+
+table.bodytable th.order1 a {
+	background-image: url(../images/arrow_down.png);
+}
+
+table.bodytable th.order2 a {
+	background-image: url(../images/arrow_up.png);
+}
+
+table.bodytable th.sortable a {
+	background-image: url(../images/arrow_off.png);
+	background-repeat: no-repeat;
+	background-position: right;
+	margin-right: 10px;
+}
+
+table.bodytable th.sorted {
+	background-color: #ABC9A4;
+}
+
+table.bodytable th.sorted a, th.sortable a {
+	background-position: right;
+	display: block;
+	width: 100%;
+	background-color: #ABC9A4;
+}
+
+table.bodytable thead tr {
+	background-color: #E1E8D8;
+}
+
+table.bodytable tr.even {
+	background-color: #F5F5F5;
+}
+
+table.bodytable tr.odd {
+	background-color: #EDEDED;
+}
+
+td.checkbox {
+	padding: 2px 4px 2px 15px;
+	text-align: center;
+	width: 50px;
+}

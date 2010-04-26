@@ -1,0 +1,9 @@
+CREATE VIEW dbo.VAR_JOB_QUOTED_V
+AS
+SELECT     dbo.JOBS.JOB_ID, SUM(ISNULL(dbo.SERVICES.QUOTE_TOTAL, 0)) AS sum_quote
+FROM         dbo.JOBS INNER JOIN
+                      dbo.SERVICES ON dbo.JOBS.JOB_ID = dbo.SERVICES.JOB_ID
+GROUP BY dbo.JOBS.JOB_ID
+
+
+

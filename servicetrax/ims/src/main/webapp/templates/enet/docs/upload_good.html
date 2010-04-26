@@ -1,0 +1,53 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<script>
+<!--
+	function closeAndRefresh()
+	{
+
+		var parentHref = {!s:showPage.toJavaScriptString()!} + 
+						 {!p:return_page.toJavaScriptString()!} +
+						 '?project_id='  + {!p:project_id.toJavaScriptString()!} +
+						 '&document_id='        + {!p:document_id.toJavaScriptString()!} +
+						 '&name='        + {!p:name.toJavaScriptString()!} +
+						 '&format_id='   + {!p:format_id.toJavaScriptString()!} +
+						 '&comments='    + {!p:comments.toJavaScriptString()!} +
+						 '&version_label='    + {!p:version_label.toJavaScriptString()!} +
+						 '&filename='    + {!p:filename.toJavaScriptString()!};
+						 
+		window.opener.focus();
+		window.opener.location = parentHref;
+		window.close();
+	}
+	
+-->
+</script>
+<body class="BodyTag" onLoad="">
+		<form name="dummyForm">
+		<input type="hidden" name="project_id" value="{!p:project_id!}">
+		<input type="hidden" name="name" value="{!p:name!}">
+		<input type="hidden" name="format_id" value="{!p:format_id!}">
+ 		<table width="100%">
+			<tr>
+				<td class="HeaderLabel" align="center"> 
+					Your file has been successfully uploaded.<br><Br>Press the &quot;Close&quot; button to return to the previous window.
+				</td>
+			</tr>	
+			<tr height="300">
+				<td height="30"> 
+				</td>
+			</tr>	
+			<tr>
+				<td align="right" style="padding-right: 30;"> 
+					<input type="button" name="Close" value="Close" class="Button" onClick="closeAndRefresh()">
+				</td>
+			</tr>	
+		</table>
+
+	
+		
+		
+		</form>
+
+</body>
+
+<!--#EMBED template="enet/embeds/footer.html" -->

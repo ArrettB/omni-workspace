@@ -1,0 +1,60 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<body class="BodyTag" onLoad="">
+
+<span class="Label">
+The following work orders matched your search criteria:
+</span>
+
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="r" var="mainQuery"
+		  query="SELECT r.project_id, r.project_no, r.record_seq_no, r.record_type_seq_no,
+		                r.record_id, r.record_no,
+		                r.ext_dealer_id,
+		                r.customer_name,
+		                r.end_user_name,
+		                r.job_name,
+		                r.est_start_date,
+		                r.record_status_type_name,
+		                r.dealer_po_no,
+		                r.customer_po_no
+				   FROM projects_all_requests_v r <?s:contacts_table?>
+				  WHERE r.record_type_code = 'workorder'
+				    AND r.organization_id = <?s:org_id.toPStmtString()?>
+				    <?s:enetNavQuery?>
+		  	   ORDER BY r.project_no, r.record_seq_no, r.record_type_seq_no" -->
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="r" var="customerQuery"
+		  query="SELECT DISTINCT r.customer_id, r.customer_name
+				   FROM projects_all_requests_v r <?s:contacts_table?>
+				  WHERE r.record_type_code = 'workorder'
+				    AND r.organization_id = <?s:org_id.toPStmtString()?>
+				    <?s:enetNavQuery?>
+		  	   ORDER BY r.customer_name" -->
+
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="r" var="endUserQuery"
+		  query="SELECT DISTINCT r.end_user_id, r.end_user_name
+			  	   FROM projects_all_requests_v r <?s:contacts_table?>
+				  WHERE r.record_type_code = 'quote_request'
+				    AND r.organization_id = <?s:org_id.toPStmtString()?>
+				    <?s:enetNavQuery?>
+		   	   ORDER BY r.end_user_name" -->
+
+<!--#SMARTTABLE name="result_list" class="SmartTable" query="<?d:mainQuery?>" -->
+
+	<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Workorder#" width="10%" align="center" href="<?s:action?>setProjectDatum?project_id=<?r:result_list:project_id?>&templateName=enet/proj/pf_main.html&request_id=<?r:result_list:record_id?>&loc=wo_create" target="_top" filter="record_no:record_no" -->
+	<!--#SMARTCOLUMN name="customer_name" sort="r.customer_name" title="Customer" width="20%"
+		             filter="customer_name:r.customer_name" filterQuery="<?d:customerQuery?>" filterQuick="true" -->
+    <!--#SMARTCOLUMN name="end_user_name" sort="r.end_user_name" title="End User" width="20%"
+		             filter="end_user_name:r.end_user_name" filterQuery="<?d:endUserQuery?>" filterQuick="true" -->
+	<!--#SMARTCOLUMN name="record_status_type_name" sort="record_status_type_name" title="Status" width="10%" filterQuick="true"
+ 		             filter="record_status_type_name:record_status_type_name" filterQuery="SELECT lookup_name id, lookup_name FROM workorder_status_types_v" -->
+	<!--#SMARTCOLUMN name="est_start_date" sort="est_start_date" format="date" title="Start Date" width="10%" -->
+	<!--#SMARTCOLUMN name="customer_po_no" sort="customer_po_no" title="End&nbsp;User&nbsp;PO" width="10%" nowrap filter="customer_po_no:customer_po_no" -->
+	<!--SMARTCOLUMN name="job_name" sort="job_name" title="Job Name" width="20%" filter="job_name:job_name" -->
+
+<!--#/SMARTTABLE -->
+
+<!--#EMBED template="enet/embeds/footer.html" -->
+

@@ -1,0 +1,14 @@
+<document>
+  <properties>
+    <title>Getting Started</title>
+    <author email="gcase@apache.org">Brett Porter</author>
+  </properties>
+  <body>
+    <section name="Charm TLD Documentation">
+      <p>
+	  You can view the documentation at <a href="http://maven.apexit.com/charm/tld">http://maven.apexit.com/charm/tld</a>
+      </p>
+    </section>
+  </body>
+</document>
+

@@ -1,0 +1,117 @@
+<!-- $Header: warehouse_report.html, 3, 6/28/2001 9:37:43 AM, Chad Ryan$ -->
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.rep/warehouse_report.view?>"-->
+
+<body class="BodyTag" onLoad="window.focus()">
+
+
+<table width="100%" cellspacing="0" cellpadding="3">
+
+<body class="BodyTag" onLoad="">
+
+	<table width="100%">
+		<tr><td colspan="16" class="TableTitle">Warehouse Report</td></tr>
+	</table>
+
+<BR>
+
+	<table border="0" cellspacing="0" cellpadding="3">
+	<form name="report">
+      <tr>
+			<td class="Label">From Date:&nbsp</td>
+			<td>
+		<!--#IF DEFINED="<?p:r_from_date?>" -->
+				<input name="r_from_date" class="regular" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_from_date)')</script>" value="{!p:r_from_date!}" size="12" -->
+		<!--#ELSE-->
+			<!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) as from_date" name="dateQuery"-->
+	     		<input name="r_from_date" class="regular" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_from_date)')</script>" value="{!r:dateQuery:from_date!}" size="12"-->
+			<!--#/SQLLOOP-->
+		<!--#/IF-->
+				<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_from_date)')</script>
+			</td>
+			<td class="Label">To Date:&nbsp</td>
+	     	<td>
+		<!--#IF DEFINED="<?p:r_to_date?>" -->
+				<input name="r_to_date" class="regular" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_to_date)')</script>" value="{!p:r_to_date!}" size="12" -->
+		<!--#ELSE-->
+			<!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) as to_date" name="dateQuery"-->
+	     		<input name="r_to_date" class="regular" value="{!r:dateQuery:to_date!}" size="12"-->&nbsp;
+			<!--#/SQLLOOP-->
+		<!--#/IF-->
+				<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_to_date)')</script>
+			</td>
+		</tr>
+		<tr>
+   	   <td><input type="button" name="set_button" value="Run Report" onClick="redisplayPage();" class="button2"-->&nbsp;</td>
+		</tr>
+	</form>
+	</table>
+
+<BR>
+
+   <!--#SMARTTABLE class="SmartTable" name="job_services_v" maxRows="40"
+	   query="SELECT jsv.job_service_id, jsv.job_id, jsv.job_no, jsv.po_no, jsv.dealer_name, jsv.customer_name, jsv.job_name, jsv.job_type_name,
+	   				  jsv.service_id, jsv.service_no, jsv.est_start_date, jsv.est_start_time, jsv.delivery_type_name, jsv.warehouse_loc,
+	   				  jsv.product_qty, jsv.num_stations, jsv.pri_furn_line_type_name, jsv.sec_furn_line_type_name
+   	FROM job_services_v jsv
+   	WHERE 'true' = <?p:r_show_report.isNullSQLString('false')?>
+		   AND jsv.organization_id = <?s:org_id.toSQLString()?>
+		   AND (jsv.delivery_type_name like '%A&M%' OR delivery_type_name is null)
+			AND (jsv.job_type_id <?p:job_type_id.isNullLike('%')?> )
+   		AND jsv.service_type_code = 'long_view'
+   		AND ( jsv.service_id like '%' OR jsv.service_id is null)
+   		AND ( jsv.est_start_date between <?p:r_from_date.isNullSQLString('1/1/1901')?> and <?p:r_to_date.isNullSQLString('1/1/2101')?> )
+   	ORDER BY jsv.est_start_date, jsv.est_start_time, jsv.job_no, jsv.service_no, jsv.po_no"
+   -->
+		<!--#SMARTCOLUMN name="est_start_date" sort="est_start_date" title="Start Date" format="date" -->
+		<!--#SMARTCOLUMN name="est_start_time" sort="est_start_time" title="Time" format="time" -->
+	<!--#CHECKSECURITY right="rights.job/job_edit.view" -->
+		<!--#SMARTCOLUMN name="job_no" sort="job_no" title="Job#" align="center" href="" onClick="newWindowScrollBars('<?s:showPage?>job/job_edit.html?job_id=<?r:job_services_v:job_id?>','job_window',400,650);return false;" -->
+	<!--#ELSE-->
+		<!--#SMARTCOLUMN name="job_no" sort="job_no" title="Job#" align="center"  -->
+	<!--#/CHECKSECURITY-->
+	<!--#CHECKSECURITY right="rights.job/req_edit.view" -->
+		<!--#SMARTCOLUMN name="service_no" sort="service_no" title="Req#" align="center" href="" onClick="newWindowScrollBars('<?s:showPage?>job/req_edit.html?service_id=<?r:job_services_v:service_id?>','req_window',780,750);return false;" -->
+	<!--#ELSE-->
+		<!--#SMARTCOLUMN name="service_no" sort="service_no" title="Req#" align="center" -->
+	<!--#/CHECKSECURITY-->
+		<!--#SMARTCOLUMN name="po_no" sort="po_no" title="PO#" -->
+		<!--#SMARTCOLUMN name="dealer_name" sort="dealer_name" title="Dealer" -->
+		<!--#SMARTCOLUMN name="customer_name" sort="customer_name" title="Customer" -->
+		<!--#SMARTCOLUMN name="job_name" sort="job_name" title="Job Name" -->
+		<!--#SMARTCOLUMN name="job_type_name" sort="job_type_name" title="Type" align="center" -->
+		<!--#SMARTCOLUMN name="delivery_type_name" sort="delivery_type_name" title="Delivery" -->
+		<!--#SMARTCOLUMN name="warehouse_loc" sort="warehouse_loc" title="Warehouse(s)" -->
+		<!--#SMARTCOLUMN name="pri_furn_line_type_name" sort="pri_furn_line_type_name" title="1st Furn Line" -->
+		<!--#SMARTCOLUMN name="sec_furn_line_type_name" sort="sec_furn_line_type_name" title="2nd Furn Line" -->
+		<!--#SMARTCOLUMN name="num_stations" sort="num_stations" title="Station Qty" width="10%" -->
+		<!--#SMARTCOLUMN name="product_qty" sort="product_qty" title="Product Qty" width="10%" -->
+   <!--#/SMARTTABLE -->
+
+</body>
+
+<script language="JavaScript">
+<!--
+
+	function redisplayPage()
+	{//used by report
+
+		var r_from_date = escape(report.r_from_date.value);
+		if( r_from_date == null )
+			 r_from_date = '';
+
+		var r_to_date = escape(report.r_to_date.value);
+		if( r_to_date == null )
+			 r_to_date = '';
+
+		location='{!s:showPage!}rep/warehouse_report.html?r_from_date='+r_from_date+'&r_to_date='+r_to_date+'&r_show_report=true';
+	}
+
+-->
+</script>
+
+
+
+<!--#EMBED template="enet/embeds/footer.html" -->
+

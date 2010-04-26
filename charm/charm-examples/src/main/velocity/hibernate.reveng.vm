@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering SYSTEM "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	<type-mapping>
+		<sql-type jdbc-type="DOUBLE"  hibernate-type="java.lang.Double" /> 
+	</type-mapping>
+#foreach($table in $tables)
+#set ($name = $table.name) 
+		<table name="${name}">
+			<primary-key>
+				<generator class="sequence">
+					<param name="table">${name}_SEQ</param>
+				</generator>
+			</primary-key>
+		</table>
+#end
+</hibernate-reverse-engineering>
+

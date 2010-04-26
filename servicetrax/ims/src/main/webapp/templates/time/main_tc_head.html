@@ -1,0 +1,59 @@
+<!--#EMBED template="embeds/header.html" -->
+
+<script language="JavaScript">
+<!--
+ function loadPage()
+ {
+	parent.main_tc_frame.location.href=(QuickIndex.URL.options[0].value);
+ }
+//-->
+</script>
+
+<body class="BodyTag" onLoad="loadPage()">
+
+<FORM name="QuickIndex" >
+<table width="95%" border="0" cellspacing="0" cellpadding="0" bgcolor="Aqua">
+<tr height="30">
+    <td width="70%">
+<!--#CHECKSECURITY right="rights.time/tc_edit.view"-->
+		<table cellspacing="0" cellpadding="0" border="0" width="300">
+			<tr>
+				<td width="100" align="middle" nowrap>
+					<a href="{!s:action!}launchCharm?address=time.html" target="_new">Add Hours</A>
+				</td>
+				<td width="100" align="middle" nowrap>
+					<A href="{!s:showPage!}time/tc_edit.html?item_type_code=expense&prev_template=time/main_tc_main.html&p_job_id={!s:job_id!}&module=time&module_mode=create&level={!p:level!}" target="_parent">Add Expenses</A>
+				</td>
+		<!--#CHECKSECURITY right="rights.time/load_misc_expenses.insert"-->
+  				<td nowrap><A href="{!s:action!}loadMiscCosts/time/load_cost_result.html" target="_parent">Load Miscellaneous Costs</A></td>
+		<!--#/CHECKSECURITY-->
+			</tr>
+		</table>
+<!--#/CHECKSECURITY-->
+	</td>
+	<td width="30%" align="right">View
+		<SELECT name="URL" class="regular" onChange="if(options[selectedIndex].value) parent.main_tc_frame.location.href=(options[selectedIndex].value);window.focus();">
+		<!--#CHECKSECURITY right="rights.view_my_time_capture.view"-->
+			<OPTION value="{!s:action!}setServiceLineFields/time/main_user_tc_list_sum_det.html?level={!p:level!}">Detail</OPTION>
+			<OPTION value="{!s:action!}setServiceLineFields/time/main_user_tc_list_sum_res.html?level={!p:level!}">Resource</OPTION>
+		<!--#ELSE-->
+			<OPTION value="{!s:action!}setServiceLineFields/time/main_tc_list_sum_det.html?level={!p:level!}">Detail</OPTION>
+			<OPTION value="{!s:action!}setServiceLineFields/time/main_tc_list_sum_req_item.html?level={!p:level!}">Req/Work Code Summary</OPTION>
+			<OPTION value="{!s:action!}setServiceLineFields/time/main_tc_list_sum_job_item.html?level={!p:level!}">Job/Work Code Summary</OPTION>
+			<OPTION value="{!s:action!}setServiceLineFields/time/main_tc_list_sum_job.html?level={!p:level!}">Job Summary</OPTION>
+			<OPTION value="{!s:action!}setServiceLineFields/time/main_tc_list_sum_res_job.html?level={!p:level!}">Resource/Job Summary</OPTION>
+			<OPTION value="{!s:action!}setServiceLineFields/time/main_tc_list_sum_res_item_wk.html?level={!p:level!}">Resource/Work Code/Week Summary</OPTION>
+		<!--#/CHECKSECURITY-->
+		</SELECT>
+		<NOSCRIPT>
+			<INPUT type=submit value="Go">
+		</NOSCRIPT>
+	</td>
+</tr>
+</table>
+<hr>
+</FORM>
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

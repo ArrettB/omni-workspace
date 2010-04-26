@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jalopy>
+  <internal>
+    <version>20</version>
+  </internal>
+  <java>
+    <printer>
+      <alignment>
+        <methodCallChain>true</methodCallChain>
+        <parameterMethodDeclaration>false</parameterMethodDeclaration>
+        <ternaryOperator>true</ternaryOperator>
+        <variableAssignment>false</variableAssignment>
+        <variableIdentifier>false</variableIdentifier>
+      </alignment>
+      <blanklines>
+        <after>
+          <block>0</block>
+          <braceLeft>0</braceLeft>
+          <class>1</class>
+          <declaration>0</declaration>
+          <footer>1</footer>
+          <header>2</header>
+          <imports>2</imports>
+          <interface>1</interface>
+          <method>1</method>
+          <package>1</package>
+        </after>
+        <before>
+          <block>0</block>
+          <braceRight>0</braceRight>
+          <caseBlock>1</caseBlock>
+          <comment>
+            <javadoc>1</javadoc>
+            <multiline>1</multiline>
+            <singleline>1</singleline>
+          </comment>
+          <controlStatement>0</controlStatement>
+          <declaration>1</declaration>
+          <footer>0</footer>
+          <header>0</header>
+        </before>
+        <keepUpTo>1</keepUpTo>
+      </blanklines>
+      <braces>
+        <empty>
+          <cuddle>false</cuddle>
+          <insertStatement>false</insertStatement>
+        </empty>
+        <insert>
+          <dowhile>false</dowhile>
+          <for>false</for>
+          <ifelse>true</ifelse>
+          <while>false</while>
+        </insert>
+        <remove>
+          <block>true</block>
+          <dowhile>false</dowhile>
+          <for>false</for>
+          <ifelse>false</ifelse>
+          <while>false</while>
+        </remove>
+        <treatDifferent>
+          <methodClass>false</methodClass>
+          <methodClassIfWrapped>false</methodClassIfWrapped>
+        </treatDifferent>
+      </braces>
+      <chunks>
+        <blanklines>true</blanklines>
+        <comments>true</comments>
+      </chunks>
+      <comments>
+        <format>
+          <multiline>false</multiline>
+        </format>
+        <javadoc>
+          <check>
+            <description>
+              <enabled>false</enabled>
+              <onlyWhenNoSee>false</onlyWhenNoSee>
+            </description>
+            <innerclass>false</innerclass>
+            <tags>
+              <enabled>false</enabled>
+            </tags>
+            <throwsTags>false</throwsTags>
+          </check>
+          <fieldsShort>true</fieldsShort>
+          <generate>
+            <class>0</class>
+            <constructor>0</constructor>
+            <field>0</field>
+            <method>0</method>
+          </generate>
+          <parseComments>false</parseComments>
+          <tags>
+            <custom>
+              <inline></inline>
+              <standard></standard>
+            </custom>
+          </tags>
+          <templates>
+            <class><![CDATA[/**
+ * DOCUMENT ME!
+ *
+ * @author $author$
+ * @version $Revision$, $Date$
+ */]]></class>
+            <constructor>
+              <bottom><![CDATA[ */]]></bottom>
+              <exception><![CDATA[ * @throws $exception.type$ DOCUMENT ME!]]></exception>
+              <param><![CDATA[ * @param $param.name$ DOCUMENT ME!]]></param>
+              <top><![CDATA[/**
+ * Creates a new $class.name$ object.]]></top>
+            </constructor>
+            <getter>
+              <bottom><![CDATA[ */]]></bottom>
+              <exception><![CDATA[ * @throws $exception.type$ DOCUMENT ME!]]></exception>
+              <param><![CDATA[ * @param $param.name$ DOCUMENT ME!]]></param>
+              <return><![CDATA[ * @return DOCUMENT ME!]]></return>
+              <top><![CDATA[/**
+ * DOCUMENT ME!]]></top>
+            </getter>
+            <interface><![CDATA[/**
+ * DOCUMENT ME!
+ *
+ * @author $author$
+ * @version $Revision$, $Date$
+ */]]></interface>
+            <method>
+              <bottom><![CDATA[ */]]></bottom>
+              <exception><![CDATA[ * @throws $exception.type$ DOCUMENT ME!]]></exception>
+              <param><![CDATA[ * @param $param.name$ DOCUMENT ME!]]></param>
+              <return><![CDATA[ * @return DOCUMENT ME!]]></return>
+              <top><![CDATA[/**
+ * DOCUMENT ME!]]></top>
+            </method>
+            <variable>/** DOCUMENT ME! */</variable>
+          </templates>
+          <wrap>
+            <after>
+              <delim>
+                <ctor>true</ctor>
+              </delim>
+            </after>
+          </wrap>
+        </javadoc>
+        <remove>
+          <javadoc>
+            <enable>false</enable>
+          </javadoc>
+          <multiLine>
+            <enable>false</enable>
+          </multiLine>
+          <singleLine>
+            <enable>false</enable>
+          </singleLine>
+        </remove>
+        <separator>
+          <fillCharacter>-</fillCharacter>
+          <insert>false</insert>
+          <insertRecursive>false</insertRecursive>
+          <length>100</length>
+          <text>
+            <class>Inner Classes</class>
+            <constructor>Constructors</constructor>
+            <field>Instance fields</field>
+            <initializer>Instance initializers</initializer>
+            <interface>Inner Interfaces</interface>
+            <method>Methods</method>
+            <static>Static fields/initializers</static>
+          </text>
+        </separator>
+      </comments>
+      <environment></environment>
+      <footer>
+        <keys></keys>
+        <smartMode>0</smartMode>
+        <text></text>
+        <use>false</use>
+      </footer>
+      <header>
+        <keys>ApexIT, Inc.</keys>
+        <smartMode>0</smartMode>
+        <text><![CDATA[/*
+*               ApexIT, Inc.
+*
+* This software can only be used with the expressed written
+* consent of ApexIT, Inc.. All rights reserved.
+
+* Copyright 2007, ApexIT, Inc.
+* $Id:$
+
+* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED.  IN NO EVENT SHALL DYNAMIC INFORMATIONS SYTEMS, LLC
+* BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+* LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+* USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+* ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+* OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+* SUCH DAMAGE.
+* ====================================================================
+*/]]></text>
+        <use>true</use>
+      </header>
+      <imports>
+        <grouping>
+          <defaultDepth>3</defaultDepth>
+          <packages>*:0|gnu:2|java:2|javax:2</packages>
+        </grouping>
+        <policy>disabled</policy>
+        <sort>true</sort>
+      </imports>
+      <indentation>
+        <caseFromSwitch>false</caseFromSwitch>
+        <continuation>
+          <block>true</block>
+          <operator>false</operator>
+        </continuation>
+        <firstColumnComments>true</firstColumnComments>
+        <label>false</label>
+        <policy>
+          <deep>false</deep>
+        </policy>
+        <sizes>
+          <braceCuddled>1</braceCuddled>
+          <braceLeft>0</braceLeft>
+          <braceRight>0</braceRight>
+          <braceRightAfter>1</braceRightAfter>
+          <continuation>4</continuation>
+          <deep>55</deep>
+          <extends>-1</extends>
+          <general>4</general>
+          <implements>-1</implements>
+          <leading>0</leading>
+          <tabs>8</tabs>
+          <throws>-1</throws>
+          <trailingComment>1</trailingComment>
+        </sizes>
+        <tabs>
+          <enable>false</enable>
+          <onlyLeading>false</onlyLeading>
+        </tabs>
+      </indentation>
+      <misc>
+        <arrayBracketsAfterIdent>false</arrayBracketsAfterIdent>
+        <booleanGetter>^(is)[A-Z]\w+</booleanGetter>
+        <insertExpressionParentheses>true</insertExpressionParentheses>
+        <insertLoggingConditional>false</insertLoggingConditional>
+        <insertTrailingNewline>true</insertTrailingNewline>
+        <insertUID>false</insertUID>
+      </misc>
+      <sorting>
+        <declaration>
+          <class>
+            <enable>false</enable>
+          </class>
+          <constructor>
+            <enable>false</enable>
+          </constructor>
+          <enable>true</enable>
+          <field>
+            <enable>false</enable>
+          </field>
+          <interface>
+            <enable>false</enable>
+          </interface>
+          <method>
+            <enable>false</enable>
+            <order>level|name|count|bean|custom</order>
+          </method>
+          <order>static|enum|enumConstant|field|initializer|constructor|method|interface|class|annotation</order>
+        </declaration>
+        <modifier>
+          <enable>false</enable>
+          <order>annotation|public|protected|private|abstract|static|final|synchronized|transient|volatile|native|strictfp</order>
+        </modifier>
+      </sorting>
+      <whitespace>
+        <after>
+          <comma>true</comma>
+          <semicolon>1</semicolon>
+          <typeCast>true</typeCast>
+        </after>
+        <before>
+          <braces>true</braces>
+          <brackets>false</brackets>
+          <bracketsTypes>false</bracketsTypes>
+          <caseColon>false</caseColon>
+          <operator>
+            <not>false</not>
+          </operator>
+          <parentheses>
+            <catch>true</catch>
+            <for>true</for>
+            <if>true</if>
+            <methodCall>false</methodCall>
+            <methodDeclaration>false</methodDeclaration>
+            <switch>true</switch>
+            <synchronized>true</synchronized>
+            <while>true</while>
+          </parentheses>
+        </before>
+        <padding>
+          <braces>true</braces>
+          <brackets>false</brackets>
+          <operator>
+            <assignment>true</assignment>
+            <bitwise>true</bitwise>
+            <logical>true</logical>
+            <mathematical>true</mathematical>
+            <relational>true</relational>
+            <shift>true</shift>
+          </operator>
+          <parenthesis>false</parenthesis>
+          <typeCast>false</typeCast>
+        </padding>
+      </whitespace>
+      <wrapping>
+        <always>
+          <after>
+            <arrayElement>0</arrayElement>
+            <braceRight>false</braceRight>
+            <extendsTypes>false</extendsTypes>
+            <implementsTypes>false</implementsTypes>
+            <label>true</label>
+            <methodCallChained>false</methodCallChained>
+            <ternaryOperator>
+              <first>false</first>
+              <second>false</second>
+            </ternaryOperator>
+            <throwsTypes>false</throwsTypes>
+          </after>
+          <before>
+            <braceLeft>true</braceLeft>
+            <extends>false</extends>
+            <implements>false</implements>
+            <throws>false</throws>
+          </before>
+          <parameter>
+            <methodCall>false</methodCall>
+            <methodCallNested>false</methodCallNested>
+            <methodDeclaration>false</methodDeclaration>
+          </parameter>
+        </always>
+        <general>
+          <beforeOperator>false</beforeOperator>
+          <enable>true</enable>
+          <lineLength>100</lineLength>
+        </general>
+        <ondemand>
+          <after>
+            <assignment>false</assignment>
+            <leftParenthesis>false</leftParenthesis>
+            <parameter>false</parameter>
+            <types>
+              <extends>false</extends>
+              <implements>false</implements>
+              <throws>false</throws>
+            </types>
+          </after>
+          <before>
+            <rightParenthesis>false</rightParenthesis>
+          </before>
+          <groupingParentheses>false</groupingParentheses>
+        </ondemand>
+      </wrapping>
+    </printer>
+  </java>
+  <shared>
+    <backup>
+      <directory>bak</directory>
+      <level>0</level>
+    </backup>
+    <convention>
+      <local></local>
+    </convention>
+    <misc>
+      <forceFormatting>false</forceFormatting>
+      <threadCount>1</threadCount>
+    </misc>
+  </shared>
+</jalopy>
+

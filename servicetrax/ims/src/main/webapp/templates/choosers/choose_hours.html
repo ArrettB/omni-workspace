@@ -1,0 +1,38 @@
+
+<!--#EMBED template="embeds/header.html" -->
+<script language="JavaScript">
+<!--
+function choose()
+{
+	window.opener.focus();
+	if (window.opener.{!p:form!}.{!p:field!})
+		window.opener.{!p:form!}.{!p:field!}.value = {!p:id!};
+	if (window.opener.{!p:form!}.{!p:field!}_text)
+	{
+		window.opener.{!p:form!}.{!p:field!}_text.value = display;
+		window.opener.{!p:form!}.{!p:field!}_text.focus();
+	}
+	if (window.opener.{!p:form!}.{!p:del_field!})
+		window.opener.{!p:form!}.{!p:del_field!}.value = '';
+	if (window.opener.{!p:form!}.{!p:del_field!}_text)
+		window.opener.{!p:form!}.{!p:del_field!}_text.value = '';
+
+	document.body.onunload = null;
+}
+
+window.focus(); //in case window is already open, then focus on window 
+
+// -->
+</script>
+
+<!--#CHOOSERTABLE name="choose" query="<?p:query?>" returnColumns="<?p:id?>,display" -->
+	<!--#CHOOSERCOLUMN title="<?p:title?>" name="display" width="100%" filter="<?p:value?>" nowrap -->
+<!--#/CHOOSERTABLE -->
+</html>
+
+
+
+
+
+
+

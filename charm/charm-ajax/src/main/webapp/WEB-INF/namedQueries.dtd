@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated from namedQueries.xml by XMLBuddy -->
+<!ELEMENT id (#PCDATA)>
+<!ELEMENT namedQueries (namedQuery)>
+<!ELEMENT namedQuery (id,query,parameter+)>
+<!ELEMENT parameter EMPTY>
+<!ATTLIST parameter
+	name NMTOKEN #REQUIRED
+	type NMTOKEN #REQUIRED
+>
+<!ELEMENT query (#PCDATA)>

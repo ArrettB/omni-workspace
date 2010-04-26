@@ -1,0 +1,76 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: cond_edit.html, 1, 8/2/2005 3:04:56 PM, Greg Case$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.job/quot/cond_edit.view?>"-->
+
+<body class="BodyTag" onLoad="setCheckboxes(document.cond_form);focusFirstField();">
+
+   <table width="100%">
+	   <!--#SMARTFORM name="job/quot/cond_edit" table="conditions" key="condition_id" 
+                  sequence="@@IDENTITY" security="rights"
+   	            preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+   	            buttons="Save,New,Cancel" 
+	   -->
+	     <!--#SMARTFIELD name="quote_id" type="hidden" value="<?p:quote_id?>" -->
+		<tr>
+      <!--#IF evaluate="<?d:mode?>" compare="Update"-->
+			<td colspan="4" class="TableTitle">Edit Quote Condition</td>
+		<!--#ELSE-->
+			<td colspan="4" class="TableTitle">Create Quote Condition</td>
+		<!--#/IF-->
+		</tr>
+      <tr>
+         <td><!--#SMARTFIELD title="Condition:&nbsp;" div="</td><td colspan='3'>" name="name" size="70" --></td>
+      </tr>
+      <!--#IF evaluate="<?d:mode?>" compare="Update"-->
+      <tr>
+          <td class="TableTitle" colspan="4">System Info</td>
+      </tr>
+      <!--#/IF-->
+      <tr>
+         <td><!--#SMARTFIELD title="Date Created" div="</td><td>" name="date_created" type="datetime" 
+                             mode="Update" readonly class="readonly" size="22" --></td>
+         <td><!--#SMARTFIELD title="Created By" div="</td><td>" name="created_by" type="chooser" 
+                             mode="Update" table="users" display="first_name+' '+last_name" key="user_id"
+                             readonly class="readonly"--></td>
+      </tr>
+      <tr>
+         <td><!--#SMARTFIELD title="Date Modified" div="</td><td>" name="date_modified" type="datetime" 
+                             mode="Update" readonly class="readonly" size="22"--></td>
+         <td><!--#SMARTFIELD title="Modified By" div="</td><td>" name="modified_by" type="chooser"
+                             mode="Update" table="users" display="first_name+' '+last_name" key="user_id"
+                             readonly class="readonly"-->
+      </tr>
+	   <!--#/SMARTFORM -->     
+	</table>
+
+
+	<form name="cond_form" action="{!s:action!}condition" method="post" class="SmartTable">
+	<input name="quote_id" type="hidden" value="{!p:quote_id!}">
+	<input name="template" type="hidden" value="job/quot/cond_edit">
+   <!--#SMARTTABLE class="SmartTable" name="conditions_v"
+	   query="SELECT *
+    	       FROM quote_conditions_v2
+    	       WHERE quote_id=<?p:quote_id.toSQLString()?> or quote_id=null"
+   -->
+		<!--#SMARTCOLUMN title="Use?" value="<INPUT TYPE='checkbox' name='statusCheckBox' value='<?r:conditions_v:use_flag?>:<?r:conditions_v:condition_id?>' class='Checkbox'>" width="2%" align="center"-->
+		<!--#IF defined="<?s:rights.job/quot/cond_edit.update?>"-->
+			<!--#SMARTCOLUMN title="Condition" name="name" sort="name" class="TableRow1Link,TableRow2Link"
+   	         href="<?s:showPage?>job/quot/cond_edit.html?quote_id=<?p:quote_id?>&condition_id=<?r:conditions_v:condition_id?>" -->
+		<!--#ELSE-->
+			<!--#SMARTCOLUMN title="Condition" name="name" sort="name" -->
+		<!--#/IF-->
+	<!--#/SMARTTABLE -->
+	<input type="submit" name="update" value="Update" class="button">
+	<input type="button" name="Done" value="Done" class="button" onClick="newWindow('{!s:showPage!}job/quot/quot_edit.html?'+
+   																					'&quote_id='+escape(cond_form.quote_id.value),'main_frame');">
+</form>
+
+</body>
+
+<script language="JavaScript">
+<!--
+-->
+</script>
+
+<!--#EMBED template="embeds/footer.html" -->

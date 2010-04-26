@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.UserJobType" table="USER_JOB_TYPES" schema="dbo" catalog="">
+        <id name="userJobTypeId" type="java.lang.Long">
+            <column name="USER_JOB_TYPE_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="user" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="USER_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="lookup" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="LOOKUP_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="createdBy" type="long">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

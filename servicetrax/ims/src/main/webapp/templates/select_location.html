@@ -1,0 +1,91 @@
+<!--#EMBED template="embeds/header.html" -->
+
+<body class="BodyTag" bgcolor="#ded4c6" topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0" marginwidth="0" marginheight="0">
+	<table border="0" cellpadding="0" cellspacing="0" width="102%" height="100%">
+		<tr>
+			<td bgcolor="#ded4c6">
+				&nbsp;
+			</td>
+			<td background="/ims/images/login/top_backgrnd.jpg" align="center">
+				<img src="/ims/images/login/logo_top.jpg" width="260" height="85" border="0" alt="">
+			</td>
+			<td bgcolor="#ded4c6">
+				&nbsp;
+			</td>
+		</tr>
+		<tr height="100%">
+			<td bgcolor="#ded4c6">
+				<img src="/ims/images/spacer.gif" width="51" height="437" alt="">
+			</td>
+			<td width="711" height="437" bgcolor="White">
+				<!-- Start Content -->
+				<form name="loginform" action="{!s:action!}selectLocation/enet/main.html" method="post">
+					<input type="hidden" name="action" value="login">
+					<input type="hidden" name="redisplaytemplate" value="selectLocation.html">
+					<table border="0" cellspacing="0" cellpadding="6">
+						<tr>
+							<td colspan="2">
+
+								<font color="#3366cc" size="3"><b>Login to serviceTrax</b></font>
+								<br>
+								<br>
+								<br>
+								Please select a location.
+								<br>
+								<br>
+								<br>
+							</td>
+						</tr>
+						<tr>
+							<td class="Label">
+								Location:
+							</td>
+							<td>
+								<!--#SELECT name="org_id"
+									style="width:115"
+									query="SELECT o.organization_id, o.name
+									  FROM organizations o, user_organizations uo
+									 WHERE o.organization_id = uo.organization_id
+									   AND uo.user_id = <?s:user_id.toSQLString()?>
+									 ORDER BY o.sequence_no"
+							currentValue="<?p:org_id?>"-->
+							</td>
+						</tr>
+						<tr>
+							<td>
+								&nbsp;
+							</td>
+							<td>
+								<input type="submit" value="Continue" class="Button">
+							</td>
+						</tr>
+						<!--#IF defined="<?d:message?>" -->
+						<tr>
+							<td colspan="2" align="center" valign="middle">
+								<span class="errorText">{!d:message!}</span>
+							</td>
+						</tr>
+						<!--#/IF-->
+					</table>
+				</form>
+
+				<br>
+				<br>
+				<div align="center">
+					<img src="/ims/images/login/omni.jpg" width="150" height="129" border="0" alt="Omin Manufacturing">
+				</div>
+
+				<!-- End Content -->
+			</td>
+			<td bgcolor="#ded4c6">
+				<img src="/ims/images/spacer.gif" width="53" height="437" alt="">
+			</td>
+		</tr>
+		<tr>
+			<td colspan="3" bgcolor="#ded4c6">
+				<img src="/ims/images/spacer.gif" width="1" height="35" alt="">
+			</td>
+		</tr>
+	</table>
+</body>
+<!--#EMBED template="embeds/footer.html" -->

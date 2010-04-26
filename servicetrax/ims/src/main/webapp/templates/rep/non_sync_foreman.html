@@ -1,0 +1,43 @@
+<!-- $Header: non_sync_foreman.html, 5, 1/7/2005 5:10:38 PM, Lee A. Gunderson$ -->
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.rep/non_sync_foreman.view?>"-->
+
+<body class="BodyTag" onLoad="window.focus()">
+
+
+<table width="100%" cellspacing="0" cellpadding="3">
+
+<body class="BodyTag" onLoad="">
+
+	<table width="100%">
+		<tr><td colspan="16" class="TableTitle">Non-Synch Foreman Report</td></tr>
+	</table>
+
+<BR>
+
+   <!--#SMARTTABLE class="SmartTable" name="non_sync_foreman_v"
+	   query="SELECT r.ext_employee_id, r.employee_name, r.todays_date, r.last_synch_date, r.job_no
+				FROM non_sync_foreman_v r
+				WHERE r.organization_id = <?s:org_id.toPStmtString()?> "
+   -->
+		<!--#SMARTCOLUMN title="Emp&nbsp;ID" name="ext_employee_id" sort="ext_employee_id" align="center" -->
+		<!--#SMARTCOLUMN title="Emp&nbsp;Name" name="employee_name" sort="employee_name" -->
+		<!--#SMARTCOLUMN title="Current Date" name="todays_date" sort="todays_date" format="datetime" -->
+		<!--#SMARTCOLUMN title="Last Sync Date" name="last_synch_date" sort="last_synch_date" format="datetime" -->
+		<!--#SMARTCOLUMN title="Job#" name="job_no" sort="job_no" align="center"  -->
+
+   <!--#/SMARTTABLE -->
+
+</body>
+
+<script language="JavaScript">
+<!--
+
+-->
+</script>
+
+
+
+<!--#EMBED template="enet/embeds/footer.html" -->
+

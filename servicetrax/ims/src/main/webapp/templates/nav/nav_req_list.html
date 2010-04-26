@@ -1,0 +1,42 @@
+<!--#EMBED template="embeds/header.html" -->
+<!---
+	This template is no longer in use
+--->
+
+<body class="BodyTag" onLoad="loadColors()">
+
+	<table width=100%>
+		<!--#IF defined="<?s:rights.job/job_edit.view?>"-->
+			<tr><td width="100" class="Label">Show <a href="{!s:showPage!}nav/nav_job_list.html?">Jobs Only</a></td></tr>
+			<tr><td><HR></td></tr>
+		<!--#/IF-->
+	</table>
+
+	<!--#SMARTTABLE name="job_services_v"
+		class="SmartTable"
+		query="SELECT sv.job_no job_number, sv.job_id, sv.customer_name, sv.job_name, sv.est_start_date,
+		              sv.service_id, sv.service_no, sv.serv_status_type_name service_status, sv.description description
+	          FROM services_v sv
+	          WHERE organization_id=<?s:org_id.toPStmtString()?>
+	     	  ORDER BY sv.job_no, sv.service_no"
+	-->
+	<!--#CHECKSECURITY right="rights.job/job_edit.view" -->
+	  <!--#SMARTCOLUMN name="job_number" sort="job_number" title="Job#" width="10%" align="center" href="<?s:action?>setupSession/job/job_main.html?job_id=<?r:job_services_v:job_id?>&loc=job_edit" target="main_frame" -->
+	<!--#ELSE-->
+	  <!--#SMARTCOLUMN name="job_number" sort="job_number" title="Job#" width="10%" align="center" -->
+	<!--#/CHECKSECURITY-->
+	  <!--#SMARTCOLUMN name="customer_name" sort="customer_name" title="Customer" width="10%" -->
+	  <!--#SMARTCOLUMN name="job_name" sort="job_name" title="Job Name" width="10%" -->
+	<!--#CHECKSECURITY right="rights.job/req_edit.view" -->
+	  <!--#SMARTCOLUMN name="service_no" sort="service_no" title="Req#" width="10%" align="center" href="<?s:action?>setupSession/main.html?service_id=<?r:job_services_v:service_id?>&job_id=<?r:job_services_v:job_id?>&loc=req_edit" target="_top" -->
+	<!--#ELSE-->
+	  <!--#SMARTCOLUMN name="service_no" sort="service_no" title="Req#" width="10%" align="center" -->
+	<!--#/CHECKSECURITY-->
+	  <!--#SMARTCOLUMN value="<INPUT TYPE='text' name='desc' value='<?r:job_services_v:description.replaceString('\'','&#39;')?>' readonly='true' class='smartTableDisplay' size='30'>" title="Description" width="20%" -->
+	  <!--#SMARTCOLUMN name="service_status" sort="service_status" title="Req Status" width="10%" -->
+	  <!--#SMARTCOLUMN name="est_start_date" sort="est_start_date" title="Start Date" format="date" width="10%" -->
+	<!--#/SMARTTABLE -->
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

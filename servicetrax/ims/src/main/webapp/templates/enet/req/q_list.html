@@ -1,0 +1,61 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!-- $Id$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.enet/req/q_edit.view?>"-->
+
+<body class="BodyTag" onLoad="acknowledge()">
+
+	<!--#EMBED template="enet/embeds/project_header.html"-->
+
+	<table width="100%" border="0" cellspacing="0">
+		<tr><td class="HeaderLabel">To create a Quote Request, click on the Quote Request Tab,
+		<tr><td class="HeaderLabel">select a Quote Request with Status 'Sent' from the list, </td></tr>
+		<tr><td class="HeaderLabel">and then click the 'Create Quote' link...</td></tr>
+		<tr><td><br></td></tr>
+	</table>
+
+	<!--#SMARTTABLE class="SmartTable" name="q_list"
+		query="SELECT record_id, record_no, record_seq_no, record_type_name, record_type_code, record_status_type_name, record_created,
+		              record_last_modified, quote_type_name, date_quoted, quote_total, quote_id, is_new
+				 FROM projects_all_requests_v
+				WHERE project_id = <?s:project_id.toPStmtString()?> AND record_type_code = 'quote'
+				  AND record_status_type_code <> 'closed'
+				ORDER BY record_seq_no, record_type_seq_no"	-->
+
+<!--#IF evaluate="<?r:q_list:is_new?>" compare="Y" -->
+        <!--#SMARTCOLUMN name="record_no" sort="record_no" title="Quote&nbsp;#" width="10%" align="center" href="<?s:showPage?>quoteReports?quote_id=<?r:q_list:quote_id?>" target="_blank" nowrap -->
+        <!--#SMARTCOLUMN title="Compact" value="compact" width="5%" align="center" href="<?s:showPage?>quoteReports?quote_id=<?r:q_list:quote_id?>&compact=true" target="_blank" nowrap -->
+<!--#ELSE-->
+		<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Quote&nbsp;#" width="10%" href="<?s:action?>setProjectDatum/enet/req/q_edit.html?quote_id=<?r:q_list:record_id?>" align="center"-->
+		<!--#SMARTCOLUMN title="Compact" value="&nbsp;" width="5%" align="center" -->
+<!--#/IF-->
+		<!--#SMARTCOLUMN name="quote_type_name" sort="quote_type_name" title="Quote&nbsp;Type" width="10%" -->
+		<!--#SMARTCOLUMN name="record_status_type_name" sort="record_status_type_name" title="Status" width="10%" -->
+		<!--#SMARTCOLUMN name="date_quoted" sort="date_quoted" title="Date&nbsp;Received" format="date" width="10%" -->
+		<!--#SMARTCOLUMN name="record_last_modified" sort="record_last_modified" title="Last&nbsp;Modified" format="datetime" width="20%" -->
+		<!--#SMARTCOLUMN name="quote_total" sort="quote_total" title="Total&nbsp;$" format="money"align="right" width="10%" -->
+
+	<!--#/SMARTTABLE -->
+
+</body>
+
+<script language="javascript">
+<!--
+
+	function acknowledge()
+	{
+		if( {!d:acknowledgement.toJavaScriptString()!} == "true" )
+		{
+			var email_msg = '';
+		<!--#IF defined="<?d:email_failed?>"-->
+			email_msg = "&email_failed=true";
+		<!--#/IF-->
+			newWindow("{!s:showPage!}enet/req/acknowledge.html?request_type_code={!d:request_type_code!}&request_no={!d:request_no!}&is_sent={!d:is_sent!}"+
+						"&sales_rep={!d:d_sales_rep_contact_id_sent!}&sales_sup={!d:d_sales_sup_contact_id_sent!}&proj_mgr={!d:d_proj_mgr_contact_id_sent!}&designer={!d:d_designer_contact_id_sent!}&a_m={!d:a_m_contact_id_sent!}"+
+						"&request_id={!d:request_id!}"+email_msg,"acknowledge_window",320,450)
+		}
+	}
+-->
+</script>
+
+<!--#EMBED template="enet/embeds/footer.html" -->

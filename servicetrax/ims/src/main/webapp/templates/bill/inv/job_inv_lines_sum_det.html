@@ -1,0 +1,222 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Id$ -->
+
+
+<body class="BodyTag" onLoad="updateInvoiceHeader()">
+
+
+
+<FORM ACTION="{!s:action!}setServiceLineStatus" METHOD="POST" name="LinesForm">
+
+	<input type="hidden" name="level" value="line">
+	<input type="hidden" name="invoice_id" value="{!p:invoice_id!}">
+	<input type="hidden" name="on_invoice" value="false"> <!-- used in SetServiceLineStatusHandler to determine if lines are on invoice or unassigned -->
+	<input type="hidden" name="template_name" value="bill/inv/job_inv_lines_sum_det.html">
+
+<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0"> <tr><td height="25" class="tableTitle">Assigned</td></tr></TABLE>
+
+<!--#SMARTTABLE name="inv_lines"
+	class="SmartTable" TableTotal="true" totalClass="TableTotal"
+	query="SELECT b.payroll_qty, b.bill_hourly_qty, b.bill_rate, b.bill_total, b.bill_exp_qty, b.item_id, b.item_name, b.bill_service_id, b.resource_name,
+			b.bill_job_id, b.bill_service_no, b.service_description, b.service_line_id, b.bill_service_line_no, b.item_type_code, b.po_no,
+			b.billing_type_name, b.service_line_date, b.service_taxable_flag, b.taxable_flag,
+			cust_col_1, cust_col_2, cust_col_3, cust_col_4, cust_col_5, cust_col_6, cust_col_7, cust_col_8, cust_col_9, cust_col_10
+	FROM billing_v b
+	WHERE b.invoice_id = <?p:invoice_id.toPStmtInt()?> AND b.billable_flag = 'Y'
+	ORDER BY b.item_name"
+-->
+	<!--#SMARTCOLUMN value="<INPUT TYPE='checkbox' name='statusCheckBox' value='<?r:inv_lines:service_line_id?>'>" title="<INPUT TYPE='checkbox' name='CheckAllBox' onClick='checkAllBoxes(this.form.CheckAllBox,this.form.statusCheckBox)'>" align="center" width="2%" -->
+
+<!--#IF evaluate="<?d:rowid?>" greaterthan="0" -->
+	<!--#IF evaluate="<?r:inv_lines:service_taxable_flag?>" compare="Y"-->
+		<!--#IF evaluate="<?r:inv_lines:item_type_code?>" compare="hours"-->
+			<!--#IF evaluate="<?r:inv_lines:taxable_flag?>" compare="Y"-->
+	<!--#SMARTCOLUMN title="Tax" value="<INPUT TYPE='checkbox' name='taxableCheckBox' value='<?r:inv_lines:service_line_id?>' onClick='setTaxTotal()' checked>" align="center" width="2%" -->
+			<!--#ELSE-->
+	<!--#SMARTCOLUMN title="Tax" value="<INPUT TYPE='checkbox' name='taxableCheckBox' value='<?r:inv_lines:service_line_id?>' onClick='setTaxTotal()'>" align="center" width="2%"-->
+			<!--#/IF-->
+		<!--#ELSE-->
+	<!--#SMARTCOLUMN title="Tax" value="" align="center" width="2%" -->
+		<!--#/IF-->
+	<!--#ELSE-->
+	<!--#SMARTCOLUMN title="Tax" value="" align="center" width="2%" -->
+	<!--#/IF-->
+<!--#ELSE-->
+	<!--#SMARTCOLUMN title="Tax" value="" align="center" width="2%" -->
+<!--#/IF-->
+<!--#IF evaluate="<?d:rowid?>" greaterthan="0" -->
+    <input type="hidden" id="{!r:inv_lines:service_line_id!}" value="{!r:inv_lines:bill_total!}">
+<!--#/IF-->
+	<!--#SMARTCOLUMN name="bill_service_no" sort="bill_service_no" title="Req#" width="5%" align="center"-->
+	<!--#SMARTCOLUMN name="po_no" sort="po_no" title="PO" width="5%" -->
+	<!--#SMARTCOLUMN name="service_line_date" sort="service_line_date" title="Date" format="Date" width="5%" -->
+	<!--#SMARTCOLUMN value="<INPUT TYPE='text' name='desc' value='<?r:inv_lines:service_description.replaceString('\'','&#39;')?>' readonly='true' class='smartTableDisplay' size='30'>" title="Description" width="10%" -->
+	<!--#SMARTCOLUMN name="bill_service_line_no" sort="bill_service_line_no" title="Line#" align="center" href="<?s:action?>setupSession/time/tc_edit.html?service_line_id=<?r:inv_lines:service_line_id?>&prev_template=bill/inv/job_inv_lines_sum_det.html&item_type_code=<?r:inv_lines:item_type_code?>&job_id=<?r:inv_lines:bill_job_id?>&service_id=<?r:inv_lines:bill_service_id?>&invoice_id=<?p:invoice_id?>&module=bill&module_mode=edit" width="5%" -->
+	<!--#SMARTCOLUMN name="resource_name" sort="resource_name" title="Resource" width="15%" -->
+	<!--#SMARTCOLUMN name="item_name" sort="item_name" title="Item" width="15%" -->
+	<!--#SMARTCOLUMN name="payroll_qty" sort="payroll_qty" title="TC Hours" align="right" format="###,###,###,##0.00" width="5%" total="true"-->
+	<!--#SMARTCOLUMN name="bill_hourly_qty" sort="bill_hourly_qty" title="Bill Hours" align="right" format="###,###,###,##0.00" width="5%" total="true" -->
+	<!--#SMARTCOLUMN name="bill_exp_qty" sort="bill_exp_qty" title="Exp Qty" align="right" format="###,###,###,##0.00" width="5%" total="true" -->
+	<!--#SMARTCOLUMN name="bill_rate" sort="bill_rate" title="Bill Rate" width="5%" align="right" format="money"-->
+	<!--#SMARTCOLUMN name="bill_total" sort="bill_total" title="Total" align="right" total="true" format="money" width="5%" -->
+<!--#IF evaluate="<?d:rowid?>" greaterthan="0" -->
+	<!--#SQLLOOP query="SELECT col_title, col_sequence FROM custom_cols c WHERE c.active_flag = 'Y' AND c.service_id = <?r:inv_lines:bill_service_id.toPStmtString()?> ORDER BY col_sequence" name="cust_col" -->
+	<!--#SMARTCOLUMN name="cust_col_<?r:cust_col:col_sequence?>" sort="cust_col_<?r:cust_col:col_sequence?>" title="<?r:cust_col:column_desc?>" width="15" -->
+	<!--#/SQLLOOP-->
+<!--#ELSE-->
+	<!--#SQLLOOP query="SELECT column_desc, col_sequence FROM custom_cust_columns c, jobs_effective_customer_v j WHERE c.active_flag = 'Y' AND c.customer_id = j.effective_customer_id AND j.job_id=<?s:job_id.toPStmtString()?> ORDER BY col_sequence" name="cust_col" -->
+	<!--#SMARTCOLUMN name="cust_col_<?r:cust_col:col_sequence?>" sort="cust_col_<?r:cust_col:col_sequence?>" title="<?r:cust_col:column_desc?>" width="15" -->
+	<!--#/SQLLOOP-->
+<!--#/IF-->
+
+<!--#/SMARTTABLE -->
+
+		<select NAME="submit_action" class="regular">
+			<option VALUE="move_submit_billing">Remove from Invoice</option>
+				<!--#SQLLOOP query="SELECT ('assignInvoice'+cast(invoice_id as varchar)) invoice_id, ('Assign to Invoice # '+cast(invoice_id as varchar)) invoice_no FROM invoices WHERE status_id = 1 and invoice_id != <?p:invoice_id.toPStmtString()?> and job_id=<?s:job_id.toPStmtString()?>" name="new_inv"-->
+			<option VALUE="{!r:new_inv:invoice_id!}">{!r:new_inv:invoice_no!}</option>
+				<!--#/SQLLOOP-->
+		<!--#CHECKSECURITY right="rights.bill/post_lines.view"-->
+			<option VALUE="move_posted">Post</option>
+		<!--#/CHECKSECURITY-->
+		<!--#CHECKSECURITY right="rights.bill/post_lines.view"-->
+			<option VALUE="updateTaxes">Set Taxable</option>
+		<!--#/CHECKSECURITY-->
+		</select>
+		<input type="submit" value="Submit" class="button2" name="button" onClick="LinesForm.on_invoice.value='true';updateCheckBoxValues('taxableCheckbox')">
+</FORM>
+
+<!--#EMBED template="bill/inv/job_inv_cust_lines.html" -->
+
+<!--#EMBED template="bill/job_bill_lines_sum_det.html" temp_name="bill/inv/job_inv_lines_sum_det.html" -->
+
+</body>
+
+<script type="text/javascript">
+<!--
+	//var customLineTax = 0; //this is defined in job_inv_cust_lines.html instead
+
+	function updateInvoiceHeader()
+	{
+	<!--#IF defined="<?d:invoice_po?>" -->
+        //document.inv_edit.po_no.value={!d:invoice_po.toJavaScriptString()!};
+         if (parent.job_inv_header && parent.job_inv_header.inv_edit && parent.job_inv_header.inv_edit.po_no && (parent.job_inv_header.inv_edit.po_no != null))
+        {
+			parent.job_inv_header.inv_edit.po_no.value = {!d:invoice_po.toJavaScriptString()!};
+		}
+
+		//parent.job_inv_header.inv_edit.po_no.value = {!d:invoice_po.toJavaScriptString()!};
+	<!--#/IF-->
+	<!--#IF defined="<?d:service_description?>" -->
+	    if (parent.job_inv_header.inv_edit.description != null)
+        {
+		   parent.job_inv_header.inv_edit.description.value = {!d:service_description.toJavaScriptString()!};
+	   }
+	<!--#/IF-->
+		setTaxTotal();
+	}
+
+	function updateCheckBoxValue(field)
+	{
+		if( field )
+		{
+			if( field.checked == true )
+				field.value = "Y" + field.value;
+			else
+			{
+				field.value = "N" + field.value;
+				field.checked = true; //need to send value to server, so must be checked
+			}
+		}
+	}
+
+	function updateCheckBoxValues(field_name)
+	{
+		if( field_name )
+		{
+			var items = document.all.item(field_name);
+			if( !(items == null) && items.length )
+			{
+				for (i = 0; i < items.length; i++)
+				{
+					updateCheckBoxValue(items[i]);
+				}
+			}
+			else //only one item so not an array
+				updateCheckBoxValue(items);
+		}
+	}
+
+	function setTaxTotal()
+	{//note custom lines template updates the tax total as well
+
+		var items = document.all.item('taxableCheckBox');
+		var item = null;
+		var total = customLineTax; //custom lines may have tax as well.
+		var new_value = 0;
+		if( !(items == null) && items.checked == null )
+		{//more then one found
+
+			for( i = 0; i < items.length; i++)
+			{
+
+				if( items[i].checked == true )
+				{
+	//alert(items[i].value);
+					eval("item = document.all.item('"+items[i].value+"')");
+					if( !(item == null) )
+					{
+						total = total + (item.value - 0);
+	//alert(total);
+					}
+				}
+			}
+		}
+		else
+		{//found only one possible field
+			if( !(items == null) && items.checked == true )
+				eval("item = document.all.item('"+items.value+"')");
+				if( !(item == null) )
+					total = total + (item.value - 0);
+		}
+
+		var tbody = window.parent.job_inv_header.document.getElementById("total_tax");
+
+		if (tbody && (tbody != null))
+		{
+			if( total > 0.009 )
+			{
+				tbody.innerHTML = "Total To Be Taxed: "+currencyFormat(total);
+			}
+			else
+			{
+				tbody.innerHTML = "";
+			}
+		}
+	}
+
+	function currencyFormat(num)
+	{
+		neg = 0
+		num = num.toString().replace(/\$|\,/g,'');
+		if(isNaN(num)) num = "0";
+		if(num < 0) {
+			num = num * -1;
+			neg = 1;
+		}
+
+		cents = Math.floor((num*100+0.5)%100);
+		num = Math.floor((num*100+0.5)/100).toString();
+		if(cents < 10) cents = "0" + cents;
+		for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
+			num = num.substring(0,num.length-(4*i+3))+','+num.substring(num.length-(4*i+3));
+		if(neg == 0)
+			return ('$' + num + '.' + cents);
+		return ('-($' + num + '.' + cents + ')');
+	}
+
+-->
+</script>
+
+
+<!--#EMBED template="embeds/footer.html" -->

@@ -1,0 +1,32 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!-- $Header: address.html, 5, 12/22/2004 9:20:39 AM, Greg Case$ -->
+
+<body class="BodyTag">
+
+   <table class="SmartTable" cellpadding="0" cellspacing="0" border="0">
+   <!--#SMARTFORM name="job/job_loc_edit" table="job_locations" key="job_location_id" security="off" buttons="" -->
+      <tr><td width="50"><!--#SMARTFIELD title="&nbsp;Address:" div="&nbsp;</td><td>" name="street1" style="width:250" readonly class="viewonly" --></td></tr>
+	<!--#IF defined="<?r:job/job_loc_edit:street2?>" -->
+		<tr><td><!--#SMARTFIELD title="&nbsp;" div="&nbsp;</td><td>" name="street2" style="width:300" readonly class="viewonly" --></td></tr>
+   <!--#/IF-->
+	<!--#IF defined="<?r:job/job_loc_edit:street3?>" -->
+      <tr><td><!--#SMARTFIELD title="&nbsp;" div="&nbsp;</td><td>" name="street3" style="width:300" readonly class="viewonly" --></td></tr>
+   <!--#/IF-->
+      <tr><td colspan="2"><table cellpadding="0" cellspacing="0">
+      	<tr>
+	      	<td><!--#SMARTFIELD title="&nbsp;City:" div="&nbsp;</td><td>" style="width:150" name="city" readonly class="viewonly"--></td>
+	         <td><!--#SMARTFIELD title="State:" div="&nbsp;</td><td>" style="width:40" name="state" readonly class="viewonly" --></td>
+	         <td><!--#SMARTFIELD title="Zip:" div="&nbsp;</td><td>" style="width:70" name="zip" readonly class="viewonly" --></td>
+			</tr>
+		</table></td></tr>
+   <!--#/SMARTFORM-->
+   </table>
+
+</body>
+
+<script language="JavaScript">
+<!--
+-->
+</script>
+
+<!--#EMBED template="enet/embeds/footer.html" -->

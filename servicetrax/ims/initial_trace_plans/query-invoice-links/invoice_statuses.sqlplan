@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ShowPlanXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0" Build="9.00.3054.00" xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan">
+  <BatchSequence>
+    <Batch>
+      <Statements>
+        <StmtSimple StatementCompId="1" StatementEstRows="1" StatementId="1" StatementOptmLevel="TRIVIAL" StatementSubTreeCost="0.00657038" StatementText="SELECT [status_id],[name] [status] FROM [invoice_statuses] WHERE [status_id]=@1" StatementType="SELECT">
+          <StatementSetOptions ANSI_NULLS="false" ANSI_PADDING="false" ANSI_WARNINGS="false" ARITHABORT="true" CONCAT_NULL_YIELDS_NULL="false" NUMERIC_ROUNDABORT="false" QUOTED_IDENTIFIER="false" />
+          <QueryPlan DegreeOfParallelism="1" CachedPlanSize="18" CompileTime="0" CompileCPU="0" CompileMemory="128">
+            <RelOp AvgRowSize="45" EstimateCPU="4.18E-06" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Inner Join" NodeId="0" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.00657038">
+              <OutputList>
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_STATUSES]" Column="STATUS_ID" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_STATUSES]" Column="NAME" />
+              </OutputList>
+              <RunTimeInformation>
+                <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+              </RunTimeInformation>
+              <NestedLoops Optimized="false">
+                <OuterReferences>
+                  <ColumnReference Column="Bmk1000" />
+                </OuterReferences>
+                <RelOp AvgRowSize="24" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Index Seek" NodeId="1" Parallel="false" PhysicalOp="Index Seek" EstimatedTotalSubtreeCost="0.0032831">
+                  <OutputList>
+                    <ColumnReference Column="Bmk1000" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_STATUSES]" Column="STATUS_ID" />
+                  </OutputList>
+                  <RunTimeInformation>
+                    <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                  </RunTimeInformation>
+                  <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                    <DefinedValues>
+                      <DefinedValue>
+                        <ColumnReference Column="Bmk1000" />
+                      </DefinedValue>
+                      <DefinedValue>
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_STATUSES]" Column="STATUS_ID" />
+                      </DefinedValue>
+                    </DefinedValues>
+                    <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_STATUSES]" Index="[PK_INVOICE_STATUSES]" />
+                    <SeekPredicates>
+                      <SeekPredicate>
+                        <Prefix ScanType="EQ">
+                          <RangeColumns>
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_STATUSES]" Column="STATUS_ID" />
+                          </RangeColumns>
+                          <RangeExpressions>
+                            <ScalarOperator ScalarString="CONVERT_IMPLICIT(numeric(18,0),[@1],0)">
+                              <Convert DataType="numeric" Precision="18" Scale="0" Style="0" Implicit="true">
+                                <ScalarOperator>
+                                  <Identifier>
+                                    <ColumnReference Column="@1" />
+                                  </Identifier>
+                                </ScalarOperator>
+                              </Convert>
+                            </ScalarOperator>
+                          </RangeExpressions>
+                        </Prefix>
+                      </SeekPredicate>
+                    </SeekPredicates>
+                  </IndexScan>
+                </RelOp>
+                <RelOp AvgRowSize="36" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="RID Lookup" NodeId="3" Parallel="false" PhysicalOp="RID Lookup" EstimatedTotalSubtreeCost="0.0032831">
+                  <OutputList>
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_STATUSES]" Column="NAME" />
+                  </OutputList>
+                  <RunTimeInformation>
+                    <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="0" ActualExecutions="1" />
+                  </RunTimeInformation>
+                  <IndexScan Lookup="true" Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                    <DefinedValues>
+                      <DefinedValue>
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_STATUSES]" Column="NAME" />
+                      </DefinedValue>
+                    </DefinedValues>
+                    <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_STATUSES]" TableReferenceId="-1" />
+                    <SeekPredicates>
+                      <SeekPredicate>
+                        <Prefix ScanType="EQ">
+                          <RangeColumns>
+                            <ColumnReference Column="Bmk1000" />
+                          </RangeColumns>
+                          <RangeExpressions>
+                            <ScalarOperator ScalarString="[Bmk1000]">
+                              <Identifier>
+                                <ColumnReference Column="Bmk1000" />
+                              </Identifier>
+                            </ScalarOperator>
+                          </RangeExpressions>
+                        </Prefix>
+                      </SeekPredicate>
+                    </SeekPredicates>
+                  </IndexScan>
+                </RelOp>
+              </NestedLoops>
+            </RelOp>
+            <ParameterList>
+              <ColumnReference Column="@1" ParameterCompiledValue="(1)" ParameterRuntimeValue="(4)" />
+            </ParameterList>
+          </QueryPlan>
+        </StmtSimple>
+      </Statements>
+    </Batch>
+  </BatchSequence>
+</ShowPlanXML>

@@ -1,0 +1,1 @@
+SELECT name, name FROM invoice_batch_statuses

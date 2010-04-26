@@ -1,0 +1,103 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: track_edit.html, 7, 1/12/2005 9:02:04 AM, Lee A. Gunderson$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.job/track/track_edit.view?>"-->
+<!--#SQLLOOP name="tracking_types" query="SELECT n.lookup_id none_id FROM notification_types_v n WHERE n.lookup_name='None'" -->
+<script language="JavaScript">
+<!--
+function exitFunction(button)
+{
+   if( button == 'Save' )
+   {
+      if( track_edit.tracking_type_id.options[track_edit.tracking_type_id.selectedIndex].text == 'Alert' ||
+          track_edit.tracking_type_id.options[track_edit.tracking_type_id.selectedIndex].text == 'PDA Note' )
+      {
+         if( track_edit.to_contact_id.selectedIndex == 0 )
+         {
+         	track_edit.to_contact_id.focus();
+         	alert("You must select a 'Send To:' when Tracking Type is Alert or PDA Note.")
+				return false;
+         }
+      }
+		track_edit.email_sent_flag.value = 'N';
+   }
+}
+
+function manageNote()
+{
+	if(track_edit.tracking_type_id.options[track_edit.tracking_type_id.selectedIndex].text == 'Note')
+	{
+		track_edit.to_contact_id.disabled = true;
+		track_edit.contact_edit_button.disabled = true;
+		track_edit.to_contact_id.className = 'readonly';
+	}
+	else
+	{
+		track_edit.to_contact_id.disabled = false;
+		track_edit.contact_edit_button.disabled = false;
+		track_edit.to_contact_id.className = 'regular';
+	}
+}
+-->
+</script>
+<body class="BodyTag" onLoad="focusFirstField();manageNote()">
+	<table border="0" cellspacing="0" cellpadding="3">
+	<!--#SMARTFORM name="job/track/track_edit" table="tracking" key="tracking_id"
+                  security="rights" nextTemplate="job/track/track_list.html"
+                  preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+                  buttons="Save,Copy,New,Delete,Cancel"
+                  onClickFunction="return exitFunction()"
+
+	-->
+		<!--#SMARTFIELD name="email_sent_flag" type="hidden" value="N" -->
+		<!--#SMARTFIELD name="loc" type="hidden" value="<?p:loc?>" -->
+		<!--#SMARTFIELD name="job_id" type="hidden" value="<?s:job_id?>" -->
+		<!--#SMARTFIELD name="service_id" type="hidden" value="<?s:service_id?>" -->
+		<!--#SMARTFIELD name="from_user_id" type="hidden" value="<?s:user_id?>" -->
+		<!--#SMARTFIELD name="tracking_type_name" type="hidden" -->
+		<!--#SQLLOOP query="SELECT serv_status_type_id, serv_status_type_name current_status
+		                    FROM services_v
+		                    WHERE service_id = <?s:service_id.toPStmtString()s?>"
+					 resourceName="SQLServer"
+					 name="reqStatusQuery"	-->
+			<!--#SMARTFIELD name="old_status_id" type="hidden" value="<?r:reqStatusQuery:serv_status_type_id?>"-->
+			<!--#SMARTFIELD name="new_status_id" type="hidden" value="<?r:reqStatusQuery:serv_status_type_id?>"-->
+		<tr>
+			<td colspan="2" class="TableTitle">Edit Resource Estimate</td></tr>
+		<tr>
+			<td><!--#SMARTFIELD title="Req Status:&nbsp;" div="</td><td>" name="cur_status_type_id" readonly class="readonly" value="<?r:reqStatusQuery:current_status?>" --></td>
+		</tr>
+		<tr>
+			<td><!--#SMARTFIELD title="Type:&nbsp;" div="</td><td>" name="tracking_type_id" type="droplist" table="tracking_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" onChange="manageNote()" value="Note" --></td>
+		</tr>
+		<!--#/SQLLOOP-->
+		<tr>
+			<td>
+				<!--#SMARTFIELD title="Send To&nbsp;:" div="</td><td>" name="to_contact_id" type="droplist" table="contacts_v" display="contact_name" key="contact_id"
+					filter="organization_id=<?s:org_id.toPStmtInt()?>" -->
+			<!--#CHECKSECURITY right="rights.job/contact_edit.view" -->
+				<input type="button" name="contact_edit_button" value="View" class="button2" onClick="newWindow('{!s:showPage!}job/contact_edit.html?loc=contact_edit&theForm=track_edit&theDroplist=to_contact_id&contact_id=','contacts',450,490,track_edit.to_contact_id);">
+			<!--#/CHECKSECURITY--></td>
+		</tr>
+		<tr valign="top">
+			<td valign="top">Notes:</td>
+			<td><!--#SMARTFIELD title="" name="notes" type="textarea" cols="80" rows="4" --><BR><BR></td>
+		</tr>
+    <!--#IF evaluate="<?d:mode?>" compare="Update"-->
+		<tr>
+			<td class="TableTitle" colspan="2">System Info</td>
+		</tr>
+		<!--#/IF-->
+		<tr>
+			<td><!--#SMARTFIELD title="Date Created:&nbsp;" div="</td><td>" name="date_created" type="datetime" mode="Update" readonly class="readonly" size="22" --></td>
+			<td><!--#SMARTFIELD title="Created By:&nbsp;" div="</td><td>" name="created_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+		</tr>
+		<tr>
+			<td><!--#SMARTFIELD title="Date Modified:&nbsp;" div="</td><td>" name="date_modified" type="datetime" mode="Update" readonly class="readonly" size="22"--></td>
+			<td><!--#SMARTFIELD title="Modified By:&nbsp;" div="</td><td>" name="modified_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+		</tr>
+		<!--#/SMARTFORM -->
+	</table>
+</body>
+<!--#/SQLLOOP-->
+<!--#EMBED template="embeds/footer.html" -->

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 1, 2006 10:52:21 AM by Hibernate Tools 3.2.0.beta6a -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.UserCustomer" table="USER_CUSTOMERS" schema="dbo" catalog="ServiceTRAX_NEW">
+        <id name="userCustomerId" type="long">
+            <column name="user_customer_id" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="user" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="user_id" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="customer" class="com.dynamic.servicetrax.orm.Customer" fetch="select">
+            <column name="customer_id" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

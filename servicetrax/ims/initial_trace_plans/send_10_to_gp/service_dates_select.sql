@@ -1,0 +1,1 @@
+SELECT MIN(est_start_date) min_start_date, MAX(est_end_date) max_end_date FROM services WHERE service_id in (SELECT bill_service_id FROM service_lines WHERE invoice_id =  164325 )

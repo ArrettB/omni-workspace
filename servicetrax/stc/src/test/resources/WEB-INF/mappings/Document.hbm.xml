@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.Document" table="DOCUMENTS" schema="dbo" catalog="">
+        <id name="documentId" type="java.lang.Long">
+            <column name="DOCUMENT_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="project" class="com.dynamic.servicetrax.orm.Project" fetch="select">
+            <column name="PROJECT_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="format" class="com.dynamic.servicetrax.orm.Format" fetch="select">
+            <column name="FORMAT_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="name" type="string">
+            <column name="NAME" length="50" not-null="true" />
+        </property>
+        <property name="code" type="string">
+            <column name="CODE" length="20" />
+        </property>
+        <property name="lockedBy" type="java.lang.Long">
+            <column name="LOCKED_BY" precision="18" scale="0" />
+        </property>
+        <property name="dateLocked" type="timestamp">
+            <column name="DATE_LOCKED" length="23" />
+        </property>
+        <property name="createdBy" type="long">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="modifiedBy" type="java.lang.Long">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <set name="versions" inverse="true">
+            <key>
+                <column name="DOCUMENT_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Version" />
+        </set>
+    </class>
+</hibernate-mapping>

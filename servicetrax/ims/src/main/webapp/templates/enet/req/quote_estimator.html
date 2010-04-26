@@ -1,0 +1,36 @@
+  <!--#SQLLOOP name="send_quote"
+               query="SELECT top 1 'x' FROM quotes
+                       WHERE request_id = <?s:request_id?>
+                       AND is_sent = 'N'"-->
+	<!--#SET name="can_edit_estimate" value="true" -->
+  <!--#/SQLLOOP-->
+
+		<div>
+			<!--#IF defined="<?d:can_edit_estimate?>" -->
+			<!--#ELSE-->
+				<!--#IF evaluate="<?p:requestIsQuoted?>" compare="N" -->
+				<input id="newQuoteButton" type="button" value="Create Quote" onclick="javascript:new_estimate();" class="button">
+				<!--#/IF -->
+			<!--#/IF-->
+		</div>
+
+		<!--#SMARTTABLE name="quotes" query="sp_estimator 5, <?s:request_id?>, NULL, NULL, NULL, NULL, <?s:project_no.toSQLString()?>" -->
+			  <!--#IF defined="<?d:can_edit_estimate?>"-->
+			<!--#SMARTCOLUMN title="" value="<input type=radio name=r_quote value=<?r:quotes:estimate_id?>>"  -->
+			  <!--#/IF-->
+		    <!--#SMARTCOLUMN name="name" title="Name" style="width:200" href="<?s:showPage?>quoteDownload?action=3&requestid=<?s:request_id?>&estimator=<?r:quotes:estimate_id?>" target="_blank" -->
+		    <!--#SMARTCOLUMN title="View Quote" value="View Quote" href="<?s:showPage?>quoteReports?quote_id=<?r:quotes:estimate_id?>" target="_blank"  -->
+		    <!--#SMARTCOLUMN title="Compact Quote" value="Compact Quote" href="<?s:showPage?>quoteReports?quote_id=<?r:quotes:estimate_id?>&compact=true" target="_blank"  -->
+		    <!--#SMARTCOLUMN name="sent" title="Created/Send" -->
+		    <!--#SMARTCOLUMN name="updated_by" title="Updated By" style="width:100" align="center" -->
+		    <!--#SMARTCOLUMN name="updated_on" title="Date Updated" format="date" -->
+			  <!--#IF defined="<?d:can_edit_estimate?>"-->
+		    <!--#SMARTCOLUMN title="Conditions" value="<input type=button name=Update value=Update onclick='editConditions(<?s:request_id?>)' " -->
+			  <!--#/IF-->
+		<!--#/SMARTTABLE -->
+
+  <!--#IF defined="<?d:can_edit_estimate?>"-->
+		<div style="padding-top: 2px;">
+			<input type="button" value="Send Quote" onclick="javascript:sendQuote();" class="button">
+		</div>
+  <!--#/IF-->

@@ -1,0 +1,120 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: resource_items.html, 9, 1/25/2005 8:13:06 AM, Lee A. Gunderson$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.mnt/resource_items.view?>"-->
+
+<body class="BodyTag">
+
+	<table width="100%" cellspacing="0" cellpadding="0">
+		<tr>
+			<!--#IF defined="<?p:resource_item_id?>"-->
+				<td  class="HeaderBar">Edit Resource Item Information</td>
+			<!--#ELSE-->
+				<td  class="HeaderBar">Enter New Resource Item Information</td>
+			<!--#/IF-->
+		</tr>
+	</table>
+
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<!--#SMARTFORM name="mnt/resource_items" security="rights" table="resource_items" key="resource_item_id"
+		prevTemplate="<?p:called_by2.isNull('mnt/main_mnt')?>.html" nextTemplate="mnt/resource_items.html"
+		preHandler="ims.handlers.job_processing.SmartFormPreHandler,ims.handlers.maintenance.ResourcePostHandler"
+		postHandler="ims.handlers.maintenance.ClearIDPostHandler"
+		buttons="Save,New,Delete,Cancel" onClickFunction="exitFunction" -->
+<!-- note made ResourcePostHandler a preHandler in this case so button does not get overwritten. -->
+		<!--#SMARTFIELD name="resource_id" type="hidden" value="<?p:resource_id?>" -->
+		<!--#SMARTFIELD name="user_id" type="hidden" value="<?p:user_id?>" -->
+		<!--#SMARTFIELD name="called_by" type="hidden" value="<?p:called_by?>" -->
+		<!--#SMARTFIELD name="called_by2" type="hidden" value="<?p:called_by2?>" -->
+		<!--#SMARTFIELD name="redisplay" type="hidden" value="false" -->
+		<!--#SMARTFIELD name="clear_id" type="hidden" value="resource_item_id" -->
+		<!--#SMARTFIELD name="res_action" type="hidden" value="loadResTypeItems" --> <!-- used by ResourcePostHandler to load resource type items into resource items -->
+
+		<tr><td width="100"><!--#SMARTFIELD title="Resource Name:" name="resource_name" div="</td><td>" type="chooser" table="resources" display="name" key="resource_id" value="<?p:resource_id?>" filter="organization_id=<?s:org_id.toSQLString()?>" readonly class="readonly" --></td></tr>
+		<tr><td width="100"><!--#SMARTFIELD title="Item:" name="item_id" div="</td><td>" type="droplist" table="items_v" display="name" key="item_id" filter="organization_id=<?s:org_id.toSQLString()?> AND item_status_type_code='active'" --></td></tr>
+		<tr><td width="100"><!--#SMARTFIELD title="Default Bill Rate:" name="default_item_flag" div="</td><td>" type="boolean" value="N"--></td></tr>
+		<tr><td width="100"><!--#SMARTFIELD title="Max Amount:" name="max_amount" div="</td><td>" type="money" --></td></tr>
+		<!--#IF evaluate="<?d:mode?>" compare="Update"-->
+		<tr><td colspan="4" class="HeaderBar">System Info</td></tr>
+		<tr>
+			<td width="100"><!--#SMARTFIELD title="Date Created" div="</td><td>" name="date_created" type="datetime" mode="Update" readonly class="readonly" size="22" --></td>
+			<td width="100"><!--#SMARTFIELD title="Created By" div="</td><td>" name="created_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+		</tr>
+		<tr>
+			<td width="100"><!--#SMARTFIELD title="Date Modified" div="</td><td>" name="date_modified" type="datetime" mode="Update" readonly class="readonly" size="22"--></td>
+			<td width="100"><!--#SMARTFIELD title="Modified By" div="</td><td>" name="modified_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+		</tr>
+		<!--#/IF-->
+		<tr><td colspan="4"><input type="submit" class="button" name="loadResTypeItems" value="Load Resource Type Items" --></td></tr>
+	<!--#/SMARTFORM -->
+	</table>
+
+
+	<table width="100%" cellspacing="0" cellpadding="0">
+		<tr><td  class="HeaderBar">Select a Resource Item to edit:</td></tr>
+	</table>
+
+	<!--#SMARTTABLE class="SmartTable" name="resource_items_list"
+			query="SELECT r.resource_item_id, i.name, r.default_item_flag, r.max_amount
+			         FROM resource_items_v r, items i
+			        WHERE r.organization_id=<?s:org_id.toPStmtString()?>
+			          AND r.resource_id = <?p:resource_id.toPStmtString()?>
+					  AND r.item_id = i.item_id
+			     ORDER BY name"
+	-->
+		<!--#IF defined="<?s:rights.mnt/resource_items.update?>"-->
+			<!--#SMARTCOLUMN name="name" sort="name" title="Item" width="25%" href="<?s:showPage?>mnt/resource_items.html?called_by=<?p:called_by?>&called_by2=<?p:called_by2?>&user_id=<?p:user_id?>&resource_id=<?p:resource_id?>&resource_item_id=<?r:resource_items_list:resource_item_id?>" -->
+		<!--#ELSE-->
+			<!--#SMARTCOLUMN name="name" sort="name" title="Item" width="25%" -->
+		<!--#/IF-->
+			<!--#SMARTCOLUMN name="default_item_flag" sort="default_item_flag" title="Default Bill Rate" width="25%" -->
+			<!--#SMARTCOLUMN name="max_amount" sort="max_amount" title="Max Amount" format="money" width="25%" -->
+	<!--#/SMARTTABLE -->
+
+	<br>
+
+</body>
+
+<script language="JavaScript">
+<!--
+
+   <!-- determine if default bill rate exists for this resource_type_id -->
+ 	<!--#SQLLOOP query="SELECT DISTINCT 'X' found
+ 	                    FROM resource_items_v
+ 	                    WHERE organization_id=<?s:org_id.toPStmtString()?>
+ 	                      AND resource_id = <?p:resource_id.toPStmtString()?>
+ 	                      AND default_item_flag = 'Y'"
+					resourceName="SQLServer"
+					name="defaultQuery"
+   -->
+   var default_exists = 'Y';
+   <!--#SQLNODATA-->
+   var default_exists = 'N';
+   <!--#/SQLNODATA-->
+   <!--#/SQLLOOP-->
+
+	function exitFunction( button )
+	{
+		if( button == 'Save' )
+		{
+			//make sure user sets only one default flag
+			if( default_exists == 'Y' &&
+				 resource_items.default_item_flag.options[resource_items.default_item_flag.selectedIndex].value == 'Y')
+			{
+				alert("You can not set a second Bill Rate as default, only one default allowed.");
+				resource_items.redisplay.value = 'true';
+				return false;
+			}
+			else
+			{
+				resource_items.redisplay.value = 'false';
+				return true;
+			}
+		}
+	}
+
+//-->
+</script>
+
+
+<!--#EMBED template="embeds/footer.html" -->

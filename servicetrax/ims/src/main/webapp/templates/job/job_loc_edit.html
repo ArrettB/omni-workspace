@@ -1,0 +1,228 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: C:\work\ims\templates\job\job_loc_edit.html, 29, 3/20/2006 7:12:52 PM, Blake Von Haden$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.job/job_loc_edit.view?>"-->
+
+<body class="BodyTag" onLoad="window.focus();testIfCreated()">
+
+   <table class="SmartTable">
+   <!--#SMARTFORM name="job/job_loc_edit" table="job_locations" key="job_location_id"
+                  security="rights"
+                  preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+                  buttons="Save,Copy,New,Delete,Cancel"
+                  onClickFunction="return exitFunction"
+   -->
+	   <!--#SMARTFIELD name="job_id" type="hidden" value="<?p:job_id?>" -->
+	   <!--#SMARTFIELD name="service_id" type="hidden" value="<?p:service_id?>" -->
+	   <!--#SMARTFIELD name="customer_id" type="hidden" value="<?p:customer_id?>" -->
+	   <!--#SMARTFIELD name="customer_name" type="hidden" value="<?p:customer_name?>" -->
+	   <!--#SMARTFIELD name="theForm" type="hidden" value="<?p:theForm?>" -->
+	   <!--#SMARTFIELD name="theDroplist" type="hidden" value="<?p:theDroplist?>" -->
+      <!--#SMARTFIELD name="redisplay" type="hidden" value="false" --></td>
+      <!--#SMARTFIELD name="created_new_loc" type="hidden" value="<?p:created_new_loc.isNull('false')?>" --></td>
+		<!--#SMARTFIELD name="return_value_flag" type="hidden" value="<?p:return_value_flag.isNull('true')?>" --></td>
+     <tr>
+         <td class="TableTitle" colspan="2">Job Location</td>
+      </tr>
+      <!--#IF defined="<?p:customer_name?>"  -->
+      <tr>
+         <td colspan="2"><!--#SMARTFIELD title="Customer:&nbsp;&nbsp;" name="dont_send" style="width:200" value="<?p:customer_name?>" readonly class="readonly" --></td>
+      </tr>
+      <!--#/IF -->
+      <tr>
+         <td colspan="2">
+            <!--#SMARTFIELD title="Select Job Location to Review:&nbsp;&nbsp;" name="xyz_enabled1" type="droplist" filter="customer_id=<?p:customer_id.toPStmtInt()?>" table="job_locations" display="job_location_name" key="job_location_id" onChange="showJobLoc(this);" -->
+            <input type="button" name="all" value="All" class="button2" onClick="chooseJobLocation()">
+         </td>
+      </tr>
+      <tr>
+		<td><!--#SMARTFIELD title="Job&nbsp;Location:&nbsp;&nbsp;" name="job_location_name"  style="width:170"--></td>
+		<td><!--#SMARTFIELD title="Site Type:&nbsp;&nbsp;" name="location_type_id" type="droplist" table="location_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td>
+      </tr>
+      <tr>
+      	<td><table>
+	      	<tr><td class="HeaderLabel">Address</td></tr>
+	         <tr><td><!--#SMARTFIELD title="Street1:" div="</td><td>" name="street1" mandatory="true" style="width:170"--></td></tr>
+	         <tr><td><!--#SMARTFIELD title="Street2:" div="</td><td>" name="street2" style="width:170"--></td></tr>
+	         <tr><td><!--#SMARTFIELD title="Street3:" div="</td><td>" name="street3" style="width:170"--></td></tr>
+	         <tr><td><!--#SMARTFIELD title="City:" div="</td><td>" name="city" mandatory="true" style="width:170"--></td></tr>
+	         <tr><td><!--#SMARTFIELD title="State:" div="</td><td>" name="state" mandatory="true" style="width:170"--></td></tr>
+	         <tr><td><!--#SMARTFIELD title="Zip:" div="</td><td>" name="zip" mandatory="true" style="width:170"--></td></tr>
+			 <tr><td><!--#SMARTFIELD title="County:" div="</td><td>" name="county" mandatory="true" style="width:170"--></td></tr>
+			</table></td>
+      	<td valign="top"><table>
+	      	<tr><td class="HeaderLabel" colspan="2">Directions</td></tr>
+	         <tr><td width="35%" class="viewonly" colspan="2">
+	            <!--#SMARTFIELD title="" name="directions" type="textarea" cols="50" rows="6" -->
+	         </td></tr>
+	      	<tr><td class="HeaderLabel" colspan="2">Contacts</td></tr>
+	         <tr><td><!--#SMARTFIELD title="Location Contact:" div="</td><td>" name="job_loc_contact_id" type="droplist" style="width:100" filter="contact_type_code='job_location'" table="contacts_v" display="contact_name" key="contact_id" -->
+            <!--#CHECKSECURITY right="rights.job/contact_edit.view"-->
+               <input type="button" name="contact_edit" value="View" class="button2" onClick="newWindow('{!s:showPage!}job/contact_edit.html?theForm=job_loc_edit&theDroplist=job_loc_contact_id&contact_id=','contacts',450,490,job_loc_edit.job_loc_contact_id);">
+            <!--#/CHECKSECURITY-->
+   	      </td></tr>
+				<tr><td><!--#SMARTFIELD title="Bldg Mgmt Contact:" div="</td><td>" name="bldg_mgmt_contact_id" type="droplist" style="width:100" filter="contact_type_code='bldg_mgmt_co'" table="contacts_v" display="contact_name" key="contact_id" -->
+            <!--#CHECKSECURITY right="rights.job/contact_edit.view"-->
+               <input type="button" name="contact_edit" value="View" class="button2" onClick="newWindow('{!s:showPage!}job/contact_edit.html?theForm=job_loc_edit&theDroplist=bldg_mgmt_contact_id&contact_id=','contacts',450,490,job_loc_edit.bldg_mgmt_contact_id);">
+            <!--#/CHECKSECURITY-->
+	         </td></tr>
+			</table></td>
+      </tr>
+      <tr>
+      	<td class="HeaderLabel" colspan="2">Building Details</td>
+      </tr>
+		<tr>
+			<td><table>
+				<tr><td><!--#SMARTFIELD title="Loading Dock Avail:" div="&nbsp;</td><td>" name="loading_dock_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Dock Avail Time:" div="&nbsp;</td><td>" name="dock_available_time" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Dock Reserv Required:" div="&nbsp;</td><td>" name="dock_reserv_req_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Semi Access Avail:" div="&nbsp;</td><td>" name="semi_access_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Dock Height:" div="&nbsp;</td><td>" name="dock_height" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Elevator Available:" div="&nbsp;</td><td>" name="elevator_avail_type_id" type="droplist" table="elevator_available_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Elevator&nbsp;Reserv&nbsp;Required:" div="&nbsp;</td><td>" name="elevator_reserv_req_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Security:" div="</td><td>" name="security_type_id" type="droplist" table="security_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no"--></td></tr>
+			</table></td>
+			<td valign="top"><table>
+				<tr><td><!--#SMARTFIELD title="Multi-Level:" div="</td><td>" name="multi_level_type_id" type="droplist" table="multi_level_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Stair Carry:" div="&nbsp;</td><td>" name="stair_carry_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="# of Flights/Steps:" div="&nbsp;</td><td>" name="stair_carry_flights" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Square Footage:" div="&nbsp;</td><td>" name="stair_carry_stairs" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Smallest Door/Elev Width:" div="&nbsp;</td><td>" name="smallest_door_elev_width" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Floor Protection:" div="&nbsp;</td><td>" name="floor_protection_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Wall Protection:" div="&nbsp;</td><td>" name="wall_protection_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Doorway Protection:" div="&nbsp;</td><td>" name="doorway_prot_type_id" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				</td></tr>
+			</table></td>
+		</tr>
+      <tr>
+      </tr>
+   <!--#/SMARTFORM-->
+   </table>
+
+</body>
+
+
+<script language="JavaScript">
+<!--
+
+	function showJobLoc(droplist)
+	{
+		var job_loc_id = '';
+		if( !(droplist === undefined) )
+		{
+			job_loc_id = droplist.options[droplist.selectedIndex].value;
+		}
+		else
+			job_loc_id = job_loc_edit.job_location_id.value;
+
+		location='{!s:showPage!}job/job_loc_edit.html?'+'&customer_id='+{!p:customer_id.toJavaScriptString()!}+
+							'&job_id={!p:job_id!}&service_id={!p:service_id!}'+
+							'&customer_name='+{!p:customer_name.toJavaScriptString()!}+
+		         		'&theForm='+{!p:theForm.toJavaScriptString()!}+
+		         		'&theDroplist='+{!p:theDroplist.toJavaScriptString()!}+
+		         		'&return_value_flag='+escape(job_loc_edit.return_value_flag.value)+
+		         		'&job_location_id='+job_loc_id;
+	}
+
+	function exitFunction(button)
+	{
+		if ( button == 'Save')
+		{
+			if (document.job_loc_edit.street1.value == '')
+			{
+				alert('Please enter a value for the street1');
+				document.job_loc_edit.street1.focus();
+				return false;
+			}
+
+			if (document.job_loc_edit.city.value == '')
+			{
+				alert('Please enter a value for the city');
+				document.job_loc_edit.city.focus();
+				return false;
+			}
+
+			document.job_loc_edit.state.value.replace(/\s*$/g, '');
+			if (document.job_loc_edit.state.value == '')
+			{
+				alert('Please enter a value for the state');
+				document.job_loc_edit.state.focus();
+				return false;
+			}
+			document.job_loc_edit.state.value = document.job_loc_edit.state.value.toUpperCase();
+			if (document.job_loc_edit.state.value.search(/[^A-Z]/g) >= 0)
+			{
+				alert('Please enter a valid value for the state');
+				return false;
+			}
+
+			if (document.job_loc_edit.zip.value == '')
+						{
+							alert('Please enter a value for the zip');
+							document.job_loc_edit.zip.focus();
+							return false;
+			}
+
+			if (document.job_loc_edit.county.value == '')
+						{
+							alert('Please enter a value for the county');
+							document.job_loc_edit.county.focus();
+							return false;
+			}
+		}
+		if( button == 'Save' || button == 'Cancel')
+		{
+			if( button == 'Save' )
+			{//need to save or update record before we return to caller.
+				document.job_loc_edit.created_new_loc.value = 'true';
+				document.job_loc_edit.job_location_name.value = document.job_loc_edit.job_location_name.value.toUpperCase();
+			}
+			else
+			{//canceling so who cares about id :-)
+				parent.window.opener.focus();
+				parent.close();
+			}
+		}
+		else if( button == 'Delete' )
+		{
+			if (!(document.job_loc_edit.return_value_flag == 'false' ))
+				returnDroplistOption(job_loc_edit.theForm.value, job_loc_edit.theDroplist.value,
+											job_loc_edit.job_location_name.value, job_loc_edit.job_location_id.value, 'remove');
+		}
+		return true;
+	}
+
+	function testIfCreated()
+	{
+		if( document.job_loc_edit.created_new_loc.value == 'true' && job_loc_edit.job_location_id != null && '{!p:validation_error!}' != 'true' )
+		{
+			if( !(document.job_loc_edit.job_location_id.value == '') )
+			{//we now have a job_location_id so return to other caller
+
+				if (!(document.job_loc_edit.return_value_flag == 'false' ))
+					returnDroplistOption(job_loc_edit.theForm.value, job_loc_edit.theDroplist.value,
+												job_loc_edit.job_location_name.value, job_loc_edit.job_location_id.value);
+	     		parent.window.opener.focus();
+				if( !(parent.window.opener.loadJobLocation === undefined) )
+						parent.window.opener.loadJobLocation();
+	   	   parent.close();
+	   	}
+		}
+	}
+
+	function chooseJobLocation()
+	{
+		url = {!s:showPage.toJavaScriptString()!}+'choosers/choose_job_location.html'
+			+ '?title=List of ALL Job Locations'
+			+ '&form=job_loc_edit'
+			+ '&field=job_location_id'
+			+ '&id=job_location_id'
+			+ '&value=xyz_enabled1_text'
+			+ '&job_location_id_text='
+			+ '&query=<?a:choose_job_location/sql?>';
+		window.open(url, 'chooser', ##-WIN-##);
+	}
+-->
+</script>
+
+<!--#EMBED template="embeds/footer.html" -->

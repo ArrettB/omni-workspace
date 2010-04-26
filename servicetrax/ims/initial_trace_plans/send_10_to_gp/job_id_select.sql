@@ -1,0 +1,1 @@
+SELECT i.job_id, j.spreadsheet_billing_flag, i.description FROM jobs j, invoices i WHERE j.job_id=i.job_id AND invoice_id='164325'

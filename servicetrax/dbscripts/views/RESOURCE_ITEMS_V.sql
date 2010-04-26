@@ -1,0 +1,20 @@
+
+CREATE VIEW dbo.RESOURCE_ITEMS_V  
+AS  
+SELECT     dbo.RESOURCES_V.ORGANIZATION_ID, dbo.RESOURCE_ITEMS.RESOURCE_ITEM_ID, dbo.RESOURCE_ITEMS.ITEM_ID,   
+                      dbo.ITEMS_V.NAME AS item_name, dbo.ITEMS_V.EXT_ITEM_ID, dbo.ITEMS_V.ITEM_TYPE_ID, dbo.ITEMS_V.item_type_code,   
+                      dbo.ITEMS_V.item_type_name, dbo.ITEMS_V.item_status_type_code, dbo.RESOURCE_ITEMS.RESOURCE_ID, dbo.RESOURCES_V.NAME AS resource_name,   
+                      dbo.RESOURCES_V.RESOURCE_TYPE_ID, dbo.RESOURCES_V.resource_type_code, dbo.RESOURCES_V.resource_type_name,   
+                      dbo.RESOURCES_V.USER_ID, dbo.RESOURCES_V.user_full_name, dbo.RESOURCES_V.ACTIVE_FLAG, dbo.RESOURCE_ITEMS.DEFAULT_ITEM_FLAG,   
+                      dbo.RESOURCE_ITEMS.MAX_AMOUNT, dbo.RESOURCE_ITEMS.DATE_CREATED, dbo.RESOURCE_ITEMS.CREATED_BY,   
+                      USERS_V_1.full_name AS created_by_name, dbo.RESOURCE_ITEMS.DATE_MODIFIED, USERS_V_1.full_name AS modified_by_name,   
+                      dbo.RESOURCE_ITEMS.MODIFIED_BY, dbo.RESOURCES_V.FOREMAN_FLAG, dbo.ITEMS_V.ORGANIZATION_ID AS Expr1  
+FROM         dbo.RESOURCE_ITEMS LEFT OUTER JOIN dbo.USERS_V USERS_V_1
+ ON dbo.RESOURCE_ITEMS.MODIFIED_BY = USERS_V_1.USER_ID
+LEFT OUTER JOIN dbo.RESOURCES_V
+ ON dbo.RESOURCE_ITEMS.RESOURCE_ID = dbo.RESOURCES_V.RESOURCE_ID
+LEFT OUTER JOIN dbo.ITEMS_V
+ ON dbo.RESOURCE_ITEMS.ITEM_ID = dbo.ITEMS_V.ITEM_ID
+LEFT OUTER JOIN dbo.USERS_V USERS_V_2
+ON dbo.RESOURCE_ITEMS.CREATED_BY = USERS_V_2.USER_ID
+

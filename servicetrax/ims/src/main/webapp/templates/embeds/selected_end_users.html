@@ -1,0 +1,24 @@
+<!-- $Header: selected_end_users.html, 4/28/2008, David Zhaon$ -->
+<html>
+<head>
+<title>Selected End Users</title>
+</head>
+<body>
+
+		<!--#SELECT class="regular"
+			name="selected_customers"
+			query="SELECT eu.customer_id, eu.customer_name
+			         FROM customers eu INNER JOIN
+			              lookups customer_type ON eu.customer_type_id = customer_type.lookup_id INNER JOIN
+			              user_customer_end_users uceu ON eu.customer_id = uceu.customer_id
+			        WHERE customer_type.code = 'end_user'
+			          AND eu.organization_id = <?s:org_id.toPStmtString()?>
+			          AND uceu.user_customer_id = <?p:parameter.toPStmtString()?>
+			     ORDER BY eu.customer_name"
+			onDblClick="removeCustomers()"
+			 size="10"
+			 style="width:200"
+			 multiple -->
+
+</body>
+</html>

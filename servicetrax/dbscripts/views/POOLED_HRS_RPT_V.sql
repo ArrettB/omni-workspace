@@ -1,0 +1,16 @@
+CREATE VIEW dbo.POOLED_HRS_RPT_V
+AS
+SELECT     TOP 100 PERCENT sl.BILL_JOB_NO, sl.BILL_SERVICE_NO, sl.BILL_JOB_ID AS job_id, sl.BILL_SERVICE_ID AS service_id, sl.ITEM_ID, 
+                      sl.ITEM_NAME, SUM(sl.BILL_QTY) AS total_qty, sl.BILL_RATE AS rate, sl.STATUS_ID AS service_line_status_id, sl.INVOICE_ID, sl.ORGANIZATION_ID, 
+                      sl.TC_SERVICE_LINE_NO, sl.POOLED_FLAG, sl.BILLED_FLAG, sl.POSTED_FLAG, sl.EXPORTED_FLAG, sl.BILLABLE_FLAG, 
+                      dbo.JOBS.JOB_STATUS_TYPE_ID
+FROM         dbo.SERVICE_LINES sl INNER JOIN
+                      dbo.JOBS ON sl.TC_JOB_NO = dbo.JOBS.JOB_NO LEFT OUTER JOIN
+                      dbo.POOLED_HOURS_CALC ON sl.BILL_SERVICE_ID = dbo.POOLED_HOURS_CALC.SERVICE_ID
+GROUP BY sl.STATUS_ID, sl.BILL_JOB_ID, sl.BILL_SERVICE_ID, sl.BILL_JOB_NO, sl.BILL_SERVICE_NO, sl.BILL_RATE, sl.ITEM_ID, sl.INVOICE_ID, 
+                      sl.ITEM_NAME, sl.ORGANIZATION_ID, sl.TC_SERVICE_LINE_NO, sl.POOLED_FLAG, sl.BILLED_FLAG, sl.POSTED_FLAG, sl.EXPORTED_FLAG, 
+                      sl.BILLABLE_FLAG, dbo.JOBS.JOB_STATUS_TYPE_ID
+HAVING      (sl.INVOICE_ID IS NULL) AND (sl.POOLED_FLAG = 'y') AND (sl.BILLED_FLAG = 'n') AND (sl.POSTED_FLAG = 'n') AND (sl.BILLABLE_FLAG = 'y') AND 
+                      (dbo.JOBS.JOB_STATUS_TYPE_ID < 115)
+ORDER BY sl.BILL_JOB_NO, sl.BILL_SERVICE_NO
+

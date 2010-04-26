@@ -1,0 +1,85 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: job_custom_cols_edit.html, 2, 1/7/2005 5:09:50 PM, Lee A. Gunderson$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.job/job_custom_cols_edit.view?>"-->
+<script language="JavaScript">
+<!--
+
+
+//-->
+</script>
+
+
+<body class="BodyTag" onload="focus()">
+
+	<table width="100%" width="100%" border="0" cellspacing="0" cellpadding="3">
+		<tr><td class="TableTitle" width="100%">Customer Custom Columns</td></tr>
+		<tr><td><BR><span class="HeaderLabel">Customer:</span> {!p:customer_name!}</td></tr>
+	</table>
+
+<!--#IF evaluate="<?p:custom_cust_col_id?>" compare="" -->
+	<BR>
+	<input type="button" class="button" value="Cancel" name="button" onClick="exitFunction('Cancel')">
+
+<!--#ELSE-->
+	 	<table border="0" cellpadding="1" cellspacing="1">
+	<!--#SMARTFORM name="job/job_custom_cols_edit" security="rights" table="custom_cust_columns" key="custom_cust_col_id" resourceName="SQLServer"
+		preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+		postHandler="ims.handlers.maintenance.ClearIDPostHandler"  buttons=""
+	-->
+		<!--#SMARTFIELD name="clear_id" type="hidden" value="custom_cust_col_id" -->
+			<tr>
+				<td>
+					<table><tr><td><!--#SMARTFIELD title="Column" div="</td></tr><tr><td>" name="col_sequence" readonly="true" class="readonly" size="5"--></td></tr></table>
+				</td>
+				<td>
+					<table><tr><td><!--#SMARTFIELD title="Column Description" div="</td></tr><tr><td>" name="column_desc" size="25"--></td></tr></table>
+				</td>
+				<td>
+					<table><tr><td><!--#SMARTFIELD title="Active" div="</td></tr><tr><td>" type="droplist" name="active_flag" table="yes_no_type_v" display="name" key="yes_no_type_code" --></td></tr></table>
+				</td>
+			</tr>
+	 	</table>
+
+	   <input type="hidden" name="customer_id" value="{!p:customer_id!}" >
+	   <input type="hidden" name="customer_name" value="{!p:customer_name!}" >
+		<input type="submit" class="button" value="Save" name="button">
+		<input type="button" class="button" value="Cancel" name="button" onClick="exitFunction('Cancel')">
+
+	<!--#/SMARTFORM -->
+
+<!--#/IF-->
+
+	<HR><BR>
+
+<!--#SMARTTABLE name="service_lines"
+	query="SELECT *
+			FROM custom_cust_columns
+			WHERE customer_id = <?p:customer_id.toPStmtString()?>
+			ORDER BY col_sequence"
+			name="cust_cols"
+-->
+  <!--#SMARTCOLUMN name="col_sequence" sort="col_sequence" title="Column" width="5%" align="center" href="" onClick="location='<?s:showPage?>job/job_custom_cols_edit?custom_cust_col_id=<?r:cust_cols:custom_cust_col_id?>&customer_id='+escape(<?p:customer_id.toJavaScriptString()?>)+'&customer_name='+escape(<?p:customer_name.toJavaScriptString()?>);return false;"-->
+  <!--#SMARTCOLUMN name="column_desc" sort="column_desc" title="Column Description" width="20%" -->
+  <!--#SMARTCOLUMN name="active_flag" sort="active_flag" title="active_flag" width="5%" align="center" -->
+<!--#/SMARTTABLE -->
+
+	<br>
+
+
+</body>
+
+<script language="JavaScript">
+<!--
+	function exitFunction(button)
+	{
+		if( button == 'Cancel' )
+		{
+			parent.window.opener.focus();
+			parent.window.close();
+		}
+	}
+-->
+</script>
+
+<!--#EMBED template="embeds/footer.html" -->

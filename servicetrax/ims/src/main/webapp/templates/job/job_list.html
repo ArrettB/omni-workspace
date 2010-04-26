@@ -1,0 +1,51 @@
+<!--#EMBED template="embeds/header.html" -->
+
+<body class="BodyTag">
+
+<table width="100%" cellspacing="0" cellpadding="0">
+	<tr height="20">
+		<td>
+			<b>Which jobs would you like to view?</b>
+		</td>
+	</tr>
+<!--#CHECKSECURITY right="rights.job/job_list_open.view"-->
+	<tr height="20">
+		<td>
+			<a href="{!s:showPage!}job/job_list_open.html">
+			View All Open Jobs
+			</a>
+		</td>
+	</tr>
+<!--#/CHECKSECURITY-->
+<!--#CHECKSECURITY right="rights.job/job_list_owned.view"-->
+	<tr height="20">
+		<td>
+			<a href="{!s:showPage!}job/job_list_owned.html">
+			View Jobs I Own
+			</a>
+		</td>
+	</tr>
+<!--#/CHECKSECURITY-->
+<!--#CHECKSECURITY right="rights.job/job_list_scheduled.view"-->
+	<tr height="20">
+		<td>
+			<a href="{!s:showPage!}job/job_list_scheduled.html">
+			View Jobs I Am Scheduled On
+			</a>
+		</td>
+	</tr>
+<!--#/CHECKSECURITY-->
+<!--#CHECKSECURITY right="rights.job/job_list_sup.view"-->
+	<tr height="20">
+		<td>
+			<a href="{!s:showPage!}job/job_list_sup.html">
+			View Jobs I Supervise
+			</a>
+		</td>
+	</tr>
+<!--#/CHECKSECURITY-->
+</table>
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

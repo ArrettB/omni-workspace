@@ -1,0 +1,30 @@
+<!--#EMBED template="embeds/header.html" --><!-- $Header: right_types.html, 1, 8/2/2005 3:05:41 PM, Greg Case$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.mnt/security/right_types.view?>"-->
+<body class="BodyTag">
+<table width="100%" cellspacing="0" cellpadding="0">
+	<tr><td  class="HeaderBar">{!s:rights.mnt/security/right_types.name!}</td></tr>
+</table>
+<!--#SMARTTABLE width="100%" name="right_types" query="SELECT right_type_id, code, name, description FROM right_types ORDER BY code" -->
+	<!--#SMARTCOLUMN width="15%" name="code" sort="code" title="Code" href="<?s:action?>mnt/security/right_type?right_type_id=<?r:right_types:right_type_id?>"-->
+	<!--#SMARTCOLUMN width="35%" name="name" sort="name" title="Name"-->
+	<!--#SMARTCOLUMN width="50%" name="description" sort="description" title="Description"-->
+<!--#/SMARTTABLE-->
+<br>
+<table border="0" cellpadding="0" cellspacing="0"><tr>
+	<!--#IF defined="<?s:rights.mnt/security/right_type.insert?>"-->
+	<td>
+		<form action="{!s:action!}mnt/security/right_type" method="get">
+		<input type="submit" value="Add" class="button">
+		</form>
+	</td>
+	<td>&nbsp;</td>
+	<!--#/IF-->
+	<td>
+		<form name="new" action="{!s:action!}mnt/main_mnt" method="get">
+		<input type="submit" value="Cancel" class="button">
+		</form>
+	</td>
+</tr></table>
+</body>
+<!--#EMBED template="embeds/footer.html" -->

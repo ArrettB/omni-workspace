@@ -1,0 +1,13 @@
+<!--#EMBED template="embeds/header.html" -->
+
+<body class="BodyTag">
+
+<br>
+<div class="infoText">Succesfully loaded {!d:load_count!} <!--#IF evaluate="<?d:load_count?>" compare="1" -->expense<!--#ELSE -->expenses<!--#/IF --> from Great Plains.</div>
+
+<!--#IF defined="<?d:SMARTFORM_ERROR?>" -->
+<div class="errorText">{!d:SMARTFORM_ERROR!}</div>
+<!--#/IF -->
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

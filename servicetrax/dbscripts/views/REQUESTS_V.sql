@@ -1,0 +1,38 @@
+
+
+
+CREATE  VIEW dbo.REQUESTS_V
+AS
+SELECT     dbo.REQUESTS.REQUEST_ID, dbo.REQUESTS.REQUEST_NO, dbo.REQUESTS.VERSION_NO, dbo.VERSIONS_MAX_NO_V.max_version_no, 
+                      dbo.REQUESTS.REQUEST_TYPE_ID, REQUEST_TYPE.CODE AS request_type_code, REQUEST_TYPE.NAME AS request_type_name, 
+                      dbo.REQUESTS.REQUEST_STATUS_TYPE_ID, REQUEST_STATUS_TYPE.CODE AS request_status_type_code, 
+                      REQUEST_STATUS_TYPE.NAME AS request_status_type_name, dbo.REQUESTS.PROJECT_ID, dbo.SERVICES.SERVICE_ID, 
+                      dbo.SERVICES.SERV_STATUS_TYPE_ID, SERV_STATUS_TYPE.CODE AS serv_status_type_code, 
+                      SERV_STATUS_TYPE.NAME AS serv_status_type_name, dbo.REQUESTS.DEALER_CUST_ID, dbo.REQUESTS.CUSTOMER_PO_NO, 
+                      dbo.REQUESTS.DEALER_PO_NO, dbo.REQUESTS.DEALER_PO_LINE_NO, dbo.REQUESTS.DEALER_PROJECT_NO, 
+                      dbo.REQUESTS.DESIGN_PROJECT_NO, dbo.REQUESTS.PROJECT_VOLUME, dbo.REQUESTS.ACCOUNT_TYPE_ID, 
+                      ACCOUNT_TYPE.CODE AS account_type_code, ACCOUNT_TYPE.NAME AS account_type_name, dbo.REQUESTS.QUOTE_TYPE_ID, 
+                      QUOTE_TYPE.CODE AS quote_type_code, QUOTE_TYPE.NAME AS quote_type_name, dbo.REQUESTS.QUOTE_NEEDED_BY, 
+                      dbo.REQUESTS.JOB_LOCATION_ID, dbo.REQUESTS.CUSTOMER_CONTACT_ID, dbo.REQUESTS.ALT_CUSTOMER_CONTACT_ID, 
+                      dbo.REQUESTS.D_SALES_REP_CONTACT_ID, dbo.REQUESTS.D_SALES_SUP_CONTACT_ID, dbo.REQUESTS.D_PROJ_MGR_CONTACT_ID, 
+                      dbo.REQUESTS.D_DESIGNER_CONTACT_ID, dbo.REQUESTS.A_M_CONTACT_ID, dbo.REQUESTS.A_M_INSTALL_SUP_CONTACT_ID, 
+                      dbo.REQUESTS.FURNITURE1_CONTACT_ID, dbo.REQUESTS.FURNITURE2_CONTACT_ID, dbo.REQUESTS.A_D_DESIGNER_CONTACT_ID, 
+                      dbo.REQUESTS.GEN_CONTRACTOR_CONTACT_ID, dbo.REQUESTS.ELECTRICIAN_CONTACT_ID, dbo.REQUESTS.DATA_PHONE_CONTACT_ID, 
+                      dbo.REQUESTS.PHONE_CONTACT_ID, dbo.REQUESTS.CARPET_LAYER_CONTACT_ID, dbo.REQUESTS.BLDG_MGR_CONTACT_ID, 
+                      dbo.REQUESTS.SECURITY_CONTACT_ID, dbo.REQUESTS.MOVER_CONTACT_ID, dbo.REQUESTS.OTHER_CONTACT_ID, 
+                      dbo.REQUESTS.PRI_FURN_TYPE_ID, PRI_FURN_TYPE.CODE AS pri_furn_type_code, PRI_FURN_TYPE.NAME AS pri_furn_type_name, 
+                      dbo.REQUESTS.PRI_FURN_LINE_TYPE_ID, dbo.REQUESTS.CSC_WO_FIELD_FLAG,
+                      PRI_FURN_LINE_TYPE.CODE AS pri_furn_line_type_code, 
+                      PRI_FURN_LINE_TYPE.NAME AS pri_furn_line_type_name, dbo.REQUESTS.SEC_FURN_TYPE_ID, SEC_FURN_TYPE.CODE AS sec_furn_type_code, 
+                      SEC_FURN_TYPE.NAME AS sec_furn_type_name, dbo.REQUESTS.SEC_FURN_LINE_TYPE_ID, 
+                      SEC_FURN_LINE_TYPE.CODE AS sec_furn_line_type_code, SEC_FURN_LINE_TYPE.NAME AS sec_furn_line_type_name, 
+                      dbo.REQUESTS.CASE_FURN_TYPE_ID, CASE_FURN_TYPE.CODE AS case_furn_type_code, CASE_FURN_TYPE.NAME AS case_furn_type_name, 
+                      dbo.REQUESTS.CASE_FURN_LINE_TYPE_ID, CASE_FURN_LINE_TYPE.CODE AS case_furn_line_type_code, 
+                      CASE_FURN_LINE_TYPE.NAME AS case_furn_line_type_name, dbo.REQUESTS.WOOD_PRODUCT_TYPE_ID, 
+                      WOOD_PRODUCT_TYPE.CODE AS wood_product_type_code, WOOD_PRODUCT_TYPE.NAME AS wood_product_type_name, 
+                      dbo.REQUESTS.DELIVERY_TYPE_ID, DELIVERY_TYPE.CODE AS delivery_type_code, DELIVERY_TYPE.NAME AS delivery_type_name, 
+                      dbo.REQUESTS.WAREHOUSE_LOC, dbo.REQUESTS.FURN_PLAN_TYPE_ID, FURN_PLAN_TYPE.CODE AS furn_plan_type_code, 
+                      FURN_PLAN_TYPE.NAME AS furn_plan_type_name, dbo.REQUESTS.PLAN_LOCATION, dbo.REQUESTS.FURN_SPEC_TYPE_ID, 
+                      FURN_SPEC_TYPE.CODE AS furn_spec_type_code, FURN_SPEC_TYPE.NAME AS furn_spec_type_name, 
+                      dbo.REQUESTS.WORKSTATION_TYPICAL_TYPE_ID, WORKSTATION_TYPICAL_TYPE.CODE AS workstation_typical_type_code, 
+           

@@ -1,0 +1,80 @@
+<!--#EMBED template="embeds/header.html"-->
+
+
+<body class="BodyTag">
+
+<!--#SQLLOOP query="SELECT status_id, name status, LOWER(code) code
+					FROM service_line_statuses WITH (NOLOCK)
+					WHERE code = 'submitted' OR code = 'new'"
+				resourceName="SQLServer"
+				name="status"-->
+<FORM ACTION="{!s:action!}setServiceLineStatus" METHOD="POST" name="{!r:status:status!}">
+<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0"> <tr><td class="tableHeader">{!r:status:status!}</td></tr>
+</TABLE>
+	<input type="hidden" name="level" value="line">
+	<input type="hidden" name="template_name" value="time/main_user_tc_list_sum_det.html">
+
+<!--#SMARTTABLE name="service_lines_<?r:status:status_id?>"
+	class="SmartTable" TableTotal="true" TotalClass="TableTotal"
+	query="SELECT t.tc_service_line_no, t.service_line_id, t.service_line_date, t.item_type_code, t.resource_name, t.item_name, t.payroll_qty, t.expense_rate, t.expense_qty, t.expense_total,
+			t.verified_by_name, t.tc_job_no, t.tc_job_id, t.tc_service_no, t.tc_service_id, t.ext_pay_code, r.user_id resource_user_id, null ignore_this
+			FROM time_capture_v t, resources r
+	WHERE t.status_id = <?r:status:status_id.toPStmtString()?>
+			AND t.resource_id = r.resource_id
+			AND (r.user_id = <?s:user_id.toPStmtString()?> OR t.created_by = <?s:user_id.toPStmtString()?> )
+			AND t.ph_service_id is null
+		    AND t.fully_allocated_flag <> 'Y'
+			AND t.organization_id = <?s:org_id.toPStmtString()?>
+			AND t.billed_flag = 'N'
+	ORDER BY tc_service_line_no"
+-->
+
+<!--#IF evaluate="<?d:rowid?>" greaterthan="0" -->
+	<!--#IF evaluate="<?r:service_lines_<?r:status:status_id?>:resource_user_id?>" compare="<?s:user_id?>"-->
+    <!--#SMARTCOLUMN value="<INPUT TYPE='checkbox' name='statusCheckBox' value='<?r:service_lines_<?r:status:status_id?>:service_line_id?>'>" title="<INPUT TYPE='checkbox' name='CheckAllBox' onclick='checkAllBoxes(this.form.CheckAllBox,this.form.statusCheckBox)'>" width="2%" -->
+	<!--#ELSE-->
+    <!--#SMARTCOLUMN name="ignore_this" width="2%" -->
+	<!--#/IF-->
+<!--#ELSE-->
+    <!--#SMARTCOLUMN value="<INPUT TYPE='checkbox' name='statusCheckBox' value=''>" title="<INPUT TYPE='checkbox' name='CheckAllBox' onclick='checkAllBoxes(this.form.CheckAllBox,this.form.statusCheckBox)'>" width="2%" -->
+<!--#/IF-->
+	<!--#SMARTCOLUMN name="tc_job_no" sort="tc_job_no" title="Job#" width="5%" href="<?s:action?>setupSession/job/job_main.html?job_id=<?r:service_lines_<?r:status:status_id?>:tc_job_id?>&loc=job_edit" target="main_frame" -->
+	<!--#SMARTCOLUMN name="tc_service_no" sort="tc_service_no" title="Req#" width="5%" href="<?s:action?>setupSession/job/job_main.html?service_id=<?r:service_lines_<?r:status:status_id?>:tc_service_id?>&job_id=<?r:service_lines_<?r:status:status_id?>:tc_job_id?>&loc=req_edit" target="main_frame" -->
+	<!--#SMARTCOLUMN name="tc_service_line_no" sort="tc_service_line_no" title="Line#" width="5%" href="<?s:action?>setServiceLineFields/time/tc_edit.html?job_id=<?r:service_lines_<?r:status:status_id?>:tc_job_id?>&service_line_id=<?r:service_lines_<?r:status:status_id?>:service_line_id?>&item_type_code=<?r:service_lines_<?r:status:status_id?>:item_type_code?>&prev_template=time/main_tc_main.html&level=<?p:level?>"target="_parent"-->
+	<!--#SMARTCOLUMN name="service_line_date" sort="service_line_date" title="Date" width="6%" format="date" -->
+	<!--#SMARTCOLUMN name="resource_name" sort="resource_name" title="Resource Name" width="10%" -->
+	<!--#SMARTCOLUMN name="item_name" sort="item_name" title="Item" width="10%" -->
+	<!--#SMARTCOLUMN name="ext_pay_code" sort="ext_pay_code" title="Paycode" width="5%" align="center" -->
+	<!--#SMARTCOLUMN name="payroll_qty" sort="payroll_qty" title="Hours" width="6%" total="true" align="right" format="###,###,###,##0.00"-->
+<!--#IF evaluate="<?r:status:status_id?>" compare="1"--> <!-- used in verify hours to total hours ->
+	<!--#IF evaluate="<?d:rowid?>" greaterthan="0" -->
+    <input type="hidden" id="{!r:service_lines_1:service_line_id!}" value="{!r:service_lines_1:payroll_qty!}">
+	<!--#/IF-->
+<!--#/IF-->
+	<!--#SMARTCOLUMN name="expense_rate" sort="expense_rate" title="Exp Rate" width="5%" align="right"-->
+	<!--#SMARTCOLUMN name="expense_qty" sort="expense_qty" title="Exp Qty" width="5%" align="right"-->
+	<!--#SMARTCOLUMN name="expense_total" sort="expense_total" title="Exp Tot" width="5%" total="true" align="right" format="money"-->
+	<!--#SMARTCOLUMN name="verified_by_name" sort="verified_by_name" title="Verified By" width="10%" -->
+<!--#/SMARTTABLE -->
+
+	<!--#IF EVALUATE="<?r:status:status_id?>" COMPARE="1"-->
+	<select NAME="submit_action">
+		<option VALUE="verify">Verify</option>
+	</select>
+	<input type="button" value="Submit" name="button" onClick="verify('{!r:status:status!}')">
+	<!--#ELSEIF EVALUATE="<?r:status:status_id?>" COMPARE="2"-->
+	<select NAME="submit_action">
+		<option VALUE="changeStatus1">Move to New</option>
+	</select>
+	<input type="submit" value="Submit" name="button">
+	<!--#/IF-->
+
+ <BR> <BR>
+</FORM>
+<!--#/SQLLOOP-->
+
+</body>
+
+
+
+<!--#EMBED template="embeds/footer.html" -->

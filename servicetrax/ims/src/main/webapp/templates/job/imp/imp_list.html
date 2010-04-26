@@ -1,0 +1,28 @@
+<!--#EMBED template="embeds/header.html" -->
+
+<body class="BodyTag" onLoad="loadColors();">
+
+<span class="HeaderLabel">Imported Job Review</span>
+
+   <!--#SMARTTABLE class="SmartTable" name="jobs_imported_v"
+	   query="SELECT jiv.job_import_id, jiv.job_no, jiv.dealer, jiv.office, jiv.work_site_cust_name,
+	                 jiv.po_no, jiv.po_line_no, jiv.date_released, jiv.est_start_date
+   	FROM jobs_imported_v jiv
+   	ORDER BY jiv.date_released"
+   -->
+     <!--#SMARTCOLUMN width="10%" class="TableRow1Link,TableRow2Link" title="Job No" name="job_no" sort="job_no"
+         href="<?s:action?>job/imp/imp_edit.html?job_import_id=<?r:jobs_imported_v:job_import_id?>" target="imp_edit_frame"-->
+     <!--#SMARTCOLUMN width="15%" title="Bill To" name="dealer" sort="dealer" type="mandatory" -->
+     <!--#SMARTCOLUMN width="10%" title="Office" name="office" sort="office" -->
+     <!--#SMARTCOLUMN width="10%" title="Work Site Customer Name" name="work_site_cust_name" sort="work_site_cust_name" -->
+     <!--#SMARTCOLUMN width="10%" title="PO No" name="po_no" sort="po_no" align="center" -->
+     <!--#SMARTCOLUMN width="10%" title="PO Line No" name="po_line_no" sort="po_line_no" align="center"-->
+     <!--#SMARTCOLUMN width="17.5%" title="Date Released" name="date_released" sort="date_released" format="MM/dd/yyyy hh:mm:ss a"-->
+     <!--#SMARTCOLUMN width="17.5%" title="Start Date" name="est_start_date" sort="est_start_date" format="MM/dd/yyyy" -->
+   <!--#/SMARTTABLE -->
+
+<script language="javascript">setCheckboxImages();</script>
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

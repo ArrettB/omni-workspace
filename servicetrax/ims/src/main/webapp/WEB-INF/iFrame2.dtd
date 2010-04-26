@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--DTD for iFrame2 projects-->
+<!ELEMENT action (handler+)>
+<!ATTLIST action
+	name CDATA #REQUIRED
+>
+<!ELEMENT admin EMPTY>
+<!ATTLIST admin
+	username CDATA #REQUIRED
+	password CDATA #REQUIRED
+	action CDATA #REQUIRED
+	template CDATA #REQUIRED
+>
+<!ELEMENT appGlobalDatum (#PCDATA)>
+<!ATTLIST appGlobalDatum
+	name CDATA #REQUIRED
+	class CDATA "java.lang.String"
+>
+<!ELEMENT appGlobals (appGlobalDatum | codetable | codetable2 | metadata | metadata2)*>
+<!ELEMENT applicationContext (admin | appGlobals  | applicationContextListener | daemons | diagnostics | dispatcher | estimator | formatManager | integrationManager | invocationContext | mail | providers | queryFilterManager | resourceManager | sessionManager | templateManager)*>
+<!ATTLIST applicationContext
+	name CDATA #REQUIRED
+	version CDATA #REQUIRED
+	class CDATA #REQUIRED
+	dynamicClassPath CDATA #IMPLIED
+>
+<!ELEMENT applicationContextListener EMPTY>
+<!ATTLIST applicationContextListener
+	class CDATA #REQUIRED
+>
+<!ELEMENT codetable EMPTY>
+<!ATTLIST codetable
+	code CDATA #REQUIRED
+	id CDATA #REQUIRED
+	table CDATA #REQUIRED
+>
+<!ELEMENT codetable2 EMPTY>
+<!ATTLIST codetable2
+	code CDATA #REQUIRED
+	id CDATA #REQUIRED
+	table CDATA #REQUIRED
+>
+<!ELEMENT daemons (daemon*)>
+<!ELEMENT daemon EMPTY>
+<!ATTLIST daemon
+        name CDATA #REQUIRED
+	class CDATA #REQUIRED
+>
+<!ELEMENT diagnostics (diagnosticsListener | diagnosticsStream | diagnosticsFile | diagnosticsApplet)*>
+<!ATTLIST diagnostics
+	level CDATA #REQUIRED
+	port CDATA #REQUIRED
+	template CDATA #REQUIRED
+>
+<!ELEMENT diagnosticsApplet EMPTY>
+<!ATTLIST diagnosticsApplet
+	codebase CDATA #REQUIRED
+	level CDATA #IMPLIED
+>
+<!ELEMENT diagnosticsFile EMPTY>
+<!ATTLIST diagnosticsFile
+	level CDATA #IMPLIED
+	path CDATA #REQUIRED
+>
+<!ELEMENT diagnosticsListener EMPTY>
+<!ATTLIST diagnosticsListener
+	class CDATA #REQUIRED
+	name CDATA "iFrame Diagnostics"
+	level CDATA #IMPLIED
+>
+<!ELEMENT diagnosticsMailer EMPTY>
+<!ATTLIST diagnosticsMailer
+	from CDATA #REQUIRED
+	host CDATA #REQUIRED
+	level CDATA #IMPLIED
+	to CDATA #REQUIRED
+>
+<!ELEMENT diagnosticsStream EMPTY>
+<!ATTLIST diagnosticsStream
+	class CDATA #REQUIRED
+	level CDATA #IMPLIED
+	property CDATA #REQUIRED
+>
+<!ELEMENT dispatcher (action+)>
+<!ATTLIST dispatcher
+	class CDATA #REQUIRED
+>
+<!ELEMENT estimator (parameter*)>
+<!ATTLIST estimator
+	estimatorTemplate2OrgId CDATA #REQUIRED
+>
+<!ELEMENT formatManager (format+)>
+<!ELEMENT format (#PCDATA)>
+<!ATTLIST format
+	name CDATA #REQUIRED
+>
+<!ELEMENT handler EMPTY>
+<!ATTLIST handler
+	class CDATA #REQUIRED
+>
+<!ELEMENT integrationManager EMPTY>
+<!ATTLIST integrationManager
+	path CDATA #REQUIRED
+	notSetupMsg CDATA #REQUIRED
+>
+<!ELEMENT invocationContext (invocationContextListener*)>
+<!ATTLIST invocationContext
+	class CDATA #REQUIRED
+>
+<!ELEMENT invocationContextListener EMPTY>
+<!ATTLIST invocationContextListener
+	class CDATA #REQUIRED
+>
+<!ELEMENT mail EMPTY>
+<!ATTLIST mail
+	host CDATA #REQUIRED
+	port CDATA #REQUIRED
+	from CDATA #REQUIRED
+>
+<!ELEMENT match (#PCDATA)>
+<!ELEMENT metadata EMPTY>
+<!ATTLIST metadata
+	table CDATA #REQUIRED
+	columns CDATA #IMPLIED
+>
+<!ELEMENT metadata2 EMPTY>
+<!ATTLIST metadata2
+	table CDATA #REQUIRED
+	columns CDATA #IMPLIED
+>
+<!--  Generic parameter-->
+<!ELEMENT parameter (#PCDATA)>
+<!ATTLIST parameter
+	name CDATA #REQUIRED
+>
+<!ELEMENT provider EMPTY>
+<!ATTLIST provider
+	name CDATA #REQUIRED
+	id CDATA #REQUIRED
+	type (handler | template) #REQUIRED
+>
+<!ELEMENT providers (provider+)>
+<!ATTLIST providers
+	default CDATA #REQUIRED
+>
+<!ELEMENT queryFilterManager (queryFilter+)>
+<!ATTLIST queryFilterManager
+	class CDATA #REQUIRED
+>
+<!ELEMENT queryFilter EMPTY>
+<!ATTLIST queryFilter
+	class CDATA #REQUIRED
+	name CDATA #REQUIRED
+>
+<!ELEMENT replace (#PCDATA)>
+<!ELEMENT resource EMPTY>
+<!ATTLIST resource
+	default CDATA #IMPLIED
+	id CDATA #REQUIRED
+	max CDATA "500"
+	min CDATA "1"
+	name CDATA #REQUIRED
+	password CDATA #IMPLIED
+	ttl CDATA "100"
+	type (Pooled | SingleInstance | SingleUse | SharedPool) "Pooled"
+	username CDATA #IMPLIED
+>
+<!ELEMENT resourceManager (resourceProducer+)>
+<!ATTLIST resourceManager
+	class CDATA #REQUIRED
+>
+<!ELEMENT resourceProducer (resource+)>
+<!ATTLIST resourceProducer
+	class CDATA #REQUIRED
+	dateFormat CDATA #REQUIRED
+	driver CDATA #REQUIRED
+	name CDATA #REQUIRED
+	now CDATA #IMPLIED
+	primaryKey CDATA #IMPLIED
+	prefix CDATA #REQUIRED
+>
+<!ELEMENT sessionListener EMPTY>
+<!ATTLIST sessionListener
+	class CDATA #REQUIRED
+>
+<!ELEMENT sessionManager (sessionListener*)>
+<!ATTLIST sessionManager
+	class CDATA #REQUIRED
+	persistentSession CDATA #REQUIRED
+	persistentStorage CDATA #REQUIRED
+	persistentTTL CDATA #REQUIRED
+	bind CDATA #REQUIRED	
+	ttl CDATA #REQUIRED
+>
+<!ELEMENT substitution (match, replace)>
+<!ELEMENT templateComponent EMPTY>
+<!ATTLIST templateComponent
+	name CDATA #REQUIRED
+	class CDATA #REQUIRED
+	aSort CDATA #IMPLIED
+	cellLinkClasses CDATA #IMPLIED
+	chooserBasePath CDATA #IMPLIED
+	dSort CDATA #IMPLIED
+	filterClass CDATA #IMPLIED
+	footerClass CDATA #IMPLIED
+	mandFieldErrMsg CDATA #IMPLIED
+	maxRows CDATA #IMPLIED
+	rowClass CDATA #IMPLIED
+	rowHeight CDATA #IMPLIED
+	rowRolloverClass CDATA #IMPLIED
+	rowSelectedClass CDATA #IMPLIED
+	security CDATA #IMPLIED
+	sequence CDATA #IMPLIED
+	size CDATA #IMPLIED
+	titleClass CDATA #IMPLIED	
+	titleHeight CDATA #IMPLIED
+	validate CDATA #IMPLIED	
+	width CDATA #IMPLIED
+>
+<!ELEMENT templateManager (templateComponent | substitution)*>
+<!ATTLIST templateManager
+	class CDATA #REQUIRED
+	path CDATA #REQUIRED
+	extentions CDATA #REQUIRED
+	size CDATA "200"
+>

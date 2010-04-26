@@ -1,0 +1,72 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<body class="BodyTag" onLoad="acknowledge()">
+
+<!--#EMBED template="enet/embeds/project_header.html"-->
+
+<table width="100%" border="0" cellspacing="0">
+	<tr><td class="HeaderLabel">To create a new Quote Request: Select a Quote Request from the list, </td></tr>
+	<tr><td class="HeaderLabel">click "Create Additional Quote Request" link, and edit fields as necessary...</td></tr>
+	<tr><td><br></td></tr>
+</table>
+
+
+<!--#SMARTTABLE name="qr_list"
+		class="SmartTable"
+		query="SELECT DISTINCT request_id, record_id, record_seq_no, record_type_seq_no, record_no, record_type_name, record_type_code,
+		              record_status_type_name, record_created, record_last_modified, dealer_project_no, quote_is_sent is_quoted, is_new
+				 FROM projects_all_requests_v
+				WHERE project_id = <?s:project_id.toPStmtString()?>
+				  AND (record_type_code = 'quote_request' OR (record_type_code = 'workorder' AND quote_request_id is not null ))
+				  AND record_status_type_code <> 'closed'
+			 ORDER BY record_seq_no, record_type_seq_no"
+-->
+
+<!--#IF evaluate="<?r:qr_list:record_type_code?>" compare="quote_request" -->
+  <!--#IF evaluate="<?r:qr_list:is_new?>" compare="Y" -->
+	<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="5%" align="center" href="<?s:action?>setProjectDatum/enet/req/quote_request.html?request_id=<?r:qr_list:record_id?>" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+  <!--#ELSE-->
+    <!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="5%" align="center" href="<?s:action?>setProjectDatum/enet/req/qr_edit.html?request_id=<?r:qr_list:record_id?>" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+  <!--#/IF-->
+<!--#ELSE-->
+	<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="5%" align="center" href="<?s:action?>setProjectDatum/enet/req/wo_edit.html?request_id=<?r:qr_list:record_id?>" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+<!--#/IF-->
+	<!--#SMARTCOLUMN name="record_type_name" sort="record_type_name" title="Type" width="8%" nowrap
+		filter="a_record_type_name:record_type_name" filterQuery="SELECT lookup_name id, lookup_name FROM request_types_v WHERE lookup_code='quote_request' OR lookup_code='workorder' ORDER BY lookup_name" filterQuick="true"
+	-->
+
+	<!--#SMARTCOLUMN name="record_status_type_name" sort="record_status_type_name" title="Status" width="5%" nowrap
+		filter="a_request_status_type_name:request_status_type_name" filterQuery="SELECT DISTINCT request_status_type_name id, request_status_type_name FROM project_requests_v WHERE project_id = <?s:project_id.toPStmtString()?> AND (request_type_code = 'quote_request' OR (request_type_code = 'workorder' AND quote_request_id is not null )) ORDER BY request_status_type_name" filterQuick="true"
+	-->
+	<!--#SMARTCOLUMN name="dealer_project_no" sort="dealer_project_no" title="Dealer Project#" width="15%" align="left" filter="a_dealer_project_no:dealer_project_no" -->
+	<!--#SMARTCOLUMN name="is_quoted" sort="is_quoted" title="Has Quote?" width="5%" align="center"
+		filter="a_is_quoted:is_quoted" filterQuery="SELECT DISTINCT is_quoted id, is_quoted FROM project_requests_v WHERE project_id = <?s:project_id.toPStmtString()?> AND (request_type_code = 'quote_request' OR (request_type_code = 'workorder' AND quote_request_id is not null )) ORDER BY IS_QUOTED" filterQuick="true"
+	-->
+	<!--#SMARTCOLUMN name="record_created" sort="record_created" title="Date&nbsp;Created" format="date" width="10%" -->
+	<!--#SMARTCOLUMN name="record_last_modified" sort="record_last_modified" title="Last&nbsp;Modified" format="datetime" width="15%" -->
+<!--#/SMARTTABLE -->
+
+
+<script language="JavaScript">
+<!--
+
+	function acknowledge()
+	{
+		if( {!d:acknowledgement.toJavaScriptString()!} == "true" )
+		{
+			var email_msg = '';
+		<!--#IF defined="<?d:email_failed?>"-->
+			email_msg = "&email_failed=true";
+		<!--#/IF-->
+			newWindow("{!s:showPage!}enet/req/acknowledge.html?request_type_code={!d:request_type_code!}&request_no={!d:request_no!}&is_sent={!d:is_sent!}&is_new={!d:is_new!}"+
+						"&sales_rep={!d:d_sales_rep_contact_id_sent!}&sales_sup={!d:d_sales_sup_contact_id_sent!}&proj_mgr={!d:d_proj_mgr_contact_id_sent!}&designer={!d:d_designer_contact_id_sent!}&a_m={!d:a_m_contact_id_sent!}"+
+						"&request_id={!d:request_id!}&version_no={!d:version_no!}"+email_msg,"acknowledge_window",320,450)
+		}
+	}
+
+-->
+</script>
+
+
+<!--#EMBED template="enet/embeds/footer.html" -->
+

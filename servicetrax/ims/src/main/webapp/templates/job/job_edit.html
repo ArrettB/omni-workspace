@@ -1,0 +1,845 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- job_edit.html is embedded in job_create.html-->
+<!-- $Header: C:\work\ims\templates\job\job_edit.html, 97, 3/15/2006 6:39:36 PM, Blake Von Haden$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.job/job_edit.view?>"-->
+<!--#EXEC handler="ims.handlers.job_processing.SetupSessionDataHandler" job_id="<?p:job_id.isNull('<?s:job_id.isNull('0')?>')?>" service_id="<?p:service_id.isNull('<?s:service_id.isNull('0')?>')?>" -->
+
+<script type="text/javascript">
+
+/*********************************
+ *       YUI Dialog Beigns       *
+ *********************************/
+	YAHOO.namespace("example.container");
+
+	function init() {
+
+  /*********************************************************
+   *       Define various event handlers for Dialog        *
+   ********************************************************/
+		var handleSubmit = function() {
+			if (this.validate())
+			{
+				this.submit();
+			}
+		};
+
+		var handleCancel = function() {
+			this.cancel();
+		};
+
+		var handleFailure = function(o) {
+			alert("Submission failed: " + o.status);
+		};
+
+		var handleContactSuccess = function(o) {
+			var response = o.responseText;
+			response = response.split("<!")[0];
+			var type = document.getElementById("contact_param3").value;
+			var jl_id = document.getElementById("job_location_id").value;
+			var currentId = document.getElementById("contact_param4").value;
+			var button = document.getElementById("contact_param6").value;
+
+			if (type == "job_location")
+			{
+				if (button == "new")
+				{
+
+					$("#jobLocationContactDiv").load("{!s:showPage!}enet/embeds/job_location_contacts.html?parameter=" + jl_id + "&action=new", function () {
+						updateContact("job_location", 1);
+						document.getElementById("viewJobLocContactButtonDiv").style.display="block";
+					});
+
+					$("#jobLocationContactInfoDiv").load("{!s:showPage!}enet/embeds/contact_info.html?action=new");
+
+				}
+				else if (button == "view")
+				{
+					$("#jobLocationContactDiv").load("{!s:showPage!}enet/embeds/job_location_contacts.html?parameter=" + jl_id + "&current_val=" + currentId);
+                    $("#jobLocationContactInfoDiv").load("{!s:showPage!}enet/embeds/contact_info.html?parameter=" + currentId);
+				}
+			}
+			else if (type == "customer")
+			{
+				var index = document.getElementById("contact_param5").value;
+
+				if (button == "new")
+				{
+				   $("#contact" + index + "Div").load("{!s:showPage!}enet/embeds/customer_contact" + index + ".html?type=contact&action=new", function () {
+					   updateContact("customer", index);
+                       document.getElementById("viewCustContact" + index + "ButtonDiv").style.display="block";
+					});
+
+				}
+				else if (button == "view")
+				{
+				   $("#contact" + index + "Div").load("{!s:showPage!}enet/embeds/customer_contact" + index + ".html?parameter=" + currentId + "&type=contact");
+			    }
+
+			    reloadCustomerContacts(index);
+			}
+
+		};
+
+		var handleCustomerSuccess = function(o) {
+			var response = o.responseText;
+			response = response.split("<!")[0];
+			var type = document.getElementById("cust_param1").value;
+			var c_id = document.getElementById("customer_id").value;
+			var currentId = document.getElementById("cust_param3").value;
+			var button = document.getElementById("cust_param4").value;
+
+			if (type == "end_user")
+			{
+
+				if (button == "new")
+				{
+					$("#endUsersDiv").load("{!s:showPage!}embeds/end_users.html?parameter=" + c_id + "&action=new", function() {
+						updateEndUser();
+						document.getElementById("viewEndUserButtonDiv").style.display="block";
+						onEndUserChange();
+					 });
+
+				}
+				else if (button == "view")
+				{
+					$("#endUsersDiv").load("{!s:showPage!}enet/embeds/end_users.html?parameter=" + c_id + "&current_val=" + currentId);
+				}
+			}
+			else
+			{
+				if (button == "new")
+				{
+					$("#customersDiv").load("{!s:showPage!}enet/embeds/customers.html?parameter=" + c_id + "&action=new", function() {
+						updateCustomer();
+						document.getElementById("viewCustomerButtonDiv").style.display="block";
+						onCustomerChange();
+					 });
+
+				}
+				else if (button == "view")
+				{
+					$("#customersDiv").load("{!s:showPage!}enet/embeds/customers.html?current_val=" + currentId);
+				}
+
+			}
+
+		};
+
+		var handleJobLocationSuccess = function(o) {
+			var response = o.responseText;
+			response = response.split("<!")[0];
+			var eu_id = document.getElementById("job_loc_param1").value;
+			var currentId = document.getElementById("job_location_id").value;
+			var button = document.getElementById("job_loc_param3").value;
+
+            if (button == "new")
+			{
+				$("#jobLocationsDiv").load("{!s:showPage!}enet/embeds/job_locations.html?parameter=" + eu_id + "&action=new",function() {
+					updateJobLocation();
+					document.getElementById("viewJobLocationButtonDiv").style.display="block";
+					onJobLocationChange();
+				 });
+
+			}
+			else if (button == "view")
+			{
+				$("#jobLocationsDiv").load("{!s:showPage!}enet/embeds/job_locations.html?parameter=" + eu_id + "&current_val=" + currentId);
+				onJobLocationChange();
+
+			}
+
+		};
+
+
+  /*********************************************************
+   *       Instantiate Contact Dialog                      *
+   ********************************************************/
+		contactDialog = new YAHOO.widget.Dialog("contactDialogDiv",
+												  { width : "300px",
+													fixedcenter : true,
+													visible : false,
+													constraintoviewport : true,
+													buttons : [ { text:"Submit", handler:handleSubmit, isDefault:true },
+															    { text:"Cancel", handler:handleCancel } ]
+												   } );
+
+		// Validate the entries in the form to require that both first and last name are entered
+		contactDialog.validate = function() {
+			var data = this.getData();
+			if (data.contact_name == "") {
+				alert("Please enter a full name.");
+				return false;
+			} else if (data.phone_work == "" && data.phone_cell == "" && data.phone_home == "") {
+				alert("Please enter at least one phone number.");
+				return false;
+			} else {
+				return true;
+			}
+		};
+
+		// Wire up the success and failure handlers
+		contactDialog.callback = {success: handleContactSuccess,
+								  failure: handleFailure };
+
+		// Render the Dialog
+		contactDialog.render();
+
+		YAHOO.util.Event.addListener("hide", "click", contactDialog.hide, contactDialog, true);
+
+  /*********************************************************
+   *       Instantiate Customer Dialog                     *
+   ********************************************************/
+		customerDialog = new YAHOO.widget.Dialog("customerDialogDiv",
+												  { width : "300px",
+													fixedcenter : true,
+													visible : false,
+													constraintoviewport : true,
+													buttons : [ { text:"Submit", handler:handleSubmit, isDefault:true },
+															    { text:"Cancel", handler:handleCancel } ]
+												   } );
+
+		// Validate the entries in the form to require that both first and last name are entered
+		customerDialog.validate = function() {
+			var data = this.getData();
+			if (data.customer_name == "") {
+				alert("Please enter a full name.");
+				return false;
+			} else if (data.street1 == "") {
+				alert("Please enter Address.");
+				return false;
+			} else if (data.city == "") {
+				alert("Please enter city.");
+				return false;
+			} else if (data.county == "") {
+				alert("Please enter a county.");
+				return false;
+            } else if (data.state == "" || data.state == "XXX") {
+				alert("Please select state.");
+				return false;
+			} else if (data.zip == "") {
+				alert("Please enter zip code.");
+				return false;
+			} else {
+				return true;
+			}
+		};
+
+		// Wire up the success and failure handlers
+		customerDialog.callback = {success: handleCustomerSuccess,
+								   failure: handleFailure };
+
+		// Render the Dialog
+		customerDialog.render();
+
+		YAHOO.util.Event.addListener("hide2", "click", customerDialog.hide, customerDialog, true);
+
+  /*********************************************************
+   *       Instantiate Job Location Dialog                 *
+   ********************************************************/
+		jobLocationDialog = new YAHOO.widget.Dialog("jobLocationDialogDiv",
+												  { width : "300px",
+													fixedcenter : true,
+													visible : false,
+													constraintoviewport : true,
+													buttons : [ { text:"Submit", handler:handleSubmit, isDefault:true },
+															    { text:"Cancel", handler:handleCancel } ]
+												   } );
+
+		// Validate the entries in the form to require that job location name and location type are entered
+		jobLocationDialog.validate = function() {
+			var data = this.getData();
+			if (data.job_location_name == "") {
+				alert("Please enter job location name.");
+				return false;
+			} else if (data.street1 == "") {
+				alert("Please enter Address.");
+				return false;
+			} else if (data.city == "") {
+				alert("Please enter city.");
+				return false;
+			} else if (data.county == "") {
+				alert("Please enter county.");
+				return false;
+			} else if (data.state == "" || data.state == "XXX") {
+				alert("Please select state.");
+				return false;
+			} else if (data.zip == "") {
+				alert("Please enter zip code.");
+				return false;
+			} else {
+				return true;
+			}
+		};
+
+		// Wire up the success and failure handlers
+		jobLocationDialog.callback = {success: handleJobLocationSuccess,
+								      failure: handleFailure };
+
+		// Render the Dialog
+		jobLocationDialog.render();
+
+		YAHOO.util.Event.addListener("hide3", "click", jobLocationDialog.hide, jobLocationDialog, true);
+
+	}
+
+	YAHOO.util.Event.addListener(window, "load", init);
+
+/*********************(*********
+ *       YUI Dialog Ends       *
+ *******************************/
+
+/****************************************
+ *         New Functions    2007-12-21  *
+ ****************************************/
+
+$(document).ready(function()
+{
+   var c_id = document.getElementById("customer_id").value;
+   var eu_id = document.getElementById("end_user_id").value;
+ //alert("In ready and customer id = " + c_id + " and eu id = " + eu_id);
+
+   $("#endUsersDiv").load("{!s:showPage!}enet/embeds/end_users.html?parameter=" + c_id + "&current_val=" + eu_id);
+
+<!--#CHECKSECURITY right="rights.enet/req/end_user_edit.insert" -->
+	showHideNewEndUserButton();
+<!--#/CHECKSECURITY-->
+	showHideViewEndUserButton();
+
+	$("#newEndUserButton").click(function() {
+
+		document.getElementById("customerLabelDiv").style.display="none";
+		document.getElementById("endUserLabelDiv").style.display="block";
+
+		document.customer_frm.customer_type.value = "end_user";
+		document.customer_frm.end_user_parent_id.value = document.getElementById("customer_id").value;
+		document.customer_frm.current_id.value = document.getElementById("end_user_id").value;
+		document.customer_frm.button.value = "new";
+
+	    $("#customerFormDiv").load("{!s:showPage!}enet/embeds/end_user.html", function() {
+			customerDialog.show();
+		});
+	});
+});
+
+function onCustomerChange()
+{
+  // c_id = document.getElementById("customer_id").value;
+   c_id = document.job_edit.customer_id.value;
+//alert("customer id = " + c_id);
+   $("#hiddenDiv").load("{!s:showPage!}enet/embeds/ext_customer_id.html?parameter="+c_id);
+   $("#endUsersDiv").load("{!s:showPage!}enet/embeds/end_users.html?parameter=" + c_id + "&current_val=");
+
+<!--#CHECKSECURITY right="rights.enet/req/end_user_edit.insert" -->
+   showHideNewEndUserButton();
+<!--#/CHECKSECURITY-->
+   document.getElementById("viewEndUserButtonDiv").style.display="none";
+}
+
+function onEndUserChange()
+{
+   eu_id = document.getElementById("end_user_id").value;
+
+   $("#hiddenDiv2").load("{!s:showPage!}enet/embeds/ext_end_user_id.html?parameter="+eu_id);
+<!--#CHECKSECURITY right="rights.enet/req/end_user_edit.update" -->
+   showHideViewEndUserButton();
+<!--#/CHECKSECURITY-->
+
+}
+
+function view_customer()
+{
+  c_id = document.getElementById("customer_id").value;
+
+  var attribs = {!a:Window2Attribs!} + ',height= 500,width=520';
+  return window.open('{!s:showPage!}enet/proj/customer_detail.html?customer_id='+c_id+'&theForm=job_edit', 'customers', attribs);
+
+}
+
+function view_end_user()
+{
+	eu_id = document.getElementById("end_user_id").value;
+	ext_customer_id= document.getElementById("ext_customer_id").value;
+//alert("In view_end_user() and eu_id = " + eu_id + "; ext_customer_id = " + ext_customer_id);
+	var attribs = {!a:Window2Attribs!} + ',height= 500,width=520';
+	return window.open('{!s:showPage!}enet/proj/end_user_detail.html?customer_id='+eu_id+'&theForm=job_edit&ext_customer_id='+ext_customer_id, 'customers', attribs);
+}
+
+function loadExtCustomerId()
+{
+	$("#hiddenDiv").load("{!s:showPage!}enet/embeds/ext_customer_id.html?parameter="+ document.getElementById("customer_id").value);
+	$("#hiddenDiv2").load("{!s:showPage!}enet/embeds/ext_end_user_id.html?parameter="+ document.getElementById("end_user_id").value);
+}
+
+
+</script>
+
+
+
+
+<body class="BodyTag" onLoad="setDefaults();window.focus();loadExtCustomerId();">
+   <table width="100%" border="0" summary="">
+      <!--#SMARTFORM name="job/job_edit" security="rights" table="jobs" key="job_id"
+				     preHandler="ims.handlers.job_processing.JobPreHandler;ims.handlers.job_processing.SmartFormPreHandler"
+				     postHandler="ims.handlers.job_processing.JobPostHandler;ims.handlers.job_processing.ItemHandler"
+				     buttons="" readonly="<?s:readonly?>"
+				     onClickFunction="exitFunction" -->
+
+		<!--#SMARTFIELD name="changed_job_no" type="hidden" value="false" --> <!-- used in JobPreHandler -->
+		<!--#SMARTFIELD name="loc" type="hidden" value="job_edit" --> <!-- used for nextTemplate when calling main.html -->
+		<!--#SMARTFIELD name="redisplay" type="hidden" value="false" --> <!-- used by SmartFormHandler to redisplay form without saving or validating -->
+		<!--#SMARTFIELD name="object_type" type="hidden" value="" -->
+		<!--#SMARTFIELD name="new_status" type="hidden" value="" -->
+		<!--#SMARTFIELD name="object_id" type="hidden" value="" -->
+		<input name="load_rates" type="hidden" value="false"> <!-- used by ItemHandler, not smartfield, so value is not remembered -->
+		<!--#SMARTFIELD name="button" type="hidden" value="" -->
+		<div id="hiddenDiv"><input type="hidden" name="ext_customer_id" id="ext_customer_id" value="{!d:ext_customer_id!}" ></div>
+        <div id="hiddenDiv2"><input type="hidden" name="ext_end_user_id" id="ext_end_user_id" value="{!d:ext_end_user_id!}" ></div>
+
+
+      <tr>
+          <td colspan="4" class="TableTitle">Job Header</td>
+      </tr>
+      <tr>
+         <td width="15%">
+			<!--#SMARTFIELD mode="Insert" title="Job#:" div="&nbsp;</td><td width='35%'>" name="job_no" -->
+        	<!--#SMARTFIELD mode="Update" title="Job#:" div="&nbsp;</td><td width='35%'>" name="job_no" readonly class="readonly" -->
+         </td>
+         <td width="10%">
+			<!--#SMARTFIELD mode="Insert"  div="&nbsp;</td><td width='50%'>" name="job_status_type_id" type="hidden" -->
+         	<!--#SMARTFIELD mode="Update" title="Status:" div="&nbsp;</td><td width='50%'>" name="job_status_type_id" type="chooser" table="job_status_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" readonly class="readonly" -->
+         </td>
+      </tr>
+		<tr>
+         <td>
+         	<!--#CHECKSECURITY right="rights.job/job_type.update" -->
+
+         	<!--#SMARTFIELD title="Job Type:" div="&nbsp;</td><td>" name="job_type_id" type="droplist" style="width:130" value="<?s:job_type_id?>"
+			   query="SELECT pt.lookup_id, pt.lookup_name
+			            FROM job_types_v pt, user_job_types u
+			           WHERE u.lookup_id = pt.lookup_id
+			             AND u.user_id = <?s:user_id.toPStmtString()?>
+			        ORDER BY pt.lookup_name" -->
+
+			 <!--#ELSE-->
+
+				<!--#SMARTFIELD
+						title="Job Type:"
+						div="&nbsp;</td><td>"
+						name="job_type_id"
+						type="droplist"
+						style="width:130"
+						value="<?s:job_type_id?>"
+			   			query="SELECT pt.lookup_id, pt.lookup_name
+			            		FROM job_types_v pt, user_job_types u
+			           			WHERE u.lookup_id = pt.lookup_id
+			             		AND u.user_id = <?s:user_id.toPStmtString()?>
+			        			ORDER BY pt.lookup_name"
+			        	readonly="true"
+			     -->
+
+			 <!--#/CHECKSECURITY-->
+		</td>
+		<td>&nbsp;</td><td>
+			<!--#IF evaluate="<?d:mode?>" compare="Update" -->
+				<!--#IF evaluate="<?s:job_status_type_code?>" compare="closed" -->
+					<!--#CHECKSECURITY right="rights.close_job.view"-->
+	   		<input name="open_job_button" type="button" value="Open Job" class="button2" onClick="updateStatus('pending');" >
+					<!--#/CHECKSECURITY-->
+				<!--#ELSE-->
+					<!--#CHECKSECURITY right="rights.close_job.view"-->
+	   		<input name="close_job_button" type="button" value="Close Job" class="button2" onClick="updateStatus('closed');">
+					<!--#/CHECKSECURITY-->
+				<!--#/IF-->
+			<!--#/IF-->
+		</td>
+	  </tr>
+      <tr>
+        <td width="15%">
+			<!--#SMARTFIELD title="Spreadsheet Billing:" name="spreadsheet_billing_flag" type="boolean" value="N" div="&nbsp;</td><td width='35%'>" -->
+         </td>
+ 		<!--#IF defined="<?r:job/job_edit:project_id?>" -->
+         <td width="15%">
+         	<!--#EXEC handler="ims.handlers.job_processing.CSCWOFieldFlagHandler" -->
+			<!--#SMARTFIELD title="CSC Work Order Field:" name="csc_wo_field_flag" type="boolean" mandatory="true" value="N" div="&nbsp;</td><td width='35%'>" -->
+         </td>
+		<!--#ELSE-->
+			<td width='15%'>&nbsp;</td><td width='35%'>&nbsp;</td>
+		<!--#/IF-->
+      </tr>
+      <tr>
+        <td width="15%">
+			<!--#SMARTFIELD title="Viewed By Scheduler:" name="view_schedule_flag" type="boolean" value="Y" div="&nbsp;</td><td width='35%'>" -->
+        </td>
+        <td colspan="2">&nbsp;</td> 
+      </tr>
+      <tr>
+			<td colspan="4">&nbsp;</td>
+      </tr>
+
+	  <tr>
+		<td class="mandatoryLabel">Customer:</td>
+<!--#IF defined="<?p:ext_dealer_id?>"-->
+    <!--#IF evaluate="<?s:job_status_type_code?>" compare="closed" -->
+		<td colspan="3"><!--#SMARTFIELD name="customer_id" class="readonly" readonly type="droplist" table="customers" display="customer_name" key="customer_id" filter="ext_dealer_id=<?p:ext_dealer_id.toPStmtString()?> AND organization_id=<?s:org_id.toPStmtInt()?> AND active_flag='Y' AND customer_type_id <> (SELECT lookup_id FROM lookups l JOIN lookup_types lt ON l.lookup_type_id=lt.lookup_type_id WHERE lt.code='customer_type' AND l.code='end_user')" style="width:300" onChange="onCustomerChange()"-->
+	<!--#ELSE-->
+		<td colspan="3"><!--#SMARTFIELD name="customer_id" type="droplist" table="customers" display="customer_name" key="customer_id" filter="ext_dealer_id=<?p:ext_dealer_id.toPStmtString()?> AND organization_id=<?s:org_id.toPStmtInt()?> AND active_flag='Y' AND customer_type_id <> (SELECT lookup_id FROM lookups l JOIN lookup_types lt ON l.lookup_type_id=lt.lookup_type_id WHERE lt.code='customer_type' AND l.code='end_user')" value="<?p:customer_id?>" style="width:300" onChange="onCustomerChange()"-->
+	<!--#/IF-->
+
+<!--#ELSE-->
+  <!--#SQLLOOP name="dealerQuery" query="SELECT ext_dealer_id FROM customers WHERE customer_id = <?r:job/job_edit:customer_id.toPStmtString()?>" -->
+	<!--#IF evaluate="<?s:job_status_type_code?>" compare="closed" -->
+		<td colspan="3"><!--#SMARTFIELD name="customer_id" class="readonly" readonly type="droplist" table="customers" display="customer_name" key="customer_id" filter="ext_dealer_id=<?r:dealerQuery:ext_dealer_id.toPStmtString()?> AND organization_id=<?s:org_id.toPStmtInt()?> AND customer_type_id <> (SELECT lookup_id FROM lookups l JOIN lookup_types lt ON l.lookup_type_id=lt.lookup_type_id WHERE lt.code='customer_type' AND l.code='end_user')" value="<?r:job/job_edit:customer_id?>" style="width:300" onChange="onCustomerChange()"-->
+	<!--#ELSE-->
+		<td colspan="3"><!--#SMARTFIELD name="customer_id" type="droplist" table="customers" display="customer_name" key="customer_id" filter="ext_dealer_id=<?r:dealerQuery:ext_dealer_id.toPStmtString()?> AND organization_id=<?s:org_id.toPStmtInt()?> AND active_flag='Y' AND customer_type_id <> (SELECT lookup_id FROM lookups l JOIN lookup_types lt ON l.lookup_type_id=lt.lookup_type_id WHERE lt.code='customer_type' AND l.code='end_user')" value="<?r:job/job_edit:customer_id?>" style="width:230" onChange="onCustomerChange()"-->
+	<!--#/IF-->
+  <!--#/SQLLOOP-->
+<!--#/IF-->
+
+		<!--#IF evaluate="<?s:ext_dealer_id?>" compare=""-->
+		<!--#ELSE-->
+			<!--#CHECKSECURITY right="rights.enet/proj/customer_edit.insert" -->
+			<input type="button" name="customer_new" value="New" class="button2" onClick="newWindow('{!s:showPage!}enet/proj/customer_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;theForm='+getFormName()+'&amp;theDroplist=customer_id&amp;customer_id=','customers',570,520);">
+			<!--#/CHECKSECURITY-->
+
+			<!--#CHECKSECURITY right="rights.enet/proj/customer_edit.update" -->
+				<input type="button" name="customer_view" value="View" class="button2" onClick="newWindow('{!s:showPage!}enet/proj/customer_edit.html?ext_dealer_id='+{!s:ext_dealer_id!}+'&amp;theForm='+getFormName()+'&amp;theDroplist=customer_id&amp;customer_id=','customers',570,520,eval(getFormName()+'.customer_id'));">
+			<!--#/CHECKSECURITY-->
+		<!--#/IF-->
+			</td>
+		</tr>
+
+<!-- David change begins -->
+
+<!-- End User -->
+      <tr>
+	    <td><span class="mandatoryLabel">End User</span>:</td>
+
+        <td><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr>
+        <td width="230px"><div id="endUsersDiv">
+         <!--SELECT name="end_user_id" id="end_user_id" class="regular" style="width:230"
+                     firstOption="" firstOptionValue=""
+                     currentValue="<?d:end_user_id?>"
+                     onChange="onEndUserChange()"
+	  				 query="SELECT c.customer_id end_user_id, LTRIM(c.customer_name) end_user_name
+							  FROM customers c INNER JOIN lookups l ON c.customer_type_id = l.lookup_id
+							 WHERE l.code='end_user'
+                               AND c.active_flag = 'Y'
+                               AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                               AND c.end_user_parent_id = <?s:customer_id.toPStmtInt()?>
+                          ORDER BY c.customer_name" -->
+<!--#SMARTFIELD name="end_user_id" class="regular" type="droplist" table="customers" display="customer_name" key="customer_id" filter="end_user_parent_id=<?r:job/job_edit:customer_id.toPStmtInt()?> AND organization_id=<?s:org_id.toPStmtInt()?>" value="<?r:job/job_edit:end_user_id?>" style="width:230" onChange="onEndUserChange()"-->
+	    </div></td>
+     <!--#CHECKSECURITY right="rights.enet/proj/customer_edit.insert" -->
+        <td>&nbsp;</td>
+        <td width="34px" align="left"><div id="newEndUserButtonDiv" style="display:none;"><input type="button" class="button2" value="New" id="newEndUserButton"></div></td>
+     <!--#ELSE-->
+        <td>&nbsp;</td>
+        <input type="hidden" id="newEndUserButton" >
+     <!--#/CHECKSECURITY-->
+     <!--#CHECKSECURITY right="rights.enet/proj/customer_edit.update" -->
+        <td>&nbsp;</td>
+        <td align="left"><div id="viewEndUserButtonDiv" style="display:none;"><input type="button" class="button2" value="View" id="viewEndUserButton" onClick="view_end_user();"></div></td>
+     <!--#ELSE-->
+  	    <td>&nbsp;</td>
+        <input type="hidden" id="viewEndUserButtonDiv">
+     <!--#/CHECKSECURITY-->
+     <td>&nbsp;</td>
+      </tr></table></td>
+      </tr>
+
+<!-- David change ends -->
+
+		<tr>
+			<td><!--#SMARTFIELD title="Job Name:" div="&nbsp;</td><td>" name="job_name" style="width:230"--></td>
+      </tr>
+      <tr>
+			<td colspan="4">&nbsp;</td>
+      </tr>
+	<!--#IF evaluate="<?d:mode?>" compare="Update" -->
+		<tr>
+			<td>
+		<!--#CHECKSECURITY right="rights.job/rate_edit.insert"-->
+		      <!--#SMARTFIELD title="Price Level:" div="&nbsp;</td><td colspan='5'>" name="ext_price_level_id" type="chooser" resourceName="<?s:org_resource?>" query="<?a:choose_price_level/sql?>" table="<?s:org_db?>iv00108" display="rtrim(prclevel)" key="rtrim(prclevel)" img="<script>makeButton('selectPriceLevel','choose_off','choose_on','choosePriceLevel()')</script>" -->
+		<!--#ELSE-->
+				<!--#SMARTFIELD title="Price Level:" div="&nbsp;</td><td colspan='5'>" name="ext_price_level_id" readonly class="readonly" -->
+		<!--#/CHECKSECURITY-->
+		<!--#IF defined="<?s:rights.job/rate_edit.view?>"-->
+				<input name="rate_button" type="button" value="View Job Rates" class="button2" onClick="newWindowScrollBars('{!s:showPage!}setupSession/job/rate_edit.html?job_id={!s:job_id!}','rate',600,500);">
+		<!--#/IF-->
+		<!--#IF defined="<?s:rights.job/rate_gp_view.view?>"-->
+				<input name="gp_rate_button" type="button" value="View GP Rates" class="button2" onClick="newWindowScrollBars('{!s:showPage!}job/rate_gp_view.html?ext_price_level_id='+escape(job_edit.ext_price_level_id.value),'rate_gp',600,500);">
+		<!--#/IF-->
+		<!--#IF defined="<?s:rights.job/rate_edit.insert?>" -->
+				<input name="load_rates_button" type="button" value="Load New Rates" class="button2" onClick="doubleCheck()"> <!-- JobPreHandler will call ItemHandler to reload rates without saving job -->
+		<!--#/IF-->
+			</td>
+		</tr>
+		<tr>
+			<td colspan="4">&nbsp;</td>
+		</tr>
+		<!--#ELSE-->
+	      <!--#SMARTFIELD name="ext_price_level_id" type="hidden" -->
+		<!--#/IF-->
+		<tr>
+    		<td><!--#SMARTFIELD title="Project Manager:" div="&nbsp;</td><td>" name="billing_user_id" mandatory="true" type="droplist" style="width:130" query="SELECT DISTINCT user_id, user_name FROM user_org_function_rights_v WHERE has_right='Y' AND function_code='bill_ops' and right_type_code='update' and organization_id=<?s:org_id.toSQLString()?> ORDER BY user_name" --></td>
+			<td><!--#SMARTFIELD mode="Update" title="Foreman:" div="&nbsp;</td><td colspan='5'>" name="foreman_resource_id" type="chooser" table="resources_v" display="name" key="resource_id" readonly class="readonly"-->
+			<!--#SMARTFIELD mode="Insert" name="foreman_resource_id" type="hidden" --></td>
+		</tr>
+		<tr>
+    		<td><!--#SMARTFIELD title="Service Provider Sales:" div="&nbsp;</td><td>" name="a_m_sales_contact_id" type="droplist" style="width:130"
+			                    table="contacts_v" display="contact_name" key="contact_id"
+			                    filter="organization_id=<?s:org_id.toPStmtInt()?> AND (contact_type_code='service_provider_sales' AND cont_status_type_code='active') or contact_id=<?d:a_m_sales_contact_id.toPStmtString()?>"--></td>
+			<td colspan="2">&nbsp;</td>
+		</tr>
+
+      <!--#IF evaluate="<?d:mode?>" compare="Update" -->
+		<tr>
+			<td class="TableTitle" colspan="4">Job PDA Distribution</td>
+		</tr>
+		<tr>
+			<td colspan="4">
+			This job will be sent to the following people's PDAs during synchronization:
+			</td>
+		</tr>
+		<tr>
+			<td colspan="4">
+				<!--#SQLLOOP name="jd"
+					query="SELECT u.user_id, u.first_name + ' ' + u.last_name user_name,
+						   	CASE WHEN ((SELECT COUNT(*)
+									FROM job_distributions jd
+									WHERE jd.user_id = u.user_id
+									AND jd.job_id = <?s:job_id.toPStmtString()?>) = 1
+									)
+								THEN 'selected'
+								ELSE null END
+								selected
+							FROM user_organizations_v u
+							WHERE u.imobile_login is NOT NULL AND organization_id=<?s:org_id.toPStmtString()?> and u.active_flag = 'Y'
+							ORDER BY user_name"
+				-->
+				<!--#SQLHEADER-->
+				<select name="jd_user_id" size="10" multiple>
+				<!--#/SQLHEADER-->
+					<option value="{!r:jd:user_id!}" {!r:jd:selected!}>{!r:jd:user_name!}</option>
+				<!--#SQLFOOTER-->
+				</select>
+				<!--#/SQLFOOTER-->
+
+				<!--#/SQLLOOP-->
+			</td>
+		</tr>
+      <tr>
+          <td class="TableTitle" colspan="4">System Info</td>
+      </tr>
+      <tr>
+         <td><!--#SMARTFIELD title="Date&nbsp;Created:" div="&nbsp;</td><td>" name="date_created" type="datetime" mode="Update" readonly class="readonly" size="22" --></td>
+         <td><!--#SMARTFIELD title="Created&nbsp;By:" div="&nbsp;</td><td>" name="created_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+      </tr>
+      <tr>
+         <td><!--#SMARTFIELD title="Date&nbsp;Modified:" div="&nbsp;</td><td>" name="date_modified" type="datetime" mode="Update" readonly class="readonly" size="22"--></td>
+         <td><!--#SMARTFIELD title="Modified&nbsp;By:" div="&nbsp;</td><td>" name="modified_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+      </tr>
+      <!--#/IF-->
+		<!--#IF evaluate="<?s:job_status_type_code?>" compare="closed" -->
+		<!--#ELSE-->
+		<tr>
+			<td colspan="4">
+				<input name="save_button" type="button" class="button" value="Save" onClick="exitFunction('Save')" >
+				<input name="cancel_button" type="button" class="button" value="Cancel" onClick="exitFunction('Cancel')" >
+			</td>
+		</tr>
+		<!--#/IF-->
+     <!--#IF evaluate="<?d:mode?>" compare="Update" -->
+		<tr><td>&nbsp;</td></tr>
+      <tr>
+         <td colspan="4">
+			<!--#IF evaluate="<?s:job_status_type_code?>" compare="closed" -->
+				<table><tr><td class="HeaderLabel">Job is currently Closed.  You cannot create Requisitions when the Job is Closed.</td></tr></table>
+			<!--#ELSE-->
+				<!--#IF defined="<?s:rights.job/req_edit.view?>"-->
+						<!--#IF evaluate="<?p:closeOnCancel?>" compare="true" --> <!-- don't show if viewing from scheduling -->
+						<!--#ELSE-->
+            <input name="req_button" type="button" value="Create Requisition" class="button" onClick="newWindow('{!s:showPage!}setupSession/job/req_create.html?job_id={!s:job_id!}&amp;closeOnCancel={!p:closeOnCancel!}','job_frame');">
+						<!--#/IF-->
+            <!--#/IF-->
+			<!--#/IF-->
+         </td>
+      </tr>
+      <!--#/IF-->
+   <!--#/SMARTFORM-->
+   </table>
+
+<!-- Customer Dialog Begin -->
+<div id="customerDialogDiv" class="yui-panel">
+  <div id="customerLabelDiv" class="hd">Please enter customer information</div>
+  <div id="endUserLabelDiv" class="hd">Please enter end user information</div>
+  <div class="bd">
+
+    <form name="customer_frm" id="customer_frm" method="POST" action="{!s:action!}newCustomer/enet/embeds/customer_response.html">
+    <div id ="customerFormDiv"></div>
+	  <input name="customer_type" id="cust_param1" type="hidden" />
+	  <input name="end_user_parent_id" id="cust_param2" type="hidden" />
+	  <input name="current_id" id="cust_param3" type="hidden" />
+	  <input name="button" id="cust_param4" type="hidden" />
+    </form>
+
+  </div>
+</div>
+<!-- Customer Dialog End -->
+
+
+<script type="text/javascript">
+<!--
+
+	function setDefaults()
+	{
+		//set status for new job
+		var status_id = null;
+		var status_name = null;
+		<!-- retrieve status id -->
+		<!--#SQLLOOP query="SELECT lookup_id, lookup_name
+		                    FROM lookups_v
+		                    WHERE type_code='job_status_type' and lookup_code='created'"
+						resourceName="SQLServer"
+						name="jobStatusQuery"
+		-->
+		status_id = {!r:jobStatusQuery:lookup_id!};
+		status_name = '{!r:jobStatusQuery:lookup_name!}';
+		<!--#/SQLLOOP-->
+
+		if( document.job_edit == null )
+		{
+			alert("You do not have permission to create a Job.");
+		}
+		else if( job_edit.job_status_type_id.value == '' )
+		{//must be creating new job, so default status new
+			if( !(job_edit.job_status_type_id_text === undefined) )
+			   job_edit.job_status_type_id_text.value = status_name;
+		   job_edit.job_status_type_id.value = status_id;
+			focusFirstField();
+		}
+		<!--#IF evaluate="<?s:job_status_type_code?>" compare="closed" -->
+			//setFormEdit('N');
+		<!--#/IF-->
+
+	}
+
+	function redisplaySmartForm()
+	{
+		job_edit.redisplay.value='true';
+		job_edit.submit();
+	}
+
+	function getFormName()
+	{
+		return 'job_edit';
+	}
+
+	function getExtDealerID()
+	{
+		return escape(document.job_edit.ext_dealer_id.options[job_edit.ext_dealer_id.selectedIndex].value);
+	}
+
+	function getCustID()
+	{
+		return escape(document.job_edit.customer_id.options[job_edit.customer_id.selectedIndex].value);
+	}
+
+	function getCustName()
+	{
+		return escape(document.job_edit.customer_id.options[job_edit.customer_id.selectedIndex].text);
+	}
+
+	function choosePriceLevel()
+	{
+		url = {!s:showPage.toJavaScriptString()!}+'choosers/choose_price_level.html'
+			+ '?title=List of Price Levels'
+			+ '&form=job_edit'
+			+ '&field=ext_price_level_id'
+			+ '&id=ext_price_level_id'
+			+ '&value=ext_price_level_id_text'
+			+ '&ext_price_level_id_text='+escape(document.job_edit.ext_price_level_id_text.value)
+			+ '&query='+escape(document.job_edit.ext_price_level_id_query.value);
+		window.open(url, 'chooser', ##-WIN-##);
+	}
+
+	function doubleCheck()
+	{
+		if( confirm("Are you sure you want to reload Job Rates\n    overwriting the Jobs current Rates?") )
+		{
+			job_edit.button.value = 'Save';
+			job_edit.load_rates.value = 'true';
+			job_edit.submit();
+		}
+	}
+
+	function updateStatus(new_status)
+	{
+		var update = false;
+		if( new_status == 'closed' )
+		{
+			if( confirm("Closing the job will close all of its requisitions.\n   Are you sure you want to Close the job?") )
+				update = true;
+		}
+		else if( new_status == 'pending' )
+		{
+			alert("Opening the job will open ONLY the job,\n          the reqs will stay closed.\n  You must open the reqs individually.");
+			update = true;
+		}
+
+		if( update )
+		{
+				job_edit.object_type.value = 'job'
+				job_edit.object_id.value = {!s:job_id.toJavaScriptString()!};
+				job_edit.new_status.value = new_status;
+				exitFunction('Save');
+		}
+	}
+
+	function exitFunction(button)
+	{
+		job_edit.redisplay.value='false';
+		job_edit.button.value = button;
+
+	<!--#IF evaluate="<?d:mode?>" compare="Insert" -->
+		if(button == 'Save')
+		{
+			job_edit.button.value = 'Save';
+			job_edit.nextTemplate.value="job/job_main.html";
+			job_edit.submit();
+		}
+		else if (button == 'Cancel')
+		{
+			newWindow('{!s:showPage!}main.html', 'tab_frame');
+			return false;
+		}
+
+	<!--#ELSE--> <!-- must be update -->
+
+		if( button == 'Save' )
+		{
+			job_edit.button.value = 'Save';
+			job_edit.submit();
+		}
+		else if( {!p:closeOnCancel.isNull('false').toJavaScriptString()!} == 'true' && button == 'Cancel' )
+		{
+			window.opener.focus();
+			window.opener.redisplayPage();
+			window.close();
+			return false;
+		}
+		else if( button == 'Cancel' )
+		{
+			job_edit.submit();
+		}
+
+	<!--#/IF-->
+
+	}
+-->
+</script>
+</body>
+
+
+<!--#EMBED template="embeds/footer.html" -->

@@ -1,0 +1,212 @@
+<!--#REQUIRED data="<?s:user?>"-->
+<!--BEGIN PROJECT HEADER-->
+
+<!--#EXEC handler="ims.handlers.proj.SetProjectDatumHandler" project_id="<?p:project_id?>" request_id="<?p:request_id?>" quote_id="<?p:quote_id?>" -->
+
+<!--#IF defined="<?s:project_id?>" -->
+
+ <table width="100%" border="0" cellpadding="0" cellspacing="3">
+ <tr>
+  <td class="HeaderLabel">Project&nbsp;#:&nbsp;&nbsp;<span style="font-weight:normal">{!s:project_no!}</span></td>
+  <td class="HeaderLabel">Project&nbsp;Type:&nbsp;&nbsp;<span style="font-weight:normal">{!s:project_type_name!}</span></td>
+  <td class="HeaderLabel">Project&nbsp;Status:&nbsp;&nbsp;<span style="font-weight:normal">{!s:project_status_type_name!}</span>&nbsp;</td>
+ </tr>
+ <tr>
+  <td class="HeaderLabel">Dealer:&nbsp;&nbsp;<input name="dealer_name" readonly class="readonly" value="{!s:dealer_name!}" size="25"></td>
+  <td class="HeaderLabel">Customer:&nbsp;&nbsp;<input name="customer_name" readonly class="readonly" value="{!s:customer_name!}" size="30"></td>
+  <td class="HeaderLabel">Job&nbsp;Name:&nbsp;&nbsp;<input name="job_name" readonly class="readonly" size="35" value="{!s:job_name!}">
+  <!--#SQLLOOP name="project" query="SELECT top 1 'x' FROM requests_v WHERE (project_id = <?s:project_id.toPStmtString()?> AND request_type_code = 'service_request' AND is_sent = 'Y') OR (project_id = <?s:project_id.toPStmtString()?> AND project_status_type_code = 'folder_closed')"-->
+  <!--#SQLNODATA-->
+   <input name="job_name_update" type="button" value="Update" class="button2" onClick="newWindow('{!s:showPage!}enet/proj/job_name_edit.html?project_id={!s:project_id!}','job_name_edit',130,300);">
+  <!--#/SQLNODATA-->
+  <!--#/SQLLOOP-->
+  <input name="ext_dealer_id" type="hidden" value="{!s:ext_dealer_id!}">
+  <input name="customer_id" type="hidden" value="{!s:customer_id!}">
+  <input name="project_type_id" type="hidden" value="{!s:project_type_id!}">
+ </td>
+ </tr>
+
+<!--#ELSE--> <!-- user needs select project type, and enter customer, job_name and maybe dealer -->
+
+  <tr><td colspan="6">
+  <table width="100%" border="0" cellspacing="0">
+   <tr><td class="HeaderRow">Please select a customer first...</td></tr>
+  </table>
+ </td></tr>
+
+ <tr>
+<!--#CHECKSECURITY right="rights.enet/proj/project_numbering.view" -->
+  <td width="5%">Project&nbsp;#:</td>
+<!--#/CHECKSECURITY-->
+  <td width="5%" class="mandatoryLabel">Project&nbsp;Type:</td>
+  <td width="10%" class="mandatoryLabel">Dealer:</td>
+  <td width="55%" class="mandatoryLabel">Customer:</td>
+  <td width="25%">Job&nbsp;Name:</td>
+ </tr>
+
+ <!--#IF evaluate="<?d:mode?>" compare="Insert" -->
+
+ <tr>
+<!--#CHECKSECURITY right="rights.enet/proj/project_numbering.view" -->
+  <td>
+   <input name="project_no" type="text" value="{!d:project_no!}" class="regular" style="width:55" -->
+  </td>
+<!--#/CHECKSECURITY-->
+  <td>
+   <!--#SELECT name="project_type_id" class="regular" style="width:90"
+   query="SELECT pt.lookup_id, pt.lookup_name
+    FROM job_types_v pt, user_job_types u
+    WHERE u.lookup_id = pt.lookup_id
+    AND u.user_id = <?s:user_id.toPStmtString()?>
+    ORDER BY pt.lookup_name"
+   currentValue="<?s:project_type_id?>"
+   firstOption=""
+   firstOptionValue=""
+   autoSelect="true"
+   -->
+  </td>
+  <td>
+  <!--#IF evaluate="<?s:rights.enet/proj/multidealer.view?>" compare="true" -->
+   	<!-- redisplay to filter customers -->
+  	<!--#SELECT name="ext_dealer_id" class="regular"
+   				style="width:110"
+   				resourceName="<?s:org_resource?>"
+   				onChange="changedHeader(this);"
+   				firstOption=""
+   				firstOptionValue=""
+   				currentValue="<?s:ext_dealer_id.trim()?>"
+   				query="SELECT RTRIM(custnmbr) dealer_id, RTRIM(shrtname) dealer_name
+   						 FROM RM00101
+   						WHERE userdef1 = 'DEALER'
+   						   OR custnmbr = <?s:ext_dealer_id.toPStmtString()?>
+   				     ORDER BY dealer_name"
+   	-->
+  <!--#ELSEIF evaluate="<?s:rights.enet/proj/non_a_m_dealers.view?>" compare="true" -->
+  	<!-- redisplay to filter customers -->
+	<!--#SELECT name="ext_dealer_id" class="regular"
+				style="width:110"
+				resourceName="<?s:org_resource?>"
+				onChange="changedHeader(this);"
+   				firstOption=""
+   				firstOptionValue=""
+   				currentValue="<?s:ext_dealer_id.trim()?>"
+   				query="SELECT RTRIM(custnmbr) dealer_id, RTRIM(shrtname) dealer_name
+   			            FROM RM00101
+   			           WHERE (userdef1 = 'DEALER'
+   			              OR custnmbr = <?s:ext_dealer_id.toPStmtString()?>)
+   			             AND custnmbr <> <?s:ext_direct_dealer_id.toPStmtString()?>
+   			   	    ORDER BY dealer_name"
+  	-->
+  <!--#ELSE-->
+   <input type="hidden" name="ext_dealer_id" value="{!s:ext_dealer_id!}">&nbsp;
+   <input type="text" name="dealer_name" value="{!s:dealer_name!}" class="readonly" readonly style="width:110">
+  <!--#/IF-->
+  </td>
+  <td>
+
+
+	<!-- redisplay to filter job locations and contacts -->
+	<!--#SQLLOOP name="custQuery" query="SELECT COUNT(customer_id) numCustomers FROM user_customers WHERE user_id = <?s:user.userID.toPStmtString()?>" resourceName="SQLServer" -->
+		<!--#IF evaluate="<?r:custQuery:numCustomers?>" compare="0"-->
+		 <!--#SELECT name="customer_id" class="regular"
+				onChange="changedHeader(this)"
+				firstOption="" firstOptionValue=""
+				currentValue="<?s:customer_id?>"
+				style="width:230"
+		 		query="SELECT DISTINCT c.customer_id, c.customer_name
+						 FROM customers c
+						WHERE c.organization_id = <?s:org_id.toPStmtInt()?>
+						  AND c.ext_dealer_id = <?s:ext_dealer_id.toPStmtString()?>
+						  AND (
+						      c.active_flag = 'Y'
+						   OR c.customer_id = <?d:customer_id.toPStmtString()?>
+						   OR c.parent_customer_id = <?d:customer_id.toPStmtString()?>
+						   OR c.customer_id = <?s:customer_id.toPStmtString()?>
+						  )
+
+				     ORDER BY c.customer_name"
+		  -->
+
+		<!--#ELSE-->
+		 <!--#SELECT name="customer_id" class="regular"
+				onChange="changedHeader(this)"
+				firstOption="" firstOptionValue=""
+				currentValue="<?s:customer_id?>"
+				style="width:230"
+		 		query="SELECT DISTINCT c.customer_id, c.customer_name
+						 FROM customers c
+						WHERE c.organization_id = <?s:org_id.toPStmtInt()?>
+						  AND c.ext_dealer_id = <?s:ext_dealer_id.toPStmtString()?>
+						  AND c.active_flag = 'Y'
+						  AND (
+						      c.customer_id IN (SELECT uc.customer_id FROM user_customers_v uc WHERE uc.user_id = <?s:user.userID.toPStmtString()?>)
+						   OR c.customer_id = <?d:customer_id.toPStmtString()?>
+					       OR c.parent_customer_id = <?d:customer_id.toPStmtString()?>
+						   OR c.customer_id = <?s:customer_id.toPStmtString()?>
+						  )
+
+				     ORDER BY c.customer_name"
+		  -->
+
+		<!--#/IF-->
+	<!--#/SQLLOOP-->
+
+
+   <!--#IF evaluate="<?s:ext_dealer_id?>" compare=""-->
+   <!--#ELSE-->
+    <!--#CHECKSECURITY right="rights.enet/proj/customer_edit.update" -->
+   <input type="button" name="customer_view" value="View" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}enet/proj/customer_edit.html?ext_dealer_id='+getExtDealerID()+'&theForm='+getFormName()+'&theDroplist=customer_id&customer_id=','customers',570,520,eval(getFormName()+'.customer_id'));">
+    <!--#/CHECKSECURITY-->
+
+    <!--#CHECKSECURITY right="rights.enet/proj/customer_edit.insert" -->
+   <input type="button" name="customer_new" value="New" class="button2" onClick="if( isLoaded() ) newWindow('{!s:showPage!}enet/proj/customer_edit.html?ext_dealer_id='+getExtDealerID()+'&theForm='+getFormName()+'&theDroplist=customer_id&customer_id=','customers',570,520);">
+    <!--#/CHECKSECURITY-->
+   <!--#/IF-->
+  </td>
+  <td>
+   <input name="job_name" type="text" value="{!s:job_name!}" class="regular" size="25">
+  </td>
+ </tr>
+ <!--#ELSE-->
+ <tr>
+  <td valign="top" class="HeaderValue">{!s:project_type_name!}</td>
+  <td valign="top" class="HeaderValue">{!s:dealer_name!}</td>
+  <td valign="top" class="HeaderValue">{!s:customer_name!}</td>
+  <td valign="top" class="HeaderValue">{!s:job_name!}</td>
+ </tr>
+ <!--#/IF-->
+
+<!--#/IF-->
+
+
+ <tr>
+  <td colspan="6"><HR>
+  </td>
+ </tr>
+</table>
+<script type="text/javascript">
+<!--
+
+ function changedHeader(field)
+ {
+  if( !(field == null) && field.name == 'ext_dealer_id' )
+  {
+   field.form.customer_id.selectedIndex = -1;
+   field.form.d_designer_contact_id.selectedIndex = -1;
+   field.form.d_sales_rep_contact_id.selectedIndex = -1;
+   field.form.d_sales_sup_contact_id.selectedIndex = -1;
+   field.form.d_proj_mgr_contact_id.selectedIndex = -1;
+  }
+  field.form.job_location_id.selectedIndex = -1;
+  field.form.customer_contact_id.selectedIndex = -1;
+  field.form.alt_customer_contact_id.selectedIndex = -1;
+
+  redisplaySmartForm()
+ }
+//-->
+</script>
+
+<!--END PROJECT HEADER-->
+
+
+

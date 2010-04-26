@@ -1,0 +1,77 @@
+<!--#EMBED template="embeds/header.html" -->
+<body class="BodyTag">
+
+
+<FORM NAME="ReqListForm" ACTION="{!s:action!}changeStatus">
+		<INPUT name="object_type" type="hidden" value="req" >
+		<INPUT name="new_status" type="hidden" value="closed">
+		<INPUT name="next_template" type="hidden" value="job/req_list.html">
+
+<!--#SMARTTABLE name="services_v"
+	class="SmartTable" autoClick="false"
+	query="SELECT sv.job_id, sv.service_id, sv.service_no, sv.serv_status_type_code, sv.serv_status_type_name,
+				  sv.job_location_name, sv.description, sv.priority_type_name, sv.est_start_date, sv.sch_start_date,
+				  sv.misc, sv.po_no
+	         FROM services_v sv
+	        WHERE sv.job_id = <?s:job_id.toPStmtString()?>
+	          AND sv.serv_status_type_code <> 'closed'
+	     ORDER BY serv_status_type_seq_no, service_no"-->
+
+<!--#IF defined="<?s:rights.job/req_edit.view?>"-->
+  <!--#SMARTCOLUMN width="5%" name="service_no" sort="service_no" title="Req#" align="center"
+         href="<?s:action?>setupSession/job/req_main.html?service_id=<?r:services_v:service_id?>&job_id=<?r:services_v:job_id?>" -->
+<!--#ELSE-->
+  <!--#SMARTCOLUMN width="5%" name="service_no" sort="service_no" title="Req#" align="center" -->
+<!--#/IF-->
+
+  <!--SMARTCOLUMN width="15%" name="po_no" sort="po_no" title="PO"  -->
+  <!--#SMARTCOLUMN width="5%" name="priority_type_name" sort="priority_type_name" title="Priority" align="center"-->
+  <!--#SMARTCOLUMN width="20%" name="description" sort="description" title="Description" value="<input readonly='true' class='smartTableDisplay' size='35' value='<?r:services_v:description.replaceString('\'','&#39;')?>'>" -->
+  <!--#SMARTCOLUMN width="10%" name="job_location_name" sort="job_location_name" title="Job Location"  -->
+  <!--#SMARTCOLUMN width="15%" name="po_no" sort="po_no" title="PO #"  -->
+  <!--#SMARTCOLUMN width="10%" name="serv_status_type_name" sort="serv_status_type_name" title="Status" nowrap -->
+  <!--#SMARTCOLUMN width="5%" name="est_start_date" sort="est_start_date" title="Est Start" nowrap format="date" -->
+  <!--#SMARTCOLUMN width="5%" name="sch_start_date" sort="sch_start_date" title="Sch Start" nowrap format="date" -->
+  <!--#IF evaluate="<?r:services_v:serv_status_type_name?>" compare="closed" -->
+		 <!--#SMARTCOLUMN value="Closed" title="Close?" width="5%" align="center" -->
+	<!--#ELSE-->
+		 <!--#SMARTCOLUMN value="<input type='checkbox' name='object_id' value='<?r:services_v:service_id?>'>&nbsp;Yes" title="Close?" width="5%" -->
+	<!--#/IF-->
+
+<!--#/SMARTTABLE -->
+
+	<br>
+	<br>
+
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+<!--#IF evaluate="<?s:job_status_type_code?>" compare="closed" -->
+		<td class="HeaderLabel">Job is currently Closed.  You cannot create Requisitions when the Job is Closed.</td></tr>
+		<tr>
+<!--#ELSE-->
+	<!--#IF defined="<?s:rights.job/req_edit.view?>"-->
+		<td>
+			<input name="req_button" type="button" value="Create Requisition" class="button" onClick="newWindow('{!s:showPage!}setupSession/job/req_create.html?job_id={!s:job_id!}','job_frame');">
+		</td>
+	<!--#/IF-->
+<!--#/IF-->
+
+<!--#CHECKSECURITY right="rights.close_req.view"-->
+		<td align="right">
+			<input type="submit" name="button" value="Close Reqs" class="Button" >
+		</td>
+<!--#/CHECKSECURITY-->
+	</tr>
+	</table>
+<BR>
+	<!--#SMARTTABLE name="services_v2" width="50" align="right"
+		query="SELECT count(1) num_closed_reqs FROM services_v WHERE serv_status_type_code='closed' AND job_id = <?s:job_id.toPStmtString()?>"
+	-->
+	  <!--#SMARTCOLUMN name="num_closed_reqs" title="#&nbsp;of&nbsp;Closed&nbsp;Reqs" align="center"-->
+	<!--#/SMARTTABLE-->
+
+</form>
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

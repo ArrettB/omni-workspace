@@ -1,0 +1,180 @@
+<!--#EMBED template="embeds/header.html" -->
+
+<body class="BodyTag">
+
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+   <!--#SMARTFORM name="sch" table="schedule_types_v" key="lookup_id" buttons="" -->
+	   <!--#SMARTFIELD name="action" type="hidden" value="set_dates" -->
+	   <!--#SMARTFIELD name="redisplay" type="hidden" value="true" -->
+		<tr>
+			<td class="Label">Schedule:&nbsp</td>
+			<td><!--#SELECT name="sch_type_id" query="SELECT lookup_id, lookup_name FROM schedule_types_v ORDER BY sequence_no"	firstOption="All" firstOptionValue="" onChange="eval(this.form.name+'.submit();');" currentValue="<?p:sch_type_id?>" class="Label" --></td>
+			<td class="Label">&nbsp;Job&nbsp;Type:&nbsp</td>
+			<td><!--#SELECT name="job_type_id" query="SELECT lookup_id, lookup_name FROM job_types_v ORDER BY sequence_no" firstOption="All" firstOptionValue="" onChange="eval(this.form.name+'.submit()');" currentValue="<?p:job_type_id?>" class="Label"--></td>
+		</tr>
+	<!--#/SMARTFORM-->
+	</table>
+
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		<tr><td colspan="4" class="tableHeader">Job List</td></tr>
+	</table>
+
+
+	<!--#IF evaluate="<?s:role_code?>" compare="major_acct_coord" -->
+
+		<!-- not a scheduler so must be the major acct coord who sees req level info. -->
+
+	   <!--#SMARTTABLE class="SmartTable" name="sch_job_list_v" maxRows="20" colorRowClasses="WatchRow,WatchRowLink" colorRowCol="watch_flag" colorRowVal="Y"
+		   query="SELECT job_service_id,
+		                 job_id,
+		                 job_no,
+		   				 service_id,
+		   				 service_no,
+		   				 request_id,
+		                 ext_dealer_id,
+		                 dealer_name,
+		                 customer_name,
+		                 job_name,
+		                 substring(job_type_name,1,1) job_type_name,
+		                 schedule_type_name,
+		   				 job_status_type_name,
+		   				 serv_status_type_name,
+		   				 est_start_date,
+		   				 est_end_date,
+		   				 est_start_time,
+		   				 watch_flag,
+		   				 weekend_flag_name,
+		   				 po_no,
+						 foreman_user_name,
+						 end_user_name,
+						 job_location_name,
+						 customer_contact,
+						 job_location_contact,
+						 schedule_with,
+                         est_hours
+			   	    FROM sch_job_list_v
+			   	   WHERE organization_id=<?s:org_id.toPStmtInt()?>
+			   	     AND foreman_user_id = <?s:user_id.toPStmtInt()?>
+			   		 AND (job_type_id like <?p:job_type_id.isNull('%').toPStmtString()?> or job_type_id is null)
+			   		 AND (schedule_type_id like <?p:sch_type_id.isNull('%').toPStmtString()?> or schedule_type_id is null)
+			   		 AND (service_id like '%' or service_id is null)
+			   		 AND serv_status_type_code <> 'closed'
+			   		 AND job_status_type_code <> 'closed'
+		   			 AND (ISNULL(est_start_date,'1/1/1901') <= <?s:sch_to_date.isNull('1/1/2101').toPStmtString()?> AND
+		   			      ISNULL(est_end_date, '1/1/2101') >= <?s:sch_from_date.isNull('1/1/1901').toPStmtString()?>)
+			    ORDER BY est_start_date DESC,
+			             est_start_time,
+			             est_end_date,
+			             job_no,
+			             service_no"
+	   -->
+
+			<!--#SMARTCOLUMN name="est_start_date" sort="est_start_date" title="Start&nbsp;Date" format="date"  width="10%" -->
+			<!--#SMARTCOLUMN name="schedule_type_name" sort="schedule_type_name" title="Sch&nbsp;Type" width="10%" -->
+			<!--#SMARTCOLUMN name="job_name" sort="job_name" title="Job&nbsp;Name" width="10%" nowrap-->
+			<!--#SMARTCOLUMN name="est_end_date" sort="est_end_date" title="End&nbsp;Date" format="date" width="10%" -->
+			<!--#SMARTCOLUMN name="est_start_time" sort="est_start_time" title="Start&nbsp;Time" format="time"  width="10%" -->
+            <!--#SMARTCOLUMN name="schedule_with" sort="schedule with" title="Omni Sch with" width="5%" align="left" filter="schedule_with:schedule_with"-->
+			<!--#SMARTCOLUMN name="job_no" sort="job_no" title="Job#" width="5%" align="center" href="<?s:action?>setupSchSession/sch/sch_job_req_info.html?sch_action=set_job_req&job_id=<?r:sch_job_list_v:job_id?>&job_no=<?r:sch_job_list_v:job_no?>&service_id=<?r:sch_job_list_v:service_id?>&service_no=<?r:sch_job_list_v:service_no?>&job_service_id=<?r:sch_job_list_v:job_service_id?>&request_id=<?r:sch_job_list_v:request_id?>" target="sch_job_req_info_frame" filter="job_no:jsv.job_no" -->
+			<!--#SMARTCOLUMN name="service_no" sort="service_no" title="Req#" width="5%" align="center" -->
+            <!--#SMARTCOLUMN name="est_hours" sort="est_hours" title="Est Hours" width="5%" align="right" filter="est_hours:est_hours"-->
+		    <!--#SMARTCOLUMN name="foreman_user_name" sort="foreman_user_name" title="Foreman" width="10%" filter="foreman_user_name:foreman_user_name"-->
+			<!--#SMARTCOLUMN name="end_user_name" sort="end_user_name" title="End&nbsp;User" width="10%" filter="end_user_name:customer_name"-->
+			<!--#SMARTCOLUMN name="job_location_name" sort="job_location_name" title="Job&nbsp;Location" width="10%" filter="job_location_name:job_location_name"-->
+			<!--#SMARTCOLUMN name="job_location_contact" sort="job_location_contact" title="Contact&nbsp;Info" width="10%" -->
+			<!--#SMARTCOLUMN name="customer_name" sort="customer_name" title="Customer" width="10%" filter="customer_name:customer_name"-->
+			<!--#SMARTCOLUMN name="po_no" sort="po_no" title="PO#" width="5%" filter="po_no:po_no" -->
+			<!--#SMARTCOLUMN name="customer_contact" sort="customer_contact" title="Contact&nbsp;Info" width="10%" -->
+
+	   <!--#/SMARTTABLE -->
+
+	<!--#ELSE -->
+
+		<!-- this is the scheduler, or someone with no sch role so display job level info -->
+
+	   <!--#SMARTTABLE class="SmartTable" name="sch_job_list_v" colorRowClasses="WatchRow,WatchRowLink" colorRowCol="watch_flag" colorRowVal="Y"
+		   query="SELECT job_service_id,
+		                 job_id,
+		   				 service_id,
+		                 job_no,
+		                 ext_dealer_id,
+		                 customer_name,
+		                 job_name,
+		                 job_type_name,
+		                 job_type_code,
+		                 schedule_type_name,
+		   				 job_status_type_name,
+		   				 serv_status_type_name,
+		   				 service_no,
+		   				 est_start_date,
+		   				 est_start_time,
+		   				 est_end_date,
+		   				 watch_flag,
+		   				 weekend_flag_name,
+		   				 po_no,
+		   				 foreman_user_name,
+                         end_user_name,
+                         job_location_name,
+                         customer_contact,
+                         job_location_contact,
+                         schedule_with,
+                         est_hours
+					FROM sch_job_list_v
+                   WHERE organization_id=<?s:org_id.toPStmtInt()?>
+                     AND ISNULL(service_type_code,'long_view') = 'long_view'
+	   		         AND (job_type_id like <?p:job_type_id.isNull('%').toPStmtString()?> or job_type_id is null)
+	   		         AND (schedule_type_id like <?p:sch_type_id.isNull('%').toPStmtString()?> or schedule_type_id is null)
+	   		         AND (serv_status_type_code <> 'closed' or serv_status_type_code is null)
+	   		         AND job_status_type_code <> 'closed'
+   			         AND (ISNULL(est_start_date,'1/1/1901') <= <?s:sch_to_date.isNull('1/1/2101').toPStmtString()?>
+   			              AND ISNULL(est_end_date, '1/1/2101') >= <?s:sch_from_date.isNull('1/1/1901').toPStmtString()?>)
+				ORDER BY est_start_date DESC,
+						 est_start_time,
+						 est_end_date,
+						 job_no,
+						 service_no"  -->
+
+			<!--#SMARTCOLUMN name="est_start_date" sort="est_start_date" title="Start&nbsp;Date" format="date"  width="10%" -->
+			<!--#SMARTCOLUMN name="schedule_type_name" sort="schedule_type_name" title="Sch&nbsp;Type" width="10%" -->
+			<!--#SMARTCOLUMN name="job_name" sort="job_name" title="Job&nbsp;Name" width="10%" filter="job_name:job_name"-->
+			<!--#SMARTCOLUMN name="est_end_date" sort="est_end_date" title="End&nbsp;Date" format="date" width="10%" -->
+			<!--#SMARTCOLUMN name="est_start_time" sort="est_start_time" title="Start&nbsp;Time" format="time"  width="10%" -->
+            <!--#SMARTCOLUMN name="schedule_with" sort="schedule with" title="Omni Sch with" width="5%" align="left" filter="schedule_with:schedule_with"-->
+			<!--#SMARTCOLUMN name="job_no" sort="job_no" title="Job#" width="5%" align="center" href="<?s:action?>setupSchSession/sch/sch_job_req_info.html?sch_action=set_job_req&job_id=<?r:sch_job_list_v:job_id?>&job_no=<?r:sch_job_list_v:job_no?>&service_id=<?r:sch_job_list_v:service_id?>&service_no=<?r:sch_job_list_v:service_no?>&job_service_id=<?r:sch_job_list_v:job_service_id?>" target="sch_job_req_info_frame" filter="job_no:job_no" -->
+		<!--#IF evaluate="<?r:sch_job_list_v:service_no?>" compare="" -->
+			<!--#IF evaluate="<?r:sch_job_list_v:job_type_code?>" compare="project" -->
+				<!--#SMARTCOLUMN name="service_no" sort="service_no" title="Req#" width="5%" class="watchrow" align="center" filter="service_no:service_no"-->
+			<!--#ELSE-->
+				<!--#SMARTCOLUMN name="service_no" sort="service_no" title="Req#" width="5%" align="center"  filter="service_no:service_no"-->
+			<!--#/IF-->
+		<!--#ELSE-->
+			<!--#SMARTCOLUMN name="service_no" sort="service_no" title="Req#" width="5%" align="center"  filter="service_no:service_no"-->
+		<!--#/IF-->
+		    <!--#SMARTCOLUMN name="est_hours" sort="est_hours" title="Est Hours" width="5%" align="right" filter="est_hours:est_hours"-->
+		    <!--#SMARTCOLUMN name="foreman_user_name" sort="foreman_user_name" title="Foreman" width="10%" filter="foreman_user_name:foreman_user_name"-->
+			<!--#SMARTCOLUMN name="end_user_name" sort="end_user_name" title="End&nbsp;User" width="10%" filter="end_user_name:customer_name"-->
+			<!--#SMARTCOLUMN name="job_location_name" sort="job_location_name" title="Job&nbsp;Location" width="10%" filter="job_location_name:job_location_name"-->
+			<!--#SMARTCOLUMN name="job_location_contact" sort="job_location_contact" title="Contact&nbsp;Info" width="10%" -->
+			<!--#SMARTCOLUMN name="customer_name" sort="customer_name" title="Customer" width="10%" filter="customer_name:customer_name"-->
+			<!--#SMARTCOLUMN name="po_no" sort="po_no" title="PO#" width="5%" filter="po_no:po_no" -->
+			<!--#SMARTCOLUMN name="customer_contact" sort="customer_contact" title="Contact&nbsp;Info" width="10%" -->
+
+	   <!--#/SMARTTABLE -->
+
+	<!--#/IF-->
+
+</body>
+
+<script language="JavaScript">
+<!--
+
+	function redisplaySmartForm(aForm)
+	{
+		aForm.redisplay.value = 'true';
+		aForm.submit();
+	}
+
+-->
+</script>
+
+<!--#EMBED template="embeds/footer.html" -->

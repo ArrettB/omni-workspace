@@ -1,0 +1,1 @@
+SELECT DISTINCT po_no, service_description FROM billing_v WHERE invoice_id = '164325'

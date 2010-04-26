@@ -1,0 +1,135 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<body class="BodyTag" onLoad="">
+
+	<span class="Label">
+		Please choose the project folder to view/update:
+	</span>
+
+<!--#EXEC handler="ims.handlers.query.RecordListQueryHandler" record_type_code="project_folder" -->
+
+<!--#SMARTTABLE name="p_list"
+		class="SmartTable"
+		query="<?d:recordListQuery?>"
+	-->
+
+  <!--#IF defined="<?d:p_list:firstRow?>"-->
+	<form name="frm_checkbox" action="{!s:action!}archive/enet/nav/pf_view.html" method="post" style="margin:0;">
+  <!--#/IF-->
+
+  <!--#IF evaluate="<?d:p_list:rowid?>" compare="total"-->
+	<td height="30" class="TableTitle">&nbsp;</td>
+  <!--#ELSE-->
+	<!--#SMARTCOLUMN title="<input type='checkbox' name='selectall' onClick='javascript:selectAll(this);' >"
+			         value="<input type='checkbox' <?r:p_list:selected?> name='archiveCheckbox' value='<?r:p_list:project_id?>' >"
+			         name="foo" align="center" width="2%"-->
+  <!--#/IF-->
+
+	<!--#SMARTCOLUMN name="project_no" sort="project_no" title="Project&nbsp;#" width="10%" align="center" href="<?s:action?>setProjectDatum?project_id=<?r:p_list:project_id?>&templateName=enet/proj/pf_main.html" target="_top" filter="project_no:project_no" -->
+
+	<!--#SMARTCOLUMN name="customer_name" sort="customer_name" title="Customer" width="20%"
+		filter="customer_name:customer_id" filterQuery="<?d:customerListQuery?>"
+		filterQuick="true" -->
+
+	<!--#SMARTCOLUMN name="end_user_name" sort="end_user_name" title="End User" width="20%"
+		filter="end_user_name:end_user_name" -->
+
+	<!--#SMARTCOLUMN name="job_name" sort="job_name" title="Job Name" width="20%" filter="job_name:job_name" -->
+
+	<!--#SMARTCOLUMN name="project_status_name" sort="project_status_name" title="Status" width="10%" filterQuick="true"
+		filter="project_status_name:project_status_code" filterQuery="SELECT lookup_code, lookup_name FROM project_status_types_v" -->
+
+
+<!--#/SMARTTABLE -->
+
+<!--#EMBED template="/embeds/spacer_table.html" spacer_height="15"-->
+
+	<input type="hidden" name="archiveIds" id="archiveIds" value="">
+	<input type="hidden" name="record_type" id="record_type" value="project">
+<table border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td width="100">
+			<input type="button" name="button" value="Archive" onClick="archive()" class="button">
+		</td>
+	</tr>
+</table>
+</form>
+
+<script type="text/javascript">
+<!--
+var totalChecked = 0;
+var f = document.frm_checkbox;
+
+function archive()
+{
+	var foundOne = false;
+	var boxList = "";
+	var boxes = document.getElementsByName("archiveCheckbox");
+	for (var i = 0; i < boxes.length; i++)
+	{
+		var theBox = boxes[i];
+		if (theBox.checked)
+		{
+			boxList += "," + theBox.value;
+			foundOne = true;
+		}
+	}
+	if (foundOne)
+	{
+		if (confirm("Do you want to close / archive the projects?"))
+		{
+			f.archiveIds.value = boxList.substring(1);
+			f.submit();
+			return true;
+		}
+		else
+		{
+			unSelectAll();
+		}
+	}
+	else
+	{
+		alert("You must select at least one project to archive.");
+	}
+}
+
+function selectAll(theitem)
+{
+	var check = theitem.checked;
+    var all_inv = 0;
+	for (i = 0; i < f.elements.length; i++)
+	{
+		if (f.elements[i].type == 'checkbox')
+		{
+				f.elements[i].checked = check;
+				all_inv += 1;
+		}
+
+	}
+
+	// update the overall counter
+	if (check)
+		totalChecked = all_inv;
+	else
+		totalChecked = 0;
+
+}
+
+function unSelectAll()
+{
+	for (i = 0; i < f.elements.length; i++)
+	{
+		if (f.elements[i].type == 'checkbox')
+		{
+				f.elements[i].checked = null;
+		}
+
+	}
+}
+
+//-->
+</script>
+
+</body>
+<!--#EMBED template="enet/embeds/footer.html" -->
+

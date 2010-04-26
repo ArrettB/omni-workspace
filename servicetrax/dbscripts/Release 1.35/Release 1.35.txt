@@ -1,0 +1,36 @@
+Version 1.35b [1579]
+
+This is updated to reflect the correct SQL script run order.  Also, the quote_standard_conditions.sql and
+standard_conditions_data.sql were changed so their depedencies are in the correct order.
+
+Scripts should be run in the following order:
+
+standard_conditions.sql
+standard_conditions_data.sql
+
+requests.sql
+quote_workstation_configurations.sql
+quote_standard_conditions.sql
+quote_specify_other_services.sql
+quote_other_furniture.sql
+quote_other_furniture_ad_hoc.sql
+quotes.sql
+versions_copy_v.sql
+
+
+
+
+
+Release Notes - A&M - Version 1.35
+
+** Bug
+    * [ANM-412] - the "Customer Costing" field is not populating the INVOICES.COST_CODES column
+
+** Enhancement
+    * [ANM-406] - Have the ability to turn Quote Conditions and Terms on or off by quote number
+    * [ANM-407] - Fix Quote Estimator "modified by" field to display correctly
+    * [ANM-408] - Create an ad-hoc way to add furniture systems under Other Furniture in the Quote Request and Estimator screens 
+    * [ANM-409] - Add a "comments" section in the Estimator
+    * [ANM-410] - Create a way for users to select either the current quote document or the old (shorter) versions of the quote document
+    * [ANM-411] - Omni will modify the current version of the Estimator that will use the "per-piece" pricing rather than the Typicals pricing
+

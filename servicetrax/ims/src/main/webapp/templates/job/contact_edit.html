@@ -1,0 +1,254 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: C:\work\ims\templates\job\contact_edit.html, 39, 3/20/2006 7:11:59 PM, Blake Von Haden$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.job/contact_edit.view?>"-->
+
+<body class="BodyTag" onLoad="testIfCreated();setDefaults();window.contact_edit.contact_name.focus();">
+
+   <table width="100%" border="0" cellspacing="0" cellpadding="3">
+      <!--#SMARTFORM name="job/contact_edit" security="rights" table="contacts" key="contact_id"
+			sequence="@@IDENTITY"
+			preHandler="ims.handlers.job_processing.SmartFormPreHandler;ims.handlers.job_processing.ContactPreHandler"
+			postHandler="ims.handlers.job_processing.ContactPostHandler"
+			onClickFunction="exitFunction"
+      -->
+		<!--#SMARTFIELD name="theForm" type="hidden" value="<?p:theForm?>" -->
+		<!--#SMARTFIELD name="theDroplist" type="hidden" value="<?p:theDroplist?>" -->
+		<!--#SMARTFIELD name="contact_type_code" type="hidden" value="<?p:contact_type_code?>" -->
+		<!--#SMARTFIELD name="created_new_contact" type="hidden" value="<?p:created_new_contact.isNull('false')?>" --></td>
+		<!--#SMARTFIELD name="return_value_flag" type="hidden" value="<?p:return_value_flag.isNull('true')?>" --></td>
+		<!--#SMARTFIELD name="redisplay" type="hidden" value="false" -->
+		<!--#SMARTFIELD name="organization_id" type="hidden" value="<?s:org_id?>" -->
+
+	<tr>
+		<td colspan="4" class="TableTitle">Contacts</td>
+	</tr>
+	<tr>
+		<td colspan="4">
+			<!--#SMARTFIELD title="Select Contact to Review: &nbsp;" name="contacts_list" type="droplist" style="width:135"
+				query="SELECT DISTINCT contact_id, contact_name
+				         FROM contacts_v
+				        WHERE organization_id=<?s:org_id.toPStmtInt()?>
+				          AND cont_status_type_code = 'active'
+				          AND ((
+				              (<?p:ext_dealer_id.toPStmtString()?> IS NULL OR ext_dealer_id = <?p:ext_dealer_id.toPStmtString()?>)
+				            AND (<?p:customer_id.toPStmtString()?> IS NULL OR customer_id = <?p:customer_id.toPStmtString()?>)
+				            AND (<?p:contact_type_code.toPStmtString()?> IS NULL OR contact_type_code = <?p:contact_type_code.toPStmtString()?>) )
+				             OR contact_id=<?p:contact_id.toPStmtString()?>)
+				     ORDER BY contact_name"
+				onChange="redisplayPage()"
+			-->
+			<!-- this next stuff is for the 'All' Contacts button -->
+			<!--#SMARTFIELD name="contacts_list_text" type="hidden"-->
+			<input type="button" name="all" value="All" class="button2" onClick="chooseContact()">
+		</td>
+	</tr>
+	<tr>
+		<td width="105">
+			<!--#IF evaluate="<?s:rights.enet/proj/multidealer.view?>" compare="true" -->
+				<!--#SMARTFIELD title="Dealer:" div="&nbsp;</td><td width='300'>" name="ext_dealer_id" resourceName="<?s:org_resource?>" type="droplist" style="width:150" query="SELECT rtrim(custnmbr) dealer_id, rtrim(shrtname) dealer_name FROM RM00101 WHERE userdef1='DEALER' or custnmbr=<?s:ext_dealer_id.toPStmtString()?> ORDER BY dealer_name" onChange="redisplaySmartForm();" value="<?p:ext_dealer_id?>"--></td>
+			<!--#ELSEIF evaluate="<?s:rights.enet/proj/non_a_m_dealers.view?>" compare="true" -->
+				<!--#SMARTFIELD title="Dealer:" div="&nbsp;</td><td width='300'>" name="ext_dealer_id" resourceName="<?s:org_resource?>" type="droplist" style="width:150" query="SELECT rtrim(custnmbr) dealer_id, rtrim(shrtname) dealer_name FROM RM00101 WHERE (userdef1='DEALER' or custnmbr=<?s:ext_dealer_id.toPStmtString()?>) AND custnmbr <> <?s:ext_direct_dealer_id.toPStmtString()?> ORDER BY dealer_name" onChange="redisplaySmartForm();" value="<?p:ext_dealer_id?>"--></td>
+			<!--#ELSE--> <!-- not Service Provider user, so cannot change bill to -->
+				<!--#SMARTFIELD title="Dealer:" div="&nbsp;</td><td width='300'>" name="ext_dealer_id" resourceName="<?s:org_resource?>" type="chooser" style="width:150" table="RM00101" display="rtrim(shrtname)" key="rtrim(custnmbr)" readonly class="readonly" value="<?p:ext_dealer_id?>" --></td>
+			<!--#/IF-->
+			</td>
+			<td width="100">
+			<!--#IF defined="<?r:job/contact_edit:customer_id?>" -->
+				<!--#SMARTFIELD title="Customer:" div="&nbsp;</td><td width='300'>" name="customer_id" type="droplist" style="width:135" table="customers" display="customer_name" key="customer_id" filter="organization_id=<?s:org_id.toPStmtString()?> AND (ext_dealer_id=ISNULL(<?r:job/contact_edit:ext_dealer_id.toPStmtString()?>,<?p:ext_dealer_id.toPStmtString()?>) OR customer_id=ISNULL(<?r:job/contact_edit:customer_id.toPStmtString()?>,<?p:customer_id.toPStmtString()?>))" value="<?p:customer_id?>" -->
+			<!--#ELSE-->
+				<!--#SMARTFIELD title="Customer:" div="&nbsp;</td><td width='300'>" name="customer_id" type="droplist" style="width:135" table="customers" display="customer_name" key="customer_id" filter="organization_id=<?s:org_id.toPStmtString()?> AND (ext_dealer_id=<?p:ext_dealer_id.toPStmtString()?> OR customer_id=<?p:customer_id.toPStmtString()?>)" value="<?p:customer_id?>" -->
+			<!--#/IF-->
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2"><table cellpadding="0" cellspacing="0">
+			<tr><td width="100"><!--#SMARTFIELD title="Contact Name:" div="</td><td>" name="contact_name" type="text" style="width:140"--></td></tr>
+
+			<tr><td class="mandatoryLabel" valign="top">Contact Group:</td><td>
+				<!--#SQLLOOP name="contact_groups"
+					query="SELECT c.lookup_id contact_type_id, c.lookup_name contact_type_name,
+						   	(CASE WHEN (SELECT COUNT(*)
+										FROM contact_groups cg
+										WHERE cg.contact_id = <?p:contact_id.toPStmtInt()?>
+										  AND c.lookup_id = cg.contact_type_id
+									   ) = 1
+								THEN 'selected' ELSE null END)	selected
+							FROM contact_types_v c
+							ORDER BY sequence_no"
+				-->
+				<!--#SQLHEADER-->
+				<select name="contact_group_id" size="5" multiple class="regular">
+				<!--#/SQLHEADER-->
+					<option value="{!r:contact_groups:contact_type_id!}" {!r:contact_groups:selected!}>{!r:contact_groups:contact_type_name!}</option>
+				<!--#SQLFOOTER-->
+				</select>
+				<!--#/SQLFOOTER-->
+
+				<!--#/SQLLOOP-->
+			</td></tr>
+		</table></td>
+		<td colspan="2" valign="top"><table cellpadding="0" cellspacing="0">
+			<tr><td><!--#SMARTFIELD title="Contact Status:" div="</td><td>" name="cont_status_type_id" type="droplist" style="width:135" table="contact_status_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" value="Active" --></td></tr>
+			<tr><td width="100"><!--#SMARTFIELD title="Work Phone:" div="</td><td>" name="phone_work" --></td></tr>
+			<tr><td><!--#SMARTFIELD title="Cell Phone:" div="</td><td>" name="phone_cell" --></td></tr>
+			<tr><td><!--#SMARTFIELD title="Home Phone:" div="</td><td>" name="phone_home" --></td></tr>
+		</table></td>
+	</tr>
+	<tr>
+		<td width="80"><!--#SMARTFIELD title="Email:" div="</td><td colspan='3'>" name="email" type="email" size="70" onblur="validateEmail(this);" --></td>
+	</tr>
+	<tr>
+		<td class="HeaderLabel" colspan="4">Address</td>
+	</tr>
+	<tr>
+         <td colspan="2"><table cellpadding="0" cellspacing="0" width="100%">
+         	<tr><td><!--#SMARTFIELD title="Street1:" div="</td><td>" name="street1" --></td></tr>
+			<tr><td><!--#SMARTFIELD title="Street2:" div="</td><td>" name="street2" --></td></tr>
+			<tr><td><!--#SMARTFIELD title="Street3:" div="</td><td>" name="street3" --></td></tr>
+		</table></td>
+		<td colspan="2"><table cellpadding="0" cellspacing="0" width="100%">
+			<tr><td><!--#SMARTFIELD title="City:" div="</td><td>" name="city" --></td></tr>
+			<tr><td><!--#SMARTFIELD title="State:" div="</td><td>" name="state" --></td></tr>
+			<tr><td><!--#SMARTFIELD title="Zip:" div="</td><td>" name="zip" --></td></tr>
+		</table></td>
+	</tr>
+	<tr>
+		<td valign="bottom" class="HeaderLabel">Notes</td>
+		<td colspan="3">
+			<!--#SMARTFIELD title="" name="notes" type="textarea" cols="70" rows="4" -->
+		</td>
+	</tr>
+
+	<tr><td colspan="4">
+	<!--#EMBED template="embeds/audit.html" table_name="contacts" table_key="contact_id" key_value="<?p:contact_id?>"-->
+	</td></tr>
+
+	<!--#/SMARTFORM -->
+ 	</table>
+
+
+</body>
+
+<script language="JavaScript">
+<!--
+
+	function setDefaults()
+	{
+	<!--#IF evaluate="<?d:mode?>" compare="Insert"-->
+		//set contact type
+	<!--#SQLLOOP name="contact_type" query="SELECT lookup_id FROM contact_types_v WHERE lookup_code=<?p:contact_type_code.toPStmtString()?>" -->
+		setSelect(contact_edit.contact_type_id, {!r:contact_type:lookup_id.toJavaScriptString()!});
+	<!--#/SQLLOOP-->
+	<!--#/IF-->
+	}
+
+//alert("ext_dealer_id='{!p:ext_dealer_id!}', customer_id='{!p:customer_id!}, contact_type_code='{!p:contact_type_code!}', contact_id='{!p:contact_id!}'");
+
+	function testIfCreated()
+	{
+		if( {!d:err@contact_group_id.isNull('false')!} == true )
+			contact_edit.contact_group_id.className='error';
+
+		if( ((contact_edit.created_new_contact.value == 'true' && contact_edit.contact_id.value != '') ||
+		    (contact_edit.created_new_contact.value == 'delete')) && {!p:validation_error.isNull('false')!} != true )
+		{//we now have a contact_id so return to caller
+
+			var action = '';
+			if( document.contact_edit.cont_status_type_id.options[contact_edit.cont_status_type_id.selectedIndex].text == 'Inactive' ||
+			    contact_edit.created_new_contact.value == 'delete' )
+			{
+				action = 'remove';
+			}
+
+			if(!( document.contact_edit.return_value_flag.value == 'false' ))
+		    {
+		      returnDroplistOption('{!p:theForm!}','{!p:theDroplist!}', contact_edit.contact_name.value, '{!p:contact_id!}', action);
+			}
+			//going to fast, need to slow it down
+			contact_edit.created_new_contact.value = contact_edit.created_new_contact.value = contact_edit.created_new_contact.value = contact_edit.created_new_contact.value;
+			if( !(parent.window.opener === undefined) )
+	     	{
+	     		parent.window.opener.focus();
+				parent.close();
+			}
+			else //must be on maintenance tab
+			contact_edit.prevTemplate.value = 'mnt/main_mnt.html';
+		}
+	}
+
+	function redisplayPage()
+	{
+		location='{!s:action!}job/contact_edit.html?return_value_flag={!p:return_value_flag.isNull('true')!}&theForm={!p:theForm!}&theDroplist={!p:theDroplist!}&contact_type_code={!p:contact_type_code!}'+
+			'&job_id={!p:job_id!}&service_id={!p:service_id!}&customer_id='+escape({!p:customer_id.toJavaScriptString()!})+'&ext_dealer_id='+escape({!p:ext_dealer_id.toJavaScriptString()!})+'&contact_id='+contact_edit.contacts_list.options[contact_edit.contacts_list.selectedIndex].value;
+	}
+
+	function redisplaySmartForm()
+	{
+		document.contact_edit.redisplay.value='true';
+		document.contact_edit.submit();
+	}
+
+	function exitFunction(button)
+	{
+		var action = '';
+		if( button == 'Save' || button == 'Cancel')
+		{
+			contact_edit.redisplay.value = 'false';
+			if( button == 'Save' )
+			{
+				document.contact_edit.created_new_contact.value = 'true';
+				document.contact_edit.contact_name.value = document.contact_edit.contact_name.value.toUpperCase();
+			}
+			else
+			{//canceling so who cares about id :-)
+				if( !(parent.window.opener === undefined) )
+		     	{
+					parent.window.opener.focus();
+					parent.close();
+				}
+				else //must be on maintenance tab
+				contact_edit.prevTemplate.value = 'mnt/main_mnt.html';
+			}
+		}
+		else if( button == 'Delete' )
+		{
+			document.contact_edit.created_new_contact.value = 'delete';
+		}
+	}
+
+	function chooseContact()
+	{
+		url = {!s:showPage.toJavaScriptString()!}+'choosers/choose_contact.html?ext_dealer_id='+escape({!p:ext_dealer_id.toJavaScriptString()!})
+			+ '&title=List of ALL Contacts'
+			+ '&form=contact_edit'
+			+ '&field=contacts_list'
+			+ '&id=contacts_list'
+			+ '&value=contacts_list_text'
+			+ '&contact_id_text='
+			+ '&query=<?a:choose_contact/sql?>';
+		window.open(url, 'chooser', ##-WIN-##);
+	}
+
+	function validateEmail(obj)
+	{
+		var str = obj.value;
+		if (str != '')
+		{
+			var validate = (str.indexOf(".") > 0) && (str.indexOf("@") > 0);
+			if (!validate)
+			{
+				alert('Invalid Email Address');
+				obj.focus();
+			}
+		}
+	}
+
+-->
+</script>
+
+
+
+
+
+<!--#EMBED template="embeds/footer.html" -->

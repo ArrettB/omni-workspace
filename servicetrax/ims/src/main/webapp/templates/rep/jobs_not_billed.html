@@ -1,0 +1,153 @@
+<!-- $Header: jobs_not_billed.html, 7, 3/6/2003 11:07:57 AM, Chad Ryan$ -->
+<!--#EMBED template="enet/embeds/header.html" -->
+
+<body class="BodyTag" onLoad="window.focus()">
+
+
+<table width="100%" cellspacing="0" cellpadding="3">
+
+<body class="BodyTag" onLoad="">
+
+	<table width="100%">
+		<tr><td colspan="16" class="TableTitle">Jobs Status Report</td></tr>
+	</table>
+
+<BR>
+
+	<table border="0" cellspacing="0" cellpadding="3">
+	<form name="report">
+      <tr>
+			<td class="Label">Service Line Date From:&nbsp</td>
+	     	<td>
+		<!--#IF DEFINED="<?p:r_from_date?>" -->
+				<input name="r_from_date" class="regular" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_from_date)')</script>" value="{!p:r_from_date!}" size="12" -->
+		<!--#ELSE-->
+			<!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) as from_date" name="dateQuery"-->
+	     		<input name="r_from_date" class="regular" value="{!r:dateQuery:from_date!}" size="12"-->&nbsp;
+			<!--#/SQLLOOP-->
+		<!--#/IF-->
+				<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_from_date)')</script>
+			</td><td class="Label">To:&nbsp</td>
+			<td>
+		<!--#IF DEFINED="<?p:r_to_date?>" -->
+				<input name="r_to_date" class="regular" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_to_date)')</script>" value="{!p:r_to_date!}" size="12" -->
+		<!--#ELSE-->
+			<!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) as to_date" name="dateQuery"-->
+	     		<input name="r_to_date" class="regular" value="{!r:dateQuery:to_date!}" size="12"-->&nbsp;
+			<!--#/SQLLOOP-->
+		<!--#/IF-->
+				<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_to_date)')</script>
+			</td>
+		</tr>
+		<tr>
+			<td class="Label">Line Statuses From:&nbsp</td>
+			<td><!--#SELECT name="r_from_status" class="regular" query="SELECT status_id, name FROM service_line_statuses ORDER BY status_id" firstOption="All" firstOptionValue="" currentValue="<?p:r_from_status?>" --></td>
+			<td class="Label">To:&nbsp</td>
+			<td><!--#SELECT name="r_to_status" class="regular" query="SELECT status_id, name FROM service_line_statuses ORDER BY status_id" firstOption="All" firstOptionValue="" currentValue="<?p:r_to_status?>" --></td>
+		</tr>
+		<tr><td colspan="4"><table><tr>
+			<td class="Label">Allocated Flag:&nbsp</td>
+			<td><!--#SELECT name="r_allocated_flag" class="regular" query="SELECT substring(lookup_name,1,1), lookup_name FROM yes_no_types_v ORDER BY lookup_name" firstOption="All" firstOptionValue="" currentValue="<?p:r_allocated_flag?>" class="regular"--></td>
+			<td class="Label">Exported:&nbsp</td>
+			<td><!--#SELECT name="r_exported_flag" class="regular" query="SELECT substring(lookup_name,1,1), lookup_name FROM yes_no_types_v ORDER BY lookup_name" firstOption="All" firstOptionValue="" currentValue="<?p:r_exported_flag?>" class="regular"--></td>
+			<td class="Label">Billed:&nbsp</td>
+			<td><!--#SELECT name="r_billed_flag" class="regular" query="SELECT substring(lookup_name,1,1), lookup_name FROM yes_no_types_v ORDER BY lookup_name" firstOption="All" firstOptionValue="" currentValue="<?p:r_billed_flag?>" class="regular"--></td>
+			<td class="Label">Posted:&nbsp</td>
+			<td><!--#SELECT name="r_posted_flag" class="regular" query="SELECT substring(lookup_name,1,1), lookup_name FROM yes_no_types_v ORDER BY lookup_name" firstOption="All" firstOptionValue="" currentValue="<?p:r_posted_flag?>" class="regular"--></td>
+		</tr></table></td></tr>
+		<tr>
+			<td><input type="button" name="set_button" value="Run Report" onClick="redisplayPage();" class="button2"-->&nbsp;</td>
+		</tr>
+	</form>
+	</table>
+
+<BR>
+
+	<!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) as to_date" name="dateQuery"-->
+
+   <!--#SMARTTABLE class="SmartTable" name="jobs_not_billed_v"
+	   query="SELECT tc_job_id, tc_job_no, SUM((sum_tc_qty - sum_allocated_qty)*tc_rate) sum_tc_total, SUM(sum_bill_total) sum_bill_total, billable_flag, invoice_no,
+	      			ext_dealer_id, dealer_name, customer_name, job_owner, job_end_date, job_status_type_name, report_date
+	      		FROM jobs_not_billed_v
+		   	WHERE 'true' = <?p:r_show_report.isNullSQLString('false')?>
+		   		AND organization_id = <?s:org_id?>
+		   		AND service_line_date between <?p:r_from_date.isNullSQLString('1/1/1901')?> AND <?p:r_to_date.isNullSQLString('1/1/2101')?>
+		   		AND serv_line_status_id between <?p:r_from_status.isNull('-100')?> AND <?p:r_to_status.isNull('100')?>
+				<?p:r_exported_flag.isNotNullSQLString('AND exported_flag = ')?>
+				<?p:r_billed_flag.isNotNullSQLString('AND billed_flag = ')?>
+				<?p:r_posted_flag.isNotNullSQLString('AND posted_flag = ')?>
+				AND internal_req_flag like <?p:r_allocated_flag.ifThenSQLString('N','Y','%')?>
+				AND fully_allocated_flag like <?p:r_allocated_flag.ifThenSQLString('N','N','%')?>
+				<?p:r_allocated_flag.ifThen('Y','AND ph_service_id IS NOT NULL',' ')?>
+				GROUP BY tc_job_id, tc_job_no, billable_flag, invoice_no,
+	   			ext_dealer_id, dealer_name, customer_name, job_owner, job_end_date, job_status_type_name, report_date
+		   	ORDER BY dealer_name, customer_name, tc_job_no, billable_flag"
+   -->
+		<!--#SMARTCOLUMN title="Dealer" name="dealer_name" sort="dealer_name" filter="dealer_name:dealer_name"
+			filter="dealer_name:dealer_name" filterQuery="SELECT distinct ext_dealer_id, dealer_name FROM jobs_not_billed_v WHERE organization_id = <?s:org_id?> ORDER BY dealer_name" filterQuick="true"
+		-->
+		<!--#SMARTCOLUMN title="Customer" name="customer_name" sort="customer_name" filter="customer_name:customer_name"
+			filter="customer_name:customer_name" filterQuery="SELECT distinct customer_name id, customer_name FROM jobs_not_billed_v WHERE organization_id = <?s:org_id?> ORDER BY customer_name" filterQuick="true"
+		-->
+	<!--#CHECKSECURITY right="rights.job/job_edit.view" -->
+		<!--#SMARTCOLUMN title="Job#" name="tc_job_no" sort="tc_job_no" align="center" href="" onClick="newWindowScrollBars('<?s:action?>setupSession/job/job_main.html?loc=job_edit&job_id=<?r:jobs_not_billed_v:tc_job_id?>','job_window',500,750);return false;" filter="tc_job_no:tc_job_no" -->
+	<!--#ELSE-->
+		<!--#SMARTCOLUMN title="Job#" name="tc_job_no" sort="tc_job_no" align="center" filter="tc_job_no:tc_job_no" -->
+	<!--#/CHECKSECURITY-->
+		<!--#SMARTCOLUMN title="Job Status" name="job_status_type_name" sort="job_status_type_name"
+			filter="job_status_type_name:job_status_type_name" filterQuery="SELECT l.lookup_id, l.name FROM lookups l, lookup_types lt WHERE lt.code = 'job_status_type' AND l.lookup_type_id = lt.lookup_type_id ORDER BY l.sequence_no" filterQuick="true"
+		-->
+		<!--#SMARTCOLUMN title="Billable" name="billable_flag" sort="billable_flag" align="center" filter="billable_flag:billable_flag" -->
+		<!--#SMARTCOLUMN title="TC Total$" name="sum_tc_total" sort="sum_tc_total" format="money" total="true" align="right" -->
+		<!--#SMARTCOLUMN title="Bill Total$" name="sum_bill_total" sort="sum_bill_total" format="money" total="true" align="right" -->
+		<!--#SMARTCOLUMN title="Invoice#" name="invoice_no" sort="invoice_no" align="center" filter="invoice_no:invoice_no" -->
+		<!--#SMARTCOLUMN title="Project Manager" name="job_owner" sort="job_owner" filter="job_owner:job_owner" -->
+		<!--#SMARTCOLUMN title="Report Date" name="report_date" sort="report_date" format="date" -->
+
+   <!--#/SMARTTABLE -->
+
+	<!--#/SQLLOOP-->
+
+</body>
+
+<script language="JavaScript">
+<!--
+
+	function redisplayPage()
+	{//used by report report
+
+		var r_from_date = escape(report.r_from_date.value);
+		if( r_from_date == null )
+			 r_from_date = '';
+		var r_to_date = escape(report.r_to_date.value);
+		if( r_to_date == null )
+			 r_to_date = '';
+		var r_from_status = escape(report.r_from_status.value);
+		if( r_from_status == null )
+			 r_from_status = '';
+		var r_to_status = escape(report.r_to_status.value);
+		if( r_to_status == null )
+			 r_to_status = '';
+		var r_allocated_flag = escape(report.r_allocated_flag.value);
+		if( r_allocated_flag == null )
+			 r_allocated_flag = '';
+		var r_exported_flag = escape(report.r_exported_flag.value);
+		if( r_exported_flag == null )
+			 r_exported_flag = '';
+		var r_billed_flag = escape(report.r_billed_flag.value);
+		if( r_billed_flag == null )
+			 r_billed_flag = '';
+		var r_posted_flag = escape(report.r_posted_flag.value);
+		if( r_posted_flag == null )
+			 r_posted_flag = '';
+
+		location='{!s:showPage!}rep/jobs_not_billed.html?r_from_date='+r_from_date+'&r_to_date='+r_to_date+'&r_from_status='+r_from_status+'&r_to_status='+r_to_status+'&r_allocated_flag='+r_allocated_flag+'&r_exported_flag='+r_exported_flag+'&r_billed_flag='+r_billed_flag+'&r_posted_flag='+r_posted_flag+'&r_show_report=true';
+	}
+
+-->
+</script>
+
+
+
+<!--#EMBED template="enet/embeds/footer.html" -->
+

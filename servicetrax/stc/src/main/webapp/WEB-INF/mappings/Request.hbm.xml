@@ -1,0 +1,606 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.Request" table="REQUESTS" schema="dbo" catalog="">
+        <id name="requestId" type="java.lang.Long">
+            <column name="REQUEST_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="lookupByActivityTypeId8" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ACTIVITY_TYPE_ID8" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByPunchlistItemTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="PUNCHLIST_ITEM_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByActivityCatTypeId3" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ACTIVITY_CAT_TYPE_ID3" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByQuoteTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="QUOTE_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByLevelTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="LEVEL_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByPriorityTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="PRIORITY_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByAMInstallSupContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="A_M_INSTALL_SUP_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByCostToCustTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="COST_TO_CUST_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByPriFurnLineTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="PRI_FURN_LINE_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByWalkboardTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="WALKBOARD_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByFurnSpecTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="FURN_SPEC_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="userByModifiedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByWorkstationTypicalTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="WORKSTATION_TYPICAL_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByRequestTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="REQUEST_TYPE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="lookupByActivityCatTypeId9" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ACTIVITY_CAT_TYPE_ID9" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByGenContractorContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="GEN_CONTRACTOR_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByAMSalesContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="A_M_SALES_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByFloorNumberTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="FLOOR_NUMBER_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByDDesignerContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="D_DESIGNER_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByActivityTypeId2" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ACTIVITY_TYPE_ID2" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByActivityCatTypeId10" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ACTIVITY_CAT_TYPE_ID10" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByActivityTypeId3" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ACTIVITY_TYPE_ID3" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupBySecFurnTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="SEC_FURN_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByCostToVendTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="COST_TO_VEND_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByCoordMoverTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="COORD_MOVER_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactBySecurityContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="SECURITY_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByADDesignerContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="A_D_DESIGNER_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByCoordPhoneDataTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="COORD_PHONE_DATA_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByDProjMgrContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="D_PROJ_MGR_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByActivityCatTypeId2" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ACTIVITY_CAT_TYPE_ID2" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByActivityCatTypeId8" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ACTIVITY_CAT_TYPE_ID8" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByFurnPlanTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="FURN_PLAN_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupBySecFurnLineTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="SEC_FURN_LINE_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByActivityTypeId1" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ACTIVITY_TYPE_ID1" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByAltCustomerContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="ALT_CUSTOMER_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByWallMountTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="WALL_MOUNT_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByDurationTimeUomTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="DURATION_TIME_UOM_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByUnionLaborReqTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="UNION_LABOR_REQ_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByRegularHoursTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="REGULAR_HOURS_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByFurniture2ContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="FURNITURE2_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByCaseFurnTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="CASE_FURN_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByOccupiedSiteTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="OCCUPIED_SITE_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByDSalesRepContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="D_SALES_REP_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByNewSiteTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="NEW_SITE_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByCostToJobTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="COST_TO_JOB_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByStagingAreaTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="STAGING_AREA_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByProdDispId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="PROD_DISP_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="project" class="com.dynamic.servicetrax.orm.Project" fetch="select">
+            <column name="PROJECT_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="lookupByWoodProductTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="WOOD_PRODUCT_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByScheduleTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="SCHEDULE_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByDSalesSupContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="D_SALES_SUP_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByPriFurnTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="PRI_FURN_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByWeekendHoursTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="WEEKEND_HOURS_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByActivityTypeId5" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ACTIVITY_TYPE_ID5" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByActivityCatTypeId6" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ACTIVITY_CAT_TYPE_ID6" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByBldgMgrContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="BLDG_MGR_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByOtherContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="OTHER_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByActivityCatTypeId1" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ACTIVITY_CAT_TYPE_ID1" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByCaseFurnLineTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="CASE_FURN_LINE_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByFurniture1ContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="FURNITURE1_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByAccountTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ACCOUNT_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="request" class="com.dynamic.servicetrax.orm.Request" fetch="select">
+            <column name="QUOTE_REQUEST_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByCoordFloorCovrTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="COORD_FLOOR_COVR_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByMoverContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="MOVER_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByDumpsterTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="DUMPSTER_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByRequestStatusTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="REQUEST_STATUS_TYPE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="contactByDataPhoneContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="DATA_PHONE_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByActivityTypeId4" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ACTIVITY_TYPE_ID4" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByActivityCatTypeId7" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ACTIVITY_CAT_TYPE_ID7" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="jobLocation" class="com.dynamic.servicetrax.orm.JobLocation" fetch="select">
+            <column name="JOB_LOCATION_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByActivityTypeId9" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ACTIVITY_TYPE_ID9" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupBySiteVisitReqTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="SITE_VISIT_REQ_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByElectricianContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="ELECTRICIAN_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByCustomerContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="CUSTOMER_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByWarehouseFeeTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="WAREHOUSE_FEE_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByApproverContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="APPROVER_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByApprovalReqTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="APPROVAL_REQ_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByActivityTypeId10" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ACTIVITY_TYPE_ID10" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByActivityTypeId6" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ACTIVITY_TYPE_ID6" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByActivityCatTypeId5" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ACTIVITY_CAT_TYPE_ID5" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="contactByAMContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="A_M_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByCoordWallCovrTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="COORD_WALL_COVR_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByDeliveryTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="DELIVERY_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByCoordElectricalTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="COORD_ELECTRICAL_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByPhasedInstallTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="PHASED_INSTALL_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByEveningHoursTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="EVENING_HOURS_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="userByCreatedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="contactByCarpetLayerContactId" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="CARPET_LAYER_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByActivityTypeId7" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ACTIVITY_TYPE_ID7" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByActivityCatTypeId4" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ACTIVITY_CAT_TYPE_ID4" precision="18" scale="0" />
+        </many-to-one>
+        <property name="requestNo" type="long">
+            <column name="REQUEST_NO" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="isSent" type="string">
+            <column name="IS_SENT" length="1" not-null="true" />
+        </property>
+        <property name="isQuoted" type="string">
+            <column name="IS_QUOTED" length="1" />
+        </property>
+        <property name="dealerCustId" type="string">
+            <column name="DEALER_CUST_ID" length="50" />
+        </property>
+        <property name="customerPoNo" type="string">
+            <column name="CUSTOMER_PO_NO" length="50" />
+        </property>
+        <property name="dealerPoNo" type="string">
+            <column name="DEALER_PO_NO" length="50" />
+        </property>
+        <property name="dealerPoLineNo" type="java.lang.Long">
+            <column name="DEALER_PO_LINE_NO" precision="18" scale="0" />
+        </property>
+        <property name="dealerProjectNo" type="string">
+            <column name="DEALER_PROJECT_NO" length="50" />
+        </property>
+        <property name="designProjectNo" type="string">
+            <column name="DESIGN_PROJECT_NO" length="50" />
+        </property>
+        <property name="projectVolume" type="java.lang.Long">
+            <column name="PROJECT_VOLUME" precision="18" scale="0" />
+        </property>
+        <property name="quoteNeededBy" type="timestamp">
+            <column name="QUOTE_NEEDED_BY" length="23" />
+        </property>
+        <property name="warehouseLoc" type="string">
+            <column name="WAREHOUSE_LOC" length="60" />
+        </property>
+        <property name="planLocation" type="string">
+            <column name="PLAN_LOCATION" length="30" />
+        </property>
+        <property name="powerType" type="string">
+            <column name="POWER_TYPE" length="30" />
+        </property>
+        <property name="punchlistLine" type="string">
+            <column name="PUNCHLIST_LINE" length="50" />
+        </property>
+        <property name="initProjTeamMtgDate" type="timestamp">
+            <column name="INIT_PROJ_TEAM_MTG_DATE" length="23" />
+        </property>
+        <property name="designPresentationDate" type="timestamp">
+            <column name="DESIGN_PRESENTATION_DATE" length="23" />
+        </property>
+        <property name="designCompletionDate" type="timestamp">
+            <column name="DESIGN_COMPLETION_DATE" length="23" />
+        </property>
+        <property name="specCheckCmplDate" type="timestamp">
+            <column name="SPEC_CHECK_CMPL_DATE" length="23" />
+        </property>
+        <property name="dealerOrderPlacedDate" type="timestamp">
+            <column name="DEALER_ORDER_PLACED_DATE" length="23" />
+        </property>
+        <property name="intPreInstallMtgDate" type="timestamp">
+            <column name="INT_PRE_INSTALL_MTG_DATE" length="23" />
+        </property>
+        <property name="extPreInstallMtgDate" type="timestamp">
+            <column name="EXT_PRE_INSTALL_MTG_DATE" length="23" />
+        </property>
+        <property name="dealerInstallPlanDate" type="timestamp">
+            <column name="DEALER_INSTALL_PLAN_DATE" length="23" />
+        </property>
+        <property name="mfgShipDate" type="timestamp">
+            <column name="MFG_SHIP_DATE" length="23" />
+        </property>
+        <property name="prodDelToWhDate" type="timestamp">
+            <column name="PROD_DEL_TO_WH_DATE" length="23" />
+        </property>
+        <property name="truckArrivalTime" type="timestamp">
+            <column name="TRUCK_ARRIVAL_TIME" length="23" />
+        </property>
+        <property name="constructCompleteDate" type="timestamp">
+            <column name="CONSTRUCT_COMPLETE_DATE" length="23" />
+        </property>
+        <property name="electricalCompleteDate" type="timestamp">
+            <column name="ELECTRICAL_COMPLETE_DATE" length="23" />
+        </property>
+        <property name="cableCompleteDate" type="timestamp">
+            <column name="CABLE_COMPLETE_DATE" length="23" />
+        </property>
+        <property name="carpetCompleteDate" type="timestamp">
+            <column name="CARPET_COMPLETE_DATE" length="23" />
+        </property>
+        <property name="siteVisitDate" type="timestamp">
+            <column name="SITE_VISIT_DATE" length="23" />
+        </property>
+        <property name="productDelToSiteDate" type="timestamp">
+            <column name="PRODUCT_DEL_TO_SITE_DATE" length="23" />
+        </property>
+        <property name="estStartDate" type="timestamp">
+            <column name="EST_START_DATE" length="23" />
+        </property>
+        <property name="estStartTime" type="timestamp">
+            <column name="EST_START_TIME" length="23" />
+        </property>
+        <property name="estEndDate" type="timestamp">
+            <column name="EST_END_DATE" length="23" />
+        </property>
+        <property name="moveInDate" type="timestamp">
+            <column name="MOVE_IN_DATE" length="23" />
+        </property>
+        <property name="punchlistCompleteDate" type="timestamp">
+            <column name="PUNCHLIST_COMPLETE_DATE" length="23" />
+        </property>
+        <property name="qty1" type="java.lang.Long">
+            <column name="QTY1" precision="18" scale="0" />
+        </property>
+        <property name="qty2" type="java.lang.Long">
+            <column name="QTY2" precision="18" scale="0" />
+        </property>
+        <property name="qty3" type="java.lang.Long">
+            <column name="QTY3" precision="18" scale="0" />
+        </property>
+        <property name="qty4" type="java.lang.Long">
+            <column name="QTY4" precision="18" scale="0" />
+        </property>
+        <property name="qty5" type="java.lang.Long">
+            <column name="QTY5" precision="18" scale="0" />
+        </property>
+        <property name="qty6" type="java.lang.Long">
+            <column name="QTY6" precision="18" scale="0" />
+        </property>
+        <property name="qty7" type="java.lang.Long">
+            <column name="QTY7" precision="18" scale="0" />
+        </property>
+        <property name="qty8" type="java.lang.Long">
+            <column name="QTY8" precision="18" scale="0" />
+        </property>
+        <property name="qty9" type="java.lang.Long">
+            <column name="QTY9" precision="18" scale="0" />
+        </property>
+        <property name="qty10" type="java.lang.Long">
+            <column name="QTY10" precision="18" scale="0" />
+        </property>
+        <property name="description" type="string">
+            <column name="DESCRIPTION" length="500" />
+        </property>
+        <property name="whoCanApproveName" type="string">
+            <column name="WHO_CAN_APPROVE_NAME" length="60" />
+        </property>
+        <property name="whoCanApprovePhone" type="string">
+            <column name="WHO_CAN_APPROVE_PHONE" length="50" />
+        </property>
+        <property name="taxableFlag" type="string">
+            <column name="TAXABLE_FLAG" length="1" />
+        </property>
+        <property name="durationQty" type="java.lang.Long">
+            <column name="DURATION_QTY" precision="18" scale="0" />
+        </property>
+        <property name="loadingDockTypeId" type="java.lang.Long">
+            <column name="LOADING_DOCK_TYPE_ID" precision="18" scale="0" />
+        </property>
+        <property name="dockAvailableTime" type="string">
+            <column name="DOCK_AVAILABLE_TIME" length="30" />
+        </property>
+        <property name="dockReservReqTypeId" type="java.lang.Long">
+            <column name="DOCK_RESERV_REQ_TYPE_ID" precision="18" scale="0" />
+        </property>
+        <property name="semiAccessTypeId" type="java.lang.Long">
+            <column name="SEMI_ACCESS_TYPE_ID" precision="18" scale="0" />
+        </property>
+        <property name="dockHeight" type="string">
+            <column name="DOCK_HEIGHT" length="20" />
+        </property>
+        <property name="elevatorAvailTypeId" type="java.lang.Long">
+            <column name="ELEVATOR_AVAIL_TYPE_ID" precision="18" scale="0" />
+        </property>
+        <property name="elevatorAvailTime" type="string">
+            <column name="ELEVATOR_AVAIL_TIME" length="30" />
+        </property>
+        <property name="elevatorReservReqTypeId" type="java.lang.Long">
+            <column name="ELEVATOR_RESERV_REQ_TYPE_ID" precision="18" scale="0" />
+        </property>
+        <property name="stairCarryTypeId" type="java.lang.Long">
+            <column name="STAIR_CARRY_TYPE_ID" precision="18" scale="0" />
+        </property>
+        <property name="stairCarryFlights" type="java.lang.Long">
+            <column name="STAIR_CARRY_FLIGHTS" precision="18" scale="0" />
+        </property>
+        <property name="stairCarryStairs" type="java.lang.Long">
+            <column name="STAIR_CARRY_STAIRS" precision="18" scale="0" />
+        </property>
+        <property name="smallestDoorElevWidth" type="string">
+            <column name="SMALLEST_DOOR_ELEV_WIDTH" length="20" />
+        </property>
+        <property name="floorProtectionTypeId" type="java.lang.Long">
+            <column name="FLOOR_PROTECTION_TYPE_ID" precision="18" scale="0" />
+        </property>
+        <property name="wallProtectionTypeId" type="java.lang.Long">
+            <column name="WALL_PROTECTION_TYPE_ID" precision="18" scale="0" />
+        </property>
+        <property name="doorwayProtTypeId" type="java.lang.Long">
+            <column name="DOORWAY_PROT_TYPE_ID" precision="18" scale="0" />
+        </property>
+        <property name="otherConditions" type="string">
+            <column name="OTHER_CONDITIONS" length="1000" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <property name="versionNo" type="long">
+            <column name="VERSION_NO" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="PCardNumber" type="string">
+            <column name="P_CARD_NUMBER" length="20" />
+        </property>
+        <property name="phoneContactId" type="java.lang.Long">
+            <column name="PHONE_CONTACT_ID" precision="18" scale="0" />
+        </property>
+        <property name="furnReqTypeId" type="java.lang.Long">
+            <column name="FURN_REQ_TYPE_ID" precision="18" scale="0" />
+        </property>
+        <property name="custContactModDate" type="timestamp">
+            <column name="CUST_CONTACT_MOD_DATE" length="23" />
+        </property>
+        <property name="jobLocationModDate" type="timestamp">
+            <column name="JOB_LOCATION_MOD_DATE" length="23" />
+        </property>
+        <property name="custCol1" type="string">
+            <column name="CUST_COL_1" length="200" />
+        </property>
+        <property name="custCol2" type="string">
+            <column name="CUST_COL_2" length="200" />
+        </property>
+        <property name="custCol3" type="string">
+            <column name="CUST_COL_3" length="200" />
+        </property>
+        <property name="custCol4" type="string">
+            <column name="CUST_COL_4" length="200" />
+        </property>
+        <property name="custCol5" type="string">
+            <column name="CUST_COL_5" length="200" />
+        </property>
+        <property name="custCol6" type="string">
+            <column name="CUST_COL_6" length="200" />
+        </property>
+        <property name="custCol7" type="string">
+            <column name="CUST_COL_7" length="200" />
+        </property>
+        <property name="custCol8" type="string">
+            <column name="CUST_COL_8" length="200" />
+        </property>
+        <property name="custCol9" type="string">
+            <column name="CUST_COL_9" length="200" />
+        </property>
+        <property name="custCol10" type="string">
+            <column name="CUST_COL_10" length="200" />
+        </property>
+        <property name="isCopy" type="string">
+            <column name="IS_COPY" length="1" />
+        </property>
+        <property name="isSurveyed" type="string">
+            <column name="IS_SURVEYED" length="1" />
+        </property>
+        <property name="furnitureType" type="string">
+            <column name="FURNITURE_TYPE" length="100" />
+        </property>
+        <property name="furnitureQty" type="java.lang.Long">
+            <column name="FURNITURE_QTY" precision="18" scale="0" />
+        </property>
+        <property name="prodDispFlag" type="string">
+            <column name="PROD_DISP_FLAG" length="1" />
+        </property>
+        <property name="workOrderReceivedDate" type="timestamp">
+            <column name="WORK_ORDER_RECEIVED_DATE" length="23" />
+        </property>
+        <property name="cscWoFieldFlag" type="string">
+            <column name="CSC_WO_FIELD_FLAG" length="1" not-null="true" />
+        </property>
+        <property name="isSentDate" type="timestamp">
+            <column name="IS_SENT_DATE" length="23" />
+        </property>
+        <set name="quotes" inverse="true">
+            <key>
+                <column name="REQUEST_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Quote" />
+        </set>
+        <set name="services" inverse="true">
+            <key>
+                <column name="REQUEST_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Service" />
+        </set>
+        <set name="requests" inverse="true">
+            <key>
+                <column name="QUOTE_REQUEST_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="customCols" inverse="true">
+            <key>
+                <column name="REQUEST_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.CustomCol" />
+        </set>
+        <set name="requestDocuments" inverse="true">
+            <key>
+                <column name="request_id" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.RequestDocument" />
+        </set>
+        <set name="punchlists" inverse="true">
+            <key>
+                <column name="request_id" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Punchlist" />
+        </set>
+        <set name="checklists" inverse="true">
+            <key>
+                <column name="REQUEST_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Checklist" />
+        </set>
+    </class>
+</hibernate-mapping>

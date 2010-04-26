@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.JobItemRate" table="JOB_ITEM_RATES" schema="dbo" catalog="">
+        <id name="jobItemRateId" type="java.lang.Long">
+            <column name="JOB_ITEM_RATE_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="item" class="com.dynamic.servicetrax.orm.Item" fetch="select">
+            <column name="ITEM_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="lookup" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="UOM_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="job" class="com.dynamic.servicetrax.orm.Job" fetch="select">
+            <column name="JOB_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="rate" type="big_decimal">
+            <column name="RATE" precision="11" scale="3" />
+        </property>
+        <property name="extRateId" type="string">
+            <column name="EXT_RATE_ID" length="30" not-null="true" />
+        </property>
+        <property name="extUomName" type="string">
+            <column name="EXT_UOM_NAME" length="50" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="createdBy" type="long">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <property name="modifiedBy" type="java.lang.Long">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </property>
+        <set name="resourceEstimates" inverse="true">
+            <key>
+                <column name="JOB_ITEM_RATE_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ResourceEstimate" />
+        </set>
+    </class>
+</hibernate-mapping>

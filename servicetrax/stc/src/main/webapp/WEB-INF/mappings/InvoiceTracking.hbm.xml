@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.InvoiceTracking" table="INVOICE_TRACKING" schema="dbo" catalog="">
+        <id name="invoiceTrackingId" type="java.lang.Long">
+            <column name="INVOICE_TRACKING_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="lookup" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="INVOICE_TRACKING_TYPE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="invoiceStatusByNewStatusId" class="com.dynamic.servicetrax.orm.InvoiceStatus" fetch="select">
+            <column name="NEW_STATUS_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="invoiceStatusByOldStatusId" class="com.dynamic.servicetrax.orm.InvoiceStatus" fetch="select">
+            <column name="OLD_STATUS_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="invoice" class="com.dynamic.servicetrax.orm.Invoice" fetch="select">
+            <column name="INVOICE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="contact" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="TO_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <property name="fromUserId" type="java.lang.Long">
+            <column name="FROM_USER_ID" precision="18" scale="0" />
+        </property>
+        <property name="notes" type="string">
+            <column name="NOTES" length="240" />
+        </property>
+        <property name="emailSentFlag" type="java.lang.Character">
+            <column name="EMAIL_SENT_FLAG" length="1" />
+        </property>
+        <property name="createdBy" type="long">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="modifiedBy" type="java.lang.Long">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+    </class>
+</hibernate-mapping>

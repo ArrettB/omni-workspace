@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<namedQueries>
+	<namedQuery>
+		<id>cityByName</id>
+		<service>hibernateService</service>
+		<query>
+			<![CDATA[ 
+			SELECT city.name 
+			FROM com.dynamic.charm.ajax.objects.City city
+			WHERE LOWER(city.name) LIKE LOWER(:name)
+			]]>
+		</query>
+		<parameter name="name" type="String"/>
+	</namedQuery>
+	<namedQuery>
+		<id>cityByName2</id>
+		<service>hibernateService</service>
+		<query>
+			<![CDATA[ 
+			FROM com.dynamic.charm.ajax.objects.City city
+			WHERE LOWER(city.name) LIKE LOWER(:name)
+			]]>
+		</query>
+		<parameter name="name" type="String"/>
+	</namedQuery>
+	<namedQuery>
+		<id>allCities</id>
+		<service>hibernateService</service>
+		<query>
+			<![CDATA[ 
+			SELECT city 
+			FROM com.dynamic.charm.ajax.objects.City city
+			]]>
+		</query>
+	</namedQuery>	
+	
+</namedQueries>

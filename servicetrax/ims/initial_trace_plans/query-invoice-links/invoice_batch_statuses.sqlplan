@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ShowPlanXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0" Build="9.00.3054.00" xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan">
+  <BatchSequence>
+    <Batch>
+      <Statements>
+        <StmtSimple StatementCompId="1" StatementEstRows="4" StatementId="1" StatementOptmLevel="TRIVIAL" StatementSubTreeCost="0.0032864" StatementText="SELECT name, name FROM invoice_batch_statuses" StatementType="SELECT">
+          <StatementSetOptions ANSI_NULLS="false" ANSI_PADDING="false" ANSI_WARNINGS="false" ARITHABORT="true" CONCAT_NULL_YIELDS_NULL="false" NUMERIC_ROUNDABORT="false" QUOTED_IDENTIFIER="false" />
+          <QueryPlan DegreeOfParallelism="1" CachedPlanSize="10" CompileTime="0" CompileCPU="0" CompileMemory="80">
+            <RelOp AvgRowSize="36" EstimateCPU="0.0001614" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="4" LogicalOp="Clustered Index Scan" NodeId="0" Parallel="false" PhysicalOp="Clustered Index Scan" EstimatedTotalSubtreeCost="0.0032864">
+              <OutputList>
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_BATCH_STATUSES]" Column="NAME" />
+              </OutputList>
+              <RunTimeInformation>
+                <RunTimeCountersPerThread Thread="0" ActualRows="4" ActualEndOfScans="1" ActualExecutions="1" />
+              </RunTimeInformation>
+              <IndexScan Ordered="false" ForcedIndex="false" NoExpandHint="false">
+                <DefinedValues>
+                  <DefinedValue>
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_BATCH_STATUSES]" Column="NAME" />
+                  </DefinedValue>
+                </DefinedValues>
+                <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICE_BATCH_STATUSES]" Index="[PK_INVOICE_BATCH_STATUSES]" />
+              </IndexScan>
+            </RelOp>
+          </QueryPlan>
+        </StmtSimple>
+      </Statements>
+    </Batch>
+  </BatchSequence>
+</ShowPlanXML>

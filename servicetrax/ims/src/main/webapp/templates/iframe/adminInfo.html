@@ -1,0 +1,74 @@
+<html>
+
+<head>
+	<title>{!c:applicationContext:name!} version {!c:applicationContext:version!}: {!d:title!}</title>
+</head>
+
+<body>
+	<font face="verdana,arial,helvetica,sans-serif">
+	<table width="100%" border="0" cellspacing="2" cellpadding="0">
+	<tr>
+		<td colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="2" bgcolor="#666699"><tr>
+		<td><h3>{!a:version.getProject()!}</td><td align="right"><font size="-5">version {!a:version.getVersion()!} ({!a:version.getDate()!})</font></td>
+		</tr></table></td>
+	</tr>
+	<tr>
+		<td colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="2" bgcolor="#8282B4"><tr>
+		<td><h3>
+		<!--#IF defined="<?a:appversion?>"-->
+		{!a:appversion.getProject()!}</td><td align="right"><font size="-5">version {!a:appversion.getVersion()!} ({!a:appversion.getDate()!})</font></td>
+		<!--#ELSE-->
+		{!c:applicationContext:name!}</td><td align="right"><font size="-5">version {!c:applicationContext:version!}</font></td>
+		<!--#/IF-->
+		</tr></table></td>
+	</tr>
+	<tr>
+		<td style="padding:3" valign="top" bgcolor="#DCDCE8" nowrap>
+			<small>
+			<a href="{!s:action!}{!c:admin:action!}?function=stats">Statistics</a><br>
+			<a href="{!s:action!}{!c:admin:action!}?function=config">Configuration</a><br>
+			<a href="{!s:action!}{!c:admin:action!}?function=appglobal">AppGlobals</a><br>
+			<a href="{!s:action!}{!c:admin:action!}?function=properties">Properties</a><br>
+			<a href="{!s:action!}{!c:admin:action!}?function=sessions">Sessions</a><br>
+			<a href="{!s:action!}{!c:admin:action!}?function=resources">Resources</a><br>
+			<a href="{!s:action!}{!c:admin:action!}?function=handlers">Handlers</a><br>
+			<a href="{!s:action!}{!c:admin:action!}?function=templates">Templates</a><br>
+			<a href="{!s:action!}{!c:admin:action!}?function=daemons">Daemons</a><br>
+			<a href="{!s:action!}{!c:admin:action!}?function=netstat">Netstat</a><br>
+			<hr>
+			<a href="{!s:action!}{!c:admin:action!}?function=diagnostics" target="new">Diagnostics</a>
+			<hr>
+			<a href="{!s:action!}{!c:admin:action!}?function=reload">Reload</a>
+			<font size="-5">
+			<hr>
+			<b>{!a:version.getProject()!} Build Info</b><br>
+			<b>Version:</b> {!a:version.getVersion()!}<br>
+			<b>Date:</b> {!a:version.getDate()!}<br>
+			<b>Time:</b> {!a:version.getTime()!}<br>
+			<b>By:</b> {!a:version.getAuthor()!}<br>
+			<!--#IF defined="<?a:appversion?>"-->
+			<hr>
+			<b>{!a:appversion.getProject()!} Build Info</b><br>
+			<b>Version:</b> {!a:appversion.getVersion()!}<br>
+			<b>Date:</b> {!a:appversion.getDate()!}<br>
+			<b>Time:</b> {!a:appversion.getTime()!}<br>
+			<b>By:</b> {!a:appversion.getAuthor()!}<br>
+			<!--#/IF-->
+			</font>
+			</small>
+		</td>
+		<td valign="top" width="100%">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr><td style="padding:3" bgcolor="#8888CC"><b>{!d:title!}</b></td></tr>
+				<tr><td><font size="2">{!d:message!}</font></td></tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td style="padding:3" colspan="2" bgcolor="#666699"><small>Copyright &copy; 2000-2001 Dynamic Information Systems</small></td>
+	</tr>
+	</table>
+	</font>
+</body>
+
+</html>

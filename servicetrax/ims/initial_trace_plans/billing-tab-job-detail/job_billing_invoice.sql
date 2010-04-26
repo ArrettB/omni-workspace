@@ -1,0 +1,1 @@
+SELECT invoice_id, invoice_id AS invoice_no FROM invoices WHERE status_id <= 2 AND job_id =  70867

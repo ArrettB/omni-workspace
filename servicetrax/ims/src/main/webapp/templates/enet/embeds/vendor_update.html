@@ -1,0 +1,330 @@
+
+<script type="text/javascript">
+<!--
+
+	var completeFields = new Array();
+	var complete_index = 0;
+	completeFields[complete_index++] = "act_start_date";
+	completeFields[complete_index++] = "act_end_date";
+	completeFields[complete_index++] = "visit_count";
+	completeFields[complete_index++] = "complete_flag";
+	var invoicedFields = new Array();
+	var invoiced_index = 0;
+	invoicedFields[invoiced_index++] = "invoice_date";
+	invoicedFields[invoiced_index++] = "total_cost";
+	invoicedFields[invoiced_index++] = "invoiced_flag";
+
+
+	if( '{!p:vendor_saved.isNull('false')!}' == 'true' )
+	{
+		if( document.exitFunction )
+		{
+			exitFunction('Cancel');
+		}
+	}
+
+	function completeFieldChanged(field, row, column, color_class)
+	{
+		var newVal = field.value;
+		var fields = completeFields;
+		if (newVal == 'Y')
+		{
+			if( column != 'complete_flag' )
+				fields = invoicedFields;
+
+			for (var i = 0; i < fields.length; i++)
+			{
+					eval("document.vForm." + fields[i] + "_" + row + ".className = \""+color_class+"\"");
+			}
+		}
+		else if (newVal == 'N')
+		{
+			if( column != 'complete_flag' )
+				fields = invoicedFields;
+
+			for (var i = 0; i < fields.length ; i++)
+			{
+					eval("document.vForm." + fields[i] + "_" + row + ".className = \"regular\"");
+			}
+		}
+	}
+
+//-->
+</script>
+
+	<!--#SQLLOOP name="v"
+		query="SELECT rv.project_id, rv.request_id, rv.request_vendor_id, rv.vendor_contact_id,
+					rv.vendor_contact_name,
+					rv.workorder_no,
+					rv.customer_name,
+					rv.request_status_type_name,
+					rv.customer_po_no,
+					isnull(convert(varchar(12),rv.emailed_date,101),'No Address') emailed_date,
+					rv.priority,
+					rv.est_start_date_varchar,
+					rv.est_end_date_varchar,
+					rv.sch_start_date, rv.sch_start_time, rv.sch_end_date,
+					rv.act_start_date, rv.act_start_time, rv.act_end_date,
+					rv.estimated_cost, rv.total_cost,
+					rv.invoice_date, rv.invoice_numbers,
+					rv.visit_count, rv.complete_flag, rv.invoiced_flag,
+					rv.vendor_notes,
+					rv.date_created
+				FROM request_vendors_v rv
+				WHERE
+				( rv.request_id=<?s:request_id.isNull('-1').toPStmtInt()?>
+				  OR (<?s:request_id.isNullSQLString('false').toPStmtString()?> = 'false' AND rv.vendor_contact_id=<?s:user.contactID.toPStmtInt()?>
+						AND rv.request_id IN (SELECT r.request_id FROM projects_all_requests_v r WHERE 'TRUE' = 'TRUE' <?s:enetNavQuery?>)))
+				AND (rv.status_seq_no >= <?p:status_seq_no.toPStmtInt()?>
+                 OR  (<?p:status_seq_no.toPStmtString()?> IS NULL
+                       AND rv.status_seq_no >= approved_seq_no))
+				AND rv.request_status_type_code != <?p:status.isNull('closed').toPStmtString()?>
+				ORDER BY rv.workorder_no DESC"
+		alternator1="TableRow1:TableRow2"
+		alternator2="TableRow1Link:TableRow2Link"
+	-->
+
+	<!--#SQLHEADER-->
+<!--#IF undefined="<?s:request_id?>" -->
+	<span class="Label">Vendor Workorder View</span>
+<!--#ELSE-->
+	<span class="Label">Vendor Information</span>
+<!--#/IF-->
+	<table class="SmartTable" cellspacing="0" cellpadding="0" border="0">
+	<form name="vForm" action="{!s:action!}saveVendorWOs/{!p:nextPage!}" method="post">
+	<input name="request_id" type="hidden" value="{!s:request_id!}">
+	<tr>
+		<td class="TableTitle">Vendor</td>
+<!--#IF undefined="<?s:project_id?>" -->
+		<td class="TableTitle">Workorder#</td>
+		<td class="TableTitle">Customer</td>
+		<td class="TableTitle">Status</td>
+		<td class="TableTitle">Cust&nbsp;PO#</td>
+		<td class="TableTitle">Priority</td>
+		<td class="TableTitle">Est Start</td>
+		<td class="TableTitle">Est End</td>
+<!--#/IF-->
+		<td class="TableTitle">Emailed</td>
+		<td class="TableTitle">Sch&nbsp;Start</td>
+		<td class="TableTitle">Sch&nbsp;Time</td>
+		<td class="TableTitle">Sch&nbsp;End</td>
+		<td class="TableTitle">Act&nbsp;Start</td>
+		<td class="TableTitle">Act&nbsp;Time</td>
+		<td class="TableTitle">Act&nbsp;End</td>
+		<td class="TableTitle">Est&nbsp;Cost</td>
+		<td class="TableTitle">Total&nbsp;Cost</td>
+		<td class="TableTitle">Inv&nbsp;Date</td>
+		<td class="TableTitle">Invoice#s</td>
+		<td class="TableTitle">#&nbsp;Visits</td>
+		<td class="TableTitle">Workorder&nbsp;Complete</td>
+		<td class="TableTitle">Invoiced&nbsp;Complete</td>
+<!--#IF defined="<?s:project_id?>" -->
+		<td class="TableTitle">Delete?</td>
+<!--#/IF-->
+		<td class="TableTitle">Notes</td>
+	</tr>
+	<!--#/SQLHEADER-->
+
+	<!--#SQLFOOTER-->
+	<!--#EMBED template="/embeds/spacer_row.html" spacer_height="10"-->
+	</table>
+	<input type="submit" class="button" name="button" value="Save">
+	</form>
+	<!--#/SQLFOOTER-->
+
+
+	<!--#SQLNODATA-->
+	<span class="Label">You have no Vendor Workorders.</span>
+	<!--#/SQLNODATA-->
+	<input name="request_vendor_id_{!d:v:rowid!}" type="hidden" value="{!r:v:request_vendor_id!}">
+	<tr>
+		<td class="{!d:v:alt1!}" width="100" nowrap>
+			{!r:v:vendor_contact_name!}
+		</td>
+<!--#IF undefined="<?s:request_id?>" -->
+		<td class="{!d:v:alt2!}" style="cursor:hand" onMouseOver="this.className='TableRowLinkRollover'; return true" onMouseOut="this.className='TableRow1Link'; return true">
+		<a href="{!s:action!}setProjectDatum?project_id={!r:v:project_id!}&templateName=enet/proj/pf_main.html&request_id={!r:v:request_id!}&loc=wo_create" target="_top">
+			{!r:v:workorder_no!}
+		</a>
+		</td>
+		<td class="{!d:v:alt1!}">
+			<input name="customer" value="{!r:v:customer_name!}" size="20" readonly class="readonly">
+		</td>
+		<td class="{!d:v:alt1!}">
+			{!r:v:request_status_type_name!}
+		</td>
+		<td class="{!d:v:alt1!}">
+			{!r:v:customer_po_no!}&nbsp;
+		</td>
+		<td class="{!d:v:alt1!}" align="center">
+			{!r:v:priority!}&nbsp;
+		</td>
+		<td class="{!d:v:alt1!}" align="center">
+			{!r:v:est_start_date_varchar!}&nbsp;
+		</td>
+		<td class="{!d:v:alt1!}" align="center">
+			{!r:v:est_end_date_varchar!}&nbsp;
+		</td>
+<!--#/IF-->
+		<td class="{!d:v:alt1!}" nowrap>
+			{!r:v:emailed_date!}&nbsp;
+		</td>
+		<td class="{!d:v:alt1!}">
+			<input name="sch_start_date_{!d:v:rowid!}" type="text" class="regular" style="width:70" value="{!r:v:sch_start_date.date!}" onChange="dateFieldChanged(this);">
+		</td>
+		<td class="{!d:v:alt1!}">
+			<input name="sch_start_time_{!d:v:rowid!}" type="text" class="regular" style="width:70" value="{!r:v:sch_start_time.time!}" onChange="timeFieldChanged(this);">
+		</td>
+		<td class="{!d:v:alt1!}">
+			<input name="sch_end_date_{!d:v:rowid!}" type="text" class="regular" style="width:70" value="{!r:v:sch_end_date.date!}" onChange="dateFieldChanged(this);">
+		</td>
+		<td class="{!d:v:alt1!}">
+			<!--#IF evaluate="<?d:use_transient_<?d:v:rowid?>?>" compare="true"-->
+				<input name="act_start_date_{!d:v:rowid!}" type="text" class="regular" style="width:70" value="{!d:act_start_date_<?d:v:rowid?>!}" onChange="dateFieldChanged(this);">
+			<!--#ELSE-->
+				<input name="act_start_date_{!d:v:rowid!}" type="text" class="regular" style="width:70" value="{!r:v:act_start_date.date!}" onChange="dateFieldChanged(this);">
+			<!--#/IF-->
+			<!--#IF defined="<?d:err@act_start_date_<?d:v:rowid?>?>" -->
+			<div class="error"><!--#ECHO data="<?d:err@act_start_date_<?d:v:rowid?>?>"--></div>
+			<!--#/IF-->
+		</td>
+		<td class="{!d:v:alt1!}">
+			<input name="act_start_time_{!d:v:rowid!}" type="text" class="regular" style="width:70" value="{!r:v:act_start_time.time!}" onChange="timeFieldChanged(this);">
+		</td>
+		<td class="{!d:v:alt1!}">
+			<!--#IF evaluate="<?d:use_transient_<?d:v:rowid?>?>" compare="true"-->
+				<input name="act_end_date_{!d:v:rowid!}" type="text" class="regular" style="width:70" value="{!d:act_end_date_<?d:v:rowid?>!}" onChange="dateFieldChanged(this);">
+			<!--#ELSE-->
+				<input name="act_end_date_{!d:v:rowid!}" type="text" class="regular" style="width:70" value="{!r:v:act_end_date.date!}" onChange="dateFieldChanged(this);">
+			<!--#/IF-->
+			<!--#IF defined="<?d:err@act_end_date_<?d:v:rowid?>?>" -->
+			<div class="error"><!--#ECHO data="<?d:err@act_end_date_<?d:v:rowid?>?>"--></div>
+			<!--#/IF-->
+		</td>
+		<td class="{!d:v:alt1!}">
+			<input name="estimated_cost_{!d:v:rowid!}" type="text" class="regular" style="width:70" value="{!r:v:estimated_cost.money!}" onChange="moneyFieldChanged(this);">
+		</td>
+		<td class="{!d:v:alt1!}">
+			<!--#IF evaluate="<?d:use_transient_<?d:v:rowid?>?>" compare="true"-->
+				<input name="total_cost_{!d:v:rowid!}" type="text" class="regular" style="width:70" value="{!d:total_cost_<?d:v:rowid?>!}" onChange="moneyFieldChanged(this);">
+			<!--#ELSE-->
+				<input name="total_cost_{!d:v:rowid!}" type="text" class="regular" style="width:70" value="{!r:v:total_cost.money!}" onChange="moneyFieldChanged(this);">
+			<!--#/IF-->
+			<!--#IF defined="<?d:err@total_cost_<?d:v:rowid?>?>" -->
+			<div class="error"><!--#ECHO data="<?d:err@total_cost_<?d:v:rowid?>?>"--></div>
+			<!--#/IF-->
+		</td>
+		<td class="{!d:v:alt1!}">
+			<!--#IF evaluate="<?d:use_transient_<?d:v:rowid?>?>" compare="true"-->
+				<input name="invoice_date_{!d:v:rowid!}" type="text" class="regular" style="width:70" value="{!d:invoice_date_<?d:v:rowid?>!}" onChange="dateFieldChanged(this);">
+			<!--#ELSE-->
+				<input name="invoice_date_{!d:v:rowid!}" type="text" class="regular" style="width:70" value="{!r:v:invoice_date.date!}" onChange="dateFieldChanged(this);">
+			<!--#/IF-->
+			<!--#IF defined="<?d:err@invoice_date_<?d:v:rowid?>?>" -->
+			<div class="error"><!--#ECHO data="<?d:err@invoice_date_<?d:v:rowid?>?>"--></div>
+			<!--#/IF-->
+		</td>
+		<td class="{!d:v:alt1!}">
+			<input name="invoice_numbers_{!d:v:rowid!}" type="text" class="regular" style="width:70" value="{!r:v:invoice_numbers!}">
+		</td>
+		<td class="{!d:v:alt1!}">
+			<!--#IF evaluate="<?d:use_transient_<?d:v:rowid?>?>" compare="true"-->
+				<input name="visit_count_{!d:v:rowid!}" type="text" class="regular" style="width:40" value="{!d:visit_count_<?d:v:rowid?>!}">
+			<!--#ELSE-->
+				<input name="visit_count_{!d:v:rowid!}" type="text" class="regular" style="width:40" nowrap value="{!r:v:visit_count!}">
+			<!--#/IF-->
+			<!--#IF defined="<?d:err@visit_count_<?d:v:rowid?>?>" -->
+			<div class="error"><!--#ECHO data="<?d:err@visit_count_<?d:v:rowid?>?>"--></div>
+			<!--#/IF-->
+		</td>
+		<td class="{!d:v:alt1!}">
+			<!--#IF evaluate="<?d:use_transient_<?d:v:rowid?>?>" compare="true"-->
+				<!--#IF evaluate="<?d:complete_flag_<?d:v:rowid?>?>" compare="Y"-->
+					<select class="regular" name="complete_flag_{!d:v:rowid!}" onChange="completeFieldChanged(this, {!d:v:rowid!}, 'complete_flag', 'error');">
+					<option value="Y" selected>Yes</option>
+					<option value="N">No</option>
+					</select>
+				<!--#ELSEIF evaluate="<?d:complete_flag_<?d:v:rowid?>?>" compare="N"-->
+					<select class="regular" name="complete_flag_{!d:v:rowid!}" onChange="completeFieldChanged(this, {!d:v:rowid!}, 'complete_flag', 'error');">
+					<option value="Y">Yes</option>
+					<option value="N" selected>No</option>
+					</select>
+				<!--#ELSE-->
+					<select class="regular" name="complete_flag_{!d:v:rowid!}" onChange="completeFieldChanged(this, {!d:v:rowid!}, 'complete_flag', 'error');">
+					<option value="Y">Yes</option>
+					<option value="N">No</option>
+					</select>
+				<!--#/IF-->
+			<!--#ELSE-->
+				<!--#IF evaluate="<?r:v:complete_flag?>" compare="Y"-->
+					<select class="regular" name="complete_flag_{!d:v:rowid!}" onChange="completeFieldChanged(this, {!d:v:rowid!}, 'complete_flag', 'error');">
+					<option value="Y" selected>Yes</option>
+					<option value="N">No</option>
+					</select>
+				<!--#ELSEIF evaluate="<?r:v:complete_flag?>" compare="N"-->
+					<select class="regular" name="complete_flag_{!d:v:rowid!}" onChange="completeFieldChanged(this, {!d:v:rowid!}, 'complete_flag', 'error');">
+					<option value="Y">Yes</option>
+					<option value="N" selected>No</option>
+					</select>
+				<!--#ELSE-->
+					<select class="regular" name="complete_flag_{!d:v:rowid!}" onChange="completeFieldChanged(this, {!d:v:rowid!}, 'complete_flag', 'error');">
+					<option value="Y">Yes</option>
+					<option value="N">No</option>
+					</select>
+				<!--#/IF-->
+			<!--#/IF-->
+		</td>
+		<td class="{!d:v:alt1!}">
+			<!--#IF evaluate="<?d:use_transient_<?d:v:rowid?>?>" compare="true"-->
+				<!--#IF evaluate="<?d:invoiced_flag_<?d:v:rowid?>?>" compare="Y"-->
+					<select class="regular" name="invoiced_flag_{!d:v:rowid!}" onChange="completeFieldChanged(this, {!d:v:rowid!}, 'invoiced_flag', 'error');">
+					<option value="Y" selected>Yes</option>
+					<option value="N">No</option>
+					</select>
+				<!--#ELSEIF evaluate="<?d:invoiced_flag_<?d:v:rowid?>?>" compare="N"-->
+					<select class="regular" name="invoiced_flag_{!d:v:rowid!}" onChange="completeFieldChanged(this, {!d:v:rowid!}, 'invoiced_flag', 'error');">
+					<option value="Y">Yes</option>
+					<option value="N" selected>No</option>
+					</select>
+				<!--#ELSE-->
+					<select class="regular" name="invoiced_flag_{!d:v:rowid!}" onChange="completeFieldChanged(this, {!d:v:rowid!}, 'invoiced_flag', 'error');">
+					<option value="Y">Yes</option>
+					<option value="N">No</option>
+					</select>
+				<!--#/IF-->
+			<!--#ELSE-->
+				<!--#IF evaluate="<?r:v:invoiced_flag?>" compare="Y"-->
+					<select class="regular" name="invoiced_flag_{!d:v:rowid!}" onChange="completeFieldChanged(this, {!d:v:rowid!}, 'invoiced_flag', 'error');">
+					<option value="Y" selected>Yes</option>
+					<option value="N">No</option>
+					</select>
+				<!--#ELSEIF evaluate="<?r:v:invoiced_flag?>" compare="N"-->
+					<select class="regular" name="invoiced_flag_{!d:v:rowid!}" onChange="completeFieldChanged(this, {!d:v:rowid!}, 'invoiced_flag', 'error');">
+					<option value="Y">Yes</option>
+					<option value="N" selected>No</option>
+					</select>
+				<!--#ELSE-->
+					<select class="regular" name="invoiced_flag_{!d:v:rowid!}" onChange="completeFieldChanged(this, {!d:v:rowid!}, 'invoiced_flag', 'error');">
+					<option value="Y">Yes</option>
+					<option value="N">No</option>
+					</select>
+				<!--#/IF-->
+			<!--#/IF-->
+
+			<script type="text/javascript">
+			<!--
+				completeFieldChanged(document.vForm.complete_flag_{!d:v:rowid!}, {!d:v:rowid!}, 'complete_flag', 'mandatory');
+				completeFieldChanged(document.vForm.invoiced_flag_{!d:v:rowid!}, {!d:v:rowid!}, 'invoiced_flag', 'mandatory');
+			//-->
+			</script>
+		</td>
+<!--#IF defined="<?s:project_id?>" -->
+		<td class="{!d:v:alt1!}" align="center">
+			<input name="delete_request_vendor_id" value="{!r:v:request_vendor_id!}" type="checkbox" -->
+		</td>
+<!--#/IF-->
+		<td class="{!d:v:alt1!}">
+			<input name="vendor_notes_{!d:v:rowid!}" type="text" size="50" class="regular" value="{!r:v:vendor_notes!}">
+		</td>
+	</tr>
+<!--#/SQLLOOP-->

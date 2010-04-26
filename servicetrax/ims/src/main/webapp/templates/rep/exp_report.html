@@ -1,0 +1,122 @@
+<!-- $Header: exp_report.html, 7, 6/3/2002 12:35:16 PM, Chad Ryan$ -->
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.rep/exp_report.view?>"-->
+
+<body class="BodyTag" onLoad="window.focus()">
+
+
+<table width="100%" cellspacing="0" cellpadding="3">
+
+<body class="BodyTag" onLoad="">
+
+	<table width="100%">
+		<tr><td colspan="16" class="TableTitle">Employee Expense Report</td></tr>
+	</table>
+
+<BR>
+	<form name="report">
+	<table border="0" cellspacing="0" cellpadding="3">
+	<tr>
+		<td class="Label">Employee ID:&nbsp</td>
+		<td><!--#SELECT name="r_user_id" class="regular" query="SELECT user_id, ISNULL(CAST(ext_employee_id AS VARCHAR),'')+' : '+first_name+' '+last_name FROM employees_v WHERE organization_id=<?s:org_id.toSQLString()?> AND active_flag='Y' ORDER BY ext_employee_id" firstOption="All" firstOptionValue="" currentValue="<?p:r_user_id?>" --></td>
+	</tr>
+	<tr>
+		<td class="Label">Expense Type:&nbsp</td>
+		<td><!--#SELECT name="r_item_id" class="regular" query="SELECT item_id, name FROM items_v WHERE organization_id=<?s:org_id.toSQLString()?> AND item_status_type_code='active' AND item_type_code='expense' ORDER BY name" firstOption="All" firstOptionValue="" currentValue="<?p:r_item_id?>" --></td>
+	</tr>
+	<tr>
+		<td class="Label">From Date:&nbsp</td>
+		<td class="Label">
+		<!--#IF DEFINED="<?p:r_from_date?>" -->
+			<input name="r_from_date" class="regular" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_from_date)')</script>" value="{!p:r_from_date!}" size="12" -->
+		<!--#ELSE-->
+			<!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) as from_date" name="dateQuery"-->
+		    <input name="r_from_date" class="regular" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_from_date)')</script>" value="{!r:dateQuery:from_date!}" size="12"-->
+			<!--#/SQLLOOP-->
+		<!--#/IF-->
+			<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_from_date)')</script>
+		&nbsp;To Date:&nbsp;
+		<!--#IF DEFINED="<?p:r_to_date?>" -->
+			<input name="r_to_date" class="regular" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_to_date)')</script>" value="{!p:r_to_date!}" size="12" -->
+		<!--#ELSE-->
+			<!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) as to_date" name="dateQuery"-->
+		    <input name="r_to_date" class="regular" value="{!r:dateQuery:to_date!}" size="12"-->&nbsp;
+			<!--#/SQLLOOP-->
+		<!--#/IF-->
+			<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(r_to_date)')</script>
+		</td>
+	</tr>
+	<tr>
+		<td class="Label">Job #:&nbsp</td>
+		<td colspan="2"><!--#SELECT name="r_job_id" class="regular" query="SELECT job_id, CAST(job_no as varchar)+' : '+ISNULL(job_name,'') job_no FROM jobs_v WHERE organization_id=<?s:org_id.toSQLString()?> ORDER BY job_no" firstOption="All" firstOptionValue="" currentValue="<?p:r_job_id?>" --></td>
+	</tr>
+	<tr>
+  		<td><input type="button" name="set_button" value="Run Report" onClick="redisplayPage();" class="button2"-->&nbsp;</td>
+	</tr>
+	</table>
+	</form>
+	
+<BR>
+   <!--#SMARTTABLE class="SmartTable" name="exp_report_v"
+	   query="SELECT r.user_id, r.ext_employee_id, r.employee_name, r.item_name, r.service_line_date, r.expenses_exported_flag, r.tc_job_no,
+	   				 r.expense_qty, r.expense_rate, r.expense_total
+				FROM expense_report_v r
+		   	WHERE 'true' = <?p:r_show_report.isNullSQLString('false')?>
+		   		AND r.organization_id = <?s:org_id.toSQLString()?>
+		   		AND r.user_id like <?p:r_user_id.isNullSQLString('%')?>
+		   		AND r.item_id like <?p:r_item_id.isNullSQLString('%')?>
+					AND r.tc_job_id like <?p:r_job_id.isNullSQLString('%')?>
+					AND r.service_line_date between <?p:r_from_date.isNullSQLString('1/1/1901')?> and <?p:r_to_date.isNullSQLString('1/1/2101')?>
+		   	ORDER BY r.ext_employee_id, r.employee_name"
+   -->
+		<!--#SMARTCOLUMN title="Emp&nbsp;ID" name="ext_employee_id" sort="ext_employee_id" align="center" -->
+		<!--#SMARTCOLUMN title="Emp&nbsp;Name" name="employee_name" sort="employee_name" -->
+		<!--#SMARTCOLUMN title="Expense&nbsp;Type" name="item_name" sort="item_name" -->
+		<!--#SMARTCOLUMN title="Date" name="service_line_date" sort="service_line_date" format="date" -->
+		<!--#SMARTCOLUMN title="Exp Qty" name="expense_qty" sort="expense_qty" align="right" format="###,###,###,##0.00" total="true"  -->
+		<!--#SMARTCOLUMN title="Exp Rate$" name="expense_rate" sort="expense_rate" format="money" align="right"  -->
+		<!--#SMARTCOLUMN title="Exp Total$" name="expense_total" sort="expense_total" format="money" align="right" total="true" -->
+		<!--#SMARTCOLUMN title="Exported?" name="expenses_exported_flag" sort="expenses_exported_flag" align="center"  -->
+		<!--#SMARTCOLUMN title="Job#" name="tc_job_no" sort="tc_job_no" align="center"  -->
+
+   <!--#/SMARTTABLE -->
+
+</body>
+
+<script language="JavaScript">
+<!--
+
+	function redisplayPage()
+	{//used by report
+
+		var r_user_id = escape(report.r_user_id.options[report.r_user_id.selectedIndex].value);
+		if( r_user_id == null )
+			 r_user_id = '';
+
+		var r_item_id = escape(report.r_item_id.options[report.r_item_id.selectedIndex].value);
+		if( r_item_id == null )
+			 r_item_id = '';
+
+		var r_job_id = escape(report.r_job_id.options[report.r_job_id.selectedIndex].value);
+		if( r_job_id == null )
+			 r_job_id = '';
+
+		var r_from_date = escape(report.r_from_date.value);
+		if( r_from_date == null )
+			 r_from_date = '';
+
+		var r_to_date = escape(report.r_to_date.value);
+		if( r_to_date == null )
+			 r_to_date = '';
+
+		location='{!s:showPage!}rep/exp_report.html?r_user_id='+r_user_id+'&r_item_id='+r_item_id+'&r_job_id='+r_job_id+'&r_from_date='+r_from_date+'&r_to_date='+r_to_date+'&r_show_report=true';
+	}
+
+-->
+</script>
+
+
+
+<!--#EMBED template="enet/embeds/footer.html" -->
+

@@ -1,0 +1,16 @@
+<table width="100%" >
+<!--#SIMPLELOOP vector="<?s:email_results?>" loopIndex="x" -->
+	<tr>
+		<td class="HeaderLabel" nowrap>
+			{!s:email_results[x].getContactName()!}
+		</td>
+		<td>
+	<!--#IF evaluate="<?s:email_results[x].getEmail()?>" compare="" -->
+			<span class="mandatoryLabel">[missing email]</span>
+	<!--#ELSE-->
+			&nbsp;
+	<!--#/IF-->
+		</td>
+	</tr>
+<!--#/SIMPLELOOP-->
+</table>

@@ -1,0 +1,45 @@
+<!-- $Header: audit.html, 2, 1/7/2005 5:09:26 PM, Lee A. Gunderson$ -->
+
+<!--#IF evaluate="<?d:mode?>" compare="Update"-->
+
+<table border="0" cellspacing="0" cellpadding="3" width="100%">
+	<tr>
+		<td class="HeaderBar" colspan="4">System Info</td>
+	</tr>
+
+<!--#SQLLOOP name="audit"
+
+	query="SELECT t.date_created, uc.user_id created_by, uc.first_name created_first_name, uc.last_name created_last_name, uc.full_name created_full_name,
+	              t.date_modified, um.user_id modified_by, um.first_name modified_first_name, um.last_name modified_last_name, um.full_name modified_full_name
+			FROM <?p:table_name?> t
+			LEFT OUTER JOIN users um ON t.modified_by = um.user_id
+			LEFT OUTER JOIN users uc ON t.created_by = uc.user_id
+			WHERE t.<?p:table_key?> = <?p:key_value.toPStmtString()?>"
+-->
+	<!--#IF defined="<?r:audit:date_created"-->
+	<tr>
+		<td>Date Created:</td>
+		<td><input class="readonly" size="22" name="audit_dc" type="text" value="<!--#ECHO data="<?r:audit:date_created?>" format="datetime"-->"></td>
+		<td>Created By:</td>
+		<td><input class="readonly" size="22" name="audit_cb" type="text" value="{!r:audit:created_full_name!}"></td>
+	</tr>
+	<!--#ELSE-->
+	<tr>
+		<td colspan="4">Created by information is not available.</td>
+	</tr>
+	<!--#/IF-->
+	<!--#IF defined="<?r:audit:modified_by_name"-->
+	<tr>
+		<td>Date Modified:</td>
+		<td><input class="readonly" size="22" name="audit_dm" type="text" value="<!--#ECHO data="<?r:audit:date_modified?>" format="datetime"-->"></td>
+		<td>Modified By:</td>
+		<td><input class="readonly" size="22" name="audit_mb" type="text" value="{!r:audit:modified_full_name!}"></td>
+	</tr>
+	<!--#ELSE-->
+	<tr>
+		<td colspan="4">This record has not been modified.</td>
+	</tr>
+	<!--#/IF-->
+<!--#/SQLLOOP-->
+
+<!--#/IF-->

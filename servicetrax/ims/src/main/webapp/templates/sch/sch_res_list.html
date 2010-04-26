@@ -1,0 +1,367 @@
+<!--#EMBED template="embeds/header.html" -->
+
+<body class="BodyTag" onload="setupSch();">
+
+<!--#IF defined="<?d:SMARTFORM_ERROR?>" -->
+<div class="error">{!d:SMARTFORM_ERROR!}</div>
+<!--#/IF -->
+	<form name="resources" action="{!s:action!}schAddRes/sch/sch_res_list.html" method="POST">
+	<input name="reload_frames" type="hidden" value={!p:reload_frames.toHTMLString()!}>
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td class="Label">Status:&nbsp</td>
+	<!--#SQLLOOP query="SELECT cur_rotation, (CASE cur_rotation WHEN 'Rotation A' THEN 'part_time_a' ELSE 'part_time_b' END) employment_type_code FROM dates_v" resourceName="SQLServer" name="rotationQuery" -->
+		<td>
+			<select class="Label" name="" onChange="document.location='{!s:action!}setupSchSession/sch/sch_res_list.html?sch_action=set_sch_filter' + this.options[this.selectedIndex].value;">
+				<option value="&sch_filter=null" <!--#IF evaluate="<?s:sch_filter?>" compare="'%'"-->selected<!--#/IF-->>All</option>
+				<option value="&sch_filter=Available" <!--#IF evaluate="<?s:sch_filter?>" compare="Available"-->selected<!--#/IF-->>Available</option>
+				<option value="&sch_filter=Unavailable" <!--#IF evaluate="<?s:sch_filter?>" compare="Unavailable"-->selected<!--#/IF-->>Unavailable</option>
+				<option value="&weekend_filter=Y&rotation={!r:rotationQuery:employment_type_code!}" <!--#IF evaluate="<?s:weekend_filter?>" compare="Y"-->selected<!--#/IF-->>Weekend</option>
+			</select>
+		</td>
+		<td class="Label">Resource&nbsp;Type:&nbsp</td>
+		<td><!--#SELECT name="resource_type_id" query="SELECT resource_type_id, name FROM resource_types ORDER BY name" firstOption="All" firstOptionValue="" currentValue="<?s:sch_res_type_id?>" class="Label" onChange="document.location='<?s:action?>setupSchSession/sch/sch_res_list.html?sch_action=set_res_type_id&sch_res_type_id='+this.options[this.selectedIndex].value"--></td>
+		<td class="Label">Resource:&nbsp</td>
+		<td><!--#SELECT name="resource_id" query="SELECT resource_id,name FROM resources WHERE organization_id=<?s:org_id.toPStmtInt()?> AND active_flag='Y' ORDER BY name" firstOption="All" firstOptionValue="" currentValue="<?s:sch_list_res_id?>" class="Label" onChange="document.location='<?s:action?>setupSchSession/sch/sch_res_list.html?sch_action=set_res_id&sch_list_res_id='+this.options[this.selectedIndex].value"--></td>
+		<td class="Label">Cur.&nbsp;Rotation:&nbsp;<input class="readonly" type="text" style="width:60" value="{!r:rotationQuery:cur_rotation.isNull('Unknown')!}"></td>
+	<!--#SQLNODATA-->
+		<td>
+			<select class="Label" name="" onChange="document.location='{!s:action!}setupSchSession/sch/sch_res_list.html?sch_action=set_sch_filter' + this.options[this.selectedIndex].value;">
+				<option value="&sch_filter=null" <!--#IF evaluate="<?s:sch_filter?>" compare="'%'"-->selected<!--#/IF-->>All</option>
+				<option value="&sch_filter=Available" <!--#IF evaluate="<?s:sch_filter?>" compare="Available"-->selected<!--#/IF-->>Available</option>
+				<option value="&sch_filter=Unavailable" <!--#IF evaluate="<?s:sch_filter?>" compare="Unavailable"-->selected<!--#/IF-->>Unavailable</option>
+			</select>
+		<td>
+		<td class="Label">Resource Type:&nbsp</td>
+		<td><!--#SELECT name="resource_type_id" query="SELECT resource_type_id, name FROM resource_types ORDER BY name" firstOption="All" firstOptionValue="" currentValue="<?s:sch_res_type_id?>" class="Label" onChange="document.location=''<?s:action?>setupSchSession/sch/sch_res_list.html?sch_action=set_res_type_id&sch_res_type_id='+this.options[this.selectedIndex].value"--></td>
+		<td class="Label">Resource:&nbsp</td>
+		<td><!--#SELECT name="resource_id" query="SELECT resource_id,name FROM resources WHERE organization_id=<?s:org_id.toSQLString()?> AND active_flag='Y' ORDER BY name" firstOption="All" firstOptionValue="" currentValue="<?s:sch_list_res_id?>" class="Label" onChange="document.location='<?s:action?>setupSchSession/sch/sch_res_list.html?sch_action=set_res_id&sch_list_res_id='+this.options[this.selectedIndex].value"--></td>
+		<td class="Label">Cur. Rotation:&nbsp;<span class="viewonly">Unknown</span></td>
+	<!--#/SQLNODATA-->
+		</td>
+	<!--#/SQLLOOP-->
+	</tr>
+	</table>
+
+	<table width="100%" cellspacing="0" cellpadding="0">
+		<tr><td  class="tableHeader">Resource Information</td></tr>
+	</table>
+
+<!--#IF evaluate="<?s:role_code?>" compare="major_acct_coord" -->
+
+	<!--#SMARTTABLE class="SmartTable" name="SRAV" colorRowClasses="UnconfirmedRow,UnconfirmedRowLink" colorRowCol="unconfirmed_flag" colorRowVal="Y"
+		   query="SELECT  srv.RESOURCE_ID,
+		                  srv.RESOURCE_NAME,
+						  srv.RES_CATEGORY_TYPE_ID,
+						  srv.res_cat_type_code,
+						  srv.res_cat_type_name,
+						  srv.resource_qty,
+						  srv.RESOURCE_TYPE_ID,
+						  srv.resource_type_code,
+						  srv.resource_type_name,
+						  srv.EMPLOYMENT_TYPE_ID,
+						  srv.employment_type_code,
+						  srv.employment_type_name,
+						  srv.ACTIVE_FLAG,
+						  srv.FOREMAN_FLAG,
+						  srv.SCH_RESOURCE_ID,
+						  srv.WEEKEND_SCH_RESOURCE_ID,
+						  srv.JOB_ID,
+						  srv.JOB_NO,
+						  srv.JOB_TYPE_ID,
+						  srv.job_type_code,
+						  srv.job_type_name,
+						  srv.SERVICE_ID,
+						  srv.SERVICE_NO,
+						  srv.RES_STATUS_TYPE_ID,
+						  srv.res_status_type_code,
+						  srv.res_status_type_name,
+						  srv.REASON_TYPE_ID,
+						  srv.reason_type_code,
+						  srv.reason_type_name,
+						  srv.FOREMAN_FLAG sch_foreman_flag,
+						  srv.RES_START_DATE,
+						  srv.RES_START_TIME,
+						  srv.RES_END_DATE,
+						  srv.RES_END_TIME,
+						  srv.WEEKEND_FLAG,
+						  srv.report_to_name,
+						  srv.unconfirmed_flag
+					 FROM dbo.SCH_RESOURCES_V srv
+				    WHERE organization_id=<?s:org_id.toPStmtInt()?>
+					  AND (srv.job_id = <?s:job_id.toSQLString()?> OR <?s:job_id.toSQLString()?> IS NULL)
+					  AND srv.active_flag = 'Y'
+					  AND srv.resource_id like <?s:sch_list_res_id.isNull('%').toPStmtString()?>
+					  AND srv.resource_type_id like <?s:sch_res_type_id.isNull('%').toPStmtString()?>
+					  AND srv.res_status_type_name like <?s:sch_filter.isNull('%').toPStmtString()?>
+					  AND (srv.job_type_code='service_account')
+					  AND (srv.weekend_flag like <?s:weekend_filter.isNull('%').toPStmtString()?> OR
+					       srv.employment_type_code like <?s:rotation.isNull('%').toPStmtString()?>)
+		   		      AND (srv.res_start_date is null OR
+		   		           (ISNULL(srv.res_start_date,'1/1/1901') <= <?s:sch_to_date.isNull('1/1/2101').toPStmtString()?> AND
+		   		            ISNULL(srv.res_end_date, '1/1/2101') >= <?s:sch_from_date.isNull('1/1/1901').toPStmtString()?>))
+				 ORDER BY srv.res_cat_type_name,
+				          srv.resource_type_name,
+				          srv.employment_type_name,
+				          srv.resource_name,
+				          srv.res_status_type_name,
+				          srv.reason_type_name,
+				          srv.res_start_date,
+				          srv.res_start_time,
+				          srv.res_end_date"
+	  	-->
+		<!--#SMARTCOLUMN title="Category" name="res_cat_type_name" sort="res_cat_type_name" -->
+		<!--#SMARTCOLUMN title="Type" name="resource_type_name" sort="resource_type_name" -->
+		<!--#SMARTCOLUMN title="Employ." name="employment_type_name" sort="employment_type_name" -->
+	<!--#CHECKSECURITY right="rights.<?s:function_code.isNull('none')?>.view" -->
+		<!--#SMARTCOLUMN title="Resource&nbsp;Name" name="resource_name" sort="resource_name" href="" onClick="resEdit('<?r:SRAV:resource_id?>','<?r:SRAV:sch_resource_id?>'); return false;" -->
+	<!--#ELSE-->
+  		<!--#SMARTCOLUMN title="Resource&nbsp;Name" name="resource_name" sort="resource_name" -->
+	<!--#/CHECKSECURITY-->
+		<!--#SMARTCOLUMN title="Status" name="res_status_type_name" sort="res_status_type_name" -->
+		<!--#SMARTCOLUMN title="Reason" name="reason_type_name" sort="reason_type_name" -->
+		<!--#SMARTCOLUMN title="Job#" name="job_no" sort="job_no" -->
+		<!--#SMARTCOLUMN title="Req#" name="service_no" sort="service_no" -->
+		<!--#SMARTCOLUMN title="Qty" name="resource_qty" sort="resource_qty" align="right"-->
+		<!--#SMARTCOLUMN title="Start Date" name="res_start_date" sort="res_start_date" format="date" -->
+		<!--#SMARTCOLUMN title="Start Time" name="res_start_time" sort="res_start_time" format="time" -->
+		<!--#SMARTCOLUMN title="End Date" name="res_end_date" sort="res_end_date" format="date" -->
+	<!--#/SMARTTABLE -->
+
+<!--#ELSE-->  <!-- Must be the scheduler or neither -->
+	<!--#SMARTTABLE class="SmartTable" name="SRAV" maxRows="1000" colorRowClasses="UnconfirmedRow,UnconfirmedRowLink" colorRowCol="unconfirmed_flag" colorRowVal="Y"
+		query="SELECT v.RESOURCE_ID,
+		              v.RESOURCE_NAME,
+		              v.resource_qty,
+		              v.res_cat_type_name,
+		              v.resource_type_name,
+		              v.employment_type_name,
+		              v.ACTIVE_FLAG,
+		              v.FOREMAN_FLAG,
+				      v.SCH_RESOURCE_ID,
+				      v.WEEKEND_SCH_RESOURCE_ID,
+				      v.JOB_ID,
+				      v.JOB_NO,
+				      v.JOB_TYPE_ID,
+				      v.job_type_code,
+				      v.job_type_name,
+				      v.SERVICE_ID,
+				      v.SERVICE_NO,
+				      v.RES_STATUS_TYPE_ID,
+				      v.res_status_type_code,
+				      v.res_status_type_name,
+				      v.REASON_TYPE_ID,
+				      v.reason_type_code,
+				      v.reason_type_name,
+				      v.FOREMAN_FLAG sch_foreman_flag,
+				      v.RES_START_DATE,
+				      v.RES_START_TIME,
+				      v.RES_END_DATE,
+				      v.RES_END_TIME,
+				      v.WEEKEND_FLAG,
+				      v.report_to_name,
+				      v.unconfirmed_flag,
+				      v.job_name
+		         FROM (SELECT  srv.RESOURCE_ID,
+		                       srv.RESOURCE_NAME,
+		                       srv.resource_qty,
+					           srv.res_cat_type_code,
+					           srv.res_cat_type_name,
+					           srv.resource_type_code,
+					           srv.resource_type_name,
+					           srv.EMPLOYMENT_TYPE_ID,
+					           srv.employment_type_code,
+					           srv.employment_type_name,
+					           srv.ACTIVE_FLAG,
+					           srv.FOREMAN_FLAG,
+					           srv.SCH_RESOURCE_ID,
+					           srv.WEEKEND_SCH_RESOURCE_ID,
+					           srv.JOB_ID,
+					           srv.JOB_NO,
+					           srv.JOB_TYPE_ID,
+					           srv.job_type_code,
+					           srv.job_type_name,
+					           srv.SERVICE_ID,
+					           srv.SERVICE_NO,
+					           srv.RES_STATUS_TYPE_ID,
+					           srv.res_status_type_code,
+					           srv.res_status_type_name,
+					           srv.REASON_TYPE_ID,
+					           srv.reason_type_code,
+					           srv.reason_type_name,
+					           srv.FOREMAN_FLAG sch_foreman_flag,
+					           srv.RES_START_DATE,
+					           srv.RES_START_TIME,
+					           srv.RES_END_DATE,
+					           srv.RES_END_TIME,
+					           srv.WEEKEND_FLAG,
+					           srv.report_to_name,
+					           srv.unconfirmed_flag,
+					           srv.job_name
+				          FROM dbo.SCH_RESOURCES_V srv
+				         WHERE organization_id=<?s:org_id.toPStmtInt()?>
+				           AND srv.active_flag = 'Y'
+				           AND srv.resource_id like <?s:sch_list_res_id.isNull('%').toPStmtString()?>
+				           AND srv.resource_type_id like <?s:sch_res_type_id.isNull('%').toPStmtString()?>
+				           AND srv.res_status_type_name like <?s:sch_filter.isNull('%').toPStmtString()?>
+				           AND (srv.job_type_code='project' OR service_id is null )
+				           AND (srv.weekend_flag like <?s:weekend_filter.isNull('%').toPStmtString()?>
+						      OR srv.employment_type_code like <?s:rotation.isNull('%').toPStmtString()?>)
+   			               AND (ISNULL(srv.res_start_date, '1/1/1901') <= <?s:sch_to_date.isNull('1/1/2101').toPStmtString()?>
+   			                  AND ISNULL(srv.res_end_date, '1/1/2101') >= <?s:sch_from_date.isNull('1/1/1901').toPStmtString()?>
+   				               )
+			          UNION
+			           SELECT rv.RESOURCE_ID,
+			                  rv.NAME resource_name,
+			                  null resource_qty,
+                              rv.res_cat_type_code,
+                              rv.res_cat_type_name,
+                              rv.resource_type_code,
+                              rv.resource_type_name,
+                              rv.EMPLOYMENT_TYPE_ID,
+                              rv.employment_type_code,
+                              rv.employment_type_name,
+                              rv.ACTIVE_FLAG,
+                              rv.FOREMAN_FLAG,
+                              null SCH_RESOURCE_ID,
+                              null WEEKEND_SCH_RESOURCE_ID,
+                              null JOB_ID,
+                              null JOB_NO,
+                              null JOB_TYPE_ID,
+                              null job_type_code,
+                              null job_type_name,
+                              null SERVICE_ID,
+                              null SERVICE_NO,
+                              null RES_STATUS_TYPE_ID,
+                              null res_status_type_code,
+                              'Available' res_status_type_name,
+                              null REASON_TYPE_ID,
+                              null reason_type_code,
+                              null reason_type_name,
+                              null sch_foreman_flag,
+                              null RES_START_DATE,
+                              null RES_START_TIME,
+                              null RES_END_DATE,
+                              null RES_END_TIME,
+                              null WEEKEND_FLAG,
+                              null report_to_name,
+                              null unconfirmed_flag,
+                              null job_name
+			         	 FROM dbo.RESOURCES_V rv
+	   	   		        WHERE organization_id=<?s:org_id.toPStmtInt()?>
+	   	   		          AND rv.active_flag = 'Y'
+	   			          AND rv.resource_id like <?s:sch_list_res_id.isNull('%').toPStmtString()?>
+				          AND rv.resource_type_id like <?s:sch_res_type_id.isNull('%').toPStmtString()?>
+			        	  AND rv.employment_type_code like <?s:rotation.isNull('%').toPStmtString()?>
+	   		         	  AND NOT EXISTS (SELECT 'X' FROM sch_resources_v srv2
+				                           WHERE organization_id=<?s:org_id.toPStmtInt()?>
+				 	                         AND srv2.resource_id = rv.resource_id
+					                         AND srv2.active_flag = 'Y'
+					                         AND srv2.resource_id like <?s:sch_list_res_id.isNull('%').toPStmtString()?>
+					                         AND srv2.resource_type_id like <?s:sch_res_type_id.isNull('%').toPStmtString()?>
+					                         AND srv2.res_status_type_name like <?s:sch_filter.isNull('%').toPStmtString()?>
+					                         AND (srv2.job_type_code='project' OR service_id is null )
+					                         AND (srv2.weekend_flag like <?s:weekend_filter.isNull('%').toPStmtString()?>
+							                   OR srv2.employment_type_code like <?s:rotation.isNull('%').toPStmtString()?>)
+	   			                             AND ( ISNULL(srv2.res_start_date, '1/1/1901') <= <?s:sch_to_date.isNull('1/1/2101').toPStmtString()?>
+	   			                               AND ISNULL(srv2.res_end_date, '1/1/2101') >= <?s:sch_from_date.isNull('1/1/1901').toPStmtString()?>
+	   				                             )
+	   		                             )
+	   	              ) v
+		        WHERE v.res_status_type_name like <?s:sch_filter.isNull('%').toPStmtString()?>
+		     ORDER BY v.res_cat_type_name,
+		              v.resource_type_name,
+		              v.employment_type_name,
+		              v.resource_name,
+		              v.res_status_type_name,
+		              v.reason_type_name,
+		              v.res_start_date,
+		              v.res_start_time,
+		              v.res_end_date"
+		group="v.res_cat_type_name, v.resource_type_name, v.employment_type_name, v.resource_name, v.res_status_type_name, v.reason_type_name, v.res_start_date, v.res_start_time, v.res_end_date"
+	-->
+		<!--#SMARTCOLUMN title="Add" name="add" value="<INPUT TYPE='checkbox' name='addCheckBox<?d:rowid?>' value='<?r:SRAV:resource_id?>_<?r:SRAV:sch_resource_id?>'>" -->
+	<!--#CHECKSECURITY right="rights.<?s:function_code.isNull('none')?>.view" -->
+		<!--#SMARTCOLUMN title="Resource&nbsp;Name" name="resource_name" sort="resource_name" href="" onClick="resEdit('<?r:SRAV:resource_id?>','<?r:SRAV:sch_resource_id?>'); return false;" -->
+	<!--#ELSE-->
+  		<!--#SMARTCOLUMN title="Resource Name" name="resource_name" sort="resource_name" -->
+	<!--#/CHECKSECURITY-->
+		<!--#SMARTCOLUMN title="Status" name="res_status_type_name" sort="res_status_type_name" value="<?r:SRAV:res_status_type_name.isNull('Available')?>" -->
+		<!--#SMARTCOLUMN title="Resource Type" name="resource_type_name" sort="resource_type_name" -->
+		<!--#SMARTCOLUMN title="Reason" name="reason_type_name" sort="reason_type_name" -->
+		<!--#SMARTCOLUMN title="Job Name" name="job_name" sort="job_name" -->
+		<!--#SMARTCOLUMN title="Start Date" name="res_start_date" sort="res_start_date" format="date" -->
+		<!--#SMARTCOLUMN title="End Date" name="res_end_date" sort="res_end_date" format="date" -->
+        <!--#SMARTCOLUMN title="Job#" name="job_no" sort="job_no" -->
+
+        <!--#SMARTCOLUMN title="Employment Type" name="employment_type_name" sort="employment_type_name" value="<?r:SRAV:employment_type_name.isNull('No User')?>" -->
+
+
+		<!--#SMARTCOLUMN title="Category" name="res_cat_type_name" sort="res_cat_type_name" -->
+
+
+
+
+
+		<!--#SMARTCOLUMN title="Req#" name="service_no" sort="service_no" -->
+		<!--#SMARTCOLUMN title="Qty" name="resource_qty" sort="resource_qty" align="right"-->
+		<!--#SMARTCOLUMN title="Start Date" name="res_start_date" sort="res_start_date" format="date" -->
+		<!--#SMARTCOLUMN title="Start Time" name="res_start_time" sort="res_start_time" format="time" -->
+		<!--#SMARTCOLUMN title="End Date" name="res_end_date" sort="res_end_date" format="date" -->
+	<!--#CHECKSECURITY right="rights.sch/sch_weekend.view"-->
+		<!--#SMARTCOLUMN title="Weekend" name="weekend_flag" sort="weekend_flag" align="center" value="<?r:SRAV:weekend_flag.isNull('N')?>" href="" onClick="weekendEdit('<?r:SRAV:resource_id?>','<?r:SRAV:sch_resource_id?>','<?r:SRAV:weekend_sch_resource_id?>','<?r:SRAV:weekend_flag?>'); return false;" -->
+	<!--#ELSE-->
+		<!--#SMARTCOLUMN title="Weekend" name="weekend_flag" sort="weekend_flag" align="center" value="<?r:SRAV:weekend_flag.isNull('N')?>"	-->
+	<!--#/CHECKSECURITY-->
+
+	<!--#/SMARTTABLE -->
+	<div>
+		<span class="label">For adding multiple resources, check each one, set the Start Date, and press the Add button.</span><br>
+		<span class="label" style="width:100">Start Date:&nbsp;</span><span><input name="res_start_date" type="text" class="regular" onFocus="fixColors()" onBlur="fixColors()" maxlength="10" value=""><script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(res_start_date)')</script></span>&nbsp;
+		<span class="label" style="width:100">End Date:&nbsp;</span><span><input name="res_end_date" type="text" class="regular" onFocus="fixColors()" onBlur="fixColors()" maxlength="10" value=""><script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(res_end_date)')</script></span><br>
+		<input class="button" type="submit" value="Add" >
+	</div>
+
+<!--#/IF-->
+	</form>
+
+</body>
+
+<script language="JavaScript">
+<!--
+	function resEdit(resource_id, sch_resource_id)
+	{
+		if( resource_id == null )
+			resource_id = '';
+		if( sch_resource_id == null )
+			sch_resource_id = '';
+		newWindowScrollBars("{!s:action!}schEditRes/sch/sch_res_edit.html?resource_id="+resource_id+"&sch_resource_id="+sch_resource_id, "sch_res_edit_window",530,510);
+	}
+
+	function weekendEdit(resource_id, sch_resource_id, weekend_sch_resource_id, weekend_flag)
+	{
+		if( resource_id == null )
+			resource_id = '';
+		if( sch_resource_id == null )
+			sch_resource_id = '';
+		if( weekend_sch_resource_id == null )
+			weekend_sch_resource_id = '';
+		if( weekend_flag == null )
+			weekend_flag = '';
+		newWindow("{!s:action!}schEditWeekend/sch/sch_weekend?resource_id="+resource_id+"&sch_resource_id="+sch_resource_id+"&weekend_sch_resource_id="+weekend_sch_resource_id+"&weekend_flag="+weekend_flag, "weekend_window", 250,450);
+	}
+	function setupSch()
+	{
+		if( resources.reload_frames.value == 'true' )
+		{
+			//refresh resource scheduled list
+			var schd_res_list_frame = window.parent.frames.schd_res_list_frame;
+			schd_res_list_frame.location.reload();
+		}
+	}
+-->
+
+</script>
+
+
+<!--#EMBED template="embeds/footer.html" -->

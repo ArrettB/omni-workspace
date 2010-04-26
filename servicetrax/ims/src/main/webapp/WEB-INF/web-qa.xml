@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<!-- QA version of web.xml-->
+<web-app>
+	<display-name>IMS</display-name>
+	<description>IMS</description>
+	<context-param>
+		<param-name>webmaster</param-name>
+		<param-value>jchrisman@ambis.com</param-value>
+		<description>The email address of the administrator to whom questions and comments about this application should be addressed. </description>
+	</context-param>
+	<servlet>
+		<servlet-name>ShowCalendar</servlet-name>
+		<servlet-class>dynamic.util.calendar.ShowCalendar</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>ims</servlet-name>
+		<description>This is version 2.08 of the iFrame2 dynamic.intraframe.engine.BaseServlet class. </description>
+		<servlet-class>dynamic.intraframe.engine.BaseServlet</servlet-class>
+		<init-param>
+			<param-name>iniFile</param-name>
+	            	<param-value>E:\Program Files\Apache Software Foundation\Tomcat 5.5\webapps\ims\WEB-INF\ims.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ims</servlet-name>
+		<url-pattern>/action/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ims</servlet-name>
+		<url-pattern>*.html</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ShowCalendar</servlet-name>
+		<url-pattern>/ShowCalendar/*</url-pattern>
+	</servlet-mapping>
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+	<mime-mapping>
+		<extension>xls</extension>
+		<mime-type>application/vnd.ms-excel</mime-type>
+	</mime-mapping>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+</web-app>

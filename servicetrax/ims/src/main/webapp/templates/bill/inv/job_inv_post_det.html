@@ -1,0 +1,28 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: job_inv_post_det.html, 7, 1/7/2005 5:10:02 PM, Lee A. Gunderson$ -->
+
+
+<body class="BodyTag">
+
+<!--#SMARTTABLE name="inv_lines"
+	class="SmartTable" totalClass="TableTotal"
+	query="SELECT invoice_id, invoice_line_id, invoice_line_no, name, line_desc, qty, unit_price,
+			(qty * unit_price) extended_total, job_id, taxable_flag
+	FROM invoice_lines_v
+	WHERE invoice_id = <?p:invoice_id.toPStmtString()?>
+	ORDER BY invoice_line_no"
+-->
+	<!--#SMARTCOLUMN name="invoice_line_no" sort="invoice_line_no" title="Invoice Line#" width="5%" align="center"-->
+	<!--#SMARTCOLUMN name="name" sort="name" title="Item" width="6%" -->
+	<!--#SMARTCOLUMN name="line_desc" sort="line_desc" title="Item Description" width="15%" -->
+	<!--#SMARTCOLUMN name="qty" sort="qty" title="Qty" align="right" format="###,###,##0.00" width="5%" total="true" -->
+	<!--#SMARTCOLUMN name="unit_price" sort="unit_price" title="Rate" align="right" format="money" width="5%" -->
+	<!--#SMARTCOLUMN name="extended_total" sort="extended_total" title="Total" align="right" total="true" format="money" width="5%" -->
+	<!--#SMARTCOLUMN name="taxable_flag" sort="taxable_flag" title="Taxable" align="center" width="5%" -->
+<!--#/SMARTTABLE -->
+
+
+</body>
+
+
+<!--#EMBED template="embeds/footer.html" -->

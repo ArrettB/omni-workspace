@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.Organization" table="ORGANIZATIONS" schema="dbo" catalog="">
+        <id name="organizationId" type="java.lang.Long">
+            <column name="ORGANIZATION_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="userByModifiedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="userByCreatedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="name" type="string">
+            <column name="NAME" length="100" not-null="true" />
+        </property>
+        <property name="code" type="string">
+            <column name="CODE" length="50" />
+        </property>
+        <property name="resourceName" type="string">
+            <column name="RESOURCE_NAME" length="20" not-null="true" />
+        </property>
+        <property name="dbPrefix" type="string">
+            <column name="DB_PREFIX" length="30" not-null="true" />
+        </property>
+        <property name="prIntegrationName" type="string">
+            <column name="PR_INTEGRATION_NAME" length="100" />
+        </property>
+        <property name="invIntegrationName" type="string">
+            <column name="INV_INTEGRATION_NAME" length="100" />
+        </property>
+        <property name="extDirectDealerId" type="string">
+            <column name="EXT_DIRECT_DEALER_ID" length="15" />
+        </property>
+        <property name="payCodeTable" type="string">
+            <column name="PAY_CODE_TABLE" length="50" not-null="true" />
+        </property>
+        <property name="pdaItemPaycodesTable" type="string">
+            <column name="PDA_ITEM_PAYCODES_TABLE" length="50" not-null="true" />
+        </property>
+        <property name="sequenceNo" type="long">
+            <column name="SEQUENCE_NO" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <property name="schedulerContactId" type="java.lang.Long">
+            <column name="SCHEDULER_CONTACT_ID" precision="18" scale="0" />
+        </property>
+        <property name="extDciDealerId" type="string">
+            <column name="EXT_DCI_DEALER_ID" length="15" />
+        </property>
+        <property name="invoiceSuffix" type="string">
+            <column name="invoice_suffix" length="6" />
+        </property>
+        <property name="commentId" type="string">
+            <column name="comment_id" length="15" />
+        </property>
+        <property name="defaultSite" type="string">
+            <column name="default_site" length="10" />
+        </property>
+        <set name="items" inverse="true">
+            <key>
+                <column name="ORGANIZATION_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Item" />
+        </set>
+        <set name="invoices" inverse="true">
+            <key>
+                <column name="ORGANIZATION_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Invoice" />
+        </set>
+        <set name="customers" inverse="true">
+            <key>
+                <column name="ORGANIZATION_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Customer" />
+        </set>
+        <set name="payrollBatches" inverse="true">
+            <key>
+                <column name="ORGANIZATION_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.PayrollBatch" />
+        </set>
+        <set name="resources" inverse="true">
+            <key>
+                <column name="ORGANIZATION_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Resource" />
+        </set>
+        <set name="contacts" inverse="true">
+            <key>
+                <column name="ORGANIZATION_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Contact" />
+        </set>
+        <set name="userOrganizations" inverse="true">
+            <key>
+                <column name="ORGANIZATION_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.UserOrganization" />
+        </set>
+    </class>
+</hibernate-mapping>

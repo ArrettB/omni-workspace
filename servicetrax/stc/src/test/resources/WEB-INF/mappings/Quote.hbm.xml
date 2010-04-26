@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.Quote" table="QUOTES" schema="dbo" catalog="">
+        <id name="quoteId" type="java.lang.Long">
+            <column name="QUOTE_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="userByQuotedByUserId" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="QUOTED_BY_USER_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByQuoteStatusTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="QUOTE_STATUS_TYPE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="lookupByQuoteTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="QUOTE_TYPE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="request" class="com.dynamic.servicetrax.orm.Request" fetch="select">
+            <column name="REQUEST_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="userByModifiedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByRequestTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="REQUEST_TYPE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="userByCreatedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="isSent" type="string">
+            <column name="IS_SENT" length="1" not-null="true" />
+        </property>
+        <property name="quoteNo" type="long">
+            <column name="QUOTE_NO" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="quotersTitle" type="string">
+            <column name="QUOTERS_TITLE" length="100" />
+        </property>
+        <property name="description" type="string">
+            <column name="DESCRIPTION" length="2000" />
+        </property>
+        <property name="quoteTotal" type="big_decimal">
+            <column name="QUOTE_TOTAL" precision="18" />
+        </property>
+        <property name="taxableFlag" type="string">
+            <column name="TAXABLE_FLAG" length="1" />
+        </property>
+        <property name="taxableAmount" type="big_decimal">
+            <column name="TAXABLE_AMOUNT" precision="18" />
+        </property>
+        <property name="warehouseFeeFlag" type="string">
+            <column name="WAREHOUSE_FEE_FLAG" length="1" />
+        </property>
+        <property name="dateQuoted" type="timestamp">
+            <column name="DATE_QUOTED" length="23" />
+        </property>
+        <property name="datePrinted" type="timestamp">
+            <column name="DATE_PRINTED" length="23" />
+        </property>
+        <property name="extraConditions" type="string">
+            <column name="EXTRA_CONDITIONS" length="1000" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <set name="quoteConditions" inverse="true">
+            <key>
+                <column name="QUOTE_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.QuoteCondition" />
+        </set>
+    </class>
+</hibernate-mapping>

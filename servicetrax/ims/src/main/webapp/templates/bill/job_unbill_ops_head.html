@@ -1,0 +1,66 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: job_unbill_ops_head.html, 11, 1/25/2005 8:13:03 AM, Lee A. Gunderson$ -->
+
+<script language="JavaScript">
+<!--
+ function loadPage()
+ {
+	page = QuickIndex.URL.options[QuickIndex.URL.options.selectedIndex].value;
+	parameter = QuickIndex.filter.options[QuickIndex.filter.options.selectedIndex].value;
+
+	if (parameter.length > 0)
+	{
+		par = parameter;
+	}
+	else
+	{
+		par = '';
+	}
+
+	parent.job_unbill_ops_frame.location.href=page+'?item_type_code='+par;
+ }
+//-->
+</script>
+
+<body class="BodyTag" onLoad="loadPage()">
+
+
+<FORM name="QuickIndex" >
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+	<!--#CHECKSECURITY right="rights.bill/inv_edit.insert"-->
+    <td width="20%">Create <A href="{!s:showPage!}bill/inv/job_inv_main.html?prev_template=bill/job_unbill_ops_main.html" target="_parent">Invoice</A></td>
+	<td width="30%">
+	<!--#SQLLOOP query="SELECT max(' *') star FROM tracking_v where job_id=<?s:job_id.toPStmtString()?>" resourceName="SQLServer" name="track"-->
+		<input name="notes_button" type="button" value="Notes{!r:track:star!}" class="button2" onClick="newWindowScrollBars('{!s:showPage!}bill/inv/inv_pda_note_list.html?job_id={!s:job_id!}','note_track',400,700);">
+	<!--#/SQLLOOP-->
+	<!--#SQLLOOP query="SELECT max(' *') AS star, max(internal_req_flag) internal_req_flag FROM service_lines WHERE internal_req_flag = 'Y' AND fully_allocated_flag = 'N' AND tc_job_id = <?s:job_id.toPStmtString()?>" resourceName="SQLServer" name="pooled"-->
+		<!--#IF evaluate="<?r:pooled:internal_req_flag?>" compare="Y" -->
+			<input name="pooled_button" type="button" value="Pooled{!r:pooled:star!}" class="button2" onClick="parent.parent.location='{!s:showPage!}bill/job_bill_main.html?loc=job_pool_hours&job_id={!s:job_id!}';">
+		<!--#/IF-->
+	<!--#/SQLLOOP-->
+	</td>
+	<!--#/CHECKSECURITY-->
+	<td width="50%" align="right">
+		View
+		<SELECT name="URL" class="regular" onChange="loadPage();window.focus();">
+			<OPTION value="{!s:showPage!}bill/job_unbill_ops_sum_item.html">Summary by Item</OPTION>
+			<OPTION value="{!s:showPage!}bill/job_unbill_ops_sum_req_item.html">Summary by Req/Item</OPTION>
+			<OPTION value="{!s:showPage!}bill/job_unbill_ops_sum_req.html">Summary by Req</OPTION>
+			<OPTION value="{!s:showPage!}bill/job_unbill_ops_sum_det.html">Detail</OPTION>
+		</SELECT>
+
+		Filter by
+		<SELECT name="filter" class="regular" onChange="loadPage();window.focus();">
+			<OPTION value="">Hours and Expenses</OPTION>
+			<OPTION value="hours">Hours</OPTION>
+			<OPTION value="expense">Expenses</OPTION>
+		</SELECT>
+	</td>
+</tr>
+</table>
+</FORM>
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

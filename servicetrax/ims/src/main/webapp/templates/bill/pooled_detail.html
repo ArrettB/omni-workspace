@@ -1,0 +1,376 @@
+<!-- $Header: pooled_detail.html, 18, 1/7/2005 5:10:48 PM, Lee A. Gunderson$ -->
+<!--#EMBED template="embeds/header.html" -->
+
+<!--#EXEC handler="ims.handlers.billing.PooledPreFlightHandler" -->
+
+<body class="BodyTag" bgcolor="#EFEFEF">
+
+
+<a href="{!s:showPage!}bill/pooled.html?job_id={!s:job_id!}">Back to Pooled Hours</a>
+<script>
+<!--
+
+	var total_available = 0; //need to remember in case user tries to change it
+	var total_field = null;
+
+	function setTotal(val, defaultVal, input)
+	{
+		if (val == null || val == '')
+		{
+			input.value=defaultVal;
+		}
+		else
+		{
+			input.value=val;
+		}
+		total_available = defaultVal;
+		total_field = input;
+	}
+
+	function showValue(val, defaultVal, input)
+	{//sets the value of the req and the external reqs
+		if (val == null || val == '')
+		{
+			input.value=defaultVal;
+		}
+		else
+		{
+			input.value=val;
+		}
+	}
+
+	function outputMoney(number) {
+	    return outputDollars(Math.floor(number-0) + '') + outputCents(number - 0);
+	}
+
+	function outputDollars(number) {
+	    if (number.length <= 3)
+	        return (number == '' ? '0' : number);
+	    else {
+	        var mod = number.length%3;
+	        var output = (mod == 0 ? '' : (number.substring(0,mod)));
+	        for (i=0 ; i < Math.floor(number.length/3) ; i++) {
+	            if ((mod ==0) && (i ==0))
+	                output+= number.substring(mod+3*i,mod+3*i+3);
+	            else
+	                output+= ',' + number.substring(mod+3*i,mod+3*i+3);
+	        }
+	        return (output);
+	    }
+	}
+
+	function outputCents(amount) {
+	    amount = Math.round( ( (amount) - Math.floor(amount) ) *100);
+	    return (amount < 10 ? '.0' + amount : '.' + amount);
+	}
+
+	function redisplayPage()
+	{
+		//does nothing, needed to have req_edit.html close itself.
+	}
+
+	function testNewTotal(field)
+	{
+		success = false;
+		if( field )
+		{
+			if( isNaN(field.value) || field.value <= 0 || new Number(field.value) > total_available )
+				alert("You must select a pooled total to allocate > 0 and <= "+total_available);
+			else
+				success = true;
+		}
+		if( success )
+		{
+			success = testPooledTotal();
+		}
+		return success;
+	}
+
+	function testPooledTotal()
+	{
+		var success = true;
+		var aForm = document.confirmPooling;
+		var e = null;
+		var amount = 0;
+		for( var i = 0; i < aForm.length; i++)
+		{
+			e = aForm.elements[i];
+			if( e.type && e.type == 'text' )
+			{
+				if( isNaN(e.value) || e.value < 0 || e.value == null )
+				{
+					alert("Please enter a positive number instead of "+e.value);
+					success = false;
+					break;
+				}
+				else if( e != total_field )
+					amount = amount + new Number(e.value);
+			}
+		}
+		if( amount > new Number(total_field.value) )
+		{
+			alert("You have over allocated by "+(amount - total_field.value)+", please reduce your allocation to <= " + total_field.value);
+			success = false;
+		}
+		else if( amount > total_available )
+		{
+			alert("You have over allocated by "+(amount - total_available)+", please reduce your allocation to <= " + total_available);
+			success = false;
+		}
+		return success;
+	}
+
+	function updateCheckbox(service_id, field)
+	{
+		var success = testPooledTotal();
+		var checkboxes = document.all.item("sendToCheckBox");
+		var checked = false;
+		if( field.value > 0 && success)
+			checked = true;
+		if( checkboxes.length )
+		{
+			for( var i = 0; i < checkboxes.length; i++)
+			{
+				if( checkboxes[i].value == service_id )
+				{
+					checkboxes[i].checked = checked;
+					break;
+				}
+			}
+		}
+		else
+			checkboxes.checked = checked;
+
+		return success;
+	}
+-->
+</script>
+
+<form name="confirmPooling" action="allocate" method="post">
+<input type="hidden" name="job_id" value="{!p:job_id!}">
+<input type="hidden" name="service_id" value="{!p:service_id!}">
+<input type="hidden" name="item_id" value="{!p:item_id!}">
+<input type="hidden" name="rate" value="{!p:rate!}">
+<input type="hidden" name="rate_id" value="{!p:rate_id!}">
+
+
+<!--#IF defined="d:errMsg" -->
+<table width="100%" cellspacing="0" cellpadding="0">
+	<tr><td class="errorText">{!d:errMsg!}</td></tr>
+</table>
+<!--#/IF-->
+
+<!--#SQLLOOP
+	query="SELECT s.service_id, s.service_no, s.job_id, s.description
+			FROM services s, lookups l
+			WHERE s.serv_status_type_id = l.lookup_id
+				AND s.service_id = <?p:service_id.toPStmtString()?>
+				AND l.code <> 'closed'"
+	name="services"
+	alternator1="TableRow1:TableRow2"
+	alternator2="TableRow1Link:TableRow2Link"
+-->
+<!--#SQLHEADER-->
+<table class="SmartTable" border="0" cellpadding="0" cellspacing="0">
+<tr rowid="0" height="22">
+	<td width="10%" name="service_no" height="22" class="TableTitle" align="center">
+		Requisition No
+	</td>
+	<td width="30%" name="service_no" height="22" class="TableTitle" align="center">
+		Desc
+	</td>
+	<td name="service_no" height="22" class="TableTitle" align="center" colspan="6">
+		Item Data
+	</td>
+</tr>
+<!--#/SQLHEADER-->
+
+<tr>
+<a href="" onClick="newWindowScrollBars('{!s:action!}setupSession/job/req_edit.html?service_id={!r:services:service_id!}&job_id={!r:services:job_id!}&closeOnCancel=true','req_window',550,750);return false;">
+		<td rowspan="{!d:itemCountPlus4!}" name="service_no" height="15" class="{!d:services:alt2!}" width="10%" align="center" style="cursor:hand" onMouseOver="this.className='TableRowLinkRollover'" onMouseOut="this.className='{!d:services:alt2!}'">
+		{!r:services:service_no!}
+		</td>
+	</a>
+	<td rowspan="{!d:itemCountPlus4!}" class="{!d:services:alt1!}" align="left">{!r:services:description!}</td>
+</tr>
+
+<tr rowid="0" height="22">
+	<td width="10%" name="service_no" height="22" class="TableTitle" align="center">
+		Item
+	</td>
+	<td width="10%" name="service_no" height="22" class="TableTitle" align="center">
+		Rate
+	</td>
+	<td width="10%" name="service_no" height="22" class="TableTitle" align="center">
+	 	Qty Total
+	</td>
+	<td width="10%" name="service_no" height="22" class="TableTitle" align="center">
+		Qty Dist
+	</td>
+	<td  width="10%" name="service_no" height="22" class="TableTitle" align="center">
+		Qty Left
+	</td>
+	<td  width="10%" name="service_no" height="22" class="TableTitle" align="center">
+		Allocate
+	</td>
+</tr>
+
+<!--#SQLLOOP name="item_rates"
+		query="SELECT DISTINCT item_id, item_name, rate, qty_pooled, qty_dist, qty_left, isnull(rate, 0) as rate, FLOOR(rate * 100) AS rate_id
+			FROM pooled_hours_calc_v
+			WHERE service_id = <?r:services:service_id.toPStmtString()?>
+			AND item_id = <?p:item_id.toPStmtString()?>
+			AND rate = <?p:rate.toPStmtString()?>
+			"
+	-->
+
+
+
+		<tr>
+		<td class="{!d:services:alt1!}">{!r:item_rates:item_name!}</td>
+		<td class="{!d:services:alt1!}" align="right">{!r:item_rates:rate!}</td>
+		<td class="{!d:services:alt1!}" align="right">{!r:item_rates:qty_pooled!}</td>
+		<td class="{!d:services:alt1!}" align="right">{!r:item_rates:qty_dist!}</td>
+		<td class="{!d:services:alt1!}" align="right">{!r:item_rates:qty_left!}</td>
+		<td class="{!d:services:alt1!}" align="right">
+			<input style="text-align:right" type="text" name="all_{!r:services:service_id!}_{!p:item_id!}_{!p:rate_id!}" value="" size="3" onChange="testNewTotal(this)">
+		</td>
+		<script>
+		setTotal(
+			{!d:all_<?r:services:service_id?>_<?p:item_id?>_<?p:rate_id?>.isNull('0')!},
+			{!r:item_rates:qty_left!},
+			document.confirmPooling.all_{!r:services:service_id!}_{!p:item_id!}_{!p:rate_id!}
+		);
+		</script>
+		</tr>
+<!--#SQLNODATA-->
+		<tr>
+		<td class="{!d:services:alt1!}">{!r:item_rates:item_name!}</td>
+		<td class="{!d:services:alt1!}" align="right">{!r:item_rates:rate!}</td>
+		<td class="{!d:services:alt1!}" align="right">0</td>
+		<td class="{!d:services:alt1!}" align="right">0</td>
+		<td class="{!d:services:alt1!}" align="right">0</td>
+		<td class="{!d:services:alt1!}" align="right">
+			<input style="text-align:right" type="text" name="all_{!r:services:service_id!}_{!p:item_id!}_{!p:rate_id!}" value="" size="3" onChange="testNewTotal(this)">
+		</td>
+		<script>
+		setTotal(
+			{!d:all_<?r:services:service_id?>_<?p:item_id?>_<?p:rate_id?>.isNull('0')!},
+			0.00,
+			document.confirmPooling.all_{!r:services:service_id!}_{!p:item_id!}_{!p:rate_id!}
+		);
+		</script>
+		</tr>
+<!--#/SQLNODATA-->
+<!--#/SQLLOOP-->
+</table>
+
+
+<!--#/SQLLOOP-->
+<BR>
+<input type="button" name="button" value="Allocate to selected" class="button" onClick="document.confirmPooling.action='{!s:action!}allocate';if(testNewTotal(total_field)) document.confirmPooling.submit()">
+
+
+
+
+
+
+
+
+
+<br>
+<br>
+
+<table width="100%" cellspacing="0" cellpadding="0">
+	<tr><td  class="HeaderBar">External Requisitions - Current Allocation</td></tr>
+</table>
+
+<!--#SQLLOOP name="item_rates"
+		query="SELECT DISTINCT item_id, item_name, rate, FLOOR(rate * 100) AS rate_id
+			FROM pooled_hours_calc_v phc
+			WHERE service_id = <?p:service_id.toPStmtString()?>
+			AND item_id = <?p:item_id.toPStmtString()?>
+			AND rate = <?p:rate.toPStmtString()?>
+			"
+	-->
+
+
+<!--#SQLLOOP
+	query="SELECT s.service_id, s.service_no, s.job_id, s.description
+			FROM services s, lookups l
+			WHERE s.serv_status_type_id = l.lookup_id
+			AND l.code <> 'closed'
+			AND s.job_id = <?s:job_id.toPStmtString()?>
+			AND s.internal_req_flag = 'N'
+     	    ORDER BY s.service_no"
+	name="services"
+	alternator1="TableRow1:TableRow2"
+	alternator2="TableRow1Link:TableRow2Link"
+-->
+<!--#SQLHEADER-->
+<table class="SmartTable" border="0" cellpadding="0" cellspacing="0">
+<tr rowid="0" height="22">
+	<td width="2%" height="22" class="TableTitle" align="center">
+		<INPUT TYPE="checkbox" name="CheckAllBox" onclick="checkAllBoxes(this.form.CheckAllBox, this.form.sendToCheckBox)">
+	</td>
+	<td width="10%" name="service_no" height="22" class="TableTitle" align="center">
+		Requisition No
+	</td>
+	<td width="30%" name="service_no" height="22" class="TableTitle" align="center">
+		Desc
+	</td>
+	<td width="10%" name="service_no" height="22" class="TableTitle" align="center">
+	 	Quantity
+	</td>
+</tr>
+<!--#/SQLHEADER-->
+<tr>
+	<td  class="TableRow1" align="center">
+		<INPUT TYPE="checkbox" name="sendToCheckBox" value="{!r:services:service_id!}">
+	</td>
+	<a href="" onClick="newWindowScrollBars('{!s:action!}setupSession/job/req_edit.html?service_id={!r:services:service_id!}&job_id={!r:services:job_id!}&closeOnCancel=true','req_window',550,750);return false;">
+		<td name="service_no" height="15" class="{!d:services:alt2!}" width="10%" align="center" style="cursor:hand" onMouseOver="this.className='TableRowLinkRollover'" onMouseOut="this.className='{!d:services:alt2!}'">
+		{!r:services:service_no!}
+		</td>
+	</a>
+	<td class="{!d:services:alt1!}" align="left">
+		{!r:services:description!}
+	</td>
+
+		<td class="{!d:services:alt1!}" align="right">
+			<input style="text-align:right" type="text" name="conf_{!r:services:service_id!}_{!p:item_id!}_{!p:rate_id!}" value="" size="3" onChange="testPooledTotal()">
+		</td>
+		<script>
+		showValue(
+			{!d:conf_<?r:services:service_id?>_<?p:item_id?>_<?p:rate_id?>.isNull('0')!},
+			0.00,
+			document.confirmPooling.conf_{!r:services:service_id!}_{!p:item_id!}_{!p:rate_id!}
+		);
+		</script>
+	</tr>
+<!--#/SQLLOOP-->
+
+
+<!--#/SQLLOOP-->
+</table>
+</form>
+
+<input type="button" name="button" value="Confirm these numbers" class="button" onClick="document.confirmPooling.action='{!s:action!}confirm';if(testNewTotal(total_field)) document.confirmPooling.submit()">
+
+
+
+
+
+
+
+
+<br><br><br>
+
+
+
+
+</body>
+<!--#EMBED template="embeds/footer.html" -->
+
+
+

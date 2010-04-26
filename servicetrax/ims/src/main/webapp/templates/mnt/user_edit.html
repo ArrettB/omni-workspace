@@ -1,0 +1,346 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: user_edit.html, 49, 9/19/2006 11:18:01 AM, Greg Case$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.mnt/user_edit.view?>"-->
+
+<body class="BodyTag">
+
+	<table width="100%" cellspacing="0" cellpadding="0">
+		<tr><td  class="HeaderBar">Personal Information</td></tr>
+	</table>
+
+	<br>
+
+	<!--#SMARTFORM name="mnt/user_edit"	security="rights" table="users"	key="user_id"	nextTemplate="mnt/user_list.html"
+			sequence="@@IDENTITY"	buttons="" useCSS="true"
+			preHandler="ims.handlers.maintenance.UserPreHandler"
+			postHandler="ims.handlers.maintenance.UserPostHandler"
+	-->
+		<!--#SMARTFIELD name="active_flag" mode="Insert" value="Y" type="hidden" -->
+		<!--#SMARTFIELD name="dealer_name" type="hidden" -->
+		<!--#SMARTFIELD name="full_name" calculated="true" type="hidden"-->
+		<!--#SMARTFIELD name="redisplay" type="hidden" value="false"-->
+		<input name="button" type="hidden" value="Cancel">
+	<table>
+		<tr><td><!--#SMARTFIELD title="First Name:" name="first_name" type="text" div="</td><td>" style="width:200" --></td></tr>
+		<tr><td><!--#SMARTFIELD title="Last Name:" name="last_name" type="text" div="</td><td>" style="width:200" --></td></tr>
+		<tr><td><!--#SMARTFIELD title="Login:" name="login" type="text" div="</td><td>" style="width:200" --></td></tr>
+		<!--#IF defined="<?d:user_id?>"-->
+		<tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Password:</span>" name="password1" value="IGNORE" type="password" div="</td><td>" style="width:200" --></td>
+		    <td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Repeat Password:</span>" name="password2" value="IGNORE" type="password" div="</td><td>" style="width:200" --></td></tr>
+		<!--#ELSE-->
+		<tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Password:</span>" name="password1" value="" type="password" div="</td><td>" style="width:200" --></td>
+		    <td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Repeat Password:</span>" name="password2" value="" type="password" style="width:200" div="</td><td>" --></td></tr>
+		<!--#/IF-->
+		<tr><td><!--#SMARTFIELD title="Pin:" name="pin" value="" type="password" div="</td><td>" style="width:200" --></td>
+		<tr><td><!--#SMARTFIELD title="iMobile Login:" name="imobile_login" type="text" div="</td><td>" style="width:200" --></td></tr>
+
+		<tr><td><!--#SMARTFIELD title="Works&nbsp;For&nbsp;Dealer:" name="ext_dealer_id" div="</td><td>" resourceName="<?s:org_resource?>" type="droplist" style="width:135" query="SELECT rtrim(custnmbr) ext_dealer_id, rtrim(shrtname) dealer_name FROM RM00101 WHERE userdef1='dealer' ORDER BY dealer_name" onChange="if(this.value != '') redisplaySmartForm()" style="width:200"--></td></tr>
+		<tr><td><!--#SMARTFIELD title="Works&nbsp;For&nbsp;Vendor:" name="vendor_contact_id" div="&nbsp;</td><td>" type="droplist"  style="width:135" query="SELECT contact_id, contact_name FROM contacts_v WHERE (cont_status_type_code='active' AND organization_id=<?s:org_id.toSQLString()?> AND (ext_dealer_id=<?d:ext_dealer_id.toSQLString()?> AND customer_id=<?d:customer_id.toSQLString()?>)) or contact_id=<?d:vendor_contact_id.toSQLString()?> Order By contact_name" style="width:200" -->
+				<input type="button" name="vendor_view" value="View" class="button2" onClick="newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id={!d:ext_dealer_id!}&customer_id={!d:customer_id!}&theForm=user_edit&theDroplist=vendor_contact_id&contact_id=','contacts',450,490,user_edit.vendor_contact_id);">
+				<input type="button" name="vendor_new"  value="New"  class="button2" onClick="newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id={!d:ext_dealer_id!}&customer_id={!d:customer_id!}&theForm=user_edit&theDroplist=vendor_contact_id&contact_id=','contacts',450,490);">
+		</td></tr>
+		<tr>
+			<td>Works For Customer:&nbsp;</td>
+			<td valign="middle">
+			<!--#SELECT class="regular"
+					name="approvers"
+					query="SELECT c.customer_id, c.customer_name
+			                 FROM customers c INNER JOIN
+			                      lookups customer_type ON c.customer_type_id = customer_type.lookup_id INNER JOIN
+			                      user_customers uc ON c.customer_id = uc.customer_id
+			                WHERE customer_type.code IN ('dealer','commercial','corporate','government')
+			                  AND uc.user_id = <?p:user_id.isNull('-1').toPStmtInt()?>
+			                  AND c.organization_id = <?s:org_id.toPStmtString()?>
+			             ORDER BY c.customer_name"
+					size="5"
+					style="width:200"
+					multiple
+					class="readonly"
+			-->
+				<!--#IF defined="<?d:user_id?>"-->
+				<input type="button" name="customer_modify" value="Modify..."  class="button2" onClick="newWindow('{!s:showPage!}mnt/user_customers?user_id={!p:user_id!}','uc',450,490);">
+				<!--#ELSE-->
+				<input type="button" name="customer_modify" value="Modify..."  class="buttonDisabled2" disabled>
+				<!--#/IF-->
+			</td>
+		</tr>
+		<tr>
+			<td>Works For End User:&nbsp;</td>
+			<td valign="middle">
+				<!--#SELECT class="regular"
+					name="endusers"
+					query="SELECT eu.customer_id, eu.customer_name
+			                 FROM customers eu INNER JOIN
+			                      user_customer_end_users uceu ON eu.customer_id = uceu.customer_id INNER JOIN
+			                      user_customers uc ON uceu.user_customer_id = uc.user_customer_id
+			                WHERE uc.user_id = <?p:user_id.isNull('-1').toPStmtInt()?>
+			                  AND eu.organization_id = <?s:org_id.toPStmtString()?>
+			             ORDER BY eu.customer_name"
+					size="5"
+					style="width:200"
+					multiple
+					class="readonly"
+				-->
+				<!--#IF defined="<?d:user_id?>"-->
+				<input type="button" name="enduser_modify" value="Modify..."  class="button2" onClick="newWindow('{!s:showPage!}mnt/user_customer_end_users?user_id={!p:user_id!}','uc',450,490);">
+				<!--#ELSE-->
+				<input type="button" name="enduser_modify" value="Modify..."  class="buttonDisabled2" disabled>
+				<!--#/IF-->
+			</td>
+		</tr>
+		<tr>
+			<td>Approves For:&nbsp;</td>
+			<td valign="middle">
+			<!--#SELECT class="regular"
+					name="approvers"
+					query="SELECT c.customer_id, c.customer_name
+						 FROM customers c, user_approvers ua
+						 WHERE ua.user_id = <?p:user_id.isNull('-1').toPStmtInt()?>
+						 AND ua.customer_id = c.customer_id
+						 AND c.organization_id = <?s:org_id.toPStmtInt()?>
+					ORDER BY c.customer_name"
+					size="5"
+					style="width:200"
+					multiple
+					class="readonly"
+			-->
+				<!--#IF defined="<?d:user_id?>"-->
+				<input type="button" name="approver_modify" value="Modify..."  class="button2" onClick="newWindow('{!s:showPage!}mnt/user_approvers?user_id={!p:user_id!}','ua',450,490);">
+				<!--#ELSE-->
+				<input type="button" name="approver_modify" value="Modify..."  class="buttonDisabled2" disabled>
+				<!--#/IF-->
+		</td>
+		</tr>
+		<tr>
+			<td>Vendor For:&nbsp;</td>
+			<td valign="middle">
+			<!--#SELECT class="regular"
+					name="approvers"
+					query="SELECT c.customer_id, c.customer_name
+						 FROM customers c, user_vendors uv
+						 WHERE uv.user_id = <?p:user_id.isNull('-1').toPStmtInt()?>
+						 AND uv.customer_id = c.customer_id
+						 AND c.organization_id = <?s:org_id.toPStmtInt()?>
+					ORDER BY c.customer_name"
+					size="5"
+					style="width:200"
+					multiple
+					class="readonly"
+			-->
+				<!--#IF defined="<?d:user_id?>"-->
+				<input type="button" name="vendor_modify" value="Modify..."  class="button2" onClick="newWindow('{!s:showPage!}mnt/user_vendors?user_id={!p:user_id!}','uv',450,490);">
+				<!--#ELSE-->
+				<input type="button" name="vendor_modify" value="Modify..."  class="buttonDisabled2" disabled>
+				<!--#/IF-->
+
+		</td>
+		</tr>
+		<tr>
+			<td>Available Project Types:&nbsp;</td>
+			<td valign="middle">
+			<!--#SELECT class="regular"
+					name="project_types"
+					query="SELECT jt.lookup_id, jt.lookup_name
+						 FROM job_types_v jt, user_job_types ujt
+						 WHERE ujt.user_id = <?p:user_id.isNull('-1').toPStmtInt()?>
+						 AND ujt.lookup_id = jt.lookup_id
+					ORDER BY jt.lookup_name"
+					size="5"
+					style="width:200"
+					multiple
+					class="readonly"
+			-->
+			  <!--#IF defined="<?d:user_id?>"-->
+				<input type="button" name="project_type_modify" value="Modify..."  class="button2" onClick="newWindow('{!s:showPage!}mnt/user_job_types?user_id={!p:user_id!}','ut',450,490);">
+				<!--#ELSE-->
+				<input type="button" name="project_type_modify" value="Modify..."  class="buttonDisabled2" disabled>
+			  <!--#/IF-->
+		  </td>
+	    </tr>
+
+		<tr><td><!--#SMARTFIELD title="Contact:" name="contact_id" div="</td><td>" type="droplist" style="width:135" table="contacts_v" style="width:200"
+		                        query="SELECT c.contact_id, c.contact_name
+		                                 FROM contacts c INNER JOIN lookups l ON c.cont_status_type_id = l.lookup_id
+		                                WHERE (c.organization_id=<?s:org_id.toSQLString()?> AND l.code='active' AND (c.ext_dealer_id = <?d:ext_dealer_id.toSQLString()?> OR <?d:ext_dealer_id.toSQLString()?> IS NULL))
+		                                   OR c.contact_id=<?d:contact_id.toSQLString()?>
+		                             ORDER BY c.contact_name" -->
+		    <!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+			  <input type="button" name="contact_edit" value="View" class="button2" onClick="newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&theForm=user_edit&theDroplist=contact_id&contact_id=','contacts',450,490,user_edit.contact_id);">
+			  <!--#/IF-->
+		</td></tr>
+		<tr><td><!--#SMARTFIELD title="Employment:" name="employment_type_id" div="</td><td>" type="droplist" style="width:135" table="employment_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" style="width:200"--></td></tr>
+		<tr><td><!--#SMARTFIELD title="Employee ID:" name="ext_employee_id" div="</td><td>" style="width:200" --></td></tr>
+		<tr><td><!--#SMARTFIELD title="QP3 Team:" name="qp3" div="</td><td>" style="width:200" --></td></tr>
+	</table>
+	<!--#IF defined="<?d:user_id?>"-->
+		<!--#CHECKSECURITY right="rights.mnt/resource.view" -->
+
+				<br>
+
+				<table width="100%" cellspacing="0" cellpadding="0">
+					<tr><td  class="HeaderBar">User's Resources</td></tr>
+				</table>
+
+				<!--#SMARTTABLE class="SmartTable" name="resources" query="SELECT resource_id, name FROM resources WHERE organization_id=<?s:org_id.toSQLString()?> AND active_flag = 'Y' AND user_id=<?d:user_id.toSQLString()?> ORDER BY name" -->
+				<!--#IF defined="<?s:rights.mnt/resource.update?>"-->
+				     <!--#SMARTCOLUMN name="name" sort="name" title="Resource Name" width="50%" href="<?s:showPage?>mnt/resource.html?cur_user_id=<?d:user_id?>&resource_id=<?r:resources:resource_id?>&called_by=mnt/user_edit" target="main_frame" -->
+				<!--#ELSE-->
+				     <!--#SMARTCOLUMN name="name" sort="name" title="Resource Name" width="50%" -->
+				<!--#/IF-->
+				<!--#/SMARTTABLE -->
+				<br>
+				<!--#IF defined="<?s:rights.mnt/resource.update?>"-->
+					<input type="button" class="button" name="user_res_button" value="User's Resources" onClick="location='{!s:showPage!}mnt/resource.html?cur_user_id={!d:user_id!}'">
+					<br>
+				<!--#/IF-->
+		<!--#/CHECKSECURITY-->
+	<!--#/IF-->
+
+	<br>
+	<table width="100%" cellspacing="0" cellpadding="0">
+		<tr><td  class="HeaderBar">Security</td></tr>
+	</table>
+	<br>
+
+	<span class="Label">This user performs the following roles:</span>
+
+	<table>
+	<!--#SQLLOOP name="r" resourceName="SQLServer"
+			query="SELECT r.role_id, r.name
+			FROM roles r
+			ORDER BY r.name"-->
+		<tr>
+		<!--#SQLLOOP name="has_role" resourceName="SQLServer"
+	   	query="SELECT DISTINCT 'X'
+			         FROM user_roles ur
+			        WHERE ur.role_id = <?r:r:role_id.toPStmtString()?>
+			          AND ur.user_id = <?d:user_id.toPStmtString()?>"-->
+			<td><input type="checkbox" name="role_id" value="{!r:r:role_id!}" checked></td>
+	<!--#SQLNODATA-->
+			<td><input type="checkbox" name="role_id" value="{!r:r:role_id!}"></td>
+	<!--#/SQLNODATA-->
+	<!--#/SQLLOOP-->
+			<td class="Label">{!r:r:name!}</td>
+		</tr>
+	<!--#/SQLLOOP-->
+	</table>
+
+	<table width="100%" cellspacing="0" cellpadding="0">
+		<tr><td  class="HeaderBar">Organizations</td></tr>
+	</table>
+	<br>
+	<span class="Label">This user is part of the following organizations:</span>
+	<table>
+	<!--#CHECKSECURITY right="rights.mnt/assign_all_locations.view" -->
+		<!--#SET name="org_query" value="SELECT organization_id, name
+			FROM organizations
+			ORDER BY organization_id" -->
+	<!--#ELSE -->
+		<!--#SET name="org_query" value="SELECT o.organization_id, o.name
+			 FROM organizations o, user_organizations uo
+			WHERE o.organization_id = uo.organization_id
+			  AND uo.user_id = <?s:user.getUserID()?>
+			ORDER BY o.organization_id" -->
+		<!--#SQLLOOP name="keepOtherOrgs"
+			 query="SELECT uo.organization_id
+			         FROM user_organizations uo
+			        WHERE uo.user_id = <?d:user_id.toPStmtString()?>
+			          AND uo.organization_id NOT IN (SELECT organization_id FROM user_organizations WHERE user_id = <?s:user.getUserID()?>)"  -->
+			<input type="hidden" name="org_id" value="{!r:keepOtherOrgs:organization_id!}">
+		<!--#/SQLLOOP-->
+			
+	<!--#/CHECKSECURITY-->
+	<!--#SQLLOOP name="organ"
+			query="<?d:org_query?>"-->
+		<tr>
+		<!--#SQLLOOP name="has_org"
+	   	query="SELECT uo.user_id, uo.organization_id
+			         FROM user_organizations uo
+			        WHERE uo.user_id = <?d:user_id.toPStmtString()?>
+			          AND uo.organization_id = <?r:organ:organization_id.toPStmtString()?>"-->
+			<td><input type="checkbox" name="org_id" value="{!r:organ:organization_id!}" checked></td>
+		<!--#SQLNODATA-->
+				<td><input type="checkbox" name="org_id" value="{!r:organ:organization_id!}"></td>
+		<!--#/SQLNODATA-->
+		<!--#/SQLLOOP-->
+			<td class="Label">{!r:organ:name!}</td>
+		</tr>
+	<!--#/SQLLOOP-->
+	</table>
+
+	<!--#EMBED template="embeds/audit.html" table_name="users" table_key="user_id" key_value="<?p:user_id?>"-->
+
+	<table>
+		<tr>
+			<!--#IF evaluate="<?d:mode?>" compare="Update"-->
+			<!--#IF defined="<?s:rights.mnt/user_edit.update?>"-->
+			<td><input type="submit" id="Save" class="button" name="save_button" value="Save" onclick="exitFunction('Save')"></td>
+			<!--#/IF-->
+			<!--#/IF-->
+			<!--#IF evaluate="<?d:mode?>" compare="Insert"-->
+			<!--#IF defined="<?s:rights.mnt/user_edit.insert?>"-->
+			<td><input type="submit" id="Save" class="button" name="save_button" value="Save" onclick="exitFunction('Save')"></td>
+			<!--#/IF-->
+			<!--#/IF-->
+			<!--#IF evaluate="<?d:mode?>" compare="Update"-->
+			<!--#IF defined="<?s:rights.mnt/user_edit.delete?>"-->
+			<td><input type="button" id="Delete" class="button" name="delete_button" value="Delete" onclick="exitFunction('Delete')"></td>
+			<!--#/IF-->
+			<!--#/IF-->
+			<td><input type="submit" id="Cancel" class="button" name="cancel_button" value="Cancel" onclick="exitFunction('Cancel')"></td>
+		</tr>
+	</table>
+	<!--#/SMARTFORM -->
+</body>
+
+<script language="JavaScript">
+<!--
+
+	function exitFunction(action)
+	{
+		document.user_edit.button.value = action;
+		if( action != null )
+		{
+			if( action == 'Save' )
+			{
+				document.user_edit.dealer_name.value = user_edit.ext_dealer_id.options[user_edit.ext_dealer_id.selectedIndex].text;
+				if (document.user_edit.password1.value != document.user_edit.password2.value)
+				{
+					alert("The passwords you have entered do not match.  Please try again.");
+					window.event.returnValue = false;
+				}
+				else if (document.user_edit.password1.value.length < 5)
+				{
+					alert("Sorry, passwords must be at least 5 characters in length.");
+					window.event.returnValue = false;
+				}
+			}
+			if( action == 'Delete' )
+			{
+				document.user_edit.action = "{!s:action!}userDelete";
+				document.user_edit.submit();
+			}
+		}
+	}
+
+	function getExtDealerID()
+	{
+		var ext_dealer_id = escape(user_edit.ext_dealer_id.options[user_edit.ext_dealer_id.selectedIndex].value);
+		if( ext_dealer_id == '')
+			ext_dealer_id = escape({!s:user.extDealerID.toJavaScriptString()!})
+		return ext_dealer_id;
+	}
+
+	function redisplaySmartForm()
+	{
+		user_edit.redisplay.value='true';
+		user_edit.submit();
+	}
+
+
+
+//-->
+</script>
+
+<!--#EMBED template="embeds/footer.html" -->

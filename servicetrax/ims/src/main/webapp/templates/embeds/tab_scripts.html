@@ -1,0 +1,121 @@
+<!-- $Header: tab_scripts.html, 6, 1/7/2005 5:11:37 PM, Lee A. Gunderson$ -->
+<script language="JavaScript">
+<!--
+
+function getTab(tab)
+{
+
+	<!--#IF DEFINED="<?p:tab_view?>"-->
+		<!--#IF DEFINED="<?p:loc?>"-->
+			<!--#SQLLOOP query="SELECT template_name, tab_name
+								FROM <?p:tab_view?>
+								WHERE location = <?p:loc.toPStmtString()?>"
+							resourceName="SQLServer"
+							name="locQuery"
+			-->
+			tab.name = {!r:locQuery:tab_name.toJavaScriptString()!};
+			tab.template = {!r:locQuery:template_name.toJavaScriptString()!};
+			tab.location = {!p:loc.toJavaScriptString()!};
+			<!--#/SQLLOOP-->
+		<!--#ELSE-->
+			<!--#SQLLOOP query="SELECT t.template_name, t.table_id
+								FROM tabs_v2 t
+								WHERE t.type_code = <?p:tab_type_code.toPStmtString()?>
+								AND t.default_tab = 'Y'
+								AND t.user_id = <?s:user_id.toPStmtInt()?>"
+							resourceName="SQLServer"
+							name="defaultTabQuery"
+			-->
+		<!--#SQLNODATA-->
+		<!---This means the don't have access to the default tab, so we select the first one-->
+			<!--#SQLLOOP query="SELECT TOP 1 t.template_name, t.table_id
+								FROM tabs_v2 t
+								WHERE t.type_code = <?p:tab_type_code.toPStmtString()?>
+								AND t.user_id = <?s:user_id.toPStmtInt()?>"
+							resourceName="SQLServer"
+							name="noDefaultTabQuery"
+			-->
+				tab.name = {!r:noDefaultTabQuery:template_name.toJavaScriptString()!};
+				tab.template = {!r:noDefaultTabQuery:template_name.toJavaScriptString()!};
+				tab.location = {!r:noDefaultTabQuery:table_id.toJavaScriptString()!};
+			<!--#/SQLLOOP-->
+		<!--#/SQLNODATA--->
+			tab.name = {!r:defaultTabQuery:template_name.toJavaScriptString()!};
+			tab.template = {!r:defaultTabQuery:template_name.toJavaScriptString()!};
+			tab.location = {!r:defaultTabQuery:table_id.toJavaScriptString()!};
+			<!--#/SQLLOOP-->
+		<!--#/IF-->
+	<!--#ELSE-->
+		<!--#SQLLOOP query="SELECT t.template_name, t.table_id
+							FROM tabs_v2 t
+							WHERE t.type_code = <?p:tab_type_code.toPStmtString()?>
+							AND t.default_tab = 'Y'
+							AND t.user_id = <?s:user_id.toPStmtInt()?>"
+						resourceName="SQLServer"
+						name="defaultTabQuery"
+		-->
+	<!--#SQLNODATA-->
+	<!---This means the don't have access to the default tab, so we select the first one-->
+		<!--#SQLLOOP query="SELECT TOP 1 t.template_name, t.table_id
+							FROM tabs_v2 t
+							WHERE t.type_code = <?p:tab_type_code.toPStmtString()?>
+							AND t.user_id = <?s:user_id.toPStmtInt()?>"
+						resourceName="SQLServer"
+						name="noDefaultTabQuery"
+		-->
+			tab.name = {!r:noDefaultTabQuery:template_name.toJavaScriptString()!};
+			tab.template = {!r:noDefaultTabQuery:template_name.toJavaScriptString()!};
+			tab.location = {!r:noDefaultTabQuery:table_id.toJavaScriptString()!};
+		<!--#/SQLLOOP-->
+	<!--#/SQLNODATA--->
+		tab.name = {!r:defaultTabQuery:template_name.toJavaScriptString()!};
+		tab.template = {!r:defaultTabQuery:template_name.toJavaScriptString()!};
+		tab.location = {!r:defaultTabQuery:table_id.toJavaScriptString()!};
+		<!--#/SQLLOOP-->
+	<!--#/IF-->
+}
+
+function selectTab(address,location)
+{
+	tab = new tabObject();
+
+	if (address && address.length > 0)
+	{
+		tab.name = address;
+		tab.template = address;
+		tab.location = location;
+	}
+	else
+		getTab(tab);
+
+	<!--#SQLLOOP query="SELECT 'if (' + t.table_id + ') colorTabLine(' + t.table_id + ',line_' + t.table_id + ',tab.name,' + '''' + t.template_name + '''' + ');' AS statement
+						FROM tabs_v2 t
+						WHERE type_code = <?p:tab_type_code.toPStmtString()?>
+						AND t.user_id = <?s:user_id.toPStmtInt()?>"
+					resourceName="SQLServer"
+					name="tabQuery"
+	-->
+		{!r:tabQuery:statement!}
+		<!--#SQLFOOTER-->
+
+			<!--#IF evaluate="<?p:tab_type_code?>" compare="MAIN" -->
+				top.main_frame.location={!s:showPage.toJavaScriptString()!} + tab.template + '?loc='+tab.location;
+			<!--#ELSEIF evaluate="<?p:tab_type_code?>" compare="JOB" -->
+				parent.job_frame.location={!s:action.toJavaScriptString()!} + tab.template + '?loc='+tab.location;
+			<!--#ELSEIF evaluate="<?p:tab_type_code?>" compare="SERVICE" -->
+				parent.service_frame.location={!s:action.toJavaScriptString()!} + tab.template + '?loc='+tab.location;
+			<!--#ELSEIF evaluate="<?p:tab_type_code?>" compare="BILL" -->
+				parent.bill_frame.location={!s:action.toJavaScriptString()!} + tab.template + '?loc='+tab.location;
+			<!--#ELSEIF evaluate="<?p:tab_type_code?>" compare="ENET" -->
+				top.main_frame.location={!s:action.toJavaScriptString()!} + tab.template + '?loc='+tab.location;
+			<!--#ELSEIF evaluate="<?p:tab_type_code?>" compare="JOB_BILL" -->
+				parent.job_bill_frame.location={!s:action.toJavaScriptString()!} + tab.template + '?loc='+tab.location;
+			<!--#/IF-->
+
+		<!--#/SQLFOOTER--->
+
+	<!--#/SQLLOOP-->
+
+}
+//-->
+</script>

@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.PunchlistIssue" table="PUNCHLIST_ISSUES" schema="dbo" catalog="">
+        <id name="punchlistIssueId" type="java.lang.Long">
+            <column name="PUNCHLIST_ISSUE_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="lookupByRootCauseId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="ROOT_CAUSE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="punchlist" class="com.dynamic.servicetrax.orm.Punchlist" fetch="select">
+            <column name="PUNCHLIST_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="lookupByStatusId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="STATUS_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="userByModifiedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="userByCreatedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="issueNo" type="long">
+            <column name="ISSUE_NO" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="stationArea" type="string">
+            <column name="STATION_AREA" length="50" />
+        </property>
+        <property name="problemDesc" type="string">
+            <column name="PROBLEM_DESC" length="300" />
+        </property>
+        <property name="completeDate" type="timestamp">
+            <column name="COMPLETE_DATE" length="23" />
+        </property>
+        <property name="solutionBy" type="string">
+            <column name="SOLUTION_BY" length="50" />
+        </property>
+        <property name="solutionDesc" type="string">
+            <column name="SOLUTION_DESC" length="300" />
+        </property>
+        <property name="solutionDate" type="timestamp">
+            <column name="SOLUTION_DATE" length="23" />
+        </property>
+        <property name="installDesc" type="string">
+            <column name="INSTALL_DESC" length="300" />
+        </property>
+        <property name="installDate" type="timestamp">
+            <column name="INSTALL_DATE" length="23" />
+        </property>
+        <property name="orderNo" type="string">
+            <column name="ORDER_NO" length="20" />
+        </property>
+        <property name="shipDate" type="timestamp">
+            <column name="SHIP_DATE" length="23" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+    </class>
+</hibernate-mapping>

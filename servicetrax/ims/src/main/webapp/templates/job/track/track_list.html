@@ -1,0 +1,36 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: track_list.html, 5, 1/7/2005 5:11:43 PM, Lee A. Gunderson$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+
+<body class="BodyTag">
+
+   <span class="Label">Add <a href="{!s:showPage!}job/track/track_edit.html?loc=track_edit">Tracking Record</a></span><hr>
+	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	   <tr><td class="tableHeader">Requisition Tracking List</td></tr>
+	</table>
+
+   <!--#SMARTTABLE name="tracking_v"
+   	   query="SELECT stv.tracking_id, stv.job_id, stv.job_no, stv.service_id, stv.service_no,
+	                 stv.tracking_type_name,
+	                 stv.to_contact_id, stv.to_contact_name, stv.email, stv.from_user_id, stv.from_user_name,
+	                 stv.notes, stv.old_status_type_name, stv.new_status_type_name,
+	                 stv.date_created, stv.created_by_name, stv.date_modified, stv.modified_by_name, stv.email_sent_flag
+	          	 FROM tracking_v stv
+   	          WHERE stv.service_id = <?s:service_id.toPStmtString()?>
+      	       ORDER BY date_created desc"
+   -->
+     <!--#SMARTCOLUMN width="9%"  title="Job#" name="job_no" sort="job_no" align="center"  -->
+     <!--#SMARTCOLUMN width="7%"  title="Req#" name="service_no" sort="service_no" align="center" -->
+     <!--#SMARTCOLUMN width="9%"  title="Date" name="date_created" sort="date_created" format="date" -->
+     <!--#SMARTCOLUMN width="7%"  title="Type" name="tracking_type_name" sort="tracking_type_name" -->
+     <!--#SMARTCOLUMN width="9%"  title="Notified" name="to_contact_name" sort="to_contact_name" -->
+     <!--#SMARTCOLUMN width="11%" title="Notified By" name="from_user_name" sort="from_user_name" -->
+     <!--#SMARTCOLUMN width="12%" title="From Status" name="old_status_type_name" sort="old_status_type_name" -->
+     <!--#SMARTCOLUMN width="9%"  title="To Status" name="new_status_type_name" sort="new_status_type_name" -->
+     <!--#SMARTCOLUMN width="2%"  title="Sent" name="email_sent_flag" sort="email_sent_flag" align="center" -->
+     <!--#SMARTCOLUMN width="18%" title="Notes" name="notes" sort="notes" href="<?s:showPage?>job/track/track_edit.html?loc=track_edit&tracking_id=<?r:tracking_v:tracking_id?>" target="" -->
+   <!--#/SMARTTABLE -->
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

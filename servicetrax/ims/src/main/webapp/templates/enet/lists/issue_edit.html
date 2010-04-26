@@ -1,0 +1,218 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+
+
+<body class="BodyTag">
+
+	      <!--#SMARTFORM name="lists/punchlist_issue" table="punchlist_issues" key="punchlist_issue_id"
+				preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+				postHandler="ims.handlers.lists.PunchlistIssuePostHandler"
+				buttons=""
+				nextTemplate="enet/lists/punchlist.html"
+				prevTemplate="enet/lists/punchlist.html"
+				onClickFunction="checkButtons"
+
+	-->
+		<!--#SMARTFIELD name="punchlist_id" value="<?p:punchlist_id?>" type="hidden"-->
+		<input type="hidden" name="nextID" value="">
+		<input type="hidden" name="previousID" value="">
+		<input type="hidden" name="npMode" value="">
+		<input type="hidden" name="prev_template" value="{!p:prev_template!}">
+
+		<table>
+			<tr>
+				<td>
+				<!--#IF defined="<?p:punchlist_issue_id?>" -->
+					<!--#SMARTFIELD name="issue_no" div="</td><td>" type="text" title="Issue#" class="readonly" readOnly="true" style="width:50"-->
+				<!--#ELSE-->
+					<!--#SQLLOOP name="q1"
+						query="SELECT ISNULL(MAX(issue_no),0) + 1 AS next_issue_no FROM punchlist_issues WHERE punchlist_id = <?p:punchlist_id.toPStmtString()?>"
+					-->
+					<!--#SMARTFIELD name="issue_no" div="</td><td>" type="text" title="Issue#" class="readonly" readOnly="true" style="width:50" value="<?r:q1:next_issue_no?>"-->
+					<!--#/SQLLOOP-->
+				<!--#/IF-->
+				</td>
+				<td>
+					&nbsp;&nbsp;&nbsp;<!--#SMARTFIELD name="status_id" div="</td><td>" type="droplist" title="Status" table="lookups_v" display="lookup_name" key="lookup_id" filter="type_code = 'punchlist_issue_status'" orderBy="sequence_no" style="width:114" -->
+				</td>
+			</tr>
+		</table>
+
+
+		<!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Problem" bo_width="500" -->
+	   <table>
+			<tr>
+				<td>
+					<!--#SMARTFIELD name="station_area" type="text" title="Workstation Name or Location" div="</td><td>" -->
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<!--#SMARTFIELD name="root_cause_id" div="</td><td>" type="droplist" title="Root Cause #" table="root_causes_v" display="name" key="root_cause_id" orderBy="cause_number" style="width:250" -->
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<!--#SMARTFIELD title="Contact" div="</td><td>" name="solution_by" -->
+				<td>
+			</tr>
+			<tr>
+				<td>
+					<!--#SMARTFIELD name="problem_desc" div="</td><td>" type="textarea" title="Problem Description" rows="4" cols="50" -->
+				</td>
+			</tr>
+		</table>
+		<!--#EMBED template="enet/embeds/boxout_footer.html" bo_title="Problem" bo_width="500" -->
+
+
+		<!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Solution" bo_width="500" -->
+	   <table>
+			<tr>
+				<td>
+					<!--#SMARTFIELD name="solution_date" type="date" title="Solution Date" div="</td><td>" -->
+					<script>makeButton('selectDate', 'calendar_off', 'calendar_on', 'chooseDate(solution_date)')</script>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<!--#SMARTFIELD name="solution_desc" div="</td><td>" type="textarea" title="Solution Description" rows="4" cols="50" -->
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<!--#SMARTFIELD name="order_no" type="text" title="Replacement Order&nbsp;#" div="</td><td>" -->
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<!--#SMARTFIELD name="ship_date" type="date" title="Ship Date" div="</td><td>" -->
+					<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(ship_date)')</script>
+				</td>
+			</tr>
+		</table>
+		<!--#EMBED template="enet/embeds/boxout_footer.html" bo_title="Solution" bo_width="500" -->
+
+		<!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Installation" bo_width="500" -->
+		<table>
+			<tr>
+				<td>
+					<!--#SMARTFIELD name="install_date" type="date" title="Install Date" div="</td><td>" -->
+					<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(install_date)')</script>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<!--#SMARTFIELD name="install_desc" div="</td><td>" type="textarea" title="Install Description" rows="4" cols="50" -->
+				</td>
+			</tr>
+		</table>
+		<!--#EMBED template="enet/embeds/boxout_footer.html" bo_title="Installation" bo_width="500" -->
+
+<table>
+<tr>
+	<td><input type="button" class="button" name="button" value="Previous" id="Previous" onClick="checkButtons('Previous');"></td>
+	<td><input type="button" class="button" name="button" value="Next" id="Next" onClick="checkButtons('Next');"></td>
+	<td><input type="submit" class="button" name="button" value="Save" id="Save"></td>
+	<td><input type="submit" class="button" name="button" value="Cancel" id="Cancel"></td>
+</tr>
+</table>
+
+
+		<!--#/SMARTFORM-->
+
+</body>
+
+
+<script>
+<!--
+
+function checkButtons(button)
+{
+
+	if (button == 'Next')
+	{
+		document.punchlist_issue.npMode.value = "Next";
+		document.punchlist_issue.Save.click();
+	}
+	else if (button == 'Previous')
+	{
+		document.punchlist_issue.npMode.value = "Previous";
+		document.punchlist_issue.Save.click();
+	}
+	return false;
+}
+
+function disableNextButton()
+{
+	document.punchlist_issue.Next.disabled=true;
+	document.punchlist_issue.Next.className="buttonDisabled";
+}
+
+function disablePreviousButton()
+{
+	document.punchlist_issue.Previous.disabled=true;
+	document.punchlist_issue.Previous.className="buttonDisabled";
+}
+
+function setNextID(nextID)
+{
+	document.punchlist_issue.nextID.value = nextID;
+}
+
+function setPreviousID(previousID)
+{
+	document.punchlist_issue.previousID.value = previousID;
+}
+
+<!--#IF defined="<?p:punchlist_issue_id?>" -->
+	<!--#SQLLOOP
+		name="checkNext"
+		query="SELECT TOP 1 punchlist_issue_id
+			FROM punchlist_issues
+			WHERE issue_no >
+			(
+				SELECT issue_no
+				FROM punchlist_issues
+				WHERE punchlist_issue_id = <?p:punchlist_issue_id.toPStmtString()?>
+					AND punchlist_id = <?p:punchlist_id.toPStmtString()?>
+			)
+			AND punchlist_id = <?p:punchlist_id.toPStmtString()?>
+			ORDER BY issue_no ASC"
+
+	-->
+	setNextID({!r:checkNext:punchlist_issue_id!});
+	<!--#SQLNODATA-->
+	disableNextButton();
+	<!--#/SQLNODATA-->
+	<!--#/SQLLOOP-->
+
+	<!--#SQLLOOP
+		name="checkPrevious"
+		query="SELECT TOP 1 punchlist_issue_id
+			FROM punchlist_issues
+			WHERE issue_no <
+			(
+				SELECT issue_no
+				FROM punchlist_issues
+				WHERE punchlist_issue_id = <?p:punchlist_issue_id.toPStmtString()?>
+					AND punchlist_id = <?p:punchlist_id.toPStmtString()?>
+			)
+			AND punchlist_id = <?p:punchlist_id.toPStmtString()?>
+			ORDER BY issue_no DESC"
+
+	-->
+	setPreviousID({!r:checkPrevious:punchlist_issue_id!});
+	<!--#SQLNODATA-->
+	disablePreviousButton();
+	<!--#/SQLNODATA-->
+	<!--#/SQLLOOP-->
+
+<!--#ELSE-->
+	disableNextButton();
+	disablePreviousButton();
+<!--#/IF-->
+-->
+</script>
+
+
+
+<!--#EMBED template="enet/embeds/footer.html" -->

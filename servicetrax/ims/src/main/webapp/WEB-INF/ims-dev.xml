@@ -1,0 +1,526 @@
+<!-- DEV version of ims.xml -->
+
+<!DOCTYPE applicationContext SYSTEM "iFrame2.dtd"
+[
+<!ENTITY appName "ims">
+<!ENTITY projectDir "C:\work\serviceTrax\ims\">
+<!ENTITY htmlDir "C:\work\serviceTrax\ims\src\main\webapp\">
+<!ENTITY sep "\">
+]
+>
+
+<applicationContext name="&appName;" version="ims.Version"
+		    class="dynamic.intraframe.engine.BaseApplicationContext"
+		>
+
+	<admin username="admin" password="nothing" action="admin" template="iframe/adminInfo.html"/>
+
+	<appGlobals>
+		<appGlobalDatum name="additionalReports">http://www.omniworkspace.com/servicetrax</appGlobalDatum>
+		<appGlobalDatum name="charmContext">stc</appGlobalDatum>
+		<appGlobalDatum name="deadlockAlter">bvonhaden@apexit.com,ChrismanJ@omniworkspace.com</appGlobalDatum>
+		<appGlobalDatum name="documentDir">&projectDir;documents&sep;</appGlobalDatum>
+		<appGlobalDatum name="headerTitle">ServiceTRAX - Powered by Omni Workspace Company</appGlobalDatum>
+		<appGlobalDatum name="ignoreContactName"> N/A</appGlobalDatum>
+		<appGlobalDatum name="loginFontSize">3</appGlobalDatum>
+		<appGlobalDatum name="loginTo">serviceTrax</appGlobalDatum>
+		<appGlobalDatum name="loginSupport">ServiceTRAX Support 1-877-257-6111</appGlobalDatum>
+		<appGlobalDatum name="loginName">User</appGlobalDatum>
+		<appGlobalDatum name="maxFileSize">10000000</appGlobalDatum>
+		<appGlobalDatum name="num_service_req_lock_days">3</appGlobalDatum>
+		<appGlobalDatum name="num_workorder_lock_days">2</appGlobalDatum>
+		<appGlobalDatum name="pocketMOTD">Please let us know how we can make PockeTRAX better 612-627-1710!</appGlobalDatum>
+		<appGlobalDatum name="requestDocumentDir">&projectDir;request_documents&sep;</appGlobalDatum>
+		<appGlobalDatum name="runEconnect">true</appGlobalDatum>
+		<appGlobalDatum name="sendErrorsTo">bvonhaden@apexit.com</appGlobalDatum>
+		<appGlobalDatum name="tempDir">&projectDir;downloadTemp&sep;</appGlobalDatum>
+		<appGlobalDatum name="testEmail">bvonhaden@apexit.com</appGlobalDatum>
+
+		<appGlobalDatum name="WindowAttribs">
+			'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=400,height=304'
+		</appGlobalDatum>
+		<appGlobalDatum name="Window2Attribs">
+			'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no'
+		</appGlobalDatum>
+		<appGlobalDatum name="Window2ScrollBarAttribs">
+			'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no'
+		</appGlobalDatum>
+		<appGlobalDatum name="choose_contact/sql">
+			SELECT contact_id contacts_list, contact_name display, contact_type_name type
+			  FROM contacts_v
+			 WHERE ext_dealer_id=&lt;?p:ext_dealer_id.toPStmtString()?&gt;
+			   AND organization_id = &lt;?s:org_id.toPStmtInt()?&gt;
+			 ORDER BY contact_name
+		</appGlobalDatum>
+ 		<appGlobalDatum name="choose_customer/sql">
+ 			SELECT rtrim(custnmbr) ext_customer_id, rtrim(custname) display, rtrim(prbtadcd) bill_to_address_id, rtrim(prclevel) price_level_id
+ 			  FROM RM00101
+ 			 WHERE custname LIKE &lt;?p:ext_customer_id_text.concat('%').toPStmtString()?&gt; and custclas='CUSTOMER'
+ 		      ORDER BY custname
+ 		</appGlobalDatum>
+ 		<appGlobalDatum name="choose_dealer/sql">
+ 			SELECT rtrim(custnmbr) ext_dealer_id, rtrim(shrtname) display, rtrim(prbtadcd) bill_to_address_id, rtrim(prclevel) price_level_id
+ 			  FROM RM00101
+ 			 WHERE shrtname LIKE &lt;?p:ext_dealer_id_text.concat('%').toPStmtString()?&gt; and custclas='DEALER'
+ 		      ORDER BY shrtname
+ 		</appGlobalDatum>
+ 		<appGlobalDatum name="choose_job_location/sql">
+ 			SELECT job_location_id, job_location_name display
+ 			  FROM job_locations_v
+ 			 WHERE job_location_name LIKE &lt;?p:job_location_id_text.concat('%').toPStmtString()?&gt;
+			   AND organization_id = &lt;?s:org_id.toPStmtInt()?&gt;
+ 		      ORDER BY job_location_name
+ 		</appGlobalDatum>
+ 		<appGlobalDatum name="choose_price_level/sql">
+ 			SELECT distinct rtrim(prclevel) ext_price_level_id, rtrim(prclevel) display
+ 			  FROM IV00108
+ 			 WHERE prclevel LIKE &lt;?p:ext_price_level_id_text.concat('%').toPStmtString()?&gt;
+ 		      ORDER BY ext_price_level_id
+ 		</appGlobalDatum>
+ 		<appGlobalDatum name="choose_pri_furn_line_type/sql">
+ 			SELECT lookup_id, lookup_name display, furniture_type_code, lookup_id AS pri_furn_line_type_id
+ 			  FROM furniture_line_types_v
+ 			 WHERE lookup_name LIKE &lt;?p:pri_furn_line_type_id_text.concat('%').toPStmtString()?&gt;
+ 		      ORDER BY lookup_name
+ 		</appGlobalDatum>
+ 		<appGlobalDatum name="choose_sec_furn_line_type/sql">
+ 			SELECT lookup_id, lookup_name display, furniture_type_code, lookup_id AS sec_furn_line_type_id
+ 			  FROM furniture_line_types_v
+ 			 WHERE lookup_name LIKE &lt;?p:sec_furn_line_type_id_text.concat('%').toPStmtString()?&gt;
+ 		      ORDER BY lookup_name
+ 		</appGlobalDatum>
+ 		<appGlobalDatum name="choose_case_furn_line_type/sql">
+ 			SELECT lookup_id, lookup_name display, furniture_type_code, lookup_id AS case_furn_line_type_id
+ 			  FROM furniture_line_types_v
+ 			 WHERE lookup_name LIKE &lt;?p:case_furn_line_type_id_text.concat('%').toPStmtString()?&gt;
+ 		      ORDER BY lookup_name
+ 		</appGlobalDatum>
+ 		<codetable2 table="INVOICE_BATCH_STATUSES" code="CODE" id="STATUS_ID"/>
+ 		<metadata table="request_documents" columns="name" />
+	</appGlobals>
+
+	<applicationContextListener class="ims.listeners.IMSApplicationContextListener"/>
+
+	<daemons>
+		<!-- daemon name="EmailDaemon" class="ims.daemons.EmailDaemon"/-->
+		<daemon name="StatusDaemon" class="ims.daemons.StatusDaemon"/>
+		<!-- daemon name="IMCommandRunner" class="ims.daemons.IMCommandRunner"/-->
+	</daemons>
+
+	<diagnostics level="15" port="19000-19099" template="iframe/diagnostics">
+		<diagnosticsStream class="java.lang.System" property="out" level="15"/>
+		<diagnosticsFile path="&projectDir;logs&sep;ims.log"/>
+		<diagnosticsApplet codebase="/ims/jar"/>
+	</diagnostics>
+
+	<dispatcher class="dynamic.intraframe.handlers.Dispatcher">
+		<action name="admin">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="dynamic.intraframe.handlers.AdminHandler"/>
+		</action>
+		<action name="allocate">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.billing.PoolingHandler"/>
+		</action>
+		<action name="archive">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.job_processing.ArchiveHandler"/>
+		</action>
+		<action name="changeStatus">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.job_processing.StatusHandler"/>
+		</action>
+		<action name="choose">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="dynamic.intraframe.handlers.ChooserHandler"/>
+		</action>
+		<action name="condition">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.job_processing.QuoteHandler"/>
+		</action>
+		<action name="confirm">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.billing.PoolingHandler"/>
+		</action>
+		<action name="costReport">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.job_processing.CostReportHandler"/>
+		</action>
+		<action name="displayChecklist">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.lists.DisplayChecklistHandler"/>
+		</action>
+		<action name="documentAddVersion">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.docs.DocumentAddVersionHandler"/>
+		</action>
+		<action name="documentDownload">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.docs.DocumentDownloadHandler"/>
+		</action>
+		<action name="documentLock">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.docs.DocumentLockHandler"/>
+		</action>
+		<action name="documentUpload">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.docs.DocumentUploadHandler"/>
+		</action>
+		<action name="emailSchedule">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.scheduling.EmailScheduleHandler"/>
+		</action>
+		<action name="enetNavSearch">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.nav.EnetSearchHandler"/>
+		</action>
+		<action name="exportExpenses">
+			<handler class="ims.handlers.time_capture.ExportExpensesHandler"/>
+		</action>
+		<action name="exportPayroll">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.time_capture.ExportPayrollHandler"/>
+		</action>
+		<action name="expressEntry">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.time_capture.ExpressEntryHandler"/>
+		</action>
+		<action name="launchCharm">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.nav.LaunchCharmHandler"/>
+		</action>
+		<action name="loadMiscCosts">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.job_processing.LoadMiscCostHandler"/>
+		</action>
+		<action name="login">
+			<handler class="ims.handlers.maintenance.UserAccessHandler"/>
+			<handler class="ims.handlers.maintenance.RightsHandler"/>
+			<handler class="ims.handlers.maintenance.SelectLocationHandler"/>
+		</action>
+		<action name="logout">
+			<handler class="ims.handlers.maintenance.LogoutHandler"/>
+		</action>
+		<action name="modifyCustomDropList">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.proj.ModifyCustomDropListHandler"/>
+		</action>
+		<action name="navSearch">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.nav.SearchHandler"/>
+		</action>
+		<action name="newContact">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.proj.NewContactHandler"/>
+		</action>
+		<action name="newCustomer">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.proj.NewCustomerHandler"/>
+		</action>
+		<action name="newJobLocation">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.proj.NewJobLocationHandler"/>
+		</action>
+		<action name="newReq">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="dynamic.intraframe.handlers.SmartFormHandler"/>
+			<handler class="ims.handlers.job_processing.ReqHandler"/>
+		</action>
+		<action name="pocketSendHours">
+			<handler class="ims.handlers.pocket.PocketSendHoursHandler"/>
+		</action>
+		<action name="pocketEntry">
+			<handler class="ims.handlers.pocket.PocketEntryHandler"/>
+		</action>
+		<action name="pocketReqSearch">
+			<handler class="ims.handlers.pocket.PocketReqSearchHandler"/>
+		</action>
+		<action name="poStatus">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.po.POStatusHandler"/>
+		</action>
+		<action name="poStatusTC">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.po.POStatusHandler"/>
+			<handler class="ims.handlers.time_capture.ServiceLineFieldHandler"/>
+		</action>
+		<action name="quoteReport">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.proj.QuoteReportHandler"/>
+		</action>
+		<action name="quoteReports">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.estimator.QuoteReport" />
+		</action>
+		<action name="quoteUpload">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.estimator.QuoteUploadHandler" />
+		</action>
+		<action name="quoteDownload">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.estimator.QuoteDownloadHandler" />
+		</action>
+		<action name="requestDocumentDelete">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.docs.RequestDocumentDeleteHandler"/>
+		</action>
+		<action name="requestDocumentDownload">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.docs.RequestDocumentDownloadHandler"/>
+		</action>
+		<action name="requestDocumentUpload">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.docs.RequestDocumentUploadHandler"/>
+		</action>
+		<action name="resubmitInvoiceBatch">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.billing.ResubmitInvoiceBatchHandler"/>
+		</action>
+		<action name="saveChecklist">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.lists.SaveChecklistHandler"/>
+		</action>
+		<action name="saveVendorWOs">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.proj.SaveVendorWOsHandler"/>
+			<handler class="ims.handlers.proj.SaveVendorWOsPostHandler"/>
+		</action>
+		<action name="schAddRes">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.scheduling.SchMultiAddHandler"/>
+		</action>
+		<action name="schEditRes">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.scheduling.SchEditPreHandler"/>
+		</action>
+		<action name="schEditWeekend">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.scheduling.SchWeekendPreHandler"/>
+		</action>
+		<action name="schedule">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.scheduling.SchHandler"/>
+			<handler class="dynamic.intraframe.handlers.SmartFormHandler"/>
+		</action>
+		<action name="selectLocation">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.maintenance.SelectLocationHandler"/>
+		</action>
+		<action name="setServiceLineFields">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.time_capture.ServiceLineFieldHandler"/>
+		</action>
+		<action name="setProjectDatum">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.proj.SetProjectDatumHandler"/>
+		</action>
+		<action name="setServiceLineStatus">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.job_processing.SetServiceLineStatusHandler"/>
+		</action>
+		<action name="setupSchEditRes">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.scheduling.SchSessionDataHandler"/>
+			<handler class="ims.handlers.scheduling.SchEditPreHandler"/>
+		</action>
+		<action name="setupSchSession">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.scheduling.SchSessionDataHandler"/>
+		</action>
+		<action name="setupSession">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.job_processing.SetupSessionDataHandler"/>
+		</action>
+		<action name="smartForm">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="dynamic.intraframe.handlers.SmartFormHandler"/>
+		</action>
+		<action name="unarchive">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.job_processing.UnArchiveHandler"/>
+		</action>
+		<action name="selectQuoteConditions">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.job_processing.quote.SelectQuoteConditions"/>
+		</action>
+		<action name="updateSearchDisplay">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.nav.UpdateSearchDisplayHandler"/>
+		</action>
+		<action name="userApprover">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.maintenance.UserApproverHandler"/>
+		</action>
+		<action name="userCustomer">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.maintenance.UserCustomerHandler"/>
+		</action>
+		<action name="userCustomerEndUser">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.maintenance.UserCustomerEndUserHandler"/>
+		</action>
+		<action name="userDelete">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.maintenance.UserDeleteHandler"/>
+		</action>
+		<action name="userJobType">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.maintenance.UserJobTypeHandler"/>
+		</action>
+		<action name="userPost">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.maintenance.UserPostHandler"/>
+		</action>
+		<action name="userPre">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.maintenance.UserPreHandler"/>
+		</action>
+		<action name="userVendor">
+		 	<handler class="ims.handlers.security.CheckLoginHandler"/>
+			<handler class="ims.handlers.maintenance.UserVendorHandler"/>
+		</action>
+
+	</dispatcher>
+
+	<estimator estimatorTemplate2OrgId="20" >
+		<parameter name="estimatorDir">&projectDir;src&sep;main&sep;webapp&sep;estimator&sep;</parameter>
+		<parameter name="estimatorExcelGet">&projectDir;src&sep;main&sep;webapp&sep;WEB-INF&sep;estimator&sep;excel_get_values.xml</parameter>
+		<parameter name="estimatorExcelSet">&projectDir;src&sep;main&sep;webapp&sep;WEB-INF&sep;estimator&sep;excel_set_values.xml</parameter>
+		<parameter name="estimatorTemplate">&projectDir;src&sep;main&sep;webapp&sep;WEB-INF&sep;estimator&sep;template.xls</parameter>
+		<parameter name="estimatorTemplate2">&projectDir;src&sep;main&sep;webapp&sep;WEB-INF&sep;estimator&sep;template2.xls</parameter>
+	</estimator>
+
+	<formatManager>
+		<format name="date">M/d/yyyy</format>
+		<format name="time">h:mm a</format>
+		<format name="datetime">M/d/yyyy h:mm a</format>
+		<format name="money">$#,##0.00</format>
+		<format name="ratemoney">$#,###,###.00#</format>
+		<format name="phone">###-####;###-###-####</format>
+	</formatManager>
+
+	<integrationManager path="d:\dynamics\im\imrun"
+	 notSetupMsg="The Integration Manger is not currently setup on the server.  Please contact your system administrator."
+	 />
+
+	<invocationContext class="dynamic.intraframe.engine.BaseInvocationContext">
+	</invocationContext>
+
+	<mail host="mail.apexit.com" port="25" from="servicetrax@omniworkspace.com"/>
+
+	<providers default="security">
+		<provider name="ValidAdminUser" id="dynamic.intraframe.handlers.AdminHandler" type="handler"/>
+		<provider name="error" id="iframe/error.html" type="template"/>
+		<provider name="security" id="security_warning.html" type="template"/>
+		<provider name="user" id="session_timeout.html" type="template"/>
+	</providers>
+
+	<queryFilterManager class="dynamic.intraframe.filter.QueryFilterManager">
+		<queryFilter name="count" class="dynamic.intraframe.filter.CountFilter"/>
+		<queryFilter name="orderby" class="dynamic.intraframe.filter.OrderByFilter"/>
+		<queryFilter name="simple" class="dynamic.intraframe.filter.SimpleFilter"/>
+		<queryFilter name="report_job" class="ims.filters.EmployeeHoursReporFilter"/>
+		<queryFilter name="tc_edit" class="ims.filters.TCEditFilter"/>
+	</queryFilterManager>
+
+	<resourceManager class="dynamic.util.resources.BaseResourceManager">
+		<resourceProducer name="SQLServerProducer" class="dynamic.dbtk.connection.JDBCResourceProducer" driver="net.sourceforge.jtds.jdbc.Driver" prefix="jdbc:jtds:sqlserver:" dateFormat="''MM/dd/yyyy HH:mm:ss''" now="getDate()" primaryKey="SELECT @@identity">
+			<resource name="sqlserver" id="//lexus:1437/ims_new;appName=ServiceTrax" username="ims" password="ims" type="SharedPool" default="true"/>
+			<resource name="Test" id="//lexus:1437/ims_new;appName=ServiceTrax" username="ims" password="ims" type="SingleUse" default="false"/>
+			<resource name="Test2" id="//lexus:1437/ims_new;appName=ServiceTrax" username="ims_gp" password="ims_gp" type="SingleUse" default="false"/>
+			<resource name="sqlserver_aia" id="//lexus:1437/AIA" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver_alabm" id="//lexus:1437/alabm" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver_gp" id="//lexus:1437/AMBIM" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver_mad" id="//lexus:1437/ammad" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver_ciinc" id="//lexus:1437/CIINC" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver_cimn" id="//lexus:1437/CIMN" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver_cillc" id="//lexus:1437/CILIC" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver_ics" id="//lexus:1437/ICS" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver_ntlsv" id="//lexus:1437/NTLSV" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver_ecms" id="//lexus:1437/ecms" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver_phx" id="//lexus:1437/phx" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+		</resourceProducer>
+	</resourceManager>
+
+
+	<sessionManager class="dynamic.intraframe.session.BaseSessionManager"
+			persistentSession="true"
+			persistentStorage="&htmlDir;sessions"
+			persistentTTL="2880"
+			bind="cookies"
+			ttl="45">
+	</sessionManager>
+
+	<templateManager class="dynamic.intraframe.templates.TemplateManager" path="&htmlDir;/templates/" extentions=".html" size="50">
+ 		<templateComponent name="CHOOSERTABLE" class="ims.components.ChooserComponent"
+			width="100%"
+			maxRows="1000"
+			filterClass="TableFilter"
+			footerClass="ChooserBottom"
+			titleClass="TableTitle,TableTitleRollover,TableTitlePressed,TableTitleSorted,TableTitleSortedRollover,TableTitleSortedPressed"
+			titleHeight="30"
+			rowClass="ChooserTableRow1,ChooserTableRow2"
+			rowRolloverClass="ChooserTableRowRollover"
+			rowSelectedClass="ChooserTableRowSelected"
+			rowHeight="22"
+			aSort="&lt;img border=&quot;0&quot; src=&quot;/images/sort2_asc.gif&quot;&gt;"
+			dSort="&lt;img border=&quot;0&quot; src=&quot;/images/sort2_desc.gif&quot;&gt;"
+			chooserBasePath="choosers/chooser"
+ 		/>
+		<templateComponent name="CHOOSERCOLUMN" class="ims.components.SmartColumnComponent"/>
+		<templateComponent name="ECHO" class="dynamic.intraframe.templates.components.EchoComponent"/>
+		<templateComponent name="ELSE" class="dynamic.intraframe.templates.components.SimpleComponent"/>
+		<templateComponent name="ELSEIF" class="dynamic.intraframe.templates.components.ElseIfComponent"/>
+		<templateComponent name="EMBED" class="dynamic.intraframe.templates.components.EmbedComponent"/>
+		<templateComponent name="EXEC" class="dynamic.intraframe.templates.components.ExecComponent"/>
+		<templateComponent name="IF" class="dynamic.intraframe.templates.components.IfComponent"/>
+		<templateComponent name="LOGACTION" class="dynamic.intraframe.templates.components.LogActionComponent"/>
+		<templateComponent name="REQUIRED" class="dynamic.intraframe.templates.components.RequiredComponent"/>
+		<templateComponent name="SELECT" class="ims.components.SelectComponent"/>
+		<templateComponent name="SET" class="dynamic.intraframe.templates.components.SetComponent"/>
+		<templateComponent name="SIMPLELOOP" class="dynamic.intraframe.templates.components.SimpleLoopComponent"/>
+		<templateComponent name="SMARTCOLUMN" class="ims.components.SmartColumnComponent"/>
+		<templateComponent name="SMARTFIELD" class="ims.components.SmartFieldComponent"/>
+		<templateComponent name="SMARTFORM" class="dynamic.intraframe.templates.components.SmartFormComponent"
+			security="false"
+			mandFieldErrMsg="false"
+			validate="true"
+			sequence="@@IDENTITY"
+		/>
+		<templateComponent name="SMARTLINK" class="dynamic.intraframe.templates.components.SmartLinkComponent"/>
+		<templateComponent name="SMARTTABLE" class="ims.components.SmartTableComponent"
+			titleClass="TableTitle,TableTitleRollover,TableTitlePressed,TableTitleSorted,TableTitleSortedRollover,TableTitleSortedPressed"
+			titleHeight="22"
+			maxRows="25"
+			rowClass="TableRow1,TableRow2"
+			cellLinkClasses="TableRow1Link,TableRow2Link"
+			rowRolloverClass="TableRowLinkRollover"
+			rowHeight="15"
+			aSort="&lt;img border=0 align=&quot;middle&quot; width=&quot;12&quot; height=&quot;6&quot; src=&quot;/ims/images/sort_asc.gif&quot;&gt;"
+			dSort="&lt;img border=0 align=&quot;middle&quot; width=&quot;12&quot; height=&quot;6&quot; src=&quot;/ims/images/sort_desc.gif&quot;&gt;"
+		/>
+		<templateComponent name="SQLEXEC" class="dynamic.intraframe.templates.components.SQLExecComponent"/>
+		<templateComponent name="SQLFOOTER" class="dynamic.intraframe.templates.components.SimpleContainerComponent"/>
+		<templateComponent name="SQLHEADER" class="dynamic.intraframe.templates.components.SimpleContainerComponent"/>
+		<templateComponent name="SQLLOOP" class="ims.components.SQLLoopComponent"/>
+		<templateComponent name="SQLMOREROWS" class="dynamic.intraframe.templates.components.SimpleContainerComponent"/>
+		<templateComponent name="SQLNODATA" class="dynamic.intraframe.templates.components.SimpleContainerComponent"/>
+		<templateComponent name="CHECKSECURITY" class="ims.tc.SecurityComponent"/>
+		<substitution>
+			<match>{!([^ {}]*)!}</match>
+			<replace>&lt;!--#ECHO data="&lt;?$1?&gt;"--&gt;</replace>
+		</substitution>
+		<substitution>
+			<match>##-WIN-##</match>
+			<replace>'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=400,height=304'</replace>
+		</substitution>
+		<substitution>
+			<match>##-WIN2-##</match>
+			<replace>'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no'</replace>
+		</substitution>
+		<substitution>
+			<match>##-WIN2ScrollBars-##</match>
+			<replace>'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no'</replace>
+		</substitution>
+	</templateManager>
+</applicationContext>

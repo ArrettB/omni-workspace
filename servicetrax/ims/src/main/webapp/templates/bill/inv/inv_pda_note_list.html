@@ -1,0 +1,39 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: C:\work\ims\templates\bill\inv\inv_pda_note_list.html, 6, 4/7/2006 5:11:08 PM, Blake Von Haden$ -->
+
+<body onLoad="window.focus()">
+
+	<table class="smartTable" border="0" cellpadding="0" cellspacing="0">
+		<form>
+		<tr><td align="right">
+			<input name="button" type="button" value="Close" class="button2" onClick="parent.window.focus();parent.window.close();">
+		<hr>
+		</td></tr>
+		</form>
+<!--#IF evaluate="<?p:invoice_id?>" compare="" -->
+	<!--#SQLLOOP query="SELECT job_no from jobs where job_id = <?p:job_id.toPStmtString()?>" name="job" -->
+		<tr><td class="tableHeader">Job# {!r:job:job_no!}</td></tr>
+	<!--#/SQLLOOP-->
+<!--#ELSE-->
+		<tr><td class="tableHeader">Invoice# {!p:invoice_id!}</td></tr>
+<!--#/IF-->
+	</table>
+
+   <!--#SMARTTABLE name="tracking_v" class="smartTable"
+   	   query="SELECT tv.tracking_id, tv.service_no,
+	                 tv.notes, tv.date_created, tv.created_by_name
+	          	 FROM tracking_v tv
+   	          WHERE tv.job_id = <?s:job_id.toPStmtString()?>
+      	       ORDER BY date_created desc"
+   -->
+     <!--#SMARTCOLUMN width="9%" title="Req#" name="service_no" sort="service_no" -->
+     <!--#SMARTCOLUMN width="18%" title="Notes" name="notes" sort="notes"-->
+     <!--#SMARTCOLUMN width="9%" title="Created By" name="created_by_name" sort="created_by_name"-->
+     <!--#SMARTCOLUMN width="9%" title="Date Created" name="date_created" sort="date_created" format="date" -->
+   <!--#/SMARTTABLE -->
+
+</script>
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

@@ -1,0 +1,203 @@
+<?xml version="1.0"?>
+
+<namedQueries>
+	
+		
+	<namedQuery>
+		<id>openJobsByName</id>
+		<service>JDBCService</service>
+		<query>
+			<![CDATA[ 
+				SELECT j.job_id, j.job_no, l.code, j.job_name
+				FROM jobs j, lookups l, customers c
+				WHERE j.job_status_type_id = l.lookup_id
+				AND j.customer_id = c.customer_id
+				AND l.code <> 'closed'
+				AND LOWER(j.job_name) LIKE lower(:name)
+				AND c.organization_id = :organization_id
+				ORDER BY j.job_name
+			]]>
+		</query>
+		<parameter name="organization_id" type="Integer"/>
+		<parameter name="name" type="String"/>
+	</namedQuery>
+	
+	<namedQuery>
+		<id>openJobsByNumber</id>
+		<service>JDBCService</service>
+		<query>
+			<![CDATA[ 
+				SELECT j.job_id, j.job_no, l.code, j.job_name, c.customer_name
+				FROM jobs j, lookups l, customers c
+				WHERE j.job_status_type_id = l.lookup_id
+				AND j.customer_id = c.customer_id
+				AND l.code <> 'closed'
+				AND j.job_no LIKE :number
+				AND c.organization_id = :organization_id
+				ORDER BY j.job_no
+			]]>
+		</query>
+		<parameter name="organization_id" type="Integer"/>
+		<parameter name="number" type="String"/>
+	</namedQuery>	
+	
+		<namedQuery>
+		<id>openJobsByCustomer</id>
+		<service>JDBCService</service>
+		<query>
+			<![CDATA[ 
+				SELECT j.job_id, j.job_no, l.code, j.job_name, c.customer_name
+				FROM jobs j, lookups l, customers c
+				WHERE j.job_status_type_id = l.lookup_id
+				AND j.customer_id = c.customer_id
+				AND l.code <> 'closed'
+				AND LOWER(c.customer_name) LIKE LOWER(:customer)
+				AND c.organization_id = :organization_id
+				ORDER BY j.job_no
+			]]>
+		</query>
+		<parameter name="organization_id" type="Integer"/>
+		<parameter name="customer" type="String"/>
+	</namedQuery>	
+
+	<namedQuery>
+		<id>reqsByJob</id>
+		<service>JDBCService</service>
+		<query>
+			<![CDATA[ 
+				SELECT s.service_id, s.service_no, s.description, l.code
+				FROM services s, lookups l
+				WHERE s.serv_status_type_id = l.lookup_id
+				AND l.code <> 'closed'
+				AND s.job_id = :job_id
+				ORDER BY s.service_no
+			]]>
+		</query>
+		<parameter name="job_id" type="String"/>
+	</namedQuery>	
+		
+	<namedQuery>
+		<id>resourcesByName</id>
+		<service>JDBCService</service>
+		<query>
+			<![CDATA[ 
+			SELECT DISTINCT resource_id, resource_name, employee_no
+			FROM tcn_resources_v 
+			WHERE organization_id = :organization_id
+			AND LOWER(resource_name) LIKE lower(:name) 
+			ORDER BY resource_name
+			]]>
+		</query>
+		<parameter name="organization_id" type="Integer"/>
+		<parameter name="name" type="String"/>
+	</namedQuery>	
+
+	<namedQuery>
+		<id>resourcesByEmployeeNo</id>
+		<service>JDBCService</service>
+		<query> <![CDATA[ 
+			SELECT DISTINCT resource_id, resource_name, employee_no
+			FROM tcn_resources_v 
+			WHERE organization_id = :organization_id
+			AND employee_no LIKE :employee_no
+			ORDER BY resource_name
+			]]>
+		</query>
+		<parameter name="organization_id" type="Integer"/>
+		<parameter name="employee_no" type="String"/>
+	</namedQuery>
+	
+
+	<namedQuery>
+		<id>itemsByResourceJob</id>
+		<service>JDBCService</service>
+		<query>
+			<![CDATA[ 
+			SELECT DISTINCT item_id, item_name
+			FROM tcn_resource_items_v 
+			WHERE organization_id = :organization_id
+			AND item_type_code = 'hours'
+			AND resource_id = :resource_id
+			AND job_id = :job_id
+			ORDER BY item_name
+			]]>
+		</query>
+		<parameter name="organization_id" type="Integer"/>
+		<parameter name="resource_id" type="String"/>
+		<parameter name="job_id" type="String"/>
+	</namedQuery>	
+	
+	<namedQuery>
+		<id>serviceNoFromId</id>
+		<service>JDBCService</service>
+		<query>
+			<![CDATA[ 
+			SELECT service_no
+			FROM services
+			WHERE service_id = :service_id
+			]]>
+		</query>
+		<parameter name="service_id" type="String"/>
+	</namedQuery>	
+
+	<namedQuery>
+		<id>payCodes</id>
+		<service>JDBCService</service>
+		<query>
+			<![CDATA[ 
+			SELECT payrcord, dscriptn
+			FROM :tableName
+			ORDER BY payrcord
+			]]>
+		</query>
+		<parameter name="tableName" type="String"/>
+	</namedQuery>	
+
+	<namedQuery>
+		<id>lookups</id>
+		<service>hibernateService</service>
+		<query>
+			<![CDATA[ 
+				SELECT l 
+				FROM Lookup l 
+				WHERE l.lookupType.code = :lookupTypeCode
+				AND l.activeFlag = 'Y'
+			]]>
+		</query>
+		<parameter name="lookupTypeCode" type="String"/>
+	</namedQuery>	
+		
+	<namedQuery>
+		<id>lookup</id>
+		<service>hibernateService</service>
+		<query>
+			<![CDATA[ 
+				SELECT l 
+				FROM Lookup l 
+				WHERE l.lookupType.code = :lookupTypeCode
+				AND l.code = :lookupCode 
+				AND l.activeFlag = 'Y'
+			]]>
+		</query>
+		<parameter name="lookupTypeCode" type="String"/>
+		<parameter name="lookupCode" type="String"/>
+	</namedQuery>		
+	
+	
+	<namedQuery>
+		<id>auditInformation</id>
+		<service>hibernateService</service>
+		<query>
+			<![CDATA[ 
+				SELECT u.firstName as a, u.lastName as b, u.fullName as c
+				FROM User u
+				WHERE u.userId != :userId
+			]]>
+		</query>
+		<parameter name="userId" type="Long"/>
+	</namedQuery>		
+	
+</namedQueries>
+
+
+

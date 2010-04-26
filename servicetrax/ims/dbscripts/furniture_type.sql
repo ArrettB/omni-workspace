@@ -1,0 +1,6 @@
+ALTER TABLE requests
+ADD FURNITURE_TYPE varchar(100) NULL
+go
+ALTER TABLE requests
+ADD FURNITURE_QTY numeric(18, 0) NULL
+go

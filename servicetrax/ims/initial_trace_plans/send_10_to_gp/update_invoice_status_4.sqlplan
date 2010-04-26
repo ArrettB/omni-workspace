@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ShowPlanXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0" Build="9.00.3068.00" xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan">
+  <BatchSequence>
+    <Batch>
+      <Statements>
+        <StmtSimple StatementCompId="2" StatementEstRows="1" StatementId="1" StatementOptmLevel="TRIVIAL" StatementSubTreeCost="0.02986" StatementText="UPDATE invoices set modified_by =  2250  ,date_modified = getDate()  ,status_id =  4  where 1=1 and invoice_id =  164325&#xD;" StatementType="UPDATE">
+          <StatementSetOptions ANSI_NULLS="false" ANSI_PADDING="false" ANSI_WARNINGS="false" ARITHABORT="true" CONCAT_NULL_YIELDS_NULL="false" NUMERIC_ROUNDABORT="false" QUOTED_IDENTIFIER="false" />
+          <QueryPlan DegreeOfParallelism="1" CachedPlanSize="34" CompileTime="17" CompileCPU="4" CompileMemory="280">
+            <RelOp AvgRowSize="9" EstimateCPU="1.8E-07" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Assert" NodeId="1" Parallel="false" PhysicalOp="Assert" EstimatedTotalSubtreeCost="0.02986">
+              <OutputList />
+              <RunTimeInformation>
+                <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+              </RunTimeInformation>
+              <Assert StartupExpression="false">
+                <RelOp AvgRowSize="9" EstimateCPU="4.18E-06" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Left Semi Join" NodeId="2" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.0298599">
+                  <OutputList>
+                    <ColumnReference Column="Expr1032" />
+                    <ColumnReference Column="Expr1033" />
+                  </OutputList>
+                  <RunTimeInformation>
+                    <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                  </RunTimeInformation>
+                  <NestedLoops Optimized="false">
+                    <DefinedValues>
+                      <DefinedValue>
+                        <ColumnReference Column="Expr1033" />
+                      </DefinedValue>
+                    </DefinedValues>
+                    <OuterReferences>
+                      <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Column="STATUS_ID" />
+                    </OuterReferences>
+                    <ProbeColumn>
+                      <ColumnReference Column="Expr1033" />
+                    </ProbeColumn>
+                    <RelOp AvgRowSize="17" EstimateCPU="4.18E-06" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Left Semi Join" NodeId="3" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.0265726">
+                      <OutputList>
+                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Column="STATUS_ID" />
+                        <ColumnReference Column="Expr1032" />
+                      </OutputList>
+                      <RunTimeInformation>
+                        <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                      </RunTimeInformation>
+                      <NestedLoops Optimized="false">
+                        <DefinedValues>
+                          <DefinedValue>
+                            <ColumnReference Column="Expr1032" />
+                          </DefinedValue>
+                        </DefinedValues>
+                        <OuterReferences>
+                          <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Column="STATUS_ID" />
+                        </OuterReferences>
+                        <ProbeColumn>
+                          <ColumnReference Column="Expr1032" />
+                        </ProbeColumn>
+                        <RelOp AvgRowSize="16" EstimateCPU="2E-06" EstimateIO="0.02" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Update" NodeId="4" Parallel="false" PhysicalOp="Clustered Index Update" EstimatedTotalSubtreeCost="0.0232853">
+                          <OutputList>
+                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Column="STATUS_ID" />
+                          </OutputList>
+                          <RunTimeInformation>
+                            <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                          </RunTimeInformation>
+                          <Update>
+                            <Object Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Index="[INV_PK]" />
+                            <Object Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Index="[IX_I_STATUS]" />
+                            <SetPredicate>
+                              <ScalarOperator ScalarString="[ims_new].[dbo].[INVOICES].[MODIFIED_BY] = [Expr1003],[ims_new].[dbo].[INVOICES].[DATE_MODIFIED] = getdate(),[ims_new].[dbo].[INVOICES].[STATUS_ID] = [Expr1005]">
+                                <ScalarExpressionList />
+                              </ScalarOperator>
+                            </SetPredicate>
+                            <RelOp AvgRowSize="43" EstimateCPU="1E-07" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Compute Scalar" NodeId="5" Parallel="false" PhysicalOp="Compute Scalar" EstimatedTotalSubtreeCost="0.0032833">
+                              <OutputList>
+                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                                <ColumnReference Column="Expr1003" />
+                                <ColumnReference Column="ConstExpr1020">
+                                  <ScalarOperator ScalarString="getdate()">
+                                    <Intrinsic FunctionName="getdate" />
+                                  </ScalarOperator>
+                                </ColumnReference>
+                                <ColumnReference Column="Expr1005" />
+                                <ColumnReference Column="Expr1030" />
+                              </OutputList>
+                              <RunTimeInformation>
+                                <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                              </RunTimeInformation>
+                              <ComputeScalar>
+                                <DefinedValues>
+                                  <DefinedValue>
+                                    <ColumnReference Column="Expr1030" />
+                                    <ScalarOperator ScalarString="[Expr1030]">
+                                      <Identifier>
+                                        <ColumnReference Column="Expr1030" />
+                                      </Identifier>
+                                    </ScalarOperator>
+                                  </DefinedValue>
+                                </DefinedValues>
+                                <RelOp AvgRowSize="43" EstimateCPU="1E-07" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Compute Scalar" NodeId="6" Parallel="false" PhysicalOp="Compute Scalar" EstimatedTotalSubtreeCost="0.0032833">
+                                  <OutputList>
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                                    <ColumnReference Column="Expr1003" />
+                                    <ColumnReference Column="ConstExpr1020">
+                                      <ScalarOperator ScalarString="getdate()">
+                                        <Intrinsic FunctionName="getdate" />
+                                      </ScalarOperator>
+                                    </ColumnReference>
+                                    <ColumnReference Column="Expr1005" />
+                                    <ColumnReference Column="Expr1030" />
+                                  </OutputList>
+                                  <ComputeScalar>
+                                    <DefinedValues>
+                                      <DefinedValue>
+                                        <ColumnReference Column="Expr1003" />
+                                        <ScalarOperator ScalarString="(2250.)">
+                                          <Const ConstValue="(2250.)" />
+                                        </ScalarOperator>
+                                      </DefinedValue>
+                                      <DefinedValue>
+                                        <ColumnReference Column="ConstExpr1020">
+                                          <ScalarOperator ScalarString="getdate()">
+                                            <Intrinsic FunctionName="getdate" />
+                                          </ScalarOperator>
+                                        </ColumnReference>
+                                        <ScalarOperator ScalarString="getdate()">
+                                          <Identifier>
+                                            <ColumnReference Column="ConstExpr1020">
+                                              <ScalarOperator>
+                                                <Intrinsic FunctionName="getdate" />
+                                              </ScalarOperator>
+                                            </ColumnReference>
+                                          </Identifier>
+                                        </ScalarOperator>
+                                      </DefinedValue>
+                                      <DefinedValue>
+                                        <ColumnReference Column="Expr1005" />
+                                        <ScalarOperator ScalarString="(4.)">
+                                          <Const ConstValue="(4.)" />
+                                        </ScalarOperator>
+                                      </DefinedValue>
+                                      <DefinedValue>
+                                        <ColumnReference Column="Expr1030" />
+                                        <ScalarOperator ScalarString="CASE WHEN CASE WHEN [ims_new].[dbo].[INVOICES].[STATUS_ID] = (4.) THEN (1) ELSE (0) END THEN (1) ELSE (0) END">
+                                          <IF>
+                                            <Condition>
+                                              <ScalarOperator>
+                                                <IF>
+                                                  <Condition>
+                                                    <ScalarOperator>
+                                                      <Compare CompareOp="BINARY IS">
+                                                        <ScalarOperator>
+                                                          <Identifier>
+                                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Column="STATUS_ID" />
+                                                          </Identifier>
+                                                        </ScalarOperator>
+                                                        <ScalarOperator>
+                                                          <Const ConstValue="(4.)" />
+                                                        </ScalarOperator>
+                                                      </Compare>
+                                                    </ScalarOperator>
+                                                  </Condition>
+                                                  <Then>
+                                                    <ScalarOperator>
+                                                      <Const ConstValue="(1)" />
+                                                    </ScalarOperator>
+                                                  </Then>
+                                                  <Else>
+                                                    <ScalarOperator>
+                                                      <Const ConstValue="(0)" />
+                                                    </ScalarOperator>
+                                                  </Else>
+                                                </IF>
+                                              </ScalarOperator>
+                                            </Condition>
+                                            <Then>
+                                              <ScalarOperator>
+                                                <Const ConstValue="(1)" />
+                                              </ScalarOperator>
+                                            </Then>
+                                            <Else>
+                                              <ScalarOperator>
+                                                <Const ConstValue="(0)" />
+                                              </ScalarOperator>
+                                            </Else>
+                                          </IF>
+                                        </ScalarOperator>
+                                      </DefinedValue>
+                                    </DefinedValues>
+                                    <RelOp AvgRowSize="25" EstimateCPU="1E-07" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Top" NodeId="7" Parallel="false" PhysicalOp="Top" EstimatedTotalSubtreeCost="0.0032832">
+                                      <OutputList>
+                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Column="STATUS_ID" />
+                                      </OutputList>
+                                      <RunTimeInformation>
+                                        <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+                                      </RunTimeInformation>
+                                      <Top RowCount="false" IsPercent="false" WithTies="false">
+                                        <TopExpression>
+                                          <ScalarOperator ScalarString="(1)">
+                                            <Const ConstValue="(1)" />
+                                          </ScalarOperator>
+                                        </TopExpression>
+                                        <RelOp AvgRowSize="25" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Clustered Index Seek" NodeId="8" Parallel="false" PhysicalOp="Clustered Index Seek" EstimatedTotalSubtreeCost="0.0032831">
+                                          <OutputList>
+                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Column="STATUS_ID" />
+                                          </OutputList>
+                                          <RunTimeInformation>
+                                            <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="0" ActualExecutions="1" />
+                                          </RunTimeInformation>
+                                          <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                                            <DefinedValues>
+                                              <DefinedValue>
+                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                                              </DefinedValue>
+                                              <DefinedValue>
+                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Column="STATUS_ID" />
+                                              </DefinedValue>
+                                            </DefinedValues>
+                                            <Object Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Index="[INV_PK]" />
+                                            <SeekPredicates>
+                                              <SeekPredicate>
+                                                <Prefix ScanType="EQ">
+                                                  <RangeColumns>
+                                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                                                  </RangeColumns>
+                                                  <RangeExpressions>
+                                                    <ScalarOperator ScalarString="(164325.)">
+                                                      <Const ConstValue="(164325.)" />
+                                                    </ScalarOperator>
+                                                  </RangeExpressions>
+                                                </Prefix>
+                                              </SeekPredicate>
+                                            </SeekPredicates>
+                                          </IndexScan>
+                                        </RelOp>
+                                      </Top>
+                                    </RelOp>
+                                  </ComputeScalar>
+                                </RelOp>
+                              </ComputeScalar>
+                            </RelOp>
+                          </Update>
+                        </RelOp>
+                        <RelOp AvgRowSize="9" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Index Seek" NodeId="22" Parallel="false" PhysicalOp="Index Seek" EstimatedTotalSubtreeCost="0.0032831">
+                          <OutputList />
+                          <RunTimeInformation>
+                            <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="0" ActualExecutions="1" />
+                          </RunTimeInformation>
+                          <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                            <DefinedValues />
+                            <Object Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_STATUSES]" Index="[PK_INVOICE_STATUSES]" />
+                            <SeekPredicates>
+                              <SeekPredicate>
+                                <Prefix ScanType="EQ">
+                                  <RangeColumns>
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_STATUSES]" Column="STATUS_ID" />
+                                  </RangeColumns>
+                                  <RangeExpressions>
+                                    <ScalarOperator ScalarString="[ims_new].[dbo].[INVOICES].[STATUS_ID]">
+                                      <Identifier>
+                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Column="STATUS_ID" />
+                                      </Identifier>
+                                    </ScalarOperator>
+                                  </RangeExpressions>
+                                </Prefix>
+                              </SeekPredicate>
+                            </SeekPredicates>
+                          </IndexScan>
+                        </RelOp>
+                      </NestedLoops>
+                    </RelOp>
+                    <RelOp AvgRowSize="9" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Index Seek" NodeId="23" Parallel="false" PhysicalOp="Index Seek" EstimatedTotalSubtreeCost="0.0032831">
+                      <OutputList />
+                      <RunTimeInformation>
+                        <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="0" ActualExecutions="1" />
+                      </RunTimeInformation>
+                      <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                        <DefinedValues />
+                        <Object Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_STATUSES]" Index="[PK_INVOICE_STATUSES]" />
+                        <SeekPredicates>
+                          <SeekPredicate>
+                            <Prefix ScanType="EQ">
+                              <RangeColumns>
+                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICE_STATUSES]" Column="STATUS_ID" />
+                              </RangeColumns>
+                              <RangeExpressions>
+                                <ScalarOperator ScalarString="[ims_new].[dbo].[INVOICES].[STATUS_ID]">
+                                  <Identifier>
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Column="STATUS_ID" />
+                                  </Identifier>
+                                </ScalarOperator>
+                              </RangeExpressions>
+                            </Prefix>
+                          </SeekPredicate>
+                        </SeekPredicates>
+                      </IndexScan>
+                    </RelOp>
+                  </NestedLoops>
+                </RelOp>
+                <Predicate>
+                  <ScalarOperator ScalarString="CASE WHEN [Expr1032] IS NULL THEN (0) ELSE CASE WHEN [Expr1033] IS NULL THEN (1) ELSE NULL END END">
+                    <IF>
+                      <Condition>
+                        <ScalarOperator>
+                          <Logical Operation="IS NULL">
+                            <ScalarOperator>
+                              <Identifier>
+                                <ColumnReference Column="Expr1032" />
+                              </Identifier>
+                            </ScalarOperator>
+                          </Logical>
+                        </ScalarOperator>
+                      </Condition>
+                      <Then>
+                        <ScalarOperator>
+                          <Const ConstValue="(0)" />
+                        </ScalarOperator>
+                      </Then>
+                      <Else>
+                        <ScalarOperator>
+                          <IF>
+                            <Condition>
+                              <ScalarOperator>
+                                <Logical Operation="IS NULL">
+                                  <ScalarOperator>
+                                    <Identifier>
+                                      <ColumnReference Column="Expr1033" />
+                                    </Identifier>
+                                  </ScalarOperator>
+                                </Logical>
+                              </ScalarOperator>
+                            </Condition>
+                            <Then>
+                              <ScalarOperator>
+                                <Const ConstValue="(1)" />
+                              </ScalarOperator>
+                            </Then>
+                            <Else>
+                              <ScalarOperator>
+                                <Const ConstValue="NULL" />
+                              </ScalarOperator>
+                            </Else>
+                          </IF>
+                        </ScalarOperator>
+                      </Else>
+                    </IF>
+                  </ScalarOperator>
+                </Predicate>
+              </Assert>
+            </RelOp>
+          </QueryPlan>
+        </StmtSimple>
+      </Statements>
+    </Batch>
+  </BatchSequence>
+</ShowPlanXML>

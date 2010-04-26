@@ -1,0 +1,65 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<body class="BodyTag" onLoad="">
+
+<span class="Label">
+The following quotes matched your search criteria:
+</span>
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="r" var="mainQuery"
+		  query="SELECT r.project_id, r.project_no, r.record_seq_no, r.record_type_seq_no,
+		                r.record_id, r.record_no,
+		                r.customer_name,
+		                r.end_user_name,
+		                r.job_name,
+		                r.record_created,
+		                r.record_status_type_name,
+		                r.dealer_project_no,
+		                r.quote_total,
+		                r.is_new
+				   FROM projects_all_requests_v r <?s:contacts_table?>
+				  WHERE r.record_type_code = 'quote'
+				    AND r.organization_id = <?s:org_id.toPStmtString()?>
+				    <?s:enetNavQuery?>
+		       ORDER BY r.project_no, r.record_seq_no, r.record_type_seq_no" -->
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="r" var="customerQuery"
+		  query="SELECT DISTINCT r.customer_id, r.customer_name
+				   FROM projects_all_requests_v r <?s:contacts_table?>
+				  WHERE r.record_type_code = 'quote'
+				    AND r.organization_id = <?s:org_id.toPStmtString()?>
+				    <?s:enetNavQuery?>
+		       ORDER BY r.customer_name" -->
+
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="r" var="endUserQuery"
+		  query="SELECT DISTINCT r.end_user_id, r.end_user_name
+			  	   FROM projects_all_requests_v r <?s:contacts_table?>
+				  WHERE r.record_type_code = 'quote_request'
+				    AND r.organization_id = <?s:org_id.toPStmtString()?>
+				    <?s:enetNavQuery?>
+		   	   ORDER BY r.end_user_name" -->
+
+<!--#SMARTTABLE name="q_list" class="SmartTable" query="<?d:mainQuery?>" -->
+
+<!--#IF evaluate="<?r:q_list:is_new?>" compare="Y"-->
+	<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Quote#" width="5%" align="center" href="<?s:showPage?>quoteReports?quote_id=<?r:q_list:record_id?>" target="_blank" filter="record_no:record_no" -->
+<!--#ELSE-->
+  <!--#CHECKSECURITY right="rights.enet/req/q_edit.update"-->
+	<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Quote#" width="10%" align="center" href="<?s:action?>setProjectDatum?project_id=<?r:q_list:project_id?>&templateName=enet/proj/pf_main.html&quote_id=<?r:q_list:record_id?>&loc=q_create" target="_top" filter="record_no:record_no" -->
+  <!--#ELSE-->
+	<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Quote#" width="5%" align="center" href=""
+	 	onClick="newWindowScrollBars('<?s:action?>quoteReport?quote_id=<?r:q_list:record_id?>','quote_window',600,780);return false;" filter="record_no:record_no" -->
+  <!--#/CHECKSECURITY-->
+<!--#/IF-->
+	<!--#SMARTCOLUMN name="customer_name" sort="r.customer_name" title="Customer" width="20%" filter="customer_name:r.customer_name" filterQuery="<?d:customerQuery?>" filterQuick="true" -->
+	<!--#SMARTCOLUMN name="end_user_name" sort="r.end_user_name" title="End User" width="20%" filter="end_user_name:r.end_user_name" filterQuery="<?d:endUserQuery?>" filterQuick="true" -->
+	<!--#SMARTCOLUMN name="job_name" sort="job_name" title="Job Name" width="20%" filter="job_name:job_name" -->
+	<!--#SMARTCOLUMN name="record_status_type_name" sort="record_status_type_name" title="Status" width="10%"
+		filter="record_status_type_name:record_status_type_name" filterQuery="SELECT lookup_name id, lookup_name FROM quote_status_types_v" filterQuick="true" -->
+	<!--#SMARTCOLUMN name="record_created" type="date" sort="record_created"  format="date" title="Date Received" width="10%"-->
+	<!--#SMARTCOLUMN name="quote_total" type="money" sort="quote_total" title="Dollar Amt" format="money" width="10%" align="right" -->
+
+<!--#/SMARTTABLE -->
+
+<!--#EMBED template="enet/embeds/footer.html" -->

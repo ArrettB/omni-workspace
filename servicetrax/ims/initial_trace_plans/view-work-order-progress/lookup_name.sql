@@ -1,0 +1,1 @@
+SELECT lookup_name, lookup_name FROM workorder_status_types_v

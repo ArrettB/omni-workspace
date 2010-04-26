@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ShowPlanXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0" Build="9.00.3054.00" xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan">
+  <BatchSequence>
+    <Batch>
+      <Statements>
+        <StmtSimple StatementCompId="1" StatementEstRows="100.02" StatementId="1" StatementOptmLevel="FULL" StatementSubTreeCost="89.6147" StatementText="select&#xD;&#xA;	ub.billing_user_name,&#xD;&#xA;	ub.billing_user_name&#xD;&#xA;from&#xD;&#xA;(&#xD;&#xA;	select&#xD;&#xA;		u.first_name + ' ' + u.last_name billing_user_name&#xD;&#xA;from&#xD;&#xA;	service_lines sl&#xD;&#xA;	join jobs j on&#xD;&#xA;		j.job_id = sl.bill_job_id	&#xD;&#xA;	left join users u on&#xD;&#xA;		u.user_id = j.billing_user_id&#xD;&#xA;	left join invoices i on&#xD;&#xA;		i.invoice_id = sl.invoice_id&#xD;&#xA;	left join invoice_lines il on&#xD;&#xA;		i.invoice_id = il.invoice_id&#xD;&#xA;where&#xD;&#xA;	(billing_user_id = 2250 OR 'true' = 'true') -- &lt;?s:user_id.toPStmtString()?&gt; OR 'true' = &lt;?s:rights.view_all_jobs.view.isNull('false').toPStmtString()?&gt;&#xD;&#xA;	and sl.organization_id = 2 -- &lt;?s:org_id.toPStmtString()?&gt;&#xD;&#xA;	and (i.status_id = 1 OR i.status_id IS NULL)&#xD;&#xA;	and sl.status_id = 4&#xD;&#xA;	and sl.internal_req_flag = 'N') ub&#xD;&#xA;group by&#xD;&#xA;	ub.billing_user_name&#xD;&#xA;order by&#xD;&#xA;	ub.billing_user_name" StatementType="SELECT">
+          <StatementSetOptions ANSI_NULLS="false" ANSI_PADDING="false" ANSI_WARNINGS="false" ARITHABORT="true" CONCAT_NULL_YIELDS_NULL="false" NUMERIC_ROUNDABORT="false" QUOTED_IDENTIFIER="false" />
+          <QueryPlan DegreeOfParallelism="4" MemoryGrant="4980" CachedPlanSize="157" CompileTime="162" CompileCPU="162" CompileMemory="1944">
+            <MissingIndexes>
+              <MissingIndexGroup Impact="95.2575">
+                <MissingIndex Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]">
+                  <ColumnGroup Usage="EQUALITY">
+                    <Column Name="[ORGANIZATION_ID]" ColumnId="1" />
+                    <Column Name="[STATUS_ID]" ColumnId="14" />
+                    <Column Name="[INTERNAL_REQ_FLAG]" ColumnId="58" />
+                  </ColumnGroup>
+                  <ColumnGroup Usage="INCLUDE">
+                    <Column Name="[BILL_JOB_ID]" ColumnId="21" />
+                    <Column Name="[INVOICE_ID]" ColumnId="29" />
+                  </ColumnGroup>
+                </MissingIndex>
+              </MissingIndexGroup>
+            </MissingIndexes>
+            <RelOp AvgRowSize="211" EstimateCPU="0.00248565" EstimateIO="0.0112613" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="100.02" LogicalOp="Distinct Sort" NodeId="0" Parallel="false" PhysicalOp="Sort" EstimatedTotalSubtreeCost="89.6147">
+              <OutputList>
+                <ColumnReference Column="Expr1010" />
+              </OutputList>
+              <MemoryFractions Input="0.00250941" Output="1" />
+              <RunTimeInformation>
+                <RunTimeCountersPerThread Thread="0" ActualRebinds="1" ActualRewinds="0" ActualRows="26" ActualEndOfScans="1" ActualExecutions="1" />
+              </RunTimeInformation>
+              <Sort Distinct="true">
+                <OrderBy>
+                  <OrderByColumn Ascending="true">
+                    <ColumnReference Column="Expr1010" />
+                  </OrderByColumn>
+                </OrderBy>
+                <RelOp AvgRowSize="211" EstimateCPU="0.0300677" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="200.039" LogicalOp="Gather Streams" NodeId="1" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="89.601">
+                  <OutputList>
+                    <ColumnReference Column="Expr1010" />
+                  </OutputList>
+                  <RunTimeInformation>
+                    <RunTimeCountersPerThread Thread="0" ActualRows="32" ActualEndOfScans="1" ActualExecutions="1" />
+                  </RunTimeInformation>
+                  <Parallelism>
+                    <RelOp AvgRowSize="211" EstimateCPU="0.0654846" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="200.039" LogicalOp="Partial Aggregate" NodeId="2" Parallel="true" PhysicalOp="Hash Match" EstimatedTotalSubtreeCost="89.5709">
+                      <OutputList>
+                        <ColumnReference Column="Expr1010" />
+                      </OutputList>
+                      <MemoryFractions Input="0" Output="0" />
+                      <RunTimeInformation>
+                        <RunTimeCountersPerThread Thread="1" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                        <RunTimeCountersPerThread Thread="2" ActualRows="3" ActualEndOfScans="1" ActualExecutions="1" />
+                        <RunTimeCountersPerThread Thread="3" ActualRows="26" ActualEndOfScans="1" ActualExecutions="1" />
+                        <RunTimeCountersPerThread Thread="4" ActualRows="3" ActualEndOfScans="1" ActualExecutions="1" />
+                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                      </RunTimeInformation>
+                      <Hash>
+                        <DefinedValues />
+                        <HashKeysBuild>
+                          <ColumnReference Column="Expr1010" />
+                        </HashKeysBuild>
+                        <BuildResidual>
+                          <ScalarOperator ScalarString="[Expr1010] = [Expr1010]">
+                            <Compare CompareOp="IS">
+                              <ScalarOperator>
+                                <Identifier>
+                                  <ColumnReference Column="Expr1010" />
+                                </Identifier>
+                              </ScalarOperator>
+                              <ScalarOperator>
+                                <Identifier>
+                                  <ColumnReference Column="Expr1010" />
+                                </Identifier>
+                              </ScalarOperator>
+                            </Compare>
+                          </ScalarOperator>
+                        </BuildResidual>
+                        <RelOp AvgRowSize="211" EstimateCPU="0.00890373" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="10003.9" LogicalOp="Filter" NodeId="3" Parallel="true" PhysicalOp="Filter" EstimatedTotalSubtreeCost="89.5054">
+                          <OutputList>
+                            <ColumnReference Column="Expr1010" />
+                          </OutputList>
+                          <RunTimeInformation>
+                            <RunTimeCountersPerThread Thread="1" ActualRows="0" ActualEndOfScans="1" ActualExecutions="1" />
+                            <RunTimeCountersPerThread Thread="2" ActualRows="171" ActualEndOfScans="1" ActualExecutions="1" />
+                            <RunTimeCountersPerThread Thread="3" ActualRows="4396" ActualEndOfScans="1" ActualExecutions="1" />
+                            <RunTimeCountersPerThread Thread="4" ActualRows="32" ActualEndOfScans="1" ActualExecutions="1" />
+                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                          </RunTimeInformation>
+                          <Filter StartupExpression="false">
+                            <RelOp AvgRowSize="220" EstimateCPU="1.41868" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="20235.7" LogicalOp="Right Outer Join" NodeId="4" Parallel="true" PhysicalOp="Hash Match" EstimatedTotalSubtreeCost="89.4965">
+                              <OutputList>
+                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Alias="[i]" Column="STATUS_ID" />
+                                <ColumnReference Column="Expr1010" />
+                              </OutputList>
+                              <MemoryFractions Input="0.74717" Output="0.745295" />
+                              <RunTimeInformation>
+                                <RunTimeCountersPerThread Thread="1" ActualRows="6077" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="2" ActualRows="5800" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="3" ActualRows="10665" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="4" ActualRows="6232" ActualEndOfScans="1" ActualExecutions="1" />
+                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                              </RunTimeInformation>
+                              <Hash>
+                                <DefinedValues />
+                                <HashKeysBuild>
+                                  <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Alias="[i]" Column="INVOICE_ID" />
+                                </HashKeysBuild>
+                                <HashKeysProbe>
+                                  <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                                </HashKeysProbe>
+                                <ProbeResidual>
+                                  <ScalarOperator ScalarString="[ims_new].[dbo].[INVOICES].[INVOICE_ID] as [i].[INVOICE_ID]=[ims_new].[dbo].[SERVICE_LINES].[INVOICE_ID] as [sl].[INVOICE_ID]">
+                                    <Compare CompareOp="EQ">
+                                      <ScalarOperator>
+                                        <Identifier>
+                                          <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Alias="[i]" Column="INVOICE_ID" />
+                                        </Identifier>
+                                      </ScalarOperator>
+                                      <ScalarOperator>
+                                        <Identifier>
+                                          <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                                        </Identifier>
+                                      </ScalarOperator>
+                                    </Compare>
+                                  </ScalarOperator>
+                                </ProbeResidual>
+                                <RelOp AvgRowSize="25" EstimateCPU="0.267134" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="116613" LogicalOp="Repartition Streams" NodeId="5" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="0.584104">
+                                  <OutputList>
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Alias="[i]" Column="INVOICE_ID" />
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Alias="[i]" Column="STATUS_ID" />
+                                  </OutputList>
+                                  <RunTimeInformation>
+                                    <RunTimeCountersPerThread Thread="1" ActualRows="29261" ActualEndOfScans="1" ActualExecutions="1" />
+                                    <RunTimeCountersPerThread Thread="3" ActualRows="29112" ActualEndOfScans="1" ActualExecutions="1" />
+                                    <RunTimeCountersPerThread Thread="4" ActualRows="29004" ActualEndOfScans="1" ActualExecutions="1" />
+                                    <RunTimeCountersPerThread Thread="2" ActualRows="29236" ActualEndOfScans="1" ActualExecutions="1" />
+                                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                  </RunTimeInformation>
+                                  <Parallelism PartitioningType="Hash">
+                                    <PartitionColumns>
+                                      <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Alias="[i]" Column="INVOICE_ID" />
+                                    </PartitionColumns>
+                                    <RelOp AvgRowSize="25" EstimateCPU="0.0642156" EstimateIO="0.252755" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="116613" LogicalOp="Index Scan" NodeId="6" Parallel="true" PhysicalOp="Index Scan" EstimatedTotalSubtreeCost="0.31697">
+                                      <OutputList>
+                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Alias="[i]" Column="INVOICE_ID" />
+                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Alias="[i]" Column="STATUS_ID" />
+                                      </OutputList>
+                                      <RunTimeInformation>
+                                        <RunTimeCountersPerThread Thread="1" ActualRows="31867" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="4" ActualRows="31232" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="2" ActualRows="24740" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="3" ActualRows="28774" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                      </RunTimeInformation>
+                                      <IndexScan Ordered="false" ForcedIndex="false" NoExpandHint="false">
+                                        <DefinedValues>
+                                          <DefinedValue>
+                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Alias="[i]" Column="INVOICE_ID" />
+                                          </DefinedValue>
+                                          <DefinedValue>
+                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Alias="[i]" Column="STATUS_ID" />
+                                          </DefinedValue>
+                                        </DefinedValues>
+                                        <Object Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Index="[IX_I_STATUS]" Alias="[i]" />
+                                      </IndexScan>
+                                    </RelOp>
+                                  </Parallelism>
+                                </RelOp>
+                                <RelOp AvgRowSize="220" EstimateCPU="0.00101179" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="20235.7" LogicalOp="Compute Scalar" NodeId="7" Parallel="true" PhysicalOp="Compute Scalar" EstimatedTotalSubtreeCost="87.4937">
+                                  <OutputList>
+                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                                    <ColumnReference Column="Expr1010" />
+                                  </OutputList>
+                                  <ComputeScalar>
+                                    <DefinedValues>
+                                      <DefinedValue>
+                                        <ColumnReference Column="Expr1010" />
+                                        <ScalarOperator ScalarString="([ims_new].[dbo].[USERS].[FIRST_NAME] as [u].[FIRST_NAME]+' ')+[ims_new].[dbo].[USERS].[LAST_NAME] as [u].[LAST_NAME]">
+                                          <Arithmetic Operation="ADD">
+                                            <ScalarOperator>
+                                              <Arithmetic Operation="ADD">
+                                                <ScalarOperator>
+                                                  <Identifier>
+                                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="FIRST_NAME" />
+                                                  </Identifier>
+                                                </ScalarOperator>
+                                                <ScalarOperator>
+                                                  <Const ConstValue="' '" />
+                                                </ScalarOperator>
+                                              </Arithmetic>
+                                            </ScalarOperator>
+                                            <ScalarOperator>
+                                              <Identifier>
+                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="LAST_NAME" />
+                                              </Identifier>
+                                            </ScalarOperator>
+                                          </Arithmetic>
+                                        </ScalarOperator>
+                                      </DefinedValue>
+                                    </DefinedValues>
+                                    <RelOp AvgRowSize="33" EstimateCPU="0.0361351" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="20235.7" LogicalOp="Repartition Streams" NodeId="8" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="87.4927">
+                                      <OutputList>
+                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="FIRST_NAME" />
+                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="LAST_NAME" />
+                                      </OutputList>
+                                      <RunTimeInformation>
+                                        <RunTimeCountersPerThread Thread="3" ActualRows="10665" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="1" ActualRows="6077" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="4" ActualRows="6232" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="2" ActualRows="5800" ActualEndOfScans="1" ActualExecutions="1" />
+                                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                      </RunTimeInformation>
+                                      <Parallelism PartitioningType="Hash">
+                                        <PartitionColumns>
+                                          <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                                        </PartitionColumns>
+                                        <RelOp AvgRowSize="33" EstimateCPU="0.307822" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="20235.7" LogicalOp="Right Outer Join" NodeId="9" Parallel="true" PhysicalOp="Hash Match" EstimatedTotalSubtreeCost="87.4566">
+                                          <OutputList>
+                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="FIRST_NAME" />
+                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="LAST_NAME" />
+                                          </OutputList>
+                                          <MemoryFractions Input="0.00628931" Output="0.00627353" />
+                                          <RunTimeInformation>
+                                            <RunTimeCountersPerThread Thread="4" ActualRows="11172" ActualEndOfScans="1" ActualExecutions="1" />
+                                            <RunTimeCountersPerThread Thread="1" ActualRows="2648" ActualEndOfScans="1" ActualExecutions="1" />
+                                            <RunTimeCountersPerThread Thread="2" ActualRows="8651" ActualEndOfScans="1" ActualExecutions="1" />
+                                            <RunTimeCountersPerThread Thread="3" ActualRows="6303" ActualEndOfScans="1" ActualExecutions="1" />
+                                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                          </RunTimeInformation>
+                                          <Hash>
+                                            <DefinedValues />
+                                            <HashKeysBuild>
+                                              <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="USER_ID" />
+                                            </HashKeysBuild>
+                                            <HashKeysProbe>
+                                              <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="BILLING_USER_ID" />
+                                            </HashKeysProbe>
+                                            <ProbeResidual>
+                                              <ScalarOperator ScalarString="[ims_new].[dbo].[USERS].[USER_ID] as [u].[USER_ID]=[ims_new].[dbo].[JOBS].[BILLING_USER_ID] as [j].[BILLING_USER_ID]">
+                                                <Compare CompareOp="EQ">
+                                                  <ScalarOperator>
+                                                    <Identifier>
+                                                      <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="USER_ID" />
+                                                    </Identifier>
+                                                  </ScalarOperator>
+                                                  <ScalarOperator>
+                                                    <Identifier>
+                                                      <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="BILLING_USER_ID" />
+                                                    </Identifier>
+                                                  </ScalarOperator>
+                                                </Compare>
+                                              </ScalarOperator>
+                                            </ProbeResidual>
+                                            <RelOp AvgRowSize="33" EstimateCPU="0.0348123" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="2462" LogicalOp="Repartition Streams" NodeId="10" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="0.0467773">
+                                              <OutputList>
+                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="USER_ID" />
+                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="FIRST_NAME" />
+                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="LAST_NAME" />
+                                              </OutputList>
+                                              <RunTimeInformation>
+                                                <RunTimeCountersPerThread Thread="1" ActualRows="611" ActualEndOfScans="1" ActualExecutions="1" />
+                                                <RunTimeCountersPerThread Thread="4" ActualRows="601" ActualEndOfScans="1" ActualExecutions="1" />
+                                                <RunTimeCountersPerThread Thread="2" ActualRows="640" ActualEndOfScans="1" ActualExecutions="1" />
+                                                <RunTimeCountersPerThread Thread="3" ActualRows="610" ActualEndOfScans="1" ActualExecutions="1" />
+                                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                              </RunTimeInformation>
+                                              <Parallelism PartitioningType="Hash">
+                                                <PartitionColumns>
+                                                  <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="USER_ID" />
+                                                </PartitionColumns>
+                                                <RelOp AvgRowSize="33" EstimateCPU="0.0014326" EstimateIO="0.0105324" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="2462" LogicalOp="Index Scan" NodeId="11" Parallel="true" PhysicalOp="Index Scan" EstimatedTotalSubtreeCost="0.011965">
+                                                  <OutputList>
+                                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="USER_ID" />
+                                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="FIRST_NAME" />
+                                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="LAST_NAME" />
+                                                  </OutputList>
+                                                  <RunTimeInformation>
+                                                    <RunTimeCountersPerThread Thread="1" ActualRows="728" ActualEndOfScans="1" ActualExecutions="1" />
+                                                    <RunTimeCountersPerThread Thread="4" ActualRows="480" ActualEndOfScans="1" ActualExecutions="1" />
+                                                    <RunTimeCountersPerThread Thread="3" ActualRows="727" ActualEndOfScans="1" ActualExecutions="1" />
+                                                    <RunTimeCountersPerThread Thread="2" ActualRows="527" ActualEndOfScans="1" ActualExecutions="1" />
+                                                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                  </RunTimeInformation>
+                                                  <IndexScan Ordered="false" ForcedIndex="false" NoExpandHint="false">
+                                                    <DefinedValues>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="USER_ID" />
+                                                      </DefinedValue>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="FIRST_NAME" />
+                                                      </DefinedValue>
+                                                      <DefinedValue>
+                                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[USERS]" Alias="[u]" Column="LAST_NAME" />
+                                                      </DefinedValue>
+                                                    </DefinedValues>
+                                                    <Object Database="[ims_new]" Schema="[dbo]" Table="[USERS]" Index="[IX_USER_NAMES]" Alias="[u]" />
+                                                  </IndexScan>
+                                                </RelOp>
+                                              </Parallelism>
+                                            </RelOp>
+                                            <RelOp AvgRowSize="25" EstimateCPU="0.0660021" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="20235.7" LogicalOp="Repartition Streams" NodeId="12" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="87.102">
+                                              <OutputList>
+                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="BILLING_USER_ID" />
+                                              </OutputList>
+                                              <RunTimeInformation>
+                                                <RunTimeCountersPerThread Thread="4" ActualRows="11172" ActualEndOfScans="1" ActualExecutions="1" />
+                                                <RunTimeCountersPerThread Thread="1" ActualRows="2648" ActualEndOfScans="1" ActualExecutions="1" />
+                                                <RunTimeCountersPerThread Thread="2" ActualRows="8651" ActualEndOfScans="1" ActualExecutions="1" />
+                                                <RunTimeCountersPerThread Thread="3" ActualRows="6303" ActualEndOfScans="1" ActualExecutions="1" />
+                                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                              </RunTimeInformation>
+                                              <Parallelism PartitioningType="Hash">
+                                                <PartitionColumns>
+                                                  <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="BILLING_USER_ID" />
+                                                </PartitionColumns>
+                                                <RelOp AvgRowSize="25" EstimateCPU="0.513673" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="20235.7" LogicalOp="Inner Join" NodeId="13" Parallel="true" PhysicalOp="Hash Match" EstimatedTotalSubtreeCost="87.036">
+                                                  <OutputList>
+                                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="BILLING_USER_ID" />
+                                                  </OutputList>
+                                                  <MemoryFractions Input="0.246541" Output="0.245922" />
+                                                  <RunTimeInformation>
+                                                    <RunTimeCountersPerThread Thread="4" ActualRows="9588" ActualEndOfScans="1" ActualExecutions="1" />
+                                                    <RunTimeCountersPerThread Thread="1" ActualRows="7050" ActualEndOfScans="1" ActualExecutions="1" />
+                                                    <RunTimeCountersPerThread Thread="2" ActualRows="6099" ActualEndOfScans="1" ActualExecutions="1" />
+                                                    <RunTimeCountersPerThread Thread="3" ActualRows="6037" ActualEndOfScans="1" ActualExecutions="1" />
+                                                    <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                  </RunTimeInformation>
+                                                  <Hash>
+                                                    <DefinedValues />
+                                                    <HashKeysBuild>
+                                                      <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_ID" />
+                                                    </HashKeysBuild>
+                                                    <HashKeysProbe>
+                                                      <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="JOB_ID" />
+                                                    </HashKeysProbe>
+                                                    <ProbeResidual>
+                                                      <ScalarOperator ScalarString="[ims_new].[dbo].[SERVICE_LINES].[BILL_JOB_ID] as [sl].[BILL_JOB_ID]=[ims_new].[dbo].[JOBS].[JOB_ID] as [j].[JOB_ID]">
+                                                        <Compare CompareOp="EQ">
+                                                          <ScalarOperator>
+                                                            <Identifier>
+                                                              <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_ID" />
+                                                            </Identifier>
+                                                          </ScalarOperator>
+                                                          <ScalarOperator>
+                                                            <Identifier>
+                                                              <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="JOB_ID" />
+                                                            </Identifier>
+                                                          </ScalarOperator>
+                                                        </Compare>
+                                                      </ScalarOperator>
+                                                    </ProbeResidual>
+                                                    <RelOp AvgRowSize="25" EstimateCPU="0.0699099" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="20235.7" LogicalOp="Bitmap Create" NodeId="14" Parallel="true" PhysicalOp="Bitmap" EstimatedTotalSubtreeCost="86.1119">
+                                                      <OutputList>
+                                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_ID" />
+                                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                                                      </OutputList>
+                                                      <RunTimeInformation>
+                                                        <RunTimeCountersPerThread Thread="1" ActualRows="7050" ActualEndOfScans="1" ActualExecutions="1" />
+                                                        <RunTimeCountersPerThread Thread="3" ActualRows="6037" ActualEndOfScans="1" ActualExecutions="1" />
+                                                        <RunTimeCountersPerThread Thread="4" ActualRows="9588" ActualEndOfScans="1" ActualExecutions="1" />
+                                                        <RunTimeCountersPerThread Thread="2" ActualRows="6112" ActualEndOfScans="1" ActualExecutions="1" />
+                                                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                      </RunTimeInformation>
+                                                      <Bitmap>
+                                                        <DefinedValues>
+                                                          <DefinedValue>
+                                                            <ColumnReference Column="Bitmap1011" />
+                                                          </DefinedValue>
+                                                        </DefinedValues>
+                                                        <HashKeys>
+                                                          <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_ID" />
+                                                        </HashKeys>
+                                                        <RelOp AvgRowSize="25" EstimateCPU="0.0699099" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="20235.7" LogicalOp="Repartition Streams" NodeId="15" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="86.1119">
+                                                          <OutputList>
+                                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_ID" />
+                                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                                                          </OutputList>
+                                                          <RunTimeInformation>
+                                                            <RunTimeCountersPerThread Thread="1" ActualRows="7050" ActualEndOfScans="1" ActualExecutions="1" />
+                                                            <RunTimeCountersPerThread Thread="3" ActualRows="6037" ActualEndOfScans="1" ActualExecutions="1" />
+                                                            <RunTimeCountersPerThread Thread="4" ActualRows="9588" ActualEndOfScans="1" ActualExecutions="1" />
+                                                            <RunTimeCountersPerThread Thread="2" ActualRows="6112" ActualEndOfScans="1" ActualExecutions="1" />
+                                                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                          </RunTimeInformation>
+                                                          <Parallelism PartitioningType="Hash">
+                                                            <PartitionColumns>
+                                                              <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_ID" />
+                                                            </PartitionColumns>
+                                                            <RelOp AvgRowSize="48" EstimateCPU="0.569135" EstimateIO="84.8624" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="20235.7" LogicalOp="Clustered Index Scan" NodeId="16" Parallel="true" PhysicalOp="Clustered Index Scan" EstimatedTotalSubtreeCost="85.4315">
+                                                              <OutputList>
+                                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_ID" />
+                                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                                                              </OutputList>
+                                                              <RunTimeInformation>
+                                                                <RunTimeCountersPerThread Thread="3" ActualRows="5685" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                <RunTimeCountersPerThread Thread="4" ActualRows="7248" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                <RunTimeCountersPerThread Thread="1" ActualRows="6426" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                <RunTimeCountersPerThread Thread="2" ActualRows="9428" ActualEndOfScans="1" ActualExecutions="1" />
+                                                                <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                              </RunTimeInformation>
+                                                              <IndexScan Ordered="false" ForcedIndex="false" NoExpandHint="false">
+                                                                <DefinedValues>
+                                                                  <DefinedValue>
+                                                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="BILL_JOB_ID" />
+                                                                  </DefinedValue>
+                                                                  <DefinedValue>
+                                                                    <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INVOICE_ID" />
+                                                                  </DefinedValue>
+                                                                </DefinedValues>
+                                                                <Object Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Index="[PK_SERVICE_LINES]" Alias="[sl]" />
+                                                                <Predicate>
+                                                                  <ScalarOperator ScalarString="[ims_new].[dbo].[SERVICE_LINES].[ORGANIZATION_ID] as [sl].[ORGANIZATION_ID]=(2.) AND [ims_new].[dbo].[SERVICE_LINES].[STATUS_ID] as [sl].[STATUS_ID]=(4.) AND [ims_new].[dbo].[SERVICE_LINES].[INTERNAL_REQ_FLAG] as [sl].[INTERNAL_REQ_FLAG]='N'">
+                                                                    <Logical Operation="AND">
+                                                                      <ScalarOperator>
+                                                                        <Compare CompareOp="EQ">
+                                                                          <ScalarOperator>
+                                                                            <Identifier>
+                                                                              <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="ORGANIZATION_ID" />
+                                                                            </Identifier>
+                                                                          </ScalarOperator>
+                                                                          <ScalarOperator>
+                                                                            <Const ConstValue="(2.)" />
+                                                                          </ScalarOperator>
+                                                                        </Compare>
+                                                                      </ScalarOperator>
+                                                                      <ScalarOperator>
+                                                                        <Compare CompareOp="EQ">
+                                                                          <ScalarOperator>
+                                                                            <Identifier>
+                                                                              <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="STATUS_ID" />
+                                                                            </Identifier>
+                                                                          </ScalarOperator>
+                                                                          <ScalarOperator>
+                                                                            <Const ConstValue="(4.)" />
+                                                                          </ScalarOperator>
+                                                                        </Compare>
+                                                                      </ScalarOperator>
+                                                                      <ScalarOperator>
+                                                                        <Compare CompareOp="EQ">
+                                                                          <ScalarOperator>
+                                                                            <Identifier>
+                                                                              <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[SERVICE_LINES]" Alias="[sl]" Column="INTERNAL_REQ_FLAG" />
+                                                                            </Identifier>
+                                                                          </ScalarOperator>
+                                                                          <ScalarOperator>
+                                                                            <Const ConstValue="'N'" />
+                                                                          </ScalarOperator>
+                                                                        </Compare>
+                                                                      </ScalarOperator>
+                                                                    </Logical>
+                                                                  </ScalarOperator>
+                                                                </Predicate>
+                                                              </IndexScan>
+                                                            </RelOp>
+                                                          </Parallelism>
+                                                        </RelOp>
+                                                      </Bitmap>
+                                                    </RelOp>
+                                                    <RelOp AvgRowSize="25" EstimateCPU="0.182797" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="75400" LogicalOp="Repartition Streams" NodeId="17" Parallel="true" PhysicalOp="Parallelism" EstimatedTotalSubtreeCost="0.410433">
+                                                      <OutputList>
+                                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="JOB_ID" />
+                                                        <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="BILLING_USER_ID" />
+                                                      </OutputList>
+                                                      <RunTimeInformation>
+                                                        <RunTimeCountersPerThread Thread="1" ActualRows="270" ActualEndOfScans="1" ActualExecutions="1" />
+                                                        <RunTimeCountersPerThread Thread="3" ActualRows="279" ActualEndOfScans="1" ActualExecutions="1" />
+                                                        <RunTimeCountersPerThread Thread="4" ActualRows="327" ActualEndOfScans="1" ActualExecutions="1" />
+                                                        <RunTimeCountersPerThread Thread="2" ActualRows="299" ActualEndOfScans="1" ActualExecutions="1" />
+                                                        <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                      </RunTimeInformation>
+                                                      <Parallelism PartitioningType="Hash">
+                                                        <PartitionColumns>
+                                                          <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="JOB_ID" />
+                                                        </PartitionColumns>
+                                                        <ProbeColumn>
+                                                          <ColumnReference Column="Bitmap1011" />
+                                                        </ProbeColumn>
+                                                        <RelOp AvgRowSize="25" EstimateCPU="0.0415485" EstimateIO="0.186088" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="75400" LogicalOp="Index Scan" NodeId="18" Parallel="true" PhysicalOp="Index Scan" EstimatedTotalSubtreeCost="0.227636">
+                                                          <OutputList>
+                                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="JOB_ID" />
+                                                            <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="BILLING_USER_ID" />
+                                                          </OutputList>
+                                                          <RunTimeInformation>
+                                                            <RunTimeCountersPerThread Thread="3" ActualRows="19481" ActualEndOfScans="1" ActualExecutions="1" />
+                                                            <RunTimeCountersPerThread Thread="1" ActualRows="16441" ActualEndOfScans="1" ActualExecutions="1" />
+                                                            <RunTimeCountersPerThread Thread="4" ActualRows="19704" ActualEndOfScans="1" ActualExecutions="1" />
+                                                            <RunTimeCountersPerThread Thread="2" ActualRows="19774" ActualEndOfScans="1" ActualExecutions="1" />
+                                                            <RunTimeCountersPerThread Thread="0" ActualRows="0" ActualEndOfScans="0" ActualExecutions="0" />
+                                                          </RunTimeInformation>
+                                                          <IndexScan Ordered="false" ForcedIndex="false" NoExpandHint="false">
+                                                            <DefinedValues>
+                                                              <DefinedValue>
+                                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="JOB_ID" />
+                                                              </DefinedValue>
+                                                              <DefinedValue>
+                                                                <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[JOBS]" Alias="[j]" Column="BILLING_USER_ID" />
+                                                              </DefinedValue>
+                                                            </DefinedValues>
+                                                            <Object Database="[ims_new]" Schema="[dbo]" Table="[JOBS]" Index="[IX_JOB_BILLING_USERS]" Alias="[j]" />
+                                                          </IndexScan>
+                                                        </RelOp>
+                                                      </Parallelism>
+                                                    </RelOp>
+                                                  </Hash>
+                                                </RelOp>
+                                              </Parallelism>
+                                            </RelOp>
+                                          </Hash>
+                                        </RelOp>
+                                      </Parallelism>
+                                    </RelOp>
+                                  </ComputeScalar>
+                                </RelOp>
+                              </Hash>
+                            </RelOp>
+                            <Predicate>
+                              <ScalarOperator ScalarString="[ims_new].[dbo].[INVOICES].[STATUS_ID] as [i].[STATUS_ID] IS NULL OR [ims_new].[dbo].[INVOICES].[STATUS_ID] as [i].[STATUS_ID]=(1.)">
+                                <Logical Operation="OR">
+                                  <ScalarOperator>
+                                    <Compare CompareOp="IS">
+                                      <ScalarOperator>
+                                        <Identifier>
+                                          <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Alias="[i]" Column="STATUS_ID" />
+                                        </Identifier>
+                                      </ScalarOperator>
+                                      <ScalarOperator>
+                                        <Const ConstValue="NULL" />
+                                      </ScalarOperator>
+                                    </Compare>
+                                  </ScalarOperator>
+                                  <ScalarOperator>
+                                    <Compare CompareOp="EQ">
+                                      <ScalarOperator>
+                                        <Identifier>
+                                          <ColumnReference Database="[ims_new]" Schema="[dbo]" Table="[INVOICES]" Alias="[i]" Column="STATUS_ID" />
+                                        </Identifier>
+                                      </ScalarOperator>
+                                      <ScalarOperator>
+                                        <Const ConstValue="(1.)" />
+                                      </ScalarOperator>
+                                    </Compare>
+                                  </ScalarOperator>
+                                </Logical>
+                              </ScalarOperator>
+                            </Predicate>
+                          </Filter>
+                        </RelOp>
+                      </Hash>
+                    </RelOp>
+                  </Parallelism>
+                </RelOp>
+              </Sort>
+            </RelOp>
+          </QueryPlan>
+        </StmtSimple>
+      </Statements>
+    </Batch>
+  </BatchSequence>
+</ShowPlanXML>

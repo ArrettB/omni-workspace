@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	
+	<type-mapping>
+		<sql-type jdbc-type="DOUBLE"  hibernate-type="java.lang.Long" /> 
+		<sql-type jdbc-type="DECIMAL" hibernate-type="java.lang.Long" /> 
+		<sql-type jdbc-type="NUMERIC" hibernate-type="java.lang.Double" /> 
+		<sql-type jdbc-type="NUMERIC" scale="0" hibernate-type="java.lang.Long" />
+	</type-mapping>
+
+	<table-filter match-catalog="AMBIM" match-schema=".*" match-name=".*" exclude="true"/>
+	<table-filter match-catalog="CIINC" match-schema=".*" match-name=".*" exclude="true"/>
+	<table-filter match-catalog="CILLC" match-schema=".*" match-name=".*" exclude="true"/>
+	<table-filter match-catalog="CIMN" match-schema=".*" match-name=".*" exclude="true"/>
+	<table-filter match-catalog="dynamics" match-schema=".*" match-name=".*" exclude="true"/>
+	<table-filter match-catalog="ICS" match-schema=".*" match-name=".*" exclude="true"/>
+	<table-filter match-catalog="IMS_PRE400" match-schema=".*" match-name=".*" exclude="true"/>
+	<table-filter match-catalog="ServiceTRAX" match-schema=".*" match-name=".*" exclude="true"/>
+	<table-filter match-catalog="ammad" match-schema=".*" match-name=".*" exclude="true"/>
+	
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name=".*_v.*" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name=".*_V.*" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="ot.*" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema="sys" match-name=".*" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="check_constraints" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="crystal.*" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="XREF.*" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="dtproperties" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="anderson_windows1" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="bad_reqs" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="bcp_customer_mpls" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="invoices_arch" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="INVOICE_LINES_arch_2004" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="SERVICE_ACCOUNT_REPORT_TEMP" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="NUMBERS" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="UPR40600" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="SEQUENCES" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="Expense_Report_for_Sandy" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="UNBILLED_REPORT_DAILYDATACAPTURE" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="CONSTRAINT_NAMES" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="FAILED_INTEGRATIONS" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="QUOTE_CONDITION_XJOIN" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="PDA_RESOURCE_SORT" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="PDA_ROSTER_CHANGES" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="POOLED_HOURS_CALC" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="pooled_hours" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="pooled_hours_allocated" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="pooled_hours_service_lines" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="pooled_hours_verification" exclude="true"/>
+	<table-filter match-catalog="ims_new" match-schema=".*" match-name="USERS_CRYSTAL" exclude="true"/>
+	
+	
+	
+</hibernate-reverse-engineering>

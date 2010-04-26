@@ -1,0 +1,551 @@
+<!-- $Header: customers.html, 8/1/2007, David Zhaon$ -->
+<html>
+<head>
+<title>Customers</title>
+</head>
+<body>
+<!--#IF defined="<?p:action?>" -->
+  <!--#IF evaluate="<?p:action?>" compare="new"-->
+<!-- 1. NEW block begins -->
+     <input type="hidden" id="current_customer_id" value="{!s:current_customer_id!}">
+
+		<!--#SQLLOOP name="custQuery" resourceName="SQLServer"
+		             query="SELECT COUNT(customer_id) numCustomers
+		                      FROM user_customers
+		                     WHERE user_id = <?s:user.userID.toPStmtString()?>"-->
+		<!--#IF evaluate="<?r:custQuery:numCustomers?>" compare="0"-->  <!-- no user customer-->
+<!-- 1.1 NEW::no user customer block begins -->
+		  <!--#IF evaluate="<?s:rights.enet/proj/multidealer.view?>" compare="true" -->
+		    <!--#SELECT name="customer_id" id="customer_id"
+		                class="regular"
+		                style="width:230"
+		                onChange="onCustomerChange()"
+						firstOption=""
+						firstOptionValue=""
+						currentValue="<?s:current_customer_id?>"
+						resourceName="SQLServer"
+						query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id
+							    WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							  UNION
+						       SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+								 FROM customers c INNER JOIN
+								      lookups l ON c.customer_type_id = l.lookup_id
+								WHERE l.code IN ('commercial','corporate','government')
+								  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+								  AND c.ext_dealer_id = <?s:ext_direct_dealer_id.toPStmtString()?>
+								  AND c.active_flag = 'Y'
+                             ORDER BY c.customer_name"  -->
+
+          <!--#ELSEIF evaluate="<?s:rights.enet/proj/non_a_m_dealers.view?>" compare="true" -->
+		    <!--#SELECT name="customer_id" id="customer_id"
+		                class="regular"
+		                style="width:230"
+		                onChange="onCustomerChange()"
+						firstOption=""
+						firstOptionValue=""
+						currentValue="<?s:current_customer_id?>"
+						resourceName="SQLServer"
+						query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id
+							    WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							  UNION
+						       SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+								 FROM customers c INNER JOIN
+								      lookups l ON c.customer_type_id = l.lookup_id
+								WHERE (l.code IN ('commercial','corporate','government')
+								  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+								  AND c.ext_dealer_id = <?s:ext_dealer_id.toPStmtString()?>
+								  AND c.active_flag = 'Y')
+								  AND c.ext_dealer_id <> <?s:ext_direct_dealer_id.toPStmtString()?>
+                             ORDER BY c.customer_name"  -->
+
+		  <!--#ELSE-->
+		    <!--#SELECT name="customer_id" id="customer_id"
+		                class="regular"
+		                style="width:230"
+		                onChange="onCustomerChange()"
+						currentValue="<?s:current_customer_id?>"
+						resourceName="SQLServer"
+						query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id
+							    WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                                  AND c.ext_customer_id = <?s:ext_dealer_id.toPStmtString()?>
+							  UNION
+						       SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+								 FROM customers c INNER JOIN
+								      lookups l ON c.customer_type_id = l.lookup_id
+								WHERE l.code IN ('commercial','corporate','government')
+								  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+								  AND c.ext_dealer_id = <?s:ext_dealer_id.toPStmtString()?>
+								  AND c.active_flag = 'Y'
+                             ORDER BY c.customer_name"  -->
+
+	      <!--#/IF-->
+
+	    <!--#ELSE--> <!-- has user customer-->
+<!-- 1.2 NEW::has user customer block begins -->
+          <!--#IF evaluate="<?s:rights.enet/proj/multidealer.view?>" compare="true" -->
+		    <!--#SELECT name="customer_id" id="customer_id"
+		                class="regular"
+		                style="width:230"
+		                onChange="onCustomerChange()"
+					    firstOption=""
+					    firstOptionValue=""
+					    currentValue="<?s:current_customer_id?>"
+					    query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN lookups l ON c.customer_type_id = l.lookup_id
+							    WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							  UNION
+							   SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id INNER JOIN
+							          user_customers_v v ON c.customer_id = v.customer_id
+								WHERE l.code IN ('commercial','corporate','government')
+							      AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							      AND c.ext_dealer_id = <?s:ext_direct_dealer_id.toPStmtString()?>
+							      AND c.active_flag = 'Y'
+							      AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+							      AND v.user_id = <?s:user.userID.toPStmtString()?>
+						     ORDER BY c.customer_name"  -->
+
+          <!--#ELSEIF evaluate="<?s:rights.enet/proj/non_a_m_dealers.view?>" compare="true" -->
+		    <!--#SELECT name="customer_id" id="customer_id"
+		                class="regular"
+		                style="width:230"
+		                onChange="onCustomerChange()"
+						firstOption=""
+						firstOptionValue=""
+						currentValue="<?s:current_customer_id?>"
+						resourceName="SQLServer"
+						query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id
+							    WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							  UNION
+							   SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id INNER JOIN
+							          user_customers_v v ON c.customer_id = v.customer_id
+								WHERE (l.code IN ('commercial','corporate','government')
+							      AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							      AND c.ext_dealer_id = <?s:ext_dealer_id.toPStmtString()?>
+							      AND c.active_flag = 'Y'
+							      AND v.user_id = <?s:user.userID.toPStmtString()?>)
+							      AND c.ext_dealer_id <> <?s:ext_direct_dealer_id.toPStmtString()?>
+                             ORDER BY c.customer_name"  -->
+
+          <!--#ELSE-->
+ 		    <!--#SELECT name="customer_id" id="customer_id"
+ 		                class="regular"
+ 		                style="width:230"
+ 		                onChange="onCustomerChange()"
+					    firstOption=""
+					    firstOptionValue=""
+					    currentValue="<?s:current_customer_id?>"
+					    query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id
+							    WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                                  AND c.ext_customer_id = <?s:ext_dealer_id.toPStmtString()?>
+							  UNION
+							   SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id INNER JOIN
+							          user_customers_v v ON c.customer_id = v.customer_id
+								WHERE l.code IN ('commercial','corporate','government')
+							      AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							      AND c.ext_dealer_id = <?s:ext_dealer_id.toPStmtString()?>
+							      AND c.active_flag = 'Y'
+							      AND v.user_id = <?s:user.userID.toPStmtString()?>
+                             ORDER BY c.customer_name"  -->
+	      <!--#/IF-->
+		<!--#/IF-->
+	  	<!--#/SQLLOOP-->
+
+  <!--#ELSE-->
+<!-- 2. non-NEW block begins -->
+		<!--#SQLLOOP name="custQuery" resourceName="SQLServer"
+		             query="SELECT COUNT(customer_id) numCustomers
+		                      FROM user_customers
+		                     WHERE user_id = <?s:user.userID.toPStmtString()?>"-->
+		<!--#IF evaluate="<?r:custQuery:numCustomers?>" compare="0"-->
+<!-- 2.1 non-NEW::no user customer block begins -->
+		  <!--#IF evaluate="<?s:rights.enet/proj/multidealer.view?>" compare="true" -->
+		    <!--#SELECT name="customer_id" id="customer_id"
+		                class="regular"
+		                style="width:230"
+		                onChange="onCustomerChange()"
+						firstOption=""
+						firstOptionValue=""
+						currentValue="<?p:current_val?>"
+						resourceName="SQLServer"
+						query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id
+							    WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							  UNION
+						       SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+								 FROM customers c INNER JOIN
+								      lookups l ON c.customer_type_id = l.lookup_id
+								WHERE l.code IN ('commercial','corporate','government')
+								  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+								  AND c.ext_dealer_id = <?s:ext_direct_dealer_id.toPStmtString()?>
+								  AND c.active_flag = 'Y'
+                             ORDER BY c.customer_name" -->
+
+          <!--#ELSEIF evaluate="<?s:rights.enet/proj/non_a_m_dealers.view?>" compare="true" -->
+		    <!--#SELECT name="customer_id" id="customer_id"
+		                class="regular"
+		                style="width:230"
+		                onChange="onCustomerChange()"
+						firstOption=""
+						firstOptionValue=""
+						currentValue="<?p:current_val?>"
+						resourceName="SQLServer"
+						query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id
+							    WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							  UNION
+						       SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+								 FROM customers c INNER JOIN
+								      lookups l ON c.customer_type_id = l.lookup_id
+								WHERE (l.code IN ('commercial','corporate','government')
+								  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+								  AND c.ext_dealer_id = <?s:ext_dealer_id.toPStmtString()?>
+								  AND c.active_flag = 'Y')
+								  AND c.ext_dealer_id <> <?s:ext_direct_dealer_id.toPStmtString()?>
+                             ORDER BY c.customer_name"  -->
+
+		  <!--#ELSE-->
+		    <!--#SELECT name="customer_id" id="customer_id"
+		                class="regular"
+		                style="width:230"
+		                onChange="onCustomerChange()"
+						currentValue="<?p:current_val?>"
+						resourceName="SQLServer"
+						query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id
+							    WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                                  AND c.ext_customer_id = <?s:ext_dealer_id.toPStmtString()?>
+							  UNION
+						       SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+								 FROM customers c INNER JOIN
+								      lookups l ON c.customer_type_id = l.lookup_id
+								WHERE l.code IN ('commercial','corporate','government')
+								  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+								  AND c.ext_dealer_id = <?s:ext_dealer_id.toPStmtString()?>
+								  AND c.active_flag = 'Y'
+                             ORDER BY c.customer_name"  -->
+
+	      <!--#/IF-->
+	    <!--#ELSE-->
+<!-- 2.2 non-NEW::has user customer block begins -->
+          <!--#IF evaluate="<?s:rights.enet/proj/multidealer.view?>" compare="true" -->
+		    <!--#SELECT name="customer_id" id="customer_id"
+		                class="regular"
+		                style="width:230"
+		                onChange="onCustomerChange()"
+					    firstOption=""
+					    firstOptionValue=""
+					    currentValue="<?p:current_val?>"
+					    query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id
+							    WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							  UNION
+							   SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id INNER JOIN
+							          user_customers_v v ON c.customer_id = v.customer_id
+								WHERE l.code IN ('commercial','corporate','government')
+							      AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							      AND c.ext_dealer_id = <?s:ext_direct_dealer_id.toPStmtString()?>
+							      AND c.active_flag = 'Y'
+							      AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+							      AND v.user_id = <?s:user.userID.toPStmtString()?>
+						     ORDER BY c.customer_name"  -->
+
+          <!--#ELSEIF evaluate="<?s:rights.enet/proj/non_a_m_dealers.view?>" compare="true" -->
+		    <!--#SELECT name="customer_id" id="customer_id"
+		                class="regular"
+		                style="width:230"
+		                onChange="onCustomerChange()"
+						firstOption=""
+						firstOptionValue=""
+						currentValue="<?p:current_val?>"
+						resourceName="SQLServer"
+						query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id
+							    WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							  UNION
+							   SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id INNER JOIN
+							          user_customers_v v ON c.customer_id = v.customer_id
+								WHERE (l.code IN ('commercial','corporate','government')
+							      AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							      AND c.ext_dealer_id = <?s:ext_dealer_id.toPStmtString()?>
+							      AND c.active_flag = 'Y'
+							      AND v.user_id = <?s:user.userID.toPStmtString()?>)
+							      AND c.ext_dealer_id <> <?s:ext_direct_dealer_id.toPStmtString()?>
+                             ORDER BY c.customer_name"  -->
+
+          <!--#ELSE-->
+ 		    <!--#SELECT name="customer_id" id="customer_id"
+ 		                class="regular"
+ 		                style="width:230"
+ 		                onChange="onCustomerChange()"
+					    firstOption=""
+					    firstOptionValue=""
+					    currentValue="<?p:current_val?>"
+					    query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id
+							    WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                                  AND c.ext_customer_id = <?s:ext_dealer_id.toPStmtString()?>
+							  UNION
+							   SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id INNER JOIN
+							          user_customers_v v ON c.customer_id = v.customer_id
+								WHERE l.code IN ('commercial','corporate','government')
+							      AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							      AND c.ext_dealer_id = <?s:ext_dealer_id.toPStmtString()?>
+							      AND c.active_flag = 'Y'
+							      AND v.user_id = <?s:user.userID.toPStmtString()?>
+                             ORDER BY c.customer_name"  -->
+	      <!--#/IF-->
+		<!--#/IF-->
+	  	<!--#/SQLLOOP-->
+  <!--#/IF-->
+<!--#ELSE-->
+<!-- 3. no-action block begins -->
+		<!--#SQLLOOP name="custQuery" resourceName="SQLServer"
+		             query="SELECT COUNT(customer_id) numCustomers
+		                      FROM user_customers
+		                     WHERE user_id = <?s:user.userID.toPStmtString()?>"-->
+		<!--#IF evaluate="<?r:custQuery:numCustomers?>" compare="0"-->
+<!-- 3.1 no-action::no user customer block begins -->
+		  <!--#IF evaluate="<?s:rights.enet/proj/multidealer.view?>" compare="true" -->
+		    <!--#SELECT name="customer_id" id="customer_id"
+		                class="regular"
+		                style="width:230"
+		                onChange="onCustomerChange()"
+						firstOption=""
+						firstOptionValue=""
+						currentValue="<?p:current_val?>"
+						resourceName="SQLServer"
+						query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id
+							    WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							  UNION
+						       SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+								 FROM customers c INNER JOIN
+								      lookups l ON c.customer_type_id = l.lookup_id
+								WHERE l.code IN ('commercial','corporate','government')
+								  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+								  AND c.ext_dealer_id = <?s:ext_direct_dealer_id.toPStmtString()?>
+								  AND c.active_flag = 'Y'
+                             ORDER BY c.customer_name" -->
+
+          <!--#ELSEIF evaluate="<?s:rights.enet/proj/non_a_m_dealers.view?>" compare="true" -->
+		    <!--#SELECT name="customer_id" id="customer_id"
+		                class="regular"
+		                style="width:230"
+		                onChange="onCustomerChange()"
+						firstOption=""
+						firstOptionValue=""
+						currentValue="<?p:current_val?>"
+						resourceName="SQLServer"
+						query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id
+							    WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							  UNION
+						       SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+								 FROM customers c INNER JOIN
+								      lookups l ON c.customer_type_id = l.lookup_id
+								WHERE (l.code IN ('commercial','corporate','government')
+								  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+								  AND c.ext_dealer_id = <?s:ext_dealer_id.toPStmtString()?>
+								  AND c.active_flag = 'Y')
+								  AND c.ext_dealer_id <> <?s:ext_direct_dealer_id.toPStmtString()?>
+                             ORDER BY c.customer_name"  -->
+
+		  <!--#ELSE-->
+		    <!--#SELECT name="customer_id" id="customer_id"
+		                class="regular"
+		                style="width:230"
+		                onChange="onCustomerChange()"
+						currentValue="<?p:current_val?>"
+						resourceName="SQLServer"
+						query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id
+							    WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                                  AND c.ext_customer_id = <?s:ext_dealer_id.toPStmtString()?>
+							  UNION
+						       SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+								 FROM customers c INNER JOIN
+								      lookups l ON c.customer_type_id = l.lookup_id
+								WHERE l.code IN ('commercial','corporate','government')
+								  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+								  AND c.ext_dealer_id = <?s:ext_dealer_id.toPStmtString()?>
+								  AND c.active_flag = 'Y'
+                             ORDER BY c.customer_name"  -->
+
+	      <!--#/IF-->
+	    <!--#ELSE-->
+<!-- 3.2 no-action::has user customer block begins -->
+          <!--#IF evaluate="<?s:rights.enet/proj/multidealer.view?>" compare="true" -->
+		    <!--#SELECT name="customer_id" id="customer_id"
+		                class="regular"
+		                style="width:230"
+		                onChange="onCustomerChange()"
+					    firstOption=""
+					    firstOptionValue=""
+					    currentValue="<?p:current_val?>"
+					    query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id
+							    WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							  UNION
+							   SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id INNER JOIN
+							          user_customers_v v ON c.customer_id = v.customer_id
+								WHERE l.code IN ('commercial','corporate','government')
+							      AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							      AND c.ext_dealer_id = <?s:ext_direct_dealer_id.toPStmtString()?>
+							      AND c.active_flag = 'Y'
+							      AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+							      AND v.user_id = <?s:user.userID.toPStmtString()?>
+						     ORDER BY c.customer_name"  -->
+
+          <!--#ELSEIF evaluate="<?s:rights.enet/proj/non_a_m_dealers.view?>" compare="true" -->
+		    <!--#SELECT name="customer_id" id="customer_id"
+		                class="regular"
+		                style="width:230"
+		                onChange="onCustomerChange()"
+						firstOption=""
+						firstOptionValue=""
+						currentValue="<?p:current_val?>"
+						resourceName="SQLServer"
+						query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id
+							    WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							  UNION
+							   SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id INNER JOIN
+							          user_customers_v v ON c.customer_id = v.customer_id
+								WHERE (l.code IN ('commercial','corporate','government')
+							      AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							      AND c.ext_dealer_id = <?s:ext_dealer_id.toPStmtString()?>
+							      AND c.active_flag = 'Y'
+							      AND v.user_id = <?s:user.userID.toPStmtString()?>)
+							      AND c.ext_dealer_id <> <?s:ext_direct_dealer_id.toPStmtString()?>
+                             ORDER BY c.customer_name"  -->
+
+          <!--#ELSE-->
+ 		    <!--#SELECT name="customer_id" id="customer_id"
+ 		                class="regular"
+ 		                style="width:230"
+ 		                onChange="onCustomerChange()"
+					    firstOption=""
+					    firstOptionValue=""
+					    currentValue="<?p:current_val?>"
+					    query="SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id
+							    WHERE l.code='dealer'
+                                  AND c.active_flag = 'Y'
+                                  AND ISNULL(c.ext_customer_id,'') NOT LIKE 'OLD%'
+                                  AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                                  AND c.ext_customer_id = <?s:ext_dealer_id.toPStmtString()?>
+							  UNION
+							   SELECT c.customer_id, LTRIM(c.customer_name) customer_name
+							     FROM customers c INNER JOIN
+							          lookups l ON c.customer_type_id = l.lookup_id INNER JOIN
+							          user_customers_v v ON c.customer_id = v.customer_id
+								WHERE l.code IN ('commercial','corporate','government')
+							      AND c.organization_id = <?s:org_id.toPStmtInt()?>
+							      AND c.ext_dealer_id = <?s:ext_dealer_id.toPStmtString()?>
+							      AND c.active_flag = 'Y'
+							      AND v.user_id = <?s:user.userID.toPStmtString()?>
+                             ORDER BY c.customer_name"  -->
+	      <!--#/IF-->
+		<!--#/IF-->
+	  	<!--#/SQLLOOP-->
+<!--#/IF-->
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!--#EMBED template="embeds/header.html" -->
+
+
+<body class="BodyTag">
+
+
+<!--#SQLLOOP query="SELECT status_id, name status, LOWER(code) code
+					FROM service_line_statuses WITH (NOLOCK)
+					WHERE code = 'submitted' OR code = 'new'
+					ORDER BY status_id"
+				resourceName="SQLServer"
+				name="statusQuery"-->
+
+	<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0"> <tr><td class="tableHeader">{!r:statusQuery:status!}</td></tr>
+	</TABLE>
+	<input type="hidden" name="level" value="req">
+	<input type="hidden" name="templateName" value="time/job_tc_list_sum">
+	<!--#SMARTTABLE name="service_lines"
+		class="SmartTable"
+		query="SELECT  s.status_id,
+						sum(s.expense_total) sum_expense_total,
+						sum(s.payroll_qty) sum_payroll_qty, s.resource_name, s.resource_id, s.ext_pay_code
+				FROM service_lines s, resources r
+				WHERE s.status_id = <?r:statusQuery:status_id.toPStmtString()?>
+					AND s.resource_id = r.resource_id
+					AND (s.created_by = <?s:user_id.toPStmtString()?> OR r.user_id = <?s:user_id.toPStmtString()?> )
+					AND s.ph_service_id is null
+				    AND s.fully_allocated_flag <> 'Y'
+					AND s.organization_id = <?s:org_id.toPStmtString()?>
+					AND s.billed_flag = 'N'
+				GROUP BY s.status_id, s.resource_name, s.resource_id, s.ext_pay_code
+				ORDER BY s.resource_name"
+	-->
+		<!--#SMARTCOLUMN name="resource_name" sort="resource_name" title="Resource" width="10%" -->
+		<!--#SMARTCOLUMN name="ext_pay_code" sort="ext_pay_code" title="Paycode" width="5%" align="center" -->
+		<!--#SMARTCOLUMN name="sum_payroll_qty" sort="sum_payroll_qty" title="Total Hours" width="10%" format="###,###,##0.00" align="right"-->
+		<!--#SMARTCOLUMN name="sum_expense_total" sort="sum_expense_total" title="Total Expenses" width="10%" format="money" align="right"-->
+	<!--#/SMARTTABLE -->
+
+
+<BR><BR>
+<!--#/SQLLOOP-->
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

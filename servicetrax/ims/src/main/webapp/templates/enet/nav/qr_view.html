@@ -1,0 +1,151 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<body class="BodyTag" onLoad="">
+
+
+<span class="Label">
+Please choose the quote request to view/update:
+</span>
+
+
+<!--#EXEC handler="ims.handlers.query.RecordListQueryHandler" record_type_code="quote_request" -->
+
+<!--#SMARTTABLE name="qr_list"
+		class="SmartTable"
+		query="<?d:recordListQuery?>"-->
+
+  <!--#IF defined="<?d:qr_list:firstRow?>"-->
+	<form name="frm_checkbox" action="{!s:action!}archive/enet/nav/qr_view.html" method="post" style="margin:0;">
+  <!--#/IF-->
+
+  <!--#IF evaluate="<?d:qr_list:rowid?>" compare="total"-->
+	<td height="30" class="TableTitle">&nbsp;</td>
+  <!--#ELSE-->
+	<!--#SMARTCOLUMN title="<input type='checkbox' name='selectall' onClick='javascript:selectAll(this);' >"
+			         value="<input type='checkbox' <?r:qr_list:selected?> name='archiveCheckbox' value='<?r:qr_list:request_id?>' >"
+			         name="foo" align="center" width="2%"-->
+  <!--#/IF-->
+
+<!--#IF evaluate="<?r:qr_list:is_new?>" compare="Y" -->
+	<!--#SMARTCOLUMN name="project_request_version_no" sort="project_request_version_no" title="QR#" align="center" width="10%" nowrap target="_top"
+	       href="<?s:action?>setProjectDatum?project_id=<?r:qr_list:project_id?>&templateName=enet/proj/pf_main.html&request_id=<?r:qr_list:request_id?>&loc=quote_request"
+	       filter="a_project_request_no:project_request_version_no like '%<?p:a_project_request_no?>%'" -->
+<!--#ELSE-->
+	<!--#SMARTCOLUMN name="project_request_version_no" sort="project_request_version_no" title="QR#" align="center" width="10%" nowrap target="_top"
+	       href="<?s:action?>setProjectDatum?project_id=<?r:qr_list:project_id?>&templateName=enet/proj/pf_main.html&request_id=<?r:qr_list:request_id?>&loc=qr_create"
+	       filter="a_project_request_no:project_request_version_no like '%<?p:a_project_request_no?>%'" -->
+<!--#/IF-->
+
+	<!--#SMARTCOLUMN name="customer_name" sort="customer_name" title="Customer" width="20%"
+		filter="filter_customer_name:customer_name LIKE '%' + <?p:filter_customer_name.toSQLString()?> + '%'"
+	-->
+
+	<!--#SMARTCOLUMN name="end_user_name" sort="end_user_name" title="End User" width="20%"
+		filter="filter_end_user_name:end_user_name LIKE '%' + <?p:filter_end_user_name.toSQLString()?> + '%'"
+	-->
+
+	<!--#SMARTCOLUMN name="job_name" sort="job_name" title="Job Name" width="20%" filter="job_name:job_name" -->
+
+	<!--#SMARTCOLUMN name="record_status_name" sort="record_status_name" title="Status" width="10%"
+		filter="record_status_name:record_status_code" filterQuick="true"
+		filterQuery="SELECT lookup_code, lookup_name FROM quote_req_status_types_v WHERE lookup_code <> 'closed'"-->
+
+	 <!--#SMARTCOLUMN name="a_m_contact_name" sort="a_m_contact_name" title="Omni Project Manager" width="10%" align="left" nowrap
+	    filter="a_m_contact_id:a_m_contact_name" -->
+	 <!--#SMARTCOLUMN name="is_quoted" sort="is_quoted" title="Quoted?" width="5%" filter="is_quoted:is_quoted" align="center"-->
+	 <!--#SMARTCOLUMN name="has_service_request" sort="has_service_request" title="Service Request?" width="5%" filter="has_service_request:has_service_request" align="center"-->
+	 <!--#SMARTCOLUMN name="record_created" sort="record_created"  format="date" title="Date Created" width="10%"-->
+
+
+<!--#/SMARTTABLE -->
+<!--#EMBED template="/embeds/spacer_table.html" spacer_height="15"-->
+	<input type="hidden" name="archiveIds" id="archiveIds" value="">
+	<input type="hidden" name="record_type" id="record_type" value="quote_request">
+	<table border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			<td width="100">
+				<input type="button" name="button" value="Archive" onClick="return archive()" class="button">
+			</td>
+		</tr>
+	</table>
+</form>
+
+<script type="text/javascript">
+<!--
+var totalChecked = 0;
+var f = document.frm_checkbox;
+
+function archive()
+{
+	var foundOne = false;
+	var boxList = "";
+	var boxes = document.getElementsByName("archiveCheckbox");
+	for (var i = 0; i < boxes.length; i++)
+	{
+		var theBox = boxes[i];
+		if (theBox.checked)
+		{
+			boxList += "," + theBox.value;
+			foundOne = true;
+		}
+	}
+	if (foundOne)
+	{
+		if (confirm("Do you want to close / archive the quote requests?"))
+		{
+			f.archiveIds.value = boxList.substring(1);
+			f.submit();
+			return true;
+		}
+		else
+		{
+			unSelectAll();
+		}
+	}
+	else
+	{
+		alert("You must select at least one quote request to archive.");
+	}
+}
+
+function selectAll(theitem)
+{
+	var check = theitem.checked;
+    var all_inv = 0;
+	for (i = 0; i < f.elements.length; i++)
+	{
+		if (f.elements[i].type == 'checkbox')
+		{
+				f.elements[i].checked = check;
+				all_inv += 1;
+		}
+
+	}
+
+	// update the overall counter
+	if (check)
+		totalChecked = all_inv;
+	else
+		totalChecked = 0;
+
+}
+
+function unSelectAll()
+{
+	for (i = 0; i < f.elements.length; i++)
+	{
+		if (f.elements[i].type == 'checkbox')
+		{
+				f.elements[i].checked = null;
+		}
+
+	}
+}
+
+//-->
+</script>
+
+</body>
+
+<!--#EMBED template="enet/embeds/footer.html" -->
+

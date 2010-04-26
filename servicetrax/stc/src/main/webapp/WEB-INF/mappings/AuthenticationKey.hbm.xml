@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.AuthenticationKey" table="authentication_keys" schema="dbo" catalog="">
+        <id name="authenticationKeyId" type="java.lang.Long">
+            <column name="authentication_key_id" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <property name="auth" type="string">
+            <column name="auth" length="50" not-null="true" />
+        </property>
+        <property name="userId" type="long">
+            <column name="user_id" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="organizationId" type="long">
+            <column name="organization_id" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="expireDate" type="timestamp">
+            <column name="expire_date" length="23" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

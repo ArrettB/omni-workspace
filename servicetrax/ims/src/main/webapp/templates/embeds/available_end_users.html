@@ -1,0 +1,40 @@
+<!-- $Header: available_end_users.html, 4/28/2008, David Zhaon$ -->
+<html>
+<head>
+<title>Available End Users</title>
+</head>
+<body>
+
+		<!--#SELECT class="regular"
+			name="all_customers"
+			query="SELECT eu.customer_id, eu.customer_name
+				     FROM customers eu INNER JOIN
+				          user_customers uc ON eu.end_user_parent_id = uc.customer_id
+					WHERE eu.active_flag = 'Y'
+					  AND eu.organization_id = <?s:org_id.toPStmtString()?>
+					  AND NOT EXISTS (SELECT 'x' FROM user_customer_end_users
+						               WHERE user_customer_id = uc.user_customer_id
+						                 AND customer_id = eu.customer_id)
+                      AND uc.user_customer_id = <?p:parameter.toPStmtString()?>
+				 ORDER BY eu.customer_name"
+			onDblClick="addCustomers()"
+			size="10"
+			style="width:200"
+			multiple -->
+<script type="text/javascript">
+<!--#SQLLOOP name="customers"
+             query="SELECT eu.customer_id, eu.customer_name
+				      FROM customers eu INNER JOIN
+				          user_customers uc ON eu.end_user_parent_id = uc.customer_id
+					 WHERE eu.active_flag = 'Y'
+					   AND eu.organization_id = <?s:org_id.toPStmtString()?>
+					   AND NOT EXISTS (SELECT 'x' FROM user_customer_end_users
+						                WHERE user_customer_id = uc.user_customer_id
+						                  AND customer_id = eu.customer_id)
+                       AND uc.user_customer_id = <?p:parameter.toPStmtString()?>
+				  ORDER BY eu.customer_name" -->
+values[index++] = new Choice({!r:customers:customer_id.toJavaScriptString()!}, {!r:customers:customer_name.toJavaScriptString()!});
+<!--#/SQLLOOP-->
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<%@ include file="/WEB-INF/jsp/include.jsp" %>
+
+<html>
+<head><title>Generated Navigation</title></head>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/main.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/extremecomponents.css">
+
+<body>
+<ul>
+#foreach($table in $tables)
+#set ($alias = $table.destinationClassName) 
+	<li>
+		<a href="${pageContext.request.contextPath}/${alias}_listing.html">${alias}</a>
+	</li>
+#end
+</ul>
+
+
+
+
+</body>
+</html>    

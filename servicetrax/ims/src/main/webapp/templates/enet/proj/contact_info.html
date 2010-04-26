@@ -1,0 +1,30 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!-- $Header: contact_info.html, 2, 4/17/2003 7:33:13 PM, Chad Ryan$ -->
+
+<body class="BodyTag">
+
+   <table class="SmartTable" cellpadding="0" cellspacing="0" border="0">
+   <!--#SMARTFORM name="contact_edit" table="contacts" key="contact_id" buttons="" -->
+	<tr>
+      	<td><!--#SMARTFIELD title="&nbsp;Phone:" div="&nbsp;</td><td>" name="phone_work" readonly class="viewonly" --></td>
+		<td><!--#SMARTFIELD title="&nbsp;Cell:" div="&nbsp;</td><td>" name="phone_cell" readonly class="viewonly" --></td>
+<!--#IF evaluate="<?p:row_count?>" compare="2" -->
+	</tr>
+	<tr>
+		<td><!--#SMARTFIELD title="&nbsp;Email:" div="&nbsp;</td><td colspan='4'>" name="email" style="width:200" readonly class="viewonly" --></td>
+<!--#ELSE-->
+		<td><!--#SMARTFIELD title="&nbsp;Email:" div="&nbsp;</td><td>" name="email" style="width:200" readonly class="viewonly" --></td>
+	</tr>
+<!--#/IF-->
+
+   <!--#/SMARTFORM-->
+   </table>
+
+</body>
+
+<script language="JavaScript">
+<!--
+-->
+</script>
+
+<!--#EMBED template="enet/embeds/footer.html" -->

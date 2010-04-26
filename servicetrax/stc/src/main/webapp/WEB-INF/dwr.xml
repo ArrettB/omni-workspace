@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE dwr PUBLIC
+  "-//GetAhead Limited//DTD Direct Web Remoting 2.0//EN"
+  "http://getahead.org/dwr/dwr20.dtd">
+
+<dwr>
+	<allow>
+		<convert converter="bean" match="com.dynamic.servicetrax.invoice*"/>
+		<convert converter="bean" match="com.dynamic.servicetrax.tc*"/>
+		<convert converter="bean" match="com.dynamic.servicetrax.transfer.*"/>
+
+		<create creator="spring" javascript="timeManager" scope="session">
+			<param name="beanName" value="timeManager"/>
+			<include method="getRequisitions"/>
+			<include method="getJobInfos"/>
+			<include method="getResources"/>
+			<include method="getItems"/>
+			<include method="getPaycodes"/>
+			<include method="getAllRecords"/>
+			<include method="getRecord"/>
+			<include method="addRecord"/>
+			<include method="deleteRecord"/>
+			<include method="clearRecords"/>
+			<include method="commitRecords"/>
+			<include method="getSubTotals" />
+		</create>
+
+		<create creator="spring" javascript="invoiceManager" scope="session">
+			<param name="beanName" value="invoiceManager"/>
+			<include method="init"/>
+			<include method="loadRecords"/>
+			<include method="refreshRecords"/>
+			<include method="resetRecords"/>
+			<include method="commitRecords"/>
+			<include method="getRecord"/>
+			<include method="updateRecord"/>
+			<include method="deleteRecord"/>
+			<include method="getSubTotals" />
+			<include method="getItemInfos" />
+			<include method="getServiceInfos" />
+		</create>
+
+		<create creator="spring" javascript="lookupSupport" scope="session">
+			<param name="beanName" value="lookupSupport"/>
+			<include method="getItemCost"/>
+			<include method="getItemBillRate"/>
+			<include method="getOpenReqs"/>
+			<include method="getResourceIDFromEmpNo"/>
+			<include method="getExpenseItems" />
+		</create>
+
+		<create creator="new" javascript="itemInfo">
+			<param name="class" value="com.dynamic.servicetrax.transfer.ItemInfo"/>
+		</create>
+		<create creator="new" javascript="serviceInfo">
+			<param name="class" value="com.dynamic.servicetrax.transfer.ServiceInfo"/>
+		</create>
+		<create creator="new" javascript="timeRecord">
+			<param name="class" value="com.dynamic.servicetrax.tc.TimeRecord"/>
+		</create>
+		<create creator="new" javascript="jobInfo">
+			<param name="class" value="com.dynamic.servicetrax.tc.JobInfo"/>
+		</create>
+		<create creator="new" javascript="resourceInfo">
+			<param name="class" value="com.dynamic.servicetrax.tc.ResourceInfo"/>
+		</create>
+
+
+
+	</allow>
+</dwr>

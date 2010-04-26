@@ -1,0 +1,321 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: sch_res_edit.html, 31, 5/31/2005 4:38:25 PM, Blake Von Haden$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+
+<body class="BodyTag" onLoad="this.focus();setupSch();">
+<!--
+	session job_no : {!s:job_no!}
+	session job_id : {!s:job_id!}
+--->
+
+	<!--#IF evaluate="<?p:sch_resource_id?>" compare=""-->
+	<!--#ELSE-->
+
+		<table width="100%" cellpadding="0" cellspacing="0" border="0">
+			<tr><td width="100%" colspan="4" class="error" align="center"><b>WARNING!</b></td></tr>
+			<tr><td width="100%" colspan="4" class="TableTitle">Already Scheduled for the following jobs/reqs</td></tr>
+		</table>
+
+		<!--#SMARTTABLE name="sra" class="SmartTable"
+			query="SELECT job_id, service_id, resource_id, sch_resource_id, job_no, service_no, res_start_date, res_start_time, res_end_date
+						FROM sch_resources_v
+						WHERE  organization_id=<?s:org_id.toPStmtInt()?>
+							AND (res_start_date <= CONVERT(datetime, <?s:sch_to_date.toPStmtString()?>)+1 )
+							AND (ISNULL(res_end_date,CONVERT(datetime,'1/1/2101')) >= <?s:sch_from_date.toPStmtString()?> )
+							AND resource_id = (SELECT resource_id FROM sch_resources WHERE sch_resource_id = <?p:sch_resource_id.toPStmtInt()?>)
+						ORDER BY job_no"
+		-->
+			<!--#SMARTCOLUMN title="Job#" name="job_no" sort="job_no" align="center" -->
+			<!--#SMARTCOLUMN title="Req#" name="service_no" sort="service_no" align="center" value="<?r:sra:service_no.isNull('None')?>" -->
+			<!--#SMARTCOLUMN title="Start Date" name="res_start_date" sort="res_start_date" format="date" align="center" -->
+			<!--#SMARTCOLUMN title="Start Time" name="res_start_time" sort="res_start_time" format="time" align="center" -->
+			<!--#SMARTCOLUMN title="End Date" name="res_end_date" sort="res_end_date" format="date" align="center" -->
+		<!--#/SMARTTABLE -->
+		<BR>
+	<!--#/IF-->
+
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<!--#SMARTFORM name="<?s:function_code.isNull('none')?>" action="<?s:action?>schedule" security="rights" table="sch_resources_all_v" key="res_sch_id" buttons="" -->
+		<!--#SMARTFIELD name="resource_id" type="hidden" value="" -->
+		<!--#SMARTFIELD name="sch_resource_id" type="hidden" value="<?p:sch_resource_id?>" -->
+		<!--#SMARTFIELD name="weekend_sch_resource_id" type="hidden" value="" -->
+		<!--#SMARTFIELD name="weekend_flag" type="hidden" value="" -->
+		<!--#SMARTFIELD name="sch_action" type="hidden" value="" -->
+		<!--#SMARTFIELD name="reload_frames" type="hidden" value="<?p:reload_frames.isNull('false')?>" -->
+		<!--#SMARTFIELD name="dont_close" type="hidden" value="<?p:dont_close.isNull('false')?>" -->
+
+		<!--#SMARTFIELD name="job_id" type="hidden" value="" --></td>
+		<!--#SMARTFIELD name="service_id" type="hidden" value="" --></td>
+		<!--#SMARTFIELD name="new_job_id" type="hidden" value="<?s:job_id?>" --></td>
+		<!--#SMARTFIELD name="new_service_id" type="hidden" value="<?s:service_id?>" --></td>
+
+		<tr>
+		<!--#IF defined="<?r:<?s:function_code.isNull('none')?>:resource_name?>"-->
+			<td colspan="4" class="TableTitle">Scheduling {!r:<?s:function_code.isNull('none')?>:resource_name!} for Job #{!s:job_no!}, Req #{!s:service_no.isNull('N/A')!} </td>
+		<!--#ELSE-->
+			<td colspan="4" class="TableTitle">Scheduling {!p:resource_name!} for Job #{!s:job_no!}, Req #{!s:service_no.isNull('N/A')!} </td>
+		<!--#/IF-->
+		</tr>
+		<tr>
+			<td width="100"><!--#SMARTFIELD title="Name:" div="&nbsp;</td><td>" name="resource_name" readonly class="readonly" --></td>
+			<td width="100"><!--#SMARTFIELD title="Type:" div="&nbsp;</td><td>" name="resource_type_name" readonly class="readonly" --></td>
+		</tr>
+		<tr>
+			<td width="100"><!--#SMARTFIELD title="Category:" div="&nbsp;</td><td>" name="res_cat_type_name" readonly class="readonly" --></td>
+			<td width="100"><!--#SMARTFIELD title="Employment:" div="&nbsp;</td><td>" name="employment_type_name" readonly class="readonly" --></td>
+		</tr>
+		<tr>
+			<td width="100"><!--#SMARTFIELD title="Cur Job#:" div="&nbsp;</td><td>" name="job_no" readonly class="readonly" --></td>
+			<td width="100"><!--#SMARTFIELD title="Cur Req#:" div="&nbsp;</td><td>" name="service_no" readonly class="readonly"--></td>
+		</tr>
+		<tr>
+		   	<td>
+		   		<!--#SMARTFIELD title="Contact:&nbsp;" div="</td><td colspan='3'>" name="user_contact_id" readonly class="readonly" type="chooser" table="contacts_v" display="contact_name" key="contact_id" filter="organization_id=<?s:org_id.toSQLString()?>" -->
+	         	<input type="button" name="user_contact_button" value="View" class="button2" onClick="newWindow('{!s:showPage!}job/contact_edit.html?loc=contact_edit&theForm={!s:function_code.isNull('none')!}&theDroplist=user_contact_id&return_value_flag=false&contact_id=','contacts',450,490,{!s:function_code.isNull('none')!}.user_contact_id);">
+			</td>
+		</tr>
+		<tr>
+			<td width="100"><!--#SMARTFIELD title="Unique?:" div="&nbsp;</td><td>" name="unique_flag" readonly class="readonly" --></td>
+		</tr>
+		<tr>
+	   		<td class="HeaderLabel" colspan="6">Resource Note</td>
+        </tr>
+		<tr>
+			<td colspan="4" rowspan="1"><!--#SMARTFIELD name="notes" type="textarea" cols="70" rows="3" readonly class="readonly" --></td>
+		</tr>
+		<tr height="10">
+			<td colspan="4">&nbsp;</td>
+		</tr>
+		<tr>
+			<td width="100"><!--#SMARTFIELD title="Add to Job#:" div="&nbsp;</td><td>" name="new_job_no" value="<?s:job_no?>" readonly class="readonly" --></td>
+			<td width="100"><!--#SMARTFIELD title="Add to Req#:" div="&nbsp;</td><td>" name="new_service_no" value="<?s:service_no?>" readonly class="readonly" --></td>
+		</tr>
+		<tr>
+			<td width="100"><!--#SMARTFIELD title="Status:" div="&nbsp;</td><td>" name="res_status_type_id" type="droplist" table="resource_status_types_v" display="lookup_name" key="lookup_id" value="Available" --></td>
+			<td width="100"><!--#SMARTFIELD title="Reason:" div="&nbsp;</td><td>" name="reason_type_id" type="droplist" table="reason_types_v" display="lookup_name" key="lookup_id" --></td>
+		</tr>
+		<tr>
+			<td width="100"><!--#SMARTFIELD title="Start Date:" div="&nbsp;</td><td>" name="res_start_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(res_start_date)')</script>" value="<?s:est_start_date?>" --></td>
+			<td width="100"><!--#SMARTFIELD title="End Date:" div="&nbsp;</td><td>" name="res_end_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(res_end_date)')</script>" value="<?s:est_end_date?>" --></td>
+		</tr>
+		<tr>
+<!--#IF evaluate="<?p:sch_resource_id?>" compare=""-->
+		<td width="100"><!--#SMARTFIELD title="Def Start Time:" div="&nbsp;</td><td>" name="res_start_time" type="time" value="<?s:est_start_time_only?>" --></td>
+<!--#ELSE-->
+		<td width="100"><!--#SMARTFIELD title="Act Start Time:" div="&nbsp;</td><td>" name="res_start_time" type="time" --></td>
+<!--#/IF-->
+
+			<td width="100"><!--#SMARTFIELD title="Confirmed:" div="&nbsp;</td><td>" name="date_confirmed" type="date"
+					img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(date_confirmed)')</script>"--></td>
+		</tr>
+		<tr>
+		<!--#IF evaluate="<?s:role_code?>" compare="scheduler" -->
+			<!--#IF evaluate="<?p:sch_resource_id?>" compare=""-->
+<!-- <scr>alert("wrong sch_foreman_flag='{!r:<?s:function_code.isNull('none')?>:foreman_flag!}'");</script> -->
+				<td width="100"><!--#SMARTFIELD title="Foreman?:" div="&nbsp;</td><td>" name="foreman_flag" type="boolean" onChange="updatePDA(this)"--></td>
+			<!--#ELSE-->
+<!-- <scr>alert("right sch_foreman_flag='{!r:<?s:function_code.isNull('none')?>:sch_foreman_flag!}'");</script> -->
+				<td width="100"><!--#SMARTFIELD title="Foreman?:" div="&nbsp;</td><td>" name="sch_foreman_flag" type="boolean" onChange="updatePDA(this)"--></td>
+			<!--#/IF-->
+		<!--#ELSE-->
+			<td width="100"><!--#SMARTFIELD title="Foreman?:" div="&nbsp;</td><td>" name="foreman_flag" readonly class="readonly" onChange="updatePDA(this)" --></td>
+		<!--#/IF-->
+<!--#SQLLOOP name="hasPDA" query = "SELECT u.user_id FROM resources r, user_organizations_v u WHERE r.user_id = u.user_id AND u.organization_id = <?s:org_id.toPStmtInt()?> AND u.imobile_login is NOT NULL AND r.resource_id = <?d:resource_id.toPStmtInt()?>" -->
+			<td width="100"><!--#SMARTFIELD title="Send to PDA?:" div="&nbsp;</td><td>" name="send_to_pda_flag" type="boolean" value="N" --></td>
+<!--#SQLNODATA-->
+			<td width="100" class="HeaderLabel">No PDA Login</td>
+<!--#/SQLNODATA-->
+<!--#/SQLLOOP-->
+		</tr>
+		<tr>
+			<td width="100"><!--#SMARTFIELD title="Res Qty:" div="&nbsp;</td><td>" name="resource_qty"--></td>
+			<td width="100"><!--#SMARTFIELD title="Report To:" div="&nbsp;</td><td>" name="report_to_type_id" type="droplist" table="report_to_types_v" display="name" key="lookup_id" --></td>
+		</tr>
+		<tr>
+		<tr>
+	   		<td class="HeaderLabel" colspan="6">Scheduling Notes</td>
+        </tr>
+		<tr>
+			<td colspan="4" rowspan="1"><!--#SMARTFIELD name="sch_notes" type="textarea" cols="70" rows="3" --></td>
+		</tr>
+
+
+
+
+		<tr>
+			<td colspan="4" class="TableTitle">System Info</td>
+		</tr>
+	<!--#IF evaluate="<?p:sch_resource_id?>" compare=""-->
+		<tr>
+			<td><!--#SMARTFIELD title="Created:" div="&nbsp;</td><td>" name="res_date_created" type="datetime" mode="Update" readonly class="readonly" size="22" --></td>
+			<td><!--#SMARTFIELD title="Created By:" div="&nbsp;</td><td>" name="res_created_by_name" mode="Update" readonly class="readonly"--></td>
+		</tr>
+		<tr>
+			<td><!--#SMARTFIELD title="Modified:" div="&nbsp;</td><td>" name="res_date_modified" type="datetime" mode="Update" readonly class="readonly" size="22"--></td>
+			<td><!--#SMARTFIELD title="Modified By:" div="&nbsp;</td><td>" name="res_modified_by"  mode="Update" readonly class="readonly"--></td>
+		</tr>
+	<!--#ELSE-->
+		<tr>
+			<td><!--#SMARTFIELD title="Created:" div="&nbsp;</td><td>" name="sch_date_created" type="datetime" mode="Update" readonly class="readonly" size="22" --></td>
+			<td><!--#SMARTFIELD title="Created By:" div="&nbsp;</td><td>" name="sch_created_by_name" mode="Update" readonly class="readonly"--></td>
+		</tr>
+		<tr>
+			<td><!--#SMARTFIELD title="Modified:" div="&nbsp;</td><td>" name="sch_date_modified" type="datetime" mode="Update" readonly class="readonly" size="22"--></td>
+			<td><!--#SMARTFIELD title="Modified By:" div="&nbsp;</td><td>" name="sch_modified_by_name" mode="Update" readonly class="readonly"--></td>
+		</tr>
+	<!--#/IF-->
+      <tr>
+         <td colspan="6">
+<BR>
+		<!--#IF evaluate="<?s:job_status_type_code?>" compare="closed"-->
+			<span class="HeaderLabel">Job is Closed. You cannot schedule this job.&nbsp;&nbsp;&nbsp; </span>
+		<!--#ELSE-->
+			<!--#IF evaluate="<?s:serv_status_type_code?>" compare="closed"-->
+				<span class="HeaderLabel">Req is Closed. You cannot schedule this Req.&nbsp;&nbsp;&nbsp; </span>
+			<!--#ELSE-->
+				<!--#IF evaluate="<?p:allow_add?>" compare="false" -->
+				<!--#ELSE-->
+					<!--#CHECKSECURITY right="rights.<?s:function_code.isNull('none')?>.insert"-->
+						<input name="add" type="button" value="Add" class="button" onClick="scheduleRes(this);" >
+					<!--#/CHECKSECURITY-->
+				<!--#/IF-->
+
+				<!--#IF evaluate="<?p:sch_resource_id?>" compare="" -->
+				<!--#ELSE-->
+					<!--#CHECKSECURITY right="rights.<?s:function_code.isNull('none')?>.delete" -->
+						<input name="remove" type="button" value="Remove" class="button" onClick="scheduleRes(this);" >
+					<!--#/CHECKSECURITY-->
+				<!--#/IF-->
+
+				<!--#IF defined="<?p:sch_resource_id?>" -->
+					<!--#CHECKSECURITY right="rights.<?s:function_code.isNull('none')?>.update"-->
+					<input name="update" type="button" value="Update" class="button" onClick="scheduleRes(this);">
+					<!--#/CHECKSECURITY-->
+				<!--#/IF-->
+			<!--#/IF-->
+		<!--#/IF-->
+	     	   <input name="cancel" type="button" value="Cancel" class="button" onClick="scheduleRes(this);">
+         </td>
+      </tr>
+	<!--#/SMARTFORM -->
+	</table>
+
+</body>
+
+<script language="JavaScript">
+<!--
+	function setupSch()
+	{
+		if( {!s:function_code.isNull('none')!}.reload_frames.value == 'true' )
+		{
+			//refresh resource lists
+			//first get frames to update, if you don't then window.opener may be undefined by the time the second window goes.
+			var sch_res_list_frame = window.opener.parent.frames.sch_res_list_frame;
+			var schd_res_list_frame = window.opener.parent.frames.schd_res_list_frame;
+			sch_res_list_frame.document.resources.reload_frames.value='false';
+			sch_res_list_frame.location.replace('{!s:showPage!}sch/sch_res_list.html');
+			schd_res_list_frame.location.reload();
+
+			if( {!s:function_code.isNull('none')!}.dont_close.value != 'true' )
+			{
+		 	   window.opener.focus();
+   			window.close();
+				//window.setTimeout('displayList()', 1000); //need to wait before closing, for the windows to refresh action to complete
+			}
+		}
+		else
+		{
+			{!s:function_code.isNull('none')!}.reload_frames.value = 'false';
+
+			if( {!s:function_code.isNull('none')!}.unique_flag.value == 'N' )
+			{
+				//can have more than one, so allow resource_qty to be updated.
+				{!s:function_code.isNull('none')!}.resource_qty.readonly = false;
+				{!s:function_code.isNull('none')!}.resource_qty.className = 'regular';
+
+				//check if we need to set a default value
+				if ({!s:function_code.isNull('none')!}.resource_qty.value == '')
+				{
+					{!s:function_code.isNull('none')!}.resource_qty.value = 1;
+				}
+			}
+			else
+			{
+				//only one is allowed
+				{!s:function_code.isNull('none')!}.resource_qty.readonly = true;
+				{!s:function_code.isNull('none')!}.resource_qty.className = 'readonly';
+
+				//always set the value to 1
+				{!s:function_code.isNull('none')!}.resource_qty.value = 1;
+			}
+		}
+	<!--#IF evaluate="<?p:sch_resource_id?>" compare=""-->
+		if( {!s:function_code.isNull('none')!}.foreman_flag )
+			updatePDA({!s:function_code.isNull('none')!}.foreman_flag);
+		if( {!s:function_code.isNull('none')!}.sch_foreman_flag )
+			updatePDA({!s:function_code.isNull('none')!}.sch_foreman_flag);
+	<!--#/IF-->
+	}
+
+	function displayList()
+	{
+		window.opener.focus();
+		window.close();
+	}
+
+	function scheduleRes(field)
+	{
+		fixTime({!s:function_code.isNull('none')!}.res_start_date, {!s:function_code.isNull('none')!}.res_start_time);
+
+		if(field.name == 'cancel' )
+		{
+			window.opener.focus();
+			window.close();
+		}
+		else
+		{
+			eval("{!s:function_code.isNull('none')!}.sch_action.value='"+field.name+"'");
+			eval("{!s:function_code.isNull('none')!}.submit()");
+		}
+	}
+
+	//there is some error where field.form.name is returning object instead of name
+	//Since it is not working on this page, need to hardcode form name in date function
+	function chooseDate(field)
+	{
+		serv = '/ims/ShowCalendar?form={!s:function_code.isNull('none')!}&field='+field.name;
+		win = window.open(serv, 'CalWindow', 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,copyhistory=no,width=155,height=160');
+		win.focus();
+	}
+
+	function fixTime(dateField, timeField)
+	{
+		if( !(timeField == null) && !(timeField.value == '') )
+		{
+			if( !(dateField == null) && !(dateField.value == '') )
+			{
+				if( timeField.value.length < 12 )  //only add if not already added
+					timeField.value = dateField.value + ' ' + timeField.value;
+			}
+			else
+			{
+			<!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) as to_date" name="dateQuery"-->
+				timeField.value = {!r:dateQuery:to_date.toJavaScriptString()!} + ' ' + timeField.value;
+			<!--#/SQLLOOP-->
+			}
+		}
+	}
+
+	function updatePDA(field)
+	{
+		if( {!s:function_code.isNull('none')!}.send_to_pda_flag )
+		{
+		<!--IF undefined="<?p:sch_resource_id?>"-->
+			setSelect({!s:function_code.isNull('none')!}.send_to_pda_flag, field.options[field.selectedIndex].value);
+		<!--/IF-->
+		}
+	}
+//-->
+</script>
+
+<!--#EMBED template="embeds/footer.html" -->

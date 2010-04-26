@@ -1,0 +1,50 @@
+<!-- $Header: tab_table.html, 8, 11/9/2006 3:28:57 PM, Greg Case$ -->
+<table border="0" cellspacing="0" cellpadding="0" width="100%" height="15">
+	<tr style="padding-right: 2" height="15">
+	<!--#SQLLOOP query="SELECT t.name,t.table_id, t.template_name
+						FROM tabs_v2 t
+						WHERE t.type_code = <?p:tab_type_code.toPStmtString()?>
+						AND t.user_id = <?s:user_id.toPStmtInt()?>
+						ORDER BY t.sequence"
+					resourceName="SQLServer"
+					name="q1"
+	-->
+	<td>
+		<table height="15" id="{!r:q1:table_id!}" onClick="selectTab('{!r:q1:template_name!}','{!r:q1:table_id!}')" cellspacing="0" cellpadding="0">
+		<tr>
+			<td><img src="/ims/images/left_tab_10x20.gif" width="10" height="15" border="0"></td>
+			<td width="90" nowrap valign="bottom">{!r:q1:name!}</td>
+			<td><img src="/ims/images/right_tab_10x20.gif" width="10" height="15" border="0"></td>
+		</tr>
+		</table>
+	</td>
+	<!--#SQLNODATA-->
+	<td width="100%">
+		You do not have access rights to any of the menus.  Please contact the system administrator.
+	</td>
+	<!--#/SQLNODATA--->
+	<!--#/SQLLOOP-->
+	<td width="100%" style="text-align:right;font-size:8px;"></td>
+	</tr>
+	<tr>
+	<!--#SQLLOOP query="SELECT t.name,t.table_id, t.template_name
+						FROM tabs_v2 t
+						WHERE t.type_code = <?p:tab_type_code.toPStmtString()?>
+						AND t.user_id = <?s:user_id.toPStmtInt()?>
+						ORDER BY t.sequence"
+					resourceName="SQLServer"
+					name="q1"
+	-->
+		<td id="line_{!r:q1:table_id!}"></td>
+	<!--#/SQLLOOP-->
+		<td class="TabLine"></td>
+
+	</tr>
+	<tr>
+		<td colspan="99"  class="TabLineSelected" style="height:2"></td>
+	</tr>
+
+	<tr>
+		<td colspan="99"  style="height:1; background-color: #000000"></td>
+	</tr>
+</table>

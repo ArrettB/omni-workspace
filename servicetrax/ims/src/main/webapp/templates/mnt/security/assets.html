@@ -1,0 +1,31 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: assets.html, 1, 8/2/2005 3:05:41 PM, Greg Case$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.mnt/security/assets.view?>"-->
+<body class="BodyTag">
+<table width="100%" cellspacing="0" cellpadding="0">
+	<tr><td  class="HeaderBar">{!s:rights.mnt/security/assets.name!}</td></tr>
+</table>
+<!--#SMARTTABLE width="100%" name="assets" query="SELECT asset_id, code, name, description, created_by, date_created FROM assets ORDER BY code" -->
+	<!--#SMARTCOLUMN width="25%" name="code" sort="code" title="Code" href="<?s:action?>mnt/security/asset?asset_id=<?r:assets:asset_id?>" size="10"-->
+	<!--#SMARTCOLUMN width="25%" name="name" sort="name" title="Name" size="10"-->
+	<!--#SMARTCOLUMN width="50%" name="description" sort="description" title="Description" size="30"-->
+<!--#/SMARTTABLE-->
+<table>
+	<tr>
+		<td>
+			<!--#IF defined="<?s:rights.mnt/security/assets.insert?>"-->
+				<form action="{!s:action!}mnt/security/asset" method="post">
+				<input type="submit" value="Add" class="button">
+				</form>
+			<!--#/IF-->
+		</td>
+		<td>
+			<form name="new" action="{!s:action!}mnt/main_mnt" method="post">
+			<input type="submit" value="Cancel" class="button">
+			</form>
+		</td>
+	</tr>
+</table>
+</body>
+<!--#EMBED template="embeds/footer.html" -->

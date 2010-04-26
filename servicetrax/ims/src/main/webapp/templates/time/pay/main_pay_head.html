@@ -1,0 +1,43 @@
+<!--#EMBED template="embeds/header.html" -->
+
+</head>
+
+<body class="BodyTag">
+
+
+<table width="95%" border="0" cellspacing="0" cellpadding="0" bgcolor="Aqua">
+
+	<tr height="5">
+		<td colspan="2"></td>
+	</tr>
+	<tr>
+		<td width="50%">
+			Add
+			<A href="{!s:showPage!}time/tc_edit.html?item_type_code=hours&prev_template=time/pay/main_pay_list_pending.html&module=payroll&module_mode=create&res_cat=employee&level={!p:level!}" target="main_pay_frame">Hours</A>
+		</td>
+
+
+<FORM name="QuickIndex" >
+	<td width="50%" align="right">View
+<SELECT name="URL" class="regular"
+   onChange="if(options[selectedIndex].value)
+   parent.main_pay_frame.location.href=
+   (options[selectedIndex].value);window.focus();">
+	<OPTION value="{!s:showPage!}time/pay/main_pay_list_pending.html?level={!p:level!}&calling_page=main_exp_main">Pending</OPTION>
+	<OPTION value="{!s:showPage!}time/pay/main_pay_list_exported.html?level={!p:level!}">Exported</OPTION>
+</SELECT>
+
+
+	</td>
+</tr>
+</FORM>
+</table>
+
+<hr>
+
+
+
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

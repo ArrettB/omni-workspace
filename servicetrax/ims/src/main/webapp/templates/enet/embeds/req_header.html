@@ -1,0 +1,139 @@
+<!-- BEGIN header.html -->
+<!-- $Header: req_header.html, 1, 7/1/2007, David Zhao$ -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<!--#IF undefined="<?p:window_title?>"-->
+	<title>{!a:headerTitle!}</title>
+<!--#ELSE-->
+	<title>{!p:window_title!}</title>
+<!--#/IF-->
+
+<!-- IMS CSS --->
+	<link rel="stylesheet" type="text/css" href="/ims/styles/en.css">
+	<link rel="stylesheet" type="text/css" href="/ims/styles/layout.css">
+	<link rel="stylesheet" type="text/css" href="/ims/styles/displaytag.css">
+
+<!-- JQuery -->
+    <script type="text/javascript" src="/ims/js/jquery-1.1.3.1.pack.js"></script>
+
+
+<!-- YUI POPUP--->
+	<link type="text/css" rel="stylesheet" href="/ims/js/yui/fonts/fonts.css">
+	<link type="text/css" rel="stylesheet" href="/ims/js/yui/reset/reset.css">
+	<link type="text/css" rel="stylesheet" href="/ims/js/yui/container/assets/container.css">
+
+    <script type="text/javascript" src="/ims/js/yui/yahoo/yahoo.js"></script>
+    <script type="text/javascript" src="/ims/js/yui/event/event.js"></script>
+    <script type="text/javascript" src="/ims/js/yui/dom/dom.js"></script>
+    <script type="text/javascript" src="/ims/js/yui/dragdrop/dragdrop.js"></script>
+	<script type="text/javascript" src="/ims/js/yui/connection/connection.js"></script>
+    <script type="text/javascript" src="/ims/js/yui/logger/logger.js"/>"></script>
+	<script type="text/javascript" src="/ims/js/yui/container/container.js"></script>
+
+<!-- IMS JS --->
+	<script type="text/javascript" src="/ims/js/makeButton.js"></script>
+	<script type="text/javascript" src="/ims/js/smartForm.js"></script>
+	<script type="text/javascript" src="/ims/js/calendar.js"></script>
+	<script type="text/javascript" src="/ims/js/ims.js"></script>
+	<script type="text/javascript" src="/ims/js/formatting.js"></script>
+	<script type="text/javascript" src="/ims/js/request.js"></script>
+
+
+
+	<style>
+		body { background:#eee }
+		label { display:block;float:left;width:45%;clear:left; }
+		.clear { clear:both; }
+		#resp { font-family:courier;margin:10px;padding:5px;border:1px solid #ccc;background:#fff;}
+	</style>
+
+	<script type="text/javascript">
+	<!--
+	//functions in this file need to be parsed for variables or what have you.
+
+
+	// -------------------------  newWindow() --------------------------
+
+	//Opens new window
+	//optionally adds the value of the droplist's (field) current selection to link
+
+	function newWindow(alink, window_name, aHeight, aWidth, field)
+	{
+	   var attribs = {!a:Window2Attribs!} +
+	   		 ',height=' + aHeight + ',width=' + aWidth;
+
+	   if( !(field == null) )
+	   {
+	      if( field.type == 'select-one')
+	      {
+	         var index = field.selectedIndex;
+	         if ( !(index == -1 ) )
+	         {//option is selected so determine value (id) of contact to add to href
+
+	            alink = alink + field.options[index].value;
+	         }
+	      }
+	      if( field.type == 'text' || field.type == 'hidden')
+	      {
+	         alink = alink + field.value;
+	      }
+	//alert("link='"+alink+"' field.type='"+field.type+"'");
+
+	   }
+	   var the_window = window.open(alink,window_name,attribs);
+
+	   return the_window;
+	}
+
+	function newWindowScrollBars(alink, window_name, aHeight, aWidth, field)
+	{
+	   var attribs = {!a:Window2ScrollBarAttribs!} +
+	   		 ',height=' + aHeight + ',width=' + aWidth;
+
+	   if( !(field == null) )
+	   {
+	      if( field.type == 'select-one')
+	      {
+	         var index = field.selectedIndex;
+	         if ( !(index == -1 ) )
+	         {//option is selected so determine value (id) of contact to add to href
+
+	            alink = alink + field.options[index].value;
+	         }
+	      }
+	      if( field.type == 'text' || field.type == 'hidden')
+	      {
+	         alink = alink + field.value;
+	      }
+	//alert("link='"+alink+"' field.type='"+field.type+"'");
+
+	   }
+	   var the_window = window.open(alink,window_name,attribs);
+
+	   return the_window;
+	}
+
+
+	function move_billing_lines(form)
+	{
+		if (form.submit_action.options[form.submit_action.selectedIndex].value == 'changeBillServiceId')
+		{
+			url = {!s:showPage.toJavaScriptString()!}+'bill/bill_move_lines.html'
+				+ '?title=Move Lines'
+				+ '&form='+form.name;
+
+			newWindow(url,'MoveBillingLines',180,350);
+		}
+		else
+		{
+			form.submit();
+		}
+	}
+
+	-->
+	</script>
+
+</head>
+<!-- END header.html -->

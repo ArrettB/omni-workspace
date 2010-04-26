@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.RoleFunctionRight" table="ROLE_FUNCTION_RIGHTS" schema="dbo" catalog="">
+        <id name="roleFunctionRightId" type="java.lang.Long">
+            <column name="ROLE_FUNCTION_RIGHT_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="role" class="com.dynamic.servicetrax.orm.Role" fetch="select">
+            <column name="ROLE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="function" class="com.dynamic.servicetrax.orm.Function" fetch="select">
+            <column name="FUNCTION_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="userByModifiedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="userByCreatedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="rightType" class="com.dynamic.servicetrax.orm.RightType" fetch="select">
+            <column name="RIGHT_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+    </class>
+</hibernate-mapping>

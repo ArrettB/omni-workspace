@@ -1,0 +1,83 @@
+<!-- $Header: job_location.html, 8/1/2007, David Zhaon$ -->
+<html>
+<head>
+<title>Job Location</title>
+</head>
+<script type="text/javascript">
+
+
+</script>
+<body>
+
+  <!--#SQLLOOP name="job_loc"
+               query="SELECT job_location_name,
+                             street1,
+                             street2,
+                             city,
+                             county,
+                             ISNULL(state, 'MN') state,
+                             zip,
+                             ISNULL(country, 'US') country
+                        FROM job_locations
+                       WHERE job_location_id = <?p:parameter.toPStmtString()?>"-->
+
+    <table border="0" cellspacing="5" cellpadding="0">
+      <tr><td><label for="job_location_name">Name:</label></td><td><input type="textbox" name="job_location_name" value="{!r:job_loc:job_location_name!}"/></td></tr>
+      <tr><td><label for="street1">Address:</label></td><td><input type="textbox" name="street1" value="{!r:job_loc:street1!}" /></td></tr>
+      <tr><td><label for="street2">(continue):</label></td><td><input type="textbox" name="street2" value="{!r:job_loc:street2!}" /></td></tr>
+      <tr><td><label for="city">City:</label></td><td><input type="textbox" name="city" value="{!r:job_loc:city!}" /></td></tr>
+      <tr><td><label for="city">County:</label></td><td><input type="textbox" name="county" value="{!r:job_loc:county!}" /></td></tr>
+      <tr><td><label for="state">State:</label></td><td><div id="jobLocationStatesDiv">
+      <!--#SELECT name="state" id="state"
+                  currentValue="<?r:job_loc:state?>"
+				  query="SELECT code state, name
+				  		   FROM states
+				  		  WHERE country_code = <?r:job_loc:country.toSQLString()?>
+		               ORDER BY name"  -->
+      </div></td></tr>
+	  <tr><td><label for="zip">Zip:</label></td><td><input type="textbox" name="zip" value="{!r:job_loc:zip!}" /></td></tr>
+	  <tr><td><label for="country">Country:</label></td><td>
+      <!--#SELECT name="country" id="country"
+                  currentValue="<?r:job_loc:country?>"
+                  onChange="onJobLocationCountryChange()"
+				  query="SELECT code country, name
+				  		   FROM countries
+		               ORDER BY name"  -->
+	  </td></tr>
+	  <tr><td><label for="active_flag">Active:</label></td><td><input type="checkbox" name="active_flag" checked/></td></tr>
+    </table>
+
+  <!--#SQLNODATA-->
+
+    <table border="0" cellspacing="5" cellpadding="0">
+      <tr><td><label for="job_location_name">Name:</label></td><td><input type="textbox" name="job_location_name" /></td></tr>
+      <tr><td><label for="street1">Address:</label></td><td><input type="textbox" name="street1" /></td></tr>
+      <tr><td><label for="street2">(continue):</label></td><td><input type="textbox" name="street2" /></td></tr>
+      <tr><td><label for="city">City:</label></td><td><input type="textbox" name="city" /></td></tr>
+      <tr><td><label for="city">County:</label></td><td><input type="textbox" name="county" /></td></tr>
+      <tr><td><label for="state">State:</label></td><td><div id="jobLocationStatesDiv">
+      <!--#SELECT name="state" id="state"
+                  firstOption=""
+                  currentValue=""
+				  query="SELECT code state, name
+				  		   FROM states
+				  		  WHERE country_code = 'US'
+		               ORDER BY name"  -->
+      </div></td></tr>
+	  <tr><td><label for="zip">Zip:</label></td><td><input type="textbox" name="zip" /></td></tr>
+	  <tr><td><label for="country">Country:</label></td><td>
+      <!--#SELECT name="country" id="country"
+                  currentValue="US"
+	  			  onChange="onJobLocationCountryChange()"
+				  query="SELECT code country, name
+				  		   FROM countries
+		               ORDER BY name"  -->
+	  </td></tr>
+    </table>
+
+  <!--#/SQLNODATA-->
+ <!--#/SQLLOOP-->
+
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: main_exp_list_exported.html, 3, 1/23/2006 3:02:17 PM, Blake Von Haden$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.time/exp/expenses.view?>"-->
+
+<body class="BodyTag">
+
+
+	<!--#IF DEFINED="<?d:integrationManagerMsg?>" -->
+		<TABLE width="100%"><tr><td class="error">{!d:integrationManagerMsg!}</td></tr></table>
+	<!--#/IF-->
+
+   <!--#SMARTTABLE name="expensesQry"
+	   query="
+			SELECT sum(expense_total) sum_expense_total, ext_batch_id, begin_date_varchar, end_date_varchar, expenses_batch_status_type_code, begin_date, null no_name, date_created_varchar
+			FROM expenses_batches_v
+			WHERE (expenses_batch_status_type_code = 'processed' or expenses_batch_status_type_code = 'error') and organization_id = <?s:org_id.toPStmtString()?>
+			GROUP BY ext_batch_id, expenses_batch_status_type_code, begin_date_varchar, end_date_varchar, begin_date, date_created_varchar
+			ORDER BY begin_date desc"
+   -->
+
+	<!--#IF evaluate="<?d:rowid?>" compare="0"-->
+		<tr><td colspan="8" class="HeaderBar">Exported Batches</td></tr>
+	<!--#/IF-->
+		<!--#SMARTCOLUMN width="75"  name="begin_date_varchar" sort="begin_date_varchar" title="Begin Date" filter="begin_date_varchar:begin_date_varchar" -->
+		<!--#SMARTCOLUMN width="75"  name="end_date_varchar" sort="end_date_varchar" title="End Date" filter="end_date_varchar:end_date_varchar" -->
+		<!--#SMARTCOLUMN width="75"  name="ext_batch_id" sort="ext_batch_id" title="Batch ID" align="center" href="" onClick="openNext(<?r:expensesQry:ext_batch_id.toJavaScriptString()?>);return false;" filter="ext_batch_id:ext_batch_id" -->
+		<!--#SMARTCOLUMN width="100" name="sum_expense_total" sort="sum_expense_total" title="Total" format="money" align="right" total="true" -->
+		<!--#SMARTCOLUMN width="75"  name="date_created_varchar" sort="date_created_varchar" title="Last Exported" filter="date_created_varchar:date_created_varchar" -->
+		<!--#SMARTCOLUMN width="75"  name="no_name" title="" -->
+
+   <!--#/SMARTTABLE -->
+
+<BR><BR>
+
+<script type="text/javascript">
+<!--
+	function openNext(aString)
+	{
+		location='{!s:showPage!}time/exp/main_exp_batch_det.html?ext_batch_id='+escape(aString);
+	}
+//-->
+</script>
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

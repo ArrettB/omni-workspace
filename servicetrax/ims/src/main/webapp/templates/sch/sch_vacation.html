@@ -1,0 +1,124 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: sch_vacation.html, 12, 1/7/2005 5:11:25 PM, Lee A. Gunderson$ -->
+<!--#REQUIRED data="<?s:user?>" -->
+
+<body class="BodyTag" onLoad="this.focus();">
+
+	<span class="Label">Show: <a href="{!s:showPage!}sch/sch_vacation.html">All People</a></span><HR>
+
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+	<!--#SMARTFORM name="vacation" action="<?s:action?>schedule" table="sch_vacations_all_v" key="res_sch_id" onClickFunction="exitFunction" buttons="" -->
+		<!--#SMARTFIELD name="sch_resource_id" type="hidden" value="<?p:sch_resource_id?>" -->
+		<!--#SMARTFIELD name="sch_action" type="hidden" value="" -->
+		<!--#SMARTFIELD name="redisplay" type="hidden" value="true" -->
+		<tr>
+			<td colspan="4" class="TableTitle">Schedule Resource</td>
+		</tr>
+		<tr>
+			<td width="70"><!--#SMARTFIELD title="Name:" div="&nbsp;</td><td>" name="resource_id" type="droplist" style="width:114" filter="organization_id=<?s:org_id.toSQLString()?> AND (ACTIVE_FLAG='Y') AND (res_cat_type_code='employee' OR res_cat_type_code='temp')" table="resources_v" display="name" key="resource_id" onChange="exitFunction('redisplay')" value="<?p:resource_id?>" --></td>
+		</tr>
+		<tr>
+			<td><!--#SMARTFIELD title="Start Date:" div="&nbsp;</td><td>" name="res_start_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(res_start_date)')</script>" onChange="vacation.res_end_date.value=this.value;" --></td>
+			<td>&nbsp;</td><td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><!--#SMARTFIELD title="End Date:" div="&nbsp;</td><td>" name="res_end_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(res_end_date)')</script>" --></td>
+			<td>&nbsp;</td><td>&nbsp;</td>
+		</tr>
+		<!--#CHECKSECURITY right="rights.sch/sch_vacation_any.insert" -->
+			<!--#SMARTFIELD name="user_pin" type="hidden" value="no_pin_required" -->
+		<!--#ELSE--> <!-- Don't have ability to insert any vacation so must enter a pin -->
+		<tr>
+			<td><!--#SMARTFIELD title="Pin:" div="&nbsp;</td><td>" name="user_pin" type="password" --></td>
+			<td>&nbsp;</td><td>&nbsp;</td>
+		</tr>
+		<!--#/CHECKSECURITY-->
+      <!--#IF evaluate="<?d:mode?>" compare="Update" -->
+		<tr>
+			<td colspan="4" class="TableTitle">System Info</td>
+		</tr>
+		<tr>
+			<td><!--#SMARTFIELD title="Created:" div="&nbsp;</td><td>" name="sch_date_created" type="datetime" mode="Update" readonly class="readonly" size="22" --></td>
+			<td><!--#SMARTFIELD title="Created By:" div="&nbsp;</td><td>" name="sch_created_by" mode="Update" readonly class="readonly"--></td>
+		</tr>
+		<tr>
+			<td><!--#SMARTFIELD title="Modified:" div="&nbsp;</td><td>" name="sch_date_modified" type="datetime" mode="Update" readonly class="readonly" size="22"--></td>
+			<td><!--#SMARTFIELD title="Modified By:" div="&nbsp;</td><td>" name="sch_modified_by" mode="Update" readonly class="readonly"--></td>
+		</tr>
+		<!--#/IF-->
+	<!--#/SMARTFORM -->
+	</table>
+
+	<table>
+	<tr>
+		<td>
+		<form>
+		<!--#IF evaluate="<?p:sch_resource_id?>" compare="" -->
+			<input type="button" name="button" value="Save" class="button" onClick="exitFunction('Save');">
+		<!--#ELSE-->
+			<input type="button" name="button" value="Remove" class="button" onClick="exitFunction('Delete');">
+		<!--#/IF-->
+			<input type="button" name="button" value="Cancel" class="button" onClick="exitFunction('Cancel');">
+		</form>
+		</td>
+	</tr>
+	</table>
+
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		<tr><td class="tableHeader">List of People and their Vacation Dates</td></tr>
+	</table>
+	<!--#SMARTTABLE class="SmartTable" name="SVAV" maxRows="40"
+			   query="SELECT res_sch_id, resource_id, sch_resource_id, resource_name, res_cat_type_name, resource_type_name, employment_type_name, res_status_type_name, reason_type_name, res_start_date, res_end_date
+		   		 FROM sch_vacations_all_v
+		   		 WHERE organization_id=<?s:org_id.toPStmtInt()?> AND active_flag = 'Y'
+		   		 	and (res_cat_type_code='employee' or res_cat_type_code='temp')
+		   		 	and resource_id like <?p:resource_id.isNull('%').toPStmtString()?>
+		   		 ORDER BY resource_name, res_status_type_name, reason_type_name"
+	-->
+		<!--#SMARTCOLUMN title="Resource Name" name="resource_name" sort="resource_name" href="<?s:showPage?>sch/sch_vacation.html?res_sch_id=<?r:SVAV:res_sch_id?>&sch_resource_id=<?r:SVAV:sch_resource_id?>&resource_id=<?r:SVAV:resource_id?>" -->
+		<!--#SMARTCOLUMN title="Status" name="res_status_type_name" sort="res_status_type_name" value="<?r:SVAV:res_status_type_name.isNull('Available')?>" -->
+		<!--#SMARTCOLUMN title="Reason" name="reason_type_name" sort="reason_type_name" -->
+		<!--#SMARTCOLUMN title="Start Date" name="res_start_date" sort="res_start_date" format="date" -->
+		<!--#SMARTCOLUMN title="End Date" name="res_end_date" sort="res_end_date" format="date" -->
+		<!--#SMARTCOLUMN title="Category:" name="res_cat_type_name" sort="res_cat_type_name" -->
+		<!--#SMARTCOLUMN title="Type" name="resource_type_name" sort="resource_type_name" -->
+		<!--#SMARTCOLUMN title="Employment" name="employment_type_name" sort="employment_type_name" -->
+	<!--#/SMARTTABLE -->
+
+
+</body>
+
+<script language="JavaScript">
+<!--
+
+	function exitFunction(button)
+	{
+		if(button == 'Save')
+		{
+			eval("vacation.sch_action.value='add_vacation'");
+			vacation.submit();
+		}
+		else if(button == 'Delete')
+		{
+			eval("vacation.sch_action.value='remove_vacation'");
+			vacation.submit();
+		}
+		else if(button == 'Cancel')
+		{
+			eval("vacation.sch_action.value='remove_vacation'");
+			window.location='{!s:showPage!}sch/sch_vacation.html';
+		}
+		else if(button == 'redisplay')
+		{
+			eval("vacation.sch_action.value='redisplay'");
+			vacation.submit();
+		}
+
+	}
+
+
+//-->
+</script>
+
+<!--#EMBED template="embeds/footer.html" -->

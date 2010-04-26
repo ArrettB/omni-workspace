@@ -1,0 +1,36 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: main_exp_user_det.html, 3, 1/7/2005 5:10:20 PM, Lee A. Gunderson$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.time/exp/expenses.view?>"-->
+
+<body class="BodyTag">
+
+<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0"> <tr><td class="HeaderBar">{!p:emp_name!}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {!p:begin_week!} - {!p:end_week!}</td></tr></TABLE>
+   <!--#SMARTTABLE name="expensesQry" totalClass="tableTotal"
+	   query="
+	   SELECT e.tc_job_id, e.tc_job_no, e.service_line_id, e.tc_service_line_no, e.service_line_date_varchar, e.item_name, e.expense_qty, e.expense_rate, e.expense_total
+		FROM expenses_export_v e
+		WHERE e.expenses_exported_flag = 'N'
+		AND e.service_line_week = <?p:service_line_week.toPStmtString()?>
+		AND e.user_id = <?p:user_id.toPStmtString()?>
+		AND e.organization_id = <?s:org_id.toPStmtString()?>
+		ORDER BY e.service_line_date_varchar, e.tc_job_no"
+   -->
+		<!--#SMARTCOLUMN width="5%" name="service_line_date_varchar" sort="service_line_date_varchar" title="Date" align="center" filter="e.service_line_date_varchar:service_line_date_varchar" -->
+		<!--#SMARTCOLUMN width="5%" name="tc_job_no" sort="tc_job_no" title="Job#" align="center" filter="e.tc_job_no:tc_job_no" -->
+		<!--#SMARTCOLUMN width="5%" name="tc_service_line_no" sort="tc_service_line_no" align="center" title="Line#" href="<?s:showPage?>time/tc_edit.html?service_line_id=<?r:expensesQry:service_line_id?>&module=expenses&job_id=<?r:expensesQry:tc_job_id?>&service_line_week=<?p:service_line_week?>&begin_week=<?p:begin_week?>&end_week=<?p:end_week?>&emp_name=<?p:emp_name?>&user_id=<?p:user_id?>&prev_template=time/exp/main_exp_user_det.html" filter="e.tc_service_line_no:tc_service_line_no" -->
+		<!--#SMARTCOLUMN width="5%" name="item_name" sort="item_name" title="Item" align="center" filter="e.item_name:item_name" -->
+		<!--#SMARTCOLUMN width="5%" name="expense_qty" sort="expense_qty" title="Qty" format="###,###,##0.00" align="right" total="true" nowrap-->
+		<!--#SMARTCOLUMN width="5%" name="expense_rate" sort="expense_rate" title="Rate" format="money" align="right" total="true" nowrap-->
+		<!--#SMARTCOLUMN width="5%" name="expense_total" sort="expense_total" title="Total" format="###,###,##0.00" align="right" total="true" nowrap-->
+   <!--#/SMARTTABLE -->
+</body>
+
+<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0">
+	<tr><td>&nbsp;</td></tr>
+	<tr><td>
+		<input type="button" value="Cancel" name="button" class="button" onClick="location='{!s:showPage!}time/exp/main_exp_list_pending.html?';">
+	</td></tr>
+</TABLE>
+
+<!--#EMBED template="embeds/footer.html" -->

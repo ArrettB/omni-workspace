@@ -1,0 +1,43 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+
+<script language="javascript">
+	function new_estimate(){
+
+		var _quote = {!p:quote_id!};
+
+		window.open('/ims/action/quoteDownload?action=1&requestid=' + _quote + '&estimator=null');
+	}
+
+	function sendQuote(){
+
+		var _quote = {!p:quote_id!};
+
+		var radios = document.getElementsByName('r_quote');
+		var _estimate = 0;
+
+		for(i = 0; i < radios.length; i++) {
+            if (radios[i].checked) _estimate = radios[i].value;
+        }
+
+		window.location = '/ims/action/quoteDownload?action=4&requestid=' + _quote + '&estimator=' + _estimate;
+	}
+</script>
+
+<div>
+	<input type="button" value="New Quote" onclick="javascript:new_estimate();" class="button">
+</div>
+
+<!--#SMARTTABLE name="quotes" query="sp_estimator 5, <?p:quote_id?>, NULL, NULL, NULL, NULL, NULL" -->
+	<!--#SMARTCOLUMN title="" value="<input type=radio name=r_quote value=<?r:quotes:estimate_id?>>"  -->
+    <!--#SMARTCOLUMN name="name" title="Name" style="width:200" href="/ims/action/quoteDownload?action=3&requestid=<?p:quote_id?>&estimator=<?r:quotes:estimate_id?>" target="_blank" -->
+    <!--#SMARTCOLUMN title="Create New Version" value="New Version" href="/ims/action/quoteDownload?action=2&requestid=<?p:quote_id?>&estimator=<?r:quotes:estimate_id?>" align="center" target="_blank" -->
+    <!--#SMARTCOLUMN title="Print Quote" value="Print Quote" href="/ims/action/quoteReports?quote_id=<?r:quotes:estimate_id?>" target="_blank"  -->
+    <!--#SMARTCOLUMN name="sent" title="Created/Send" -->
+    <!--#SMARTCOLUMN name="updated_by" title="Updated By" style="width:100" align="center" -->
+    <!--#SMARTCOLUMN name="updated_on" title="Date Updated" format="date" -->
+<!--#/SMARTTABLE -->
+
+<div style="padding-top: 2px;">
+	<input type="button" value="Send Quote" onclick="javascript:sendQuote();" class="button">
+</div>

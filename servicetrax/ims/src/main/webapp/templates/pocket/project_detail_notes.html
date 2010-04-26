@@ -1,0 +1,82 @@
+<!--#EMBED template="pocket/embeds/header.html" title="Req/Project Notes"-->
+
+<!--#EMBED template="pocket/embeds/title_bar.html" title="Req/Project Notes"-->
+
+<!--#EMBED template="embeds/spacer_table.html" spacer_height="5"-->
+
+
+
+<!--#SMARTFORM
+  name="noteForm"
+  table="tracking"
+  key="tracking_id"
+  prevTemplate="pocket/project_detail_links.html"
+  nextTemplate="pocket/project_detail_links.html"
+  buttons="Save,Cancel"
+  sequence="@@identity"
+  preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+  postHandler="ims.handlers.pocket.PocketNotesPostHandler"
+  validate="false"
+  useCSS="false"
+-->
+<!--#SMARTFIELD name="job_id" type="hidden" value="<?p:job_id?>"-->
+<!--#SMARTFIELD name="service_id" type="hidden" value="<?p:service_id?>"-->
+<!--#SMARTFIELD name="tracking_type_id" type="hidden" value="<?a:trackingTypeMap:pda_note?>"-->
+
+<!--#SMARTFIELD name="date_created" type="hidden" mode="Insert" value="getDate()"-->
+<!--#SMARTFIELD name="created_by" type="hidden" mode="Insert" value="<?s:user_id?>"-->
+<!--#SMARTFIELD name="from_user_id" type="hidden" mode="Insert" value="<?s:user_id?>"-->
+<!--#SMARTFIELD name="email_sent_flag" type="hidden" mode="Insert" value="N"-->
+
+<!--#SMARTFIELD name="date_modified" type="hidden" mode="Update" value="getDate()"-->
+<!--#SMARTFIELD name="modified_by" type="hidden" mode="Update" value="<?s:user_id?>"-->
+
+
+<table cellspacing="0" cellpadding="0" width="100%">
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Note</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana">
+					<!--#SMARTFIELD name="notes" type="textarea" rows="5" cols="15" -->
+			</font>
+		</td>
+		<!--#SQLLOOP name="co"
+		query="SELECT change_order FROM pkt_services_v WHERE service_id = <?p:service_id?>"
+		-->
+	</tr>
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Change Order</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana">{!r:co:change_order.isNull('N/A')!}</font>
+		</td>
+		<!--#/SQLLOOP-->
+	</tr>
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Req Complete</b></font>
+		</td>
+		<td>
+			<!--#SMARTFIELD name="req_complete" type="droplist" table="yes_no_types_v" display="lookup_name" key="lookup_name" -->
+		</td>
+	</tr>
+</table>
+
+<!--#/SMARTFORM-->
+
+
+
+<table cellspacing="2" cellpadding="0" width="100%">
+	<!--#EMBED template="embeds/spacer_row.html" spacer_height="10"-->
+	<tr>
+		<td align="center">
+			<font color="#000000" size="-2" face="Verdana"><b><a href="{!s:showPage!}pocket/project_list.html?job_id={!p:job_id!}&amp;dest_template={!p:dest_template!}">Req List</a></b></font>
+		</td>
+	</tr>
+</table>
+
+
+<!--#EMBED template="pocket/embeds/footer.html"-->

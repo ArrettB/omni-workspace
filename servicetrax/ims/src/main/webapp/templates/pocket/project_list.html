@@ -1,0 +1,58 @@
+<!--#EMBED template="pocket/embeds/header.html" title="Req/Project List"-->
+
+<!--#EMBED template="pocket/embeds/title_bar.html" title="Req/Project List"-->
+
+<!--#EMBED template="embeds/spacer_table.html" spacer_height="5"-->
+
+
+<!--#SQLLOOP
+     name="proj_list"
+     query="SELECT substring(service_description, 0, 20) service_description, job_service_no, service_id
+			  FROM pkt_services_v
+			  WHERE job_id = <?p:job_id?>
+			  AND <?d:searchCriteria.isNull('1=1')?>
+			  ORDER BY service_no"
+	 alternator1="#FFFFFF:#DCDCDC"
+-->
+<!--#SQLHEADER-->
+
+<table cellspacing="2" cellpadding="0" width="100%">
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Req No</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b>Description</b></font>
+		</td>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><b><a href="{!s:showPage!}pocket/project_search.html?job_id={!p:job_id!}&dest_template={!p:dest_template!}">Search</a></b></font>
+		</td>
+	</tr>
+	<tr height="1">
+		<td bgcolor="black" height="1" colspan="3"><img alt="image" src="/ims/images/spacer.gif" width="1" height="1"></td>
+	</tr>
+
+<!--#/SQLHEADER-->
+	<tr>
+		<td>
+			<font color="#000000" size="-2" face="Verdana"><a href="{!s:showPage!}{!p:dest_template!}?job_id={!p:job_id!}&service_id={!r:proj_list:service_id!}&dest_template={!p:dest_template!}">{!r:proj_list:job_service_no!}</a></font>
+		</td>
+		<td colspan="2">
+			<font color="#000000" size="-2" face="Verdana">{!r:proj_list:service_description!}</font>
+		</td>
+	</tr>
+<!--#SQLFOOTER-->
+</table>
+<!--#/SQLFOOTER-->
+	<!--#SQLNODATA-->
+
+	<font color="#000000" size="-2" face="Verdana">
+	<b>There are no projects for this job.<br>
+	<a href="{!s:showPage!}pocket/project_search.html?job_id={!p:job_id!}&dest_template={!p:dest_template!}">Search</a></b></font>
+
+
+	<!--#/SQLNODATA-->
+<!--#/SQLLOOP-->
+
+
+<!--#EMBED template="pocket/embeds/footer.html"-->

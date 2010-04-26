@@ -1,0 +1,66 @@
+<!--#EMBED template="embeds/header.html"-->
+<!--#REQUIRED data="<?s:user?>"-->
+
+<body class="BodyTag">
+
+<table class="SmartTable" border="0" cellpadding="0" cellspacing="0">
+	<tr><td class="tableHeader">Detail</td></tr>
+</table>
+<!--#SMARTTABLE name="service_lines"
+	class="SmartTable" TableTotal="true" TotalClass="TableTotal" maxRows="25"
+	query="SELECT tc_service_line_no,
+	              service_line_id,
+	              service_line_date,
+	              item_type_code,
+	              resource_name,
+	              item_name,
+	              payroll_qty,
+	              expense_qty,
+	              expense_rate,
+	              expense_total,
+	              ISNULL(modified_by_name, created_by_name) submitted_by_name,
+			      verified_by_name,
+			      override_by_name,
+			      tc_job_no,
+			      tc_job_id,
+			      tc_service_no,
+			      tc_service_id,
+			      ext_pay_code,
+			      fully_allocated_flag
+			 FROM time_capture_v
+			WHERE status_code = 'submitted'
+			AND (
+				foreman_user_id = <?s:user_id.toPStmtString()?>
+				OR billing_user_id = <?s:user_id.toPStmtString()?>
+				OR 'true' = <?s:rights.view_all_jobs.view.isNull('false').toPStmtString()?>
+				)
+			AND fully_allocated_flag = 'N'
+			AND ph_service_id is null
+			AND organization_id = <?s:org_id.toPStmtString()?>
+			AND billed_flag = 'N'
+			AND posted_flag = 'N'
+	ORDER BY service_line_date DESC, resource_name, item_name"
+-->
+
+	<!--#SMARTCOLUMN name="tc_job_no" sort="tc_job_no" title="Job#" width="5%" href="<?s:action?>setupSession/job/job_main.html?job_id=<?r:service_lines:tc_job_id?>&loc=job_tc_list" target="main_frame" -->
+	<!--#SMARTCOLUMN name="tc_service_no" sort="tc_service_no" title="Req#" width="3%" href="<?s:action?>setupSession/job/job_main.html?service_id=<?r:service_lines:tc_service_id?>&job_id=<?r:service_lines:tc_job_id?>&loc=req_tc_list" target="main_frame" -->
+	<!--#SMARTCOLUMN name="tc_service_line_no" sort="tc_service_line_no" title="Line#" width="3%" href="<?s:action?>setServiceLineFields/time/tc_edit.html?job_id=<?r:service_lines:tc_job_id?>&service_id=<?r:service_lines:tc_service_id?>&service_line_id=<?r:service_lines:service_line_id?>&item_type_code=<?r:service_lines:item_type_code?>&prev_template=time/main_tc_main.html&module_mode=edit&module=time&level=<?p:level?>"target="_parent"-->
+	<!--#SMARTCOLUMN name="service_line_date" sort="service_line_date" title="Date" width="6%" format="date" -->
+	<!--#SMARTCOLUMN name="resource_name" sort="resource_name" title="Resource Name" width="10%" -->
+	<!--#SMARTCOLUMN name="item_name" sort="item_name" title="Work Code" width="10%" -->
+	<!--#SMARTCOLUMN name="ext_pay_code" sort="ext_pay_code" title="Paycode" width="3%" align="center"-->
+	<!--#SMARTCOLUMN name="payroll_qty" sort="payroll_qty" title="Hours" width="6%" total="true" align="right" format="###,###,###,##0.00"-->
+	<!--#SMARTCOLUMN name="expense_rate" sort="expense_rate" title="Exp Rate" width="5%" align="right"-->
+	<!--#SMARTCOLUMN name="expense_qty" sort="expense_qty" title="Exp Qty" width="5%" align="right"-->
+	<!--#SMARTCOLUMN name="expense_total" sort="expense_total" title="Exp Tot" width="5%" total="true" align="right" format="money"-->
+	<!--#SMARTCOLUMN name="submitted_by_name" sort="submitted_by_name" title="Submitted By" width="10%" -->
+	<!--#SMARTCOLUMN name="verified_by_name" sort="verified_by_name" title="Verified By" width="10%" -->
+	<!--#SMARTCOLUMN name="override_by_name" sort="override_by_name" title="Override By" width="10%" -->
+<!--#/SMARTTABLE -->
+<br>
+
+<!--#EMBED template="time/po/po_list.html" main_page="main_tc_list_sum_det.html"-->
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

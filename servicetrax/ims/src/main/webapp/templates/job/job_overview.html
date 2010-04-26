@@ -1,0 +1,51 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: job_overview.html, 18, 1/7/2005 5:10:07 PM, Lee A. Gunderson$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.job/job_overview.view?>"-->
+
+<body class="BodyTag" onLoad="loadColors();">
+
+   <!--#SMARTTABLE class="SmartTable" name="jobs_overview_v"
+	   query="SELECT jov.job_id, jov.service_id, jov.est_start_date, jov.job_no, jov.service_no, jov.job_type_name,
+	   					jov.dealer_name, jov.customer_name, jov.job_name, jov.job_status_type_name, jov.serv_status_type_name,
+	   					jov.loc_val_flag, jov.prod_val_flag, jov.sch_val_flag, jov.task_val_flag, jov.bill_val_flag
+	   		FROM jobs_overview_v jov
+		   	WHERE not (jov.loc_val_flag='Y' and jov.prod_val_flag='Y' and jov.sch_val_flag='Y' and jov.task_val_flag='Y' and jov.bill_val_flag='Y')
+		   	  AND organization_id = <?s:org_id.toPStmtString()?>
+		   	ORDER BY jov.est_start_date desc"
+   -->
+   <!--#SMARTCOLUMN width="10%" title="Start Date" name="est_start_date" sort="est_start_date" format="MM/dd/yyyy" -->
+	<!--#IF defined="<?s:rights.job/job_edit.view?>"-->
+		<!--#SMARTCOLUMN width="10%" title="Job#" name="job_no" sort="job_no" align="center" href="<?s:action?>setupSession/job/job_main.html?job_id=<?r:jobs_overview_v:job_id?>&loc=job_edit" target="main_frame"-->
+	<!--#ELSE-->
+		<!--#SMARTCOLUMN width="10%" title="Job#" name="job_no" sort="job_no" align="center" -->
+	<!--#/IF-->
+	<!--#IF defined="<?r:jobs_overview_v:service_id?>"-->
+		<!--#IF defined="<?s:rights.job/job_edit.view?>"-->
+			<!--#SMARTCOLUMN width="10%" title="Req#" name="service_no" sort="service_no" align="center" href="<?s:action?>setupSession/job/job_main.html?job_id=<?r:jobs_overview_v:job_id?>&service_id=<?r:jobs_overview_v:service_id?>&loc=req_edit" target="main_frame" -->
+		<!--#ELSE-->
+			<!--#SMARTCOLUMN width="10%" title="Req#" name="service_no" sort="service_no" align="center" -->
+		<!--#/IF-->
+	<!--#ELSE-->
+		<!--#SMARTCOLUMN width="10%" title="Req#" name="service_no" sort="service_no" align="center" -->
+	<!--#/IF-->
+
+     <!--#SMARTCOLUMN width="10%" title="Job Type" name="job_type_name" sort="job_type_name" -->
+     <!--#SMARTCOLUMN width="10%" title="Dealer" name="dealer_name" sort="dealer_name" -->
+     <!--#SMARTCOLUMN width="10%" title="Customer" name="customer_name" sort="customer_name" -->
+     <!--#SMARTCOLUMN width="10%" title="Job Name" name="job_name" sort="job_name" -->
+     <!--#SMARTCOLUMN width="10%" title="Job Status" name="job_status_type_name" sort="job_status_type_name" -->
+     <!--#SMARTCOLUMN width="10%" title="Service Status" name="serv_status_type_name" sort="serv_status_type_name" -->
+     <!--#SMARTCOLUMN width="10%" title="Req Header?" name="head_val_flag" sort="head_val_flag" value="<img name='<?r:jobs_overview_v:loc_val_flag?>'>" align="center"-->
+     <!--#SMARTCOLUMN width="10%" title="Custom?" name="cust_val_flag" sort="cust_val_flag" value="<img name='<?r:jobs_overview_v:loc_val_flag?>'>" align="center"-->
+     <!--#SMARTCOLUMN width="10%" title="Location?" name="loc_val_flag" sort="loc_val_flag" value="<img name='<?r:jobs_overview_v:loc_val_flag?>'>" align="center"-->
+     <!--#SMARTCOLUMN width="10%" title="Product?" name="prod_val_flag" sort="prod_val_flag" value="<img name='<?r:jobs_overview_v:prod_val_flag?>'>" align="center"-->
+     <!--#SMARTCOLUMN width="10%" title="Scheduling?" name="sch_val_flag" sort="sch_val_flag" value="<img name='<?r:jobs_overview_v:sch_val_flag?>'>" align="center"-->
+     <!--#SMARTCOLUMN width="10%" title="Billing Info?" name="bill_val_flag" sort="bill_val_flag" value="<img name='<?r:jobs_overview_v:bill_val_flag?>'>" align="center"-->
+   <!--#/SMARTTABLE -->
+
+<script language="javascript">setCheckboxImages();</script>
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

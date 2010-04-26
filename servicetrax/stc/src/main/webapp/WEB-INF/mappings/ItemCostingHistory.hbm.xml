@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.ItemCostingHistory" table="ITEM_COSTING_HISTORY" schema="dbo" catalog="">
+        <id name="itemCostingHistoryId" type="java.lang.Long">
+            <column name="ITEM_COSTING_HISTORY_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="item" class="com.dynamic.servicetrax.orm.Item" fetch="select">
+            <column name="ITEM_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="costPerUom" type="big_decimal">
+            <column name="COST_PER_UOM" precision="18" />
+        </property>
+        <property name="percentMargin" type="java.lang.Short">
+            <column name="PERCENT_MARGIN" precision="3" scale="0" />
+        </property>
+        <property name="createdBy" type="string">
+            <column name="CREATED_BY" length="50" not-null="true" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

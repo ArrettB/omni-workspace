@@ -1,0 +1,62 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: project_notes.html, 3, 8/2/2001 3:18:53 PM, Chad Ryan$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.enet/prog/jp_edit.view?>"-->
+
+<body class="BodyTag" onLoad="testIfCreated();focusFirstField()" >
+
+   <table width="100%">
+   <!--#SMARTFORM name="enet/prog/jp_edit" table="project_notes" key="project_note_id" security="rights"
+						preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+						onClickFunction="exitFunction" buttons="Save,Cancel"
+   -->
+
+      <!--#SMARTFIELD name="project_id" type="hidden" value="<?p:project_id?>" -->
+      <!--#SMARTFIELD name="created_new_note" type="hidden" value="false" -->
+
+		<tr>
+			<td colspan="4" class="TableTitle">Create Project Note</td>
+      <tr>
+			<td><!--#SMARTFIELD name="note" type="textarea" cols="70" rows="8" --></td>
+		</tr>
+   </table>
+   <!--#/SMARTFORM -->
+
+
+</body>
+
+<script language="JavaScript">
+<!--
+
+	function testIfCreated()
+	{
+		if( document.jp_edit.created_new_note.value == 'true' && !(document.jp_edit.project_note_id.value == '') )
+		{//we now have a project_note_id so return to caller
+	     	parent.window.opener.focus();
+			parent.window.opener.redisplayPage();
+	      parent.close();
+		}
+	}
+
+
+	function exitFunction(button)
+	{
+	   if( button == 'Save' || button == 'Cancel')
+	   {
+			if( button == 'Save' )
+			{
+				document.jp_edit.created_new_note.value = 'true';
+			}
+	      else
+	      {//canceling so who cares about id :-)
+	      	parent.window.opener.focus();
+		      parent.close();
+			}
+	   }
+	}
+
+-->
+</script>
+
+
+<!--#EMBED template="embeds/footer.html" -->

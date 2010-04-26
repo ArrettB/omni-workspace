@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.Project" table="PROJECTS" schema="dbo" catalog="">
+        <id name="projectId" type="java.lang.Long">
+            <column name="PROJECT_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="customer" class="com.dynamic.servicetrax.orm.Customer" fetch="select">
+            <column name="CUSTOMER_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="endUser" class="com.dynamic.servicetrax.orm.Customer" fetch="select">
+            <column name="END_USER_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="userByModifiedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByProjectTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="PROJECT_TYPE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="userByCreatedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="lookupByProjectStatusTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="PROJECT_STATUS_TYPE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="projectNo" type="long">
+            <column name="PROJECT_NO" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="jobName" type="string">
+            <column name="JOB_NAME" length="50" />
+        </property>
+        <property name="percentComplete" type="big_decimal">
+            <column name="PERCENT_COMPLETE" precision="10" scale="5" />
+        </property>
+        <property name="isNew" type="string">
+            <column name="IS_NEW" length="1" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <set name="requests" inverse="true">
+            <key>
+                <column name="PROJECT_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Request" />
+        </set>
+        <set name="documents" inverse="true">
+            <key>
+                <column name="PROJECT_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Document" />
+        </set>
+        <set name="projectNotes" inverse="true">
+            <key>
+                <column name="PROJECT_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.ProjectNote" />
+        </set>
+        <set name="punchlists" inverse="true">
+            <key>
+                <column name="PROJECT_ID" precision="18" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Punchlist" />
+        </set>
+        <set name="jobs" inverse="true">
+            <key>
+                <column name="PROJECT_ID" precision="18" scale="0" />
+            </key>
+            <one-to-many class="com.dynamic.servicetrax.orm.Job" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,9 @@
+
+CREATE VIEW dbo.CUSTOMER_CONTACTS_V
+AS
+SELECT     dbo.CONTACTS.*
+FROM         dbo.CONTACTS LEFT OUTER JOIN
+                      dbo.LOOKUPS ON dbo.CONTACTS.CONTACT_TYPE_ID = dbo.LOOKUPS.LOOKUP_ID
+WHERE     (dbo.LOOKUPS.CODE = 'customer')
+
+

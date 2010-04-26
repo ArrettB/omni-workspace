@@ -1,0 +1,96 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: task_edit.html, 1, 8/2/2005 3:04:59 PM, Greg Case$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.job/task/task_edit.view?>"-->
+<body class="BodyTag" onLoad="refreshList();"><!-- Removed secureButtons(); after adding security -->
+
+   <table width="100%">
+      <!--#SMARTFORM name="job/task/task_edit" security="rights" table="service_tasks" key="service_task_id"
+                     sequence="@@IDENTITY" preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+                     buttons="Save,New,Delete,Cancel,Done" onClickFunction="exitFunction"
+      -->
+         <!--#SMARTFIELD title="" name="loc" type="hidden" value="<?p:loc?>" -->
+         <!--#SMARTFIELD title="" name="service_id" type="hidden" value="<?p:service_id?>" -->
+	      <!--#SMARTFIELD name="refresh_list" type="hidden" value="<?p:refresh_list?>" -->
+      <tr>
+          <td colspan="6" class="TableTitle">Edit Tasks</td>
+      </tr>
+      
+      <tr>
+         <td colspan="6">
+            <!--#SMARTFIELD title="Select Task to Review: &nbsp;" name="xyz_enabled1" type="droplist"
+                  table="service_tasks" display="phase+':Seq#'+CAST(sequence_no as varchar(3))" key="service_task_id" 
+                  onChange="location='<?s:action?>job/task_edit.html?loc=<?p:loc?>&service_task_id=' + this.options[this.selectedIndex].value;"
+             --></td>
+         <td>&nbsp;</td>
+      </tr>      
+      <tr>
+         <td><!--#SMARTFIELD title="Phase:" div="</td><td>" name="phase" --></td>
+         <td><!--#SMARTFIELD title="Phase#:" div="</td><td>" name="phase_no" --></td>
+         <td><!--#SMARTFIELD title="Phase Type:" div="</td><td>" name="phase_type_id" type="droplist" 
+                  table="phase_types_v" display="lookup_name" key="lookup_id" -->
+      </tr>
+      <tr>
+         <td class="HeaderLabel" colspan="2">Task Description</td>
+         <td><!--#SMARTFIELD title="Sequence#:" div="</td><td>" name="sequence_no" --></td>
+         <td><!--#SMARTFIELD title="Sub-Activity Type:" div="</td><td>" name="sub_act_type_id" type="droplist" 
+                  table="sub_activity_types_v" display="lookup_name" key="lookup_id" -->
+      </tr>
+      <tr>
+         <td colspan="4">
+         	<!--#SMARTFIELD title="" name="description" type="textarea" cols="70" rows="4" -->
+         </td>
+			<td><!--#SMARTFIELD title="Vendor Responsible:" div="</td><td>" name="vendor_responsible" --></td>
+      </tr>
+      <!--#IF evaluate="<?d:mode?>" compare="Update"-->
+      <tr>
+          <td class="TableTitle" colspan="6">System Info</td>
+      </tr>
+      <!--#/IF-->
+      <tr>
+         <td><!--#SMARTFIELD title="Date Created" div="</td><td>" name="date_created" type="datetime" 
+                             mode="Update" readonly class="readonly" size="22" --></td>
+         <td><!--#SMARTFIELD title="Created By" div="</td><td>" name="created_by" type="chooser" 
+                             mode="Update" table="users" display="first_name+' '+last_name" key="user_id"
+                             readonly class="readonly"--></td>
+      </tr>
+      <tr>
+         <td><!--#SMARTFIELD title="Date Modified" div="</td><td>" name="date_modified" type="datetime" 
+                             mode="Update" readonly class="readonly" size="22"--></td>
+         <td><!--#SMARTFIELD title="Modified By" div="</td><td>" name="modified_by" type="chooser"
+                             mode="Update" table="users" display="first_name+' '+last_name" key="user_id"
+                             readonly class="readonly"--></td>
+      </tr>
+   <!--#/SMARTFORM -->
+ 	</table>
+</body>
+
+<script language="JavaScript">
+<!--
+
+function refreshList()
+{
+	if( task_edit.refresh_list.value != null && task_edit.refresh_list.value == 'true')
+	{
+		window.open('{!s:showPage!}job/task/task_list.html?loc=task_list&job_id={!p:job_id!}&service_id={!p:service_id!}','task_list_frame');
+		task_edit.refresh_list.value = '';
+	}
+}
+
+function exitFunction(button)
+{
+	if( button == 'Save' || button == 'Delete' )
+	{
+		task_edit.refresh_list.value = true;
+	}
+   if( button == 'Done' )
+   {
+      parent.window.opener.focus();
+      parent.close();
+   }
+}
+
+-->
+</script>
+
+<!--#EMBED template="embeds/footer.html" -->

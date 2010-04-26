@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ShowPlanXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0" Build="9.00.3054.00" xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan">
+  <BatchSequence>
+    <Batch>
+      <Statements>
+        <StmtSimple StatementCompId="1" StatementEstRows="1" StatementId="1" StatementOptmLevel="FULL" StatementOptmEarlyAbortReason="GoodEnoughPlanFound" StatementSubTreeCost="0.0196431" StatementText="SELECT lt.code lookup_type, l.lookup_id   FROM lookups l INNER JOIN lookup_types lt ON l.lookup_type_id=lt.lookup_type_id  WHERE ((lt.code='delivery_type' OR (lt.code='furniture_line_type' AND l.attribute2='system')) AND l.code='n_a')     OR (lt.code='yes_no_type' AND l.code='N')" StatementType="SELECT">
+          <StatementSetOptions ANSI_NULLS="false" ANSI_PADDING="false" ANSI_WARNINGS="false" ARITHABORT="true" CONCAT_NULL_YIELDS_NULL="false" NUMERIC_ROUNDABORT="false" QUOTED_IDENTIFIER="false" />
+          <QueryPlan DegreeOfParallelism="1" CachedPlanSize="31" CompileTime="17" CompileCPU="5" CompileMemory="392">
+            <RelOp AvgRowSize="35" EstimateCPU="3.36268E-05" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Inner Join" NodeId="0" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.0196431">
+              <OutputList>
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="LOOKUP_ID" />
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUP_TYPES]" Alias="[lt]" Column="CODE" />
+              </OutputList>
+              <RunTimeInformation>
+                <RunTimeCountersPerThread Thread="0" ActualRows="3" ActualEndOfScans="1" ActualExecutions="1" />
+              </RunTimeInformation>
+              <NestedLoops Optimized="false">
+                <OuterReferences>
+                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="LOOKUP_TYPE_ID" />
+                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="CODE" />
+                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="ATTRIBUTE2" />
+                </OuterReferences>
+                <RelOp AvgRowSize="39" EstimateCPU="0.000949" EstimateIO="0.0105324" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="8.04469" LogicalOp="Clustered Index Scan" NodeId="1" Parallel="false" PhysicalOp="Clustered Index Scan" EstimatedTotalSubtreeCost="0.0114814">
+                  <OutputList>
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="LOOKUP_ID" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="LOOKUP_TYPE_ID" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="CODE" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="ATTRIBUTE2" />
+                  </OutputList>
+                  <RunTimeInformation>
+                    <RunTimeCountersPerThread Thread="0" ActualRows="8" ActualEndOfScans="1" ActualExecutions="1" />
+                  </RunTimeInformation>
+                  <IndexScan Ordered="false" ForcedIndex="false" NoExpandHint="false">
+                    <DefinedValues>
+                      <DefinedValue>
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="LOOKUP_ID" />
+                      </DefinedValue>
+                      <DefinedValue>
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="LOOKUP_TYPE_ID" />
+                      </DefinedValue>
+                      <DefinedValue>
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="CODE" />
+                      </DefinedValue>
+                      <DefinedValue>
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="ATTRIBUTE2" />
+                      </DefinedValue>
+                    </DefinedValues>
+                    <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Index="[PK_LOOKUPS]" Alias="[l]" />
+                    <Predicate>
+                      <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[LOOKUPS].[CODE] as [l].[CODE]='N' OR [servicetrax_dev].[dbo].[LOOKUPS].[CODE] as [l].[CODE]='n_a'">
+                        <Logical Operation="OR">
+                          <ScalarOperator>
+                            <Compare CompareOp="EQ">
+                              <ScalarOperator>
+                                <Identifier>
+                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="CODE" />
+                                </Identifier>
+                              </ScalarOperator>
+                              <ScalarOperator>
+                                <Const ConstValue="'N'" />
+                              </ScalarOperator>
+                            </Compare>
+                          </ScalarOperator>
+                          <ScalarOperator>
+                            <Compare CompareOp="EQ">
+                              <ScalarOperator>
+                                <Identifier>
+                                  <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="CODE" />
+                                </Identifier>
+                              </ScalarOperator>
+                              <ScalarOperator>
+                                <Const ConstValue="'n_a'" />
+                              </ScalarOperator>
+                            </Compare>
+                          </ScalarOperator>
+                        </Logical>
+                      </ScalarOperator>
+                    </Predicate>
+                  </IndexScan>
+                </RelOp>
+                <RelOp AvgRowSize="26" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="7.04469" EstimateRewinds="0" EstimateRows="1" LogicalOp="Clustered Index Seek" NodeId="2" Parallel="false" PhysicalOp="Clustered Index Seek" EstimatedTotalSubtreeCost="0.00747453">
+                  <OutputList>
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUP_TYPES]" Alias="[lt]" Column="CODE" />
+                  </OutputList>
+                  <RunTimeInformation>
+                    <RunTimeCountersPerThread Thread="0" ActualRows="3" ActualEndOfScans="5" ActualExecutions="8" />
+                  </RunTimeInformation>
+                  <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                    <DefinedValues>
+                      <DefinedValue>
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUP_TYPES]" Alias="[lt]" Column="CODE" />
+                      </DefinedValue>
+                    </DefinedValues>
+                    <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUP_TYPES]" Index="[PK_LOOKUP_TYPES]" Alias="[lt]" />
+                    <SeekPredicates>
+                      <SeekPredicate>
+                        <Prefix ScanType="EQ">
+                          <RangeColumns>
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUP_TYPES]" Alias="[lt]" Column="LOOKUP_TYPE_ID" />
+                          </RangeColumns>
+                          <RangeExpressions>
+                            <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[LOOKUPS].[LOOKUP_TYPE_ID] as [l].[LOOKUP_TYPE_ID]">
+                              <Identifier>
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="LOOKUP_TYPE_ID" />
+                              </Identifier>
+                            </ScalarOperator>
+                          </RangeExpressions>
+                        </Prefix>
+                      </SeekPredicate>
+                    </SeekPredicates>
+                    <Predicate>
+                      <ScalarOperator ScalarString="([servicetrax_dev].[dbo].[LOOKUP_TYPES].[CODE] as [lt].[CODE]='delivery_type' OR [servicetrax_dev].[dbo].[LOOKUP_TYPES].[CODE] as [lt].[CODE]='furniture_line_type' AND [servicetrax_dev].[dbo].[LOOKUPS].[ATTRIBUTE2] as [l].[ATTRIBUTE2]='system') AND [servicetrax_dev].[dbo].[LOOKUPS].[CODE] as [l].[CODE]='n_a' OR [servicetrax_dev].[dbo].[LOOKUP_TYPES].[CODE] as [lt].[CODE]='yes_no_type' AND [servicetrax_dev].[dbo].[LOOKUPS].[CODE] as [l].[CODE]='N'">
+                        <Logical Operation="OR">
+                          <ScalarOperator>
+                            <Logical Operation="AND">
+                              <ScalarOperator>
+                                <Logical Operation="OR">
+                                  <ScalarOperator>
+                                    <Compare CompareOp="EQ">
+                                      <ScalarOperator>
+                                        <Identifier>
+                                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUP_TYPES]" Alias="[lt]" Column="CODE" />
+                                        </Identifier>
+                                      </ScalarOperator>
+                                      <ScalarOperator>
+                                        <Const ConstValue="'delivery_type'" />
+                                      </ScalarOperator>
+                                    </Compare>
+                                  </ScalarOperator>
+                                  <ScalarOperator>
+                                    <Logical Operation="AND">
+                                      <ScalarOperator>
+                                        <Compare CompareOp="EQ">
+                                          <ScalarOperator>
+                                            <Identifier>
+                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUP_TYPES]" Alias="[lt]" Column="CODE" />
+                                            </Identifier>
+                                          </ScalarOperator>
+                                          <ScalarOperator>
+                                            <Const ConstValue="'furniture_line_type'" />
+                                          </ScalarOperator>
+                                        </Compare>
+                                      </ScalarOperator>
+                                      <ScalarOperator>
+                                        <Compare CompareOp="EQ">
+                                          <ScalarOperator>
+                                            <Identifier>
+                                              <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="ATTRIBUTE2" />
+                                            </Identifier>
+                                          </ScalarOperator>
+                                          <ScalarOperator>
+                                            <Const ConstValue="'system'" />
+                                          </ScalarOperator>
+                                        </Compare>
+                                      </ScalarOperator>
+                                    </Logical>
+                                  </ScalarOperator>
+                                </Logical>
+                              </ScalarOperator>
+                              <ScalarOperator>
+                                <Compare CompareOp="EQ">
+                                  <ScalarOperator>
+                                    <Identifier>
+                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="CODE" />
+                                    </Identifier>
+                                  </ScalarOperator>
+                                  <ScalarOperator>
+                                    <Const ConstValue="'n_a'" />
+                                  </ScalarOperator>
+                                </Compare>
+                              </ScalarOperator>
+                            </Logical>
+                          </ScalarOperator>
+                          <ScalarOperator>
+                            <Logical Operation="AND">
+                              <ScalarOperator>
+                                <Compare CompareOp="EQ">
+                                  <ScalarOperator>
+                                    <Identifier>
+                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUP_TYPES]" Alias="[lt]" Column="CODE" />
+                                    </Identifier>
+                                  </ScalarOperator>
+                                  <ScalarOperator>
+                                    <Const ConstValue="'yes_no_type'" />
+                                  </ScalarOperator>
+                                </Compare>
+                              </ScalarOperator>
+                              <ScalarOperator>
+                                <Compare CompareOp="EQ">
+                                  <ScalarOperator>
+                                    <Identifier>
+                                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[LOOKUPS]" Alias="[l]" Column="CODE" />
+                                    </Identifier>
+                                  </ScalarOperator>
+                                  <ScalarOperator>
+                                    <Const ConstValue="'N'" />
+                                  </ScalarOperator>
+                                </Compare>
+                              </ScalarOperator>
+                            </Logical>
+                          </ScalarOperator>
+                        </Logical>
+                      </ScalarOperator>
+                    </Predicate>
+                  </IndexScan>
+                </RelOp>
+              </NestedLoops>
+            </RelOp>
+          </QueryPlan>
+        </StmtSimple>
+      </Statements>
+    </Batch>
+  </BatchSequence>
+</ShowPlanXML>

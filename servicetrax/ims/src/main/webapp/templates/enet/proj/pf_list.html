@@ -1,0 +1,234 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<body class="BodyTag" onLoad="acknowledge()">
+
+
+<!--#IF defined="<?s:project_id?>" -->
+
+  <!--#EMBED template="enet/embeds/project_header.html"-->
+
+  <table width="100%" border="0" cellspacing="0">
+	<tr><td class="HeaderLabel">To View or Update or <font size="2">CREATE</FONT> an additional request, please select a Service Request, Quote Request, or Quote below...</td></tr>
+	<tr><td><br></td></tr>
+  </table>
+
+
+  <!--#CHECKSECURITY right="rights.enet/multi_vendor.view" -->
+
+    <!--#SMARTTABLE name="pf_list"
+		class="SmartTable"
+		query="SELECT DISTINCT r.record_no, r.record_seq_no, r.record_type_seq_no, r.project_id, r.record_id, r.record_type_name,
+		              r.record_type_code, r.record_status_type_name, r.record_last_modified, r.dealer_po_no, r.customer_po_no,
+		              r.request_id, r.quote_id, r.description, r.is_new
+				 FROM projects_all_requests_v r
+				WHERE r.project_id = <?s:project_id.toPStmtString()?>
+				  AND record_status_type_code <> 'closed'
+			 ORDER BY r.record_seq_no, r.record_type_seq_no" -->
+
+	<!--#IF evaluate="<?r:pf_list:record_type_code?>" compare="workorder"-->
+		<!--#CHECKSECURITY right="rights.enet/req/wo_edit.view"-->
+			<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" href="<?s:action?>setProjectDatum/enet/proj/pf_main.html?project_id=<?r:pf_list:project_id?>&request_id=<?r:pf_list:record_id?>&loc=wo_create" target="_top" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+		<!--#ELSE-->
+			<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+		<!--#/CHECKSECURITY -->
+
+	<!--#ELSEIF evaluate="<?r:pf_list:record_type_code?>" compare="service_request"-->
+	  <!--#CHECKSECURITY right="rights.enet/req/sr_edit.view"-->
+        <!--#IF evaluate="<?r:pf_list:is_new?>" compare="Y" -->
+	      <!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" href="<?s:action?>setProjectDatum/enet/proj/pf_main.html?project_id=<?r:pf_list:project_id?>&request_id=<?r:pf_list:record_id?>&loc=service_request" target="_top" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+        <!--#ELSE-->
+	      <!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" href="<?s:action?>setProjectDatum/enet/proj/pf_main.html?project_id=<?r:pf_list:project_id?>&request_id=<?r:pf_list:record_id?>&loc=sr_create" target="_top" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+        <!--#/IF-->
+	  <!--#ELSE-->
+	      <!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+	  <!--#/CHECKSECURITY -->
+
+	<!--#ELSEIF evaluate="<?r:pf_list:record_type_code?>" compare="quote_request"-->
+	  <!--#CHECKSECURITY right="rights.enet/req/qr_edit.view"-->
+		<!--#IF evaluate="<?r:pf_list:is_new?>" compare="Y" -->
+		  <!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" href="<?s:action?>setProjectDatum/enet/proj/pf_main.html?project_id=<?r:pf_list:project_id?>&request_id=<?r:pf_list:record_id?>&loc=quote_request" target="_top" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+		<!--#ELSE-->
+		  <!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" href="<?s:action?>setProjectDatum/enet/proj/pf_main.html?project_id=<?r:pf_list:project_id?>&request_id=<?r:pf_list:record_id?>&loc=qr_create" target="_top" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+        <!--#/IF-->
+	  <!--#ELSE-->
+		  <!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+	  <!--#/CHECKSECURITY -->
+
+	<!--#ELSEIF evaluate="<?r:pf_list:record_type_code?>" compare="quote"-->
+	  <!--#CHECKSECURITY right="rights.enet/req/q_edit.view"-->
+	    <!--#IF evaluate="<?r:pf_list:is_new?>" compare="Y" -->
+          <!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" href="<?s:showPage?>quoteReports?quote_id=<?r:pf_list:quote_id?>" target="_blank" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+	    <!--#ELSE-->
+		  <!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" href="<?s:action?>setProjectDatum/enet/proj/pf_main.html?project_id=<?r:pf_list:project_id?>&quote_id=<?r:pf_list:record_id?>&loc=q_create" target="_top" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+		<!--#/IF-->
+	  <!--#ELSE-->
+	    <!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+	  <!--#/CHECKSECURITY -->
+
+	<!--#ELSEIF evaluate="<?r:pf_list:record_type_code?>" compare="project_folder"-->
+		<!--#CHECKSECURITY right="rights.enet/req/q_edit.view"-->
+			<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" href="<?s:showPage?>enet/proj/pf_edit?request_id=<?r:pf_list:record_id?>" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'"-->
+		<!--#ELSE-->
+			<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+		<!--#/CHECKSECURITY -->
+	<!--#ELSE-->
+			<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+	<!--#/IF-->
+	  <!--#SMARTCOLUMN name="record_type_name" sort="record_type_name" title="Request&nbsp;Type" width="10%"
+ 		filter="a_record_type_name:record_type_name" filterQuery="SELECT lookup_name id, lookup_name FROM request_types_v ORDER BY lookup_name" filterQuick="true"
+	  -->
+	  <!--#SMARTCOLUMN name="record_status_type_name" sort="record_status_type_name" title="Status" width="10%"
+ 		filter="a_record_status_type_name:record_status_type_name" filterQuery="SELECT DISTINCT request_status_type_name id, request_status_type_name FROM project_requests_v WHERE project_id = <?s:project_id.toSQLString()?> ORDER BY request_status_type_name" filterQuick="true"
+	  -->
+
+	  <!--#SMARTCOLUMN name="description" sort="description" title="Description" width="40%" align="left" -->
+
+	  <!--#SMARTCOLUMN name="dealer_po_no" sort="dealer_po_no" title="Dealer&nbsp;PO" width="5%" align="left" filter="dealer_po_no:dealer_po_no" -->
+	  <!--#SMARTCOLUMN name="customer_po_no" sort="customer_po_no" title="End&nbsp;User&nbsp;PO" width="5%" align="left" filter="customer_po_no:customer_po_no" -->
+	  <!--#SMARTCOLUMN name="record_last_modified" sort="record_last_modified" title="Last&nbsp;Modified" format="datetime" width="15%"-->
+    <!--#/SMARTTABLE -->
+
+    <!--#IF evaluate="<?s:project_status_type_code?>" compare="folder_closed"-->
+    <!--#ELSE-->
+	  <table width="100%" border="0" cellspacing="0">
+	    <tr><td>&nbsp;</td></tr>
+	    <tr><td><input type="submit" class="button" value="Archive Project" name="archive_project" onClick="return archiveProject();"></td></tr>
+	  </table>
+    <!--#/IF-->
+
+  <!--#ELSE-->
+
+    <!--#SMARTTABLE name="pf_list"
+		class="SmartTable"
+		query="SELECT DISTINCT r.record_no, r.record_seq_no, r.record_type_seq_no, r.project_id, r.record_id, r.record_no, r.record_type_name,
+		              r.record_type_code, r.record_status_type_code, r.record_status_type_name, r.record_last_modified, r.dealer_po_no, r.customer_po_no,
+				      r.est_start_date_varchar, rv.sch_start_date_varchar, rv.sch_start_time, rv.sch_end_date_varchar
+				 FROM projects_all_requests_v r, request_vendors_v rv
+				WHERE r.project_id = <?s:project_id.toPStmtString()?>
+				  AND record_type_code = 'workorder'
+				  AND r.request_id = rv.request_id
+				  AND (rv.vendor_contact_id = <?s:user.contactID.toPStmtString()?>
+				       OR r.furniture1_contact_id = <?s:user.contactID.toPStmtString()?>
+					   OR r.furniture2_contact_id = <?s:user.contactID.toPStmtString()?>
+					   )
+				  AND record_status_type_code <> 'closed'
+			 ORDER BY r.record_seq_no, r.record_type_seq_no" -->
+
+	<!--#IF evaluate="<?r:pf_list:record_type_code?>" compare="workorder"-->
+		<!--#CHECKSECURITY right="rights.enet/req/wo_edit.view"-->
+			<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" href="<?s:action?>setProjectDatum/enet/proj/pf_main.html?project_id=<?r:pf_list:project_id?>&request_id=<?r:pf_list:record_id?>&loc=wo_create" target="_top" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'"-->
+		<!--#ELSE-->
+			<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+		<!--#/CHECKSECURITY -->
+	<!--#ELSEIF evaluate="<?r:pf_list:record_type_code?>" compare="service_request"-->
+		<!--#CHECKSECURITY right="rights.enet/req/sr_edit.view"-->
+			<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" href="<?s:action?>setProjectDatum/enet/proj/pf_main.html?project_id=<?r:pf_list:project_id?>&request_id=<?r:pf_list:record_id?>&loc=service_request" target="_top" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+		<!--#ELSE-->
+			<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+		<!--#/CHECKSECURITY -->
+	<!--#ELSEIF evaluate="<?r:pf_list:record_type_code?>" compare="quote_request"-->
+		<!--#CHECKSECURITY right="rights.enet/req/qr_edit.view"-->
+			<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" href="<?s:action?>setProjectDatum/enet/proj/pf_main.html?project_id=<?r:pf_list:project_id?>&request_id=<?r:pf_list:record_id?>&loc=quote_request" target="_top" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+		<!--#ELSE-->
+			<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+		<!--#/CHECKSECURITY -->
+	<!--#ELSEIF evaluate="<?r:pf_list:record_type_code?>" compare="quote"-->
+		<!--#CHECKSECURITY right="rights.enet/req/q_edit.view"-->
+			<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" href="<?s:action?>setProjectDatum/enet/proj/pf_main.html?project_id=<?r:pf_list:project_id?>&quote_id=<?r:pf_list:record_id?>&loc=q_create" target="_top" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+		<!--#ELSE-->
+			<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+		<!--#/CHECKSECURITY -->
+	<!--#ELSEIF evaluate="<?r:pf_list:record_type_code?>" compare="project_folder"-->
+		<!--#CHECKSECURITY right="rights.enet/req/q_edit.view"-->
+			<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" href="<?s:showPage?>enet/proj/pf_edit?request_id=<?r:pf_list:record_id?>" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'"-->
+		<!--#ELSE-->
+			<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+		<!--#/CHECKSECURITY -->
+	<!--#ELSE-->
+			<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+	<!--#/IF-->
+	  <!--#SMARTCOLUMN name="record_type_name" sort="record_type_name" title="Request&nbsp;Type" width="14%"
+ 		filter="record_type_name:record_type_name" filterQuery="SELECT lookup_name id, lookup_name FROM request_types_v ORDER BY lookup_name" filterQuick="true"
+	  -->
+	  <!--#SMARTCOLUMN name="record_status_type_name" sort="record_status_type_name" title="Status" width="12%"
+ 		filter="request_status_type_name:request_status_type_name" filterQuery="SELECT DISTINCT request_status_type_name id, request_status_type_name FROM project_requests_v WHERE project_id = <?s:project_id.toSQLString()?> ORDER BY request_status_type_name" filterQuick="true"
+	  -->
+	  <!--#SMARTCOLUMN name="est_start_date_varchar" sort="est_start_date_varchar" title="Est&nbsp;Start&nbsp;Date" width="10%" filter="est_start_date_varchar:est_start_date_varchar" -->
+	  <!--#SMARTCOLUMN name="sch_start_date_varchar" sort="sch_start_date_varchar" title="Sch&nbsp;Start&nbsp;Date" width="10%" filter="sch_start_date_varchar:sch_start_date_varchar" -->
+	  <!--#SMARTCOLUMN name="sch_start_time" sort="sch_start_time" title="Start&nbsp;Time" width="7%" format="time" -->
+	  <!--#SMARTCOLUMN name="sch_end_date_varchar" sort="sch_end_date_varchar" title="Sch&nbsp;End&nbsp;Date" width="10%" filter="sch_end_date_varchar:sch_end_date_varchar" -->
+	  <!--#SMARTCOLUMN name="customer_po_no" sort="customer_po_no" title="End&nbsp;User&nbsp;PO" width="10%" align="left" filter="customer_po_no:customer_po_no" -->
+    <!--#/SMARTTABLE -->
+
+
+    <br>
+    <table width="100%" cellspacing="0" cellpadding="3">
+	  <!--#SMARTFORM name="enet/proj/pf_edit" security="rights" table="requests" key="request_id"
+						preHandler="ims.handlers.job_processing.SmartFormPreHandler,ims.handlers.proj.PDSPreHandler"
+						postHandler="ims.handlers.proj.PDSPostHandler"
+                  buttons=""
+	  -->
+	  <!--#SMARTFIELD name="req_button" type="hidden" -->
+	  <tr>
+
+      <!--#CHECKSECURITY right="rights.enet/req/wo_edit.insert"-->
+
+	    <!--#IF evaluate="<?s:project_type_code?>" compare="service_account"-->
+		  <!--#IF evaluate="<?s:project_status_type_code?>" compare="folder_closed"-->
+		  <!--#ELSE-->
+		    <td align="left"><input type="button" class="button" value="Create New Workorder" name="wo_button" onClick="return newWorkorder();"></td>
+		  <!--#/IF-->
+	    <!--#/IF-->
+      <!--#/CHECKSECURITY-->
+
+	  <!--#IF evaluate="<?s:project_status_type_code?>" compare="folder_closed"-->
+      <!--#ELSE-->
+		<td align="right"><input type="submit" class="button" value="Archive Project" name="archive_project" onClick="return archiveProject();"></td>
+	  <!--#/IF-->
+	  </tr>
+	  <!--#/SMARTFORM-->
+    </table>
+
+  <!--#/CHECKSECURITY-->
+
+<!--#ELSE-->
+	<table><tr><td class="errorInfo">Lost project_id, please contact the system administrator.</td></tr></table>
+<!--#/IF-->
+
+<script language="JavaScript">
+<!--
+
+	function acknowledge()
+	{
+		if( {!d:acknowledgement.toJavaScriptString()!} == "true" )
+		{
+			var email_msg = '';
+		<!--#IF defined="<?d:email_failed?>"-->
+			email_msg = "&email_failed=true";
+		<!--#/IF-->
+			newWindowScrollBars("{!s:showPage!}enet/req/acknowledge.html?request_type_code={!d:request_type_code!}&request_no={!d:request_no!}&is_sent={!d:is_sent!}"+
+						"&sales_rep={!d:d_sales_rep_contact_id_sent!}&sales_sup={!d:d_sales_sup_contact_id_sent!}&proj_mgr={!d:d_proj_mgr_contact_id_sent!}&designer={!d:d_designer_contact_id_sent!}&a_m={!d:a_m_contact_id_sent!}"+
+						"&request_id={!d:request_id!}&version_no={!d:version_no!}"+email_msg,"acknowledge_window",320,450)
+		}
+	}
+
+	function newWorkorder()
+	{
+		newWindow("{!s:action!}setProjectDatum/enet/proj/pf_main.html?request_id=&clear_request_id=true&loc=wo_create","_top");
+	}
+
+	function archiveProject()
+	{
+		document.pf_edit.req_button.value = 'archive_project';
+		return confirm("Archiving will close all associated requests and disable any further activity.\n\n"+
+							"                    Are you sure you want to archive this project?");
+	}
+
+
+-->
+</script>
+
+
+
+<!--#EMBED template="enet/embeds/footer.html" -->
+

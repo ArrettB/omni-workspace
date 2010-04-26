@@ -1,0 +1,1 @@
+SELECT l.lookup_id, l.name FROM lookups l, lookup_types lt WHERE lt.code = 'invoice_type' AND l.lookup_type_id = lt.lookup_type_id ORDER BY l.name

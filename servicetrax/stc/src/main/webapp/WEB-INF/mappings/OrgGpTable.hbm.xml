@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.OrgGpTable" table="ORG_GP_TABLES" schema="dbo" catalog="">
+        <id name="orgTableId" type="java.lang.Long">
+            <column name="ORG_TABLE_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <property name="tableId" type="long">
+            <column name="TABLE_ID" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="orgId" type="long">
+            <column name="ORG_ID" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="viewName" type="string">
+            <column name="VIEW_NAME" length="50" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

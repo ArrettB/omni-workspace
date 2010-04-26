@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.UsersCrystal" table="USERS_CRYSTAL" schema="dbo" catalog="">
+        <id name="login" type="string">
+            <column name="login" length="25" />
+            <generator class="identity" />
+        </id>
+        <property name="password" type="string">
+            <column name="password" length="25" not-null="true" />
+        </property>
+        <property name="company" type="string">
+            <column name="company" length="50" />
+        </property>
+    </class>
+</hibernate-mapping>

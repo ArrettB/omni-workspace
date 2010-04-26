@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ShowPlanXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0" Build="9.00.3054.00" xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan">
+  <BatchSequence>
+    <Batch>
+      <Statements>
+        <StmtSimple StatementCompId="1" StatementEstRows="1" StatementId="1" StatementOptmLevel="FULL" StatementOptmEarlyAbortReason="GoodEnoughPlanFound" StatementSubTreeCost="0.011818" StatementText="SELECT [invoice_id],[invoice_id] [invoice_no] FROM [invoices] WHERE [status_id]&lt;=@1 AND [job_id]=@2" StatementType="SELECT">
+          <StatementSetOptions ANSI_NULLS="false" ANSI_PADDING="false" ANSI_WARNINGS="false" ARITHABORT="true" CONCAT_NULL_YIELDS_NULL="false" NUMERIC_ROUNDABORT="false" QUOTED_IDENTIFIER="false" />
+          <QueryPlan DegreeOfParallelism="1" MemoryGrant="128" CachedPlanSize="25" CompileTime="1" CompileCPU="1" CompileMemory="216">
+            <RelOp AvgRowSize="16" EstimateCPU="1.70202E-06" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="1" LogicalOp="Filter" NodeId="0" Parallel="false" PhysicalOp="Filter" EstimatedTotalSubtreeCost="0.011818">
+              <OutputList>
+                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+              </OutputList>
+              <RunTimeInformation>
+                <RunTimeCountersPerThread Thread="0" ActualRows="1" ActualEndOfScans="1" ActualExecutions="1" />
+              </RunTimeInformation>
+              <Filter StartupExpression="false">
+                <RelOp AvgRowSize="25" EstimateCPU="1.48217E-05" EstimateIO="0" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="3.54587" LogicalOp="Inner Join" NodeId="1" Parallel="false" PhysicalOp="Nested Loops" EstimatedTotalSubtreeCost="0.0118163">
+                  <OutputList>
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Column="STATUS_ID" />
+                  </OutputList>
+                  <RunTimeInformation>
+                    <RunTimeCountersPerThread Thread="0" ActualRows="5" ActualEndOfScans="1" ActualExecutions="1" />
+                  </RunTimeInformation>
+                  <NestedLoops Optimized="true">
+                    <OuterReferences>
+                      <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                    </OuterReferences>
+                    <RelOp AvgRowSize="16" EstimateCPU="0.0001609" EstimateIO="0.003125" EstimateRebinds="0" EstimateRewinds="0" EstimateRows="3.54587" LogicalOp="Index Seek" NodeId="3" Parallel="false" PhysicalOp="Index Seek" EstimatedTotalSubtreeCost="0.0032859">
+                      <OutputList>
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                      </OutputList>
+                      <RunTimeInformation>
+                        <RunTimeCountersPerThread Thread="0" ActualRows="5" ActualEndOfScans="1" ActualExecutions="1" />
+                      </RunTimeInformation>
+                      <IndexScan Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                        <DefinedValues>
+                          <DefinedValue>
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                          </DefinedValue>
+                        </DefinedValues>
+                        <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Index="[IX_I_JOBS]" />
+                        <SeekPredicates>
+                          <SeekPredicate>
+                            <Prefix ScanType="EQ">
+                              <RangeColumns>
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Column="JOB_ID" />
+                              </RangeColumns>
+                              <RangeExpressions>
+                                <ScalarOperator ScalarString="(70867.)">
+                                  <Const ConstValue="(70867.)" />
+                                </ScalarOperator>
+                              </RangeExpressions>
+                            </Prefix>
+                          </SeekPredicate>
+                        </SeekPredicates>
+                      </IndexScan>
+                    </RelOp>
+                    <RelOp AvgRowSize="16" EstimateCPU="0.0001581" EstimateIO="0.003125" EstimateRebinds="2.54587" EstimateRewinds="0" EstimateRows="1" LogicalOp="Clustered Index Seek" NodeId="5" Parallel="false" PhysicalOp="Clustered Index Seek" EstimatedTotalSubtreeCost="0.00851561">
+                      <OutputList>
+                        <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Column="STATUS_ID" />
+                      </OutputList>
+                      <RunTimeInformation>
+                        <RunTimeCountersPerThread Thread="0" ActualRows="5" ActualEndOfScans="0" ActualExecutions="5" />
+                      </RunTimeInformation>
+                      <IndexScan Lookup="true" Ordered="true" ScanDirection="FORWARD" ForcedIndex="false" NoExpandHint="false">
+                        <DefinedValues>
+                          <DefinedValue>
+                            <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Column="STATUS_ID" />
+                          </DefinedValue>
+                        </DefinedValues>
+                        <Object Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Index="[INV_PK]" TableReferenceId="-1" />
+                        <SeekPredicates>
+                          <SeekPredicate>
+                            <Prefix ScanType="EQ">
+                              <RangeColumns>
+                                <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                              </RangeColumns>
+                              <RangeExpressions>
+                                <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[INVOICES].[INVOICE_ID]">
+                                  <Identifier>
+                                    <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Column="INVOICE_ID" />
+                                  </Identifier>
+                                </ScalarOperator>
+                              </RangeExpressions>
+                            </Prefix>
+                          </SeekPredicate>
+                        </SeekPredicates>
+                      </IndexScan>
+                    </RelOp>
+                  </NestedLoops>
+                </RelOp>
+                <Predicate>
+                  <ScalarOperator ScalarString="[servicetrax_dev].[dbo].[INVOICES].[STATUS_ID]&lt;=(2.)">
+                    <Compare CompareOp="LE">
+                      <ScalarOperator>
+                        <Identifier>
+                          <ColumnReference Database="[servicetrax_dev]" Schema="[dbo]" Table="[INVOICES]" Column="STATUS_ID" />
+                        </Identifier>
+                      </ScalarOperator>
+                      <ScalarOperator>
+                        <Const ConstValue="(2.)" />
+                      </ScalarOperator>
+                    </Compare>
+                  </ScalarOperator>
+                </Predicate>
+              </Filter>
+            </RelOp>
+            <ParameterList>
+              <ColumnReference Column="@2" ParameterCompiledValue="(70867)" ParameterRuntimeValue="(70867)" />
+              <ColumnReference Column="@1" ParameterCompiledValue="(2)" ParameterRuntimeValue="(2)" />
+            </ParameterList>
+          </QueryPlan>
+        </StmtSimple>
+      </Statements>
+    </Batch>
+  </BatchSequence>
+</ShowPlanXML>

@@ -1,0 +1,466 @@
+<?xml version="1.0"?>
+
+<!-- 
+The DOCTYPE declaration declares the location of product-specific parts of the
+Ant build file. You can change the values of these declarations to point to
+other available files. This gives you an opportunity to choose what database
+and EJB container to use for the Middlegen samples.
+
+Note that this syntax has nothing to do with Ant or Middlegen. This
+is the standard way defined by w3c to dynamically include external
+files in an XML document. Any decent XML parser will do the include
+transparently. Try to open this file in Internet Explorer and see
+for yourself.
+-->
+
+<!DOCTYPE project [
+   
+]>
+
+
+
+<project name="Charm Based Project" default="copy_web" basedir="." xmlns:ivy="antlib:fr.jayasoft.ivy.ant" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+	<import file="maven-ant.xml" />
+
+	<!-- grab system environment and prepend with env. -->
+	<property environment="env" />
+
+	<!-- User Properties From File -->
+	<property file="${user.home}\build.properties" />
+	<property file="cfg/build.properties" />
+
+	<!-- Project Properties From File 
+	
+	    MUST DEFINE THE FOLLOWING:
+		project.name.unique
+		jdbc.user
+		jdbc.password
+		jdbc.schema
+		jdbc.catalog
+		jdbc.driver
+		jdbc.url
+		jdbc.classpath
+		jdbc.orm.package
+		hibernate.dialect
+	-->
+	<property file="cfg/project.properties" />
+
+	<property name="xdoclet.version" value="1.2" />
+
+	<!-- Source Paths -->
+	<property name="src.dir" value="src/main" />
+	<property name="src.java.dir" value="${src.dir}/java" />
+	<property name="src.web.dir" value="${src.dir}/webapp" />
+	<property name="src.templates.dir" value="${src.dir}/templates" />
+	<property name="src.tld.dir" value="${src.dir}/tld" />
+	<property name="src.hibernate.dir" value="${src.web.dir}/WEB-INF/mappings" />
+
+	<!-- Test Source Paths -->
+	<property name="test.dir" value="test" />
+	<property name="test.includes" value="**/*Test.class" />
+	<property name="test.excludes" value="**/Abstract*" />
+
+	<!-- Target Paths -->
+	<property name="target.dir" value="${maven.build.directory}" />
+	<property name="target.web.dir" value="${target.dir}/web" />
+	<property name="target.webinf.dir" value="${target.web.dir}/WEB-INF" />
+	<property name="target.classes.dir" value="${target.dir}/classes" />
+	<property name="target.reports.dir" value="${target.dir}/reports/" />
+	<property name="target.mockclasses.dir" value="${target.dir}/mock-classes" />
+	<property name="target.testclasses.dir" value="${target.dir}/test-classes/" />
+	<property name="target.testreports.dir" value="${target.dir}/test-reports/" />
+	<property name="target.testsummary.dir" value="${target.dir}/test-summary/" />
+
+	<!-- Target Paths For Generation -->
+	<property name="target.gen.dir" value="${target.dir}/generated/" />
+	<property name="target.gen.hibernate.dir" value="${target.gen.dir}/hibernate/" />
+	<property name="target.gen.tld.dir" value="${target.gen.dir}/tld" />
+	<property name="target.gen.webinf.dir" value="${target.gen.dir}/webinf" />
+
+	<property name="jdbc.jar.name" value="${jdbc.artifact}-${jdbc.version}.jar" />
+	<property name="jdbc.jar.location" value="${user.home}/.m2/repository/${jdbc.org}/${jdbc.artifact}/${jdbc.version}/" />
+	
+	
+	<path id="hibernate.classpath">
+		<pathelement location="${hibernate.home}/hibernate3.jar" />
+		<fileset dir="${hibernate.home}/lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	
+	<path id="jdbc.classpath">
+		<pathelement location="${jdbc.jar.location}/${jdbc.jar.name}" />
+	</path>
+	<pathconvert targetos="windows" property="jdbc.classpath.string" refid="jdbc.classpath" />
+	
+	<!-- TO DO
+		Remove this if not needed
+	-->
+	<path id="hibernate-tools.classpath.minimal">
+		<pathelement location="${hibernate.home}/hibernate3.jar" />
+		<pathelement location="${hibernate.home}/lib/dom4j-1.6.jar" />
+		<pathelement location="${hibernate.home}/lib/commons-collections-2.1.1.jar" />
+		<pathelement location="${hibernate.home}/lib/commons-logging-1.0.4.jar" />
+		<pathelement location="${hibernate.home}/lib/log4j-1.2.9.jar" />
+		<pathelement location="${hibernate-tools.home}/hibernate-tools.jar" />
+		<pathelement location="${hibernate-tools.home}/lib/velocity-tools-generic-1.1.jar" />
+		<pathelement location="${hibernate-tools.home}/lib/velocity-1.4.jar" />
+		<pathelement location="${maven.repo.local}/${jdbc.classpath}" />
+	</path>
+
+	<path id="hibernate-tools.classpath">
+		<pathelement location="${hibernate.home}/hibernate3.jar" />
+		<fileset dir="${hibernate.home}/lib">
+			<include name="*.jar" />
+		</fileset>
+		<pathelement location="${hibernate-tools.home}/hibernate-tools.jar" />
+		<fileset dir="${hibernate-tools.home}/lib">
+			<include name="*.jar" />
+		</fileset>
+		 <path refid="jdbc.classpath"/>
+		<pathelement location="${target.classes.dir}" />
+	</path>
+
+
+	<!-- Task Defs -->
+	<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="hibernate-tools.classpath" />
+
+	<target name="hbm2java" depends="init" description="Generates the .java files from the .hbm files">
+		<hibernatetool destdir="${target.gen.hibernate.dir}">
+			<!-- A configuration can take a configurationfile and/or a fileset of hbm.xml's -->
+			<configuration configurationfile="cfg/hibernate.cfg.xml">
+				<fileset dir="${src.hibernate.dir}" id="id">
+					<include name="**/*.hbm.xml" />
+				</fileset>
+			</configuration>
+			<!-- generate default .java files -->
+			<hbm2java />
+			<!-- export schema to database. If outputfilename is provided a text file is generated instead. -->
+			<hbm2ddl drop="false" outputfilename="database.sql" />
+		</hibernatetool>
+	</target>
+
+	<target name="db2hbm" depends="init,check_jdbc" description="Reverse engineers a database, generating .hbm.xml and .java files">
+
+		<delete dir="${target.gen.hibernate.dir}"/>
+		<mkdir dir="${target.gen.hibernate.dir}"/>
+		
+		<hibernatetool destdir="${target.gen.hibernate.dir}">
+			<!-- database settings are read from hibernate.cfg.xml and/or via propertyfile if provided -->
+			<jdbcconfiguration 
+				packageName="${jdbc.orm.package}" 
+				configurationfile="cfg/hibernate.cfg.xml" />
+			<!-- generate default .hbm.xml files -->
+			<cfg2hbm />
+			<!-- generate default .java files without EJB3 annotations -->
+			<hbm2java ejb3="false" />
+		</hibernatetool>
+	</target>
+
+	<target name="hbm2doc" depends="init" description="Generates the .java files from the .hbm files">
+		<hibernatetool destdir="${target.gen.hibernate.dir}">
+			<!-- A configuration can take a configurationfile and/or a fileset of hbm.xml's -->
+			<configuration configurationfile="cfg/hibernate.cfg.xml">
+				<fileset dir="${src.hibernate.dir}" id="id">
+					<include name="**/*.hbm.xml" />
+				</fileset>
+			</configuration>
+
+			<!-- generate documentation files -->
+			<hbm2doc />
+		</hibernatetool>
+	</target>
+
+	<target name="copy_hibernate" depends="init" description="Copies the generated .hbm.xml and .java files to the source directories">
+
+		<mkdir dir="${src.hibernate.dir}"/>
+		
+		<!--Delete the existing hbm.xml files -->
+		<delete>
+			<fileset dir="${src.hibernate.dir}">
+				<include name="**/*.hbm.xml" />
+			</fileset>
+		</delete>		
+		
+		<!-- Copy the hbm.xml files to the src/web/WEB-INF/mappings folder -->
+		<copy todir="${src.hibernate.dir}" flatten="true">
+			<fileset dir="${target.gen.hibernate.dir}">
+				<include name="**/*.hbm.xml" />
+			</fileset>
+		</copy>
+		
+		<!-- Remove catalog="XXX" from the hbm.xml files -->
+		<replace dir="${src.hibernate.dir}" token="catalog=&quot;${jdbc.user}&quot;" value=" "/>
+
+		<!-- Modify the generator from assigned to identity -->
+		<replace dir="${src.hibernate.dir}" token="&lt;generator class=&quot;assigned&quot; /&gt;" value="&lt;generator class=&quot;identity&quot; /&gt;"/>
+		
+		<!-- Copy the java files to the src/java folder -->
+		<copy todir="${src.java.dir}" flatten="false">
+			<fileset dir="${target.gen.hibernate.dir}">
+				<include name="**/*.java" />
+			</fileset>
+		</copy>
+			
+		
+		
+	</target>
+
+	<target name="copy_web" depends="init" description="Does a quick copy of source files from source web to target web">
+		<echo message="Copying web files from ${src.web.dir} to ${maven.build.directory}/${maven.build.final.name}" />
+
+		<copy todir="${maven.build.directory}/${maven.build.final.name}">
+			<fileset dir="${src.web.dir}">
+				<include name="**/*.xml" />
+				<include name="**/*.hbm.xml" />
+				<include name="**/*.css" />
+				<include name="**/*.jsp" />
+				<include name="**/*.jpg" />
+				<include name="**/*.gif" />
+				<include name="**/*.html" />
+				<exclude name="**/*.svn" />
+				<exclude name="**/*.svn/**" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="debug_classpath" depends="init" description="Prints the classpath used to build the project">
+		<property name="temp.cp" value="${maven-ant.build.classpath}" />
+		<echo message="build.classpath = ${temp.cp}" />
+	</target>
+
+	<target name="package_source" depends="init">
+		<zip destfile="${target.dir}/src-${dateStamp}.zip">
+			<zipfileset dir="${src.dir}" prefix="src" />
+			<zipfileset dir="${test.src.dir}" prefix="test" />
+		</zip>
+	</target>
+
+	<target name="mail_source" depends="init, package_source">
+
+		<echo message="Sending mail to ${env.USERNAME}@apexit.com" />
+		<mail mailhost="mail.apexit.com" mailport="25" subject="Test build">
+			<from address="${env.USERNAME}@apexit.com" />
+			<replyto address="${env.USERNAME}@apexit.com" />
+			<to address="${env.USERNAME}@apexit.com" />
+			<message>The source for ${name} is attached to this message</message>
+			<fileset dir="${target.dir}">
+				<include name="src-*.zip" />
+			</fileset>
+		</mail>
+	</target>
+
+	<target name="init" description="Used to initialize the build" depends="prep_for_dev,prep_for_production">
+
+		<condition property="deploy.dir" value="${env.TOMCAT_HOME}\webapps">
+			<isset property="env.TOMCAT_HOME" />
+		</condition>
+		<condition property="deploy.dir" value="${env.CATALINA_HOME}\webapps">
+			<isset property="env.CATALINA_HOME" />
+		</condition>
+
+		<condition property="do_production" value="true">
+			<isset property="production" />
+		</condition>
+
+		<echo message="ANT_HOME = ${env.ANT_HOME}" />
+		<echo message="JAVA_HOME = ${env.JAVA_HOME}" />
+		<echo>Using ${deploy.dir} for deployment.</echo>
+
+		<!-- Create the time stamp -->
+		<tstamp>
+			<format property="dateStamp" pattern="yyyy-MM-dd" locale="en" />
+		</tstamp>
+
+		<filterchain id="resource.filters">
+			<replacetokens>
+				<token key="VERSION" value="${version}" />
+				<token key="DATE" value="${TODAY}" />
+				<token key="TIME" value="${TSTAMP}" />
+			</replacetokens>
+		</filterchain>
+
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${target.dir}" />
+	</target>
+
+
+	<target name="prep_for_dev" unless="do_production">
+		<echo message="Doing a Development Build" />
+	</target>
+
+	<target name="prep_for_production" if="do_production">
+		<echo message="Doing a Production Build" />
+	</target>
+
+	<target name="init_xdoclet" depends="init,xdoclet_dependencies">
+		<available property="xdoclet1.2+" classname="xdoclet.modules.ejb.EjbDocletTask" classpathref="xdoclet.classpath" />
+	</target>
+
+
+
+	<target name="webdoclet" depends="init_xdoclet" description="Generates tld files for your tags in the source directory">
+
+		<pathconvert targetos="windows" property="cp.xdoclet" refid="xdoclet.classpath" />
+
+		<taskdef name="webdoclet" classname="xdoclet.modules.web.WebDocletTask" classpathref="xdoclet.classpath" />
+		<webdoclet destDir="${target.gen.tld.dir}" verbose="true">
+
+			<fileset dir="${src.java.dir}">
+				<include name="**/*Tag.java" />
+			</fileset>
+			<fileset dir="C:/work/charm/src/java/">
+				<include name="**/*Tag.java" />
+			</fileset>
+
+			<jspTaglib jspVersion="1.2" displayname="${project.name.unique} Tag Library" shortname="${project.name.unique}" uri="/tld/${project.name.unique}" acceptAbstractClasses="false" destDir="${target.gen.tld.dir}" destinationFile="${project.name.unique}.tld" />
+
+		</webdoclet>
+
+		<copy file="${target.gen.tld.dir}/${project.name.unique}.tld" tofile="${src.tld.dir}/${project.name.unique}.tld" />
+
+	</target>
+
+	<target name="xdoclet_dependencies">
+
+		<artifact:pom file="pom.xml" id="maven.project" />
+
+		<artifact:localRepository id="local.repository" location="${maven.repo.local}" layout="legacy" />
+
+		<artifact:dependencies pathId="xdoclet.classpath">
+			<dependency groupId="xdoclet" artifactId="xdoclet" version="1.2" />
+			<dependency groupId="xdoclet" artifactId="xdoclet-web-module" version="1.2" />
+			<dependency groupId="xdoclet" artifactId="xjavadoc" version="1.0.2" />
+			<dependency groupId="commons-logging" artifactId="commons-logging" version="1.1-dev" />
+			<dependency groupId="commons-collections" artifactId="commons-collections" version="3.0" />
+			<dependency groupId="servletapi" artifactId="servletapi" version="2.3" />
+		</artifact:dependencies>
+	</target>
+
+
+
+
+	<!-- =================================================================== -->
+	<!-- Fails if XDoclet 1.2.x is not on classpath                          -->
+	<!-- =================================================================== -->
+	<target name="fail-if-no-xdoclet-1.2" unless="xdoclet1.2+">
+		<fail>
+     		 XDoclet 1.2 is needed to build this project.
+      </fail>
+	</target>
+
+
+	<!-- =================================================================== -->
+	<!-- Create tables                                                       -->
+	<!-- =================================================================== -->
+	<target name="create-tables" depends="init,check_jdbc" description="Create tables">
+		<echo>Creating tables using URL ${database.url}</echo>
+		<sql classpath="${database.driver.classpath}" driver="${database.driver}" url="${database.url}" userid="${database.userid}" password="${database.password}" src="${database.script.file}" print="true" output="result.txt" />
+	</target>
+
+	<target name="check_jdbc_init">
+		
+		<available file="${jdbc.jar.name}" property="driver.jar.present">
+			<filepath>
+				<pathelement location="${jdbc.jar.location}" />
+			</filepath>
+		</available>
+		<available classname="${jdbc.driver}" classpathref="jdbc.classpath" property="driver.class.present">
+		</available>
+
+	</target>
+
+	
+	<!-- TO DO Clean up these warning messages -->
+	<target name="panic_no_jdbc_lib" unless="driver.jar.present">
+		<fail>
+		The JDBC jar could not be found.  How to resolve:
+		Edit ${basedir}cfg/project.properties
+		Looked in: ${user.home}/.m2/repository/${jdbc.classpath}
+		Current settings: 
+	    jdbc.driver =  ${jdbc.driver}
+    	jdbc.classpath =  ${jdbc.classpath.string}
+		</fail>
+	</target>
+
+	<!-- TO DO Clean up these warning messages -->
+	<target name="panic_no_jdbc_driver" unless="driver.class.present">
+		<fail>
+		The JDBC driver could not be found.  How to resolve:
+		Edit ${basedir}cfg/project.properties
+		Looked in: ${maven.repo.local}/${jdbc.classpath}
+		
+		Current settings: 
+	    jdbc.driver = ${jdbc.driver}
+    	jdbc.classpath = ${jdbc.classpath.string}
+		</fail>
+	</target>
+
+
+	<target name="check_jdbc" depends="check_jdbc_init,panic_no_jdbc_lib,panic_no_jdbc_driver">
+		<echo message="JDBC Driver found: ${jdbc.driver}" />
+	</target>
+
+	<target name="clean">
+
+		<delete dir="${target.classes.dir}" />
+		<delete dir="${target.web.dir}" />
+		<delete dir="${target.webinf.dir}" />
+		<delete dir="${target.classes.dir}" />
+		<delete dir="${target.reports.dir}" />
+		<delete dir="${target.mockclasses.dir}" />
+		<delete dir="${target.testclasses.dir}" />
+		<delete dir="${target.testreports.dir}" />
+		<delete dir="${target.junit.reports.dir}" />
+		<delete dir="${target.testsummary.dir}" />
+		<delete dir="${target.gen.dir}" />
+		<delete dir="${target.gen.hibernate.dir}" />
+		<delete dir="${target.gen.webinf.dir}" />
+		<delete dir="${target.gen.tld.dir}" />
+
+		<!-- Just kill target dir (it's safer). No need at this point to keep it. -->
+		<delete dir="${target.dir}" />
+
+		<delete dir="${dist.dir}" />
+		<delete dir="${javadocs.dir}" />
+	</target>
+
+	<target name="info" description="Echoes useful system properties">
+		<echo message="java.vm.info=${java.vm.info}" />
+		<echo message="java.vm.name=${java.vm.name}" />
+		<echo message="java.vm.vendor=${java.vm.vendor}" />
+		<echo message="java.vm.version=${java.vm.version}" />
+		<echo message="os.arch=${os.arch}" />
+		<echo message="os.name=${os.name}" />
+		<echo message="os.version=${os.version}" />
+		<echo message="java.home = ${java.home}" />
+		<!--
+        <echo message="java.class.path = ${java.class.path}"/>
+ -->
+		<echo message="build.compiler = ${build.compiler}" />
+		<echo message="file.encoding=${file.encoding}" />
+		<echo message="user.home = ${user.home}" />
+		<echo message="user.language=${user.language}" />
+
+		<pathconvert targetos="windows" property="foo" refid="hibernate.classpath" />
+
+		<echoproperties>
+			<propertyset>
+				<propertyref prefix="maven" />
+
+			</propertyset>
+		</echoproperties>
+
+
+		<!--
+    	 <echoproperties>
+       	    <propertyset>
+        	      <propertyref prefix="java.vm"/>
+        	    	 <propertyref name="user.home"/>
+        	    </propertyset>
+   	  </echoproperties>
+    -->
+
+
+	</target>
+</project>

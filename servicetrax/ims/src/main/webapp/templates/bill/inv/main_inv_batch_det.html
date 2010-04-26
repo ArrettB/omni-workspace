@@ -1,0 +1,71 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: main_inv_batch_det.html, 8, 1/7/2005 5:10:22 PM, Lee A. Gunderson$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.time/pay/payroll.view?>"-->
+
+<body class="BodyTag">
+
+<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0"> <tr class="HeaderBar"><td align="center">Batch - {!p:ext_batch_id!}</td>
+
+	<form ACTION="{!s:action!}resubmitInvoiceBatch" METHOD="POST" name="resubmitFrm">
+		<td align="right">{!p:batch_status_name!}
+			<!--#IF evaluate="<?p:batch_status_id?>" compare="-1" -->
+				<input type="hidden" name="template_name" value="bill/inv/main_inv_list_acct.html">
+				<input type="hidden" name="submit_type" value="resubmit">
+				<input type="hidden" name="ext_batch_id" value="{!p:ext_batch_id!}">
+				<input type="submit" value="Re-Submit" name="button" class="button2">
+			<!--#/IF-->
+		</td>
+	</form>
+	</tr></TABLE>
+
+
+<!--#SMARTTABLE name="invoice_lines"
+	class="SmartTable" totalClass="TableTotal"
+	query="SELECT sum(custom_line_total) custom_tot,
+	              sum(bill_hourly_total) hours_total,
+	              sum(bill_exp_total) exp_tot,
+	              ext_batch_id,
+	              batch_status_name,
+	              batch_error_message,
+	              assigned_to_name,
+	              job_no, job_id,
+				  sum(bill_total + custom_line_total) total_tot,
+				  invoice_id_trk,
+				  invoice_id,
+				  invoice_description,
+				  invoice_type_name,
+				  invoice_status_id,
+				  date_sent,
+				  customer_name,
+				  job_type_name,
+				  readonly
+	         FROM invoice_post_total_v
+	        WHERE organization_id = <?s:org_id.toPStmtString()?>
+	          AND invoice_status_id = 4 and ext_batch_id = <?p:ext_batch_id.toPStmtString()?>
+	     GROUP BY invoice_id, invoice_id_trk, invoice_description, invoice_type_name, invoice_status_id, date_sent, customer_name,
+	              ext_batch_id, batch_status_name, batch_error_message, assigned_to_name, job_type_name, job_no, job_id, readonly
+	     ORDER BY invoice_id"
+-->
+		<!--#SMARTCOLUMN name="invoice_id_trk" sort="invoice_id" title="Invoice#" width="5%" class="TableRow1Link,TableRow2Link" href="<?s:action?>setupSession/bill/inv/job_inv_main.html?invoice_id=<?r:invoice_lines:invoice_id?>&status_id=<?r:invoice_lines:invoice_status_id?>&readonly=<?r:invoice_lines:readonly?>&job_id=<?r:invoice_lines:job_id?>&prev_template=bill/inv/main_inv_list_acct.html"-->
+		<!--#SMARTCOLUMN name="job_no" sort="job_no" title="Job#" width="3%"-->
+		<!--SMARTCOLUMN name="ext_batch_id" sort="ext_batch_id" title="Batch ID" width="5%"-->
+		<!--#SMARTCOLUMN name="batch_status_name" sort="batch_status_id" title="Batch Status" width="5%"-->
+		<!--#SMARTCOLUMN name="batch_error_message" sort="batch_error_message" title="Batch Error Message" width="15%"-->
+		<!--#SMARTCOLUMN name="date_sent" sort="date_sent" title="Date Sent" width="5%"-->
+		<!--#SMARTCOLUMN name="customer_name" sort="customer_name" title="Customer" width="5%"-->
+		<!--#SMARTCOLUMN name="invoice_type_name" sort="invoice_type_name" title="Type" width="5%"-->
+		<!--#SMARTCOLUMN name="job_type_name" sort="job_type_name" title="Job Type" width="5%"-->
+		<!--#SMARTCOLUMN value="<INPUT TYPE='text' name='desc' value='<?r:invoice_lines:invoice_description.replaceString('\'','&#39;')?>' readonly='true' class='smartTableDisplay' size='30'>" title="Description" width="10%" -->
+		<!--#SMARTCOLUMN name="custom_tot" sort="custom_tot" title="Custom Total" align="right" total="true" format="money" width="5%" -->
+		<!--#SMARTCOLUMN name="hours_total" sort="hours_total" title="Hours Total" align="right" total="true" format="money" width="5%" -->
+		<!--#SMARTCOLUMN name="exp_tot" sort="exp_tot" title="Exp Total" align="right" total="true" format="money" width="5%" -->
+		<!--#SMARTCOLUMN name="total_tot" sort="total_tot" title="Total" align="right" total="true" format="money" width="5%" -->
+		<!--#SMARTCOLUMN name="assigned_to_name" sort="assigned_to_name" title="Assigned To" width="5%"-->
+<!--#/SMARTTABLE -->
+
+
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

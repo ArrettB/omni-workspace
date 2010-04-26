@@ -1,0 +1,122 @@
+<!--#EMBED template="embeds/header.html"-->
+<!-- $Header: main_bill_posted.html, 3, 1/23/2006 3:02:16 PM, Blake Von Haden$ -->
+
+
+<body class="BodyTag">
+
+<script language="JavaScript" type="text/javascript">
+<!--//
+
+	function openCustomLines(invoiceId, invoiceLineId, invoiceLineNo)
+	{
+		if (false)
+		{
+			var url = '{!s:action!}launchCharm?address=invoice.html'
+			url += '%3FinvoiceId=' + invoiceId;
+			url += '%26invoiceLineNo=' + invoiceLineNo;
+
+			window.open(url);
+		}
+		else
+		{
+			var url = '{!s:showPage!}bill/inv/inv_cust_edit.html'
+			url += '?invoice_id=' + invoiceId;
+			url += '&invoice_line_id=' + invoiceLineId;
+			url += '&prev_template=' + LinesForm_Y.template_name.value
+
+			parent.location = url;
+
+		}
+	}
+
+-->
+</script>
+
+
+<!--#SQLLOOP query="SELECT yes_no_type_code code, (case yes_no_type_code when 'Y' then 'Billable' else 'Non-Billable' end) type FROM yes_no_type_v" resourceName="SQLServer" name="yes_no"-->
+<!--#SQLLOOP query="SELECT status_id, name status FROM service_line_statuses WHERE status_id = 5" resourceName="SQLServer" name="status"-->
+<FORM ACTION="{!s:action!}setServiceLineStatus" METHOD="POST" name="LinesForm">
+<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0"> <tr><td height="25" class="tableTitle">{!r:yes_no:type!}</td></tr></TABLE>
+	<input type="hidden" name="level" value="line">
+	<input type="hidden" name="bill_job_id" value="">
+	<input type="hidden" name="bill_service_id" value="">
+	<input type="hidden" name="invoice_id" value="{!p:invoice_id!}">
+	<input type="hidden" name="template_name" value="bill/main_bill_posted.html">
+
+<!--#SMARTTABLE name="post_lines"
+	class="SmartTable" tableTotal="true" totalClass="TableTotal"
+	query="SELECT bill_job_no, bill_job_id, bill_service_no, bill_service_id, service_description, invoice_id, bill_service_line_no, service_line_id,
+			cust_col_1, cust_col_2, cust_col_3, cust_col_4, cust_col_5, cust_col_6, cust_col_7, cust_col_8, cust_col_9, cust_col_10,
+			bill_qty, bill_rate, bill_total, item_name, resource_name, item_type_code, '' statusCheckBox
+	FROM billing_v
+	WHERE status_id = 5
+	  AND billable_flag = <?r:yes_no:code.toPStmtString()?>
+	  AND organization_id = <?s:org_id.toPStmtInt()?>
+	ORDER BY bill_job_no, bill_service_no, bill_service_line_no"
+-->
+<!--#IF evaluate="<?r:post_lines:invoice_id?>" compare="" -->
+	<!--#SMARTCOLUMN name="statusCheckBox" sort="statusCheckBox" title="" width="10%" -->
+<!--#ELSE-->
+	<!--#SMARTCOLUMN value="<INPUT TYPE='checkbox' name='statusCheckBox' value='<?r:post_lines:service_line_id?>'" title="<INPUT TYPE='checkbox' name='CheckAllBox' onclick='checkAllBoxes(this.form.CheckAllBox,this.form.statusCheckBox)'>" align="center" width="2%" -->
+<!--#/IF-->
+	<!--#SMARTCOLUMN name="invoice_id" sort="invoice_id" title="Inv#" width="10%" href="<?s:action?>setupSession/bill/inv/job_inv_main.html?job_id=<?r:post_lines:bill_job_id?>&invoice_id=<?r:post_lines:invoice_id?>&prev_template=bill/main_bill_posted.html"-->
+	<!--#SMARTCOLUMN name="bill_job_no" sort="bill_job_no" title="Job#" width="10%" -->
+	<!--#SMARTCOLUMN name="bill_service_no" sort="bill_service_no" title="Req#" width="10%" -->
+	<!--#SMARTCOLUMN value="<INPUT TYPE='text' name='desc' value='<?r:post_lines:service_description.replaceString('\'','&#39;')?>' readonly='true' class='smartTableDisplay' size='30'>" title="Description" width="10%" -->
+	<!--#SMARTCOLUMN name="bill_service_line_no" sort="bill_service_line_no" title="Line#" align="center" href="<?s:showPage?>time/tc_edit.html?service_line_id=<?r:post_lines:service_line_id?>&prev_template=bill/main_bill_posted.html&invoice_id=<?p:invoice_id?>&item_type_code=<?r:post_lines:item_type_code?>&job_id=<?r:post_lines:bill_job_id?>&service_id=<?r:post_lines:bill_service_id?>&module=bill" width="15%" -->
+	<!--#SMARTCOLUMN name="resource_name" sort="resource_name" title="Resource" width="15%" -->
+	<!--#SMARTCOLUMN name="item_name" sort="item_name" title="Item" width="15%" -->
+	<!--#SMARTCOLUMN name="bill_qty" sort="bill_qty" title="Qty" width="15%" align="right"-->
+	<!--#SMARTCOLUMN name="bill_rate" sort="bill_rate" title="Rate" width="15%" align="right"-->
+	<!--#SMARTCOLUMN name="bill_total" sort="bill_total" title="Total" align="right" total="true" format="money" width="5%" -->
+<!--#/SMARTTABLE -->
+
+	<select NAME="submit_action" class="regular">
+		<!--#IF EVALUATE="<?r:yes_no:code?>" COMPARE="Y"-->
+			<option VALUE="nonbillable">Mark as Non-Billable</option>
+		<!--#ELSEIF EVALUATE="<?r:yes_no:code?>" COMPARE="N"-->
+			<option VALUE="billable">Mark as Billable</option>
+		<!--#/IF-->
+		<!--#CHECKSECURITY right="rights.bill/move_lines.view"-->
+			<option VALUE="changeBillServiceId">Move Lines</option>
+		<!--#/CHECKSECURITY-->
+		<!--#CHECKSECURITY right="rights.bill/post_lines.view"-->
+			<option VALUE="move_submit_billing">Un-Post</option>
+		<!--#/CHECKSECURITY-->
+	</select>
+	<input type="button" value="Submit" name="button" class="button2" onClick="move_billing_lines(this.form)">
+
+ <BR> <BR>
+</FORM>
+
+
+<!--#/SQLLOOP-->
+<!--#/SQLLOOP-->
+
+<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="0"> <tr><td height="25" class="tableTitle">Custom</td></tr>
+</TABLE>
+	<input type="hidden" name="level" value="invoice">
+	<input type="hidden" name="status_id" value="">
+	<input type="hidden" name="template_name" value="bill/job_bill_list_det.html">
+
+<!--#SMARTTABLE name="cust_inv_lines"
+	class="SmartTable" totalClass="TableTotal"
+	query="SELECT invoice_id, invoice_line_id, invoice_line_no, line_desc, qty, unit_total, (qty*unit_total)extended_total
+	FROM invoice_lines_v
+	WHERE organization_id=<?s:ord_id.toPStmtInt()?> AND invoice_line_type_code='custom'
+	ORDER BY invoice_id, invoice_line_no"
+-->
+	<!--#SMARTCOLUMN name="invoice_id" sort="invoice_id" title="Invoice#" width="5%" class="TableRow1Link,TableRow2Link" href="<?s:showPage?>bill/inv/job_inv_main.html?invoice_id=<?r:cust_inv_lines:invoice_id?>&prev_template=bill/job_bill_posted.html"-->
+	<!--#SMARTCOLUMN name="invoice_line_no" sort="invoice_line_no" title="Invoice Line#" width="5%" align="center" href="javascript:void(0);" onclick="openCustomLines(<?r:cust_inv_lines:invoice_id?>, <?r:cust_inv_lines:invoice_line_id?>, <?r:cust_inv_lines:invoice_line_no?>);"-->
+	<!--#SMARTCOLUMN name="line_desc" sort="line_desc" title="Description" width="15%" -->
+	<!--#SMARTCOLUMN name="qty" sort="qty" title="Qty" align="right" format="###,###,##0.00" width="5%" -->
+	<!--#SMARTCOLUMN name="unit_total" sort="unit_total" title="Rate" align="right" format="money" width="5%" -->
+	<!--#SMARTCOLUMN name="extended_total" sort="extended_total" title="Total" align="right" total="true" format="money" width="5%" -->
+<!--#/SMARTTABLE -->
+
+
+
+</body>
+
+
+<!--#EMBED template="embeds/footer.html" -->

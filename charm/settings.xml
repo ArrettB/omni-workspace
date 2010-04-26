@@ -1,0 +1,62 @@
+<!--
+This file must be placed in C:\Documents and Settings\[user]\.m2\
+-->
+
+<settings>
+	
+	<!--
+	 Uncomment this section if you wish to have your local repository somewhere else
+	
+	<localRepository>C:/.m2/repository</localRepository>
+	-->
+	
+	
+	<!-- If you want to use Maven to deploy to a tomcat server, you need uncomment this next section:
+	
+	<servers>
+		<server>
+			<id>tomcat</id>
+			<username>[tomcatuser]</username>
+			<password>[tomcat password]</password>
+		</server>
+	</servers>
+	
+
+	
+	And then place this section in the <plugins> section of your projecs pom.xml
+	
+	<plugin>
+		<groupId>org.codehaus.mojo</groupId>
+		<artifactId>tomcat-maven-plugin</artifactId>
+		<configuration>
+			<server>tomcat</server>
+			<url>http://bizbid.dynamic-info.com/manager/</url>
+			<path>/bizbid</path>
+		</configuration>
+	</plugin>
+
+	This will let you run commands like:
+	
+	mvn tomcat:deploy
+	mvn tomcat:undeploy
+	
+	
+	Note:  Tomcat Manager application must be running, and [tomcatuser] added to conf/tomcat-user.xml!
+	
+	-->
+	
+	<mirrors>
+		<mirror>
+			<id>mirrors.dotsrc.org</id>
+			<name>Mirror of http://repo1.maven.org/maven2/</name>
+			<url>http://mirrors.dotsrc.org/maven2/</url>
+			<mirrorOf>central</mirrorOf>
+		</mirror>
+		<mirror>
+			<id>public.planetmirror.com</id>
+			<name>Mirror of http://repo1.maven.org/maven2/</name>
+			<url>http://public.planetmirror.com/pub/maven2/</url>
+			<mirrorOf>central</mirrorOf>
+		</mirror>
+	</mirrors>
+</settings>

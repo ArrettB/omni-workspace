@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.PayrollBatch" table="PAYROLL_BATCHES" schema="dbo" catalog="">
+        <id name="intBatchId" type="java.lang.Long">
+            <column name="INT_BATCH_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="lookup" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="PAYROLL_BATCH_STATUS_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="organization" class="com.dynamic.servicetrax.orm.Organization" fetch="select">
+            <column name="ORGANIZATION_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="user" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="CREATED_BY" precision="18" scale="0" />
+        </many-to-one>
+        <property name="extBatchId" type="string">
+            <column name="EXT_BATCH_ID" length="15" not-null="true" />
+        </property>
+        <property name="beginDate" type="timestamp">
+            <column name="BEGIN_DATE" length="23" not-null="true" />
+        </property>
+        <property name="endDate" type="timestamp">
+            <column name="END_DATE" length="23" not-null="true" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" />
+        </property>
+    </class>
+</hibernate-mapping>

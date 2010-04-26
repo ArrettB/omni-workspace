@@ -1,0 +1,296 @@
+<!-- $Header: sr_report_new.html, 1/24/2008, David Zhaon$ -->
+<!--#EMBED template="enet/embeds/header.html" -->
+
+<script type="text/javascript">
+<!--
+
+	function setDefaults()
+	{
+
+		window.print();
+		//alert("Hello");
+	}
+
+
+	function getAMDealerID()
+	{
+		return escape({!s:ext_direct_dealer_id.toJavaScriptString()!});
+	}
+
+	function getContactID(droplist)
+	{
+		var contact_id = '';
+		if( !(droplist == null) && !(droplist.options === undefined) )
+			contact_id = droplist.options[droplist.selectedIndex].value;
+		return contact_id;
+	}
+
+	function getCustID()
+	{
+		return escape({!s:customer_id.toJavaScriptString()!});
+	}
+
+	function getCustName()
+	{
+		return escape({!s:customer_name.toJavaScriptString()!});
+	}
+
+	function getExtDealerID()
+	{
+		return escape({!s:ext_dealer_id.toJavaScriptString()!});
+	}
+
+	function getFormName()
+	{
+		return 'sr_edit';
+	}
+
+	function redisplaySmartForm()
+	{
+		document.sr_edit.redisplay.value = 'true';
+		document.sr_edit.submit();
+	}
+
+	function exitFunction(button)
+	{
+	}
+
+-->
+</script>
+
+
+<body class="BodyTag" onLoad="window.focus();setDefaults();">
+
+<table width="100%" cellspacing="0" cellpadding="0" summary="Report" border="1">
+	<!--#SMARTFORM name="enet/req/sr_edit" security="rights" table="requests" key="request_id"
+                   preHandler="ims.handlers.job_processing.SmartFormPreHandler,ims.handlers.proj.PDSPreHandler"
+                   postHandler="ims.handlers.proj.PDSPostHandler"
+                   buttons=""
+	-->
+		<!--#SMARTFIELD name="ext_customer_id" type="hidden" value="<?s:ext_customer_id?>" -->
+     	<!--#SMARTFIELD name="redisplay" type="hidden" value="false" -->
+		<!--#SMARTFIELD name="project_id" type="hidden" value="<?s:project_id?>" -->
+     	<!--#SMARTFIELD name="extDealerID" type="hidden" -->
+		<!--#SMARTFIELD name="request_type_code" type="hidden" value="service_request" --> <!-- used in PDSPreHandler -->
+		<!--#SMARTFIELD name="show_more_fields" type="hidden" value="false" -->
+		<!--#SMARTFIELD name="is_sent" type="hidden" value="<?s:is_sent.isNull('N')?>" -->
+		<!--#SMARTFIELD name="csc_wo_field_flag" type="hidden" value="<?p:csc_wo_field_flag.isNull('N')?>" -->  <!-- required by request table, not used here -->
+		<!--#SMARTFIELD name="button" type="hidden" --> <!-- used in exitFunction to inform PDSPreHandler -->
+		<!--#SMARTFIELD name="req_button" type="hidden" --> <!-- used in exitFunction to inform PDSPreHandler -->
+
+		<tr><td>
+			<table width="100%" border="1" cellspacing="0" summary="">
+				<tr><td colspan="4" class="HeaderRow">Service Request</td></tr>
+			</table>
+		</td></tr>
+		<tr><td><!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Header" -->
+
+		<tr>
+		  <td><!--#SMARTFIELD title="Quote&nbsp;#:" div="&nbsp;</td><td>" style="width:230" name="project_no" value="<?s:project_no?>-<?r:enet/req/sr_edit:request_no?>.<?r:enet/req/sr_edit:version_no?>" --></td>
+		  <td><!--#SMARTFIELD title="Type&nbsp;of&nbsp;Service:" div="&nbsp;</td><td>" style="width:230" name="job_type" value="<?s:project_type_name?>" --></td>
+	    </tr>
+
+		<tr>
+		  <td><!--#SMARTFIELD title="Project&nbsp;Name:" div="&nbsp;</td><td>" style="width:230" name="job_name" value="<?s:job_name?>" --></td>
+		  <td width="80"><!--#SMARTFIELD title="Job Location:&nbsp;" div="&nbsp;</td><td>" style="width:230" name="job_location_id" type="chooser" table="job_locations" display="job_location_name" key="job_location_id" filter="customer_id=<?s:customer_id.toSQLString()?> or job_location_id=<?r:enet/req/sr_edit:job_location_id.toSQLString()?>" onChange="loadJobLocation(this)" --></td>
+		</tr>
+
+
+		<tr>
+		  <td><!--#SMARTFIELD title="Customer&nbsp;Name:" div="&nbsp;</td><td>" style="width:230" name="customer_id"  type="chooser" table="customers" display="customer_name" key="customer_id" value="<?s:customer_id?>" --></td>
+
+		  <td class="Label" colspan="4" rowspan="3">
+<!--#SQLLOOP name="job_loc_edit" query="SELECT street1,street2,street3, city + ',  ' + state + ' ' + zip city
+                                          FROM job_locations
+                                         WHERE job_location_id=<?r:enet/req/sr_edit:job_location_id.toPStmtInt()?>" -->
+   <table class="SmartTable" cellpadding="0" cellspacing="0" border="0" summary="Job Locations">
+      <tr><td width="35"><!--#SMARTFIELD title="Address:" div="&nbsp;</td><td>" name="street1" style="width:280" value="<?r:job_loc_edit:street1?>" align="left"--></td></tr>
+	<!--#IF defined="<?r:job_loc_edit:street2?>" -->
+		<tr><td><!--#SMARTFIELD title="&nbsp;" div="&nbsp;</td><td>" name="street2" style="width:280" value="<?r:job_loc_edit:street2?>" --></td></tr>
+   <!--#/IF-->
+   <!--#IF defined="<?r:job_loc_edit:street3?>" -->
+      <tr><td><!--#SMARTFIELD title="&nbsp;" div="&nbsp;</td><td>" name="street3" style="width:280" value="<?r:job_loc_edit:street3?>" --></td></tr>
+   <!--#/IF-->
+      <tr><td><!--#SMARTFIELD title="&nbsp;" div="&nbsp;</td><td>" style="width:280" name="city" value="<?r:job_loc_edit:city?>"--></td></tr>
+<!--#/SQLLOOP-->
+   </table>
+				</td>
+			</tr>
+
+			<tr>
+				<td><!--#SMARTFIELD title="End User Name:" div="&nbsp;</td><td>" name="end_user_name" value="<?s:end_user_name?>" --></td>
+			</tr>
+	<!--#IF defined="<?r:job_loc_edit:street2?>" -->
+		<tr><td>&nbsp;
+   <!--#/IF-->
+	<!--#IF defined="<?r:job_loc_edit:street3?>" -->
+        <tr><td>&nbsp;</td></tr>
+   <!--#/IF-->
+
+	<!--#EMBED template="enet/embeds/boxout_footer.html" --></td></tr>
+	<!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Contacts" -->
+		<tr><td valign="top"><table cellpadding="0" cellspacing="0" summary="Contacts">
+				<tr><td>
+					<!--#SMARTFIELD title="Project Mgr:" div="&nbsp;</td><td>" name="a_m_contact_id" style="width:400" type="chooser" table="contacts" display="ISNULL(contact_name,'')+' :'+ISNULL('(W)'+phone_work,' No Phone Listed') +ISNULL(' (C)' + phone_cell,' : No Cell Listed')" key="contact_id" key="contact_id" filter="contact_type_code='a_m' or contact_id=<?r:enet/req/sr_edit:a_m_contact_id.toSQLString()?>" -->
+				</td></tr>
+				<tr><td>
+					<!--#SMARTFIELD title="Sales Person:" div="&nbsp;</td><td>" name="a_m_sales_contact_id" style="width:400" type="chooser" table="contacts_v" display="ISNULL(contact_name,'')+' :'+ISNULL('(W)'+phone_work,' No Phone Listed') +ISNULL(' (C)' + phone_cell,' : No Cell Listed')" key="contact_id" key="contact_id" filter="contact_type_code='service_provider_sales' or contact_id=<?r:enet/req/sr_edit:a_m_sales_contact_id.toSQLString()?>" -->
+				</td></tr>
+				<tr><td>
+					<!--#SMARTFIELD title="Job Location Contact:" div="&nbsp;</td><td>" name="job_location_contact_id" style="width:400" type="chooser" table="contacts" display="ISNULL(contact_name,'')+' :'+ISNULL('(W)'+phone_work,' No Phone Listed') +ISNULL(' (C)' + phone_cell,' : No Cell Listed')" key="contact_id" filter="(ext_dealer_id=<?s:ext_dealer_id.toSQLString()?> AND contact_type_code='job_location') or contact_id=<?r:enet/req/sr_edit:job_location_contact_id.toSQLString()?>" -->
+				</td></tr>
+				<tr><td>
+					<!--#SMARTFIELD title="Customer Contact 1:" div="&nbsp;</td><td>" name="customer_contact_id" style="width:400" type="chooser" table="contacts" display="ISNULL(contact_name,'')+' :'+ISNULL('(W)'+phone_work,' No Phone Listed') +ISNULL(' (C)' + phone_cell,' : No Cell Listed')" key="contact_id" filter="contact_id=<?r:enet/req/sr_edit:customer_contact_id.toSQLString()?>" -->
+				</td></tr>
+   <!--#IF defined="<?r:enet/req/sr_edit:customer_contact2_id?>" -->
+				<tr><td>
+					<!--#SMARTFIELD title="Customer Contact 2:" div="&nbsp;</td><td>" name="customer_contact2_id" style="width:400" type="chooser" table="contacts" display="ISNULL(contact_name,'')+' :'+ISNULL('(W)'+phone_work,' No Phone Listed') +ISNULL(' (C)' + phone_cell,' : No Cell Listed')" key="contact_id" filter="(ext_dealer_id=<?s:ext_dealer_id.toSQLString()?> AND customer_id=<?s:customer_id.toSQLString()?> AND contact_type_code='customer') or contact_id=<?s:customer_contact2_id.toSQLString()?>" -->
+				</td></tr>
+  <!--#/IF-->
+  <!--#IF defined="<?r:enet/req/sr_edit:customer_contact3_id?>" -->
+				<tr><td>
+					<!--#SMARTFIELD title="Customer Contact 3:" div="&nbsp;</td><td>" name="customer_contact3_id" style="width:400" type="chooser" table="contacts" display="ISNULL(contact_name,'')+' :'+ISNULL('(W)'+phone_work,' No Phone Listed') +ISNULL(' (C)' + phone_cell,' : No Cell Listed')" key="contact_id" filter="(ext_dealer_id=<?s:ext_dealer_id.toSQLString()?> AND customer_id=<?s:customer_id.toSQLString()?> AND contact_type_code='customer') or contact_id=<?s:customer_contact3_id.toSQLString()?>" -->
+				</td></tr>
+  <!--#/IF-->
+  <!--#IF defined="<?r:enet/req/sr_edit:customer_contact4_id?>" -->
+				<tr><td>
+					<!--#SMARTFIELD title="Customer Contact 4:" div="&nbsp;</td><td>" name="customer_contact4_id" style="width:400" type="chooser" table="contacts" display="ISNULL(contact_name,'')+' :'+ISNULL('(W)'+phone_work,' No Phone Listed') +ISNULL(' (C)' + phone_cell,' : No Cell Listed')" key="contact_id" filter="(ext_dealer_id=<?s:ext_dealer_id.toSQLString()?> AND customer_id=<?s:customer_id.toSQLString()?> AND contact_type_code='customer') or contact_id=<?s:customer_contact4_id.toSQLString()?>" -->
+				</td></tr>
+  <!--#/IF-->
+<!--iframe: email-->
+				<tr><td><iframe name="email_frame" height="0" width="0"></iframe></td></tr>
+			</table></td>
+		<tr>
+	<!--#EMBED template="enet/embeds/boxout_footer.html" -->
+	<!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Job&nbsp;Scope&nbsp;" -->
+		<tr>
+			<td valign="top"><table cellpadding="0" cellspacing="0" summary="">
+			  <tr><td><!--#SMARTFIELD title="Schedule w/ Client:" div="&nbsp;</td><td>" name="schedule_with_client_flag" type="chooser" query="SELECT <?r:enet/req/sr_edit:schedule_with_client_flag.toSQLString()?>, CASE WHEN <?r:enet/req/sr_edit:schedule_with_client_flag.toSQLString()?> = 'Y' THEN 'Yes' ELSE 'No' END" --></td></tr>
+			  <tr><td><!--#SMARTFIELD title="Schedule Type:" div="&nbsp;</td><td>" name="schedule_type_id"  type="chooser" table="schedule_types_enet_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
+			  <tr><td><!--#SMARTFIELD title="Requested Service Date:" div="&nbsp;</td><td>" name="est_start_date" type="date"--></td></tr>
+			  <tr><td><!--#SMARTFIELD title="Requested Start Time:" div="&nbsp;</td><td>" name="est_start_time" type="time"--></td></tr>
+			  <tr><td><!--#SMARTFIELD title="Requested Complete Date:" div="&nbsp;</td><td>" name="est_end_date" type="date"--></td></tr>
+			</table></td>
+			<td valign="top"><table cellpadding="0" cellspacing="0" summary="">
+			  <tr><td><!--#SMARTFIELD title="# Days to Complete:" div="&nbsp;</td><td>" name="days_to_complete" --></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Systems Furniture:" div="&nbsp;</td><td>" name="system_furniture_line_type_id" type="chooser"
+	                          query="SELECT lookup_id pri_furn_line_type_id,
+                                            l.name
+ 			                           FROM lookups l INNER JOIN
+                                            lookup_types lt ON l.lookup_type_id=lt.lookup_type_id
+ 			                          WHERE lt.code='furniture_line_type'
+                                        AND l.attribute2 = 'system'
+                                        AND l.active_flag='Y'
+                                   ORDER BY l.name" --></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Shipping Method:" div="&nbsp;</td><td>" name="delivery_type_id" type="chooser" query="SELECT l.lookup_id delivery_type_id, l.name
+									   FROM lookups l INNER JOIN
+									        lookup_types lt ON l.lookup_type_id = lt.lookup_type_id
+									  WHERE lt.code='delivery_type'
+									    AND l.active_flag='Y'
+								   ORDER BY l.sequence_no" --></td></tr>
+			  <tr><td><!--#SMARTFIELD title="Other Furniture:" div="&nbsp;</td><td>" name="other_furniture_type_id" type="chooser" query="SELECT l.lookup_id other_furniture_type_id, l.name
+	                                   FROM lookups l INNER JOIN
+	                                        lookup_types lt ON l.lookup_type_id=lt.lookup_type_id
+	                                  WHERE lt.code='yes_no_type'
+	                                    AND l.active_flag='Y'
+	                               ORDER BY l.name DESC" --></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Shipping Method:" div="&nbsp;</td><td>" name="other_delivery_type_id" type="chooser" query="SELECT l.lookup_id other_delivery_type_id, l.name
+									   FROM lookups l INNER JOIN
+									        lookup_types lt ON l.lookup_type_id = lt.lookup_type_id
+									  WHERE lt.code='delivery_type'
+									    AND l.active_flag='Y'
+								   ORDER BY l.sequence_no" --></td></tr>
+			</table></td>
+			<td valign="top"><table cellpadding="0" cellspacing="0" summary="">
+				<tr><td><!--#SMARTFIELD title="Product Disposition:" div="&nbsp;</td><td>" name="prod_disp_id" type="chooser" table="product_disposition_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" value="<?d:defaultProdDispType?>" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Wall Mount:" div="&nbsp;</td><td>" name="wall_mount_type_id" type="chooser" table="wall_mount_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Delivery Conditions:" div="&nbsp;</td><td>" name="elevator_avail_type_id" type="chooser" table="elevator_available_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Stair Carry Required:" div="&nbsp;</td><td>" name="is_stair_carry_required" type="chooser" query="SELECT <?r:enet/req/sr_edit:is_stair_carry_required.toSQLString()?>, CASE WHEN <?r:enet/req/sr_edit:is_stair_carry_required.toSQLString()?> = 'Y' THEN 'Yes' ELSE 'No' END" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Plan Location:" div="&nbsp;</td><td>" name="plan_location" type="text" --></td></tr>
+			</table></td>
+		</tr>
+	<!--#EMBED template="enet/embeds/boxout_footer.html" -->
+	<!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Billing&nbsp;Information&nbsp;" -->
+		<tr>
+			<td valign="top"><table cellpadding="0" cellspacing="0" summary="">
+			  <tr><td><!--#SMARTFIELD title="PO #:" div="&nbsp;</td><td>" name="dealer_po_no" --></td></tr>
+			  <tr><td><!--#SMARTFIELD title="PO Line #:" div="&nbsp;</td><td>" name="dealer_po_line_no" --></td></tr>
+			</table></td>
+			<td valign="top"><table cellpadding="0" cellspacing="0" summary="">
+			  <tr><td><!--#SMARTFIELD title="Billing Type:" div="&nbsp;</td><td>" name="quote_type_id" type="chooser"  table="billing_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
+		      <tr><td><!--#SMARTFIELD title="Sales Tax:" div="&nbsp;</td><td>" name="taxable_flag" type="chooser" query="SELECT <?r:enet/req/sr_edit:taxable_flag.toSQLString()?>, CASE WHEN <?r:enet/req/sr_edit:taxable_flag.toSQLString()?> = 'Y' THEN 'Yes' ELSE 'No' END" --></td></tr>
+			</table></td>
+			<td valign="top"><table cellpadding="0" cellspacing="0" summary="">
+				<tr><td><!--#SMARTFIELD title="Order Type:" div="&nbsp;</td><td>" style="width:114" name="order_type_id" type="chooser" query="SELECT lookup_id order_type_id, l.name
+ 			                           FROM lookups l INNER JOIN lookup_types lt ON l.lookup_type_id=lt.lookup_type_id
+ 			                          WHERE lt.code='order_type'
+                                   ORDER BY l.sequence_no" --></td></tr>
+				<tr><td><!--#SMARTFIELD title="Customer Costing:" div="&nbsp;</td><td>" style="width:114" name="customer_costing_type_id" type="chooser"  query="SELECT lookup_id customer_costing_type_id, l.name
+ 			                           FROM lookups l INNER JOIN lookup_types lt ON l.lookup_type_id=lt.lookup_type_id
+ 			                          WHERE lt.code='customer_costing_type'
+                                   ORDER BY l.sequence_no" --></td></tr>
+			</table></td>
+		</tr>
+	<!--#EMBED template="enet/embeds/boxout_footer.html" -->
+	<!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Narrative&nbsp;Work&nbsp;Request" -->
+				<tr>
+				  <td style="word-break:break-all;">{!r:enet/req/sr_edit:description.toHTML2()!}</td>
+				</tr>
+	<!--#EMBED template="enet/embeds/boxout_footer.html" -->
+	<!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Additional&nbsp;Conditions&nbsp;" -->
+				<tr>
+				  <td style="word-break:break-all;">{!r:enet/req/sr_edit:other_conditions.toHTML2().isNull('None')!}</td>
+				</tr>
+	<!--#EMBED template="enet/embeds/boxout_footer.html" -->
+	<!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Attachments&nbsp;" -->
+<!--#SQLLOOP name="attachments" query="SELECT DISTINCT rd.request_document_id,
+	 	                              rd.name,
+	 	                              u.full_name created_by,
+	 	                              CONVERT(VARCHAR(10), rd.date_created, 101) date_created
+			 	                 FROM request_documents rd,
+			 	                      users u
+				                WHERE (rd.request_id = <?r:enet/req/sr_edit:request_id.toPStmtInt()?> OR
+				                       rd.request_id = <?r:enet/req/sr_edit:quote_request_id.toPStmtInt()?>)
+				                  AND rd.created_by = u.user_id"  -->
+  <!--#SQLHEADER-->
+		<tr>
+		  <td width="70%"><b>File Name</b></td>
+		  <td width="15%"><b>Created By</b></td>
+		  <td width="15%"><b>Date Created</b></td>
+		</tr>
+  <!--#/SQLHEADER-->
+		<tr>
+		  <td width="500">{!r:attachments:name!}</td>
+		  <td width="200">{!r:attachments:created_by!}</td>
+		  <td width="200">{!r:attachments:date_created!}</td>
+		</tr>
+  <!--#SQLNODATA-->
+    None
+  <!--#/SQLNODATA-->
+<!--#/SQLLOOP-->
+	<!--#EMBED template="enet/embeds/boxout_footer.html" -->
+	<!--#EMBED template="enet/embeds/boxout_header.html" bo_title="Audit&nbsp;Information&nbsp;" -->
+		<tr>
+		  <td width="50%" valign="top">
+		    <table cellpadding="0" cellspacing="0" summary="">
+			  <tr><td><!--#SMARTFIELD title="<span class='regularLabel'>Date Created:</span>" div="&nbsp;</td><td>" name="date_created" type="date" --></td></tr>
+			  <tr><td><!--#SMARTFIELD title="<span class='regularLabel'>Created By:</sapn>" div="&nbsp;</td><td>" name="created_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" --></td></tr>
+			</table>
+	      </td>
+		  <td width="50%" align="left" valign="top">
+		    <table cellpadding="0" cellspacing="0" summary="">
+			  <tr><td><!--#SMARTFIELD title="Date Modified:" div="&nbsp;</td><td>" name="date_modified" type="date" --></td></tr>
+			  <tr><td><!--#SMARTFIELD title="Modified By:" div="&nbsp;</td><td>" name="modified_by" type="chooser" table="users" display="first_name+' '+last_name" key="user_id"--></td></tr>
+			</table>
+		  </td>
+		</tr>
+	<!--#EMBED template="enet/embeds/boxout_footer.html" -->
+
+   <!--#/SMARTFORM-->
+
+	</table>
+
+</body>
+
+
+<!--#EMBED template="enet/embeds/footer.html" -->

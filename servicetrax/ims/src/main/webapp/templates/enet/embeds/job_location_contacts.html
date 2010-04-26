@@ -1,0 +1,70 @@
+<!-- $Header: job_location_contacts.html, 8/1/2007, David Zhaon$ -->
+<html>
+<head>
+<!--#EMBED template="enet/embeds/yui_header.html" -->
+<title>Job Location Contacts</title>
+</head>
+<body onload="onEndUserContactChange()">
+<!--#IF defined="<?p:action?>" -->
+  <!--#IF evaluate="<?p:action?>" compare="new"-->
+
+  <input type="hidden" id="current_job_location_contact_id" value="{!s:current_contact_id!}">
+  <!--#SELECT name="job_location_contact_id" id="job_location_contact_id" class="regular" style="width:230"
+			  firstOption=""
+			  firstOptionValue=""
+			  currentValue="<?s:current_contact_id?>"
+              onChange="onJobLocationContactChange()"
+	  		  query="SELECT DISTINCT c.contact_id job_location_contact_id, c.contact_name
+	  		           FROM contacts c INNER JOIN
+	  		                job_location_contacts jlc ON c.contact_id=jlc.contact_id INNER JOIN
+                            lookups l ON c.cont_status_type_id = l.lookup_id INNER JOIN
+                            lookup_types lt ON l.lookup_type_id = lt.lookup_type_id
+		              WHERE lt.code = 'contact_status_type'
+                        AND l.code='active'
+                        AND c.contact_name IS NOT NULL
+		                AND c.contact_name NOT LIKE '%N/A%'
+		                AND c.contact_name <> 'NA'
+		                AND (jlc.job_location_id = <?p:parameter.toPStmtString()?> OR c.contact_id = <?s:current_contact_id.toPStmtString()?>)
+		           ORDER BY c.contact_name"  -->
+  <!--#ELSE-->
+
+  <!--#SELECT name="job_location_contact_id" id="job_location_contact_id" class="regular" style="width:230"
+			  firstOption=""
+			  firstOptionValue=""
+			  currentValue="<?p:current_val?>"
+              onChange="onJobLocationContactChange()"
+	  		  query="SELECT DISTINCT c.contact_id job_location_contact_id, c.contact_name
+	  		           FROM contacts c INNER JOIN
+	  		                job_location_contacts jlc ON c.contact_id=jlc.contact_id INNER JOIN
+                            lookups l ON c.cont_status_type_id = l.lookup_id INNER JOIN
+                            lookup_types lt ON l.lookup_type_id = lt.lookup_type_id
+		              WHERE lt.code = 'contact_status_type'
+                        AND l.code='active'
+                        AND c.contact_name IS NOT NULL
+		                AND c.contact_name NOT LIKE '%N/A%'
+		                AND c.contact_name <> 'NA'
+		                AND (jlc.job_location_id = <?p:parameter.toPStmtString()?> OR c.contact_id = <?p:current_val.toPStmtString()?>)
+		           ORDER BY c.contact_name"  -->
+  <!--#/IF-->
+<!--#ELSE-->
+  <!--#SELECT name="job_location_contact_id" id="job_location_contact_id" class="regular" style="width:230"
+			  firstOption=""
+			  firstOptionValue=""
+			  currentValue="<?p:current_val?>"
+              onChange="onJobLocationContactChange()"
+	  		  query="SELECT DISTINCT c.contact_id job_location_contact_id, c.contact_name
+	  		           FROM contacts c INNER JOIN
+	  		                job_location_contacts jlc ON c.contact_id=jlc.contact_id INNER JOIN
+                            lookups l ON c.cont_status_type_id = l.lookup_id INNER JOIN
+                            lookup_types lt ON l.lookup_type_id = lt.lookup_type_id
+		              WHERE lt.code = 'contact_status_type'
+                        AND l.code='active'
+                        AND c.contact_name IS NOT NULL
+		                AND c.contact_name NOT LIKE '%N/A%'
+		                AND c.contact_name <> 'NA'
+		                AND (jlc.job_location_id = <?p:parameter.toPStmtString()?> OR c.contact_id = <?p:current_val.toPStmtString()?>)
+		           ORDER BY c.contact_name"  -->
+
+<!--#/IF-->
+</body>
+</html>

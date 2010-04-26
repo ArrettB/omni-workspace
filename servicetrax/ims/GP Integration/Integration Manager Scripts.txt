@@ -1,0 +1,39 @@
+Payroll Scripts:
+
+	Document Error:
+
+		Dim objRec
+		Dim objConn
+		Dim cmdString
+		Set objRec = CreateObject("ADODB.Recordset")
+		Set objConn = CreateObject("ADODB.Connection")
+		objConn.ConnectionString = "driver={SQL Server};server=A-M_POWEREDGE;uid=ims;pwd=ims;database=IMS"
+		objConn.Open
+		cmdString = "UPDATE PAYROLL_BATCHES SET STATUS_ID=-1 WHERE EXT_BATCH_ID = '" & CStr(SourceFields("EXT_BATCH_ID")) &"'"
+		Set objRec = objConn.Execute(cmdString)
+		objConn.Close
+
+	After Query:
+
+		query.ExecuteSQL("Update payroll_batches Set status_id = 3 where status_id = 2")		
+		
+Invoice Scripts:
+
+	Document Error:
+
+		Dim objRec
+		Dim objConn
+		Dim cmdString
+		Set objRec = CreateObject("ADODB.Recordset")
+		Set objConn = CreateObject("ADODB.Connection")
+		objConn.ConnectionString = "driver={SQL Server};server=A-M_POWEREDGE;uid=ims;pwd=ims;database=IMS"
+		objConn.Open
+		cmdString = "UPDATE INVOICES SET INTEGRATION_STATUS_ID=-1 WHERE INTEGRATION_STATUS_ID = 2 AND EXT_BATCH_ID = '" & CStr(SourceFields("EXT_BATCH_ID")) &"'"
+		Set objRec = objConn.Execute(cmdString)
+		objConn.Close
+
+	After Query:
+
+		query.ExecuteSQL("Update invoices Set integration_status_id = 3 where integration_status_id = 2")
+
+

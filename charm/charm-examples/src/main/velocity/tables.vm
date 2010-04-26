@@ -1,0 +1,21 @@
+<%@ include file="/WEB-INF/jsp//includes/init.jsp" %>
+
+<html>
+<head><title>Generated Navigation</title></head>
+
+<body>
+<ul>
+#foreach($table in $tables)
+#set ($name = $table.destinationClassName) 
+#set ($alias = "$name.substring(0,1).toLowerCase()$name.substring(1)")
+	<li>
+		<a href="<c:url value="${name}_list.html"/>">${name}</a>
+	</li>
+#end
+</ul>
+
+
+
+
+</body>
+</html>    

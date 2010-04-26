@@ -1,0 +1,395 @@
+<!-- $Header: enet\po\po_detail.html, 1, 4/6/2008, David Zhao$ -->
+<!--#EMBED template="enet/embeds/po_header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#EXEC handler="ims.handlers.po.LoadPODetailHandler" project_id="<?p:project_id?>" request_id="<?p:request_id?>" po_id="<?p:po_id?>" -->
+
+
+
+<script type="text/javascript">
+
+
+
+
+/*******************************************************
+ *                                                     *
+ * JavaScript Funtions                                 *
+ *                                                     *
+ *******************************************************/
+$(document).ready(function()
+{
+<!--#IF defined="<?p:po_id?>" -->
+	var v_id = document.getElementById("ext_vendor_id").value;
+	var va_id = document.getElementById("ext_vendor_address_id").value;
+    $("#vendorAddressDiv").load("{!s:showPage!}enet/embeds/vendor_address.html?vendor_id=" + v_id + '&address_code=' + va_id);
+<!--#/IF-->
+ 	textCounter(document.getElementById("description"), document.getElementById("remLen"),1000,'up');
+});
+
+function setDefaults()
+{
+	<!--#IF evaluate="<?s:po_readonly?>" compare="true" -->
+		setFormEdit('N');
+	<!--#/IF-->
+}
+
+function modifyDropList(customCustColID)
+{
+		var url = {!s:showPage.toJavaScriptString()!} + 'enet/proj/custom_col_drop_list.html';
+		url += "?custom_cust_col_id=" + customCustColID
+		url += "&return_value_flag=false"
+		newWindow(url,'cust_col_dl',270,300);
+}
+
+function redisplaySmartForm()
+{
+	document.po_detail.redisplay.value = 'true';
+	document.po_detail.submit();
+}
+
+function prepareColumnEdit(column)
+{
+	document.po_detail.customer_button.value = "Prepare Column Edit";
+	document.po_detail.custom_cust_col_id.value = column;
+	document.po_detail.submit();
+}
+
+
+function getCustomerID()
+{
+	return {!d:customer_id.toJavaScriptString()!};
+}
+
+function textCounter(field, countfield, maxlimit, action)
+{
+	if (field.value.length > maxlimit)
+	{
+		field.value = field.value.substring(0, maxlimit);
+		alert ("You can only type " + maxlimit + " letters in this field.");
+	}
+	else
+	{
+		countfield.value = maxlimit - field.value.length;
+	}
+}
+
+function exitFunction(button)
+{
+	if( button == 'Back')
+	{
+		document.po_detail.po_button.value = '';
+		parent.window.opener.focus();
+		parent.close();
+	}
+	else if( button == 'Cancel')
+	{
+		document.po_detail.button.value = 'Save';
+		document.po_detail.po_button.value = 'Cancel';
+		document.po_detail.nextTemplate.value="enet/po/po_detail_close.html";
+		document.po_detail.submit();
+	}
+	else if(button == 'Save')
+	{
+
+	    document.po_detail.button.value = 'Save';
+		document.po_detail.po_button.value = 'Save';
+
+		if (validateSave())
+		{
+			document.po_detail.nextTemplate.value="enet/po/po_detail_close.html";
+			document.po_detail.submit();
+		}
+
+	}
+	else if(button == 'Send')
+	{
+		document.po_detail.button.value = 'Save';
+		document.po_detail.po_button.value = 'Send';
+
+		if (validateSend())
+		{
+			document.po_detail.nextTemplate.value="enet/po/po_detail_close.html";
+			document.po_detail.submit();
+		}
+	}
+	else if( button == 'print_po')
+	{
+
+		//newWindow('{!s:showPage!}enet/rep/po_report.html?po_id='+document.getElementById("po_id").value,"_target");
+		newWindow('{!s:showPage!}enet/rep/po_report.html?po_id='+document.getElementById("po_id").value,'print_frame');
+
+	}
+}
+
+function validateSave()
+{
+  var result = true;
+
+  if (result && document.getElementById("ext_vendor_id").value == "")
+  {
+	alert("Vendor Name is required.");
+	document.getElementById("ext_vendor_id").focus();
+	result = false;
+  }
+
+  if (result && document.getElementById("ext_vendor_address_id").value == "")
+  {
+	alert("Vendor Location is required.");
+	document.getElementById("ext_vendor_address_id").focus();
+	result = false;
+  }
+
+  if (result && document.getElementById("billing_type_id").value == "")
+  {
+	alert("Billing Type is required.");
+	document.getElementById("billing_type_id").focus();
+	result = false;
+  }
+
+  if (result && document.getElementById("item_id").value == "")
+  {
+	alert("Work Code is required.");
+	document.getElementById("item_id").focus();
+	result = false;
+  }
+
+  if (result && document.getElementById("po_total").value == "")
+  {
+	alert("PO Total is required.");
+	document.getElementById("po_total").focus();
+	result = false;
+  }
+
+  if (result && document.getElementById("po_status_id").value == "")
+  {
+	alert("PO Status is required.");
+	document.getElementById("po_status_id").focus();
+	result = false;
+  }
+
+  if (result && document.getElementById("description").value == "")
+  {
+	alert("Narrative Work Request is required.");
+	document.getElementById("description").focus();
+	result = false;
+  }
+
+  return result;
+}
+
+function validateSend()
+{
+  var result = validateSave();
+
+  return result;
+}
+
+function onVendorChange()
+{
+   v_id = document.getElementById("ext_vendor_id").value;
+//alert("In onVendorChange(). vendor id = " + v_id);
+   $("#vendorLocationsDiv").load("{!s:showPage!}enet/embeds/vendor_locations.html?parameter=" + v_id + "&current_val=");
+   $("#vendorAddressDiv").load("{!s:showPage!}enet/embeds/vendor_address.html?parameter=");
+}
+
+function onVendorLocationChange()
+{
+	v_id = document.getElementById("ext_vendor_id").value;
+    addr_id = document.getElementById("ext_vendor_address_id").value;
+//alert("In onVendorLocationChange(). vendor id = " + v_id + "address id = " + addr_id);
+    $("#vendorAddressDiv").load("{!s:showPage!}enet/embeds/vendor_address.html?vendor_id=" + v_id + '&address_code=' + addr_id);
+}
+
+</script>
+
+<body class="BodyTag" onLoad="window.focus();setDefaults();">
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" border="0">
+  <!--#SMARTFORM name="enet/po/po_detail"
+                 security="rights"
+				 table="purchase_orders"
+				 key="po_id"
+				 preHandler="ims.handlers.job_processing.SmartFormPreHandler;ims.handlers.po.POPreHandler;"
+				 onClickFunction="exitFunction"
+				 buttons="" -->
+
+	<!--#SMARTFIELD name="redisplay" type="hidden" value="false" -->
+	<!--#SMARTFIELD name="po_button" type="hidden" -->
+	<!--#SMARTFIELD name="button" type="hidden" -->
+	<!--#SMARTFIELD name="request_id" type="hidden" value="<?s:request_id?>"-->
+	<!--#SMARTFIELD name="po_no" type="hidden" value="<?d:po_no?>"-->
+
+
+<!--#IF evaluate="<?d:mode?>" compare="Insert"-->
+  <tr><td colspan="4" class="HeaderRow">Create New PO</td></tr>
+ <!--#ELSE-->
+  <tr><td colspan="4" class="HeaderRow">Update Existing PO</td></tr>
+<!--#/IF-->
+
+  <tr>
+    <td><Table width="1px" border="0" cellspacing="0" cellpadding="0" ><tr><td>&nbsp;</td></tr></Table><br/><br/></td>
+    <td valign="top">
+<!--  Left Side  -->
+      <TABLE width="60%" border=0" cellspacing="5" cellpadding="0">
+        <tr><td><!--#SMARTFIELD title="PO Number:" div="</td><td colspan='3'>" name="project_request_po_no" style="width:200" type="text" class="readonly" readonly value="<?d:project_request_po_no?>"--></td></tr>
+
+        <tr>
+	  	  <td width="200px"><!--#SMARTFIELD title="<span class='regularLabel'>Project Name</span>:" div="&nbsp;</td>
+	  	  <td>" style="width:200px" name="job_name" class="readonly" value="<?d:jobName?>" readonly -->
+	    </tr>
+<!--#CHECKSECURITY right="rights.enet/proj/select_gp_customer.view" -->
+        <tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Vendor&nbsp;Name</span>:" div="&nbsp;</td><td colspan='3'>" class="regular"
+                                name="ext_vendor_id" type="droplist" resourceName="<?s:org_resource?>" style="width:200"
+                                filter="vendstts <> 2 AND vendorid  NOT LIKE 'old%'" onChange="onVendorChange()"
+                                table="pm00200" display="vendname" key="vendorid" -->
+        </td></tr>
+
+
+<!-- Vendor Location -->
+        <tr>
+<!--#IF evaluate="<?s:po_readonly?>" compare="true" -->
+          <td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Vendor&nbsp;Location</span>:" div="&nbsp;</td><td>" style="width:200"
+                              name="ext_vendor_address_id" type="droplist" resourceName="<?s:org_resource?>"
+                              query="SELECT adrscode ext_vendor_address_id, adrscode
+  			                           FROM pm00300
+  			                          WHERE vendorid = <?r:enet/po/po_detail:ext_vendor_id.toPStmtString()?>
+  			                            AND adrscode = <?r:enet/po/po_detail:ext_vendor_address_id.toPStmtString()?>" --></td>
+<!--#ELSE-->
+        <td><span class="mandatoryLabel">Vendor&nbsp;Location</span>:</td>
+        <td><div id="vendorLocationsDiv">
+        <!--#SELECT name="ext_vendor_address_id" id="ext_vendor_address_id" class="regular" style="width:200"
+                    firstOption="" firstOptionValue=""
+                    currentValue="<?r:enet/po/po_detail:ext_vendor_address_id?>"
+                    onChange="onVendorLocationChange()"
+                    resourceName="<?s:org_resource?>"
+	  				query="SELECT adrscode, adrscode
+	  			  		     FROM pm00300
+	  						WHERE vendorid = <?r:enet/po/po_detail:ext_vendor_id.toPStmtString()?>
+	  					 ORDER BY adrscode"  -->
+	    </div></td>
+<!--#/IF-->
+	  </tr>
+<!-- Vendor Address -->
+      <tr><td colspan="4"><div id="vendorAddressDiv">
+        <table border="0" cellspacing="2" cellpadding="0">
+          <tr><td width="35%"><span class='mandatoryLabel'>&nbsp;&nbsp;Vendor Address</span>:&nbsp;</td><td>&nbsp;</td></tr>
+          <tr><td width="35%"><span class='mandatoryLabel'>&nbsp;&nbsp;City/State/Zip</span>:&nbsp;</td><td>&nbsp;</td></tr>
+        </table>
+      </div></td></tr>
+
+      <tr><td><!--SMARTFIELD title="<span class='mandatoryLabel'>Vendor&nbsp;Location</span>:" div="&nbsp;</td><td colspan='3'>"
+                             name="ext_vendor_address_id" type="droplist" resourceName="<?s:org_resource?>" style="width:200"
+                             filter="vendstts <> 2 AND vendorid  NOT LIKE 'old%'" table="pm00200" display="vendname" key="vendorid" --></td></tr>
+
+<!--#/CHECKSECURITY-->
+
+     <tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Billing&nbsp;Type</span>:" div="&nbsp;</td><td colspan='3'>" class="regular"
+                             name="billing_type_id" type="droplist" resourceName="SQLServer" style="width:200"
+                             filter="lookup_type_id=(SELECT lookup_type_id FROM lookup_types WHERE code='billing_type') AND active_flag='Y' AND code <> 'budget'"
+                             table="lookups" display="name" key="lookup_id" --></td></tr>
+
+     <tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Work&nbsp;Code</span>:" div="&nbsp;</td><td colspan='3'>" class="regular" name="item_id"
+                             type="droplist" resourceName="SQLServer" style="width:200" table="items" display="name" key="item_id"
+                             filter="organization_id=<?s:org_id.toPStmtInt()?> AND ISNULL(job_type_id,0)=<?d:job_type_id.toPStmtInt()?>
+                                 AND (name LIKE '%freight%' OR name LIKE '%supplies%' OR
+                                      name LIKE '%travel%'OR name LIKE '%sub%exp%'OR
+                                      name LIKE '%perdiem%' OR
+                                      name LIKE '%stor%Flex%Bldg%')"--></td></tr>
+
+     <tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>PO&nbsp;Total</span>:" div="</td><td colspan='3'>" class="regular"
+                             name="po_total" style="width:200" type="number" --></td></tr>
+<!--#IF evaluate="<?d:mode?>" compare="Update"-->
+      <tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>PO&nbsp;Status</span>:" div="&nbsp;</td><td colspan='3'>" class="regular"
+                              name="po_status_id" type="chooser" resourceName="SQLServer" style="width:200"
+                              filter="lookup_type_id=(SELECT lookup_type_id FROM lookup_types WHERE code='po_status_type') AND active_flag='Y'"
+                              table="lookups" display="name" key="lookup_id" class="readonly" readonly--></td></tr>
+<!--#ELSE-->
+      <tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>PO Status</span>:" div="&nbsp;</td><td colspan='3'>" class="regular"
+                              name="po_status_id" value="<?d:po_status_id?>" type="chooser" resourceName="SQLServer" style="width:200"
+                              filter="lookup_type_id=(SELECT lookup_type_id FROM lookup_types WHERE code='po_status_type') AND active_flag='Y' AND code='new'"
+                              table="lookups" display="name" key="lookup_id" class="readonly" readonly--></td></tr>
+<!--#/IF-->
+   </TABLE><br>
+  </td>
+
+  <td><Table width="10px" border="0" cellspacing="0" cellpadding="0"><tr><td> &nbsp;</td></tr></Table><br/></td>
+
+<td valign="top">
+<!--  Right Side  -->
+    <TABLE width="40%" border=0" cellspacing="5" cellpadding="0">
+<!--#IF evaluate="<?d:mode?>" compare="Update"-->
+      <tr>          <td align="left"><a href="" onClick="exitFunction('print_po');return false;">Print&nbsp;Purchase&nbsp;Order</a></td>
+		<!-- iframe: print -->
+          <td><iframe name="print_frame" height="0" width="0" marginheight="0" marginwidth="0"></iframe></td></tr></tr>
+<!--#/IF-->
+    </TABLE><br>
+</td>
+</tr>
+
+
+<tr>
+  <td>&nbsp;</td>
+  <td colspan="5"><span class="mandatoryLabel">Narrative Work Request</span>&nbsp;<input readonly type="text" name="remLen" size="4" maxlength="4"
+                        value="1000" class="HeaderLabel"><span class="regularLabel">&nbsp;characters left.</span></td></tr>
+<tr>
+<tr>
+  <td>&nbsp;</td>
+  <td colspan="5"><!--#SMARTFIELD name="description" type="textarea" cols="100" rows="10" wrap="virtual" value="<?d:description?>"
+                                  onKeyDown="textCounter(this.form.description,this.form.remLen,1000,'down');"
+                                  onKeyUp="textCounter(this.form.description,this.form.remLen,1000,'up');"--></td>
+
+  <td><Table width="10px" border="0" cellspacing="0" cellpadding="0"><tr><td> &nbsp;</td></tr></Table><br/></td>
+
+
+</table><br></td></tr>
+
+
+<!--#IF evaluate="<?d:mode?>" compare="Update"-->
+
+	<tr><td><table width="100%" cellspacing="0" cellpadding="0">
+	<tr>
+		<td><!--#SMARTFIELD title="Date Created:" div="&nbsp;</td><td>" name="date_created" type="datetime" mode="Update" readonly
+		                    class="readonly" size="22" --></td>
+		<td><!--#SMARTFIELD title="Created By:" div="&nbsp;</td><td>" name="created_by" type="chooser" mode="Update" table="users"
+		                    display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+	</tr>
+	<tr>
+		<td><!--#SMARTFIELD title="Date&nbsp;Modified:" div="&nbsp;</td><td>" name="date_modified" type="datetime" mode="Update" readonly
+		                    class="readonly" size="22"--></td>
+		<td><!--#SMARTFIELD title="Modified&nbsp;By:" div="&nbsp;</td><td>" name="modified_by" type="chooser" mode="Update" table="users"
+		                    display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+	</tr>
+	</td>
+</TABLE>
+<!--#/IF-->
+
+
+<table width="100%" border="0" cellspacing="10" cellpadding="3" bgcolor="tan">
+
+	<tr><td><table border="0" width="100%">
+		<tr>
+			<td align="left">
+			</td>
+
+		<!--#IF evaluate="<?s:po_readonly?>" compare="true"-->
+		<!--#ELSE-->
+			<td align="right">
+				<input type="button" class="button" value="Cancel" name="back" onClick="exitFunction('Back');">
+				<input type="button" class="button" value="Next" name ="Next"
+				       onClick="newWindow('{!s:showPage!}enet/po/confirm.html?po_id={!r:enet/po/po_detail:po_id!}','confirm_qr',260,450);">
+			</td>
+		<!--#/IF-->
+		</tr>
+</table></td></tr>
+
+
+	<!-- spacing for buttons-->
+
+
+<!--#/SMARTFORM -->
+
+</table>
+
+</body>
+
+
+<!--#EMBED template="enet/embeds/footer.html" -->

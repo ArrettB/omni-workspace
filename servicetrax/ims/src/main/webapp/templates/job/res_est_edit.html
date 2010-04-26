@@ -1,0 +1,190 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: res_est_edit.html, 4, 1/7/2005 5:11:13 PM, Lee A. Gunderson$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.job/res_est_edit.view?>"-->
+
+<body class="BodyTag" onLoad="focusFirstField()" >
+
+   <table width="100%">
+<!--#IF evaluate="<?s:serv_status_type_code?>" compare="closed" -->
+	<tr><td class="HeaderLabel">This requisition is currently Closed.  You may only view existing Resource Estimates.</td></tr>
+<!--#ELSE-->
+   <!--#SMARTFORM name="job/res_est_edit" table="resource_estimates" key="resource_est_id" security="rights"
+                  preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+						postHandler="ims.handlers.maintenance.ClearIDPostHandler;ims.handlers.maintenance.ResEstPostHandler"
+						onClickFunction="exitFunction"
+						buttons="Save,New,Delete,Cancel"
+   -->
+
+      <!--#SMARTFIELD name="job_id" type="hidden" value="<?p:job_id?>" -->
+      <!--#SMARTFIELD name="service_id" type="hidden" value="<?p:service_id?>" -->
+      <!--#SMARTFIELD name="est_start_date" type="hidden" value="<?p:est_start_date?>" -->
+      <!--#SMARTFIELD name="called_by" type="hidden" value="<?p:called_by?>" -->
+		<!--#SMARTFIELD name="multiplier" type="hidden" -->
+		<!--#SMARTFIELD name="clear_id" type="hidden" value="resource_est_id" -->
+		<!--#SMARTFIELD name="show_all_services" type="hidden" value="<?p:show_all_resources?>" -->
+
+		<tr>
+			<td colspan="4" class="TableTitle">Edit Resource Estimates</td>
+      <tr>
+		<td><!--#SMARTFIELD title="Resource Type:" div="</td><td>" name="resource_type_id" type="droplist" table="resource_types_v" display="resource_type_name" key="resource_type_id" onChange="setTimeUOM(this);recalculate();" orderby="sequence_no" --></td>
+		<td><!--#SMARTFIELD title="Resource Qty:" div="</td><td>" name="unit_qty" onChange="recalculate();" --></td>
+      </tr>
+      <tr>
+         <td><!--#SMARTFIELD title="Time UofM:" div="</td><td>" name="time_uom_type_id" type="droplist" table="time_uom_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" onChange="setMultiplier(this.options[this.selectedIndex].value);recalculate();" -->
+         <td><!--#SMARTFIELD title="Time Qty:" div="</td><td>" name="time_qty" type="text" onChange="recalculate();" --></td>
+      </tr>
+      <tr>
+   	  	<td><!--#SMARTFIELD title="Resource Start Date:" div="</td><td>" name="start_date" type="date" value="<?p:est_start_date?>" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(start_date)')</script>" value="<?p:est_start_date?>"--></td>
+         <td><!--#SMARTFIELD title="Sub-Total Hours:" div="</td><td>" name="total_hours" type="text" readonly class="readonly" align="right" --></td>
+      </tr>
+      <!--#IF evaluate="<?d:mode?>" compare="Update"-->
+      <tr>
+          <td class="TableTitle" colspan="4">System Info</td>
+      </tr>
+      <!--#/IF-->
+      <tr>
+         <td><!--#SMARTFIELD title="Date Created:&nbsp;" div="</td><td>" name="date_created" type="datetime" mode="Update" readonly class="readonly" size="22" --></td>
+         <td><!--#SMARTFIELD title="Created By:&nbsp;" div="</td><td>" name="created_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+      </tr>
+      <tr>
+         <td><!--#SMARTFIELD title="Date Modified:&nbsp;" div="</td><td>" name="date_modified" type="datetime" mode="Update" readonly class="readonly" size="22"--></td>
+         <td><!--#SMARTFIELD title="Modified By:&nbsp;" div="</td><td>" name="modified_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"-->
+      </tr>
+   <!--#/SMARTFORM -->
+<!--#/IF-->
+   </table>
+	<br>
+	<br>
+
+	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	   <tr><td class="tableHeader">Resource Estimates List</td></tr>
+	</table>
+
+   <!--#SMARTTABLE name="resource_estimates_v" class="SmartTable" TotalClass = "TableTotal"
+	   query="SELECT rev.resource_est_id, start_date, rev.item_name, rev.item_type_name, rev.resource_type_name,
+	                 rev.unit_qty, rev.rate, rev.time_uom_type_name, rev.time_qty, rev.total_dollars, rev.total_hours,
+	                 rev.date_created, rev.created_by_name, rev.date_modified, rev.modified_by_name
+          	 FROM resource_estimates_v rev
+             WHERE rev.job_id = <?p:job_id.toPStmtString()?>
+             	AND (rev.service_id = <?p:service_id.toPStmtString()?> OR rev.service_id is null OR rev.service_id like <?p:show_all_services.isNull('-1').toPStmtString()?>)
+             ORDER BY rev.start_date, rev.resource_type_name"
+   -->
+     <!--#SMARTCOLUMN width="17%" title="Start Date" name="start_date" sort="start_date" format="date" -->
+     <!--#SMARTCOLUMN width="17%" title="Resource Qty" name="unit_qty" sort="unit_qty" align="center" -->
+<!--#IF evaluate="<?s:serv_status_type_code?>" compare="closed" -->
+     <!--#SMARTCOLUMN width="20%" title="Resource" name="resource_type_name" sort="resource_type_name" -->
+<!--#ELSE-->
+     <!--#SMARTCOLUMN width="20%" title="Resource" name="resource_type_name" sort="resource_type_name" href="<?s:showPage?>job/res_est_edit.html?loc=res_edit&job_id=<?p:job_id?>&service_id=<?p:service_id?>&est_start_date=<?p:est_start_date?>&called_by=<?p:called_by?>&show_all_services=<?p:show_all_services?>&resource_est_id=<?r:resource_estimates_v:resource_est_id?>" -->
+<!--#/IF-->
+     <!--#SMARTCOLUMN width="13%" title="Time Qty" name="time_qty" sort="time_qty" align="center" -->
+     <!--#SMARTCOLUMN width="15%" title="Time UofM" name="time_uom_type_name" sort="time_uom_type_name" -->
+     <!--#SMARTCOLUMN width="20%" title="Sub-Total (hrs)" name="total_hours" sort="total_hours" align="right" total="true" -->
+   <!--#/SMARTTABLE -->
+
+</body>
+
+<script type="text/javascript">
+<!--
+   var res_type_def_time_uom = new Array();
+   var res_type_est_hours = new Array();
+   <!-- retrieve resource_type's def_time_uom_types -->
+ 	<!--#SQLLOOP query="SELECT resource_type_id, def_time_uom_type_id, estimate_hours_flag
+ 	                    FROM resource_types
+ 	                    WHERE def_time_uom_type_id IS NOT NULL"
+					resourceName="SQLServer"
+					name="defTimeUOMQuery"
+   -->
+   res_type_def_time_uom[{!r:defTimeUOMQuery:resource_type_id!}] = {!r:defTimeUOMQuery:def_time_uom_type_id!};
+   res_type_est_hours[{!r:defTimeUOMQuery:resource_type_id!}] = '{!r:defTimeUOMQuery:estimate_hours_flag!}';
+   <!--#/SQLLOOP-->
+
+   var time_uom = new Array();
+   <!-- retrieve time UOM types and multipliers -->
+ 	<!--#SQLLOOP query="SELECT lookup_id, multiplier
+ 	                    FROM time_uom_types_v"
+					resourceName="SQLServer"
+					name="timeUOMQuery"
+   -->
+   time_uom[{!r:timeUOMQuery:lookup_id!}] = {!r:timeUOMQuery:multiplier!};
+   <!--#/SQLLOOP-->
+
+	function setTimeUOM(res_type_field)
+	{//first set time_uom field to correct setting option based on resource_type
+
+		var cur_index = res_type_field.selectedIndex;
+		var res_type_id = res_type_field.options[cur_index].value;
+		var def_time;
+		var value = 0;
+		if( res_type_def_time_uom[res_type_id] === undefined )
+		{
+			def_time = 0; //not found don't set
+		}
+		else
+		{//found default time unit of measure
+			def_time = res_type_def_time_uom[res_type_id];
+		   for( i=0; i < res_est_edit.time_uom_type_id.length; i++)
+		   {//set time_uom_type_id droplist
+				if( res_est_edit.time_uom_type_id.options[i].value == def_time )
+				{
+					res_est_edit.time_uom_type_id.options[i].selected = true;
+					setMultiplier(res_est_edit.time_uom_type_id.options[i].value, res_type_id);
+				}
+			}
+		}
+	}
+
+	function setMultiplier(time_uom_type_id, res_type_id)
+	{//set multipler for time uom, if not estimate hours set to 0
+	   res_est_edit.multiplier.value=time_uom[time_uom_type_id];
+		if( !(res_type_id == null) && res_type_est_hours[res_type_id]=='N' )
+			res_est_edit.multiplier.value = 0;
+	}
+
+
+	function recalculate()
+	{
+	   var qty = 1;
+	   var rate = 1;
+	   var time_qty = 1;
+	   var sub_total = 0;
+
+	   if( !(res_est_edit == null) )
+	   {
+	      if( res_est_edit.unit_qty.value == '' )   //unit_qty
+	         res_est_edit.unit_qty.value = 1;
+	      else
+	         qty = res_est_edit.unit_qty.value;
+	      if( res_est_edit.time_qty.value == '' )   //time_qty
+	         res_est_edit.time_qty.value = 1;
+	      else
+	         time_qty = res_est_edit.time_qty.value;
+
+	      sub_total = qty * time_qty * res_est_edit.multiplier.value;
+	   }
+	   sub_total = Math.round(sub_total*100)/100;
+
+	   if( sub_total.toString() == 'NaN' ) //Not a Number
+	   {//calculation erred, so put more meaningful message
+	      res_est_edit.total_hours.value = 'Invalid';
+	   }
+	   else
+	      res_est_edit.total_hours.value = sub_total;
+	}
+
+	function exitFunction(button)
+	{
+		if( button == 'Cancel' )
+		{
+	    	parent.window.opener.focus();
+			if( res_est_edit.called_by.value == 'sch' )
+				parent.window.opener.exitFunction(button); //refresh list of resources estimates
+	      parent.close();
+		}
+	}
+
+-->
+</script>
+
+
+<!--#EMBED template="embeds/footer.html" -->

@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.Tracking" table="TRACKING" schema="dbo" catalog="">
+        <id name="trackingId" type="java.lang.Long">
+            <column name="TRACKING_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="lookupByNewStatusId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="NEW_STATUS_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByOldStatusId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="OLD_STATUS_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="userByFromUserId" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="FROM_USER_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="lookupByTrackingTypeId" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
+            <column name="TRACKING_TYPE_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="userByModifiedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="service" class="com.dynamic.servicetrax.orm.Service" fetch="select">
+            <column name="SERVICE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="job" class="com.dynamic.servicetrax.orm.Job" fetch="select">
+            <column name="JOB_ID" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="userByCreatedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="contact" class="com.dynamic.servicetrax.orm.Contact" fetch="select">
+            <column name="TO_CONTACT_ID" precision="18" scale="0" />
+        </many-to-one>
+        <property name="notes" type="string">
+            <column name="NOTES" length="500" />
+        </property>
+        <property name="palmRepId" type="java.lang.Long">
+            <column name="PALM_REP_ID" precision="18" scale="0" />
+        </property>
+        <property name="emailSentFlag" type="char">
+            <column name="EMAIL_SENT_FLAG" length="1" not-null="true" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+    </class>
+</hibernate-mapping>

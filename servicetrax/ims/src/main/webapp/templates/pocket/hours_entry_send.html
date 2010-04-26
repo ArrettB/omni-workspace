@@ -1,0 +1,133 @@
+<!--#EMBED template="pocket/embeds/header.html" title="Submit Records"-->
+
+<!--#EMBED template="pocket/embeds/title_bar.html" title="Submit Records"-->
+
+<!--#EMBED template="embeds/spacer_table.html" spacer_height="5"-->
+
+<!--#EXEC handler="ims.handlers.pocket.PocketPreFlightHandler"-->
+
+<!--#SQLLOOP
+     name="detail"
+     query="SELECT job_no, job_name, service_no, substring(service_description, 0, 20) service_description
+			  FROM pkt_services_v
+			  WHERE service_id = <?p:service_id.toPStmtString()?>"
+	 alternator1="#FFFFFF:#DCDCDC"
+-->
+
+
+
+<!--Entry Header-->
+<table cellspacing="0" cellpadding="0" width="100%">
+	<tr>
+		<td>
+			<b>Job</b>
+		</td>
+		<td>
+			{!r:detail:job_no!} - {!r:detail:job_name!}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b>Req</b>
+		</td>
+		<td>
+			{!r:detail:service_no!} - {!r:detail:service_description!}
+		</td>
+	</tr>
+</table>
+<!--#/SQLLOOP-->
+
+<!--List-->
+
+<!--#SQLLOOP
+     name="time_list"
+     query="SELECT service_line_id, service_line_no, item_name, qty, dbo.getShortName(resource_name) resource_name, user_id
+				FROM pkt_service_lines_v
+			  WHERE service_id = <?p:service_id.toPStmtString()?>
+			  AND (status_code = 'New' OR status_code = 'Temp')
+			  ORDER BY service_line_no"
+	 alternator1="#FFFFFF:#DCDCDC"
+-->
+<!--#SQLHEADER-->
+
+<form action="{!s:action!}pocketSendHours/pocket/hours_entry_send.html" method="post">
+<input type="hidden" name="job_id" type="hidden" value="{!p:job_id!}">
+<input type="hidden" name="service_id" type="hidden" value="{!p:service_id!}">
+<input type="hidden" name="service_line_date" type="hidden" value="{!d:service_line_date!}">
+
+<table cellspacing="0" cellpadding="0" width="100%">
+	</tr>
+	<tr height="1">
+		<td bgcolor="black" height="1" colspan="4"><img alt="image" src="/ims/images/spacer.gif" width="1" height="1"></td>
+	</tr>
+	<tr>
+		<td>
+		</td>
+		<td>
+			<b>Resource</b>
+		</td>
+		<td>
+			<b>Item</b>
+		</td>
+		<td>
+			<b>Qty</b>
+		</td>
+	</tr>
+	<tr height="1">
+		<td bgcolor="black" height="1" colspan="4"><img alt="image" src="/ims/images/spacer.gif" width="1" height="1"></td>
+	</tr>
+
+<!--#/SQLHEADER-->
+	<tr>
+		<td>
+			<input type="checkbox" name="send_cb" value="{!r:time_list:service_line_id!}" <!--#IF evaluate="<?r:time_list:user_id?>" compare="<?s:user_id?>"--> checked<!--#/IF-->>
+		</td>
+		<td>
+			{!r:time_list:resource_name!}
+		</td>
+		<td>
+			{!r:time_list:item_name!}
+		</td>
+		<td>
+			{!r:time_list:qty!}
+		</td>
+	</tr>
+<!--#SQLFOOTER-->
+</table>
+<table cellspacing="0" cellpadding="0" width="100%">
+	<tr>
+		<td>
+				<input type="submit" name="button" value="Send">
+		</td>
+	</tr>
+</table>
+</form>
+<!--#/SQLFOOTER-->
+
+<!--#SQLNODATA-->
+<table cellspacing="0" cellpadding="0" width="100%">
+	<tr height="1">
+		<td bgcolor="black" height="1" colspan="1"><img alt="image" src="/ims/images/spacer.gif" width="1" height="1"></td>
+	</tr>
+	<tr height="1">
+		<td><b>Time has been entered for this Req/date</b></td>
+	</tr>
+</table>
+<!--#/SQLNODATA-->
+
+<!--#/SQLLOOP-->
+
+
+
+<!--#IF defined="<?d:error?>" -->
+<font color="#FF0000" size="-2" face="Verdana"><b>{!d:error!}</b>
+<!--#/IF-->
+
+<table cellspacing="0" cellpadding="0" width="100%">
+	<tr>
+		<td align="center">
+			<b><a href="{!s:showPage!}pocket/hours_entry.html?job_id={!p:job_id!}&service_id={!p:service_id!}&service_line_date={!d:service_line_date!}">Enter Hours</a></b>
+		</td>
+	</tr>
+</table>
+<!--#EMBED template="pocket/embeds/footer.html"-->

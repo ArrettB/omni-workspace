@@ -1,0 +1,35 @@
+var selectObject = document.{!p:form_name!}.{!p:select_name!};
+if (selectObject.options)
+{
+	var length = selectObject.options.length;
+	for (var i = length -1; i >= 0; i--)
+	{
+		selectObject.options[i] = null;
+	}
+}
+var i = 0;
+selectObject.options[i++] = new Option('', '', false, false);
+<!--#SQLLOOP name="q1"
+	query="SELECT i.item_id val, i.name display
+		   	 FROM items i INNER JOIN
+		          lookups item_type ON i.item_type_id = item_type.lookup_id INNER JOIN
+		          resource_items ri ON i.item_id = ri.item_id INNER JOIN
+		          job_item_rates jir ON i.item_id = jir.item_id INNER JOIN
+		          jobs j ON i.job_type_id = j.job_type_id
+		    WHERE j.job_id = jir.job_id
+		   	  AND item_type.code = 'hours'
+		      AND i.organization_id = <?s:org_id.toPStmtInt()?>
+		      AND ri.resource_id = <?p:resource_id.toPStmtInt()?>
+			  AND j.job_id = <?s:job_id.toPStmtInt()?>
+		  UNION
+		   SELECT item_id, name
+		     FROM items
+		    WHERE item_id = <?p:item_id.toPStmtInt()?>
+		 ORDER BY i.name"
+-->
+selectObject.options[i++] = new Option({!r:q1:display.toJavaScriptString()!}, {!r:q1:val.toJavaScriptString()!}, false, false);
+<!--#/SQLLOOP-->
+selectObject.fireEvent("onChange");
+<!--#IF defined="<?p:new_value?>"-->
+selectObject.value = {!p:new_value!};
+<!--#/IF-->

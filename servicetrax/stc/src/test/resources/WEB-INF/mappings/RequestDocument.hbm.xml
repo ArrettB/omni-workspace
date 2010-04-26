@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.RequestDocument" table="REQUEST_DOCUMENTS" schema="dbo" catalog="">
+        <id name="requestDocumentId" type="java.lang.Long">
+            <column name="request_document_id" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="request" class="com.dynamic.servicetrax.orm.Request" fetch="select">
+            <column name="request_id" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="userByModifiedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="modified_by" precision="18" scale="0" />
+        </many-to-one>
+        <many-to-one name="userByCreatedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
+            <column name="created_by" precision="18" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="name" type="string">
+            <column name="name" length="256" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" length="100" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="date_created" length="23" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="date_modified" length="23" />
+        </property>
+    </class>
+</hibernate-mapping>

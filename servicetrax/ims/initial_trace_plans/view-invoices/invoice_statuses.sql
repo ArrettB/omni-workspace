@@ -1,0 +1,1 @@
+SELECT name, name FROM invoice_statuses ORDER BY status_id

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.ExpensesBatchLine" table="EXPENSES_BATCH_LINES" schema="dbo" catalog="">
+        <id name="serviceLineId" type="java.lang.Long">
+            <column name="SERVICE_LINE_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <property name="intBatchId" type="long">
+            <column name="INT_BATCH_ID" precision="18" scale="0" not-null="true" />
+        </property>
+        <property name="expenseQty" type="big_decimal">
+            <column name="EXPENSE_QTY" precision="18" />
+        </property>
+        <property name="expenseRate" type="big_decimal">
+            <column name="EXPENSE_RATE" precision="18" />
+        </property>
+        <property name="expenseTotal" type="big_decimal">
+            <column name="EXPENSE_TOTAL" precision="18" />
+        </property>
+        <property name="extItemId" type="string">
+            <column name="EXT_ITEM_ID" length="30" />
+        </property>
+        <property name="expenseExportCode" type="string">
+            <column name="EXPENSE_EXPORT_CODE" length="10" />
+        </property>
+        <property name="extEmployeeId" type="string">
+            <column name="EXT_EMPLOYEE_ID" length="15" />
+        </property>
+    </class>
+</hibernate-mapping>

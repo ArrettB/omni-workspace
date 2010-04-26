@@ -1,0 +1,29 @@
+Remote Login Instructions
+
+ 
+
+http://www.gotomypc.com
+
+ 
+
+username: jchrisman@ambis.com
+
+password: 3gotomypc3
+
+ 
+
+Access Code for machine:   ambis123
+
+ 
+
+Windows Login: shabaz
+
+Windows Password:  schmaltz
+
+
+
+QA web server: Kermit
+QA Database: Scooby - user ims_test
+
+Production web server:
+Production database: Scooby - user ims_new4

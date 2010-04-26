@@ -1,0 +1,1 @@
+SELECT number col_sequence FROM numbers WHERE number between 1 and 10 ORDER BY number

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	
+	<bean id="version" class="com.dynamic.charm.common.Version">
+	</bean>
+	
+	<!--Configure a message resource -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>messages</value>
+				<value>charm</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Load properties from classes/project.properties -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="file:src/main/filters/dev-filter.properties" />
+	</bean>
+	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driver}"/>
+		<property name="url" value="${jdbc.url}"/>
+		<property name="username" value="${jdbc.user}"/>
+		<property name="password" value="${jdbc.password}"/>
+	</bean>
+	
+	<!--
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/jdbc/DB"/>
+	</bean>
+	-->
+	
+	<bean id="namedQueryLoader" class="com.dynamic.charm.query.NamedQueryLoader">
+		<property name="namedQueries">
+			<list>
+				<value>file:src/main/webapp/WEB-INF/namedQueries.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="hibernateServiceTarget" class="com.dynamic.charm.query.hibernate.DefaultHibernateService">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="isDefault" value="true"/>
+		<property name="defaultPackage" value="${jdbc.orm.package}"/>
+	</bean>
+		
+	<bean id="jdbcServiceTarget" class="com.dynamic.charm.query.jdbc.DefaultJDBCService">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<bean id="queryServiceTarget" class="com.dynamic.charm.service.DefaultQueryService">
+		<property name="namedQueryLoader" ref="namedQueryLoader"/>
+		<property name="dataServices">
+			<map>
+				<entry key="hibernateService" value-ref="hibernateService"/>
+				<entry key="jdbcService" value-ref="jdbcService"/>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="mappingDirectoryLocations">
+			<list>
+				<value>file:src/main/webapp/WEB-INF/mappings</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<!--
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.Provider</prop>
+				<prop key="CacheProvider">net.sf.ehcache.hibernate.Provider</prop>
+				-->
+			</props>
+		</property>
+		<property name="eventListeners">
+			<map>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="securityService" class="com.dynamic.examples.service.SecurityService">
+	</bean>	
+	 
+	<bean id="formService" class="com.dynamic.charm.web.form.HibernateFormService">
+		<property name="hibernateService" ref="hibernateService"/>
+	</bean>
+	
+	<!-- Hibernate Session Inteceptor Allow Lazy Initialization -->
+	<bean id="openSessionInViewInterceptor"
+		class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="singleSession" value="true"/>
+	</bean>
+	
+	<!-- The Transaction Manager -->
+	<bean id="myTransactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- The Fully Transactional Basic Service Controller
+	see org.springframework.transaction.TransactionDefinition for transaction level descriptions -->
+	<bean id="queryService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="myTransactionManager"/>
+		<property name="target" ref="queryServiceTarget"/>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="delete">PROPAGATION_REQUIRED</prop>
+				<prop key="deleteAll">PROPAGATION_REQUIRED</prop>
+				<prop key="get">PROPAGATION_REQUIRED</prop>
+				<prop key="load">PROPAGATION_REQUIRED</prop>
+				<prop key="merge">PROPAGATION_REQUIRED</prop>
+				<prop key="namedQueryFor*">PROPAGATION_REQUIRED</prop>
+				<prop key="queryFor*">PROPAGATION_REQUIRED</prop>
+				<prop key="save">PROPAGATION_REQUIRED</prop>
+				<prop key="saveOrUpdate">PROPAGATION_REQUIRED</prop>
+				<prop key="update">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="hibernateService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="myTransactionManager"/>
+		<property name="target" ref="hibernateServiceTarget"/>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="delete">PROPAGATION_REQUIRED</prop>
+				<prop key="deleteAll">PROPAGATION_REQUIRED</prop>
+				<prop key="get">PROPAGATION_REQUIRED</prop>
+				<prop key="load">PROPAGATION_REQUIRED</prop>
+				<prop key="merge">PROPAGATION_REQUIRED</prop>
+				<prop key="namedQueryFor*">PROPAGATION_REQUIRED</prop>
+				<prop key="queryFor*">PROPAGATION_REQUIRED</prop>
+				<prop key="save">PROPAGATION_REQUIRED</prop>
+				<prop key="saveOrUpdate">PROPAGATION_REQUIRED</prop>
+				<prop key="update">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="jdbcService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="myTransactionManager"/>
+		<property name="target" ref="jdbcServiceTarget"/>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="query*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+		<property name="resourceLoaderPath" value="WEB-INF/velocity"/>
+	</bean>
+	
+	<bean id="hibernateInterceptor" class="org.springframework.orm.hibernate3.HibernateInterceptor">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="password" class="com.dynamic.charm.security.Password" singleton="false">
+		<property name="passwordEncoder" ref="passwordEncoder"/>
+	</bean>
+	
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mail.host}" />
+	</bean>
+</beans>

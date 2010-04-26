@@ -1,0 +1,649 @@
+<?xml version="1.0"?>
+<project name="iFrame2" default="dist" basedir="..">
+
+
+	<!-- Configure the custom Ant tasks for the Manager application 
+ -->
+
+
+	<target name="undeploy" description="Install web application">
+		<undeploy url="${manager.url}" username="${manager.username}" password="${manager.password}"
+            path="${manager.path}" />
+
+	</target>
+
+	<target name="dep" description="Install web application">
+		<deploy url="${manager.url}" username="${manager.username}" password="${manager.password}"
+            path="${manager.path}" war="file://${deploy.dir}\${project}.war"/>
+
+	</target>
+
+	<target name="install" description="Install web application">
+		<install url="${manager.url}" username="${manager.username}" password="${manager.password}"
+            path="${manager.path}" war="file://${deploy.dir}\${project}.war"/>
+
+	</target>
+
+	<target name="reload" description="Reload web application" depends="dist">
+		<reload  url="${manager.url}" username="${manager.username}" password="${manager.password}"
+            path="${manager.path}"/>
+	</target>
+
+	<target name="remove" description="Remove web application">
+		<remove url="${manager.url}" username="${manager.username}" password="${manager.password}"
+            path="${manager.path}"/>
+	</target>
+
+	<target name="stop_tomcat" description="Remove web application">
+		<stop url="${manager.url}" username="${manager.username}" password="${manager.password}"
+              path="${manager.path}"/>
+	</target>
+
+	<target name="start_tomcat" description="Remove web application">
+		<start url="${manager.url}" username="${manager.username}" password="${manager.password}"
+              path="${manager.path}"/>
+	</target>
+
+	<!-- grab system environment and prepend with env. -->
+	<property environment="env" />
+
+	<!-- set global properties for this build -->
+	<property name="project" value="ims"/>
+	<property name="src.dir" value="src"/>
+	<property name="web-inf.dir" value="www/WEB-INF"/>
+	<property name="build.dir" value="${web-inf.dir}/classes"/>
+	<property name="dist.dir"  value="dist"/>
+	<property name="lib.dir" value="${web-inf.dir}/lib"/>
+	<property name="compile.lib.dir" value="compile_only_lib"/>
+	<property name="public.dir" value="www"/>
+	<property name="projectOwner" value="gcase@dynamic-info.com"/>
+	<property name="doc.dir" value="${public.dir}/docs"/>
+	<property name="busobjects.dir" value="busobjects_temp"/>
+
+	<property name="deploy.dir" value="${env.CATALINA_HOME}\webapps"/>
+
+	<!-- For intergration with Starteam -->
+	<property name="starteam.folder" value="src" />
+	<property name="starteam.server" value="dodge" />
+	<property name="starteam.port" value="49201" />
+	<property name="starteam.project" value="Gage Outdoor" />
+	<property name="starteam.view" value="Gage Outdoor" />
+	<property name="starteam.url" value="${starteam.server}:${starteam.port}/${starteam.project}" />
+	<property name="starteam.user" value="gcase" />
+	<property name="starteam.passwd" value="dis5000" />
+	<property name="starteam.tempfolder" value="sttemp" />
+
+	<!-- If you are using the IBM jikes compiler, un comment the following -->
+
+	<!--
+	<property name="build.compiler" value="jikes" />
+	<property name="build.compiler.emacs" value="true"/>
+	<property name="build.compiler.fulldepend " value="true"/>
+	-->
+
+	<!-- Tomcat manager props -->
+	<property name="manager.url"      value="http://localhost/manager"/>
+	<property name="manager.path"      value="/${project}"/>
+	<property name="manager.username" value="gcase"/>
+	<property name="manager.password" value="dis5k"/>
+
+
+
+	<target name="st">
+		<delete dir="${starteam.tempfolder}" />
+		<mkdir dir="${starteam.tempfolder}"/>
+
+		<stcheckout servername="${starteam.server}" 
+				serverport="${starteam.port}"
+				projectname="${starteam.project}" 
+				viewname="${starteam.view}"
+				username="${starteam.user}"
+				password="${starteam.passwd}"
+				rootstarteamfolder="src"
+				rootlocalfolder="${starteam.tempfolder}"
+				forced="true"   
+			/>
+
+	</target>
+
+
+	<!-- Set up our classpath once, so that it may be reused elsewhere by using classpathref="classpath" -->
+	<path id="classPath">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar"/>
+			<include name="**/*.zip"/>
+			<exclude name="{$project}.jar"/>
+		</fileset>
+		<fileset dir="${compile.lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<!-- Included in our web archive-->
+	<patternset id="included.jar.files" >
+
+		<exclude name="servlet*.jar" />
+
+		<!-- Oracle -->
+		<!--
+		<exclude name="classes12.jar" /> 	
+		-->
+		<exclude name="olite40.jar" />
+		<exclude name="ibm.jar" />
+		<exclude name="mysql.jar" />
+	</patternset>
+
+	<target name="setup">
+
+		<!--splash showduration="500" /-->
+
+
+		<property name="compiler" value="Javac"/>
+
+		<condition property="compiler" value="Jikes">
+			<equals arg1="jikes" arg2="${build.compiler}" />
+		</condition>
+
+		<condition property="deploy.dir" value="${env.TOMCAT_HOME}\webapps">
+			<isset property="env.TOMCAT_HOME"/>
+		</condition>
+		<condition property="deploy.dir" value="${env.CATALINA_HOME}\webapps">
+			<isset property="env.CATALINA_HOME"/>
+		</condition>
+
+		<condition property="do_production">
+			<isset property="production"/>
+		</condition>
+
+		<condition property="do_qa">
+			<isset property="qa"/>
+		</condition>
+		
+		<condition property="do_test">
+			<isset property="test"/>
+		</condition>
+		
+		<condition property="do_archive">
+			<isset property="archive"/>
+		</condition>
+		
+		<condition property="do_qa2008">
+			<isset property="qa2008"/>
+		</condition>
+
+
+		<condition property="do_dev">
+			<not>
+				<or>
+					<isset property="test"/>
+					<isset property="production"/>
+					<isset property="qa"/>
+					<isset property="qa2008"/>
+					<isset property="archive"/>
+				</or>
+			</not>
+		</condition>
+
+		<echo message="ANT_HOME = ${env.ANT_HOME}"/>
+		<echo message="JAVA_HOME = ${env.JAVA_HOME}"/>
+		<echo message="Compiling with ${compiler}"/>
+		<echo>Using ${deploy.dir} for deployment.</echo>
+
+	</target>
+
+	<target name="prep_for_test" if="do_test">
+		<echo message="Doing a Test Build"/>
+		<delete file="${web-inf.dir}/${project}.xml" />
+		<copy file="${web-inf.dir}/${project}-test.xml"
+		      toFile="${web-inf.dir}/${project}.xml"
+		/>
+		<delete file="${web-inf.dir}/web.xml" />
+		<copy file="${web-inf.dir}/web-test.xml"
+		      toFile="${web-inf.dir}/web.xml"
+		/>
+	</target>
+
+	<target name="prep_for_qa" if="do_qa">
+		<echo message="Doing a QA Build"/>
+		<delete file="${web-inf.dir}/${project}.xml" />
+		<copy file="${web-inf.dir}/${project}-qa.xml"
+		      toFile="${web-inf.dir}/${project}.xml"
+		/>
+		<delete file="${web-inf.dir}/web.xml" />
+		<copy file="${web-inf.dir}/web-qa.xml"
+		      toFile="${web-inf.dir}/web.xml"
+		/>
+	</target>
+
+	<target name="prep_for_qa2008" if="do_qa2008">
+		<echo message="Doing a QA Archive Build"/>
+		<delete file="${web-inf.dir}/${project}.xml" />
+		<copy file="${web-inf.dir}/${project}-qa2008.xml"
+		      toFile="${web-inf.dir}/${project}.xml"
+		/>
+		<delete file="${web-inf.dir}/web.xml" />
+		<copy file="${web-inf.dir}/web-qa2008.xml"
+		      toFile="${web-inf.dir}/web.xml"
+		/>
+	</target>
+
+	<target name="prep_for_dev" if="do_dev" >
+		<echo message="Doing a Development Build"/>
+		<delete file="${web-inf.dir}/${project}.xml" />
+		<copy file="${web-inf.dir}/${project}-dev.xml"
+		      toFile="${web-inf.dir}/${project}.xml"
+		/>
+		<delete file="${web-inf.dir}/web.xml" />
+		<copy file="${web-inf.dir}/web-dev.xml"
+		      toFile="${web-inf.dir}/web.xml"
+		/>
+	</target>
+
+	<target name="prep_for_production" if="do_production">
+		<echo message="Doing a Production Build"/>
+		<delete file="${web-inf.dir}/${project}.xml" />
+		<copy file="${web-inf.dir}/${project}-prod.xml"
+		      toFile="${web-inf.dir}/${project}.xml"
+		/>
+		<delete file="${web-inf.dir}/web.xml" />
+		<copy file="${web-inf.dir}/web-prod.xml"
+		      toFile="${web-inf.dir}/web.xml"
+		/>
+	</target>
+	
+	<target name="prep_for_archive" if="do_archive">
+		<echo message="Doing a Archive Build"/>
+		<delete file="${web-inf.dir}/${project}.xml" />
+		<copy file="${web-inf.dir}/${project}-archive.xml"
+		      toFile="${web-inf.dir}/${project}.xml"
+		/>
+		<delete file="${web-inf.dir}/web.xml" />
+		<copy file="${web-inf.dir}/web-archive.xml"
+		      toFile="${web-inf.dir}/web.xml"
+		/>
+	</target>
+
+
+	<target name="checkout" description="Checks out the starteam files">
+
+		<delete dir="${src.dir}"/>
+		<delete dir="${lib.dir}"/>
+
+		<mkdir dir="${starteam.tempfolder}"/>
+		<starteam servername="${starteam.server}" 
+			serverport="${starteam.port}"
+			projectname="${starteam.project}" 
+			viewname="${starteam.view}"
+			username="${starteam.user}"
+			password="${starteam.passwd}"
+			targetfolder="${starteam.tempfolder}"
+			includes="*.java *.jar *.xml *.zip *.dtd"
+			excludes="build.xml"
+			force="true"
+		/>
+
+		<move toDir=".">
+			<fileset dir="${starteam.tempfolder}/${starteam.project}">
+			</fileset>
+		</move>
+
+		<delete dir="${starteam.tempfolder}"/>
+
+	</target>
+
+	<target name="clean" description="Cleans out temporary files">
+		<!-- Delete the ${build.dir} and ${dist.dir} directory trees -->
+		<delete dir="${build.dir}"/>
+
+		<delete dir="${dist.dir}/current"/>
+
+	</target>
+
+	<target name="init" depends="setup,prep_for_dev,prep_for_test,prep_for_qa,prep_for_qa2008,prep_for_archive,prep_for_production" description="Used to initialize the build">
+
+		<!-- Create the time stamp -->
+		<tstamp>
+			<format property="dateStamp" pattern="yyyy-MM-dd" locale="en"/>
+		</tstamp>
+
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${build.dir}"/>
+	</target>
+
+	<target name="checkDepends" description="Checks dependencies">
+		<depend 
+			srcdir="${src.dir}"
+			destdir="${build.dir}"
+			cache="depcache"
+			closure="yes"/>
+	</target>
+
+	<target name="compile" depends="init,checkDepends" description="Compiles the source files">
+
+
+		<!-- Compile the java code from ${src} into ${build.dir} -->
+		<javac srcdir="${src.dir}" 
+			destdir="${build.dir}" 
+			classpathref="classPath" 
+			debug="on" 
+			deprecation="on"
+			source="1.4"
+			target="1.4">
+		</javac>
+	</target>
+
+	<target name="dist" depends="compile" description="Takes the compiled class files and places them in a jar">
+		<!-- Create the distribution directory -->
+		<mkdir dir="${dist.dir}/${dateStamp}/lib"/>
+
+		<!-- Build the jar -->
+		<echo message="Creating ${dist.dir}/${dateStamp}/lib/${project}.jar"/>
+		<jar jarfile="${dist.dir}/${dateStamp}/lib/${project}.jar" 
+			basedir="${build.dir}"
+		/>
+
+		<!-- Archive the source -->
+		<zip destfile="${dist.dir}/${dateStamp}/ims-src.zip" basedir="${src.dir}"
+		 />
+
+		<!--Keep a copy in the current folder to be copied from other projects -->
+		<copy 
+			file="${dist.dir}/${dateStamp}/lib/${project}.jar" 
+			toFile="${dist.dir}/current/lib/${project}.jar"
+		/>
+	</target>
+
+	<target name="dist_dummy" depends="init" description="Takes the compiled class files and places them in a jar">
+		<!-- Create the distribution directory -->
+		<mkdir dir="${dist.dir}/${dateStamp}/lib"/>
+
+		<echo message="Creating ${dist.dir}/${dateStamp}/lib/${project}.jar"/>
+		<jar jarfile="${dist.dir}/${dateStamp}/lib/${project}.jar" 
+				basedir="dummy_jar"
+			/>
+
+
+	</target>
+
+
+	<target name="war" depends="dist">
+
+		<!-- Delete our old war file -->
+		<delete file="${dist.dir}/${dateStamp}/${project}.war" quiet="true"/>
+
+		<!-- Copy our project.jar to the lib directory so it gets included -->
+		<copy file="${dist.dir}/${dateStamp}/lib/${project}.jar" 
+				tofile="${lib.dir}/${project}.jar"/>
+
+		<!-- Build the war-->
+		<war destfile="${dist.dir}/${dateStamp}/${project}.war" webxml="${web-inf.dir}/web.xml" duplicate="preserve">
+
+			<!-- Everything in this fileset gets put into the WEB-INF/lib dir -->
+			<lib dir="${lib.dir}">
+				<patternset refid="included.jar.files"/>
+			</lib>
+
+			<!-- Everything in this fileset gets put into the WEB-INF dir -->
+			<webinf dir="${web-inf.dir}">
+				<exclude name="web.xml"/>
+				<exclude name="lib/**"/>
+				<exclude name="classes/**"/>
+				<exclude name="${project}-*.xml"/>
+			</webinf>
+
+			<!-- These are our public files, templates and everything else in www -->
+			<zipfileset dir="${public.dir}">
+				<exclude name="work/**"/>
+				<exclude name="WEB-INF/**"/>
+			</zipfileset>
+
+
+			<zipfileset dir="">
+				<include name="${project}.xml"/>
+				<include name="*.dtd"/>
+			</zipfileset>
+
+			<zipfileset dir="templates" prefix="templates">
+			</zipfileset>
+
+			<zipfileset dir="logs" prefix="logs">
+				<include name="placeholder.txt"/>
+			</zipfileset>
+			<zipfileset dir="sessions" prefix="sessions">
+				<include name="placeholder.txt"/>
+			</zipfileset>
+
+		</war>
+
+		<!-- Delete our project.jar from lib -->
+		<delete file="${lib.dir}/${project}.jar" quiet="true"/>
+
+		<!--Keep a copy in the current folder to be copied from other projects -->
+		<copy 
+			file="${dist.dir}/${dateStamp}/${project}.war" 
+			toFile="${dist.dir}/current/${project}.war"
+		/>
+
+	</target>
+
+	<target name="deploy" depends="war">
+
+		<!-- Clean out Tomcat-->
+		<delete dir="${env.CATALINA_HOME}/webapps/${project}"/>
+
+		<!-- Copy to Tomcat-->
+		<copy 
+			file="${dist.dir}/current/${project}.war" 
+			toFile="${env.CATALINA_HOME}/webapps/${project}.war"
+		/>
+
+	</target>
+
+
+	<target name="unwar" depends="war" description="Extracts contents of war for testing">
+		<delete dir="war_contents"/>
+		<mkdir dir="war_contents"/>
+		<unwar src="${dist.dir}/current/${project}.war" dest="war_contents"/>
+	</target>
+
+	<target name="javadoc" depends="compile" description="Generates the API documentation">
+
+		<delete dir="${doc.dir}"/>
+		<mkdir dir="${doc.dir}"/>
+
+		<!--Generate the javadoc-->
+		<javadoc 
+			packagenames="*"
+			sourcepath="${src.dir}"
+			defaultexcludes="yes"
+			destdir="${doc.dir}\api"
+			author="true"
+			version="true"
+			use="true"
+			windowtitle="${project} API Specification"
+			classpathref="classPath">
+			<doctitle>
+				<![CDATA[${project} <sup>
+				<font size=-2>TM</font>
+			</sup> v1.0.3 API Specification]]></doctitle>
+		<bottom>
+			<![CDATA[<font size=-1>
+			<a href=mailto:${projectOwner}?SUBJECT=${project}>Submit a bug or feature</a>
+			<br>
+				<br>iFrame is a trademark or registered trademark of Dynamic Information Systems.<br>&copy;2002 Dynamic Information Systems, 505 Waterford Suite 100, 505 N Hwy 169, Minneapolis MN, 55441<br>All Rights Reserved.</font>]]></bottom>
+					<link href="http://java.sun.com/j2se/1.3/docs/api"/>
+					<link href="http://java.sun.com/products/servlet/2.2/javadoc"/>
+					<link href="http://java.sun.com/xml/docs/api"/>
+					<link href="http://java.sun.com/products/javamail/1.2/docs/javadocs"/>
+					<link href="http://java.sun.com/products/javabeans/glasgow/javadocs"/>
+				</javadoc>
+
+			</target>
+
+
+			<target name="daily" depends="clean, checkout, dist, javadoc, validateXML" description="Does a complete daily build, and archives the file on ford">
+
+				<copy file="${dist.dir}/${dateStamp}/lib/${project}.jar" 
+				tofile="${archives.dir}\${dateStamp}/${project}.jar"/>
+
+				<copy file="${dist.dir}/${dateStamp}/lib/${project}.jar" 
+				tofile="${archives.dir}/Current/${project}.jar"/>
+
+				<mail from="builds@dynamic-info.com" 
+				tolist="${projectOwner}" 
+				subject="Daily ${project} build"
+				files="build.log"
+				mailHost="mail.dynamic-info.com"
+		/>
+			</target>
+
+			<!-- Make sure our xml files are good -->
+			<target name="validateXML" description="Checks xml files for good form">
+				<xmlvalidate  lenient="true">
+					<fileset dir="." includes="**/*.xml"/>
+				</xmlvalidate>
+			</target>
+
+
+
+
+
+			<target name="build_framework" description="Calls ant for the framework and copies over the resulting jar files">
+				<ant antfile="C:\work\iframe2\build.xml" dir="C:\work\iframe2" target="dist" inheritAll="false"/>
+				<echo message="Succesfully built iFrame2"/>
+
+				<copy
+			file="C:\work\iframe2\dist\current\lib\iFrame2.jar"
+			toFile="${lib.dir}/iFrame2.jar"
+		/>
+				<copy
+			file="C:\work\iframe2\dist\current\lib\example.jar"
+			toFile="${lib.dir}/example.jar"
+		/>
+				<copy
+			file="C:\work\iframe2\dist\current\lib\diagnostics.jar"
+			toFile="${public.dir}/jar/diagnostics.jar"
+		/>
+
+			</target>
+
+			<target name="busobjects" depends="">
+				<echo>Generating business objects</echo>
+				<delete dir="${busobjects.dir}" />
+				<mkdir dir="${busobjects.dir}" />
+
+				<java classname="dynamic.dbtk.meta.RelationalJavaMapper" fork="true">
+					<arg value="ims-blake.xml" />
+					<arg value="dbo" />
+					<arg value="ims.dataobjects" />
+					<arg value="${busobjects.dir}" />
+					<arg value="SQLServer" />
+					<classpath>
+						<pathelement location="${build.dir}"/>
+						<fileset dir="${lib.dir}">
+							<include name="*.jar" />
+						</fileset>
+					</classpath>
+				</java>
+			</target>
+
+			<target name="jdepend">
+
+				<jdepend format="xml" outputfile="${doc.dir}/jdepend-report.xml"
+	    classpathref="classPath" >
+					<sourcespath>
+						<pathelement location="${src.dir}" />
+					</sourcespath>
+
+				</jdepend>
+				<style basedir="${doc.dir}" destdir="${doc.dir}"
+				includes="jdepend-report.xml" 
+				style="${ant.home}/etc/jdepend.xsl" />
+
+				<delete file="${doc.dir}/jdepend-report.xml" />
+
+			</target>
+
+			<target name="remove_framework" description="Removes generated iFrame files">
+				<delete file="${lib.dir}/iFrame2.jar"/>
+				<delete file="${lib.dir}/diagnostics.jar"/>
+				<delete file="${lib.dir}/example.jar"/>
+
+			</target>
+
+			<target name="ear" description="Creates and ear" >
+				<delete file="${dist.dir}/${project}.ear"/>
+				<ear destfile="${dist.dir}/${project}.ear" appxml="${web-inf.dir}/application.xml">
+					<fileset dir="${dist.dir}" includes="*.war"/>
+					<metainf dir="META-INF" fullpath="META-INF" prefix=""/>
+				</ear>
+			</target>
+
+			<target name="ear2" description="Creates and ear" >
+				<delete file="${dist.dir}/${project}.ear"/>
+
+				<zip 
+				 		destfile="${dist.dir}/${project}.ear"
+				 		basedir="${dist.dir}"
+				 		includes="*.war"
+				 	>
+					<zipfileset 
+
+							fullPath="${web-inf.dir}/application.xml"
+	
+						/>
+				</zip>
+
+			</target>
+
+			<target name="build_all" depends="init" description="Builds wars for each environment for servicetrax and charm module">
+
+				<antcall target="clean" inheritall="false" />
+
+				<antcall target="war" inheritall="false">
+					<param name="production" value="true" />
+				</antcall>
+				<copy tofile="${dist.dir}/${dateStamp}/${project}-prod.war" file="${dist.dir}/${dateStamp}/${project}.war" />
+
+				<antcall target="war" inheritall="false">
+					<param name="qa" value="true" />
+				</antcall>
+				<copy tofile="${dist.dir}/${dateStamp}/${project}-qa.war" file="${dist.dir}/${dateStamp}/${project}.war" />
+
+				<antcall target="war" inheritall="false">
+				</antcall>
+				<copy tofile="${dist.dir}/${dateStamp}/${project}-dev.war" file="${dist.dir}/${dateStamp}/${project}.war" />
+
+				<delete file="${dist.dir}/${dateStamp}/${project}.war" />
+
+				<exec executable="cmd.exe" dir="../serviceTraxCharm" spawn="false">
+					<arg line="/c mvn clean package" />
+					<arg line="-Dfilter.name=prod" />
+				</exec>
+				<copy tofile="${dist.dir}/${dateStamp}/stc-prod.war" file="../serviceTraxCharm/target/stc.war" />
+
+				<exec executable="cmd.exe" dir="../serviceTraxCharm" spawn="false">
+					<arg line="/c mvn clean package" />
+					<arg line="-Dfilter.name=qa" />
+				</exec>
+				<copy tofile="${dist.dir}/${dateStamp}/stc-qa.war" file="../serviceTraxCharm/target/stc.war" />
+
+				<exec executable="cmd.exe" dir="../serviceTraxCharm" spawn="false">
+					<arg line="/c mvn clean package" />
+					<arg line="-Dfilter.name=dev" />
+				</exec>
+				<copy tofile="${dist.dir}/${dateStamp}/stc-dev.war" file="../serviceTraxCharm/target/stc.war" />
+
+
+				<exec executable="cmd.exe" dir="../serviceTraxCharm" spawn="false">
+					<arg line="/c mvn source:jar" />
+				</exec>
+				<copy tofile="${dist.dir}/${dateStamp}/stc-src.jar" file="../serviceTraxCharm/target/stc-sources.jar" />
+
+
+				<delete file="../serviceTraxCharm/target/stc.war" />
+				
+			</target>
+
+		</project>
+

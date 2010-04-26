@@ -1,0 +1,84 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<body class="BodyTag" onLoad="">
+
+<span class="Label">
+The following service requests do not have any checklists.<br>
+To create a Checklist, select a Service Request.
+</span>
+
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="r" var="mainQuery"
+		query="SELECT r.project_id, r.request_id, r.project_request_no, r.dealer_name, r.ext_dealer_id, r.customer_name, r.job_name, r.est_start_date, r.request_status_type_name, r.dealer_po_no, r.customer_po_no
+				FROM requests_v r
+				WHERE r.request_type_code = 'service_request'
+				AND r.request_status_type_code != 'closed'
+				AND r.organization_id = <?s:org_id.toPStmtString()?>
+				AND NOT EXISTS (SELECT 'x' FROM checklists c WHERE c.request_id = r.request_id)
+		  		ORDER BY r.project_no desc, r.record_seq_no"
+
+-->
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="r" var="customerQuery"
+		query="SELECT DISTINCT r.customer_name id, r.customer_name
+				FROM requests_v r
+				WHERE r.request_type_code = 'service_request'
+				AND r.request_status_type_code != 'closed'
+				AND r.organization_id = <?s:org_id.toPStmtString()?>
+				AND NOT EXISTS (SELECT 'x' FROM checklists c WHERE c.request_id = r.request_id)
+		  		ORDER BY r.customer_name"
+
+-->
+
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="r" var="dealerQuery"
+		query="SELECT DISTINCT r.ext_dealer_id, r.dealer_name
+				FROM requests_v r
+				WHERE r.request_type_code = 'service_request'
+				AND r.request_status_type_code != 'closed'
+				AND r.organization_id = <?s:org_id.toPStmtString()?>
+				AND NOT EXISTS (SELECT 'x' FROM checklists c WHERE c.request_id = r.request_id)
+		   		ORDER BY r.dealer_name"
+
+-->
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="r" var="requestStatusQuery"
+		query="SELECT DISTINCT r.request_status_type_name id, r.request_status_type_name
+				FROM requests_v r
+				WHERE r.request_type_code = 'service_request'
+				AND r.request_status_type_code != 'closed'
+				AND r.organization_id = <?s:org_id.toPStmtString()?>
+				AND NOT EXISTS (SELECT 'x' FROM checklists c WHERE c.request_id = r.request_id)
+		   		ORDER BY r.request_status_type_name"
+
+-->
+
+<!--#SMARTTABLE name="sr_list"
+		class="SmartTable"
+		query="<?d:mainQuery?>"
+	-->
+
+	 <!--#SMARTCOLUMN name="project_request_no" sort="project_request_no" title="Request&nbsp;#" width="5%" align="center" href="<?s:action?>setProjectDatum?project_id=<?r:sr_list:project_id?>&templateName=enet/proj/pf_main.html&request_id=<?r:sr_list:request_id?>&prev_template=enet/main.html&loc=cl_create" target="_top" filter="project_request_no:project_request_no"-->
+	 <!--#SMARTCOLUMN name="customer_name" sort="r.customer_name" title="Customer" width="20%"
+	 	filter="a_customer_name:r.customer_name" filterQuery="<?d:customerQuery?>" filterQuick="true"
+	 -->
+	 <!--#SMARTCOLUMN name="job_name" sort="job_name" title="Job Name" width="20%" filter="a_job_name:job_name" -->
+	 <!--#SMARTCOLUMN name="est_start_date" sort="est_start_date" format="date" title="Start Date" width="10%" filter="a_est_start_date:convert(varchar(12),est_start_date,101) like '%'+<?p:a_est_start_date.toPStmtString()?>+'%'" -->
+	 <!--#SMARTCOLUMN name="request_status_type_name" sort="request_status_type_name" title="Status" width="10%"
+  		filter="request_status_type_name:request_status_type_name" filterQuery="<?d:requestStatusQuery?>" filterQuick="true"
+	 -->
+	 <!--#SMARTCOLUMN name="dealer_po_no" sort="dealer_po_no" title="Customer PO" width="10%" align="left" filter="a_dealer_po_no:dealer_po_no like '%'+<?p:a_dealer_po_no?>+'%'" -->
+	 <!--#SMARTCOLUMN name="customer_po_no" sort="customer_po_no" title="End&nbsp;User&nbsp;PO" width="10%" align="left" filter="a_customer_po_no:customer_po_no like '%'+<?p:a_customer_po_no?>+'%'" -->
+<!--#IF evaluate="<?s:rights.enet/proj/multidealer.view?>" compare="true" --><!-- Show only if user can see multiple dealers -->
+	 <!--#SMARTCOLUMN name="dealer_name" sort="dealer_name" title="Dealer" width="10%" align="center"
+		filter="dealer_name:dealer_name" filterQuery="<?d:dealerQuery?>" filterQuick="true"
+	 -->
+<!--#ELSEIF evaluate="<?s:rights.enet/proj/non_a_m_dealers.view?>" compare="true" --><!-- Show only if user can see non a_m dealers -->
+	 <!--#SMARTCOLUMN name="dealer_name" sort="dealer_name" title="Dealer" width="10%" align="center"
+		filter="dealer_name:dealer_name" filterQuery="<?d:dealerQuery?>" filterQuick="true"
+	 -->
+<!--#/IF-->
+<!--#/SMARTTABLE -->
+
+<!--#EMBED template="enet/embeds/footer.html" -->
+

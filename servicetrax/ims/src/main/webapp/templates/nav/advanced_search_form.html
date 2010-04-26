@@ -1,0 +1,107 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: advanced_search_form.html, 9, 3/31/2003 10:38:17 AM, Chad Ryan$ -->
+<body class="BodyTag" onLoad="loadColors()">
+<script language="JavaScript">
+<!--
+function MainFrame()
+{
+	top.main_frame.location.replace('{!s:action!}nav/main_nav');
+}
+
+<!--#IF evaluate="<?d:queryGood?>" compare="true"-->
+	parent.navigator_results.location.replace('{!s:showPage!}nav/search_results.html');
+<!--#/IF-->
+
+-->
+</script>
+<form name="searchForm" action="{!s:action!}navSearch">
+<input type="hidden" name="search_page" value="nav/advanced_search_form">
+<table width="100%" cellpadding="0" border="0" align="center">
+	<tr>
+		<td nowrap><b>Search Criteria:</b></td>
+	</tr>
+	<tr>
+		<td><table width="50%" cellspacing="3">
+			<tr><td nowrap>Jobs / Reqs:</td><td><select name="display_table" style="width:204" class="regular">
+											<option value="jobs" <!--#IF evaluate="<?d:display_table?>" compare="jobs"-->selected<!--#/IF-->>Jobs</option>
+											<option value="reqs" <!--#IF evaluate="<?d:display_table?>" compare="reqs"-->selected<!--#/IF-->>Reqs</option>
+										</select></td></tr>
+			<tr><td nowrap>Job No:</td><td><input type="text" size="20" name="job_no" value="{!d:job_no!}" style="width:204" class="regular"></td></tr>
+			<tr><td nowrap>Job Name:</td><td><input type="text" size="20" name="job_name" value="{!d:job_name!}" style="width:204" class="regular"></td></tr>
+			<tr><td nowrap>Job Status:</td><td><!--#SELECT name="job_status_id"
+					 query="SELECT lookup_id, lookup_name FROM job_status_types_v"
+			         firstOption="All Statuses"
+					 firstOptionValue=""
+					 style="width:204" class="regular"
+					 currentValue="<?d:job_status_id?>"
+			 	-->
+			 </td></tr>
+			<tr><td nowrap>Job Type:</td><td><!--#SELECT name="job_type_id"
+					query="SELECT lookup_id, lookup_name FROM job_types_v"
+					firstOption="All Types"
+					firstOptionValue=""
+					style="width:204" class="regular"
+					currentValue="<?d:job_type_id?>"
+				-->
+			</td></tr>
+			<tr><td nowrap>Customer:</td><td><!--#SELECT name="customer"
+					query="SELECT customer_name, customer_name FROM customers where active_flag='Y' ORDER BY customer_name"
+					firstOption=""
+					firstOptionValue=""
+					style="width:204" class="regular"
+					currentValue="<?d:customer?>"
+			 	-->
+			</td></tr>
+		</table></td>
+		<td><table width="50%" cellspacing="3">
+
+			<!--#IF defined="<?d:err@service_no?>"-->
+			<tr>
+				<td nowrap>&nbsp;</td>
+				<td nowrap class="error">{!d:err@service_no!}</td>
+			</tr>
+			<!--#/IF-->
+			<tr><td nowrap>Req No:</td><td><input type="text" size="20" name="service_no" value="{!d:service_no!}" style="width:204" class="regular"></td></tr>
+
+			<tr><td nowrap>Req Status:</td><td><!--#SELECT name="serv_status"
+							query="SELECT lookup_name, lookup_name FROM lookups_v WHERE type_code='service_status_type'"
+							firstOption="All Statuses"
+							firstOptionValue=""
+							style="width:204" class="regular"
+							currentValue="<?d:serv_status?>"
+					-->
+			</td></tr>
+			<tr><td nowrap>Description:</td><td><input type="text" size="20" name="description" value="{!d:description!}" style="width:204" class="regular"></td></tr>
+
+			<tr><td nowrap>Work Site:</td><td><input type="text" size="20" name="work_site" style="width:204" class="regular" value="{!d:work_site!}"></td></tr>
+
+			<!--#IF defined="<?d:err@dates?>"-->
+			<tr>
+				<td nowrap>&nbsp;</td>
+				<td nowrap class="error">{!d:err@dates!}</td>
+			</tr>
+			<!--#/IF-->
+			<tr><td nowrap>Date Created:</td><td nowrap>
+					<input type="text" size="10" name="begin_create_date" value="{!d:begin_create_date!}" class="regular">
+					<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(begin_create_date)')</script>
+					&nbsp;to&nbsp;
+					<input type="text" size="10" name="end_create_date" value="{!d:end_create_date!}" class="regular">
+					<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(end_create_date)')</script>
+			</td></tr>
+			<tr>
+				<td nowrap>Invoice#</td>
+				<td><input type="text" size="20" name="invoice_no" value="{!d:invoice_no!}" style="width:204" class="regular"></td>
+			</tr>
+		</table></td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>
+			<input type="submit" value="Search" name="button" class="button2">
+			<input type="button" value="Back" onClick="MainFrame()" class="button2">
+		</td>
+	</tr>
+</table>
+
+</form>
+<!--#EMBED template="embeds/footer.html" -->

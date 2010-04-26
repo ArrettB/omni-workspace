@@ -1,0 +1,109 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: search_results.html, 14, 1/7/2005 5:11:26 PM, Lee A. Gunderson$ -->
+
+<body class="BodyTag" onLoad="loadColors()">
+
+<!--#IF defined="<?s:navQuery?>" -->
+
+	<!--#IF evaluate="<?s:display_table?>" compare="reqs"-->
+	<table width="100%">
+		<tr>
+			<td width="100%" class="Label">
+				Show <a href="{!s:action!}updateSearchDisplay?display_table=jobs">Jobs Only</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<hr>
+			</td>
+		</tr>
+	</table>
+	<!--#ELSEIF evaluate="<?s:display_table?>" compare="jobs"-->
+	<table width="100%">
+		<tr>
+			<td width="100%" class="Label">
+				Show <a href="{!s:action!}updateSearchDisplay?display_table=reqs">Jobs with Requisitions</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<hr>
+			</td>
+		</tr>
+	</table>
+	<!--#/IF-->
+
+	<!--#IF evaluate="<?s:display_table?>" compare="jobs"-->
+
+		<!--#SMARTTABLE name="results" autoClick="false"
+				class="SmartTable"
+				query="SELECT DISTINCT job_no,
+				              job_id,
+				              customer_name,
+				              end_user_name,
+				              job_name,
+				              job_type_name,
+				              job_status_type_name,
+				              job_date_created
+						 FROM job_services_v sv
+						WHERE sv.organization_id = <?s:org_id.toPStmtString()?>
+						  AND sv.job_service_id IN (<?s:navQuery?>)
+					 ORDER BY sv.job_no"
+		-->
+
+		<!--#CHECKSECURITY right="rights.job/job_edit.view" -->
+			<!--#SMARTCOLUMN name="job_no" sort="job_no" title="Job#" width="5%" align="center" href="<?s:action?>setupSession/main.html?job_id=<?r:results:job_id?>&loc=job_edit" target="_top"-->
+		<!--#ELSE-->
+			<!--#SMARTCOLUMN name="job_no" sort="job_no" title="Job#" width="5%" align="center" -->
+		<!--#/CHECKSECURITY-->
+			<!--#SMARTCOLUMN name="customer_name" sort="customer_name" title="Customer" width="10%"-->
+			<!--#SMARTCOLUMN name="end_user_name" sort="end_user_name" title="End User" width="10%"-->
+			<!--#SMARTCOLUMN name="job_name" sort="job_name" title="Job Name" width="10%"-->
+			<!--#SMARTCOLUMN name="job_type_name" sort="job_type_name" title="Job Type" width="5%" -->
+			<!--#SMARTCOLUMN name="job_status_type_name" sort="job_status_type_name" title="Status" width="7%" -->
+			<!--#SMARTCOLUMN name="job_date_created" sort="job_date_created" title="Date Created" width="7%" format="date" -->
+		<!--#/SMARTTABLE -->
+
+	<!--#ELSEIF evaluate="<?s:display_table?>" compare="reqs"-->
+
+		<!--#SMARTTABLE name="results"
+				class="SmartTable" autoClick="false"
+				query="SELECT job_no job_no,
+				              job_id,
+				              job_name,
+				              customer_name,
+				              end_user_name,
+							  service_id,
+							  service_no,
+							  serv_status_type_name service_status,
+							  description description,
+							  job_location_name
+				         FROM job_services_v sv
+				        WHERE sv.organization_id = <?s:org_id.toPStmtString()?>
+				          AND (sv.job_service_id IN (<?s:navQuery?>))
+				     ORDER BY job_no, service_no"
+			-->
+		<!--#CHECKSECURITY right="rights.job/job_edit.view" -->
+			<!--#SMARTCOLUMN name="job_no" sort="job_no" title="Job&nbsp;#" width="5%" align="center" href="<?s:action?>setupSession/main.html?job_id=<?r:results:job_id?>&loc=job_edit" target="_top"-->
+		<!--#ELSE-->
+			<!--#SMARTCOLUMN name="job_no" sort="job_no" title="Job&nbsp;#" width="5%" align="center" -->
+		<!--#/CHECKSECURITY-->
+			<!--#SMARTCOLUMN name="customer_name" sort="customer_name" title="Customer" width="15%"-->
+			<!--#SMARTCOLUMN name="end_user_name" sort="end_user_name" title="End User" width="15%"-->
+		<!--#CHECKSECURITY right="rights.job/req_edit.view" -->
+			<!--#SMARTCOLUMN name="service_no" sort="service_no" title="Req&nbsp;#" align="center" width="5%" href="<?s:action?>setupSession/main.html?service_id=<?r:results:service_id?>&job_id=<?r:results:job_id?>&loc=req_edit" target="_top" -->
+		<!--#ELSE-->
+			<!--#SMARTCOLUMN name="service_no" sort="service_no" title="Req&nbsp;#" align="center" width="5%" -->
+		<!--#/CHECKSECURITY-->
+			<!--#SMARTCOLUMN value="<INPUT TYPE='text' name='desc' value='<?r:results:description.replaceString('\'','&#39;')?>' readonly='true' class='smartTableDisplay' size='60'>" title="Req Description" width="40%" -->
+			<!--#SMARTCOLUMN name="service_status" sort="service_status" title="Req Status" nowrap width="10%" -->
+		<!--#/SMARTTABLE -->
+
+	<!--#/IF-->
+
+<!--#ELSE-->
+	There are currently no search results to display.
+<!--#/IF-->
+
+</body>
+<!--#EMBED template="embeds/footer.html" -->

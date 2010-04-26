@@ -1,0 +1,195 @@
+<!--#EMBED template="enet/embeds/header.html" -->
+<!--#REQUIRED data="<?s:user?>"-->
+<body class="BodyTag" onLoad="">
+
+<span class="Label">
+View Workorder Progress:
+</span>
+
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="wpv" var="mainQuery"
+		query="select
+    project_id,
+    request_id,
+    project_no,
+    workorder_no,
+    dealer_name,
+    customer_name,
+    request_status_type_name,
+    min_start_date,
+    max_end_date,
+    punchlist_flag,
+    percent_complete
+from
+(select
+    p.project_id,
+    r.request_id,
+    p.project_no,
+    convert(varchar, p.project_no) + '-' + convert(varchar, r.request_no) workorder_no,
+    c.dealer_name,
+    case ct.code
+        when 'end_user' then cp.customer_name else c.customer_name
+    end customer_name,
+    rs.name request_status_type_name,
+    md.min_start_date,
+    md.max_end_date,
+    case
+        when pl.punchlist_id is null then 'n'
+        else 'y'
+    end punchlist_flag,
+    case md.duration
+        when 0 then null
+        else Round((md.duration - md.current_duration) / md.duration, 2)
+    end percent_complete,
+    r.request_no
+from
+    requests r
+    join projects p on
+        p.project_id = r.project_id
+    join customers c on
+        c.customer_id = p.customer_id
+    join lookups rt on
+        rt.lookup_id = r.request_type_id
+    join lookups rs on
+        rs.lookup_id = r.request_status_type_id
+    join lookups ps on
+        ps.lookup_id = p.project_status_type_id
+    left join lookups ct on
+        c.customer_type_id = ct.lookup_id
+    left join customers cp on
+        c.end_user_parent_id = cp.customer_id
+    left join punchlists pl on
+        r.request_id = pl.request_id
+    join (
+        select
+            imd.request_id,
+            imd.min_start_date,
+            imd.max_end_date,
+            convert(numeric, datediff(hour, getdate(), imd.max_end_date + 1)) current_duration,
+            convert(numeric, datediff(hour, imd.min_start_date, imd.max_end_date + 1)) duration
+        from
+        (select
+            r.request_id,
+            min(IsNull(act_start_date, IsNull(sch_start_date, r.est_start_date))) min_start_date,
+            max(IsNull(act_end_date, IsNull(sch_end_date, r.est_end_date))) max_end_date
+        from
+            requests r
+            left join request_vendors rv on
+                r.request_id = rv.request_id
+        group by
+            r.request_id) imd) md on
+        r.request_id = md.request_id
+where
+    c.organization_id = <?s:org_id.toPStmtString()?>
+    and rt.code = 'workorder'
+    and ps.code <> 'folder_closed'
+    and rs.code <> 'closed') data
+order by
+    data.project_no desc,
+    data.request_no"
+
+-->
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="wpv" var="customerQuery"
+		query="select
+    c.customer_name id,
+    c.customer_name
+from (
+select distinct
+    case ct.code
+        when 'end_user' then cp.customer_id else c.customer_id
+    end customer_id,
+    case ct.code
+        when 'end_user' then cp.customer_name else c.customer_name
+    end customer_name
+from
+    requests r
+    join projects p on
+        p.project_id = r.project_id
+    join customers c on
+        c.customer_id = p.customer_id
+    left join lookups ct on
+        ct.lookup_id = c.customer_type_id
+    left join customers cp on
+        c.end_user_parent_id = cp.customer_id
+    join lookups rt on
+        rt.lookup_id = r.request_type_id
+    join lookups rs on
+        rs.lookup_id = r.request_status_type_id
+    join lookups ps on
+        ps.lookup_id = p.project_status_type_id
+where
+    c.organization_id = <?s:org_id.toPStmtString()?>
+    and rt.code = 'workorder'
+    and ps.code <> 'folder_closed'
+    and rs.code <> 'closed') c
+order by
+    c.customer_name"
+
+-->
+
+
+<!--#EXEC handler="ims.handlers.query.DealerCustomerQueryHandler" alias="wpv" var="dealerQuery"
+		query="select distinct
+    c.ext_dealer_id,
+    c.dealer_name
+from
+    requests r
+    join projects p on
+        p.project_id = r.project_id
+    join customers c on
+        c.customer_id = p.customer_id
+    join lookups rt on
+        rt.lookup_id = r.request_type_id
+    join lookups rs on
+        rs.lookup_id = r.request_status_type_id
+    join lookups ps on
+        ps.lookup_id = p.project_status_type_id
+where
+    c.organization_id = <?s:org_id.toPStmtString()?>
+    and rt.code = 'workorder'
+    and ps.code <> 'folder_closed'
+    and rs.code <> 'closed'
+order by
+    c.dealer_name"
+
+-->
+
+
+<!--#SMARTTABLE name="wp_list"
+		class="SmartTable"
+		query="<?d:mainQuery?>"
+-->
+	<!--#SMARTCOLUMN name="workorder_no" sort="workorder_no" title="Workorder#" align="center" width="10%" href="<?s:action?>setProjectDatum?project_id=<?r:wp_list:project_id?>&templateName=enet/proj/pf_main.html&request_id=<?r:wp_list:request_id?>&loc=wo_create" target="_top" filter="a_workorder_no:workorder_no like '%'+<?p:a_workorder_no.toPStmtString()?>+'%'" nowrap -->
+	<!--#SMARTCOLUMN name="customer_name" sort="customer_name" title="Customer" width="20%"
+		filter="customer_name:customer_name" filterQuery="<?d:customerQuery?>" filterQuick="true"
+	-->
+	<!--#SMARTCOLUMN name="request_status_type_name" sort="request_status_type_name" title="Status" width="15%" nowrap
+		filter="wp_request_status_type_name:request_status_type_name" filterQuery="SELECT lookup_name id, lookup_name FROM workorder_status_types_v" filterQuick="true"
+	 -->
+	<!--#SMARTCOLUMN name="min_start_date" sort="min_start_date" title="Start Date" width="5%" format="date" filter="wp_start_date:convert(varchar(12),min_start_date,101) like '%'+<?p:wp_start_date.toPStmtString()?>+'%'" -->
+	<!--#SMARTCOLUMN name="max_end_date" sort="max_end_date" title="End Date" width="5%" format="date" filter="wp_end_date:convert(varchar(12),max_end_date, 101) like '%'+<?p:wp_end_date.toPStmtString()?>+'%'" -->
+	<!--#SMARTCOLUMN name="punchlist_flag" sort="punchlist_flag" title="Punchlist" width="10%" align="center" filter="wp_punchlist_flag:punchlist_flag" -->
+<!--#IF evaluate="<?r:wp_list:percent_complete?>" compare="" -->
+	<!--#SMARTCOLUMN name="percent_complete" sort="percent_complete" title="Progress%" numDecimals="0" width="10%" align="center" format="percent" value="0%"-->
+<!--#ELSEIF evaluate="<?r:wp_list:percent_complete?>" greaterthan="1" -->
+	<!--#SMARTCOLUMN name="percent_complete" sort="percent_complete" title="Progress%" numDecimals="0" width="10%" align="center" format="percent" value="100%" -->
+<!--#ELSEIF evaluate="<?r:wp_list:percent_complete?>" lessthan="0" -->
+	<!--#SMARTCOLUMN name="percent_complete" sort="percent_complete" title="Progress%" numDecimals="0" width="10%" align="center" format="percent" value="0%" -->
+<!--#ELSE -->
+	<!--#SMARTCOLUMN name="percent_complete" sort="percent_complete" title="Progress%" numDecimals="0" width="10%" align="center" format="percent" -->
+<!--#/IF-->
+<!--#IF evaluate="<?s:rights.enet/proj/multidealer.view?>" compare="true" --><!-- Show only if user can see multiple dealers -->
+	<!--#SMARTCOLUMN name="dealer_name" sort="dealer_name" title="Dealer" width="5%" align="center"
+		filter="dealer_name:dealer_name" filterQuery="<?d:dealerQuery?>" filterQuick="true"
+	-->
+<!--#ELSEIF evaluate="<?s:rights.enet/proj/non_a_m_dealers.view?>" compare="true" --><!-- Show only if user can see non a_m dealers -->
+	<!--#SMARTCOLUMN name="dealer_name" sort="dealer_name" title="Dealer" width="5%" align="center"
+		filter="dealer_name:dealer_name" filterQuery="<?d:dealerQuery?>" filterQuick="true"
+	-->
+<!--#/IF-->
+
+	<!--#/SMARTTABLE -->
+
+<!--#EMBED template="enet/embeds/footer.html" -->
+

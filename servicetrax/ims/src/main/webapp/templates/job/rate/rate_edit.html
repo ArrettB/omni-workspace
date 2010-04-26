@@ -1,0 +1,108 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: rate_edit.html, 1, 8/2/2005 3:04:58 PM, Greg Case$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.job/rate/rate_edit.view?>"-->
+<body class="BodyTag"><!-- Removed onLoad="checkSave();secureButtons()" (Using SmartForm Security instead)-->
+
+<!-- Only display when a id is passed in -->
+<!--#IF defined="<?p:job_item_rate_id?>"-->
+
+   <!--#SMARTFORM name="job/rate/rate_edit" table="job_item_rates_v" key="job_item_rate_id" 
+                  security="rights" onClickFunction="changeTarget"
+                  prevTemplate="job/rate/rate_edit" nextTemplate="job/rate/rate_list"
+                  preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+                  buttons="Save,Cancel,Done"
+   -->
+      <!--#SMARTFIELD title="" name="loc" type="hidden" value="<?p:loc?>" -->
+
+   <table width="100%">
+      <tr>
+          <td class="TableTitle" colspan="4">Edit Job Item Rates</td>
+      </tr>
+
+      <tr>
+             <!--#SMARTFIELD title="" name="job_id" type="hidden" ignore="true" -->
+         <td><!--#SMARTFIELD title="Item:" div="</td><td>" name="item_id" type="chooser" 
+                  table="items" display="name" key="item_id" readonly class="readonly" -->
+         </td>
+         <td><!--#SMARTFIELD title="Item Type:" div="</td><td>" name="item_type_id" type="chooser" 
+                  table="item_types_v" display="lookup_name" key="lookup_id"  readonly class="readonly" ignore="true" -->
+         </td>
+      </tr>
+      <tr>
+         <td><!--#SMARTFIELD title="U of M:" div="</td><td>" name="uom_type_id" type="chooser" readonly class="readonly" ignore="true"
+                  table="uom_types_v" display="lookup_name" key="lookup_id" -->
+         </td>
+         <td><!--#SMARTFIELD title="Rate:" div="</td><td>" name="rate" type="text" format="money" align="right"--></td>
+      </tr>
+      <!--#IF evaluate="<?d:mode?>" compare="Update"-->
+      <tr>
+          <td class="TableTitle" colspan="4">System Info</td>
+      </tr>
+      <!--#/IF-->
+      <tr>
+         <td><!--#SMARTFIELD title="Date Created" div="</td><td>" name="date_created" type="datetime" 
+                             mode="Update" readonly class="readonly" size="22" --></td>
+         <td><!--#SMARTFIELD title="Created By" div="</td><td>" name="created_by" type="chooser" 
+                             mode="Update" table="users" display="first_name+' '+last_name" key="user_id"
+                             readonly class="readonly"--></td>
+      </tr>
+      <tr>
+         <td><!--#SMARTFIELD title="Date Modified" div="</td><td>" name="date_modified" type="datetime" 
+                             mode="Update" readonly class="readonly" size="22"--></td>
+         <td><!--#SMARTFIELD title="Modified By" div="</td><td>" name="modified_by" type="chooser"
+                             mode="Update" table="users" display="first_name+' '+last_name" key="user_id"
+                             readonly class="readonly"-->
+      </tr>
+   </table>
+  
+   <!--#/SMARTFORM -->
+	    
+<!--#/IF-->
+
+</body>
+
+<script language="JavaScript">
+<!--
+
+function checkSave()
+{
+   var buttons = document.all.item('button');
+   save_button = null;
+   if( !(buttons == null) )
+   {
+      for( i=0; i < buttons.length; i++)
+      {
+         if( buttons[i].value == 'Save' )
+            save_button = buttons[i];
+      }
+      if( !(save_button == null) )
+      {
+         if( rate_edit.job_item_rate_id.value == '')
+            save_button.disabled = true;      
+         else
+            save_button.disabled = false;
+      }
+   }
+   return true;
+}
+
+function changeTarget(button)
+{
+   if( button == 'Save' || button =='Delete')
+   {
+      rate_edit.target = 'rate_list_frame';
+      var redisplay_save = '';
+      window.open('{!s:showPage!}job/rate/rate_edit.html?loc=rate_edit&job_id={!p:job_id!}'+redisplay_save,'rate_edit_frame');
+   } 
+   if( button == 'Done' )
+   {
+      parent.window.opener.focus();
+      parent.close();
+   }
+}
+
+-->
+</script>
+
+<!--#EMBED template="embeds/footer.html" -->

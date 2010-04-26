@@ -1,0 +1,281 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: job_inv_head.html, 42, 6/14/2006 9:45:57 AM, Greg Case$-->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.bill/inv_edit.view?>"-->
+
+<!-- job_id may not be set in session data which is needed when adding lines -->
+<!--#IF evaluate="<?p:invoice_id?>" compare="" -->
+
+<!--#ELSE-->
+	<!--#SQLLOOP name="jobQuery" query="SELECT job_id FROM invoices WHERE invoice_id = <?p:invoice_id.toPStmtString()?>"-->
+		<!--#EXEC handler="ims.handlers.job_processing.SetupSessionDataHandler" job_id="<?r:jobQuery:job_id?>" -->
+	<!--#/SQLLOOP-->
+<!--#/IF-->
+
+<script type="text/javascript">
+<!--
+	function changeStatus(myForm,status)
+	{
+		myForm.status_id[0].value=status;
+		myForm.close_page.value='true';
+		exitFunction('Save');
+	}
+
+	function loadPage()
+	{
+
+		var mainFrame = window.top.self.main_frame;
+
+		<!--#IF evaluate="<?p:close_page?>" compare="true"-->
+		  <!--#IF defined="<?p:prev_template?>" -->
+			parent.location='{!s:showPage!}{!p:prev_template!}?invoice_id={!p:invoice_id!}';
+			//parent.location='{!s:showPage!}bill/job_unbill_ops_main.html?invoice_id={!p:invoice_id!}';
+		  <!--#ELSE-->
+		    if (mainFrame.job_frame.job_bill_frame)
+			{
+				mainFrame.job_frame.job_bill_frame.location = '{!s:showPage!}bill/job_unbill_ops_main.html?invoice_id={!p:invoice_id!}';
+			}
+		  <!--#/IF-->
+		<!--#/IF-->
+	}
+
+	function readOnly()
+	{
+		<!--#IF evaluate="<?p:readonly?>" compare="true" -->
+			setFormEdit('N');
+		<!--#/IF-->
+	}
+
+
+//-->
+</script>
+
+<body class="BodyTag" onLoad="loadPage();loadLines();readOnly();">
+<TABLE width="100%" border="0" cellpadding="0" cellspacing="2">
+<!--#SMARTFORM
+	name="bill/inv_edit"
+	security="rights"
+	table="invoices"
+	key="invoice_id"
+	sequence="@@identity"
+	prevTemplate="<?p:prev_template?>"
+	nextTemplate="bill/inv/job_inv_head.html"
+	value="<?p:invoice_id?>"
+	buttons=""
+	preHandler="ims.handlers.job_processing.SmartFormPreHandler"
+-->
+	<!--#SMARTFIELD name="button" type="hidden" value="Cancel" -->
+	<!--#SMARTFIELD name="level" type="hidden" value="<?p:level?>" -->
+	<!--#SMARTFIELD name="organization_id" type="hidden" value="<?s:org_id?>" -->
+
+    <tr>
+<!--#SQLLOOP name="invoive_count" query="SELECT COUNT(*) inv_cnt FROM invoices WHERE job_id = <?s:job_id.toPStmtInt()?>"-->
+  <!--#IF evaluate="<?r:invoive_count:inv_cnt?>" compare="0" -->
+    <td colspan="10" class="HeaderBar">Invoice Header<span class="regularLabel"> (No invoice has been created for the job)</span></td>
+  <!--#ELSEIF evaluate="<?r:invoive_count:inv_cnt?>" compare="1" -->
+    <td colspan="10" class="HeaderBar">Invoice Header<span class="regularLabel"> (1 invoice has been created for the job)</span></td>
+  <!--#ELSE -->
+    <td colspan="10" class="HeaderBar">Invoice Header<span class="regularLabel"> ({!r:invoive_count:inv_cnt!} invoices have been created for the job)</span></td>
+  <!--#/IF-->
+<!--#/SQLLOOP-->
+    </tr>
+    <tr>
+		<td><!--#SMARTFIELD title="Invoice#" div="</td><td>" name="invoice_id" readonly="true" class="readonly" type="text" size="9"--></td>
+
+<!--#IF evaluate="<?d:mode?>" compare="Update" -->
+		<td><!--#SMARTFIELD title="Job#" div="</td><td>" name="job_id" readonly="true" class="readonly" type="chooser" display="job_no" key="job_id" table="jobs" size="9"--></td>
+		<td><!--#SMARTFIELD title="Dealer" div="</td><td>" name="ext_dealer_id" readonly="true" class="readonly" resourceName="<?s:org_resource?>" type="chooser" table="RM00101" display="rtrim(shrtname)" key="rtrim(custnmbr)" filter="userdef1='DEALER'" value="<?s:ext_dealer_id.trim()?>" --></td> <!-- used only to filter customers and create new customers -->
+		<td><!--#SMARTFIELD title="Customer" div="</td><td>" mandatory="true" readonly="true" class="readonly" name="bill_customer_id" type="chooser" display="customer_name" key="customer_id" table="customers" value="<?s:customer_id?>"--></td>
+<!--#ELSE-->
+		<td><!--#SMARTFIELD title="Job#" div="</td><td>" name="job_id" value="<?s:job_id?>" readonly="true" class="readonly" type="chooser" display="job_no" key="job_id" table="jobs" size="9"--></td>
+		<td><!--#SMARTFIELD title="Dealer" div="</td><td>" name="ext_dealer_id" readonly="true" class="readonly" resourceName="<?s:org_resource?>" type="chooser" table="RM00101" display="rtrim(shrtname)" key="rtrim(custnmbr)" filter="userdef1='DEALER'" value="<?s:ext_dealer_id.trim()?>" --></td> <!-- used only to filter customers and create new customers -->
+		<td><!--#SMARTFIELD title="Customer" div="</td><td>" mandatory="true" readonly="true" class="readonly" name="bill_customer_id" type="chooser" display="customer_name" key="customer_id" table="customers" value="<?s:customer_id?>"--></td>
+<!--#/IF-->
+
+<!--#IF evaluate="<?d:mode?>" compare="Update" -->
+		<td><!--#SMARTFIELD title="Status" div="</td><td>" name="status_id" type="chooser" readonly="true" class="readonly" display="name" key="status_id" table="invoice_statuses"--></td>
+<!--#ELSE-->
+		<td><!--#SMARTFIELD title="Status" div="</td><td>" value="1" name="status_id" type="chooser" readonly="true" class="readonly" display="name" key="status_id" table="invoice_statuses"--></td>
+<!--#/IF-->
+	</tr>
+	<tr>
+		<td><!--#SMARTFIELD title="PO #" div="</td><td colspan='5'>" name="po_no" style="width:300" type="text" class="readonly" readonly --></td>
+		<td><!--#SMARTFIELD title="Invoice&nbsp;Type" div="</td><td>" mandatory="true" name="invoice_type_id" type="droplist" display="name" key="lookup_id" table="invoice_types_v"--></td>
+		<td><!--#SMARTFIELD title="Created&nbsp;By" div="</td><td>" name="created_by" type="chooser" readonly="true" class="readonly"  display="full_name" key="user_id" table="users_v"--></td>
+	</tr>
+	<tr>
+<!--#IF evaluate="<?d:mode?>" compare="Update" -->
+		<td><!--#SMARTFIELD title="Description" div="</td><td colspan='5'>" type="textarea" name="description" cols="60" rows="4" --></td>
+		<td colspan="4"><table border="0"><tr><td><!--#SMARTFIELD title="Billing Type" div="</td><td>" name="billing_type_id" type="droplist" display="lookup_name" key="lookup_id" table="billing_types_v" --></td>
+<!--#ELSE-->
+	<!--#SQLLOOP query="SELECT count(service_id) service_id_count, min(service_id) service_id FROM services WHERE job_id = <?s:job_id.toPStmtString()?>" resourceName="SQLServer" name="service"-->
+		<!--#IF evaluate="<?r:service:service_id_count?>" compare="1"-->
+			<!--#SQLLOOP query="SELECT description FROM services WHERE service_id = <?r:service:service_id.toPStmtString()?>" resourceName="SQLServer" name="s_desc"-->
+				<td><!--#SMARTFIELD title="Description" div="</td><td colspan='5'>" type="textarea" value="<?r:s_desc:description?>" name="description" cols="60" rows="4" --></td>
+			<!--#/SQLLOOP-->
+		<!--#ELSE-->
+				<td><!--#SMARTFIELD title="Description" div="</td><td colspan='5'>" type="textarea" name="description" cols="60" rows="4" --></td>
+		<!--#/IF-->
+	<!--#/SQLLOOP-->
+		<td colspan="4"><table border="0"><tr><td><!--#SMARTFIELD title="Billing Type" div="</td><td>" name="billing_type_id" type="droplist" display="lookup_name" key="lookup_id" table="billing_types_v" --></td>
+<!--#/IF-->
+
+<!--IF evaluate="<?d:mode?>" compare="Update" -->
+  <!--IF evaluate="<?p:status_id?>" compare="1"-->
+  <!--ELSE-->
+    <!--#SQLLOOP query="SELECT l.name job_type_name FROM lookups l INNER JOIN jobs j ON l.lookup_id = j.job_type_id WHERE j.job_id = <?r:bill/inv_edit:job_id.toPStmtInt()?>" resourceName="SQLServer" name="job_type"-->
+	  <td><!--#SMARTFIELD title="Job Type&nbsp;&nbsp;&nbsp;" div="</td><td>" name="job_type" type="text" readonly="true" class="readonly" value="<?r:job_type:job_type_name?>" --></td>
+	<!--#/SQLLOOP-->
+  <!--/IF-->
+<!--/IF-->
+	<tr><td><!--#SMARTFIELD title="Assigned To" div="</td><td>" style="width:140" mandatory="true" name="assigned_to_user_id" type="droplist" display="user_name" key="user_id" table="user_org_function_rights_v"
+		filter="(organization_id=<?s:org_id.toPStmtInt()?>) AND (function_code = 'bill_acct') AND (right_type_code = 'insert') AND (has_right = 'Y')"--></td></tr>
+	</tr></table></td>
+	</tr>
+
+	<tr height="10"><td colspan="10"><table border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<td><!--#SMARTFIELD title="Date&nbsp;Created:" div="&nbsp;" name="date_created" type="datetime" mode="Update" readonly class="readonly" size="22" --></td>
+			<td><!--#SMARTFIELD title="&nbsp;Created&nbsp;By:" div="&nbsp;" name="created_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+			<td><!--#SMARTFIELD title="&nbsp;Date&nbsp;Modified:" div="&nbsp;" name="date_modified" type="datetime" mode="Update" readonly class="readonly" size="22"--></td>
+			<td><!--#SMARTFIELD title="&nbsp;Modified&nbsp;By:" div="&nbsp;" name="modified_by" type="chooser" mode="Update" table="users" display="first_name+' '+last_name" key="user_id" readonly class="readonly"--></td>
+		</tr>
+	</table></tr></td>
+
+</TABLE>
+
+	<input type="hidden" name="status_id" value="{!p:status_id!}">
+	<input type="hidden" name="prev_template" value="{!p:prev_template!}">
+	<input type="hidden" name="close_page" value="{!p:close_page!}">
+
+<TABLE width="100%">
+	<tr>
+		<td>
+	<!--#IF evaluate="<?p:readonly?>" compare="true" -->
+	<!--#ELSE-->
+				<input type="button" class="button2" value="Save" name="save_button" onClick="exitFunction('Save')">
+		<!--#IF evaluate="<?d:mode?>" compare="Update" -->
+				<input type="button" class="button2" value="New" name="new_button" onClick="exitFunction('New')">
+		  <!--#SQLLOOP name="inv_status" query="SELECT code FROM invoice_statuses WHERE status_id=<?r:bill/inv_edit:status_id.toPStmtInt()?>" resourceName="SQLServer"-->
+		    <!--#IF evaluate="<?r:inv_status:code?>" compare="INVOICED" -->
+		    <!--#ELSE-->
+				<input type="button" class="button2" value="Delete" name="delete_button" onClick="exitFunction('Delete')">
+			<!--#/IF-->
+		  <!--#/SQLLOOP-->
+		<!--#/IF-->
+	<!--#/IF-->
+				<input type="button"  class="button2" value="Cancel" name="cancel_button" onClick="exitFunction('Cancel')">
+        </td>
+        <td align="right">
+<!--#IF evaluate="<?d:mode?>" compare="Update" -->
+
+	<!--#SQLLOOP query="SELECT max(' *') star FROM tracking_v where job_id=<?r:bill/inv_edit:job_id.toPStmtString()?>" resourceName="SQLServer" name="track"-->
+		<input name="pda_button" type="button" value="PDA Notes{!r:track:star!}" class="button2"
+			 onClick="newWindowScrollBars('{!s:showPage!}bill/inv/inv_pda_note_list.html?job_id={!r:bill/inv_edit:job_id!}&invoice_id={!r:bill/inv_edit:invoice_id!}','pda_note_track',400,700);">
+	<!--#/SQLLOOP-->
+
+	<!--#SQLLOOP query="SELECT max(' *') instr FROM invoice_tracking where invoice_id=<?p:invoice_id.toPStmtString()?>" resourceName="SQLServer" name="invTrack"-->
+		<input name="trk_button" type="button" value="Invoice Tracking{!r:invTrack:instr!}" class="button2"
+			 onClick="newWindowScrollBars('{!s:showPage!}bill/inv/inv_track_list.html?invoice_id={!r:bill/inv_edit:invoice_id!}','inv_track',400,700);">
+	<!--#/SQLLOOP-->
+
+	<!--#IF evaluate="<?p:status_id?>" compare="1" -->
+		<input name="send_to_proc_button" type="button" value="Send to Processing Dept >>" class="button2"
+			 onClick="changeStatus(this.form,2)">
+	<!--#ELSEIF evaluate="<?p:status_id?>" compare="2"-->
+		<input name="send_to_idm_button" type="button" value="<< Send back to IDM" class="button2"
+			 onClick="changeStatus(this.form,1)">
+		<input name="complete_button" type="button" value="Complete >>" class="button2"
+			 onClick="changeStatus(this.form,3)">
+	<!--#ELSEIF evaluate="<?p:status_id?>" compare="3"-->
+		<input name="pending_button" type="button" value="<< Pending" class="button2"
+			 onClick="changeStatus(this.form,2)">
+	<!--#/IF-->
+
+<!--#/IF-->
+       	</td>
+    </tr>
+
+<!--#/SMARTFORM -->
+
+<!--#IF evaluate="<?d:mode?>" compare="Update" -->
+	<TABLE class="SmartTable" border="0" cellpadding="0" cellspacing="2"> <tr><td class="HeaderBar">Invoice Lines</td></tr></TABLE>
+	<TABLE width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr height="5">
+		<td colspan="2"></td>
+	<tr>
+		<td width="50%">
+			<!--#IF evaluate="<?p:readonly?>" compare="true" -->
+			<!--#ELSE-->
+				<!--#CHECKSECURITY right="rights.add_billing_lines.view"-->
+				&nbsp;Add&nbsp;&nbsp;
+					<A href="{!s:action!}time/tc_edit.html?item_type_code=hours&prev_template=bill/inv/job_inv_lines_sum_det.html&module=bill&module_mode=create&level={!p:level!}&p_invoice_id={!p:invoice_id!}&status_id=4" target="job_inv_frame">Hours</A>&nbsp;&nbsp;&nbsp;
+					<A href="{!s:action!}time/tc_edit.html?item_type_code=expense&prev_template=bill/inv/job_inv_lines_sum_det.html&module=bill&module_mode=create&level={!p:level!}&p_invoice_id={!p:invoice_id!}&status_id=4" target="job_inv_frame">Expenses</A>&nbsp;&nbsp;&nbsp;
+					<A href="{!s:action!}bill/inv/inv_cust_edit.html?&prev_template=bill/inv/job_inv_lines_sum_det.html&invoice_id={!p:invoice_id!}&level={!p:level!}" target="job_inv_frame">Custom Lines (Old)</A>&nbsp;&nbsp;&nbsp;
+					<a href="javascript:void(0);" onclick="window.open('{!s:action!}launchCharm?address=invoice.html%3FinvoiceId={!p:invoice_id!}');return false;" >Custom Lines</A>
+
+
+
+
+							<!--#/CHECKSECURITY-->
+			<!--#/IF-->
+		</td>
+	<FORM name="QuickIndex" >
+		<td id="total_tax" align="center" nowrap></td>
+		<td width="50%" align="right">View
+
+			<SELECT name="URL" class="regular"
+			   onChange="if(options[selectedIndex].value)
+			   parent.job_inv_frame.location.href=
+			   (options[selectedIndex].value);window.focus()">
+			<!--#IF evaluate="<?p:status_id?>" greaterthan="2" -->
+				<OPTION value="{!s:showPage!}bill/inv/job_inv_lines_post_det.html?invoice_id={!p:invoice_id!}">Detail</OPTION>
+				<OPTION value="{!s:showPage!}bill/inv/job_inv_post_det.html?invoice_id={!p:invoice_id!}">Invoice Line Det</OPTION>
+				<OPTION value="{!s:showPage!}bill/inv/job_inv_lines_post_req.html?invoice_id={!p:invoice_id!}">Summary by Req</OPTION>
+				<OPTION value="{!s:showPage!}bill/inv/job_inv_lines_post_item.html?invoice_id={!p:invoice_id!}">Summary by Item</OPTION>
+				<OPTION value="{!s:showPage!}bill/inv/job_inv_lines_post_req_item.html?invoice_id={!p:invoice_id!}">Summary by Req/Item</OPTION>
+			<!--#ELSE-->
+				<OPTION value="{!s:showPage!}bill/inv/job_inv_lines_sum_det.html?invoice_id={!p:invoice_id!}">Detail</OPTION>
+				<OPTION value="{!s:showPage!}bill/inv/job_inv_lines_sum_req.html?invoice_id={!p:invoice_id!}">Summary by Req</OPTION>
+				<OPTION value="{!s:showPage!}bill/inv/job_inv_lines_sum_item.html?invoice_id={!p:invoice_id!}">Summary by Item</OPTION>
+				<OPTION value="{!s:showPage!}bill/inv/job_inv_lines_sum_req_item.html?invoice_id={!p:invoice_id!}">Summary by Req/Item</OPTION>
+			<!--#/IF-->
+			</SELECT>
+		</td>
+	</FORM>
+	</tr>
+	</TABLE>
+<!--#/IF-->
+
+<script type="text/javascript">
+<!--
+	 function loadLines()
+	 {
+
+	<!--#IF evaluate="<?d:mode?>" compare="Update" -->
+		var url = (QuickIndex.URL.options[0].value);
+		parent.job_inv_frame.location.href = url;
+	<!--#ELSE-->
+		parent.job_inv_frame.location.href = "{!s:showPage!}blank.html";
+	<!--#/IF-->
+
+	 }
+
+	function exitFunction(action)
+	{
+		if( action != null && action == 'Cancel' )
+		{
+			parent.location='{!s:showPage!}{!p:prev_template!}?invoice_id={!p:invoice_id!}';
+		}
+		else
+		{
+			inv_edit.button.value = action;
+			inv_edit.submit();
+		}
+	}
+//-->
+</script>
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

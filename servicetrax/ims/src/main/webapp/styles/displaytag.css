@@ -1,0 +1,123 @@
+table th.sectionTitle { text-align:left; }
+
+table.bodytable { border: 1px solid #666666; margin: 0 0 15px 0; width:100%; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px;}
+
+table.bodytable th, table.bodytable td {
+	padding: 2px 4px 2px 6px;
+	text-align: left;
+	vertical-align: top;
+}
+
+table.bodytable thead tr { background-color: #3B5D77;}
+
+table.bodytable th.sorted { background-color: #009900; }
+
+table.bodytable th { color:white; }
+
+table.bodytable th a, th a:visited { color: #FFFFFF; }
+table.bodytable th a { text-decoration:none; }
+table.bodytable th a:hover { text-decoration: underline; }
+
+table.bodytable th.sorted a, th.sortable a { background-position: right; display: block; width: 100%;}
+table.bodytable th.sortable a { background-image: url(../images/arrow_off.png); background-repeat: no-repeat; background-position: right; margin-right:10px;}
+
+table.bodytable th.order1 a { background-image: url(../images/arrow_down.png); }
+table.bodytable th.order2 a { background-image: url(../images/arrow_up.png); }
+
+table.bodytable tr.odd { background-color: #EDEDED; }
+table.bodytable tr.even { background-color: #DDDDDD; }
+table.bodytable tr.selected { background-color: #B0C4DE; }
+
+
+table.steptable { border: 1px solid #666666; margin: 0px 0px 0px 0px; width:100%; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px;}
+
+table.steptable th, table.steptable td { padding: 2px 4px 2px 4px; text-align: left; vertical-align: top; }
+
+table.steptable thead tr { background-color: #3B5D77;}
+
+table.steptable th.sorted { background-color: #009900; }
+
+table.steptable th { color:white; background-color: #3B5D77;}
+
+table.steptable th a, th a:visited { color: #FFFFFF; }
+table.steptable th a { text-decoration:none; }
+table.steptable th a:hover { text-decoration: underline; }
+
+table.steptable th.sorted a, th.sortable a { background-position: right; display: block; width: 100%;}
+table.steptable th.sortable a { background-image: url(../images/arrow_off.png); background-repeat: no-repeat; background-position: right; margin-right:10px;}
+
+table.steptable th.order1 a { background-image: url(../images/arrow_down.png); }
+table.steptable th.order2 a { background-image: url(../images/arrow_up.png); }
+
+table.steptable tr.odd { background-color: #EDEDED; }
+table.steptable tr.even { background-color: #cccccc; }
+table.steptable tr.selected { background-color: #B0C4DE; }
+
+table.steptable tr td { cursor: pointer; cursor: hand; }
+
+td.checkbox {padding: 2px 4px 2px 15px; text-align: center; width:50px;}
+table.steptable th.stepnum { font-size:2.1em; }
+
+input.long {width:320px;}
+input.checkbox {padding: 2px 2px 2px 20px; text-align: center;}
+input.long {width:320px;}
+option.long {width:320px;}
+select.long {width:320px;}
+select.longX {width:340px;}
+select.longXX {width:693px;}
+
+
+.formTableHeading
+{
+	background-color:#d9dbd0;
+	color:black;
+	font-family: Verdana, Arial, Helvetica, sans-serif; 
+	font-size: 11px;
+	font-weight:bold;
+}
+
+table.formTable
+{
+ border: 1px solid #666666; margin: 15px 0 15px 0; 
+}
+
+
+div.exportlinks {
+	background-color: #eee;
+	border: 1px dotted #999;
+	padding: 2px 4px 2px 4px;
+	margin: 2px 0 10px 0;
+	width: 79%;
+}
+
+span.export {
+	padding: 0 4px 1px 20px;
+	display: inline;
+	display: inline-block;
+	cursor: pointer;
+}
+
+span.excel {
+	background-image: url(../images/ico_file_excel.png);
+	background-repeat: no-repeat;
+}
+
+span.csv {
+	background-image: url(../images/ico_file_csv.png);
+	background-repeat: no-repeat;
+}
+
+span.xml {
+	background-image: url(../images/ico_file_xml.png);
+	background-repeat: no-repeat;
+}
+
+span.pdf {
+	background-image: url(../images/ico_file_pdf.png);
+	background-repeat: no-repeat;
+}
+
+span.rtf {
+	background-image: url(../images/ico_file_rtf.png);
+	background-repeat: no-repeat;
+}

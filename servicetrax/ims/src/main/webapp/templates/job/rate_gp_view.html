@@ -1,0 +1,34 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: rate_gp_view.html, 6, 4/7/2005 9:30:57 AM, Greg Case$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.job/rate_gp_view.view?>"-->
+<body onLoad="focus()">
+
+	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	   <tr><td class="tableHeader">Default Rates from Great Plains</td></tr>
+	</table>
+
+   <!--#SMARTTABLE name="rate_edit" class="SmartTable" maxRows="0"
+    	   query="SELECT pl.prclevel, (case im.itmshnam when null then im.itemnmbr when '' then im.itemnmbr else im.itmshnam end) name, im.uscatvls_1, im.uscatvls_2, pl.uofm,
+                      (case pricmthd when '1' then pl.uomprice
+                           	       when '3' then (im.currcost+(im.currcost*(pl.uomprice/100))) end) rate
+                FROM IV00101 im, IV00108 pl
+                WHERE im.itemnmbr = pl.itemnmbr
+                AND itemtype != 2
+                AND pl.prclevel = <?p:ext_price_level_id.toPStmtString()?>
+                ORDER BY name"
+         resourceName="<?s:org_resource?>"
+   -->
+	<!--#SMARTCOLUMN title="Item" name="name" sort="name" -->
+	<!--#SMARTCOLUMN title="U of M" name="uofm" sort="uofm" -->
+	<!--#SMARTCOLUMN title="Rate" name="rate" sort="rate" format="money" align="right" -->
+	<!--#SMARTCOLUMN title="Billable" name="uscatvls_1" sort="uscatvls_1" value="<?r:rate_edit:uscatvls_1.isNull('Yes')?>" align="center"-->
+	<!--#SMARTCOLUMN title="Exp Code" name="uscatvls_2" sort="uscatvls_2" align="center"-->
+   <!--#/SMARTTABLE -->
+
+	<br>
+	<input name="cancel" type="button" value="Cancel" class="button" onClick="window.opener.focus();parent.window.close();">
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

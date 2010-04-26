@@ -1,0 +1,18 @@
+#foreach($table in $tables)
+#set ($name = $table.destinationClassName) 
+#set ($alias = "$name.substring(0,1).toLowerCase()$name.substring(1)")
+
+${alias}_list.title = ${alias} List
+${alias}_list.heading = Select the ${alias} that you wish to edit.
+#foreach( $column in $table.columns )
+${alias}_list.${column.variableName}.title = ${column.variableName}
+#end
+
+${alias}_detail.title = ${alias} Detail
+${alias}_detail.heading = Edit this ${alias} and then click save when you are finished.
+#foreach( $column in $table.columns )
+${alias}Form.${column.variableName}.label = ${column.variableName}
+${alias}Form.${column.variableName}.tooltip = ${column.variableName}
+#end
+
+#end

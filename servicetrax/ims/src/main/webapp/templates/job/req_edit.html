@@ -1,0 +1,1156 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: req_edit.html, 78, 1/23/2006 10:11:21 AM, Blake Von Haden$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.job/req_edit.view?>"-->
+<!--#EXEC handler="ims.handlers.job_processing.SetupSessionDataHandler" job_id="<?s:job_id?>" service_id="<?s:service_id?>" -->
+
+<body class="BodyTag" onLoad="setCheckboxes(req_edit);window.focus();onLoadFunction();">
+
+<!--#EXEC handler="ims.handlers.job_processing.InitReqHandler" -->
+
+<!--#REQUIRED data="<?s:user?>"-->
+<!--#REQUIRED data="<?s:rights.job/req_edit.view?>"-->
+<!--#REQUIRED data="<?s:job_id?>"-->
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<!--#SMARTFORM name="job/req_edit" action="<?s:action?>newReq/job/req_edit.html" security="rights"
+	               table="services" key="service_id" sequence="@@IDENTITY"
+				   preHandler="ims.handlers.job_processing.SmartFormPreHandler;ims.handlers.job_processing.ReqPreHandler;"
+				   postHandler="ims.handlers.job_processing.ReqPostHandler"
+                   nextTemplate="main.html"
+                   onClickFunction="exitFunction"
+                   buttons=""
+	-->
+
+		<!--#SMARTFIELD name="loc" type="hidden" value="<?p:loc?>" -->
+		<!--#SMARTFIELD name="job_id" type="hidden" value="<?s:job_id?>" -->
+		<!--#SMARTFIELD name="redisplay" type="hidden" value="false" -->
+		<!--#SMARTFIELD name="service_type_name" type="hidden" value="<?p:service_type_name?>" -->
+		<!--#SMARTFIELD name="closeOnCancel" type="hidden" value="<?p:closeOnCancel?>"-->
+		<!--#SMARTFIELD name="object_type" type="hidden" value="" -->
+		<!--#SMARTFIELD name="new_status" type="hidden" value="" -->
+		<!--#SMARTFIELD name="object_id" type="hidden" value="" -->
+		<!--#SMARTFIELD name="button" type="hidden" value="" -->
+		<!--#SMARTFIELD name="parent" type="hidden" value="" -->
+		<!--#SMARTFIELD name="a_m_sales_contact_id" type="hidden" value="<?s:a_m_sales_contact_id?>" -->
+
+	<tr>
+		<td>
+		<table width="100%">
+			<tr>
+				<td class="TableTitle" colspan="5">Requisition</td>
+				<td width="14%" class="TableTitle">Complete?<!--#SMARTFIELD name="head_val_flag" type="checkbox" value="<?r:job/req_edit:head_val_flag?>" class="Checkbox" mode="Update" --><!--#SMARTFIELD name="head_val_flag" type="checkbox" class="Checkbox" mode="Insert" --></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<table width="100%">
+			<tr><td><table width="100%" cellspacing="0" cellpadding="0"><tr>
+				<td><!--#SMARTFIELD title="Req#:" div="</td><td>" name="service_no" readonly class="readonly" --></td>
+				<td><!--#SMARTFIELD title="Req Type:" div="</td><td>" name="service_type_id" style="width:114" type="droplist" table="service_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" onChange="setCheckboxesVal(req_edit);passServiceType();redisplaySmartForm();" value="<?p:service_type_id.toPStmtInt()?>" --></td>
+				<td>
+					<!--#SMARTFIELD title="Req&nbsp;Status: " div="</td><td colspan=\"3\">" name="serv_status_type_id" type="chooser" table="service_status_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" readonly class="readonly" -->
+				<!--#IF evaluate="<?d:mode?>" compare="Update" -->
+					<!--#IF evaluate="<?s:serv_status_type_code?>" compare="closed" -->
+						<!--#CHECKSECURITY right="rights.close_req.view"-->
+   	   		<input name="close_req_button" type="button" value="Open Req" class="button2" onClick="updateStatus('pending');" >
+   	   	      <!--#/CHECKSECURITY-->
+					<!--#ELSE-->
+						<!--#CHECKSECURITY right="rights.close_req.view"-->
+   	   		<input name="close_req_button" type="button" value="Close Req" class="button2" onClick="updateStatus('closed');" >
+  		   	      <!--#/CHECKSECURITY-->
+					<!--#/IF-->
+				<!--#/IF-->
+				</td>
+			</tr></table></td></tr>
+			<tr><td><table width="100%" cellspacing="0" cellpadding="0">
+			<tr>
+		      <td nowrap><!--#SMARTFIELD title="PO/Line#:" div="</td><td>" name="po_no"--></td>
+		      <td><!--#SMARTFIELD title="Pooled&nbsp;Hours?" div="</td><td>" name="internal_req_flag" type="boolean" value="N" --></td>
+			  <td class="HeaderLabel">Miscellaneous Info:</td>
+			</tr>
+			<tr>
+				<td><!--#SMARTFIELD title="Quote#:" div="&nbsp;</td><td>" name="request_id" type="chooser" table="service_quotes_v" display="project_quote_no" key="service_request_id" readonly class="readonly" --></td>
+				<td><!--#SMARTFIELD title="Priority:" div="&nbsp;</td><td>" name="priority_type_id" style="width:45" align="center" type="chooser" table="priority_types_v" display="lookup_name" key="lookup_id" readonly class="readonly" --></td>
+				<td rowspan="2" align="left">
+					<!--#SMARTFIELD  name="misc" type="textarea" cols="55" rows="3" wrap="virtual" -->
+				</td>
+			</tr>
+			<tr>
+				<td><!--#SMARTFIELD title="Billing Type:" div="</td><td>" name="billing_type_id" style="width:114" type="droplist" table="billing_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td>
+				<td><!--#SMARTFIELD title="Taxable?" div="</td><td>" name="taxable_flag" type="boolean" value="N" --></td>
+			</tr>
+			</table></td></tr>
+		</table>
+		<table width="100%" border="0">
+			<tr>
+				<td class="HeaderLabel" colspan="4">Description</td>
+		    	<td class="HeaderLabel" align="right" style="width:200">Email?</td>
+				<td class="HeaderLabel" colspan="3">Contacts</td>
+			</tr>
+<!-- David modification BEGINS here -->
+<!--#IF evaluate="<?s:is_new?>" compare="Y"-->
+			<tr>
+		      <td colspan="4" rowspan="6"><!--#SMARTFIELD title="" name="description" type="textarea" cols="70" rows="10" wrap="virtual"
+		          onKeyDown="textCounter(this.form.description,this.form.remLen,1000,'down');"
+		          onKeyUp="textCounter(this.form.description,this.form.remLen,1000,'up');"--></td>
+
+		      <td align="right"><!--#SMARTFIELD name="email_idm" type="checkbox" class="Checkbox" value=""--></td>
+
+			  <td><!--#SMARTFIELD title="Omni&nbsp;Project&nbsp;Manager:" div="</td><td width=\"1%\">" name="idm_contact_id" style="width:114"
+			                      type="droplist" table="contacts_v" display="contact_name" key="contact_id"
+			                      filter="(organization_id=<?s:org_id.toPStmtInt()?> AND contact_type_code='a_m' AND cont_status_type_code='active')
+			                              OR contact_id=<?r:job/req_edit:idm_contact_id.toPStmtInt()?>"
+			                      table="contacts_v" display="contact_name" key="contact_id" value="<?d:a_m_contact_id?>"--></td><td align="left">&nbsp;
+
+		<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+				<input type="button" name="contact_edit" value="View" class="button2"
+				       onClick="newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+escape({!s:ext_direct_dealer_id.toJavaScriptString()!})
+				                                                             +'&amp;contact_type_code=a_m&amp;theForm=req_edit&amp;theDroplist=idm_contact_id&amp;contact_id=',
+                                          'contacts',450,490,req_edit.idm_contact_id);">
+		<!--#/IF-->
+				</td><td width="20%">&nbsp;</td>
+			</tr>
+			<tr>
+		      <td align="right"><!--#SMARTFIELD name="email_am_sales" type="checkbox" class="Checkbox" value=""--></td>
+			  <td><!--#SMARTFIELD title="Omni&nbsp;Sales&nbsp;Person:" div="</td><td width=\"1%\">" name="a_m_sales_contact_id" style="width:114" type="droplist"
+			                      filter="organization_id=<?s:org_id.toPStmtInt()?> AND (contact_type_code='service_provider_sales' AND cont_status_type_code='active')
+			                              OR contact_id=<?s:a_m_sales_contact_id.toPStmtInt()?>"
+			                      table="contacts_v" display="contact_name" key="contact_id" readonly --></td><td align="left">&nbsp;
+
+			<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+				<input type="button" name="contact_edit" value="View" class="button2"
+				  onClick="newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=service_provider_sales&amp;theForm=req_edit&amp;theDroplist=a_m_sales_contact_id&amp;contact_id=','contacts',450,490,req_edit.a_m_sales_contact_id);">
+			<!--#/IF-->
+				</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+		      <td align="right"><!--#SMARTFIELD name="email_job_location" type="checkbox" class="Checkbox" --></td>
+			  <td>
+				<!--#SMARTFIELD title="Job&nbsp;Location&nbsp;Contact:" div="</td><td width=\"1%\"><div id=\"jobLocationContactDiv\">" name="job_location_contact_id" style="width:114" type="droplist"
+				              query="SELECT DISTINCT c.contact_id job_location_contact_id, c.contact_name
+					  		           FROM contacts c INNER JOIN
+					  		                job_location_contacts jlc ON c.contact_id = jlc.contact_id INNER JOIN
+				                            lookups l ON c.cont_status_type_id = l.lookup_id
+						              WHERE l.code='active'
+				                        AND c.contact_name IS NOT NULL
+						                AND c.contact_name NOT LIKE '%N/A%'
+						                AND c.contact_name <> 'NA'
+						                AND (jlc.job_location_id = <?r:job/req_edit:job_location_id.toPStmtInt()?> OR c.contact_id = <?r:job/req_edit:job_location_contact_id.toPStmtInt()?>)
+		                           ORDER BY c.contact_name" -->
+		      </div></td>
+		      <td align="left">&nbsp;
+			<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+				<input type="button" name="contact_edit" value="View" class="button2"
+				       onClick="newWindow('{!s:showPage!}job/job_Location_contact_edit.html?ext_dealer_id='+getExtDealerID()
+				                                                                          +'&amp;job_location_id='+escape({!r:job/req_edit:job_location_id.toJavaScriptString()!})
+				                                                                          +'&amp;contact_type_code=job_location'
+				                                                                          +'&amp;theForm=req_edit&amp;theDroplist=job_location_contact_id'
+				                                                                          +'&amp;contact_id=',
+				                          'contacts',450,490,req_edit.job_location_contact_id);">
+			<!--#/IF-->
+			  </td><td>&nbsp;</td>
+			</tr>
+
+  <!--#SQLLOOP name="cust_tye"
+               query="SELECT l.code
+                        FROM customers c INNER JOIN
+                             lookups l ON c.customer_type_id=l.lookup_id
+                       WHERE l.active_flag='Y'
+                         AND c.customer_id=<?s:customer_id.toPStmtString()?>"-->
+    <!--#IF evaluate="<?r:cust_tye:code?>" compare="dealer"-->
+
+			<tr>
+		      <td align="right"><!--#SMARTFIELD name="email_customer" type="checkbox" class="Checkbox" value=""--></td>
+			  <td><!--#SMARTFIELD title="Customer&nbsp;Contact:" div="</td><td width=\"1%\">" name="customer_contact_id" style="width:114" type="droplist"
+				  query="SELECT customer_contact_id, contact_name
+				           FROM (SELECT c.contact_id customer_contact_id, c.contact_name
+								   FROM contacts c INNER JOIN
+										contact_groups cg ON c.contact_id=cg.contact_id INNER JOIN
+										lookups l ON c.cont_status_type_id = l.lookup_id INNER JOIN
+										lookups l2 ON cg.contact_type_id=l2.lookup_id
+								  WHERE l.code='active'
+									AND c.organization_id = <?s:org_id.toPStmtInt()?>
+									AND c.contact_name IS NOT NULL
+									AND c.contact_name NOT LIKE '%N/A%'
+									AND c.contact_name <> 'NA'
+									AND c.customer_id = <?s:customer_id.toPStmtInt()?>
+									AND l2.code IN ('sales','designer','support','project_mgr')
+								UNION
+								 SELECT c.contact_id customer_contact_id, c.contact_name
+								   FROM contacts c INNER JOIN
+										contact_groups cg ON c.contact_id=cg.contact_id INNER JOIN
+										lookups l ON c.cont_status_type_id = l.lookup_id INNER JOIN
+										lookups l2 ON cg.contact_type_id=l2.lookup_id INNER JOIN
+										customers cust ON c.ext_dealer_id=cust.ext_customer_id
+								  WHERE l.code='active'
+									AND c.organization_id = <?s:org_id.toPStmtInt()?>
+									AND c.contact_name IS NOT NULL
+									AND c.contact_name NOT LIKE '%N/A%'
+									AND c.contact_name <> 'NA'
+									AND cust.customer_id = <?s:customer_id.toPStmtInt()?>
+									AND l2.code IN ('sales','designer','support','project_mgr')) c
+		               ORDER BY c.contact_name"  --></td><td align="left">&nbsp;
+			<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+				<input type="button" name="contact_edit" value="View" class="button2"
+				       onClick="newWindow('{!s:showPage!}job/customer_contact_edit.html?ext_dealer_id='+getExtDealerID()
+				                                                                      +'&amp;customer_id='+getCustID()
+				                                                                      +'&amp;theForm=req_edit&amp;theDroplist=customer_contact_id'
+				                                                                      +'&amp;cc2_id='+escape({!r:job/req_edit:customer_contact2_id.toJavaScriptString()!})
+				                                                                      +'&amp;cc3_id='+escape({!r:job/req_edit:customer_contact3_id.toJavaScriptString()!})
+				                                                                      +'&amp;cc4_id='+escape({!r:job/req_edit:customer_contact4_id.toJavaScriptString()!})
+				                                                                      +'&amp;contact_id=',
+				                          'contacts',450,490,req_edit.customer_contact_id);">
+			<!--#/IF-->
+				</td><td>&nbsp;</td>
+			</tr>
+
+			<tr>
+		      <td align="right"><!--#SMARTFIELD name="email_customer2" type="checkbox" class="Checkbox" value=""--></td>
+			  <td><!--#SMARTFIELD title="Customer&nbsp;Contact2:" div="</td><td width=\"1%\">" name="customer_contact2_id" style="width:114" type="droplist" onchange=""
+				  query="SELECT customer_contact2_id, contact_name
+				  		   FROM (SELECT c.contact_id customer_contact2_id, c.contact_name
+								   FROM contacts c INNER JOIN
+										contact_groups cg ON c.contact_id=cg.contact_id INNER JOIN
+										lookups l ON c.cont_status_type_id = l.lookup_id INNER JOIN
+										lookups l2 ON cg.contact_type_id=l2.lookup_id
+								  WHERE l.code='active'
+									AND c.organization_id = <?s:org_id.toPStmtInt()?>
+									AND c.contact_name IS NOT NULL
+									AND c.contact_name NOT LIKE '%N/A%'
+									AND c.contact_name <> 'NA'
+									AND c.customer_id = <?s:customer_id.toPStmtInt()?>
+									AND l2.code IN ('sales','designer','support','project_mgr')
+								UNION
+								 SELECT c.contact_id customer_contact2_id, c.contact_name
+								   FROM contacts c INNER JOIN
+										contact_groups cg ON c.contact_id=cg.contact_id INNER JOIN
+										lookups l ON c.cont_status_type_id = l.lookup_id INNER JOIN
+										lookups l2 ON cg.contact_type_id=l2.lookup_id INNER JOIN
+										customers cust ON c.ext_dealer_id=cust.ext_customer_id
+								  WHERE l.code='active'
+									AND c.organization_id = <?s:org_id.toPStmtInt()?>
+									AND c.contact_name IS NOT NULL
+									AND c.contact_name NOT LIKE '%N/A%'
+									AND c.contact_name <> 'NA'
+									AND cust.customer_id = <?s:customer_id.toPStmtInt()?>
+									AND l2.code IN ('sales','designer','support','project_mgr')) c
+		               ORDER BY c.contact_name"  --></td><td align="left">&nbsp;
+			<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+				<input type="button" name="contact_edit" value="View" class="button2"
+				       onClick="newWindow('{!s:showPage!}job/customer_contact_edit.html?ext_dealer_id='+getExtDealerID()
+				                                                                      +'&amp;customer_id='+getCustID()
+				                                                                      +'&amp;theForm=req_edit&amp;theDroplist=customer_contact_id'
+				                                                                      +'&amp;cc1_id='+escape({!r:job/req_edit:customer_contact_id.toJavaScriptString()!})
+				                                                                      +'&amp;cc3_id='+escape({!r:job/req_edit:customer_contact3_id.toJavaScriptString()!})
+				                                                                      +'&amp;cc4_id='+escape({!r:job/req_edit:customer_contact4_id.toJavaScriptString()!})
+				                                                                      +'&amp;contact_id=',
+				                          'contacts',450,490,req_edit.customer_contact2_id);">
+			<!--#/IF-->
+				</td><td>&nbsp;</td>
+			</tr>
+
+			<tr>
+		      <td align="right"><!--#SMARTFIELD name="email_customer3" type="checkbox" class="Checkbox" value=""--></td>
+			  <td><!--#SMARTFIELD title="Customer&nbsp;Contact3:" div="</td><td width=\"1%\">" name="customer_contact3_id" style="width:114" type="droplist" onchange=""
+				  query="SELECT customer_contact3_id, c.contact_name
+				           FROM (SELECT c.contact_id customer_contact3_id, c.contact_name
+								   FROM contacts c INNER JOIN
+										contact_groups cg ON c.contact_id=cg.contact_id INNER JOIN
+										lookups l ON c.cont_status_type_id = l.lookup_id INNER JOIN
+										lookups l2 ON cg.contact_type_id=l2.lookup_id
+								  WHERE l.code='active'
+									AND c.organization_id = <?s:org_id.toPStmtInt()?>
+									AND c.contact_name IS NOT NULL
+									AND c.contact_name NOT LIKE '%N/A%'
+									AND c.contact_name <> 'NA'
+									AND c.customer_id = <?s:customer_id.toPStmtInt()?>
+									AND l2.code IN ('sales','designer','support','project_mgr')
+								UNION
+								 SELECT c.contact_id customer_contact3_id, c.contact_name
+								   FROM contacts c INNER JOIN
+										contact_groups cg ON c.contact_id=cg.contact_id INNER JOIN
+										lookups l ON c.cont_status_type_id = l.lookup_id INNER JOIN
+										lookups l2 ON cg.contact_type_id=l2.lookup_id INNER JOIN
+										customers cust ON c.ext_dealer_id=cust.ext_customer_id
+								  WHERE l.code='active'
+									AND c.organization_id = <?s:org_id.toPStmtInt()?>
+									AND c.contact_name IS NOT NULL
+									AND c.contact_name NOT LIKE '%N/A%'
+									AND c.contact_name <> 'NA'
+									AND cust.customer_id = <?s:customer_id.toPStmtInt()?>
+									AND l2.code IN ('sales','designer','support','project_mgr')) c
+		               ORDER BY c.contact_name"  --></td><td align="left">&nbsp;
+			<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+				<input type="button" name="contact_edit" value="View" class="button2"
+				       onClick="newWindow('{!s:showPage!}job/customer_contact_edit.html?ext_dealer_id='+getExtDealerID()
+				                                                                      +'&amp;customer_id='+getCustID()
+				                                                                      +'&amp;theForm=req_edit&amp;theDroplist=customer_contact_id'
+				                                                                      +'&amp;cc1_id='+escape({!r:job/req_edit:customer_contact_id.toJavaScriptString()!})
+				                                                                      +'&amp;cc2_id='+escape({!r:job/req_edit:customer_contact2_id.toJavaScriptString()!})
+				                                                                      +'&amp;cc4_id='+escape({!r:job/req_edit:customer_contact4_id.toJavaScriptString()!})
+				                                                                      +'&amp;contact_id=',
+				                          'contacts',450,490,req_edit.customer_contact3_id);">
+			<!--#/IF-->
+				</td><td>&nbsp;</td>
+			</tr>
+
+			<tr>
+			  <td colspan="4" class="HeaderLabel"><input readonly type="text" name="remLen" size="3" maxlength="3" value="500" class="HeaderLabel"> characters left.</td>
+		      <td align="right"><!--#SMARTFIELD name="email_customer4" type="checkbox" class="Checkbox" value=""--></td>
+			  <td><!--#SMARTFIELD title="Customer&nbsp;Contact4:" div="</td><td width=\"1%\">" name="customer_contact4_id" style="width:114" type="droplist" onchange=""
+				  query="SELECT customer_contact4_id, c.contact_name
+				           FROM (SELECT c.contact_id customer_contact4_id, c.contact_name
+								   FROM contacts c INNER JOIN
+										contact_groups cg ON c.contact_id=cg.contact_id INNER JOIN
+										lookups l ON c.cont_status_type_id = l.lookup_id INNER JOIN
+										lookups l2 ON cg.contact_type_id=l2.lookup_id
+								  WHERE l.code='active'
+									AND c.organization_id = <?s:org_id.toPStmtInt()?>
+									AND c.contact_name IS NOT NULL
+									AND c.contact_name NOT LIKE '%N/A%'
+									AND c.contact_name <> 'NA'
+									AND c.customer_id = <?s:customer_id.toPStmtInt()?>
+									AND l2.code IN ('sales','designer','support','project_mgr')
+								UNION
+								 SELECT c.contact_id customer_contact4_id, c.contact_name
+								   FROM contacts c INNER JOIN
+										contact_groups cg ON c.contact_id=cg.contact_id INNER JOIN
+										lookups l ON c.cont_status_type_id = l.lookup_id INNER JOIN
+										lookups l2 ON cg.contact_type_id=l2.lookup_id INNER JOIN
+										customers cust ON c.ext_dealer_id=cust.ext_customer_id
+								  WHERE l.code='active'
+									AND c.organization_id = <?s:org_id.toPStmtInt()?>
+									AND c.contact_name IS NOT NULL
+									AND c.contact_name NOT LIKE '%N/A%'
+									AND c.contact_name <> 'NA'
+									AND cust.customer_id = <?s:customer_id.toPStmtInt()?>
+									AND l2.code IN ('sales','designer','support','project_mgr')) c
+		               ORDER BY c.contact_name"  --></td><td align="left">&nbsp;
+			<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+				<input type="button" name="contact_edit" value="View" class="button2"
+				       onClick="newWindow('{!s:showPage!}job/customer_contact_edit.html?ext_dealer_id='+getExtDealerID()
+				                                                                      +'&amp;customer_id='+getCustID()
+				                                                                      +'&amp;theForm=req_edit&amp;theDroplist=customer_contact_id'
+				                                                                      +'&amp;cc1_id='+escape({!r:job/req_edit:customer_contact_id.toJavaScriptString()!})
+				                                                                      +'&amp;cc2_id='+escape({!r:job/req_edit:customer_contact2_id.toJavaScriptString()!})
+				                                                                      +'&amp;cc3_id='+escape({!r:job/req_edit:customer_contact3_id.toJavaScriptString()!})
+				                                                                      +'&amp;contact_id=',
+				                          'contacts',450,490,req_edit.customer_contact4_id);">
+			<!--#/IF-->
+				</td><td>&nbsp;</td>
+			</tr>
+
+    <!--#ELSE-->
+			<tr>
+		      <td align="right"><!--#SMARTFIELD name="email_customer" type="checkbox" class="Checkbox" value=""--></td>
+			  <td><!--#SMARTFIELD title="Customer&nbsp;Contact:" div="</td><td width=\"1%\">" name="customer_contact_id" style="width:114" type="droplist"
+                  query="SELECT DISTINCT c.contact_id customer_contact_id, c.contact_name
+				  		   FROM contacts c INNER JOIN
+				  		        contact_groups cg ON c.contact_id=cg.contact_id INNER JOIN
+                                lookups l ON c.cont_status_type_id = l.lookup_id INNER JOIN
+                                lookups l2 ON cg.contact_type_id=l2.lookup_id
+		                  WHERE l.code='active'
+		                    AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                            AND c.contact_name IS NOT NULL
+		                    AND c.contact_name NOT LIKE '%N/A%'
+		                    AND c.contact_name <> 'NA'
+		                    AND c.customer_id = <?s:customer_id.toPStmtInt()?>
+		                    AND l2.code = 'customer'
+		               ORDER BY c.contact_name" --></td><td align="left">&nbsp;
+			<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+				<input type="button" name="contact_edit" value="View" class="button2"
+					   onClick="newWindow('{!s:showPage!}job/customer_contact_edit.html?ext_dealer_id='+getExtDealerID()
+																					  +'&amp;customer_id='+getCustID()
+																					  +'&amp;theForm=req_edit&amp;theDroplist=customer_contact_id'
+																					  +'&amp;cc2_id='+escape({!r:job/req_edit:customer_contact2_id.toJavaScriptString()!})
+																					  +'&amp;cc3_id='+escape({!r:job/req_edit:customer_contact3_id.toJavaScriptString()!})
+																					  +'&amp;cc4_id='+escape({!r:job/req_edit:customer_contact4_id.toJavaScriptString()!})
+																					  +'&amp;contact_id=',
+				                          'contacts',450,490,req_edit.customer_contact_id);"?
+			<!--#/IF-->
+				</td><td>&nbsp;</td>
+			</tr>
+
+			<tr>
+		      <td align="right"><!--#SMARTFIELD name="email_customer2" type="checkbox" class="Checkbox" value=""--></td>
+			  <td><!--#SMARTFIELD title="Customer&nbsp;Contact2:" div="</td><td width=\"1%\">" name="customer_contact2_id" style="width:114" type="droplist"
+                  query="SELECT DISTINCT c.contact_id customer_contact2_id, c.contact_name
+				  		   FROM contacts c INNER JOIN
+				  		        contact_groups cg ON c.contact_id=cg.contact_id INNER JOIN
+                                lookups l ON c.cont_status_type_id = l.lookup_id INNER JOIN
+                                lookups l2 ON cg.contact_type_id=l2.lookup_id
+		                  WHERE l.code='active'
+		                    AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                            AND c.contact_name IS NOT NULL
+		                    AND c.contact_name NOT LIKE '%N/A%'
+		                    AND c.contact_name <> 'NA'
+		                    AND c.customer_id = <?s:customer_id.toPStmtInt()?>
+		                    AND l2.code = 'customer'
+		               ORDER BY c.contact_name" --></td><td align="left">&nbsp;
+			<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+				<input type="button" name="contact_edit" value="View" class="button2"
+				       onClick="newWindow('{!s:showPage!}job/customer_contact_edit.html?ext_dealer_id='+getExtDealerID()
+				                                                                      +'&amp;customer_id='+getCustID()
+				                                                                      +'&amp;theForm=req_edit&amp;theDroplist=customer_contact_id'
+				                                                                      +'&amp;cc1_id='+escape({!r:job/req_edit:customer_contact_id.toJavaScriptString()!})
+				                                                                      +'&amp;cc3_id='+escape({!r:job/req_edit:customer_contact3_id.toJavaScriptString()!})
+				                                                                      +'&amp;cc4_id='+escape({!r:job/req_edit:customer_contact4_id.toJavaScriptString()!})
+				                                                                      +'&amp;contact_id=',
+				                          'contacts',450,490,req_edit.customer_contact2_id);">
+			<!--#/IF-->
+				</td><td>&nbsp;</td>
+			</tr>
+
+			<tr>
+		      <td align="right"><!--#SMARTFIELD name="email_customer3" type="checkbox" class="Checkbox" value=""--></td>
+			  <td><!--#SMARTFIELD title="Customer&nbsp;Contact3:" div="</td><td width=\"1%\">" name="customer_contact3_id" style="width:114" type="droplist"
+                  query="SELECT DISTINCT c.contact_id customer_contact3_id, c.contact_name
+				  		   FROM contacts c INNER JOIN
+				  		        contact_groups cg ON c.contact_id=cg.contact_id INNER JOIN
+                                lookups l ON c.cont_status_type_id = l.lookup_id INNER JOIN
+                                lookups l2 ON cg.contact_type_id=l2.lookup_id
+		                  WHERE l.code='active'
+		                    AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                            AND c.contact_name IS NOT NULL
+		                    AND c.contact_name NOT LIKE '%N/A%'
+		                    AND c.contact_name <> 'NA'
+		                    AND c.customer_id = <?s:customer_id.toPStmtInt()?>
+		                    AND l2.code = 'customer'
+		               ORDER BY c.contact_name" --></td><td align="left">&nbsp;
+			<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+				<input type="button" name="contact_edit" value="View" class="button2"
+				       onClick="newWindow('{!s:showPage!}job/customer_contact_edit.html?ext_dealer_id='+getExtDealerID()
+				                                                                      +'&amp;customer_id='+getCustID()
+				                                                                      +'&amp;theForm=req_edit&amp;theDroplist=customer_contact_id'
+				                                                                      +'&amp;cc1_id='+escape({!r:job/req_edit:customer_contact_id.toJavaScriptString()!})
+				                                                                      +'&amp;cc2_id='+escape({!r:job/req_edit:customer_contact2_id.toJavaScriptString()!})
+				                                                                      +'&amp;cc4_id='+escape({!r:job/req_edit:customer_contact4_id.toJavaScriptString()!})
+				                                                                      +'&amp;contact_id=',
+				                          'contacts',450,490,req_edit.customer_contact3_id);">
+			<!--#/IF-->
+				</td><td>&nbsp;</td>
+			</tr>
+
+			<tr>
+			<tr>
+			  <td colspan="4" class="HeaderLabel"><input readonly type="text" name="remLen" size="3" maxlength="3" value="500" class="HeaderLabel"> characters left.</td>
+		      <td align="right"><!--#SMARTFIELD name="email_customer4" type="checkbox" class="Checkbox" value=""--></td>
+			  <td><!--#SMARTFIELD title="Customer&nbsp;Contact4:" div="</td><td width=\"1%\">" name="customer_contact4_id" style="width:114" type="droplist"
+                  query="SELECT DISTINCT c.contact_id customer_contact4_id, c.contact_name
+				  		   FROM contacts c INNER JOIN
+				  		        contact_groups cg ON c.contact_id=cg.contact_id INNER JOIN
+                                lookups l ON c.cont_status_type_id = l.lookup_id INNER JOIN
+                                lookups l2 ON cg.contact_type_id=l2.lookup_id
+		                  WHERE l.code='active'
+		                    AND c.organization_id = <?s:org_id.toPStmtInt()?>
+                            AND c.contact_name IS NOT NULL
+		                    AND c.contact_name NOT LIKE '%N/A%'
+		                    AND c.contact_name <> 'NA'
+		                    AND c.customer_id = <?s:customer_id.toPStmtInt()?>
+		                    AND l2.code = 'customer'
+		               ORDER BY c.contact_name" --></td><td align="left">&nbsp;
+			<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+				<input type="button" name="contact_edit" value="View" class="button2"
+				       onClick="newWindow('{!s:showPage!}job/customer_contact_edit.html?ext_dealer_id='+getExtDealerID()
+				                                                                      +'&amp;customer_id='+getCustID()
+				                                                                      +'&amp;theForm=req_edit&amp;theDroplist=customer_contact_id'
+				                                                                      +'&amp;cc1_id='+escape({!r:job/req_edit:customer_contact_id.toJavaScriptString()!})
+				                                                                      +'&amp;cc2_id='+escape({!r:job/req_edit:customer_contact2_id.toJavaScriptString()!})
+				                                                                      +'&amp;cc3_id='+escape({!r:job/req_edit:customer_contact3_id.toJavaScriptString()!})
+				                                                                      +'&amp;contact_id=',
+				                          'contacts',450,490,req_edit.customer_contact4_id);">
+			<!--#/IF-->
+				</td><td>&nbsp;</td>
+			</tr>
+
+    <!--#/IF-->
+
+  <!--#/SQLLOOP-->
+
+<!--#ELSE-->
+			<tr>
+		      <td colspan="4" rowspan="5"><!--#SMARTFIELD title="" name="description" type="textarea" cols="70" rows="8" wrap="virtual" onKeyDown="textCounter(this.form.description,this.form.remLen,1000,'down');" onKeyUp="textCounter(this.form.description,this.form.remLen,1000,'up');"--></td>
+		      <td align="right"><!--#SMARTFIELD name="email_idm" type="checkbox" class="Checkbox" value=""--></td>
+			  <td><!--#SMARTFIELD title="Service Provider:" div="</td><td width=\"1%\">" name="idm_contact_id" style="width:114" type="droplist" filter="(ext_dealer_id=<?s:ext_direct_dealer_id.toPStmtString()?> AND contact_type_code='a_m' AND cont_status_type_code='active') or contact_id=<?d:idm_contact_id.toPStmtInt()?>" table="contacts_v" display="contact_name" key="contact_id" -->&nbsp;
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+				<input type="button" name="contact_edit" value="View" class="button2" onClick="newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+escape({!s:ext_direct_dealer_id.toJavaScriptString()!})+'&amp;contact_type_code=a_m&amp;theForm=req_edit&amp;theDroplist=idm_contact_id&amp;contact_id=','contacts',450,490,req_edit.idm_contact_id);">
+				<!--#/IF-->
+				</td><td width="20%">&nbsp;</td>
+			</tr>
+			<tr>
+		      <td align="right"><!--#SMARTFIELD name="email_customer" type="checkbox" class="Checkbox" value=""--></td>
+			  <td><!--#SMARTFIELD title="Customer:" div="</td><td width=\"1%\">" name="customer_contact_id" style="width:114" type="droplist" filter="organization_id=<?s:org_id.toPStmtInt()?> AND ((ext_dealer_id=<?s:ext_dealer_id.toPStmtString()?> AND contact_type_code='customer' AND cont_status_type_code='active') or contact_id=<?p:customer_contact_id.toPStmtInt()?>)" table="contacts_v" display="contact_name" key="contact_id" -->&nbsp;
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+				<input type="button" name="contact_edit" value="View" class="button2" onClick="newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;customer_id='+getCustID()+'&amp;contact_type_code=customer&amp;theForm=req_edit&amp;theDroplist=customer_contact_id&amp;contact_id=','contacts',450,490,req_edit.customer_contact_id);">
+				<!--#/IF-->
+				</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+		      <td align="right"><!--#SMARTFIELD name="email_sales" type="checkbox" class="Checkbox" value=""--></td>
+			  <td><!--#SMARTFIELD title="Sales:" div="</td><td width=\"1%\">" name="sales_contact_id" style="width:114" type="droplist" filter="organization_id=<?s:org_id.toPStmtInt()?> AND ((ext_dealer_id=<?s:ext_dealer_id.toPStmtString()?> AND contact_type_code='sales' AND cont_status_type_code='active') or contact_id=<?p:sales_contact_id.toPStmtInt()?>)" table="contacts_v" display="contact_name" key="contact_id" -->&nbsp;
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+				<input type="button" name="contact_edit" value="View" class="button2" onClick="newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=sales&amp;theForm=req_edit&amp;theDroplist=sales_contact_id&amp;contact_id=','contacts',450,490,req_edit.sales_contact_id);">
+				<!--#/IF-->
+				</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+			  <td align="right"><!--#SMARTFIELD name="email_support" type="checkbox" class="Checkbox" value=""--></td>
+			  <td><!--#SMARTFIELD title="Support:" div="</td><td width=\"1%\">" name="support_contact_id" style="width:114" type="droplist" filter="organization_id=<?s:org_id.toPStmtInt()?> AND ((ext_dealer_id=<?s:ext_dealer_id.toPStmtString()?> AND contact_type_code='support' AND cont_status_type_code='active') or contact_id=<?p:support_contact_id.toPStmtInt()?>)" table="contacts_v" display="contact_name" key="contact_id" -->&nbsp;
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+				<input type="button" name="contact_edit" value="View" class="button2" onClick="newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=support&amp;theForm=req_edit&amp;theDroplist=support_contact_id&amp;contact_id=','contacts',450,490,req_edit.support_contact_id);">
+				<!--#/IF-->
+				</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+	          <td align="right"><!--#SMARTFIELD name="email_designer" type="checkbox" class="Checkbox" value=""--></td>
+			  <td><!--#SMARTFIELD title="Designer:" div="</td><td width=\"1%\">" name="designer_contact_id" style="width:114" type="droplist" filter="organization_id=<?s:org_id.toPStmtInt()?> AND ((ext_dealer_id=<?s:ext_dealer_id.toPStmtString()?> AND contact_type_code='designer' AND cont_status_type_code='active') or contact_id=<?p:designer_id.toPStmtInt()?>)" table="contacts_v" display="contact_name" key="contact_id" -->&nbsp;
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+				<input type="button" name="contact_edit" value="View" class="button2" onClick="newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=designer&amp;theForm=req_edit&amp;theDroplist=designer_contact_id&amp;contact_id=','contacts',450,490,req_edit.designer_contact_id);">
+				<!--#/IF-->
+				</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+			  <td colspan="4" class="HeaderLabel"><input readonly type="text" name="remLen" size="3" maxlength="3" value="500" class="HeaderLabel"> characters left.</td>
+		      <td align="right"><!--#SMARTFIELD name="email_project_mgr" type="checkbox" class="Checkbox" --></td>
+				<td><!--#SMARTFIELD title="Project&nbsp;Mgr:" div="</td><td width=\"1%\">" name="project_mgr_contact_id" style="width:114" type="droplist" filter="organization_id=<?s:org_id.toPStmtInt()?> AND ((ext_dealer_id=<?s:ext_dealer_id.toPStmtString()?> AND contact_type_code='project_mgr' AND cont_status_type_code='active') or contact_id=<?d:project_mgr_contact_id.toPStmtInt()?>)" table="contacts_v" display="contact_name" key="contact_id" -->&nbsp;
+				<!--#IF defined="<?s:rights.job/contact_edit.view?>"-->
+				<input type="button" name="contact_edit" value="View" class="button2" onClick="newWindow('{!s:showPage!}job/contact_edit.html?ext_dealer_id='+getExtDealerID()+'&amp;contact_type_code=project_mgr&amp;theForm=req_edit&amp;theDroplist=project_mgr_contact_id&amp;contact_id=','contacts',450,490,req_edit.project_mgr_contact_id);">
+				<!--#/IF-->
+				</td><td>&nbsp;</td>
+			</tr>
+<!--#/IF-->
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td><table width="100%" cellpadding="0" cellspacing="0"><tr>																				<!-- Job Location Info -->
+	    	<td class="TableTitle" colspan="5">Job Location</td>
+		    <td width="14%" class="TableTitle">Complete?
+				<!--#SMARTFIELD name="loc_val_flag" type="checkbox" value="<?r:job/req_edit:loc_val_flag?>" class="Checkbox" mode="Update" -->
+				<!--#SMARTFIELD name="loc_val_flag" type="checkbox" class="Checkbox" mode="Insert" -->
+			</td>
+		</tr></table></td>
+	</tr>
+	<tr><td><table width="100%">
+	   <tr>
+			<td>
+<!--#IF evaluate="<?s:is_new?>" compare="Y"-->
+				<!--#IF defined="<?r:job/req_edit:job_location_id?>" -->
+					<!--#SMARTFIELD title="<span class='mandatoryLabel'>Job Location:</span>&nbsp;" name="job_location_id" type="droplist" filter="customer_id=<?s:end_user_id.toPStmtInt()?> or job_location_id=<?r:job/req_edit:job_location_id.toPStmtInt()?>" table="job_locations" display="job_location_name" key="job_location_id" onChange="loadJobLocation()"-->
+				<!--#ELSE -->
+					<!--#SMARTFIELD title="<span class='mandatoryLabel'>Job Location:</span>&nbsp;" name="job_location_id" type="droplist" filter="customer_id=<?s:end_user_id.toPStmtInt()?> or job_location_id=<?p:job_location_id.toPStmtInt()?>" table="job_locations" display="job_location_name" key="job_location_id" onChange="loadJobLocation()"-->
+				<!--#/IF-->
+				<input name="job_loc_button" type="button" value="View" class="button2" onClick="newWindow('{!s:showPage!}job/job_loc_edit.html?job_id={!s:job_id!}&amp;service_id={!s:service_id!}&amp;customer_id='+escape({!s:end_user_id.toJavaScriptString()!})+'&amp;customer_name='+escape({!s:end_user_name.toJavaScriptString()!})+'&amp;theForm=req_edit&amp;theDroplist=job_location_id&amp;job_location_id=','job_loc',520,600,req_edit.job_location_id);">
+<!--#ELSE-->
+  <!--#IF defined="<?s:end_user_id?>" -->
+				<!--#IF defined="<?r:job/req_edit:job_location_id?>" -->
+					<!--#SMARTFIELD title="<span class='mandatoryLabel'>Job Location:</span>&nbsp;" name="job_location_id" type="droplist" filter="customer_id=<?s:end_user_id.toPStmtInt()?> or job_location_id=<?r:job/req_edit:job_location_id.toPStmtInt()?>" table="job_locations" display="job_location_name" key="job_location_id" onChange="loadJobLocation()"-->
+				<!--#ELSE -->
+					<!--#SMARTFIELD title="<span class='mandatoryLabel'>Job Location:</span>&nbsp;" name="job_location_id" type="droplist" filter="customer_id=<?s:end_user_id.toPStmtInt()?> or job_location_id=<?p:job_location_id.toPStmtInt()?>" table="job_locations" display="job_location_name" key="job_location_id" onChange="loadJobLocation()"-->
+				<!--#/IF-->
+				<input name="job_loc_button" type="button" value="View" class="button2" onClick="newWindow('{!s:showPage!}job/job_loc_edit.html?job_id={!s:job_id!}&amp;service_id={!s:service_id!}&amp;customer_id='+escape({!s:end_user_id.toJavaScriptString()!})+'&amp;customer_name='+escape({!s:end_user_name.toJavaScriptString()!})+'&amp;theForm=req_edit&amp;theDroplist=job_location_id&amp;job_location_id=','job_loc',520,600,req_edit.job_location_id);">
+  <!--#ELSE-->
+				<!--#IF defined="<?r:job/req_edit:job_location_id?>" -->
+					<!--#SMARTFIELD title="<span class='mandatoryLabel'>Job Location:</span>&nbsp;" name="job_location_id" type="droplist" filter="customer_id=<?s:customer_id.toPStmtInt()?> or job_location_id=<?r:job/req_edit:job_location_id.toPStmtInt()?>" table="job_locations" display="job_location_name" key="job_location_id" onChange="loadJobLocation()"-->
+				<!--#ELSE -->
+					<!--#SMARTFIELD title="<span class='mandatoryLabel'>Job Location:</span>&nbsp;" name="job_location_id" type="droplist" filter="customer_id=<?s:customer_id.toPStmtInt()?> or job_location_id=<?p:job_location_id.toPStmtInt()?>" table="job_locations" display="job_location_name" key="job_location_id" onChange="loadJobLocation()"-->
+				<!--#/IF-->
+				<input name="job_loc_button" type="button" value="View" class="button2" onClick="newWindow('{!s:showPage!}job/job_loc_edit.html?job_id={!s:job_id!}&amp;service_id={!s:service_id!}&amp;customer_id='+escape({!s:customer_id.toJavaScriptString()!})+'&amp;customer_name='+escape({!s:customer_name.toJavaScriptString()!})+'&amp;theForm=req_edit&amp;theDroplist=job_location_id&amp;job_location_id=','job_loc',520,570,req_edit.job_location_id);">
+  <!--#/IF-->
+<!--#/IF-->
+<!-- David modification ENDS here -->
+			</td>
+			<td><table border="0"><tr>
+				<td class="Label" colspan="2" rowspan="3">
+					<iframe name="address_frame" height="70" width="355" scrolling="NO" marginheight="0"></iframe>
+				</td>
+			</tr></table></td>
+		</tr>
+	</table></td></tr>
+<!--#IF evaluate="<?p:service_type_name?>" compare="Long View"-->
+
+	<tr><td><table width="100%">
+		<tr>																				<!-- Product Info -->
+	      <td class="TableTitle" colspan="5">Product Info</td>
+	      <td width="14%" class="TableTitle">Complete?
+	         <!--#SMARTFIELD name="prod_val_flag" type="checkbox" value="<?r:job/req_edit:prod_val_flag?>" class="Checkbox" mode="Update" -->
+   	     	 <!--#SMARTFIELD name="prod_val_flag" type="checkbox" class="Checkbox" mode="Insert" -->
+	      </td>
+	   </tr>
+	</table></td></tr>
+	<tr><td><table width="100%">
+	   <tr>
+	   	<td class="HeaderLabel" colspan="3">Product Setup Instructions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input readonly type="text" name="remLen2" size="4" maxlength="4" value="1000" class="HeaderLabel"> characters left.</td><td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td><td>&nbsp;</td>
+		</tr>
+	   <tr>
+	      <td colspan="2" rowspan="4"><!--#SMARTFIELD name="product_setup_desc" type="textarea" cols="50" rows="7" wrap="virtual" onKeyDown="textCounter(this.form.product_setup_desc,this.form.remLen2,1000,'down');" onKeyUp="textCounter(this.form.product_setup_desc,this.form.remLen2,1000,'up');"--></td>
+	      <td><!--#SMARTFIELD title="Delivery Type:" div="&nbsp;</td><td>" name="delivery_type_id" type="droplist" table="delivery_types_v" display="lookup_name" key="lookup_id"  orderBy="sequence_no" --></td>
+	      <td><!--#SMARTFIELD title="Warehouse&nbsp;Loc:" div="&nbsp;</td><td>" name="warehouse_loc" --></td>
+		</tr>
+	   <tr>
+	      <td><!--#SMARTFIELD title="1st Furn. Line:" div="&nbsp;</td><td>" name="pri_furn_line_type_id" type="chooser" query="<?a:choose_pri_furn_line_type/sql?>" table="furniture_line_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" img="<script>makeButton('selectPriFurnLineType','choose_off','choose_on','choosePriFurnLineType()');</script>" --></td>
+	      <td><!--#SMARTFIELD title="1st Furn. Type:" div="&nbsp;</td><td>" name="pri_furn_type_id" type="droplist" table="furniture_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no"--></td>
+	   </tr>
+		<tr>
+	      <td><!--#SMARTFIELD title="2nd Furn. Line:" div="&nbsp;</td><td>" name="sec_furn_line_type_id" type="chooser" query="<?a:choose_sec_furn_line_type/sql?>" table="furniture_line_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" img="<script>makeButton('selectSecFurnLineType','choose_off','choose_on','chooseSecFurnLineType()');</script>" --></td>
+	      <td><!--#SMARTFIELD title="2nd Furn. Type:" div="&nbsp;</td><td>" name="sec_furn_type_id" type="droplist" table="furniture_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no"-->
+		</tr>
+	   <tr>
+	      <td><!--#SMARTFIELD title="Product Qty:" div="&nbsp;</td><td>" name="product_qty" --></td>
+	      <td><!--#SMARTFIELD title="# of Stations:" div="&nbsp;</td><td>" name="num_stations" --></td>
+	   </tr>
+	   <tr>
+	      <td><!--#SMARTFIELD title="Blueprint Location:" div="&nbsp;</td><td>" name="blueprint_location" --></td>
+	      <td><!--#SMARTFIELD title="Punchlist&nbsp;Item:" div="&nbsp;</td><td>" name="punchlist_type_id" type="droplist" table="punchlist_item_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td>
+	      <td><!--#SMARTFIELD title="Wood Product:" div="&nbsp;</td><td>" name="wood_product_type_id" type="droplist" table="wood_product_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td>
+	   </tr>
+	</table></td></tr>
+	<tr><td><table width="100%">
+		<tr>																				<!-- Scheduling Info -->
+	      <td class="TableTitle" colspan="5">Scheduling Info</td>
+	      <td width="14%" class="TableTitle">Complete?
+	         <!--#SMARTFIELD name="sch_val_flag" type="checkbox" value="<?r:job/req_edit:sch_val_flag?>" class="Checkbox" mode="Update"-->
+	         <!--#SMARTFIELD name="sch_val_flag" type="checkbox" class="Checkbox" mode="Insert" -->
+	      </td>
+	   </tr>
+	</table></td></tr>
+	<tr><td><table width="100%">
+	   <tr>
+	      <td><!--#SMARTFIELD title="Schedule Type:" div="</td><td>" name="schedule_type_id" type="droplist" table="schedule_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td>
+	      <td><!--#SMARTFIELD title="Weekend&nbsp;Scheduling:" div="</td><td>" name="weekend_flag" type="boolean" value="N" --></td>
+  	      <td>&nbsp;</td><td>&nbsp;</td>
+		</tr>
+<!--IF evaluate="<?s:role_code?>" compare="scheduler" -->
+	   <tr>
+	      <td><!--#SMARTFIELD title="Est Start Date:" div="</td><td>" name="est_start_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(est_start_date)')</script>"--></td>
+	      <td><!--#SMARTFIELD title="Est Start Time:" div="</td><td>" name="est_start_time" type="time" --></td>
+	      <td><!--#SMARTFIELD title="Est End Date:" div="</td><td>" name="est_end_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(est_end_date)')</script>"--></td>
+	   </tr>
+<!--ELSE
+	   <tr>
+	      <td><!--#SMARTFIELD title="Est Start Date:" div="</td><td>" name="est_start_date" type="date" readonly class="readonly" --></td>
+	      <td><!--#SMARTFIELD title="Est Start Time:" div="</td><td>" name="est_start_time" type="time" readonly class="readonly" --></td>
+	      <td><!--#SMARTFIELD title="Est End Date:" div="</td><td>" name="est_end_date" type="date" readonly class="readonly" --></td>
+	   </tr>
+/IF-->
+	   <tr>
+	      <td><!--#SMARTFIELD title="Sch Start Date:" div="</td><td>" name="sch_start_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(sch_start_date)')</script>"--></td>
+	      <td><!--#SMARTFIELD title="Sch Start Time:" div="</td><td>" name="sch_start_time" type="time"--></td>
+	      <td><!--#SMARTFIELD title="Sch End Date:" div="</td><td>" name="sch_end_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(sch_end_date)')</script>"--></td>
+	   </tr>
+	   <tr>
+	      <td><!--#SMARTFIELD title="Act Start Date:" div="</td><td>" name="act_start_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(act_start_date)')</script>"--></td>
+	      <td><!--#SMARTFIELD title="Act Start Time:" div="</td><td>" name="act_start_time" type="time"--></td>
+	      <td><!--#SMARTFIELD title="Act End Date:" div="</td><td>" name="act_end_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(act_end_date)')</script>"--></td>
+	   </tr>
+	   <tr>
+	      <td><!--#SMARTFIELD title="Truck&nbsp;Ship&nbsp;Date:" div="</td><td>" name="truck_ship_date" type="date"	img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(truck_ship_date)')</script>"--></td>
+	      <td><!--#SMARTFIELD title="Truck Arrival Date:" div="</td><td>" name="truck_arrival_date" type="date"	img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(truck_arrival_date)')</script>"--></td>
+	      <td><!--#SMARTFIELD title="Ordered&nbsp;On&nbsp;Date:" div="</td><td>" name="ordered_date" type="date"	img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(ordered_date)')</script>"--></td>
+	   </tr>
+	</table></td></tr>
+	<tr><td><table width="100%">
+	   <tr>																			<!-- Resource Estimates -->
+	      <td class="TableTitle">Resource Estimates</td>
+	      <td width="14%" class="TableTitle">Complete?
+	         <!--#SMARTFIELD name="res_val_flag" type="checkbox" value="<?r:job/req_edit:res_val_flag?>" class="Checkbox" mode="Update" -->
+	         <!--#SMARTFIELD name="res_val_flag" type="checkbox" class="Checkbox" mode="Insert" -->
+	      </td>
+	   </tr>
+	</table></td></tr>
+	<tr><td>
+	<!--#IF defined="<?s:rights.job/res_est_edit.view?>"-->
+	<table width="100%">
+	   <tr>
+			<!--#IF defined="<?s:service_id?>"-->
+		      <td><input name="res_est_button" type="button" value="Resource Estimates" class="button"
+		         onClick="newWindow('{!s:showPage!}job/res_est_edit.html?job_id={!s:job_id!}&amp;service_id='+req_edit.service_id.value+'&amp;est_start_date='+req_edit.est_start_date.value,'res_est',450,600);">
+	   	   </td>
+   		<!--#ELSE-->
+	   		<td class="HeaderLabel">Please save Requisition first, then you may add Resource Estimates.<td>
+   		<!--#/IF-->
+	   </tr>
+	</table>
+	<!--#/IF-->
+	</td></tr>
+
+<!--#ELSEIF evaluate="<?p:service_type_name?>" compare="Short View"-->
+
+	 <!--#IF evaluate="<?d:mode?>" compare="Insert"-->
+		 <!--#SQLLOOP name="defaults"
+					query="SELECT st.lookup_id schedule_id, dt.lookup_id deliv_id
+							FROM schedule_types_v st, delivery_types_v dt
+							WHERE st.lookup_code = 'date_time'
+		 					AND dt.lookup_code = 'n_a'"
+		 -->
+			<input name="schedule_type_id" type="hidden" value="{!r:defaults:schedule_id!}"-->
+			<input name="delivery_type_id" type="hidden" value="{!r:defaults:deliv_id!}"-->
+
+			<!--#/SQLLOOP-->
+	<!--#/IF-->
+
+	<tr><td><table width="100%">
+		<tr>																				<!-- Scheduling Info -->
+	      <td class="TableTitle" colspan="5">Scheduling Info</td>
+	      <td width="14%" class="TableTitle">Complete?
+	         <!--#SMARTFIELD name="sch_val_flag" type="checkbox" value="<?r:job/req_edit:sch_val_flag?>" class="Checkbox" mode="Update"-->
+	         <!--#SMARTFIELD name="sch_val_flag" type="checkbox" class="Checkbox" mode="Insert" -->
+	      </td>
+	   </tr>
+	</table></td></tr>
+	<tr><td><table width="100%">
+	   <tr>
+	      <td><!--#SMARTFIELD title="Est Start Date:" div="</td><td>" name="est_start_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(est_start_date)')</script>"--></td>
+	      <td><!--#SMARTFIELD title="Est Start Time:" div="</td><td>" name="est_start_time" type="time" --></td>
+	      <td><!--#SMARTFIELD title="Est End Date:" div="</td><td>" name="est_end_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(est_end_date)')</script>"--></td>
+	   </tr>
+	   <tr>
+	      <td><!--#SMARTFIELD title="Sch Start Date:" div="</td><td>" name="sch_start_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(sch_start_date)')</script>"--></td>
+	      <td><!--#SMARTFIELD title="Sch Start Time:" div="</td><td>" name="sch_start_time" type="time"--></td>
+	      <td><!--#SMARTFIELD title="Sch End Date:" div="</td><td>" name="sch_end_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(sch_end_date)')</script>"--></td>
+	   </tr>
+	   <tr>
+	      <td><!--#SMARTFIELD title="Act Start Date:" div="</td><td>" name="act_start_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(act_start_date)')</script>"--></td>
+	      <td><!--#SMARTFIELD title="Act Start Time:" div="</td><td>" name="act_start_time" type="time"--></td>
+	      <td><!--#SMARTFIELD title="Act End Date:" div="</td><td>" name="act_end_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(act_end_date)')</script>"--></td>
+	   </tr>
+	</table></td></tr>
+<!--#/IF-->
+
+   <!--#SMARTFIELD name="wood_product_type_id" type="hidden" -->
+<!--#IF evaluate="<?p:job_type_code?>" compare="service_account" -->
+<!--#IF evaluate="<?d:mode?>" compare="Update"-->
+   <!--#SQLLOOP
+		query="SELECT custom_col_id, custom_cust_col_id, col_title, col_sequence, col_value, active_flag, is_mandatory, is_droplist
+		       FROM custom_cols
+	   	    WHERE service_id  = <?s:service_id.toPStmtString()?>
+   	       ORDER BY col_sequence"
+		resourceName="SQLServer"
+		name="custQuery"
+   -->
+   <!--#SQLHEADER-->
+	<tr><td><table width="100%">
+		<tr>
+			<td class="TableTitle">Custom Fields</td>
+	      <td width="14%" class="TableTitle">Complete?
+	         <!--#SMARTFIELD name="cust_val_flag" type="checkbox" value="<?r:job/req_edit:prod_val_flag?>" class="Checkbox" mode="Update" -->
+   	      <!--#SMARTFIELD name="cust_val_flag" type="checkbox" class="Checkbox" mode="Insert" -->
+	      </td>
+	   </tr>
+	</table></td></tr>
+	<tr><td><table cellspacing="0" cellspadding="0" width="100%">
+		<tr><td valign="top" width="50%"><table cellspacing="0" cellpadding="0">
+	<!--#/SQLHEADER-->
+		<tr><td nowrap>
+	<!--#IF evaluate="<?r:custQuery:active_flag?>" compare="Y" -->
+		<!--#IF evaluate="<?r:custQuery:is_mandatory?>" compare="Y" -->
+			<!--#IF evaluate="<?r:custQuery:is_droplist?>" compare="Y" -->
+				<!--#SMARTFIELD title="<span class='mandatoryLabel'><?r:custQuery:col_title?></span>:" div="&nbsp;</td><td width='400'>" name="xcust_col_<?r:custQuery:col_sequence?>" style="width:150" type="droplist" query="SELECT custom_col_list_id, list_value FROM custom_col_lists WHERE (active_flag='Y' AND custom_cust_col_id = <?r:custQuery:custom_cust_col_id.toPStmtInt()?>) OR custom_col_list_id = <?r:custQuery:col_value.toPStmtInt()?> ORDER BY sequence" value="<?r:custQuery:col_value?>" onChange="req_edit.xcust_col_<?r:custQuery:col_sequence?>_text.value = req_edit.xcust_col_<?r:custQuery:col_sequence?>.options[req_edit.xcust_col_<?r:custQuery:col_sequence?>.selectedIndex].text;" -->
+				<input name="xcust_col_{!r:custQuery:col_sequence!}_text" type="hidden" >
+				<script type="text/javascript">req_edit.xcust_col_{!r:custQuery:col_sequence!}_text.value = req_edit.xcust_col_{!r:custQuery:col_sequence!}.options[req_edit.xcust_col_{!r:custQuery:col_sequence!}.selectedIndex].text</script>
+		<!--#CHECKSECURITY right="rights.job/modify_custom_droplists.update" -->
+				<input name="droplist_modify_{!r:custQuery:col_sequence!}" type="button" value="Modify List" class="button2" onClick="modifyDropList('{!r:custQuery:custom_cust_col_id!}')">
+		<!--#/CHECKSECURITY-->
+			<!--#ELSE--> <!--active_flag, mandatory-->
+				<!--#SMARTFIELD title="<span class='mandatoryLabel'><?r:custQuery:col_title?></span>:" div="&nbsp;</td><td>" name="xcust_col_<?r:custQuery:col_sequence?>" style="width:150" value="<?r:custQuery:col_value?>" -->
+			<!--#/IF-->
+		<!--#ELSE-->
+			<!--#IF evaluate="<?r:custQuery:is_droplist?>" compare="Y" -->
+				<!--#SMARTFIELD title="<?r:custQuery:col_title?>:" div="&nbsp;</td><td width='400'>" name="xcust_col_<?r:custQuery:col_sequence?>" style="width:150" type="droplist" query="SELECT custom_col_list_id, list_value FROM custom_col_lists WHERE (active_flag='Y' AND custom_cust_col_id = <?r:custQuery:custom_cust_col_id.toPStmtInt()?>) OR custom_col_list_id = <?r:custQuery:col_value.toPStmtInt()?> ORDER BY sequence" value="<?r:custQuery:col_value?>" onChange="req_edit.xcust_col_<?r:custQuery:col_sequence?>_text.value = req_edit.xcust_col_<?r:custQuery:col_sequence?>.options[req_edit.xcust_col_<?r:custQuery:col_sequence?>.selectedIndex].text;"-->
+				<input name="xcust_col_{!r:custQuery:col_sequence!}_text" type="hidden" >
+				<script type="text/javascript">req_edit.xcust_col_{!r:custQuery:col_sequence!}_text.value = req_edit.xcust_col_{!r:custQuery:col_sequence!}.options[req_edit.xcust_col_{!r:custQuery:col_sequence!}.selectedIndex].text</script>
+		<!--#CHECKSECURITY right="rights.job/modify_custom_droplists.update" -->
+				<input name="droplist_modify_{!r:custQuery:col_sequence!}" type="button" value="Modify List" class="button2" onClick="modifyDropList('{!r:custQuery:custom_cust_col_id!}')">
+		<!--#/CHECKSECURITY-->
+			<!--#ELSE--> <!--active_flag-->
+				<!--#SMARTFIELD title="<?r:custQuery:col_title?>:" div="&nbsp;</td><td>" name="xcust_col_<?r:custQuery:col_sequence?>" style="width:150" value="<?r:custQuery:col_value?>" -->
+			<!--#/IF-->
+		<!--#/IF-->
+	<!--#ELSE-->
+		&nbsp;
+	<!--#/IF-->
+		</td><tr>
+	<!--#IF evaluate="<?r:custQuery:col_sequence?>" compare="5"-->
+		</table></td>
+		<td valign="top"><table cellspacing="0" cellspadding="0">
+	<!--#/IF-->
+   <!--#SQLFOOTER-->
+      </table></td></tr>
+      </table></td></tr>
+   <!--#/SQLFOOTER-->
+   <!--#/SQLLOOP-->
+
+<!--#ELSE-->
+
+   <!--#SQLLOOP
+		query="SELECT custom_cust_col_id, column_desc, col_sequence, active_flag, is_mandatory, is_droplist
+		       FROM custom_cust_columns
+	   	    WHERE customer_id  = <?s:customer_id.toPStmtInt()?>
+   	       ORDER BY col_sequence"
+		resourceName="SQLServer"
+		name="custQuery"
+   -->
+   <!--#SQLHEADER-->
+	<tr><td><table width="100%">
+		<tr>
+			<td class="TableTitle">Custom Fields</td>
+	      <td width="14%" class="TableTitle">Complete?
+	         <!--#SMARTFIELD name="cust_val_flag" type="checkbox" value="<?r:job/req_edit:prod_val_flag?>" class="Checkbox" mode="Update" -->
+   	      <!--#SMARTFIELD name="cust_val_flag" type="checkbox" class="Checkbox" mode="Insert" -->
+	      </td>
+	   </tr>
+	</table></td></tr>
+	<tr><td><table cellspacing="0" cellspadding="0" width="100%">
+		<tr><td valign="top" width="50%"><table cellspacing="0" cellspadding="0">
+	<!--#/SQLHEADER-->
+		<tr><td nowrap>
+	<!--#IF evaluate="<?r:custQuery:active_flag?>" compare="Y" -->
+		<!--#IF evaluate="<?r:custQuery:is_mandatory?>" compare="Y" -->
+			<!--#IF evaluate="<?r:custQuery:is_droplist?>" compare="Y" -->
+				<!--#SMARTFIELD title="<span class='mandatoryLabel'><?r:custQuery:column_desc?></span>:" div="&nbsp;</td><td width='400'>" name="xcust_col_<?r:custQuery:col_sequence?>" style="width:150" type="droplist" query="SELECT custom_col_list_id, list_value FROM custom_col_lists WHERE (active_flag='Y' AND custom_cust_col_id = <?r:custQuery:custom_cust_col_id?>) ORDER BY sequence" onChange="req_edit.xcust_col_<?r:custQuery:col_sequence?>_text.value = req_edit.xcust_col_<?r:custQuery:col_sequence?>.options[req_edit.xcust_col_<?r:custQuery:col_sequence?>.selectedIndex].text;" -->
+				<input name="xcust_col_{!r:custQuery:col_sequence!}_text" type="hidden" >
+				<script type="text/javascript">req_edit.xcust_col_{!r:custQuery:col_sequence!}_text.value = req_edit.xcust_col_{!r:custQuery:col_sequence!}.options[req_edit.xcust_col_{!r:custQuery:col_sequence!}.selectedIndex].text</script>
+		<!--#CHECKSECURITY right="rights.job/modify_custom_droplists.update" -->
+				<input name="droplist_modify_{!r:custQuery:col_sequence!}" type="button" value="Modify List" class="button2" onClick="modifyDropList('{!r:custQuery:custom_cust_col_id!}')">
+		<!--#/CHECKSECURITY-->
+			<!--#ELSE--> <!--active_flag, mandatory-->
+				<!--#SMARTFIELD title="<span class='mandatoryLabel'><?r:custQuery:column_desc?></span>:" div="&nbsp;</td><td>" name="xcust_col_<?r:custQuery:col_sequence?>" style="width:150"-->
+			<!--#/IF-->
+		<!--#ELSE-->
+			<!--#IF evaluate="<?r:custQuery:is_droplist?>" compare="Y" -->
+				<!--#SMARTFIELD title="<?r:custQuery:column_desc?>:" div="&nbsp;</td><td width='400'>" name="xcust_col_<?r:custQuery:col_sequence?>" style="width:150" type="droplist" query="SELECT custom_col_list_id, list_value FROM custom_col_lists WHERE (active_flag='Y' AND custom_cust_col_id = <?r:custQuery:custom_cust_col_id?>)  ORDER BY sequence" onChange="req_edit.xcust_col_<?r:custQuery:col_sequence?>_text.value = req_edit.xcust_col_<?r:custQuery:col_sequence?>.options[req_edit.xcust_col_<?r:custQuery:col_sequence?>.selectedIndex].text;"-->
+				<input name="xcust_col_{!r:custQuery:col_sequence!}_text" type="hidden" >
+				<script type="text/javascript">req_edit.xcust_col_{!r:custQuery:col_sequence!}_text.value = req_edit.xcust_col_{!r:custQuery:col_sequence!}.options[req_edit.xcust_col_{!r:custQuery:col_sequence!}.selectedIndex].text</script>
+		<!--#CHECKSECURITY right="rights.job/modify_custom_droplists.update" -->
+				<input name="droplist_modify_{!r:custQuery:col_sequence!}" type="button" value="Modify List" class="button2" onClick="modifyDropList('{!r:custQuery:custom_cust_col_id!}')">
+		<!--#/CHECKSECURITY-->
+			<!--#ELSE--> <!--active_flag-->
+				<!--#SMARTFIELD title="<?r:custQuery:column_desc?>:" div="&nbsp;</td><td>" name="xcust_col_<?r:custQuery:col_sequence?>" style="width:150"-->
+			<!--#/IF-->
+		<!--#/IF-->
+	<!--#ELSE-->
+		&nbsp;
+	<!--#/IF-->
+		</td><tr>
+	<!--#IF evaluate="<?r:custQuery:col_sequence?>" compare="5"-->
+		</table></td>
+		<td valign="top"><table cellspacing="0" cellspadding="0">
+	<!--#/IF-->
+   <!--#SQLFOOTER-->
+   </table></td></tr>
+   </table></td></tr>
+   <!--#/SQLFOOTER-->
+   <!--#/SQLLOOP-->
+<!--#/IF-->
+<!--#/IF-->
+
+   <!--#IF evaluate="<?d:mode?>" compare="Update"-->
+	<tr><td>
+		<table width="100%">
+			<tr>
+				<td class="TableTitle" colspan="6">System Info</td>
+			</tr>
+		</table>
+	</td></tr>
+	<tr><td>
+		<table width="100%">
+			<tr>
+				<td width="90">
+					<!--#SMARTFIELD title="Date Created:" div="</td><td>" name="date_created" type="datetime"
+						mode="Update" readonly class="readonly" size="22"
+					-->
+				</td>
+				<td width="80">
+					<!--#SMARTFIELD title="Created By:" div="</td><td>" name="created_by" type="chooser"
+						mode="Update" table="users" display="first_name+' '+last_name" key="user_id"
+						readonly class="readonly"
+					-->
+				</td>
+			</tr>
+			<tr>
+				 <td>
+				 	<!--#SMARTFIELD title="Date Modified:" div="</td><td>" name="date_modified" type="datetime"
+						mode="Update" readonly class="readonly" size="22"
+					-->
+				</td>
+				 <td>
+					<!--#SMARTFIELD title="Modified By:" div="</td><td>" name="modified_by" type="chooser"
+						mode="Update" table="users" display="first_name+' '+last_name" key="user_id"
+						readonly class="readonly"
+					-->
+				</td>
+			</tr>
+		</table>
+	</td></tr>
+	<!--#ELSE-->
+	<tr><td>&nbsp;</td></tr>
+	<!--#/IF-->
+
+	<!--#IF evaluate="<?s:serv_status_type_code?>" compare="closed" -->
+	<!--#ELSE-->
+	<tr>
+		<td>
+			<input name="save_button" type="button" class="button" value="Save" onClick="exitFunction('Save')" >
+			<input name="cancel_button" type="button" class="button" value="Cancel" onClick="exitFunction('Cancel')" >
+		</td>
+	</tr>
+	<!--#/IF-->
+	</table>
+   <!--#/SMARTFORM-->
+
+<script type="text/javascript">
+<!--
+
+	function passServiceType()
+	{
+		document.req_edit.service_type_name.value = document.req_edit.service_type_id.options[document.req_edit.service_type_id.selectedIndex].text;
+	}
+
+	function getFormName()
+	{
+		return 'req_edit';
+	}
+
+	function getExtDealerID()
+	{
+		return escape({!s:ext_dealer_id.toJavaScriptString()!});
+	}
+
+	function getCustID()
+	{
+		return escape({!s:customer_id.toJavaScriptString()!});
+	}
+
+	var wood_product_types = new Array();
+
+	function onLoadFunction()
+	{
+		//load job location address frame
+		loadJobLocation();
+		<!-- retrieve 'created' req_status_type_id -->
+		<!--#SQLLOOP query="SELECT lookup_id, lookup_name
+	                    FROM lookups_v
+	                    WHERE type_code='service_status_type' and lookup_code='created'"
+					resourceName="SQLServer"
+					name="serviceStatusQuery"
+		-->
+		if( document.req_edit == null )
+		{
+			alert("You do not have permission to create a Requisition.");
+		}
+		else if( req_edit.serv_status_type_id.value == '' )
+		{//must be creating new job, so default status new
+		   req_edit.serv_status_type_id_text.value = '{!r:serviceStatusQuery:lookup_name!}';
+	   	req_edit.serv_status_type_id.value = {!r:serviceStatusQuery:lookup_id!};
+		}
+		<!--#/SQLLOOP-->
+
+		//now handle default for wood_product_flag
+		<!--#SQLLOOP query="SELECT lookup_id, lookup_name, lookup_code
+		                    FROM lookups_v
+		                    WHERE type_code='wood_product_type'"
+						resourceName="SQLServer"
+						name="woodTypesQuery"
+		-->
+			wood_product_types['{!r:woodTypesQuery:lookup_code!}'] = new typeObject('{!r:woodTypesQuery:lookup_id!}','{!r:woodTypesQuery:lookup_name!}');
+		<!--#/SQLLOOP-->
+
+		if( req_edit.wood_product_type_id.value == '' )
+		{
+			setSelect(req_edit.wood_product_type_id, wood_product_types['no'].id);
+		}
+
+		if( {!p:successful_save.isNull('false').toJavaScriptString()!} == 'true' )
+		{
+			if( {!p:closeOnCancel.isNull('false').toJavaScriptString()!} == 'true' )
+			{
+				parent.window.opener.focus();
+				parent.window.opener.redisplayPage();
+				parent.close();
+			}
+			else
+				newWindow('{!s:showPage!}job/job_head.html?loc=req_list', 'job_header');
+
+		}
+		else
+		{
+			<!--#IF evaluate="<?s:serv_status_type_code?>" compare="closed" -->
+				setFormEdit('N');
+			<!--#/IF-->
+		}
+
+		textCounter(req_edit.description,req_edit.remLen,1000,'up')
+		textCounter(req_edit.product_setup_desc,req_edit.remLen2,1000,'up')
+	}
+
+	<!-- RETRIEVE FURNITURE TYPES, HANDLE WOOD_PRODUCT_FLAG -->
+
+	var furniture_types = new Array();
+	<!--#SQLLOOP query="SELECT lookup_id, lookup_name, lookup_code
+	                    FROM lookups_v
+	                    WHERE type_code='furniture_type'"
+					resourceName="SQLServer"
+					name="furnTypesQuery"
+	-->
+	furniture_types['{!r:furnTypesQuery:lookup_code!}'] = new typeObject('{!r:furnTypesQuery:lookup_id!}','{!r:furnTypesQuery:lookup_name!}');
+	<!--#/SQLLOOP-->
+
+	function handleFurnType(form, furn_type_field, furniture_type_code)
+	{
+		eval("setSelect("+form+"."+furn_type_field+","+furniture_types[furniture_type_code].id+")");
+
+		var wood = false;
+		var wood_id = furniture_types['wood'].id;
+		if( eval(form+".pri_furn_type_id.value == " + wood_id) )
+			wood = true;
+		else if( eval(form+".sec_furn_type_id.value == " + wood_id) )
+			wood = true;
+
+		if( wood )
+			setSelect( eval(form+".wood_product_type_id"), wood_product_types['yes'].id);
+		else
+			setSelect( eval(form+".wood_product_type_id"), wood_product_types['no'].id);
+	}
+
+
+	function choosePriFurnLineType()
+	{
+		url = {!s:showPage.toJavaScriptString()!}+'choosers/choose_pri_furn_line_type.html'
+			+ '?title=List of Furniture Lines'
+			+ '&form=req_edit'
+			+ '&field=pri_furn_line_type_id'
+			+ '&id=lookup_id'
+			+ '&value=pri_furn_line_type_id_text'
+			+ '&pri_furn_line_type_id_text='+escape(document.req_edit.pri_furn_line_type_id_text.value)
+			+ '&query='+escape(document.req_edit.pri_furn_line_type_id_query.value);
+		window.open(url, 'chooser', ##-WIN-##);
+	}
+
+	function chooseSecFurnLineType()
+	{
+		url = {!s:showPage.toJavaScriptString()!}+'choosers/choose_sec_furn_line_type.html'
+			+ '?title=List of Furniture Lines'
+			+ '&form=req_edit'
+			+ '&field=sec_furn_line_type_id'
+			+ '&id=lookup_id'
+			+ '&value=sec_furn_line_type_id_text'
+			+ '&sec_furn_line_type_id_text='+escape(document.req_edit.sec_furn_line_type_id_text.value)
+			+ '&query='+escape(document.req_edit.sec_furn_line_type_id_query.value);
+		window.open(url, 'chooser', ##-WIN-##);
+	}
+
+	function redisplaySmartForm()
+	{
+		document.req_edit.redisplay.value = 'true';
+		document.req_edit.submit();
+	}
+
+	function updateStatus(new_status)
+	{
+		req_edit.object_type.value = 'req'
+		req_edit.object_id.value = {!s:service_id.toJavaScriptString()!};
+		req_edit.new_status.value = new_status;
+		exitFunction('Save');
+	}
+
+	function fixTime(dateField, timeField)
+	{
+		if( !(timeField == null) && !(timeField.value == '') )
+		{
+			if( timeField.value.length < 12 )  //only add if not already added
+			{
+				if( !(dateField == null) && !(dateField.value == '') )
+				{
+					timeField.value = dateField.value + ' ' + timeField.value;
+				}
+				else
+				{
+				<!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) as to_date" name="dateQuery"-->
+					timeField.value = {!r:dateQuery:to_date.toJavaScriptString()!} + ' ' + timeField.value;
+				<!--#/SQLLOOP-->
+				}
+			}
+		}
+	}
+
+	function exitFunction(button)
+	{
+		if( button == 'Save' && validateReqSave())
+		{
+			setCheckboxesVal(req_edit);
+			fixTime(req_edit.est_start_date, req_edit.est_start_time);
+			req_edit.redisplay.value = 'false';
+			req_edit.loc.value ='req_list';
+			req_edit.button.value = 'Save';
+			req_edit.submit();
+		}
+		else if( button == 'Cancel' )
+		{
+			if( {!p:closeOnCancel.isNull('false').toJavaScriptString()!} == 'true' )
+			{
+				parent.window.opener.focus();
+				parent.close();
+			}
+			else
+				newWindow('{!s:showPage!}job/job_main.html?loc=req_list', 'main_frame');
+			return false;
+		}
+	}
+
+	function textCounter(field, countfield, maxlimit, action)
+	{
+		if( !(field == null) )
+		{
+			if (field.value.length > maxlimit)
+			{
+				field.value = field.value.substring(0, maxlimit);
+				alert ("You can only type " + maxlimit + " letters in this field.");
+			}
+			else
+			{
+				countfield.value = maxlimit - field.value.length;
+			}
+		}
+	}
+
+	function modifyDropList(customCustColID)
+	{
+			var url = {!s:showPage.toJavaScriptString()!} + 'enet/proj/custom_col_drop_list.html';
+			url += "?custom_cust_col_id=" + customCustColID
+			newWindow(url,'cust_col_dl',270,300);
+	}
+
+	function loadJobLocation()
+	{
+		var job_loc_id = '';
+		if( !(job_loc_id === undefined ) )
+			job_loc_id = req_edit.job_location_id.options[req_edit.job_location_id.selectedIndex].value;
+		newWindow({!s:showPage.toJavaScriptString()!} + 'enet/proj/address.html?job_location_id='+job_loc_id,'address_frame');
+<!--#IF evaluate="<?s:is_new?>" compare="Y"-->
+		$("#jobLocationContactDiv").load("{!s:showPage!}embeds/job_location_contacts.html?parameter=" + job_loc_id + "&current_val=" + document.getElementById("job_location_contact_id").value);
+<!--#/IF-->
+	}
+
+function validateReqSave()
+{
+  var result = true;
+
+  if (result && document.getElementById("job_location_id").value == "")
+  {
+	alert("Job Location is required.");
+	document.getElementById("job_location_id").focus();
+	result = false;
+  }
+
+  return result;
+}
+
+-->
+</script>
+
+<!--#EMBED template="embeds/footer.html" -->

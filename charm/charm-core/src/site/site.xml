@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Charm">
+  <bannerLeft>
+    <name>Charm</name>
+    <src>http://maven.apexit.com/charm/images/charm.gif</src>
+    <href>http://maven.apexit.com/charm</href>
+  </bannerLeft>
+
+  <body>
+    <links>
+      <item name="Apex IT" href="http://www.apexit.com" />
+    </links>
+    <menu name="Charm">
+      <item name="Introduction" href="index.html"/>
+      <item name="FAQ" href="faq.html"/>
+      <item name="Road Map" href="roadmap.html" />
+    </menu>
+    <menu name="User's Guide">
+      <item name="Getting Started" href="getting_started.html"/>
+      <item name="Configuration" href="configuration.html"/>
+    </menu>
+    <menu name="Reference">
+      <item name="Charm TagLib Documentation" href="charm_tld.html"/>
+      <item name="Ant Tasks" href="ant_tasks.html"/>
+    </menu>
+    <menu name="3rd Party Documentation">
+      <item name="JSTL Tag Reference" href="http://java.sun.com/products/jsp/jstl/1.1/docs/tlddocs/index.html"/>
+      <item name="Hibernate Reference" href="http://www.hibernate.org/hib_docs/v3/reference/en/html/"/>
+      <item name="Hibernate API" href="http://www.hibernate.org/hib_docs/v3/api/"/>
+      <item name="Spring Reference" href="http://static.springframework.org/spring/docs/2.5.6/reference/index.html"/>
+      <item name="Spring API" href="http://static.springframework.org/spring/docs/2.5.6/api/index.html"/>        
+      <item name="SiteMesh Tag Reference" href="http://www.opensymphony.com/sitemesh/tags.html"/>
+      <item name="DisplayTag Tag Reference" href="http://displaytag.sourceforge.net/1.2/displaytag/tagreference.html"/>      
+      <item name="Java J2SE 1.4.2 API" href="http://java.sun.com/j2se/1.4.2/docs/api/"/>
+      <item name="Java J2SE 1.5.0 API" href="http://java.sun.com/j2se/1.5.0/docs/api/"/>              
+      <item name="Java J2SE 6 API" href="http://java.sun.com/javase/6/docs/api/"/>              
+    </menu>
+    <menu name="Developers">
+      <item name="Documentation Needed" href="docs_required.html"/>
+    </menu>
+    
+    ${reports}
+    
+  </body>
+</project>

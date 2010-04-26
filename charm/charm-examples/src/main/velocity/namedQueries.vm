@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<namedQueries>
+#foreach ($table in $tables)
+#set ($name = $table.destinationClassName) 
+#set ($alias = "$name.substring(0,1).toLowerCase()$name.substring(1)")
+	<namedQuery>
+		<id>all${name}</id>
+		<service>hibernateService</service>
+		<query><![CDATA[
+				SELECT ${alias} 
+				FROM ${table.package}.${name} ${alias}
+		]]>
+		</query>
+	</namedQuery>
+#end
+</namedQueries>

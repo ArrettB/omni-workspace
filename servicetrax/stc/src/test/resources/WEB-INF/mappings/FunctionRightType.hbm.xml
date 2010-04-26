@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 27, 2006 9:55:29 AM by Hibernate Tools 3.1.0.beta5 -->
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.FunctionRightType" table="FUNCTION_RIGHT_TYPES" schema="dbo" catalog="">
+        <id name="functionRightTypeId" type="java.lang.Long">
+            <column name="FUNCTION_RIGHT_TYPE_ID" precision="18" scale="0" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="rightType" class="com.dynamic.servicetrax.orm.RightType" fetch="select">
+            <column name="RIGHT_TYPE_ID" precision="18" scale="0" />
+        </many-to-one>
+        <property name="functionId" type="java.lang.Long">
+            <column name="FUNCTION_ID" precision="18" scale="0" />
+        </property>
+        <property name="updatableFlag" type="string">
+            <column name="UPDATABLE_FLAG" length="1" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" />
+        </property>
+        <property name="createdBy" type="java.lang.Long">
+            <column name="CREATED_BY" precision="18" scale="0" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23" />
+        </property>
+        <property name="modifiedBy" type="java.lang.Long">
+            <column name="MODIFIED_BY" precision="18" scale="0" />
+        </property>
+    </class>
+</hibernate-mapping>

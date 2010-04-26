@@ -1,0 +1,131 @@
+<!--#EMBED template="embeds/header.html" -->
+
+<script language="JavaScript">
+<!--
+	function verify(type)
+	{
+		if (window.opener.{!p:form!})
+		{
+			if (type == 'verify')
+			{
+				if (verifyForm.pin.value == null || verifyForm.pin.value.length < 1)
+				{
+					alert('Please enter pin.');
+					return;
+				}
+				else
+				{
+					window.opener.{!p:form!}.pin.value = verifyForm.pin.value;
+					window.opener.{!p:form!}.verify_type.value = type;
+				}
+			}
+			else
+			{
+				if (verifyForm.overrideReason.options[0].selected)
+				{
+					alert('Please select a reason for the override.');
+					return;
+				}
+				else if (verifyForm.overridePin.value == null || verifyForm.overridePin.value.length < 1)
+				{
+					alert('Please enter override pin.');
+					return;
+				}
+				else
+				{
+					idx = verifyForm.overrideReason.selectedIndex;
+					window.opener.{!p:form!}.pin.value = verifyForm.overridePin.value;
+					window.opener.{!p:form!}.override_reason.value = verifyForm.overrideReason.options[idx].value;
+					window.opener.{!p:form!}.verify_type.value = type;
+				}
+			}
+			window.opener.{!p:form!}.submit();
+		}
+		document.body.onunload = null;
+		parent.window.close();
+	}
+
+	function getHoursTotal()
+	{
+
+		var items = window.opener.document.all.item('statusCheckBox');
+		var item = null;
+		var total = 0;
+		var new_value = 0;
+		if( items.checked == null )
+		{//more then one found
+			for( i = 0; i < items.length; i++)
+			{
+				if( items[i].checked == true )
+				{
+//	alert(items[i].value);
+					eval("item = window.opener.document.all.item('"+items[i].value+"')");
+					if( !(item == null) )
+					{
+						total = total + (item.value - 0);
+//	alert(total);
+					}
+				}
+			}
+		}
+		else
+		{//found only one possible field
+			if( items.checked == true )
+				eval("item = window.opener.document.all.item('"+items.value+"')");
+				if( !(item == null) )
+					total = total + (item.value - 0);
+		}
+		verifyForm.total_hours.value = total;
+	}
+
+// -->
+</script>
+</head>
+
+<body onLoad="getHoursTotal();verifyForm.pin.focus();">
+
+<FORM METHOD="POST" name="verifyForm">
+
+	<table width="100%">
+		<tr>
+			<td colspan="2"><table width="100%">
+				<tr>
+					<td class="HeaderLabel">PIN:</td>
+					<td><input type="password" size="10" name="pin"></td>
+					<td><input type="button" value="Verify" name="button" class="button" onClick="verify('verify')"></td>
+				</tr>
+				<tr>
+					<td class="HeaderLabel">Total Hours:</td>
+					<td><input name="total_hours" type="text" value="0" class="readonly" readonly size="6"></td>
+				</tr>
+			</table></td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<br><hr>
+			</td>
+		</tr>
+		<tr>
+			<td><table>
+				<tr>
+					<td class="HeaderLabel">Override PIN:</td>
+					<td><input type="password" size="10" name="overridePin"><BR><BR><td/>
+				</tr>
+				<tr>
+					<td class="HeaderLabel">Override Reason:</td>
+					<td><!--#SELECT name="overrideReason" query="SELECT lookup_id, lookup_name FROM override_reason_types_v ORDER BY sequence_no" class="mandatoryLabel"--></td>
+				</tr>
+			</table></td>
+			<td><table>
+				<tr>
+					<td><input type="button" value="Override" name="button" class="button" onClick="verify('{!p:override_type!}')"></td>
+				</tr>
+			</table></td>			
+		</tr>
+	</table>
+	
+</FORM>
+
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->

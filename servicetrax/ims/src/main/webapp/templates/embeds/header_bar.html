@@ -1,0 +1,22 @@
+<!-- BEGIN header_bar.html -->
+<!-- $Header: C:\work\ims\templates\embeds\header_bar.html, 7, 4/26/2006 3:08:42 PM, Blake Von Haden$ -->
+
+<!--#SQLLOOP name="theDate" query="SELECT DISTINCT CONVERT(varchar,getDate(),101) now" -->
+<table height="20" width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="Black">
+<tr height="20">
+	<td class="TitleBar" width="30%" nowrap="nowrap">
+			&nbsp;Welcome&nbsp;{!s:user_name.toHTML()!}&nbsp;-&nbsp;{!s:org_name.toHTML()!}&nbsp;&nbsp;
+			<a class="TitleBar" href="{!s:action!}logout/login.html" target="_top">Logout</a>
+	</td>
+	<td class="TitleBar">&nbsp;</td>
+	<td class="TitleBar">
+		<a class="TitleBar" href="{!s:showPage!}select_location.html?org_id={!s:org_id!}" target="_top">Change&nbsp;Location</a>
+	</td>
+	<td align="right" class="TitleBar" >
+		{!r:theDate:now!}&nbsp;
+	</td>
+</tr>
+</table>
+
+<!--#/SQLLOOP-->
+<!-- END header_bar.html -->

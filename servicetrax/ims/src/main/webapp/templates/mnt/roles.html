@@ -1,0 +1,38 @@
+<!--#EMBED template="embeds/header.html" -->
+<!-- $Header: roles.html, 4, 4/9/2001 11:43:22 AM, Chad Ryan$ -->
+<!--#REQUIRED data="<?s:user?>"-->
+<!--REQUIRED data="<?s:rights.mnt/roles.view?>"-->
+<body class="BodyTag">
+<span class="Label">
+Please select a role you wish to edit:
+</span>
+<!--#SMARTTABLE width="100%"  name="roles" query="SELECT r.role_id, r.name, r.created_by_name, r.date_created, r.modified_by_name, r.date_modified FROM roles_v r ORDER BY r.name" -->
+	<!--#IF defined="<?s:rights.mnt/roles.update?>"-->
+	<!--#SMARTCOLUMN width="20%" name="name" sort="name" title="Name" class="TableRow1Link,TableRow2Link" href="<?s:showPage?>mnt/role.html?role_id=<?r:roles:role_id?>" target="main_frame" -->
+	<!--#ELSE-->
+	<!--#SMARTCOLUMN width="20%" name="name" sort="name" -->
+	<!--#/IF-->
+	<!--#SMARTCOLUMN width="20%" name="created_by_name" sort="created_by_name" title="Created By"-->
+	<!--#SMARTCOLUMN width="20%" name="date_created" sort="date_created" title="Date Created" format="date"-->
+	<!--#SMARTCOLUMN width="20%" name="modified_by_name" sort="modified_by_name" title="Modified By"-->
+	<!--#SMARTCOLUMN width="20%" name="date_modified" sort="date_modified" title="Date Modified" format="date"-->
+<!--#/SMARTTABLE-->
+<br>
+<table border="0" cellpadding="0" cellspacing="0"><tr>
+	<!--#IF defined="<?s:rights.mnt/roles.insert?>"-->
+	<td>
+		<form name="new" action="{!s:action!}mnt/role" method="get">
+		<input type="submit" value="Add" class="button">
+		</form>
+	</td>
+	<td>&nbsp;</td>
+	<!--#/IF-->
+	<td>
+		<form name="new" action="{!s:action!}mnt/main_mnt" method="post">
+		<input type="submit" value="Cancel" class="button">
+		</form>
+	</td>
+</tr></table>
+</body>
+
+<!--#EMBED template="embeds/footer.html" -->
