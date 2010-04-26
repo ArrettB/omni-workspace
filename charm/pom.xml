@@ -354,6 +354,11 @@
 			<layout>default</layout>
 		</repository>
                 -->
+                <repository> 
+                    <id>java.net</id> 
+                    <name>java.net</name> 
+                    <url>http://download.java.net/maven/2/</url> 
+                </repository>
 	</repositories>
 	<distributionManagement>
                 <!--

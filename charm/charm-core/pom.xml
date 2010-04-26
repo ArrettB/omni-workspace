@@ -72,11 +72,6 @@
                     <name>java.net</name> 
                     <url>http://download.java.net/maven/2/</url> 
                 </repository>
-                <repository> 
-                    <id>mvnrepository</id> 
-                    <name>mvnrepositoryt</name> 
-                    <url>http://mvnrepository.com/</url> 
-                </repository>
 	</repositories>
 	
 	
