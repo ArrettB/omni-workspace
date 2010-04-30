@@ -14,15 +14,11 @@
     </parent>
 	<modules>
 		<module>charm-core</module>
+        <!--
 		<module>charm-examples</module>
 		<module>charm-sandbox</module>
+		-->
 	</modules>
-    <!--
-	<properties>
-		<spring.version>2.5.6</spring.version>
-		<spring-tools.version>2.0.8</spring-tools.version>
-	</properties>
-	-->
 	<developers>
 		<developer>
 			<id>blake.vonhaden</id>
