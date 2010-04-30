@@ -19,7 +19,10 @@
 		<servlet-class>dynamic.intraframe.engine.BaseServlet</servlet-class>
 		<init-param>
 			<param-name>iniFile</param-name>
+            <!--
 			<param-value>C:\work\serviceTrax\ims\src\main\webapp\WEB-INF\ims.xml</param-value>
+			-->
+			<param-value>/Users/dave/kettle_river_consulting/customers/omni workspace/workspace/servicetrax/ims/src/main/webapp/WEB-INF/ims.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>

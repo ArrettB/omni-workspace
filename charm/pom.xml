@@ -7,17 +7,22 @@
 	<version>2.3</version>
 	<description>Charm Project</description>
 	<url>http://charm.apexit.com</url>
+    <parent>
+        <groupId>com.omni.servicetrax</groupId>
+        <artifactId>omni-parent</artifactId>
+        <version>1.38.2-SNAPSHOT</version>
+    </parent>
 	<modules>
 		<module>charm-core</module>
-                <!--
 		<module>charm-examples</module>
 		<module>charm-sandbox</module>
-                -->
 	</modules>
+    <!--
 	<properties>
 		<spring.version>2.5.6</spring.version>
 		<spring-tools.version>2.0.8</spring-tools.version>
 	</properties>
+	-->
 	<developers>
 		<developer>
 			<id>blake.vonhaden</id>
@@ -196,12 +201,12 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-dao</artifactId>
-				<version>${spring-tools.version}</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-hibernate3</artifactId>
-				<version>${spring-tools.version}</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
@@ -221,7 +226,7 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-remoting</artifactId>
-				<version>${spring-tools.version}</version>
+				<version>${spring.version}</version>
 			</dependency>
 			
 			<!-- Test -->
@@ -234,7 +239,7 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-mock</artifactId>
-				<version>${spring-tools.version}</version>
+				<version>${spring.version}</version>
 				<scope>test</scope>
 			</dependency>
 			<!-- mail -->
@@ -268,22 +273,26 @@
 				<version>1.6.1</version>
 			</dependency>
 			<!-- MySQL JDBC Driver -->
+            <!--
 			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
 				<version>3.1.11</version>
 				<scope>runtime</scope>
 			</dependency>
+			-->
 			<!-- Oracle JDBC Driver -->
+            <!--
 			<dependency>
 				<groupId>oracle</groupId>
 				<artifactId>ojdbc14</artifactId>
 				<version>10.2.0.3</version>
 				<scope>runtime</scope>
 			</dependency>
+			-->
 			<!-- SQL Server JDBC Driver -->
 			<dependency>
-				<groupId>jtds</groupId>
+				<groupId>net.sourceforge.jtds</groupId>
 				<artifactId>jtds</artifactId>
 				<version>1.2</version>
 				<scope>runtime</scope>

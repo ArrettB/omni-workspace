@@ -3,9 +3,9 @@
 <!DOCTYPE applicationContext SYSTEM "iFrame2.dtd"
 [
 <!ENTITY appName "ims">
-<!ENTITY projectDir "C:\work\serviceTrax\ims\">
-<!ENTITY htmlDir "C:\work\serviceTrax\ims\src\main\webapp\">
-<!ENTITY sep "\">
+<!ENTITY projectDir "/Users/dave/kettle_river_consulting/customers/omni workspace/workspace/servicetrax/ims/">
+<!ENTITY htmlDir "/Users/dave/kettle_river_consulting/customers/omni workspace/workspace/servicetrax/ims/src/main/webapp/">
+<!ENTITY sep "/">
 ]
 >
 
@@ -425,20 +425,20 @@
 
 	<resourceManager class="dynamic.util.resources.BaseResourceManager">
 		<resourceProducer name="SQLServerProducer" class="dynamic.dbtk.connection.JDBCResourceProducer" driver="net.sourceforge.jtds.jdbc.Driver" prefix="jdbc:jtds:sqlserver:" dateFormat="''MM/dd/yyyy HH:mm:ss''" now="getDate()" primaryKey="SELECT @@identity">
-			<resource name="sqlserver" id="//lexus:1437/ims_new;appName=ServiceTrax" username="ims" password="ims" type="SharedPool" default="true"/>
-			<resource name="Test" id="//lexus:1437/ims_new;appName=ServiceTrax" username="ims" password="ims" type="SingleUse" default="false"/>
-			<resource name="Test2" id="//lexus:1437/ims_new;appName=ServiceTrax" username="ims_gp" password="ims_gp" type="SingleUse" default="false"/>
-			<resource name="sqlserver_aia" id="//lexus:1437/AIA" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
-			<resource name="sqlserver_alabm" id="//lexus:1437/alabm" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
-			<resource name="sqlserver_gp" id="//lexus:1437/AMBIM" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
-			<resource name="sqlserver_mad" id="//lexus:1437/ammad" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
-			<resource name="sqlserver_ciinc" id="//lexus:1437/CIINC" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
-			<resource name="sqlserver_cimn" id="//lexus:1437/CIMN" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
-			<resource name="sqlserver_cillc" id="//lexus:1437/CILIC" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
-			<resource name="sqlserver_ics" id="//lexus:1437/ICS" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
-			<resource name="sqlserver_ntlsv" id="//lexus:1437/NTLSV" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
-			<resource name="sqlserver_ecms" id="//lexus:1437/ecms" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
-			<resource name="sqlserver_phx" id="//lexus:1437/phx" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver" id="//10.211.55.6:1433/ims_new;appName=ServiceTrax" username="ims" password="ims" type="SharedPool" default="true"/>
+			<resource name="Test" id="//10.211.55.6:1433/ims_new;appName=ServiceTrax" username="ims" password="ims" type="SingleUse" default="false"/>
+			<resource name="Test2" id="//10.211.55.6:1433/ims_new;appName=ServiceTrax" username="ims_gp" password="ims_gp" type="SingleUse" default="false"/>
+			<resource name="sqlserver_aia" id="//10.211.55.6:1433/AIA" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver_alabm" id="//10.211.55.6:1433/alabm" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver_gp" id="//10.211.55.6:1433/AMBIM" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver_mad" id="//10.211.55.6:1433/ammad" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver_ciinc" id="//10.211.55.6:1433/CIINC" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver_cimn" id="//10.211.55.6:1433/CIMN" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver_cillc" id="//10.211.55.6:1433/CILIC" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver_ics" id="//10.211.55.6:1433/ICS" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver_ntlsv" id="//10.211.55.6:1433/NTLSV" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver_ecms" id="//10.211.55.6:1433/ecms" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver_phx" id="//10.211.55.6:1433/phx" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
 		</resourceProducer>
 	</resourceManager>
 

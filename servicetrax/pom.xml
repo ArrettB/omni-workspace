@@ -8,10 +8,16 @@
 	<version>1.38.2-SNAPSHOT</version>
 	<description>ServiceTRAX Project</description>
 
-	<modules>
-		<module>stc</module>
-		<module>ims</module>
-	</modules>
+    <modules>
+        <module>stc</module>
+        <module>ims</module>
+    </modules>
+
+    <parent>
+        <groupId>com.omni.servicetrax</groupId>
+        <artifactId>omni-parent</artifactId>
+        <version>1.38.2-SNAPSHOT</version>
+    </parent>
 
 	<properties>
 		<filter.name>dev</filter.name>
@@ -58,7 +64,7 @@
 
 			<!-- SQL Server JDBC Driver -->
 			<dependency>
-				<groupId>jtds</groupId>
+				<groupId>net.sourceforge.jtds</groupId>
 				<artifactId>jtds</artifactId>
 				<version>1.2</version>
 				<scope>runtime</scope>

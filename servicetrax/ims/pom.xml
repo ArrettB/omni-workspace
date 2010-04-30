@@ -118,7 +118,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
 					<webXml>
-						/src/main/webapp/WEB-INF/web-${filter.name}.xml
+						src/main/webapp/WEB-INF/web-${filter.name}.xml
 					</webXml>
 					<webResources />
 					<warSourceExcludes>

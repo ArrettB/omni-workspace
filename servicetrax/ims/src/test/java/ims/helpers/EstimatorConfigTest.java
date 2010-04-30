@@ -40,7 +40,7 @@ import dynamic.util.xml.XMLUtils;
  */
 public class EstimatorConfigTest
 {
-	static final String fredText = "c:\\work\\fred.txt";
+	static final String fredText = "fred.txt";
 	static final File fred = new File(fredText);
 	static final File fred5 = new File(fredText + "5");
 	
