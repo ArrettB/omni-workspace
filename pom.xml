@@ -14,7 +14,7 @@
 		<module>servicetrax</module>
 	</modules>
     <properties>
-            <jdk.version>1.6</jdk.version>
+            <jdk.version>1.5</jdk.version>
             <spring.version>2.0.8</spring.version>
             <artifactory.url>http://svn.kettleriverconsulting.com:8081/artifactory/</artifactory.url>
             <svn.url.root>http://svn.kettleriverconsulting.com/svn/omni/trunk</svn.url.root>
