@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="MacRoman"?>
+
+<DbVisualizer-Export>
+<dataset>
+  <INVOICE_STATUSES 
+	STATUS_ID="1" 
+	CODE="NEW" 
+	NAME="New"/>
+  <INVOICE_STATUSES 
+	STATUS_ID="2" 
+	CODE="PENDING" 
+	NAME="Pending"/>
+  <INVOICE_STATUSES 
+	STATUS_ID="3" 
+	CODE="COMPLETE" 
+	NAME="Complete"/>
+  <INVOICE_STATUSES 
+	STATUS_ID="4" 
+	CODE="INVOICED" 
+	NAME="Invoiced"/>
+</dataset>
+</DbVisualizer-Export>

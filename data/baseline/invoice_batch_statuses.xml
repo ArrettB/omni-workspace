@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="MacRoman"?>
+
+<DbVisualizer-Export>
+<dataset>
+  <INVOICE_BATCH_STATUSES 
+	STATUS_ID="-1" 
+	CODE="ERROR" 
+	NAME="Error"/>
+  <INVOICE_BATCH_STATUSES 
+	STATUS_ID="1" 
+	CODE="WAITING" 
+	NAME="Waiting"/>
+  <INVOICE_BATCH_STATUSES 
+	STATUS_ID="2" 
+	CODE="PROCESSING" 
+	NAME="Processing"/>
+  <INVOICE_BATCH_STATUSES 
+	STATUS_ID="3" 
+	CODE="PROCESSED" 
+	NAME="Processed"/>
+</dataset>
+</DbVisualizer-Export>

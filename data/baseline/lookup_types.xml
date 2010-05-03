@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="MacRoman"?>
+
+<DbVisualizer-Export>
+<dataset>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="0" 
+	CODE="none" 
+	NAME="None" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-03-18 00:00:00" 
+	CREATED_BY="1"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="3" 
+	CODE="job_type" 
+	NAME="Job Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="5" 
+	CODE="item_type" 
+	NAME="Item Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="3"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="7" 
+	CODE="tracking_type" 
+	NAME="Tracking Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="8" 
+	CODE="service_type" 
+	NAME="Req Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="9" 
+	CODE="uom_type" 
+	NAME="Unit of Measure Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="10" 
+	CODE="billing_type" 
+	NAME="Billing Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="11" 
+	CODE="activity_type" 
+	NAME="Activity Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2001-02-12 15:25:00" 
+	MODIFIED_BY="1"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="13" 
+	CODE="furniture_line_type" 
+	NAME="Furniture Line Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="14" 
+	CODE="delivery_type" 
+	NAME="Delivery Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="15" 
+	CODE="phase_type" 
+	NAME="Phase Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="16" 
+	CODE="sub_activity_type" 
+	NAME="Sub-Activity Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="17" 
+	CODE="multi_level_type" 
+	NAME="Multi-Level Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="18" 
+	CODE="loading_dock_type" 
+	NAME="Loading Dock Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="19" 
+	CODE="security_type" 
+	NAME="Security Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="20" 
+	CODE="contact_type" 
+	NAME="Contact Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2001-07-17 13:47:39" 
+	MODIFIED_BY="1"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="21" 
+	CODE="floor_prot_type" 
+	NAME="Floor Protection Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="22" 
+	CODE="notification_type" 
+	NAME="Notification Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="23" 
+	CODE="terms_type" 
+	NAME="Terms Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="24" 
+	CODE="furniture_type" 
+	NAME="Furniture Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="25" 
+	CODE="customer_type" 
+	NAME="Customer Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="26" 
+	CODE="punchlist_item_type" 
+	NAME="Punchlist Item Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="27" 
+	CODE="location_type" 
+	NAME="Floor #" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="28" 
+	CODE="job_status_type" 
+	NAME="Job Status Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="29" 
+	CODE="service_status_type" 
+	NAME="Req Status Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="30" 
+	CODE="serv_line_status_type" 
+	NAME="Service Line Status Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="31" 
+	CODE="contact_status_type" 
+	NAME="Contact Status Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="32" 
+	CODE="item_status_type" 
+	NAME="Items Status Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="N" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="33" 
+	CODE="invoice_type" 
+	NAME="Invoice Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="3"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="34" 
+	CODE="override_reason_type" 
+	NAME="Override Reason Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="3"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="35" 
+	CODE="wood_product_type" 
+	NAME="Wood Product Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2000-12-31 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="37" 
+	CODE="yes_no_type" 
+	NAME="Yes&#47;No Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-02-05 00:00:00" 
+	CREATED_BY="3"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="39" 
+	CODE="quote_status_type" 
+	NAME="Quote Status Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-02-07 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="40" 
+	CODE="user_type" 
+	NAME="User Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-02-07 00:00:00" 
+	CREATED_BY="1"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="42" 
+	CODE="alert_type" 
+	NAME="Alert Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-02-09 00:00:00" 
+	CREATED_BY="3"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="43" 
+	CODE="resource_category_type" 
+	NAME="Resource Category Types" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-02-14 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="44" 
+	CODE="service_line_type" 
+	NAME="Service Line Types" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-02-19 00:00:00" 
+	CREATED_BY="1" 
+	DATE_MODIFIED="2001-02-19 14:40:39" 
+	MODIFIED_BY="1"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="45" 
+	CODE="payroll_status_type" 
+	NAME="Payroll Status Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-02-21 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="46" 
+	CODE="invoice_line_type" 
+	NAME="Invoice Line Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-02-28 00:00:00" 
+	CREATED_BY="3"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="47" 
+	CODE="schedule_type" 
+	NAME="Schedule Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-03-01 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="48" 
+	CODE="employment_type" 
+	NAME="Employment Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-03-05 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="49" 
+	CODE="invoice_format_type" 
+	NAME="Invoice Format Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-03-06 00:00:00" 
+	CREATED_BY="3"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="50" 
+	CODE="report_type_type" 
+	NAME="Report To Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-03-08 00:00:00" 
+	CREATED_BY="1"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="51" 
+	CODE="resource_status_type" 
+	NAME="Resource Status Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-03-12 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="52" 
+	CODE="reason_type" 
+	NAME="Reason Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-03-12 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="53" 
+	CODE="expense_status_type" 
+	NAME="Expense Status Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-03-13 00:00:00" 
+	CREATED_BY="3"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="54" 
+	CODE="date_type" 
+	NAME="Date Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-03-19 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="55" 
+	CODE="punchlist_issue_status" 
+	NAME="Punchlist Statuses" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-05-03 00:00:00" 
+	CREATED_BY="1"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="56" 
+	CODE="root_cause_types" 
+	NAME="Punchlist Issues Root Causes" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-05-03 00:00:00" 
+	CREATED_BY="1"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="58" 
+	CODE="project_status_type" 
+	NAME="Project Status Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-05-09 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="59" 
+	CODE="serv_req_status_type" 
+	NAME="Service Request Status Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-05-09 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="60" 
+	CODE="quote_req_status_type" 
+	NAME="Quote Request Status Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-05-09 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="61" 
+	CODE="account_type" 
+	NAME="Account Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-05-09 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="62" 
+	CODE="yes_no_none_type" 
+	NAME="Yes&#47;No&#47;None Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-05-09 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="63" 
+	CODE="wall_mount_type" 
+	NAME="Wall Mount Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-05-09 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="65" 
+	CODE="activity_category_type" 
+	NAME="Activity Category Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-05-09 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="66" 
+	CODE="approval_req_type" 
+	NAME="Approval Requirement Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-05-09 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="67" 
+	CODE="elevator_available_type" 
+	NAME="Elevator Available Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-05-09 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="68" 
+	CODE="request_type" 
+	NAME="Request Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2001-05-09 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="69" 
+	CODE="payroll_batch_status_type" 
+	NAME="Payroll Batch Status Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2002-03-26 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="70" 
+	CODE="expenses_batch_status_type" 
+	NAME="Expenses Batch Status Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2002-07-03 00:00:00" 
+	CREATED_BY="2"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="71" 
+	CODE="floor_number_type" 
+	NAME="Floor Number Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2003-09-03 14:28:48" 
+	CREATED_BY="1"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="72" 
+	CODE="time_type" 
+	NAME="Time Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2003-09-03 14:28:48" 
+	CREATED_BY="1"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="73" 
+	CODE="priority_type" 
+	NAME="Priority Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2003-09-03 14:29:06" 
+	CREATED_BY="1"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="74" 
+	CODE="level_type" 
+	NAME="Level Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2003-09-03 14:29:06" 
+	CREATED_BY="1"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="75" 
+	CODE="workorder_status_type" 
+	NAME="Workorder Status Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2003-09-03 14:29:28" 
+	CREATED_BY="1"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="76" 
+	CODE="product_disposition_type" 
+	NAME="Product Disposition" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2005-09-21 18:00:12" 
+	CREATED_BY="1"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="77" 
+	CODE="item_category_type" 
+	NAME="Item Categories" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2007-04-04 21:57:22" 
+	CREATED_BY="1"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="78" 
+	CODE="item_category_type" 
+	NAME="Item Categories" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2007-04-04 22:07:55" 
+	CREATED_BY="1"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="79" 
+	CODE="customer_costing_type" 
+	NAME="Customer Costing Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2008-01-29 17:43:36" 
+	CREATED_BY="1"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="80" 
+	CODE="order_type" 
+	NAME="Order Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2008-01-29 17:43:36" 
+	CREATED_BY="1"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="81" 
+	CODE="yes_no_na_type" 
+	NAME="Yes&#47;No&#47;NA Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2008-01-29 17:43:36" 
+	CREATED_BY="1"/>
+  <LOOKUP_TYPES 
+	LOOKUP_TYPE_ID="82" 
+	CODE="po_status_type" 
+	NAME="PO Status Type" 
+	ACTIVE_FLAG="Y" 
+	UPDATABLE_FLAG="Y" 
+	DATE_CREATED="2008-06-26 23:03:53" 
+	CREATED_BY="1"/>
+</dataset>
+</DbVisualizer-Export>

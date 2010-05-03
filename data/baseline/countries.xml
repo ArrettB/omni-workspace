@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="MacRoman"?>
+
+<DbVisualizer-Export>
+<dataset>
+  <countries 
+	code="CA" 
+	name="Canada"/>
+  <countries 
+	code="US" 
+	name="United States"/>
+</dataset>
+</DbVisualizer-Export>

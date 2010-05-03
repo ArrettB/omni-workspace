@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="MacRoman"?>
+
+<DbVisualizer-Export>
+<dataset>
+  <CONDITIONS 
+	CONDITION_ID="1" 
+	NAME="Price for services based on the following (not including tax):" 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="1" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2006-01-09 12:38:11" 
+	MODIFIED_BY="161"/>
+  <CONDITIONS 
+	CONDITION_ID="2" 
+	NAME="* Completing the whole job in one phase, with free and clear access to the loading dock, elevator, job site and product." 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="18" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2005-10-05 14:11:25" 
+	MODIFIED_BY="158"/>
+  <CONDITIONS 
+	CONDITION_ID="3" 
+	NAME="* No return trips. Any additional trips will be billed at the appropriate rate." 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="17" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2004-12-14 07:01:22" 
+	MODIFIED_BY="158"/>
+  <CONDITIONS 
+	CONDITION_ID="4" 
+	NAME="* Work to be performed by non-union labor." 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="2" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2002-02-22 11:12:54" 
+	MODIFIED_BY="158"/>
+  <CONDITIONS 
+	CONDITION_ID="5" 
+	NAME="* Work to be performed during normal business hours (8:00 a.m. - 4:30 p.m.)." 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="3" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2004-04-02 14:05:48" 
+	MODIFIED_BY="158"/>
+  <CONDITIONS 
+	CONDITION_ID="6" 
+	NAME="* Work to be performed after normal business hours (5:00 p.m. or later and weekends)." 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="4" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2006-03-09 12:51:23" 
+	MODIFIED_BY="158"/>
+  <CONDITIONS 
+	CONDITION_ID="7" 
+	NAME="* Elevator is available, free of charge to service provider, to move product and equipment. Additional charges will result if a &quot;stair carry&quot; is necessary." 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="12" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2006-01-09 10:06:27" 
+	MODIFIED_BY="247"/>
+  <CONDITIONS 
+	CONDITION_ID="8" 
+	NAME="* Panel-to-panel connectors installed by service provider employees" 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="14" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2006-01-09 09:56:16" 
+	MODIFIED_BY="247"/>
+  <CONDITIONS 
+	CONDITION_ID="9" 
+	NAME="* Panel-to-panel connectors installed by licensed electrician" 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="13" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2006-08-02 13:37:38" 
+	MODIFIED_BY="158"/>
+  <CONDITIONS 
+	CONDITION_ID="10" 
+	NAME="* Unloading furniture directly to staging area. Additional charges will result if double handling is necessary" 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="8" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2002-02-22 11:18:06" 
+	MODIFIED_BY="158"/>
+  <CONDITIONS 
+	CONDITION_ID="11" 
+	NAME="* Receiving product in &quot;blanket-wrapped&quot; condition. Additional charges will result if product received cartoned." 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="11" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2002-02-22 11:20:19" 
+	MODIFIED_BY="158"/>
+  <CONDITIONS 
+	CONDITION_ID="12" 
+	NAME="* Clear, detailed installation drawing required" 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="5" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2003-07-16 09:43:17" 
+	MODIFIED_BY="612"/>
+  <CONDITIONS 
+	CONDITION_ID="13" 
+	NAME="* Complete and accurate furniture specifications" 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="6" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2002-02-22 11:14:59" 
+	MODIFIED_BY="158"/>
+  <CONDITIONS 
+	CONDITION_ID="14" 
+	NAME="* Additional charges will result to receive trucks early or late." 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="7" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2003-07-01 07:44:52" 
+	MODIFIED_BY="158"/>
+  <CONDITIONS 
+	CONDITION_ID="15" 
+	NAME="* Office area left in &quot;broom clean&quot; condition at the completion of work. Additional charges will result if vacuuming is necessary." 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="20" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2002-02-22 11:54:11" 
+	MODIFIED_BY="158"/>
+  <CONDITIONS 
+	CONDITION_ID="16" 
+	NAME="* Wiping down all furniture at the completion of work." 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="19" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2004-01-16 12:29:52" 
+	MODIFIED_BY="158"/>
+  <CONDITIONS 
+	CONDITION_ID="17" 
+	NAME="Client will be responsible for the following:" 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="21" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2007-02-16 08:14:21" 
+	MODIFIED_BY="158"/>
+  <CONDITIONS 
+	CONDITION_ID="18" 
+	NAME="* Unpacking  required of all contents on shelving, and in overheads." 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="23" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2006-05-10 11:43:58" 
+	MODIFIED_BY="1734"/>
+  <CONDITIONS 
+	CONDITION_ID="19" 
+	NAME="* Providing adequate area for unloading and staging furniture" 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="9" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2002-02-22 11:17:03" 
+	MODIFIED_BY="158"/>
+  <CONDITIONS 
+	CONDITION_ID="20" 
+	NAME="* All items to be cleaned off of desktops, pedestals to be emptied" 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="24" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2007-11-19 09:09:55" 
+	MODIFIED_BY="158"/>
+  <CONDITIONS 
+	CONDITION_ID="21" 
+	NAME="* Any shelving, storage cabinets, etc will be unloaded by client." 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="22" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2002-02-22 11:55:07" 
+	MODIFIED_BY="158"/>
+  <CONDITIONS 
+	CONDITION_ID="22" 
+	NAME="* Providing a work area that is free and clear of any obstacles" 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="10" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2004-12-15 08:57:31" 
+	MODIFIED_BY="158"/>
+  <CONDITIONS 
+	CONDITION_ID="23" 
+	NAME="* Providing a work area with electricity" 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="25" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2002-02-22 11:55:42" 
+	MODIFIED_BY="158"/>
+  <CONDITIONS 
+	CONDITION_ID="24" 
+	NAME="* Cost of licensed electrician to install panel-to-panel connectors" 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="26" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2007-10-04 14:17:33" 
+	MODIFIED_BY="158"/>
+  <CONDITIONS 
+	CONDITION_ID="25" 
+	NAME="* Cost of hardwiring furniture electrical systems to the base building power by someone else." 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="15" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2002-02-22 11:23:44" 
+	MODIFIED_BY="158"/>
+  <CONDITIONS 
+	CONDITION_ID="26" 
+	NAME="* Does not include cost of disconnecting &amp; reconnecting phones, cabling &amp; computer equipment." 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="16" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2003-02-04 08:12:41" 
+	MODIFIED_BY="158"/>
+  <CONDITIONS 
+	CONDITION_ID="27" 
+	NAME="* Wood touch up required by the client will be at an additional cost" 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="28" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2002-02-22 11:56:15" 
+	MODIFIED_BY="158"/>
+  <CONDITIONS 
+	CONDITION_ID="28" 
+	NAME="* Specialized equipment required for service work will be discussed with the client and provided at the client&#39;s cost." 
+	ACTIVE_FLAG="Y" 
+	SEQUENCE_NO="27" 
+	DATE_CREATED="2001-05-22 17:36:08" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2002-02-22 11:56:10" 
+	MODIFIED_BY="158"/>
+</dataset>
+</DbVisualizer-Export>

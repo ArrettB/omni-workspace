@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="MacRoman"?>
+
+<DbVisualizer-Export>
+<dataset>
+  <FORMATS 
+	FORMAT_ID="1" 
+	NAME="Word" 
+	EXTENSION=".doc" 
+	DESCRIPTION="Microsoft Word" 
+	DATE_CREATED="2001-04-20 00:00:00" 
+	CREATED_BY="1"/>
+  <FORMATS 
+	FORMAT_ID="2" 
+	NAME="PDF" 
+	EXTENSION=".pdf" 
+	DESCRIPTION="Adobe Acrobat PDF" 
+	DATE_CREATED="2001-04-20 00:00:00" 
+	CREATED_BY="1"/>
+  <FORMATS 
+	FORMAT_ID="3" 
+	NAME="HTML" 
+	EXTENSION=".html" 
+	DESCRIPTION="HTML" 
+	DATE_CREATED="2001-04-20 00:00:00" 
+	CREATED_BY="1"/>
+  <FORMATS 
+	FORMAT_ID="4" 
+	NAME="Excel" 
+	EXTENSION=".xls" 
+	DESCRIPTION="Microsoft Excel" 
+	DATE_CREATED="2001-04-20 00:00:00" 
+	CREATED_BY="1"/>
+  <FORMATS 
+	FORMAT_ID="5" 
+	NAME="Visio" 
+	EXTENSION=".vss" 
+	DESCRIPTION="Visio" 
+	DATE_CREATED="2001-04-20 00:00:00" 
+	CREATED_BY="1"/>
+  <FORMATS 
+	FORMAT_ID="6" 
+	NAME="Zip" 
+	EXTENSION=".zip" 
+	DESCRIPTION="Zip Archives" 
+	DATE_CREATED="2001-04-24 00:00:00" 
+	CREATED_BY="1"/>
+  <FORMATS 
+	FORMAT_ID="8" 
+	NAME="CAD-DWG" 
+	EXTENSION=".dwg" 
+	DESCRIPTION="CAD
+File" 
+	DATE_CREATED="2001-10-02 09:09:55" 
+	CREATED_BY="1"/>
+  <FORMATS 
+	FORMAT_ID="9" 
+	NAME="CAD-DXF" 
+	EXTENSION=".dxf" 
+	DESCRIPTION="CAD Exchange
+File" 
+	DATE_CREATED="2001-10-02 09:10:14" 
+	CREATED_BY="1"/>
+  <FORMATS 
+	FORMAT_ID="10" 
+	NAME="Text" 
+	EXTENSION=".txt" 
+	DESCRIPTION="Text File" 
+	DATE_CREATED="2001-10-02 09:10:31" 
+	CREATED_BY="1"/>
+  <FORMATS 
+	FORMAT_ID="11" 
+	NAME="MS Project" 
+	EXTENSION=".mpp" 
+	DESCRIPTION="Microsoft Project File" 
+	DATE_CREATED="2001-12-03 12:16:10" 
+	CREATED_BY="1"/>
+  <FORMATS 
+	FORMAT_ID="12" 
+	NAME="JPEG" 
+	EXTENSION=".jpeg" 
+	DESCRIPTION="J-Peg Images" 
+	DATE_CREATED="2003-09-16 11:04:17" 
+	CREATED_BY="1"/>
+</dataset>
+</DbVisualizer-Export>

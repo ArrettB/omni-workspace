@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="MacRoman"?>
+
+<DbVisualizer-Export>
+<dataset>
+  <FUNCTION_GROUPS 
+	FUNCTION_GROUP_ID="1" 
+	NAME="Miscellaneous" 
+	CODE="DEFAULT"/>
+  <FUNCTION_GROUPS 
+	FUNCTION_GROUP_ID="2" 
+	NAME="Maintenance" 
+	CODE="MAINT"/>
+  <FUNCTION_GROUPS 
+	FUNCTION_GROUP_ID="3" 
+	NAME="Job Processing" 
+	CODE="job"/>
+  <FUNCTION_GROUPS 
+	FUNCTION_GROUP_ID="4" 
+	NAME="Tabs" 
+	CODE="TABS"/>
+  <FUNCTION_GROUPS 
+	FUNCTION_GROUP_ID="5" 
+	NAME="Billing" 
+	CODE="bil"/>
+  <FUNCTION_GROUPS 
+	FUNCTION_GROUP_ID="6" 
+	NAME="Scheduling" 
+	CODE="sch"/>
+  <FUNCTION_GROUPS 
+	FUNCTION_GROUP_ID="7" 
+	NAME="Time Capture" 
+	CODE="time"/>
+  <FUNCTION_GROUPS 
+	FUNCTION_GROUP_ID="8" 
+	NAME="Extranet" 
+	CODE="enet"/>
+  <FUNCTION_GROUPS 
+	FUNCTION_GROUP_ID="9" 
+	NAME="Reports" 
+	CODE="rep"/>
+</dataset>
+</DbVisualizer-Export>
