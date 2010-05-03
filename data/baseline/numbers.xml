@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="MacRoman"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<DbVisualizer-Export>
 <dataset>
   <NUMBERS 
 	number="0"/>
@@ -2005,4 +2004,3 @@
   <NUMBERS 
 	number="1000"/>
 </dataset>
-</DbVisualizer-Export>
