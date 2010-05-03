@@ -69,7 +69,7 @@ public class EstimatorConfigTest
 		Document doc = XMLUtils.parse(is);
 		EstimatorConfig ec = new EstimatorConfig(doc);
 		
-		assertEquals("fred.txt5", ec.getEstimatorDir("5"));
+		assertEquals(fred5, ec.getEstimatorDir("5"));
 	}
 
 
