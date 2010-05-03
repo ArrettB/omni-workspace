@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name="serviceTrax" default="build_all" basedir=".">
 
-	<!--grab system environment and prepend with env. -->
+	<!-- grab system environment and prepend with env. -->
 	<property environment="env" />
 
 	<!-- User Properties From File -->
