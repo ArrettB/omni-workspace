@@ -1,3 +1,84 @@
+/****** Object:  View [dbo].[LOOKUPS_V]    Script Date: 05/03/2010 14:18:07 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[LOOKUPS_V]
+AS
+SELECT     TOP 100 PERCENT dbo.LOOKUP_TYPES.LOOKUP_TYPE_ID, dbo.LOOKUP_TYPES.CODE AS type_code, dbo.LOOKUP_TYPES.NAME AS type_name, 
+                      dbo.LOOKUP_TYPES.ACTIVE_FLAG AS type_active_flag, dbo.LOOKUP_TYPES.UPDATABLE_FLAG AS type_updatable_flag, 
+                      dbo.LOOKUP_TYPES.PARENT_TYPE_ID, dbo.LOOKUP_TYPES.DATE_CREATED AS type_date_created, 
+                      dbo.LOOKUP_TYPES.CREATED_BY AS type_created_by, USERS_1.FIRST_NAME + ' ' + USERS_1.LAST_NAME AS type_created_by_name, 
+                      dbo.LOOKUP_TYPES.DATE_MODIFIED AS type_date_modified, dbo.LOOKUP_TYPES.MODIFIED_BY AS type_modified_by, 
+                      USERS_2.FIRST_NAME + ' ' + USERS_2.LAST_NAME AS type_modified_by_name, dbo.LOOKUPS.LOOKUP_ID, dbo.LOOKUPS.CODE AS lookup_code, 
+                      dbo.LOOKUPS.NAME AS lookup_name, dbo.LOOKUPS.SEQUENCE_NO, dbo.LOOKUPS.ACTIVE_FLAG AS lookup_active_flag, 
+                      dbo.LOOKUPS.UPDATABLE_FLAG AS lookup_updatable_flag, dbo.LOOKUPS.PARENT_LOOKUP_ID, dbo.LOOKUPS.EXT_ID, dbo.LOOKUPS.ATTRIBUTE1,
+                       dbo.LOOKUPS.ATTRIBUTE2, dbo.LOOKUPS.ATTRIBUTE3, dbo.LOOKUPS.DATE_CREATED AS lookup_date_created, 
+                      dbo.LOOKUPS.CREATED_BY AS lookup_created_by, USERS_3.FIRST_NAME + ' ' + USERS_3.LAST_NAME AS lookup_created_by_name, 
+                      dbo.LOOKUPS.DATE_MODIFIED AS lookup_date_modified, dbo.LOOKUPS.MODIFIED_BY AS lookup_modified_by, 
+                      USERS_4.FIRST_NAME + ' ' + USERS_4.LAST_NAME AS lookup_modified_by_name
+FROM         dbo.USERS USERS_4 RIGHT OUTER JOIN
+                      dbo.LOOKUPS ON USERS_4.USER_ID = dbo.LOOKUPS.MODIFIED_BY LEFT OUTER JOIN
+                      dbo.USERS USERS_3 ON dbo.LOOKUPS.CREATED_BY = USERS_3.USER_ID RIGHT OUTER JOIN
+                      dbo.USERS USERS_2 RIGHT OUTER JOIN
+                      dbo.LOOKUP_TYPES ON USERS_2.USER_ID = dbo.LOOKUP_TYPES.MODIFIED_BY ON 
+                      dbo.LOOKUPS.LOOKUP_TYPE_ID = dbo.LOOKUP_TYPES.LOOKUP_TYPE_ID LEFT OUTER JOIN
+                      dbo.USERS USERS_1 ON dbo.LOOKUP_TYPES.CREATED_BY = USERS_1.USER_ID
+ORDER BY type_code, dbo.LOOKUPS.SEQUENCE_NO
+GO
+/* $Id: jobs_v.sql 1667 2009-08-17 21:49:29Z bvonhaden $ */
+
+CREATE VIEW [dbo].[jobs_v]
+AS
+SELECT j.job_id, 
+       j.project_id, 
+       j.job_no, 
+       j.job_name, 
+       CAST(j.job_no AS varchar) + ' - ' + ISNULL(c.customer_name, '') + ' - ' + ISNULL(j.job_name, '') AS job_no_name, 
+       j.job_type_id, 
+       job_type.code AS job_type_code, 
+       job_type.name AS job_type_name, 
+       j.job_status_type_id, 
+       job_status_type.code AS job_status_type_code, 
+       job_status_type.name AS job_status_type_name, 
+       job_status_type.sequence_no AS job_status_seq_no, 
+       c.organization_id, 
+       CASE WHEN customer_type.code = 'dealer' THEN c.customer_name ELSE c.dealer_name END dealer_name,
+       CASE WHEN customer_type.code = 'dealer' THEN c.ext_customer_id ELSE c.ext_dealer_id END ext_dealer_id, 
+       c.ext_customer_id, 
+       j.ext_price_level_id, 
+       j.foreman_resource_id, 
+       r.name AS foreman_resource_name, 
+       r.user_id AS foreman_user_id, 
+       foreman_user.first_name + ' ' + foreman_user.last_name AS foreman_user_name, 
+       j.billing_user_id, 
+       j.a_m_sales_contact_id,
+       j.watch_flag, 
+       u_billing.first_name + ' ' + u_billing.last_name AS billing_user_name, 
+       j.created_by, 
+       created_by.first_name + ' ' + created_by.last_name AS created_by_name, 
+       j.date_created, 
+       j.modified_by, 
+       modified_by.first_name + ' ' + modified_by.last_name AS modified_by_name, 
+       j.date_modified,
+       CASE WHEN customer_type.code = 'end_user' THEN c.end_user_parent_id ELSE c.customer_id END customer_id,
+       CASE WHEN customer_type.code = 'end_user' THEN (SELECT customer_name FROM customers WHERE customer_id = c.end_user_parent_id) ELSE c.customer_name END customer_name,
+       CASE WHEN customer_type.code = 'end_user' THEN c.customer_id ELSE eu.customer_id END end_user_id,
+       CASE WHEN customer_type.code = 'end_user' THEN c.customer_name ELSE eu.customer_name END end_user_name,
+       ISNULL(p.is_new, 'N') is_new
+  FROM dbo.jobs j INNER JOIN
+       dbo.customers c ON j.customer_id = c.customer_id INNER JOIN
+       dbo.lookups customer_type ON c.customer_type_id = customer_type.lookup_id INNER JOIN
+       dbo.lookups job_type ON j.job_type_id = job_type.lookup_id INNER JOIN 
+       dbo.lookups job_status_type ON j.job_status_type_id = job_status_type.lookup_id INNER JOIN
+       dbo.users created_by ON j.created_by = created_by.user_id LEFT OUTER JOIN
+       dbo.users u_billing ON j.billing_user_id = u_billing.user_id LEFT OUTER JOIN
+       dbo.users modified_by ON j.modified_by = modified_by.user_id LEFT OUTER JOIN
+       dbo.resources r ON j.foreman_resource_id = r.resource_id LEFT OUTER JOIN
+       dbo.users foreman_user ON r.user_id = foreman_user.user_id LEFT OUTER JOIN
+       dbo.projects p ON j.project_id = p.project_id LEFT OUTER JOIN
+       dbo.customers eu ON p.end_user_id = eu.customer_id
+GO
 /****** Object:  View [dbo].[TEMPLATE_LOCATIONS_2_V]    Script Date: 05/03/2010 14:18:09 ******/
 SET ANSI_NULLS ON
 GO
@@ -623,34 +704,6 @@ SELECT     LOOKUP_TYPE_ID, type_code, type_name, type_active_flag, type_date_cre
                       lookup_date_created, lookup_created_by, lookup_created_by_name, lookup_date_modified, lookup_modified_by, lookup_modified_by_name
 FROM         dbo.LOOKUPS_V
 WHERE     (type_code = 'wall_mount_type') AND (lookup_active_flag <> 'N') AND (type_active_flag <> 'N')
-GO
-/****** Object:  View [dbo].[LOOKUPS_V]    Script Date: 05/03/2010 14:18:07 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE VIEW [dbo].[LOOKUPS_V]
-AS
-SELECT     TOP 100 PERCENT dbo.LOOKUP_TYPES.LOOKUP_TYPE_ID, dbo.LOOKUP_TYPES.CODE AS type_code, dbo.LOOKUP_TYPES.NAME AS type_name, 
-                      dbo.LOOKUP_TYPES.ACTIVE_FLAG AS type_active_flag, dbo.LOOKUP_TYPES.UPDATABLE_FLAG AS type_updatable_flag, 
-                      dbo.LOOKUP_TYPES.PARENT_TYPE_ID, dbo.LOOKUP_TYPES.DATE_CREATED AS type_date_created, 
-                      dbo.LOOKUP_TYPES.CREATED_BY AS type_created_by, USERS_1.FIRST_NAME + ' ' + USERS_1.LAST_NAME AS type_created_by_name, 
-                      dbo.LOOKUP_TYPES.DATE_MODIFIED AS type_date_modified, dbo.LOOKUP_TYPES.MODIFIED_BY AS type_modified_by, 
-                      USERS_2.FIRST_NAME + ' ' + USERS_2.LAST_NAME AS type_modified_by_name, dbo.LOOKUPS.LOOKUP_ID, dbo.LOOKUPS.CODE AS lookup_code, 
-                      dbo.LOOKUPS.NAME AS lookup_name, dbo.LOOKUPS.SEQUENCE_NO, dbo.LOOKUPS.ACTIVE_FLAG AS lookup_active_flag, 
-                      dbo.LOOKUPS.UPDATABLE_FLAG AS lookup_updatable_flag, dbo.LOOKUPS.PARENT_LOOKUP_ID, dbo.LOOKUPS.EXT_ID, dbo.LOOKUPS.ATTRIBUTE1,
-                       dbo.LOOKUPS.ATTRIBUTE2, dbo.LOOKUPS.ATTRIBUTE3, dbo.LOOKUPS.DATE_CREATED AS lookup_date_created, 
-                      dbo.LOOKUPS.CREATED_BY AS lookup_created_by, USERS_3.FIRST_NAME + ' ' + USERS_3.LAST_NAME AS lookup_created_by_name, 
-                      dbo.LOOKUPS.DATE_MODIFIED AS lookup_date_modified, dbo.LOOKUPS.MODIFIED_BY AS lookup_modified_by, 
-                      USERS_4.FIRST_NAME + ' ' + USERS_4.LAST_NAME AS lookup_modified_by_name
-FROM         dbo.USERS USERS_4 RIGHT OUTER JOIN
-                      dbo.LOOKUPS ON USERS_4.USER_ID = dbo.LOOKUPS.MODIFIED_BY LEFT OUTER JOIN
-                      dbo.USERS USERS_3 ON dbo.LOOKUPS.CREATED_BY = USERS_3.USER_ID RIGHT OUTER JOIN
-                      dbo.USERS USERS_2 RIGHT OUTER JOIN
-                      dbo.LOOKUP_TYPES ON USERS_2.USER_ID = dbo.LOOKUP_TYPES.MODIFIED_BY ON 
-                      dbo.LOOKUPS.LOOKUP_TYPE_ID = dbo.LOOKUP_TYPES.LOOKUP_TYPE_ID LEFT OUTER JOIN
-                      dbo.USERS USERS_1 ON dbo.LOOKUP_TYPES.CREATED_BY = USERS_1.USER_ID
-ORDER BY type_code, dbo.LOOKUPS.SEQUENCE_NO
 GO
 /****** Object:  View [dbo].[SERVICE_ACCOUNT_REPORT_NUMBERS]    Script Date: 05/03/2010 14:18:09 ******/
 SET ANSI_NULLS ON
@@ -5439,59 +5492,6 @@ GO
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
-GO
-/* $Id: jobs_v.sql 1667 2009-08-17 21:49:29Z bvonhaden $ */
-
-CREATE VIEW [dbo].[jobs_v]
-AS
-SELECT j.job_id, 
-       j.project_id, 
-       j.job_no, 
-       j.job_name, 
-       CAST(j.job_no AS varchar) + ' - ' + ISNULL(c.customer_name, '') + ' - ' + ISNULL(j.job_name, '') AS job_no_name, 
-       j.job_type_id, 
-       job_type.code AS job_type_code, 
-       job_type.name AS job_type_name, 
-       j.job_status_type_id, 
-       job_status_type.code AS job_status_type_code, 
-       job_status_type.name AS job_status_type_name, 
-       job_status_type.sequence_no AS job_status_seq_no, 
-       c.organization_id, 
-       CASE WHEN customer_type.code = 'dealer' THEN c.customer_name ELSE c.dealer_name END dealer_name,
-       CASE WHEN customer_type.code = 'dealer' THEN c.ext_customer_id ELSE c.ext_dealer_id END ext_dealer_id, 
-       c.ext_customer_id, 
-       j.ext_price_level_id, 
-       j.foreman_resource_id, 
-       r.name AS foreman_resource_name, 
-       r.user_id AS foreman_user_id, 
-       foreman_user.first_name + ' ' + foreman_user.last_name AS foreman_user_name, 
-       j.billing_user_id, 
-       j.a_m_sales_contact_id,
-       j.watch_flag, 
-       u_billing.first_name + ' ' + u_billing.last_name AS billing_user_name, 
-       j.created_by, 
-       created_by.first_name + ' ' + created_by.last_name AS created_by_name, 
-       j.date_created, 
-       j.modified_by, 
-       modified_by.first_name + ' ' + modified_by.last_name AS modified_by_name, 
-       j.date_modified,
-       CASE WHEN customer_type.code = 'end_user' THEN c.end_user_parent_id ELSE c.customer_id END customer_id,
-       CASE WHEN customer_type.code = 'end_user' THEN (SELECT customer_name FROM customers WHERE customer_id = c.end_user_parent_id) ELSE c.customer_name END customer_name,
-       CASE WHEN customer_type.code = 'end_user' THEN c.customer_id ELSE eu.customer_id END end_user_id,
-       CASE WHEN customer_type.code = 'end_user' THEN c.customer_name ELSE eu.customer_name END end_user_name,
-       ISNULL(p.is_new, 'N') is_new
-  FROM dbo.jobs j INNER JOIN
-       dbo.customers c ON j.customer_id = c.customer_id INNER JOIN
-       dbo.lookups customer_type ON c.customer_type_id = customer_type.lookup_id INNER JOIN
-       dbo.lookups job_type ON j.job_type_id = job_type.lookup_id INNER JOIN 
-       dbo.lookups job_status_type ON j.job_status_type_id = job_status_type.lookup_id INNER JOIN
-       dbo.users created_by ON j.created_by = created_by.user_id LEFT OUTER JOIN
-       dbo.users u_billing ON j.billing_user_id = u_billing.user_id LEFT OUTER JOIN
-       dbo.users modified_by ON j.modified_by = modified_by.user_id LEFT OUTER JOIN
-       dbo.resources r ON j.foreman_resource_id = r.resource_id LEFT OUTER JOIN
-       dbo.users foreman_user ON r.user_id = foreman_user.user_id LEFT OUTER JOIN
-       dbo.projects p ON j.project_id = p.project_id LEFT OUTER JOIN
-       dbo.customers eu ON p.end_user_id = eu.customer_id
 GO
 /****** Object:  View [dbo].[tcn_resources_v]    Script Date: 05/03/2010 14:18:09 ******/
 SET ANSI_NULLS ON
