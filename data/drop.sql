@@ -1,3685 +1,2811 @@
-/* ---------------------------------------------------------------------- */
-/* Script generated with: DeZign for Databases v4.1.3                     */
-/* Target DBMS:           MS SQL Server 2005                              */
-/* Project file:          servicetrax_2010.dez                            */
-/* Project name:                                                          */
-/* Author:                                                                */
-/* Script type:           Database drop script                            */
-/* Created on:            2010-05-03 12:21                                */
-/* ---------------------------------------------------------------------- */
-
-
-/* ---------------------------------------------------------------------- */
-/* Drop views                                                             */
-/* ---------------------------------------------------------------------- */
-
-DROP VIEW [dbo.TEMPLATE_LOCATIONS_2_V]
+/****** Object:  ForeignKey [FK_CHECKLIST_DATA_CHECKLISTS]    Script Date: 05/03/2010 14:18:03 ******/
+ALTER TABLE [dbo].[CHECKLIST_DATA] DROP CONSTRAINT [FK_CHECKLIST_DATA_CHECKLISTS]
 GO
-
-DROP VIEW [dbo.TIME_UOM_TYPES_V]
+/****** Object:  ForeignKey [FK_CHECKLISTS_REQUESTS]    Script Date: 05/03/2010 14:18:03 ******/
+ALTER TABLE [dbo].[CHECKLISTS] DROP CONSTRAINT [FK_CHECKLISTS_REQUESTS]
 GO
-
-DROP VIEW [dbo.TRACKING_TYPES_V]
+/****** Object:  ForeignKey [FK_CONTACT_GROUPS_CONTACTS]    Script Date: 05/03/2010 14:18:03 ******/
+ALTER TABLE [dbo].[CONTACT_GROUPS] DROP CONSTRAINT [FK_CONTACT_GROUPS_CONTACTS]
 GO
-
-DROP VIEW [dbo.UOM_TYPES_V]
+/****** Object:  ForeignKey [FK_CONTACT_GROUPS_LOOKUPS]    Script Date: 05/03/2010 14:18:03 ******/
+ALTER TABLE [dbo].[CONTACT_GROUPS] DROP CONSTRAINT [FK_CONTACT_GROUPS_LOOKUPS]
 GO
-
-DROP VIEW [dbo.WEEKEND_DATE_TYPES_V]
+/****** Object:  ForeignKey [FK_C_CONT_STATUS_TYPES]    Script Date: 05/03/2010 14:18:03 ******/
+ALTER TABLE [dbo].[CONTACTS] DROP CONSTRAINT [FK_C_CONT_STATUS_TYPES]
 GO
-
-DROP VIEW [dbo.WOOD_PRODUCT_TYPES_V]
+/****** Object:  ForeignKey [FK_C_CONTACT_TYPES]    Script Date: 05/03/2010 14:18:03 ******/
+ALTER TABLE [dbo].[CONTACTS] DROP CONSTRAINT [FK_C_CONTACT_TYPES]
 GO
-
-DROP VIEW [dbo.YES_NO_TYPE_V]
+/****** Object:  ForeignKey [FK_CONTACTS_CUSTOMERS]    Script Date: 05/03/2010 14:18:03 ******/
+ALTER TABLE [dbo].[CONTACTS] DROP CONSTRAINT [FK_CONTACTS_CUSTOMERS]
 GO
-
-DROP VIEW [dbo.PDA_RESOURCES_V]
+/****** Object:  ForeignKey [FK_CONTACTS_ORGANIZATIONS]    Script Date: 05/03/2010 14:18:03 ******/
+ALTER TABLE [dbo].[CONTACTS] DROP CONSTRAINT [FK_CONTACTS_ORGANIZATIONS]
 GO
-
-DROP VIEW [dbo.GP_AIA_PAY_CODE_V]
+/****** Object:  ForeignKey [FK_CUSTOM_COL_LISTS_CUSTOM_CUST_COLUMNS]    Script Date: 05/03/2010 14:18:03 ******/
+ALTER TABLE [dbo].[CUSTOM_COL_LISTS] DROP CONSTRAINT [FK_CUSTOM_COL_LISTS_CUSTOM_CUST_COLUMNS]
 GO
-
-DROP VIEW [dbo.PDA_REASONS_V]
+/****** Object:  ForeignKey [FK_CUSTOM_COLS_REQUESTS]    Script Date: 05/03/2010 14:18:03 ******/
+ALTER TABLE [dbo].[CUSTOM_COLS] DROP CONSTRAINT [FK_CUSTOM_COLS_REQUESTS]
 GO
-
-DROP VIEW [dbo.Taxes_V]
+/****** Object:  ForeignKey [FK_CUSTOM_CUST_COLUMNS_CUSTOMERS]    Script Date: 05/03/2010 14:18:03 ******/
+ALTER TABLE [dbo].[CUSTOM_CUST_COLUMNS] DROP CONSTRAINT [FK_CUSTOM_CUST_COLUMNS_CUSTOMERS]
 GO
-
-DROP VIEW [dbo.CHECKLISTS_V]
+/****** Object:  ForeignKey [fk_customer_customer_type]    Script Date: 05/03/2010 14:18:03 ******/
+ALTER TABLE [dbo].[CUSTOMERS] DROP CONSTRAINT [fk_customer_customer_type]
 GO
-
-DROP VIEW [dbo.GP_CIINC_PAY_CODE_V]
+/****** Object:  ForeignKey [fk_customer_end_user_parent]    Script Date: 05/03/2010 14:18:03 ******/
+ALTER TABLE [dbo].[CUSTOMERS] DROP CONSTRAINT [fk_customer_end_user_parent]
 GO
-
-DROP VIEW [dbo.MAX_REQ_NO_V]
+/****** Object:  ForeignKey [fk_customer_parent]    Script Date: 05/03/2010 14:18:03 ******/
+ALTER TABLE [dbo].[CUSTOMERS] DROP CONSTRAINT [fk_customer_parent]
 GO
-
-DROP VIEW [dbo.GP_CILLC_PAY_CODE_V]
+/****** Object:  ForeignKey [FK_CUSTOMERS_ORGANIZATIONS]    Script Date: 05/03/2010 14:18:03 ******/
+ALTER TABLE [dbo].[CUSTOMERS] DROP CONSTRAINT [FK_CUSTOMERS_ORGANIZATIONS]
 GO
-
-DROP VIEW [dbo.crystal_pkf_quote_V]
+/****** Object:  ForeignKey [FK_DOCUMENTS_FORMATS]    Script Date: 05/03/2010 14:18:03 ******/
+ALTER TABLE [dbo].[DOCUMENTS] DROP CONSTRAINT [FK_DOCUMENTS_FORMATS]
 GO
-
-DROP VIEW [dbo.crystal_UNBILLED_OPS_V]
+/****** Object:  ForeignKey [FK_DOCUMENTS_PROJECTS]    Script Date: 05/03/2010 14:18:03 ******/
+ALTER TABLE [dbo].[DOCUMENTS] DROP CONSTRAINT [FK_DOCUMENTS_PROJECTS]
 GO
-
-DROP VIEW [dbo.SYSCOLUMNS_V]
+/****** Object:  ForeignKey [FK_FRT_RIGHT_TYPES]    Script Date: 05/03/2010 14:18:03 ******/
+ALTER TABLE [dbo].[FUNCTION_RIGHT_TYPES] DROP CONSTRAINT [FK_FRT_RIGHT_TYPES]
 GO
-
-DROP VIEW [dbo.GP_CIMN_PAY_CODE_V]
+/****** Object:  ForeignKey [FK_FUNCTION_RIGHT_TYPES_FUNCTIONS]    Script Date: 05/03/2010 14:18:03 ******/
+ALTER TABLE [dbo].[FUNCTION_RIGHT_TYPES] DROP CONSTRAINT [FK_FUNCTION_RIGHT_TYPES_FUNCTIONS]
 GO
-
-DROP VIEW [dbo.INVOICE_COST_CODES_PROBLEMS_V]
+/****** Object:  ForeignKey [FK_FUNCTIONS_FUNCTION_GROUPS]    Script Date: 05/03/2010 14:18:03 ******/
+ALTER TABLE [dbo].[FUNCTIONS] DROP CONSTRAINT [FK_FUNCTIONS_FUNCTION_GROUPS]
 GO
-
-DROP VIEW [dbo.Taxes_V_Sum]
+/****** Object:  ForeignKey [FK_FUNCTIONS_TEMPLATE_LOCATIONS]    Script Date: 05/03/2010 14:18:03 ******/
+ALTER TABLE [dbo].[FUNCTIONS] DROP CONSTRAINT [FK_FUNCTIONS_TEMPLATE_LOCATIONS]
 GO
-
-DROP VIEW [dbo.crystal_VAR_TIME_EXP_V]
+/****** Object:  ForeignKey [FK_FUNCTIONS_TEMPLATES]    Script Date: 05/03/2010 14:18:03 ******/
+ALTER TABLE [dbo].[FUNCTIONS] DROP CONSTRAINT [FK_FUNCTIONS_TEMPLATES]
 GO
-
-DROP VIEW [dbo.PDA_ITEMS_V]
+/****** Object:  ForeignKey [fk_il_bill_service_id]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[INVOICE_LINES] DROP CONSTRAINT [fk_il_bill_service_id]
 GO
-
-DROP VIEW [dbo.JOBS_V_jerry]
+/****** Object:  ForeignKey [FK_IL_INVOICES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[INVOICE_LINES] DROP CONSTRAINT [FK_IL_INVOICES]
 GO
-
-DROP VIEW [dbo.JOBS_READY_TO_BILL_V]
+/****** Object:  ForeignKey [FK_IL_ITEMS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[INVOICE_LINES] DROP CONSTRAINT [FK_IL_ITEMS]
 GO
-
-DROP VIEW [dbo.JOB_SEARCH_V]
+/****** Object:  ForeignKey [FK_IL_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[INVOICE_LINES] DROP CONSTRAINT [FK_IL_TYPES]
 GO
-
-DROP VIEW [dbo.CUSTOMER_CONTACTS_V]
+/****** Object:  ForeignKey [FK_IT_CONTACTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[INVOICE_TRACKING] DROP CONSTRAINT [FK_IT_CONTACTS]
 GO
-
-DROP VIEW [dbo.VAR_JOB_QUOTED_V]
+/****** Object:  ForeignKey [FK_IT_INVOICE_TRACKING_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[INVOICE_TRACKING] DROP CONSTRAINT [FK_IT_INVOICE_TRACKING_TYPES]
 GO
-
-DROP VIEW [dbo.DATE_OFFSETS_V]
+/****** Object:  ForeignKey [FK_IT_INVOICES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[INVOICE_TRACKING] DROP CONSTRAINT [FK_IT_INVOICES]
 GO
-
-DROP VIEW [dbo.FUNCTION_RIGHT_TYPES_V]
+/****** Object:  ForeignKey [FK_IT_NEW_INVOICE_STATUSES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[INVOICE_TRACKING] DROP CONSTRAINT [FK_IT_NEW_INVOICE_STATUSES]
 GO
-
-DROP VIEW [dbo.crystal_UNBILLED_OPS_V2]
+/****** Object:  ForeignKey [FK_IT_OLD_INVOICE_STATUSES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[INVOICE_TRACKING] DROP CONSTRAINT [FK_IT_OLD_INVOICE_STATUSES]
 GO
-
-DROP VIEW [dbo.GP_ECMS_PAY_CODE_V]
+/****** Object:  ForeignKey [FK_I_BATCH_STATUSES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[INVOICES] DROP CONSTRAINT [FK_I_BATCH_STATUSES]
 GO
-
-DROP VIEW [dbo.GP_MPLS_PAY_CODE_V]
+/****** Object:  ForeignKey [FK_I_BILLING_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[INVOICES] DROP CONSTRAINT [FK_I_BILLING_TYPES]
 GO
-
-DROP VIEW [dbo.EXPENSES_EXPORT_V]
+/****** Object:  ForeignKey [FK_I_CUSTOMERS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[INVOICES] DROP CONSTRAINT [FK_I_CUSTOMERS]
 GO
-
-DROP VIEW [dbo.INVOICE_FORMAT_TYPES_V]
+/****** Object:  ForeignKey [FK_I_INVOICE_FORMAT_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[INVOICES] DROP CONSTRAINT [FK_I_INVOICE_FORMAT_TYPES]
 GO
-
-DROP VIEW [dbo.ROOT_CAUSES_V]
+/****** Object:  ForeignKey [FK_I_INVOICE_STATUSES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[INVOICES] DROP CONSTRAINT [FK_I_INVOICE_STATUSES]
 GO
-
-DROP VIEW [dbo.SYS_TABLES_V]
+/****** Object:  ForeignKey [FK_I_INVOICE_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[INVOICES] DROP CONSTRAINT [FK_I_INVOICE_TYPES]
 GO
-
-DROP VIEW [dbo.INVOICE_LINE_TYPES_V]
+/****** Object:  ForeignKey [FK_I_JOBS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[INVOICES] DROP CONSTRAINT [FK_I_JOBS]
 GO
-
-DROP VIEW [dbo.INVOICE_TYPES_V]
+/****** Object:  ForeignKey [FK_I_ORGANIZATIONS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[INVOICES] DROP CONSTRAINT [FK_I_ORGANIZATIONS]
 GO
-
-DROP VIEW [dbo.YES_NO_NONE_TYPES_V]
+/****** Object:  ForeignKey [FK_I_STATUSES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[INVOICES] DROP CONSTRAINT [FK_I_STATUSES]
 GO
-
-DROP VIEW [dbo.SERV_REQ_STATUS_TYPES_V]
+/****** Object:  ForeignKey [FK_ITEMS_ITEM_ID]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[ITEM_COSTING_HISTORY] DROP CONSTRAINT [FK_ITEMS_ITEM_ID]
 GO
-
-DROP VIEW [dbo.WALL_MOUNT_TYPES_V]
+/****** Object:  ForeignKey [FK_ITEM_ORGANIZATIONS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[ITEMS] DROP CONSTRAINT [FK_ITEM_ORGANIZATIONS]
 GO
-
-DROP VIEW [dbo.LOOKUPS_V]
+/****** Object:  ForeignKey [FK_ITEM_STATUSES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[ITEMS] DROP CONSTRAINT [FK_ITEM_STATUSES]
 GO
-
-DROP VIEW [dbo.SERVICE_ACCOUNT_REPORT_NUMBERS]
+/****** Object:  ForeignKey [FK_ITEM_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[ITEMS] DROP CONSTRAINT [FK_ITEM_TYPES]
 GO
-
-DROP VIEW [dbo.PDA_JOBS_V]
+/****** Object:  ForeignKey [fk_items_category_lookups]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[ITEMS] DROP CONSTRAINT [fk_items_category_lookups]
 GO
-
-DROP VIEW [dbo.GP_NTLSV_PAY_CODE_V]
+/****** Object:  ForeignKey [FK_ITEMS_TYPE_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[ITEMS] DROP CONSTRAINT [FK_ITEMS_TYPE_TYPES]
 GO
-
-DROP VIEW [dbo.SERVICE_TYPES_V]
+/****** Object:  ForeignKey [FK_JD_JOBS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOB_DISTRIBUTIONS] DROP CONSTRAINT [FK_JD_JOBS]
 GO
-
-DROP VIEW [dbo.YES_NO_TYPES_V]
+/****** Object:  ForeignKey [FK_JIR_ITEMS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOB_ITEM_RATES] DROP CONSTRAINT [FK_JIR_ITEMS]
 GO
-
-DROP VIEW [dbo.CRYSTAL_CUSTOMER_INVOICE_INTERCOMPANY]
+/****** Object:  ForeignKey [FK_JIR_JOBS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOB_ITEM_RATES] DROP CONSTRAINT [FK_JIR_JOBS]
 GO
-
-DROP VIEW [dbo.CRYSTAL_CUSTOMER_INVOICE_INTERCOMPANY_DISTRIBUTIONS]
+/****** Object:  ForeignKey [FK_JIR_UOMS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOB_ITEM_RATES] DROP CONSTRAINT [FK_JIR_UOMS]
 GO
-
-DROP VIEW [dbo.GP_PHX_PAY_CODE_V]
+/****** Object:  ForeignKey [FK_jlc_contact]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[job_location_contacts] DROP CONSTRAINT [FK_jlc_contact]
 GO
-
-DROP VIEW [dbo.GP_IT_PAY_CODE_V]
+/****** Object:  ForeignKey [FK_jlc_job_location]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[job_location_contacts] DROP CONSTRAINT [FK_jlc_job_location]
 GO
-
-DROP VIEW [dbo.QUOTE_CONDITION_XJOIN]
+/****** Object:  ForeignKey [FK_JL_BLDG_CONTACTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOB_LOCATIONS] DROP CONSTRAINT [FK_JL_BLDG_CONTACTS]
 GO
-
-DROP VIEW [dbo.crystal_Job_Cost_V]
+/****** Object:  ForeignKey [FK_JL_CONTACTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOB_LOCATIONS] DROP CONSTRAINT [FK_JL_CONTACTS]
 GO
-
-DROP VIEW [dbo.REPORT_TO_TYPES_V]
+/****** Object:  ForeignKey [FK_JL_CUSTOMERS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOB_LOCATIONS] DROP CONSTRAINT [FK_JL_CUSTOMERS]
 GO
-
-DROP VIEW [dbo.JOB_OWNER_IS_NULL_V]
+/****** Object:  ForeignKey [FK_JL_DOCK_RESERV_REQ_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOB_LOCATIONS] DROP CONSTRAINT [FK_JL_DOCK_RESERV_REQ_TYPES]
 GO
-
-DROP VIEW [dbo.EXPENSE_REPORT_V]
+/****** Object:  ForeignKey [FK_JL_DOOR_PROT_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOB_LOCATIONS] DROP CONSTRAINT [FK_JL_DOOR_PROT_TYPES]
 GO
-
-DROP VIEW [dbo.SERVICE_QUOTES_V]
+/****** Object:  ForeignKey [FK_JL_ELEV_AVAIL_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOB_LOCATIONS] DROP CONSTRAINT [FK_JL_ELEV_AVAIL_TYPES]
 GO
-
-DROP VIEW [dbo.ROLES_V]
+/****** Object:  ForeignKey [FK_JL_ELEV_RESERV_REQ_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOB_LOCATIONS] DROP CONSTRAINT [FK_JL_ELEV_RESERV_REQ_TYPES]
 GO
-
-DROP VIEW [dbo.VERSIONS_MAX_NO_V]
+/****** Object:  ForeignKey [FK_JL_FLOOR_PROT_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOB_LOCATIONS] DROP CONSTRAINT [FK_JL_FLOOR_PROT_TYPES]
 GO
-
-DROP VIEW [dbo.SCHEDULE_TYPES_V]
+/****** Object:  ForeignKey [FK_JL_LOADING_DOCK_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOB_LOCATIONS] DROP CONSTRAINT [FK_JL_LOADING_DOCK_TYPES]
 GO
-
-DROP VIEW [dbo.ICVERIFY_V]
+/****** Object:  ForeignKey [FK_JL_MULTI_LEVEL_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOB_LOCATIONS] DROP CONSTRAINT [FK_JL_MULTI_LEVEL_TYPES]
 GO
-
-DROP VIEW [dbo.LOOKUP_TYPES_V]
+/****** Object:  ForeignKey [FK_JL_SECURITY_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOB_LOCATIONS] DROP CONSTRAINT [FK_JL_SECURITY_TYPES]
 GO
-
-DROP VIEW [dbo.SCH_VACATION_V]
+/****** Object:  ForeignKey [FK_JL_SEMI_ACCESS_TYES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOB_LOCATIONS] DROP CONSTRAINT [FK_JL_SEMI_ACCESS_TYES]
 GO
-
-DROP VIEW [dbo.GP_ICS_PAY_CODE_V]
+/****** Object:  ForeignKey [FK_JL_STAIR_CARRY_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOB_LOCATIONS] DROP CONSTRAINT [FK_JL_STAIR_CARRY_TYPES]
 GO
-
-DROP VIEW [dbo.GP_MAD_PAY_CODE_V]
+/****** Object:  ForeignKey [FK_JL_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOB_LOCATIONS] DROP CONSTRAINT [FK_JL_TYPES]
 GO
-
-DROP VIEW [dbo.GP_ALABM_PAY_CODE_V]
+/****** Object:  ForeignKey [FK_JL_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOB_LOCATIONS] DROP CONSTRAINT [FK_JL_USERS_C]
 GO
-
-DROP VIEW [dbo.GP_MDWST_PAY_CODE_V]
+/****** Object:  ForeignKey [FK_JL_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOB_LOCATIONS] DROP CONSTRAINT [FK_JL_USERS_M]
 GO
-
-DROP VIEW [dbo.SERVICE_LINE_TYPES_V]
+/****** Object:  ForeignKey [FK_JL_WALL_PROT_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOB_LOCATIONS] DROP CONSTRAINT [FK_JL_WALL_PROT_TYPES]
 GO
-
-DROP VIEW [dbo.SERVICE_STATUS_TYPES_V]
+/****** Object:  ForeignKey [fk_job_end_user]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOBS] DROP CONSTRAINT [fk_job_end_user]
 GO
-
-DROP VIEW [dbo.CONVERTED_REQUESTS_V]
+/****** Object:  ForeignKey [FK_JOBS_BILLING_USERS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOBS] DROP CONSTRAINT [FK_JOBS_BILLING_USERS]
 GO
-
-DROP VIEW [dbo.SUB_ACTIVITY_TYPES_V]
+/****** Object:  ForeignKey [FK_JOBS_CUSTOMERS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOBS] DROP CONSTRAINT [FK_JOBS_CUSTOMERS]
 GO
-
-DROP VIEW [dbo.crystal_SYNCH_REPORT_V]
+/****** Object:  ForeignKey [FK_JOBS_FOREMAN_RESOURCES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOBS] DROP CONSTRAINT [FK_JOBS_FOREMAN_RESOURCES]
 GO
-
-DROP VIEW [dbo.TABS_V]
+/****** Object:  ForeignKey [FK_JOBS_PROJECTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOBS] DROP CONSTRAINT [FK_JOBS_PROJECTS]
 GO
-
-DROP VIEW [dbo.TEMPLATE_LOCATIONS_1_V]
+/****** Object:  ForeignKey [FK_JOBS_STATUSES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOBS] DROP CONSTRAINT [FK_JOBS_STATUSES]
 GO
-
-DROP VIEW [dbo.crystal_USERS_V]
+/****** Object:  ForeignKey [FK_JOBS_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOBS] DROP CONSTRAINT [FK_JOBS_TYPES]
 GO
-
-DROP VIEW [dbo.USER_ROLES_V]
+/****** Object:  ForeignKey [FK_JOBS_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOBS] DROP CONSTRAINT [FK_JOBS_USERS_C]
 GO
-
-DROP VIEW [dbo.ROLE_FUNCTIONS_ALL_V]
+/****** Object:  ForeignKey [FK_JOBS_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOBS] DROP CONSTRAINT [FK_JOBS_USERS_M]
 GO
-
-DROP VIEW [dbo.Pep_USER_ROLES_V]
+/****** Object:  ForeignKey [FK_LOOKUP_TYPE_PARENTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[LOOKUP_TYPES] DROP CONSTRAINT [FK_LOOKUP_TYPE_PARENTS]
 GO
-
-DROP VIEW [dbo.TABS_V2]
+/****** Object:  ForeignKey [FK_LT_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[LOOKUP_TYPES] DROP CONSTRAINT [FK_LT_USERS_C]
 GO
-
-DROP VIEW [dbo.PKT_REASONS_V]
+/****** Object:  ForeignKey [FK_LT_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[LOOKUP_TYPES] DROP CONSTRAINT [FK_LT_USERS_M]
 GO
-
-DROP VIEW [dbo.jobs_with_costs_v]
+/****** Object:  ForeignKey [FK_L_LOOKUP_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[LOOKUPS] DROP CONSTRAINT [FK_L_LOOKUP_TYPES]
 GO
-
-DROP VIEW [dbo.FAILED_INTEGRATIONS]
+/****** Object:  ForeignKey [FK_L_LOOKUPS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[LOOKUPS] DROP CONSTRAINT [FK_L_LOOKUPS]
 GO
-
-DROP VIEW [dbo.billing_v]
+/****** Object:  ForeignKey [FK_O_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[ORGANIZATIONS] DROP CONSTRAINT [FK_O_USERS_C]
 GO
-
-DROP VIEW [dbo.invoices_extranet_v]
+/****** Object:  ForeignKey [FK_O_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[ORGANIZATIONS] DROP CONSTRAINT [FK_O_USERS_M]
 GO
-
-DROP VIEW [dbo.BILLING_V_DAILYREPORTCAPTURE]
+/****** Object:  ForeignKey [FK_PBL_SERVICE_LINES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[PAYROLL_BATCH_LINES] DROP CONSTRAINT [FK_PBL_SERVICE_LINES]
 GO
-
-DROP VIEW [dbo.FINANCE_REPORT1_V]
+/****** Object:  ForeignKey [FK_PAYROLL_BATCH_STATUS_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[PAYROLL_BATCHES] DROP CONSTRAINT [FK_PAYROLL_BATCH_STATUS_TYPES]
 GO
-
-DROP VIEW [dbo.INVOICE_TOTALS_V]
+/****** Object:  ForeignKey [FK_PAYROLL_BATCHE_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[PAYROLL_BATCHES] DROP CONSTRAINT [FK_PAYROLL_BATCHE_USERS_C]
 GO
-
-DROP VIEW [dbo.crystal_VAR_JOB_INVOICED_V]
+/****** Object:  ForeignKey [FK_PB_ORGANIZATIONS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[PAYROLL_BATCHES] DROP CONSTRAINT [FK_PB_ORGANIZATIONS]
 GO
-
-DROP VIEW [dbo.contains_invoice_tracking_v]
+/****** Object:  ForeignKey [FK_PHC_ITEMS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[POOLED_HOURS_CALC] DROP CONSTRAINT [FK_PHC_ITEMS]
 GO
-
-DROP VIEW [dbo.VAR_INV_DATE_V]
+/****** Object:  ForeignKey [FK_PHC_SERVICES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[POOLED_HOURS_CALC] DROP CONSTRAINT [FK_PHC_SERVICES]
 GO
-
-DROP VIEW [dbo.bill_jobs_v]
+/****** Object:  ForeignKey [FK_PN_PROJECTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[PROJECT_NOTES] DROP CONSTRAINT [FK_PN_PROJECTS]
 GO
-
-DROP VIEW [dbo.INVOICE_JOB_LOCATIONS_V]
+/****** Object:  ForeignKey [FK_PN_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[PROJECT_NOTES] DROP CONSTRAINT [FK_PN_USERS_C]
 GO
-
-DROP VIEW [dbo.INVOICE_COST_CODES_LINE_V]
+/****** Object:  ForeignKey [FK_PN_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[PROJECT_NOTES] DROP CONSTRAINT [FK_PN_USERS_M]
 GO
-
-DROP VIEW [dbo.INVOICE_COST_CODES_JOB_V]
+/****** Object:  ForeignKey [fk_project_end_user]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[PROJECTS] DROP CONSTRAINT [fk_project_end_user]
 GO
-
-DROP VIEW [dbo.invoices_arch]
+/****** Object:  ForeignKey [FK_PROJECT_STATUSES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[PROJECTS] DROP CONSTRAINT [FK_PROJECT_STATUSES]
 GO
-
-DROP VIEW [dbo.invoice_lines_v]
+/****** Object:  ForeignKey [FK_PROJECT_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[PROJECTS] DROP CONSTRAINT [FK_PROJECT_TYPES]
 GO
-
-DROP VIEW [dbo.crystal_QUOTES_OTHER_SERVICE_V]
+/****** Object:  ForeignKey [FK_PROJECTS_CUSTOMERS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[PROJECTS] DROP CONSTRAINT [FK_PROJECTS_CUSTOMERS]
 GO
-
-DROP VIEW [dbo.TEMPLATE_LOCATIONS_4_V]
+/****** Object:  ForeignKey [FK_PROJECTS_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[PROJECTS] DROP CONSTRAINT [FK_PROJECTS_USERS_C]
 GO
-
-DROP VIEW [dbo.TEMPLATE_LOCATIONS_3_V]
+/****** Object:  ForeignKey [FK_PROJECTS_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[PROJECTS] DROP CONSTRAINT [FK_PROJECTS_USERS_M]
 GO
-
-DROP VIEW [dbo.crystal_AIA_REQUESTS_V]
+/****** Object:  ForeignKey [FK_PI_PUNCHLISTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[PUNCHLIST_ISSUES] DROP CONSTRAINT [FK_PI_PUNCHLISTS]
 GO
-
-DROP VIEW [dbo.crystal_TARGET_REPORT1_V]
+/****** Object:  ForeignKey [FK_PI_ROOT_CAUSES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[PUNCHLIST_ISSUES] DROP CONSTRAINT [FK_PI_ROOT_CAUSES]
 GO
-
-DROP VIEW [dbo.JC_JOB_COSTS_V]
+/****** Object:  ForeignKey [FK_PI_STATUS_ID]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[PUNCHLIST_ISSUES] DROP CONSTRAINT [FK_PI_STATUS_ID]
 GO
-
-DROP VIEW [dbo.crystal_dashboard_REQUESTS_V]
+/****** Object:  ForeignKey [FK_PI_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[PUNCHLIST_ISSUES] DROP CONSTRAINT [FK_PI_USERS_C]
 GO
-
-DROP VIEW [dbo.REQUESTS_V]
+/****** Object:  ForeignKey [FK_PI_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[PUNCHLIST_ISSUES] DROP CONSTRAINT [FK_PI_USERS_M]
 GO
-
-DROP VIEW [dbo.TIME_CAPTURE_V]
+/****** Object:  ForeignKey [fk_punchlist_requests]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[PUNCHLISTS] DROP CONSTRAINT [fk_punchlist_requests]
 GO
-
-DROP VIEW [dbo.job_services_v]
+/****** Object:  ForeignKey [FK_PUNCHLISTS_PROJECTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[PUNCHLISTS] DROP CONSTRAINT [FK_PUNCHLISTS_PROJECTS]
 GO
-
-DROP VIEW [dbo.crystal_QUOTES_V]
+/****** Object:  ForeignKey [FK_PUNCHLISTS_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[PUNCHLISTS] DROP CONSTRAINT [FK_PUNCHLISTS_USERS_C]
 GO
-
-DROP VIEW [dbo.job_progress_v]
+/****** Object:  ForeignKey [FK_PUNCHLISTS_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[PUNCHLISTS] DROP CONSTRAINT [FK_PUNCHLISTS_USERS_M]
 GO
-
-DROP VIEW [dbo.UNBILLED_DATA_DAILY_CAPTURE_V]
+/****** Object:  ForeignKey [fk_po_billing_type_id]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[purchase_orders] DROP CONSTRAINT [fk_po_billing_type_id]
 GO
-
-DROP VIEW [dbo.extranet_email_v2]
+/****** Object:  ForeignKey [fk_po_item_id]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[purchase_orders] DROP CONSTRAINT [fk_po_item_id]
 GO
-
-DROP VIEW [dbo.quick_quote_requests_v2]
+/****** Object:  ForeignKey [fk_po_request_id]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[purchase_orders] DROP CONSTRAINT [fk_po_request_id]
 GO
-
-DROP VIEW [dbo.quick_quotes_v]
+/****** Object:  ForeignKey [fk_po_status_id]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[purchase_orders] DROP CONSTRAINT [fk_po_status_id]
 GO
-
-DROP VIEW [dbo.extranet_email_quote_v]
+/****** Object:  ForeignKey [FK_QC_CONDITIONS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTE_CONDITIONS] DROP CONSTRAINT [FK_QC_CONDITIONS]
 GO
-
-DROP VIEW [dbo.extranet_email_none_quote_v]
+/****** Object:  ForeignKey [FK_QC_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTE_CONDITIONS] DROP CONSTRAINT [FK_QC_USERS_C]
 GO
-
-DROP VIEW [dbo.versions_copy_v]
+/****** Object:  ForeignKey [FK_QC_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTE_CONDITIONS] DROP CONSTRAINT [FK_QC_USERS_M]
 GO
-
-DROP VIEW [dbo.quick_requests_v2]
+/****** Object:  ForeignKey [FK_QOF_QUOTES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTE_OTHER_FURNITURE] DROP CONSTRAINT [FK_QOF_QUOTES]
 GO
-
-DROP VIEW [dbo.crystal_QUOTES_OTHER_FURN_V]
+/****** Object:  ForeignKey [FK_QOF_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTE_OTHER_FURNITURE] DROP CONSTRAINT [FK_QOF_USERS_C]
 GO
-
-DROP VIEW [dbo.JOB_COSTING_V]
+/****** Object:  ForeignKey [FK_QOF_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTE_OTHER_FURNITURE] DROP CONSTRAINT [FK_QOF_USERS_M]
 GO
-
-DROP VIEW [dbo.service_line_edit_v]
+/****** Object:  ForeignKey [FK_QOFAH_QUOTES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTE_OTHER_FURNITURE_AD_HOC] DROP CONSTRAINT [FK_QOFAH_QUOTES]
 GO
-
-DROP VIEW [dbo.PKT_SERVICE_LINES_V]
+/****** Object:  ForeignKey [FK_QOFAH_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTE_OTHER_FURNITURE_AD_HOC] DROP CONSTRAINT [FK_QOFAH_USERS_C]
 GO
-
-DROP VIEW [dbo.EXPENSES_V]
+/****** Object:  ForeignKey [FK_QOFAH_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTE_OTHER_FURNITURE_AD_HOC] DROP CONSTRAINT [FK_QOFAH_USERS_M]
 GO
-
-DROP VIEW [dbo.crystal_JOB_STATUS_RPT_V]
+/****** Object:  ForeignKey [FK_QSOS_QUOTES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTE_SPECIFY_OTHER_SERVICES] DROP CONSTRAINT [FK_QSOS_QUOTES]
 GO
-
-DROP VIEW [dbo.VAR_JOB_ACT_HOURS_V]
+/****** Object:  ForeignKey [FK_QSOS_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTE_SPECIFY_OTHER_SERVICES] DROP CONSTRAINT [FK_QSOS_USERS_C]
 GO
-
-DROP VIEW [dbo.PAYROLL_BATCHES_V]
+/****** Object:  ForeignKey [FK_QSOS_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTE_SPECIFY_OTHER_SERVICES] DROP CONSTRAINT [FK_QSOS_USERS_M]
 GO
-
-DROP VIEW [dbo.TC_VERIFIED_V]
+/****** Object:  ForeignKey [FK_QSC_QUOTES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTE_STANDARD_CONDITIONS] DROP CONSTRAINT [FK_QSC_QUOTES]
 GO
-
-DROP VIEW [dbo.jobs_with_posted_costs_v]
+/****** Object:  ForeignKey [FK_QSC_STANDARD_CONDITIONS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTE_STANDARD_CONDITIONS] DROP CONSTRAINT [FK_QSC_STANDARD_CONDITIONS]
 GO
-
-DROP VIEW [dbo.crystal_JOBS_INVOICED_BUT_DOLLARS_REMAIN_IN_JOB_V]
+/****** Object:  ForeignKey [FK_QSC_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTE_STANDARD_CONDITIONS] DROP CONSTRAINT [FK_QSC_USERS_C]
 GO
-
-DROP VIEW [dbo.crystal_WPS_Timesheet_V]
+/****** Object:  ForeignKey [FK_QSC_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTE_STANDARD_CONDITIONS] DROP CONSTRAINT [FK_QSC_USERS_M]
 GO
-
-DROP VIEW [dbo.EXPENSES_BATCHES_V]
+/****** Object:  ForeignKey [FK_QWC_QUOTES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTE_WORKSTATION_CONFIGURATIONS] DROP CONSTRAINT [FK_QWC_QUOTES]
 GO
-
-DROP VIEW [dbo.crystal_SCH_ACT_2_V]
+/****** Object:  ForeignKey [FK_QWC_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTE_WORKSTATION_CONFIGURATIONS] DROP CONSTRAINT [FK_QWC_USERS_C]
 GO
-
-DROP VIEW [dbo.PAYROLL_V]
+/****** Object:  ForeignKey [FK_QWC_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTE_WORKSTATION_CONFIGURATIONS] DROP CONSTRAINT [FK_QWC_USERS_M]
 GO
-
-DROP VIEW [dbo.crystal_TIME_CAPTURE_V]
+/****** Object:  ForeignKey [FK_QUOTE_REQUEST_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTES] DROP CONSTRAINT [FK_QUOTE_REQUEST_TYPES]
 GO
-
-DROP VIEW [dbo.SERVICE_LINES_VERIFY_V]
+/****** Object:  ForeignKey [FK_QUOTE_REQUESTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTES] DROP CONSTRAINT [FK_QUOTE_REQUESTS]
 GO
-
-DROP VIEW [dbo.REQUEST_INVOICES_V_ORIG]
+/****** Object:  ForeignKey [FK_QUOTE_STATUSES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTES] DROP CONSTRAINT [FK_QUOTE_STATUSES]
 GO
-
-DROP VIEW [dbo.REQUEST_INVOICES_V2]
+/****** Object:  ForeignKey [FK_QUOTE_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTES] DROP CONSTRAINT [FK_QUOTE_TYPES]
 GO
-
-DROP VIEW [dbo.JOBS_NOT_BILLED_V]
+/****** Object:  ForeignKey [FK_QUOTE_USERS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTES] DROP CONSTRAINT [FK_QUOTE_USERS]
 GO
-
-DROP VIEW [dbo.REQUEST_INVOICES_V]
+/****** Object:  ForeignKey [FK_QUOTE_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTES] DROP CONSTRAINT [FK_QUOTE_USERS_C]
 GO
-
-DROP VIEW [dbo.VAR_JOB_TIME_EXP_V]
+/****** Object:  ForeignKey [FK_QUOTE_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[QUOTES] DROP CONSTRAINT [FK_QUOTE_USERS_M]
 GO
-
-DROP VIEW [dbo.POOLED_HRS_RPT_V]
+/****** Object:  ForeignKey [FK_REQUEST_DOCUMENTS_CREATED_BY]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUEST_DOCUMENTS] DROP CONSTRAINT [FK_REQUEST_DOCUMENTS_CREATED_BY]
 GO
-
-DROP VIEW [dbo.job_time_by_job_v]
+/****** Object:  ForeignKey [FK_REQUEST_DOCUMENTS_MODIFIED_BY]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUEST_DOCUMENTS] DROP CONSTRAINT [FK_REQUEST_DOCUMENTS_MODIFIED_BY]
 GO
-
-DROP VIEW [dbo.ITEMS_USAGE_V]
+/****** Object:  ForeignKey [FK_REQUEST_DOCUMENTS_REQUESTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUEST_DOCUMENTS] DROP CONSTRAINT [FK_REQUEST_DOCUMENTS_REQUESTS]
 GO
-
-DROP VIEW [dbo.crystal_GRACO_REPORT_V]
+/****** Object:  ForeignKey [FK_REQUEST_VENDOR_CONTACT]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUEST_VENDORS] DROP CONSTRAINT [FK_REQUEST_VENDOR_CONTACT]
 GO
-
-DROP VIEW [dbo.POOLED_HOURS_TOTALS_V]
+/****** Object:  ForeignKey [FK_REQUEST_VENDOR_CREATED_BY]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUEST_VENDORS] DROP CONSTRAINT [FK_REQUEST_VENDOR_CREATED_BY]
 GO
-
-DROP VIEW [dbo.Expense_Report_for_Sandy]
+/****** Object:  ForeignKey [FK_REQUEST_VENDOR_MODIFIED_BY]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUEST_VENDORS] DROP CONSTRAINT [FK_REQUEST_VENDOR_MODIFIED_BY]
 GO
-
-DROP VIEW [dbo.crystal_RETURN_TO_JOB_V]
+/****** Object:  ForeignKey [FK_REQUEST_VENDORS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUEST_VENDORS] DROP CONSTRAINT [FK_REQUEST_VENDORS]
 GO
-
-DROP VIEW [dbo.crystal_CHECKLIST_RPT_V]
+/****** Object:  ForeignKey [FK_REQUEST_A_D_DESIGNER_CONTACTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_A_D_DESIGNER_CONTACTS]
 GO
-
-DROP VIEW [dbo.RETURN_TO_JOB_MAD_V]
+/****** Object:  ForeignKey [FK_REQUEST_A_M_CONTACTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_A_M_CONTACTS]
 GO
-
-DROP VIEW [dbo.crystal_RETURN_TO_JOB_MAD_V]
+/****** Object:  ForeignKey [FK_REQUEST_A_M_INSTALLER_CONTACTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_A_M_INSTALLER_CONTACTS]
 GO
-
-DROP VIEW [dbo.SURVEY_TEST_V]
+/****** Object:  ForeignKey [FK_REQUEST_ACCOUNT_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_ACCOUNT_TYPES]
 GO
-
-DROP VIEW [dbo.QUICK_REQUEST_VENDORS_HELPER_V]
+/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_CAT_TYPES1]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES1]
 GO
-
-DROP VIEW [dbo.request_vendor_totals_v]
+/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_CAT_TYPES10]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES10]
 GO
-
-DROP VIEW [dbo.crystal_csc_WORK_ORDER_MASTER_V]
+/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_CAT_TYPES2]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES2]
 GO
-
-DROP VIEW [dbo.REQUEST_VENDORS_V]
+/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_CAT_TYPES3]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES3]
 GO
-
-DROP VIEW [dbo.QP3_RESOURCE_TYPES_V]
+/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_CAT_TYPES4]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES4]
 GO
-
-DROP VIEW [dbo.SERVICES_V]
+/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_CAT_TYPES5]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES5]
 GO
-
-DROP VIEW [dbo.tcn_resources_v]
+/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_CAT_TYPES6]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES6]
 GO
-
-DROP VIEW [dbo.crystal_USERS_AND_RESOURCE_TYPES]
+/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_CAT_TYPES7]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES7]
 GO
-
-DROP VIEW [dbo.projects_v]
+/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_CAT_TYPES8]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES8]
 GO
-
-DROP VIEW [dbo.projects_v2]
+/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_CAT_TYPES9]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES9]
 GO
-
-DROP VIEW [dbo.jobs_v]
+/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_TYPE1]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_ACTIVITY_TYPE1]
 GO
-
-DROP VIEW [dbo.ACTIVE_USERS_COUNT_V]
+/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_TYPES10]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES10]
 GO
-
-DROP VIEW [dbo.quotes_v]
+/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_TYPES2]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES2]
 GO
-
-DROP VIEW [dbo.USERS_V]
+/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_TYPES3]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES3]
 GO
-
-DROP VIEW [dbo.crystal_REQUESTS_COUNT_USAGE_V]
+/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_TYPES4]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES4]
 GO
-
-DROP VIEW [dbo.crystal_dashboard_QUOTES_V]
+/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_TYPES5]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES5]
 GO
-
-DROP VIEW [dbo.USER_CONTACTS_V]
+/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_TYPES6]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES6]
 GO
-
-DROP VIEW [dbo.pep_vendor_user_v]
+/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_TYPES7]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES7]
 GO
-
-DROP VIEW [dbo.ITEMS_V]
+/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_TYPES8]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES8]
 GO
-
-DROP VIEW [dbo.USERS_VQ]
+/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_TYPES9]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES9]
 GO
-
-DROP VIEW [dbo.REQUEST_VENDORS_V2]
+/****** Object:  ForeignKey [FK_REQUEST_ALT_CUST_CONTACTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_ALT_CUST_CONTACTS]
 GO
-
-DROP VIEW [dbo.INVOICE_TRACKING_V]
+/****** Object:  ForeignKey [FK_REQUEST_APPROVAL_REQ_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_APPROVAL_REQ_TYPES]
 GO
-
-DROP VIEW [dbo.PENDING_TRACKING_V]
+/****** Object:  ForeignKey [fk_request_approver_contact]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [fk_request_approver_contact]
 GO
-
-DROP VIEW [dbo.USER_CUSTOMERS_V]
+/****** Object:  ForeignKey [FK_REQUEST_BLDG_MGR_CONTACTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_BLDG_MGR_CONTACTS]
 GO
-
-DROP VIEW [dbo.crystal_UNBILLED_OPS_AIA_V]
+/****** Object:  ForeignKey [FK_REQUEST_CARPET_CONTACTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_CARPET_CONTACTS]
 GO
-
-DROP VIEW [dbo.SERVICE_LINE_PAYROLL_V]
+/****** Object:  ForeignKey [FK_REQUEST_CASE_FURN_LINE_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_CASE_FURN_LINE_TYPES]
 GO
-
-DROP VIEW [dbo.USER_RESOURCES_V]
+/****** Object:  ForeignKey [FK_REQUEST_CASE_FURN_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_CASE_FURN_TYPES]
 GO
-
-DROP VIEW [dbo.PEP_RESOURCES_V]
+/****** Object:  ForeignKey [FK_REQUEST_COORD_ELECTRICAL_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_COORD_ELECTRICAL_TYPES]
 GO
-
-DROP VIEW [dbo.crystal_routing_ticket]
+/****** Object:  ForeignKey [FK_REQUEST_COORD_FLOOR_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_COORD_FLOOR_TYPES]
 GO
-
-DROP VIEW [dbo.crystal_INTERNAL_REQ_V]
+/****** Object:  ForeignKey [FK_REQUEST_COORD_MOVER_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_COORD_MOVER_TYPES]
 GO
-
-DROP VIEW [dbo.PKT_ROSTER_V]
+/****** Object:  ForeignKey [FK_REQUEST_COORD_PHONE_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_COORD_PHONE_TYPES]
 GO
-
-DROP VIEW [dbo.PKT_JOB_RESOURCES_V]
+/****** Object:  ForeignKey [FK_REQUEST_COORD_WALL_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_COORD_WALL_TYPES]
 GO
-
-DROP VIEW [dbo.pkt_job_user_res_v]
+/****** Object:  ForeignKey [FK_REQUEST_COST_TO_CUST_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_COST_TO_CUST_TYPES]
 GO
-
-DROP VIEW [dbo.RESOURCES_V]
+/****** Object:  ForeignKey [FK_REQUEST_COST_TO_JOB_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_COST_TO_JOB_TYPES]
 GO
-
-DROP VIEW [dbo.EMPLOYEES_V]
+/****** Object:  ForeignKey [FK_REQUEST_COST_TO_VENDOR_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_COST_TO_VENDOR_TYPES]
 GO
-
-DROP VIEW [dbo.SERVICE_LINE_EXPENSE_V]
+/****** Object:  ForeignKey [fk_request_customer_contact2]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [fk_request_customer_contact2]
 GO
-
-DROP VIEW [dbo.RESOURCE_ESTIMATES_V]
+/****** Object:  ForeignKey [fk_request_customer_contact3]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [fk_request_customer_contact3]
 GO
-
-DROP VIEW [dbo.crystal_workorder_detail_pkf_V]
+/****** Object:  ForeignKey [fk_request_customer_contact4]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [fk_request_customer_contact4]
 GO
-
-DROP VIEW [dbo.bad_reqs]
+/****** Object:  ForeignKey [FK_REQUEST_CUSTOMER_CONTACTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_CUSTOMER_CONTACTS]
 GO
-
-DROP VIEW [dbo.REQUEST_NO_PUNCHLISTS_V]
+/****** Object:  ForeignKey [fk_request_customer_costing_type]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [fk_request_customer_costing_type]
 GO
-
-DROP VIEW [dbo.REQUEST_SCHEDULE_DIFF_V]
+/****** Object:  ForeignKey [FK_REQUEST_D_DESIGNER_CONTACTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_D_DESIGNER_CONTACTS]
 GO
-
-DROP VIEW [dbo.SITE_CONDITIONS_MORE_V]
+/****** Object:  ForeignKey [FK_REQUEST_D_PROJ_MGR_CONTACTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_D_PROJ_MGR_CONTACTS]
 GO
-
-DROP VIEW [dbo.GP_ALABM_ITEM_PAYCODES_V]
+/****** Object:  ForeignKey [FK_REQUEST_D_SALES_REP_CONTACTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_D_SALES_REP_CONTACTS]
 GO
-
-DROP VIEW [dbo.EXTRANET_REQ_V]
+/****** Object:  ForeignKey [FK_REQUEST_D_SALES_SUP_CONTACTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_D_SALES_SUP_CONTACTS]
 GO
-
-DROP VIEW [dbo.GP_MDWST_ITEM_PAYCODES_V]
+/****** Object:  ForeignKey [FK_REQUEST_DATA_PHONE_CONTACTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_DATA_PHONE_CONTACTS]
 GO
-
-DROP VIEW [dbo.SURVEY_V]
+/****** Object:  ForeignKey [FK_REQUEST_DELIVERY_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_DELIVERY_TYPES]
 GO
-
-DROP VIEW [dbo.jobs_effective_customer_v]
+/****** Object:  ForeignKey [FK_REQUEST_DUMPSTER_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_DUMPSTER_TYPES]
 GO
-
-DROP VIEW [dbo.GP_ICS_ITEM_PAYCODES_V]
+/****** Object:  ForeignKey [FK_REQUEST_DUR_TIME_UOM_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_DUR_TIME_UOM_TYPES]
 GO
-
-DROP VIEW [dbo.GP_MAD_ITEM_PAYCODES_V]
+/****** Object:  ForeignKey [FK_REQUEST_ELECTRICIAN_CONTACTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_ELECTRICIAN_CONTACTS]
 GO
-
-DROP VIEW [dbo.SITE_CONDITIONS_V]
+/****** Object:  ForeignKey [FK_REQUEST_EVENING_HOURS_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_EVENING_HOURS_TYPES]
 GO
-
-DROP VIEW [dbo.request_mail_v2]
+/****** Object:  ForeignKey [fk_request_floor_number_types]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [fk_request_floor_number_types]
 GO
-
-DROP VIEW [dbo.JOBS_NO_OWNER_V]
+/****** Object:  ForeignKey [FK_REQUEST_FURN_PLAN_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_FURN_PLAN_TYPES]
 GO
-
-DROP VIEW [dbo.Contacts_qry_lookupbyorg]
+/****** Object:  ForeignKey [FK_REQUEST_FURN_SPEC_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_FURN_SPEC_TYPES]
 GO
-
-DROP VIEW [dbo.GP_PHX_ITEM_PAYCODES_V]
+/****** Object:  ForeignKey [fk_request_furn1_contact]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [fk_request_furn1_contact]
 GO
-
-DROP VIEW [dbo.TC_SERVICES_V]
+/****** Object:  ForeignKey [fk_request_furn2_contact]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [fk_request_furn2_contact]
 GO
-
-DROP VIEW [dbo.GP_IT_ITEM_PAYCODES_V]
+/****** Object:  ForeignKey [FK_REQUEST_GEN_CONTRACT_CONTACTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_GEN_CONTRACT_CONTACTS]
 GO
-
-DROP VIEW [dbo.project_requests_v2]
+/****** Object:  ForeignKey [fk_request_job_loc_contact]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [fk_request_job_loc_contact]
 GO
-
-DROP VIEW [dbo.RESOURCE_TYPES_V]
+/****** Object:  ForeignKey [FK_REQUEST_JOB_LOCATIONS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_JOB_LOCATIONS]
 GO
-
-DROP VIEW [dbo.PKT_QUOTES_V]
+/****** Object:  ForeignKey [fk_request_level_types]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [fk_request_level_types]
 GO
-
-DROP VIEW [dbo.INVOICES_V]
+/****** Object:  ForeignKey [FK_REQUEST_MOVER_CONTACTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_MOVER_CONTACTS]
 GO
-
-DROP VIEW [dbo.JOB_LOCATIONS_V]
+/****** Object:  ForeignKey [FK_REQUEST_NEW_SITE_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_NEW_SITE_TYPES]
 GO
-
-DROP VIEW [dbo.PKT_SERVICES_V]
+/****** Object:  ForeignKey [FK_REQUEST_OCCUPIED_SITE_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_OCCUPIED_SITE_TYPES]
 GO
-
-DROP VIEW [dbo.PUNCHLIST_REQUESTS_V]
+/****** Object:  ForeignKey [fk_request_order_type]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [fk_request_order_type]
 GO
-
-DROP VIEW [dbo.requests_query_for_Tim_VVV]
+/****** Object:  ForeignKey [FK_REQUEST_OTHER_CONTACTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_OTHER_CONTACTS]
 GO
-
-DROP VIEW [dbo.GP_NTLSV_ITEM_PAYCODES_V]
+/****** Object:  ForeignKey [fk_request_other_delivery_type]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [fk_request_other_delivery_type]
 GO
-
-DROP VIEW [dbo.GP_MPLS_ITEM_PAYCODES_V]
+/****** Object:  ForeignKey [fk_request_other_furn_type]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [fk_request_other_furn_type]
 GO
-
-DROP VIEW [dbo.QUICK_REQUESTS_V]
+/****** Object:  ForeignKey [FK_REQUEST_PHASED_INSTALL_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_PHASED_INSTALL_TYPES]
 GO
-
-DROP VIEW [dbo.GP_CIMN_ITEM_PAYCODES_V]
+/****** Object:  ForeignKey [FK_REQUEST_PRI_FURN_LINE_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_PRI_FURN_LINE_TYPES]
 GO
-
-DROP VIEW [dbo.WORKORDER_DETAIL_V]
+/****** Object:  ForeignKey [FK_REQUEST_PRI_FURN_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_PRI_FURN_TYPES]
 GO
-
-DROP VIEW [dbo.INVOICE_COST_CODES_V]
+/****** Object:  ForeignKey [fk_request_priority_types]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [fk_request_priority_types]
 GO
-
-DROP VIEW [dbo.VAR_JOB_EST_HOURS_V]
+/****** Object:  ForeignKey [FK_REQUEST_PROJECTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_PROJECTS]
 GO
-
-DROP VIEW [dbo.REQUESTS_V_jerry]
+/****** Object:  ForeignKey [FK_REQUEST_PUNCHLIST_ITEM_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_PUNCHLIST_ITEM_TYPES]
 GO
-
-DROP VIEW [dbo.JOB_ITEM_RATES_V]
+/****** Object:  ForeignKey [FK_REQUEST_QUOTE_REQUESTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_QUOTE_REQUESTS]
 GO
-
-DROP VIEW [dbo.JOBS_OVERVIEW_V]
+/****** Object:  ForeignKey [FK_REQUEST_QUOTE_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_QUOTE_TYPES]
 GO
-
-DROP VIEW [dbo.crystal_MADISON_RPT1_V]
+/****** Object:  ForeignKey [FK_REQUEST_REGULAR_HOURS_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_REGULAR_HOURS_TYPES]
 GO
-
-DROP VIEW [dbo.GP_ECMS_ITEM_PAYCODES_V]
+/****** Object:  ForeignKey [FK_REQUEST_SCHEDULE_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_SCHEDULE_TYPES]
 GO
-
-DROP VIEW [dbo.crystal_JOBS_CLOSED_V]
+/****** Object:  ForeignKey [FK_REQUEST_SEC_FURN_LINE_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_SEC_FURN_LINE_TYPES]
 GO
-
-DROP VIEW [dbo.tcn_resource_items_v]
+/****** Object:  ForeignKey [FK_REQUEST_SEC_FURN_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_SEC_FURN_TYPES]
 GO
-
-DROP VIEW [dbo.POOLED_HOURS_CALC_V]
+/****** Object:  ForeignKey [FK_REQUEST_SECURITY_CONTACTS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_SECURITY_CONTACTS]
 GO
-
-DROP VIEW [dbo.PDA_PDS_V]
+/****** Object:  ForeignKey [FK_REQUEST_SITE_VISIT_REQ_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_SITE_VISIT_REQ_TYPES]
 GO
-
-DROP VIEW [dbo.TRACKING_V]
+/****** Object:  ForeignKey [FK_REQUEST_STAGING_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_STAGING_TYPES]
 GO
-
-DROP VIEW [dbo.CONTACTS_V]
+/****** Object:  ForeignKey [FK_REQUEST_STATION_TYPICAL_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_STATION_TYPICAL_TYPES]
 GO
-
-DROP VIEW [dbo.CONTACT_EMAILS_V]
+/****** Object:  ForeignKey [FK_REQUEST_STATUSES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_STATUSES]
 GO
-
-DROP VIEW [dbo.GP_AIA_ITEM_PAYCODES_V]
+/****** Object:  ForeignKey [fk_request_sys_furn_line_type]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [fk_request_sys_furn_line_type]
 GO
-
-DROP VIEW [dbo.GP_CIINC_ITEM_PAYCODES_V]
+/****** Object:  ForeignKey [FK_REQUEST_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_TYPES]
 GO
-
-DROP VIEW [dbo.pda_services_v]
+/****** Object:  ForeignKey [FK_REQUEST_UNION_LABOR_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_UNION_LABOR_TYPES]
 GO
-
-DROP VIEW [dbo.crystal_JOBS_COMPLETED_V]
+/****** Object:  ForeignKey [FK_REQUEST_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_USERS_C]
 GO
-
-DROP VIEW [dbo.quick_project_v]
+/****** Object:  ForeignKey [FK_REQUEST_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_USERS_M]
 GO
-
-DROP VIEW [dbo.SCH_JOBS_REPORT_V]
+/****** Object:  ForeignKey [FK_REQUEST_WALKBOARD_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_WALKBOARD_TYPES]
 GO
-
-DROP VIEW [dbo.GP_CILLC_ITEM_PAYCODES_V]
+/****** Object:  ForeignKey [FK_REQUEST_WALL_MOUNT_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_WALL_MOUNT_TYPES]
 GO
-
-DROP VIEW [dbo.SERVICE_CUSTOM_COLS_V]
+/****** Object:  ForeignKey [FK_REQUEST_WAREHOUSE_FEE_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_WAREHOUSE_FEE_TYPES]
 GO
-
-DROP VIEW [dbo.RESOURCE_TYPE_ITEMS_V]
+/****** Object:  ForeignKey [FK_REQUEST_WEEKEND_HOURS_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_WEEKEND_HOURS_TYPES]
 GO
-
-DROP VIEW [dbo.PDA_TIME_V]
+/****** Object:  ForeignKey [FK_REQUEST_WOOD_PRODUCT_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUEST_WOOD_PRODUCT_TYPES]
 GO
-
-DROP VIEW [dbo.SERVICE_LINE_STATUSES_V]
+/****** Object:  ForeignKey [FK_REQUESTS_A_M_SALES_CONTACT_ID]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUESTS_A_M_SALES_CONTACT_ID]
 GO
-
-DROP VIEW [dbo.QUOTE_CONDITIONS_V]
+/****** Object:  ForeignKey [FK_REQUESTS_PROD_DIST]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [FK_REQUESTS_PROD_DIST]
 GO
-
-DROP VIEW [dbo.QUOTE_CONDITIONS_V2]
+/****** Object:  ForeignKey [FK_RE_JOB_ITEM_RATES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[RESOURCE_ESTIMATES] DROP CONSTRAINT [FK_RE_JOB_ITEM_RATES]
 GO
-
-DROP VIEW [dbo.INVOICE_LINES_arch_2004]
+/****** Object:  ForeignKey [FK_RE_JOBS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[RESOURCE_ESTIMATES] DROP CONSTRAINT [FK_RE_JOBS]
 GO
-
-DROP VIEW [dbo.AIA_JOB_LOCATIONS_V]
+/****** Object:  ForeignKey [FK_RE_RESOURCE_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[RESOURCE_ESTIMATES] DROP CONSTRAINT [FK_RE_RESOURCE_TYPES]
 GO
-
-DROP VIEW [dbo.DATES_V]
+/****** Object:  ForeignKey [FK_RE_SERVICES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[RESOURCE_ESTIMATES] DROP CONSTRAINT [FK_RE_SERVICES]
 GO
-
-DROP VIEW [dbo.PUNCHLISTS_V]
+/****** Object:  ForeignKey [FK_RE_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[RESOURCE_ESTIMATES] DROP CONSTRAINT [FK_RE_USERS_C]
 GO
-
-DROP VIEW [dbo.CONDITIONS_V]
+/****** Object:  ForeignKey [FK_RE_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[RESOURCE_ESTIMATES] DROP CONSTRAINT [FK_RE_USERS_M]
 GO
-
-DROP VIEW [dbo.SYS_COLUMNS_V]
+/****** Object:  ForeignKey [FK_RI_ITEMS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[RESOURCE_ITEMS] DROP CONSTRAINT [FK_RI_ITEMS]
 GO
-
-DROP VIEW [dbo.SYS_FOREIGN_KEYS_V]
+/****** Object:  ForeignKey [FK_RI_RESOURCES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[RESOURCE_ITEMS] DROP CONSTRAINT [FK_RI_RESOURCES]
 GO
-
-DROP VIEW [dbo.USER_ORGANIZATIONS_V]
+/****** Object:  ForeignKey [FK_RI_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[RESOURCE_ITEMS] DROP CONSTRAINT [FK_RI_USERS_C]
 GO
-
-DROP VIEW [dbo.DOCUMENTS_V]
+/****** Object:  ForeignKey [FK_RI_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[RESOURCE_ITEMS] DROP CONSTRAINT [FK_RI_USERS_M]
 GO
-
-DROP VIEW [dbo.JOB_PAYCODE_VIEW_V]
+/****** Object:  ForeignKey [FK_RTI_ITEMS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[RESOURCE_TYPE_ITEMS] DROP CONSTRAINT [FK_RTI_ITEMS]
 GO
-
-DROP VIEW [dbo.crystal_dashboard_REQUEST_SENT_V]
+/****** Object:  ForeignKey [FK_RTI_RESOURCE_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[RESOURCE_TYPE_ITEMS] DROP CONSTRAINT [FK_RTI_RESOURCE_TYPES]
 GO
-
-DROP VIEW [dbo.CUSTOMERS_V]
+/****** Object:  ForeignKey [FK_RTI_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[RESOURCE_TYPE_ITEMS] DROP CONSTRAINT [FK_RTI_USERS_C]
 GO
-
-DROP VIEW [dbo.SCH_REQUEST_VENDORS_V]
+/****** Object:  ForeignKey [FK_RTI_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[RESOURCE_TYPE_ITEMS] DROP CONSTRAINT [FK_RTI_USERS_M]
 GO
-
-DROP VIEW [dbo.crystal_REQUEST_SENT_V]
+/****** Object:  ForeignKey [FK_RT_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[RESOURCE_TYPES] DROP CONSTRAINT [FK_RT_USERS_C]
 GO
-
-DROP VIEW [dbo.SURVEY_REQUEST_VENDORS_V]
+/****** Object:  ForeignKey [FK_RT_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[RESOURCE_TYPES] DROP CONSTRAINT [FK_RT_USERS_M]
 GO
-
-DROP VIEW [dbo.AIA_OFFICE_INTERIORS_CUSTOMER_V]
+/****** Object:  ForeignKey [FK_RESOURCE_ORGANIZATIONS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[RESOURCES] DROP CONSTRAINT [FK_RESOURCE_ORGANIZATIONS]
 GO
-
-DROP VIEW [dbo.SERV_LINE_STATUS_TYPES_V]
+/****** Object:  ForeignKey [FK_RESOURCE_RESOURCE_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[RESOURCES] DROP CONSTRAINT [FK_RESOURCE_RESOURCE_TYPES]
 GO
-
-DROP VIEW [dbo.PUNCHLIST_ITEM_TYPES_V]
+/****** Object:  ForeignKey [FK_RESOURCE_USERS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[RESOURCES] DROP CONSTRAINT [FK_RESOURCE_USERS]
 GO
-
-DROP VIEW [dbo.WORKORDER_STATUS_TYPES_V]
+/****** Object:  ForeignKey [FK_RESOURCE_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[RESOURCES] DROP CONSTRAINT [FK_RESOURCE_USERS_C]
 GO
-
-DROP VIEW [dbo.PRIORITY_TYPES_V]
+/****** Object:  ForeignKey [FK_RESOURCE_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[RESOURCES] DROP CONSTRAINT [FK_RESOURCE_USERS_M]
 GO
-
-DROP VIEW [dbo.RESOURCE_CATEGORY_TYPES_V]
+/****** Object:  ForeignKey [FK_RIGHT_TYPE_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[RIGHT_TYPES] DROP CONSTRAINT [FK_RIGHT_TYPE_USERS_C]
 GO
-
-DROP VIEW [dbo.LEVEL_TYPES_V]
+/****** Object:  ForeignKey [FK_RIGHT_TYPE_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[RIGHT_TYPES] DROP CONSTRAINT [FK_RIGHT_TYPE_USERS_M]
 GO
-
-DROP VIEW [dbo.REQ_TYPES_V]
+/****** Object:  ForeignKey [FK_RFR_FUNCTIONS]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[ROLE_FUNCTION_RIGHTS] DROP CONSTRAINT [FK_RFR_FUNCTIONS]
 GO
-
-DROP VIEW [dbo.SECURITY_TYPES_V]
+/****** Object:  ForeignKey [FK_RFR_RIGHT_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[ROLE_FUNCTION_RIGHTS] DROP CONSTRAINT [FK_RFR_RIGHT_TYPES]
 GO
-
-DROP VIEW [dbo.RESOURCE_STATUS_TYPES_V]
+/****** Object:  ForeignKey [FK_RFR_ROLES]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[ROLE_FUNCTION_RIGHTS] DROP CONSTRAINT [FK_RFR_ROLES]
 GO
-
-DROP VIEW [dbo.PHASE_TYPES_V]
+/****** Object:  ForeignKey [FK_RFR_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[ROLE_FUNCTION_RIGHTS] DROP CONSTRAINT [FK_RFR_USERS_C]
 GO
-
-DROP VIEW [dbo.MULTI_LEVEL_TYPES_V]
+/****** Object:  ForeignKey [FK_RFR_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[ROLE_FUNCTION_RIGHTS] DROP CONSTRAINT [FK_RFR_USERS_M]
 GO
-
-DROP VIEW [dbo.ELEVATOR_AVAILABLE_TYPES_V]
+/****** Object:  ForeignKey [FK_ROLE_USERS_C]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[ROLES] DROP CONSTRAINT [FK_ROLE_USERS_C]
 GO
-
-DROP VIEW [dbo.APPROVAL_REQ_TYPES_V]
+/****** Object:  ForeignKey [FK_ROLE_USERS_M]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[ROLES] DROP CONSTRAINT [FK_ROLE_USERS_M]
 GO
-
-DROP VIEW [dbo.OVERRIDE_REASON_TYPES_V]
+/****** Object:  ForeignKey [FK_RESOURCE_SCH_RESOURCES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SCH_RESOURCES] DROP CONSTRAINT [FK_RESOURCE_SCH_RESOURCES]
 GO
-
-DROP VIEW [dbo.PRODUCT_DISPOSITION_V]
+/****** Object:  ForeignKey [FK_SR_DATE_TYPES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SCH_RESOURCES] DROP CONSTRAINT [FK_SR_DATE_TYPES]
 GO
-
-DROP VIEW [dbo.NOTIFICATION_TYPES_V]
+/****** Object:  ForeignKey [FK_SR_HIDDEN_SERVICES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SCH_RESOURCES] DROP CONSTRAINT [FK_SR_HIDDEN_SERVICES]
 GO
-
-DROP VIEW [dbo.REQUEST_TYPES_V]
+/****** Object:  ForeignKey [FK_SR_JOBS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SCH_RESOURCES] DROP CONSTRAINT [FK_SR_JOBS]
 GO
-
-DROP VIEW [dbo.ACCOUNT_TYPES_V]
+/****** Object:  ForeignKey [FK_SR_REASON_TYPES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SCH_RESOURCES] DROP CONSTRAINT [FK_SR_REASON_TYPES]
 GO
-
-DROP VIEW [dbo.QUOTE_REQ_STATUS_TYPES_V]
+/****** Object:  ForeignKey [FK_SR_REPORT_TYPES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SCH_RESOURCES] DROP CONSTRAINT [FK_SR_REPORT_TYPES]
 GO
-
-DROP VIEW [dbo.QUOTE_STATUS_TYPES_V]
+/****** Object:  ForeignKey [FK_SR_RES_STATUS_TYPES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SCH_RESOURCES] DROP CONSTRAINT [FK_SR_RES_STATUS_TYPES]
 GO
-
-DROP VIEW [dbo.REASON_TYPES_V]
+/****** Object:  ForeignKey [FK_SR_RESOURCES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SCH_RESOURCES] DROP CONSTRAINT [FK_SR_RESOURCES]
 GO
-
-DROP VIEW [dbo.DATE_TYPES_V]
+/****** Object:  ForeignKey [FK_SR_SERVICES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SCH_RESOURCES] DROP CONSTRAINT [FK_SR_SERVICES]
 GO
-
-DROP VIEW [dbo.CUSTOMER_TYPES_V]
+/****** Object:  ForeignKey [FK_SR_USERS_C]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SCH_RESOURCES] DROP CONSTRAINT [FK_SR_USERS_C]
 GO
-
-DROP VIEW [dbo.SCHEDULE_TYPES_ENET_V]
+/****** Object:  ForeignKey [FK_SR_USERS_M]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SCH_RESOURCES] DROP CONSTRAINT [FK_SR_USERS_M]
 GO
-
-DROP VIEW [dbo.DELIVERY_TYPES_V]
+/****** Object:  ForeignKey [FK_SR_WEEKEND]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SCH_RESOURCES] DROP CONSTRAINT [FK_SR_WEEKEND]
 GO
-
-DROP VIEW [dbo.FURNITURE_LINE_TYPES_V]
+/****** Object:  ForeignKey [FK_SIL_INVOICE_LINES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERV_INV_LINES] DROP CONSTRAINT [FK_SIL_INVOICE_LINES]
 GO
-
-DROP VIEW [dbo.EMPLOYMENT_TYPES_V]
+/****** Object:  ForeignKey [FK_SIL_SERVICE_LINES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERV_INV_LINES] DROP CONSTRAINT [FK_SIL_SERVICE_LINES]
 GO
-
-DROP VIEW [dbo.FLOOR_PROTECTION_TYPES_V]
+/****** Object:  ForeignKey [FK_SL_BILL_SERVICES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICE_LINES] DROP CONSTRAINT [FK_SL_BILL_SERVICES]
 GO
-
-DROP VIEW [dbo.ALERT_TYPES_V]
+/****** Object:  ForeignKey [FK_SL_ENTERED_BY]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICE_LINES] DROP CONSTRAINT [FK_SL_ENTERED_BY]
 GO
-
-DROP VIEW [dbo.ACTIVITY_TYPES_V]
+/****** Object:  ForeignKey [FK_SL_INVOICES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICE_LINES] DROP CONSTRAINT [FK_SL_INVOICES]
 GO
-
-DROP VIEW [dbo.CONTACT_STATUS_TYPES_V]
+/****** Object:  ForeignKey [FK_SL_ITEMS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICE_LINES] DROP CONSTRAINT [FK_SL_ITEMS]
 GO
-
-DROP VIEW [dbo.BILLING_TYPES_V]
+/****** Object:  ForeignKey [FK_SL_OVERRIDE_BY]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICE_LINES] DROP CONSTRAINT [FK_SL_OVERRIDE_BY]
 GO
-
-DROP VIEW [dbo.CONTACT_TYPES_V]
+/****** Object:  ForeignKey [FK_SL_OVERRIDE_REASON_TYPES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICE_LINES] DROP CONSTRAINT [FK_SL_OVERRIDE_REASON_TYPES]
 GO
-
-DROP VIEW [dbo.USER_TYPES_V]
+/****** Object:  ForeignKey [FK_SL_POOL_SERVICE_ID]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICE_LINES] DROP CONSTRAINT [FK_SL_POOL_SERVICE_ID]
 GO
-
-DROP VIEW [dbo.INVOICE_TRACKING_TYPES_V]
+/****** Object:  ForeignKey [FK_SL_RESOURCES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICE_LINES] DROP CONSTRAINT [FK_SL_RESOURCES]
 GO
-
-DROP VIEW [dbo.FURNITURE_TYPES_V]
+/****** Object:  ForeignKey [FK_SL_SERVICE_LINE_STATUSES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICE_LINES] DROP CONSTRAINT [FK_SL_SERVICE_LINE_STATUSES]
 GO
-
-DROP VIEW [dbo.ITEM_TYPES_V]
+/****** Object:  ForeignKey [FK_SL_SERVICES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICE_LINES] DROP CONSTRAINT [FK_SL_SERVICES]
 GO
-
-DROP VIEW [dbo.JOB_TYPES_V]
+/****** Object:  ForeignKey [FK_SL_USERS_C]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICE_LINES] DROP CONSTRAINT [FK_SL_USERS_C]
 GO
-
-DROP VIEW [dbo.LOADING_DOCK_TYPES_V]
+/****** Object:  ForeignKey [FK_SL_USERS_M]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICE_LINES] DROP CONSTRAINT [FK_SL_USERS_M]
 GO
-
-DROP VIEW [dbo.JOB_STATUS_TYPES_V]
+/****** Object:  ForeignKey [FK_SL_VERIFIED_BY]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICE_LINES] DROP CONSTRAINT [FK_SL_VERIFIED_BY]
 GO
-
-DROP VIEW [dbo.ITEM_STATUS_TYPES_V]
+/****** Object:  ForeignKey [FK_ST_PHASE_TYPES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICE_TASKS] DROP CONSTRAINT [FK_ST_PHASE_TYPES]
 GO
-
-DROP VIEW [dbo.ACTIVITY_CATEGORY_TYPES_V]
+/****** Object:  ForeignKey [FK_ST_SERVICES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICE_TASKS] DROP CONSTRAINT [FK_ST_SERVICES]
 GO
-
-DROP VIEW [dbo.PROJECT_STATUS_TYPES_V]
+/****** Object:  ForeignKey [FK_ST_SUB_ACT_TYPES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICE_TASKS] DROP CONSTRAINT [FK_ST_SUB_ACT_TYPES]
 GO
-
-DROP VIEW [dbo.LOCATION_TYPES_V]
+/****** Object:  ForeignKey [FK_ST_USERS_C]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICE_TASKS] DROP CONSTRAINT [FK_ST_USERS_C]
 GO
-
-DROP VIEW [dbo.LOOKUPS_QUICK_V]
+/****** Object:  ForeignKey [FK_ST_USERS_M]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICE_TASKS] DROP CONSTRAINT [FK_ST_USERS_M]
 GO
-
-DROP VIEW [dbo.PDA_SCHED_RES_V]
+/****** Object:  ForeignKey [FK_JL_SERVICES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_JL_SERVICES]
 GO
-
-DROP VIEW [dbo.PROJECT_NOTES_V]
+/****** Object:  ForeignKey [fk_service_customer_contact2]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [fk_service_customer_contact2]
 GO
-
-DROP VIEW [dbo.CUSTOM_CUST_COLUMNS_V]
+/****** Object:  ForeignKey [fk_service_customer_contact3]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [fk_service_customer_contact3]
 GO
-
-DROP VIEW [dbo.ITEMS_BY_JOB_TYPES_V]
+/****** Object:  ForeignKey [fk_service_customer_contact4]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [fk_service_customer_contact4]
 GO
-
-DROP VIEW [dbo.vendors_v]
+/****** Object:  ForeignKey [fk_service_job_loc_contact]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [fk_service_job_loc_contact]
 GO
-
-DROP VIEW [dbo.extranet_email_v]
+/****** Object:  ForeignKey [FK_SERVICE_REQUESTS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_SERVICE_REQUESTS]
 GO
-
-DROP VIEW [dbo.REQUEST_MAX_VERSION_V]
+/****** Object:  ForeignKey [FK_SERVICES_BILLING_TYPES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_SERVICES_BILLING_TYPES]
 GO
-
-DROP VIEW [dbo.SCH_VACATIONS_ALL_V]
+/****** Object:  ForeignKey [FK_SERVICES_CUSTOMER_CONTACTS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_SERVICES_CUSTOMER_CONTACTS]
 GO
-
-DROP VIEW [dbo.SCH_RESOURCE_DATES_V]
+/****** Object:  ForeignKey [FK_SERVICES_DELIVERY_TYPES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_SERVICES_DELIVERY_TYPES]
 GO
-
-DROP VIEW [dbo.QUOTE_REQUESTS_V]
+/****** Object:  ForeignKey [FK_SERVICES_DESIGNER_CONTACTS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_SERVICES_DESIGNER_CONTACTS]
 GO
-
-DROP VIEW [dbo.PKT_CONTACTS_V]
+/****** Object:  ForeignKey [FK_SERVICES_IDM_CONTACTS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_SERVICES_IDM_CONTACTS]
 GO
-
-DROP VIEW [dbo.Contact_pkf_V]
+/****** Object:  ForeignKey [FK_SERVICES_JOB_LOCATIONS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_SERVICES_JOB_LOCATIONS]
 GO
-
-DROP VIEW [dbo.REQUEST_MAIL_V]
+/****** Object:  ForeignKey [FK_SERVICES_JOBS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_SERVICES_JOBS]
 GO
-
-DROP VIEW [dbo.SERVICE_ACCOUNT_REPORT_TEMP]
+/****** Object:  ForeignKey [FK_SERVICES_PRI_FURN_LINE_TYPES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_SERVICES_PRI_FURN_LINE_TYPES]
 GO
-
-DROP VIEW [dbo.PAYROLL_VERIFICATION_V]
+/****** Object:  ForeignKey [FK_SERVICES_PRI_FURN_TYPES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_SERVICES_PRI_FURN_TYPES]
 GO
-
-DROP VIEW [dbo.SERVICE_ACCT_RPT_TEMP_V_AZ]
+/****** Object:  ForeignKey [FK_SERVICES_PROJ_MRG_CONTACTS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_SERVICES_PROJ_MRG_CONTACTS]
 GO
-
-DROP VIEW [dbo.PUNCHLIST_ISSUES_V]
+/****** Object:  ForeignKey [FK_SERVICES_PUNCHLIST_TYPE_ID]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_SERVICES_PUNCHLIST_TYPE_ID]
 GO
-
-DROP VIEW [dbo.PROJECT_INVOICES_V]
+/****** Object:  ForeignKey [FK_SERVICES_REPORT_TO_LOCS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_SERVICES_REPORT_TO_LOCS]
 GO
-
-DROP VIEW [dbo.invoice_volume_v]
+/****** Object:  ForeignKey [FK_SERVICES_SALES_CONTACTS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_SERVICES_SALES_CONTACTS]
 GO
-
-DROP VIEW [dbo.crystal_POSTED_V]
+/****** Object:  ForeignKey [FK_SERVICES_SCHEDULE_TYPES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_SERVICES_SCHEDULE_TYPES]
 GO
-
-DROP VIEW [dbo.invoice_post_total_v]
+/****** Object:  ForeignKey [FK_SERVICES_SEC_FURN_LINE_TYPES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_SERVICES_SEC_FURN_LINE_TYPES]
 GO
-
-DROP VIEW [dbo.BILLING_CUSTOM_COLS_V]
+/****** Object:  ForeignKey [FK_SERVICES_SEC_FURN_TYPES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_SERVICES_SEC_FURN_TYPES]
 GO
-
-DROP VIEW [dbo.invoice_date_range]
+/****** Object:  ForeignKey [FK_SERVICES_STATUS_TYPES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_SERVICES_STATUS_TYPES]
 GO
-
-DROP VIEW [dbo.BILLING_CUSTOM_COLS_TARGET_V]
+/****** Object:  ForeignKey [FK_SERVICES_SUPPORT_CONTACTS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_SERVICES_SUPPORT_CONTACTS]
 GO
-
-DROP VIEW [dbo.PEP_POSTED_CUSTOM_LINES_V]
+/****** Object:  ForeignKey [FK_SERVICES_TYPES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_SERVICES_TYPES]
 GO
-
-DROP VIEW [dbo.crystal_BILLING_ECMS_V]
+/****** Object:  ForeignKey [FK_SERVICES_USERS_C]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_SERVICES_USERS_C]
 GO
-
-DROP VIEW [dbo.sch_job_list_v]
+/****** Object:  ForeignKey [FK_SERVICES_USERS_M]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_SERVICES_USERS_M]
 GO
-
-DROP VIEW [dbo.JOB_PROGRESS_1_V]
+/****** Object:  ForeignKey [FK_SERVICES_WOOD_PRODUCT_TYPES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[SERVICES] DROP CONSTRAINT [FK_SERVICES_WOOD_PRODUCT_TYPES]
 GO
-
-DROP VIEW [dbo.sch_job_req_info_v]
+/****** Object:  ForeignKey [FK_SC_USERS_C]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[STANDARD_CONDITIONS] DROP CONSTRAINT [FK_SC_USERS_C]
 GO
-
-DROP VIEW [dbo.crystal_dashboard_JOB_COSTING_V2]
+/****** Object:  ForeignKey [FK_SC_USERS_M]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[STANDARD_CONDITIONS] DROP CONSTRAINT [FK_SC_USERS_M]
 GO
-
-DROP VIEW [dbo.crystal_dashboard_JOB_COSTING_V]
+/****** Object:  ForeignKey [fk_states_country]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[states] DROP CONSTRAINT [fk_states_country]
 GO
-
-DROP VIEW [dbo.crystal_INVOICE_TOTAL_AND_HOURS_V]
+/****** Object:  ForeignKey [FK_TRACKING_FROM_USERS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[TRACKING] DROP CONSTRAINT [FK_TRACKING_FROM_USERS]
 GO
-
-DROP VIEW [dbo.PEP_POSTED_REQS_V]
+/****** Object:  ForeignKey [FK_TRACKING_JOBS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[TRACKING] DROP CONSTRAINT [FK_TRACKING_JOBS]
 GO
-
-DROP VIEW [dbo.MISSING_EMP_HRS_V]
+/****** Object:  ForeignKey [FK_TRACKING_NEW_STATUSES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[TRACKING] DROP CONSTRAINT [FK_TRACKING_NEW_STATUSES]
 GO
-
-DROP VIEW [dbo.SERVICE_LINES_SCHD_V]
+/****** Object:  ForeignKey [FK_TRACKING_OLD_STATUSES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[TRACKING] DROP CONSTRAINT [FK_TRACKING_OLD_STATUSES]
 GO
-
-DROP VIEW [dbo.crystal_TC_VERIFIED_V]
+/****** Object:  ForeignKey [FK_TRACKING_SERVICES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[TRACKING] DROP CONSTRAINT [FK_TRACKING_SERVICES]
 GO
-
-DROP VIEW [dbo.crystal_csc_pkf_WORK_ORDER_MASTER_V]
+/****** Object:  ForeignKey [FK_TRACKING_TO_CONTACTS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[TRACKING] DROP CONSTRAINT [FK_TRACKING_TO_CONTACTS]
 GO
-
-DROP VIEW [dbo.VAR_REPORT_V]
+/****** Object:  ForeignKey [FK_TRACKING_TYPES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[TRACKING] DROP CONSTRAINT [FK_TRACKING_TYPES]
 GO
-
-DROP VIEW [dbo.PAYROLL_VERIFICATION_V_PATTY]
+/****** Object:  ForeignKey [FK_TRACKING_USERS_C]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[TRACKING] DROP CONSTRAINT [FK_TRACKING_USERS_C]
 GO
-
-DROP VIEW [dbo.crystal_UNBILL_ACCT_V]
+/****** Object:  ForeignKey [FK_TRACKING_USERS_M]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[TRACKING] DROP CONSTRAINT [FK_TRACKING_USERS_M]
 GO
-
-DROP VIEW [dbo.NON_SYNC_FOREMAN_V]
+/****** Object:  ForeignKey [FK_USER_APPROVERS_CUSTOMERS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[USER_APPROVERS] DROP CONSTRAINT [FK_USER_APPROVERS_CUSTOMERS]
 GO
-
-DROP VIEW [dbo.SCH_RESOURCES_ALL_V]
+/****** Object:  ForeignKey [FK_USER_APPROVERS_USERS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[USER_APPROVERS] DROP CONSTRAINT [FK_USER_APPROVERS_USERS]
 GO
-
-DROP VIEW [dbo.workorder_progress_v]
+/****** Object:  ForeignKey [fk_uceu_customer_id]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[user_customer_end_users] DROP CONSTRAINT [fk_uceu_customer_id]
 GO
-
-DROP VIEW [dbo.PROJECT_QUOTES_V]
+/****** Object:  ForeignKey [fk_uceu_user_customer_id]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[user_customer_end_users] DROP CONSTRAINT [fk_uceu_user_customer_id]
 GO
-
-DROP VIEW [dbo.quick_request_vendors_v]
+/****** Object:  ForeignKey [FK_USER_CUSTOMERS_CUSTOMERS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[USER_CUSTOMERS] DROP CONSTRAINT [FK_USER_CUSTOMERS_CUSTOMERS]
 GO
-
-DROP VIEW [dbo.projects_all_requests_v]
+/****** Object:  ForeignKey [FK_USER_CUSTOMERS_USERS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[USER_CUSTOMERS] DROP CONSTRAINT [FK_USER_CUSTOMERS_USERS]
 GO
-
-DROP VIEW [dbo.SCH_RESOURCES_V]
+/****** Object:  ForeignKey [FK_USER_JOB_TYPES_LOOKUPS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[USER_JOB_TYPES] DROP CONSTRAINT [FK_USER_JOB_TYPES_LOOKUPS]
 GO
-
-DROP VIEW [dbo.crystal_SERVICE_REQ_V]
+/****** Object:  ForeignKey [FK_USER_JOB_TYPES_USERS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[USER_JOB_TYPES] DROP CONSTRAINT [FK_USER_JOB_TYPES_USERS]
 GO
-
-DROP VIEW [dbo.pkt_sch_jobs_v]
+/****** Object:  ForeignKey [FK_UO_ORGANIZATIONS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[USER_ORGANIZATIONS] DROP CONSTRAINT [FK_UO_ORGANIZATIONS]
 GO
-
-DROP VIEW [dbo.QUICK_QUOTE_REQUESTS_V]
+/****** Object:  ForeignKey [FK_UO_USERS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[USER_ORGANIZATIONS] DROP CONSTRAINT [FK_UO_USERS]
 GO
-
-DROP VIEW [dbo.crystal_VAR_REPORT_SUMMARY_V]
+/****** Object:  ForeignKey [FK_UO_USERS_C]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[USER_ORGANIZATIONS] DROP CONSTRAINT [FK_UO_USERS_C]
 GO
-
-DROP VIEW [dbo.DOCS_CURRENT_V]
+/****** Object:  ForeignKey [FK_UO_USERS_M]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[USER_ORGANIZATIONS] DROP CONSTRAINT [FK_UO_USERS_M]
 GO
-
-DROP VIEW [dbo.invoice_pre_total_v]
+/****** Object:  ForeignKey [FK_UR_ROLES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[USER_ROLES] DROP CONSTRAINT [FK_UR_ROLES]
 GO
-
-DROP VIEW [dbo.HOURS_BY_PAYCODE_V]
+/****** Object:  ForeignKey [FK_UR_USERS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[USER_ROLES] DROP CONSTRAINT [FK_UR_USERS]
 GO
-
-DROP VIEW [dbo.RESOURCE_ITEMS_V]
+/****** Object:  ForeignKey [FK_UR_USERS_C]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[USER_ROLES] DROP CONSTRAINT [FK_UR_USERS_C]
 GO
-
-DROP VIEW [dbo.ROLE_FUNCTION_RIGHTS_ALL_V]
+/****** Object:  ForeignKey [FK_UR_USERS_M]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[USER_ROLES] DROP CONSTRAINT [FK_UR_USERS_M]
 GO
-
-DROP VIEW [dbo.crystal_JOB_LOCATIONS_V]
+/****** Object:  ForeignKey [FK_USER_VENDORS_CUSTOMERS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[USER_VENDORS] DROP CONSTRAINT [FK_USER_VENDORS_CUSTOMERS]
 GO
-
-DROP VIEW [dbo.crystal_JOB_TIME_BY_JOB_WITH_GP_ACCTNUM_V]
+/****** Object:  ForeignKey [FK_USER_VENDORS_USERS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[USER_VENDORS] DROP CONSTRAINT [FK_USER_VENDORS_USERS]
 GO
-
-DROP VIEW [dbo.crystal_SCH_ACT_1_V]
+/****** Object:  ForeignKey [FK_USER_CONTACTS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[USERS] DROP CONSTRAINT [FK_USER_CONTACTS]
 GO
-
-DROP VIEW [dbo.CHANGED_HRS_V]
+/****** Object:  ForeignKey [FK_USER_EMPLOYMENT_TYPES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[USERS] DROP CONSTRAINT [FK_USER_EMPLOYMENT_TYPES]
 GO
-
-DROP VIEW [dbo.UNVERIFIED_HRS_V]
+/****** Object:  ForeignKey [FK_USER_TYPES]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[USERS] DROP CONSTRAINT [FK_USER_TYPES]
 GO
-
-DROP VIEW [dbo.SCH_RESOURCE_ESTIMATES_V]
+/****** Object:  ForeignKey [FK_USER_USERS_C]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[USERS] DROP CONSTRAINT [FK_USER_USERS_C]
 GO
-
-DROP VIEW [dbo.PROJECT_REQUESTS_V]
+/****** Object:  ForeignKey [FK_USER_USERS_M]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[USERS] DROP CONSTRAINT [FK_USER_USERS_M]
 GO
-
-DROP VIEW [dbo.crystal_Job_time_by_job_v]
+/****** Object:  ForeignKey [fk_user_vendor_contact]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[USERS] DROP CONSTRAINT [fk_user_vendor_contact]
 GO
-
-DROP VIEW [dbo.USER_FUNCTION_RIGHTS_V]
+/****** Object:  ForeignKey [FK_VERSIONS_DOCUMENTS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[VERSIONS] DROP CONSTRAINT [FK_VERSIONS_DOCUMENTS]
 GO
-
-DROP VIEW [dbo.USER_ORG_FUNCTION_RIGHTS_V]
+/****** Object:  Check [ITEMS_COLUMN_POSITION_CHECK]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[ITEMS] DROP CONSTRAINT [ITEMS_COLUMN_POSITION_CHECK]
 GO
-
-DROP VIEW [dbo.QUOTE_MAIL_V]
+/****** Object:  Check [SPREADSHEET_BILLING_YN]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[JOBS] DROP CONSTRAINT [SPREADSHEET_BILLING_YN]
 GO
-
-DROP VIEW [dbo.JOB_TIME_BY_EMP_V]
+/****** Object:  Check [CSC_WO_FIELD_YN]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [CSC_WO_FIELD_YN]
 GO
-
-DROP VIEW [dbo.crystal_csc_routing_ticket_v]
+/****** Object:  Check [PROD_DISP_YN]    Script Date: 05/03/2010 14:18:04 ******/
+ALTER TABLE [dbo].[REQUESTS] DROP CONSTRAINT [PROD_DISP_YN]
 GO
-
-DROP VIEW [dbo.SERVICE_ACCOUNT_REPORT_V]
+/****** Object:  Check [CK_STANDARD_CONDITIONS]    Script Date: 05/03/2010 14:18:05 ******/
+ALTER TABLE [dbo].[STANDARD_CONDITIONS] DROP CONSTRAINT [CK_STANDARD_CONDITIONS]
 GO
-
-DROP VIEW [dbo.crystal_SCHEDULE_VS_ACTUAL_V]
+/****** Object:  Table [dbo].[QUOTE_STANDARD_CONDITIONS]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[QUOTE_STANDARD_CONDITIONS]
 GO
-
-DROP VIEW [dbo.JOB_PROGRESS_2_V]
+/****** Object:  View [dbo].[USER_FUNCTION_RIGHTS_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[USER_FUNCTION_RIGHTS_V]
 GO
-
-DROP VIEW [dbo.SERVICE_ACCOUNT_REPORT_V_AZ]
+/****** Object:  View [dbo].[pep_vendor_user_v]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[pep_vendor_user_v]
 GO
-
-DROP VIEW [dbo.SCH_EMAIL_V]
+/****** Object:  View [dbo].[USER_ROLES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[USER_ROLES_V]
 GO
-
-DROP VIEW [dbo.SCH_RESOURCES_ALL_JOBS_V]
+/****** Object:  View [dbo].[USER_TYPES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[USER_TYPES_V]
 GO
-
-DROP VIEW [dbo.RESOURCE_ITEM_RATES_V]
+/****** Object:  View [dbo].[POOLED_HOURS_CALC_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[POOLED_HOURS_CALC_V]
 GO
-
-DROP VIEW [dbo.PKT_ITEMS_V]
+/****** Object:  View [dbo].[WEEKEND_DATE_TYPES_V]    Script Date: 05/03/2010 14:18:10 ******/
+DROP VIEW [dbo].[WEEKEND_DATE_TYPES_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop foreign key constraints                                           */
-/* ---------------------------------------------------------------------- */
-
-ALTER TABLE [z_resource_items] DROP CONSTRAINT [RESOURCES_z_resource_items]
+/****** Object:  View [dbo].[PDA_PDS_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PDA_PDS_V]
 GO
-
-ALTER TABLE [z_resource_items] DROP CONSTRAINT [RESOURCE_ITEMS_z_resource_items]
+/****** Object:  View [dbo].[FINANCE_REPORT1_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[FINANCE_REPORT1_V]
 GO
-
-ALTER TABLE [z_resource_items] DROP CONSTRAINT [ITEMS_z_resource_items]
+/****** Object:  View [dbo].[crystal_INTERNAL_REQ_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_INTERNAL_REQ_V]
 GO
-
-ALTER TABLE [PDA_RESOURCE_SORT] DROP CONSTRAINT [NUMBERS_PDA_RESOURCE_SORT]
+/****** Object:  Table [dbo].[USER_VENDORS]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[USER_VENDORS]
 GO
-
-ALTER TABLE [PDA_RESOURCE_SORT] DROP CONSTRAINT [RESOURCES_PDA_RESOURCE_SORT]
+/****** Object:  View [dbo].[Expense_Report_for_Sandy]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[Expense_Report_for_Sandy]
 GO
-
-ALTER TABLE [z_resource_type_items] DROP CONSTRAINT [RESOURCE_ESTIMATES_z_resource_type_items]
+/****** Object:  View [dbo].[crystal_AIA_REQUESTS_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[crystal_AIA_REQUESTS_V]
 GO
-
-ALTER TABLE [z_resource_type_items] DROP CONSTRAINT [RESOURCE_TYPES_z_resource_type_items]
+/****** Object:  View [dbo].[TEMPLATE_LOCATIONS_2_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[TEMPLATE_LOCATIONS_2_V]
 GO
-
-ALTER TABLE [z_resource_type_items] DROP CONSTRAINT [RESOURCE_TYPE_ITEMS_z_resource_type_items]
+/****** Object:  View [dbo].[crystal_BILLING_ECMS_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[crystal_BILLING_ECMS_V]
 GO
-
-ALTER TABLE [z_resource_type_items] DROP CONSTRAINT [ITEMS_z_resource_type_items]
+/****** Object:  View [dbo].[TEMPLATE_LOCATIONS_3_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[TEMPLATE_LOCATIONS_3_V]
 GO
-
-ALTER TABLE [TABS] DROP CONSTRAINT [TEMPLATES_TABS]
+/****** Object:  View [dbo].[crystal_TARGET_REPORT1_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_TARGET_REPORT1_V]
 GO
-
-ALTER TABLE [TABS] DROP CONSTRAINT [GREAT_PLAINS_TABLES_TABS]
+/****** Object:  Table [dbo].[QUOTE_WORKSTATION_CONFIGURATIONS]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[QUOTE_WORKSTATION_CONFIGURATIONS]
 GO
-
-ALTER TABLE [UNBILLED_REPORT_DAILYDATACAPTURE] DROP CONSTRAINT [USER_ORGANIZATIONS_UNBILLED_REPORT_DAILYDATACAPTURE]
+/****** Object:  View [dbo].[crystal_dashboard_REQUEST_SENT_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_dashboard_REQUEST_SENT_V]
 GO
-
-ALTER TABLE [UNBILLED_REPORT_DAILYDATACAPTURE] DROP CONSTRAINT [JOBS_UNBILLED_REPORT_DAILYDATACAPTURE]
+/****** Object:  View [dbo].[TIME_UOM_TYPES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[TIME_UOM_TYPES_V]
 GO
-
-ALTER TABLE [UNBILLED_REPORT_DAILYDATACAPTURE] DROP CONSTRAINT [ORGANIZATIONS_UNBILLED_REPORT_DAILYDATACAPTURE]
+/****** Object:  Table [dbo].[z_resource_items]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[z_resource_items]
 GO
-
-ALTER TABLE [UNBILLED_REPORT_DAILYDATACAPTURE] DROP CONSTRAINT [INVOICES_UNBILLED_REPORT_DAILYDATACAPTURE]
+/****** Object:  View [dbo].[TRACKING_TYPES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[TRACKING_TYPES_V]
 GO
-
-ALTER TABLE [UNBILLED_REPORT_DAILYDATACAPTURE] DROP CONSTRAINT [USERS_UNBILLED_REPORT_DAILYDATACAPTURE]
+/****** Object:  View [dbo].[TRACKING_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[TRACKING_V]
 GO
-
-ALTER TABLE [EMAILS] DROP CONSTRAINT [QUOTES_EMAILS]
+/****** Object:  Table [dbo].[z_resource_type_items]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[z_resource_type_items]
 GO
-
-ALTER TABLE [EMAILS] DROP CONSTRAINT [REQUESTS_EMAILS]
+/****** Object:  View [dbo].[UOM_TYPES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[UOM_TYPES_V]
 GO
-
-ALTER TABLE [EMAILS] DROP CONSTRAINT [PROJECTS_EMAILS]
+/****** Object:  View [dbo].[Contact_pkf_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[Contact_pkf_V]
 GO
-
-ALTER TABLE [EMAILS] DROP CONSTRAINT [CONTACTS_EMAILS]
+/****** Object:  View [dbo].[ACTIVITY_TYPES_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[ACTIVITY_TYPES_V]
 GO
-
-ALTER TABLE [XREF_PDS] DROP CONSTRAINT [SERVICES_XREF_PDS]
+/****** Object:  View [dbo].[PDA_SCHED_RES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PDA_SCHED_RES_V]
 GO
-
-ALTER TABLE [XREF_PDS] DROP CONSTRAINT [USERS_XREF_PDS]
+/****** Object:  StoredProcedure [dbo].[sp_delete_duplicate_customers]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_delete_duplicate_customers]
 GO
-
-ALTER TABLE [FUNCTION_GROUPS] DROP CONSTRAINT [countries_FUNCTION_GROUPS]
+/****** Object:  View [dbo].[crystal_UNBILL_ACCT_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_UNBILL_ACCT_V]
 GO
-
-ALTER TABLE [INVOICE_STATUSES] DROP CONSTRAINT [countries_INVOICE_STATUSES]
+/****** Object:  View [dbo].[crystal_JOB_CST_COMIS_ECMS_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_JOB_CST_COMIS_ECMS_V]
 GO
-
-ALTER TABLE [SERVICE_LINE_STATUSES] DROP CONSTRAINT [countries_SERVICE_LINE_STATUSES]
+/****** Object:  View [dbo].[GP_AIA_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[GP_AIA_ITEM_PAYCODES_V]
 GO
-
-ALTER TABLE [SERVICE_STATUSES] DROP CONSTRAINT [countries_SERVICE_STATUSES]
+/****** Object:  View [dbo].[BILLING_TYPES_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[BILLING_TYPES_V]
 GO
-
-ALTER TABLE [XREF_ITEMS] DROP CONSTRAINT [ITEMS_XREF_ITEMS]
+/****** Object:  View [dbo].[crystal_GRACO_REPORT_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_GRACO_REPORT_V]
 GO
-
-ALTER TABLE [XREF_ITEMS] DROP CONSTRAINT [USERS_XREF_ITEMS]
+/****** Object:  Table [dbo].[EMAILS]    Script Date: 05/03/2010 14:18:03 ******/
+DROP TABLE [dbo].[EMAILS]
 GO
-
-ALTER TABLE [XREF_JOBS] DROP CONSTRAINT [JOBS_XREF_JOBS]
+/****** Object:  Table [dbo].[QUOTE_OTHER_FURNITURE]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[QUOTE_OTHER_FURNITURE]
 GO
-
-ALTER TABLE [XREF_JOBS] DROP CONSTRAINT [USERS_XREF_JOBS]
+/****** Object:  View [dbo].[CONTACT_EMAILS_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[CONTACT_EMAILS_V]
 GO
-
-ALTER TABLE [XREF_NOTES] DROP CONSTRAINT [USERS_XREF_NOTES]
+/****** Object:  View [dbo].[crystal_routing_ticket]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_routing_ticket]
 GO
-
-ALTER TABLE [XREF_REASONS] DROP CONSTRAINT [USERS_XREF_REASONS]
+/****** Object:  View [dbo].[CONTACTS_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[CONTACTS_V]
 GO
-
-ALTER TABLE [XREF_RESOURCES] DROP CONSTRAINT [RESOURCES_XREF_RESOURCES]
+/****** Object:  View [dbo].[PDA_REASONS_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PDA_REASONS_V]
 GO
-
-ALTER TABLE [XREF_RESOURCES] DROP CONSTRAINT [USERS_XREF_RESOURCES]
+/****** Object:  View [dbo].[crystal_VAR_JOB_INVOICED_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_VAR_JOB_INVOICED_V]
 GO
-
-ALTER TABLE [XREF_SERVICES] DROP CONSTRAINT [SERVICES_XREF_SERVICES]
+/****** Object:  View [dbo].[CUSTOMERS_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[CUSTOMERS_V]
 GO
-
-ALTER TABLE [XREF_SERVICES] DROP CONSTRAINT [USERS_XREF_SERVICES]
+/****** Object:  View [dbo].[CONTACT_STATUS_TYPES_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[CONTACT_STATUS_TYPES_V]
 GO
-
-ALTER TABLE [XREF_SCHED_RESOURCES] DROP CONSTRAINT [SCH_RESOURCES_XREF_SCHED_RESOURCES]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_OVERHEAD_HOURS_TCI]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_OVERHEAD_HOURS_TCI]
 GO
-
-ALTER TABLE [XREF_SCHED_RESOURCES] DROP CONSTRAINT [RESOURCES_XREF_SCHED_RESOURCES]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_WonOpenQuoteReport]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_WonOpenQuoteReport]
 GO
-
-ALTER TABLE [XREF_SCHED_RESOURCES] DROP CONSTRAINT [USERS_XREF_SCHED_RESOURCES]
+/****** Object:  View [dbo].[bill_jobs_v]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[bill_jobs_v]
 GO
-
-ALTER TABLE [XREF_TIME] DROP CONSTRAINT [USERS_XREF_TIME]
+/****** Object:  View [dbo].[Taxes_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[Taxes_V]
 GO
-
-ALTER TABLE [EXPENSES_BATCH_LINES] DROP CONSTRAINT [EXPENSES_BATCHES_EXPENSES_BATCH_LINES]
+/****** Object:  View [dbo].[CHECKLISTS_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[CHECKLISTS_V]
 GO
-
-ALTER TABLE [EXPENSES_BATCH_LINES] DROP CONSTRAINT [PAYROLL_BATCHES_EXPENSES_BATCH_LINES]
+/****** Object:  View [dbo].[SURVEY_TEST_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SURVEY_TEST_V]
 GO
-
-ALTER TABLE [EXPENSES_BATCH_LINES] DROP CONSTRAINT [ITEMS_EXPENSES_BATCH_LINES]
+/****** Object:  View [dbo].[POOLED_HOURS_TOTALS_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[POOLED_HOURS_TOTALS_V]
 GO
-
-ALTER TABLE [PDA_ROSTER_CHANGES] DROP CONSTRAINT [RESOURCES_PDA_ROSTER_CHANGES]
+/****** Object:  View [dbo].[JC_JOB_COSTS_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[JC_JOB_COSTS_V]
 GO
-
-ALTER TABLE [PDA_ROSTER_CHANGES] DROP CONSTRAINT [JOBS_PDA_ROSTER_CHANGES]
+/****** Object:  View [dbo].[WOOD_PRODUCT_TYPES_V]    Script Date: 05/03/2010 14:18:10 ******/
+DROP VIEW [dbo].[WOOD_PRODUCT_TYPES_V]
 GO
-
-ALTER TABLE [EXPENSES_BATCHES] DROP CONSTRAINT [PAYROLL_BATCHES_EXPENSES_BATCHES]
+/****** Object:  View [dbo].[YES_NO_TYPE_V]    Script Date: 05/03/2010 14:18:10 ******/
+DROP VIEW [dbo].[YES_NO_TYPE_V]
 GO
-
-ALTER TABLE [EXPENSES_BATCHES] DROP CONSTRAINT [ORGANIZATIONS_EXPENSES_BATCHES]
+/****** Object:  View [dbo].[BILLING_V_DAILYREPORTCAPTURE]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[BILLING_V_DAILYREPORTCAPTURE]
 GO
-
-ALTER TABLE [ottInvHeaderTEMP_Madison] DROP CONSTRAINT [EXPENSES_BATCHES_ottInvHeaderTEMP_Madison]
+/****** Object:  View [dbo].[ALERT_TYPES_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[ALERT_TYPES_V]
 GO
-
-ALTER TABLE [ottInvHeaderTEMP_Madison] DROP CONSTRAINT [PAYROLL_BATCHES_ottInvHeaderTEMP_Madison]
+/****** Object:  View [dbo].[JOB_ITEM_RATES_ECMS_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[JOB_ITEM_RATES_ECMS_V]
 GO
-
-ALTER TABLE [ottInvHeaderTEMP_Madison] DROP CONSTRAINT [INVOICES_ottInvHeaderTEMP_Madison]
+/****** Object:  View [dbo].[PDA_RESOURCES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PDA_RESOURCES_V]
 GO
-
-ALTER TABLE [ottInvHeaderTEMP_Madison] DROP CONSTRAINT [DOCUMENTS_ottInvHeaderTEMP_Madison]
+/****** Object:  View [dbo].[GP_AIA_PAY_CODE_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[GP_AIA_PAY_CODE_V]
 GO
-
-ALTER TABLE [ottInvLineTEMP_Madison] DROP CONSTRAINT [INVOICES_ottInvLineTEMP_Madison]
+/****** Object:  View [dbo].[UNVERIFIED_HRS_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[UNVERIFIED_HRS_V]
 GO
-
-ALTER TABLE [ottInvLineTEMP_Madison] DROP CONSTRAINT [ITEMS_ottInvLineTEMP_Madison]
+/****** Object:  View [dbo].[CONTACT_TYPES_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[CONTACT_TYPES_V]
 GO
-
-ALTER TABLE [AUTHENTICATION_KEYS] DROP CONSTRAINT [ORGANIZATIONS_AUTHENTICATION_KEYS]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AIA_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AIA_DATERANGE]
 GO
-
-ALTER TABLE [AUTHENTICATION_KEYS] DROP CONSTRAINT [USERS_AUTHENTICATION_KEYS]
+/****** Object:  View [dbo].[USERS_VQ]    Script Date: 05/03/2010 14:18:10 ******/
+DROP VIEW [dbo].[USERS_VQ]
 GO
-
-ALTER TABLE [ottInvHeaderTEMP] DROP CONSTRAINT [EXPENSES_BATCHES_ottInvHeaderTEMP]
+/****** Object:  View [dbo].[CHANGED_HRS_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[CHANGED_HRS_V]
 GO
-
-ALTER TABLE [ottInvHeaderTEMP] DROP CONSTRAINT [PAYROLL_BATCHES_ottInvHeaderTEMP]
+/****** Object:  View [dbo].[pda_services_v]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[pda_services_v]
 GO
-
-ALTER TABLE [ottInvHeaderTEMP] DROP CONSTRAINT [INVOICES_ottInvHeaderTEMP]
+/****** Object:  View [dbo].[sch_job_list_v]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[sch_job_list_v]
 GO
-
-ALTER TABLE [ottInvHeaderTEMP] DROP CONSTRAINT [DOCUMENTS_ottInvHeaderTEMP]
+/****** Object:  View [dbo].[ITEMS_USAGE_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[ITEMS_USAGE_V]
 GO
-
-ALTER TABLE [ottInvLineTEMP] DROP CONSTRAINT [INVOICES_ottInvLineTEMP]
+/****** Object:  View [dbo].[HOURS_BY_PAYCODE_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[HOURS_BY_PAYCODE_V]
 GO
-
-ALTER TABLE [ottInvLineTEMP] DROP CONSTRAINT [ITEMS_ottInvLineTEMP]
+/****** Object:  View [dbo].[vendors_v]    Script Date: 05/03/2010 14:18:10 ******/
+DROP VIEW [dbo].[vendors_v]
 GO
-
-ALTER TABLE [ottInvTaxesTEMP] DROP CONSTRAINT [INVOICES_ottInvTaxesTEMP]
+/****** Object:  View [dbo].[CUSTOMER_TYPES_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[CUSTOMER_TYPES_V]
 GO
-
-ALTER TABLE [ottInvHeaderTEMP_ALL] DROP CONSTRAINT [EXPENSES_BATCHES_ottInvHeaderTEMP_ALL]
+/****** Object:  View [dbo].[POOLED_HRS_RPT_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[POOLED_HRS_RPT_V]
 GO
-
-ALTER TABLE [ottInvHeaderTEMP_ALL] DROP CONSTRAINT [PAYROLL_BATCHES_ottInvHeaderTEMP_ALL]
+/****** Object:  View [dbo].[DATES_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[DATES_V]
 GO
-
-ALTER TABLE [ottInvHeaderTEMP_ALL] DROP CONSTRAINT [ORGANIZATIONS_ottInvHeaderTEMP_ALL]
+/****** Object:  Table [dbo].[XREF_PDS]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[XREF_PDS]
 GO
-
-ALTER TABLE [ottInvHeaderTEMP_ALL] DROP CONSTRAINT [INVOICES_ottInvHeaderTEMP_ALL]
+/****** Object:  View [dbo].[GP_CIINC_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[GP_CIINC_PAY_CODE_V]
 GO
-
-ALTER TABLE [ottInvHeaderTEMP_ALL] DROP CONSTRAINT [DOCUMENTS_ottInvHeaderTEMP_ALL]
+/****** Object:  View [dbo].[GP_CIINC_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[GP_CIINC_ITEM_PAYCODES_V]
 GO
-
-ALTER TABLE [ottInvLineTEMP_ALL] DROP CONSTRAINT [INVOICE_LINES_ottInvLineTEMP_ALL]
+/****** Object:  View [dbo].[REQUEST_MAX_VERSION_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[REQUEST_MAX_VERSION_V]
 GO
-
-ALTER TABLE [ottInvLineTEMP_ALL] DROP CONSTRAINT [ORGANIZATIONS_ottInvLineTEMP_ALL]
+/****** Object:  View [dbo].[VAR_INV_DATE_V]    Script Date: 05/03/2010 14:18:10 ******/
+DROP VIEW [dbo].[VAR_INV_DATE_V]
 GO
-
-ALTER TABLE [ottInvLineTEMP_ALL] DROP CONSTRAINT [INVOICES_ottInvLineTEMP_ALL]
+/****** Object:  View [dbo].[DELIVERY_TYPES_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[DELIVERY_TYPES_V]
 GO
-
-ALTER TABLE [ottInvLineTEMP_ALL] DROP CONSTRAINT [ITEMS_ottInvLineTEMP_ALL]
+/****** Object:  View [dbo].[JOBS_NOT_BILLED_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[JOBS_NOT_BILLED_V]
 GO
-
-ALTER TABLE [ottInvTaxesTEMP_ALL] DROP CONSTRAINT [ORGANIZATIONS_ottInvTaxesTEMP_ALL]
+/****** Object:  View [dbo].[crystal_USERS_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_USERS_V]
 GO
-
-ALTER TABLE [ottInvTaxesTEMP_ALL] DROP CONSTRAINT [INVOICES_ottInvTaxesTEMP_ALL]
+/****** Object:  View [dbo].[REQUEST_MAIL_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[REQUEST_MAIL_V]
 GO
-
-ALTER TABLE [INVOICE_BATCH_STATUSES] DROP CONSTRAINT [countries_INVOICE_BATCH_STATUSES]
+/****** Object:  View [dbo].[quick_quotes_v]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[quick_quotes_v]
 GO
-
-ALTER TABLE [ITEMS_REPORTING_TYPE] DROP CONSTRAINT [ITEMS_ITEMS_REPORTING_TYPE]
+/****** Object:  View [dbo].[FLOOR_PROTECTION_TYPES_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[FLOOR_PROTECTION_TYPES_V]
 GO
-
-ALTER TABLE [ORG_GP_TABLES] DROP CONSTRAINT [GREAT_PLAINS_TABLES_ORG_GP_TABLES]
+/****** Object:  View [dbo].[REQUEST_VENDORS_V2]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[REQUEST_VENDORS_V2]
 GO
-
-ALTER TABLE [ROLE_FUNCTION_RIGHTS] DROP CONSTRAINT [FUNCTIONS_ROLE_FUNCTION_RIGHTS]
+/****** Object:  View [dbo].[PEP_POSTED_REQS_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PEP_POSTED_REQS_V]
 GO
-
-ALTER TABLE [ROLE_FUNCTION_RIGHTS] DROP CONSTRAINT [ROLES_ROLE_FUNCTION_RIGHTS]
+/****** Object:  View [dbo].[extranet_email_v2]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[extranet_email_v2]
 GO
-
-ALTER TABLE [ROLE_FUNCTION_RIGHTS] DROP CONSTRAINT [RIGHT_TYPES_ROLE_FUNCTION_RIGHTS]
+/****** Object:  View [dbo].[DATE_TYPES_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[DATE_TYPES_V]
 GO
-
-ALTER TABLE [USER_ROLES] DROP CONSTRAINT [USERS_USER_ROLES]
+/****** Object:  View [dbo].[PEP_RESOURCES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PEP_RESOURCES_V]
 GO
-
-ALTER TABLE [USER_ROLES] DROP CONSTRAINT [ROLES_USER_ROLES]
+/****** Object:  View [dbo].[MAX_REQ_NO_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[MAX_REQ_NO_V]
 GO
-
-ALTER TABLE [LOOKUPS] DROP CONSTRAINT [countries_LOOKUPS]
+/****** Object:  View [dbo].[GP_CILLC_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[GP_CILLC_PAY_CODE_V]
 GO
-
-ALTER TABLE [LOOKUPS] DROP CONSTRAINT [LOOKUP_TYPES_LOOKUPS]
+/****** Object:  View [dbo].[VAR_REPORT_V]    Script Date: 05/03/2010 14:18:10 ******/
+DROP VIEW [dbo].[VAR_REPORT_V]
 GO
-
-ALTER TABLE [INVOICE_LINES] DROP CONSTRAINT [SERVICES_INVOICE_LINES]
+/****** Object:  View [dbo].[DOCS_CURRENT_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[DOCS_CURRENT_V]
 GO
-
-ALTER TABLE [INVOICE_LINES] DROP CONSTRAINT [INVOICES_INVOICE_LINES]
+/****** Object:  View [dbo].[SCHEDULE_TYPES_ENET_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SCHEDULE_TYPES_ENET_V]
 GO
-
-ALTER TABLE [INVOICE_LINES] DROP CONSTRAINT [ITEMS_INVOICE_LINES]
+/****** Object:  View [dbo].[crystal_pkf_quote_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_pkf_quote_V]
 GO
-
-ALTER TABLE [INVOICE_TRACKING] DROP CONSTRAINT [INVOICE_STATUSES_INVOICE_TRACKING]
+/****** Object:  View [dbo].[quick_request_vendors_v]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[quick_request_vendors_v]
 GO
-
-ALTER TABLE [INVOICE_TRACKING] DROP CONSTRAINT [SERVICE_LINE_STATUSES_INVOICE_TRACKING]
+/****** Object:  View [dbo].[quick_project_v]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[quick_project_v]
 GO
-
-ALTER TABLE [INVOICE_TRACKING] DROP CONSTRAINT [SERVICE_STATUSES_INVOICE_TRACKING]
+/****** Object:  View [dbo].[crystal_INVOICES_NOT_SENT_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_INVOICES_NOT_SENT_V]
 GO
-
-ALTER TABLE [INVOICE_TRACKING] DROP CONSTRAINT [INVOICE_BATCH_STATUSES_INVOICE_TRACKING]
+/****** Object:  View [dbo].[PEP_POSTED_CUSTOM_LINES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PEP_POSTED_CUSTOM_LINES_V]
 GO
-
-ALTER TABLE [INVOICE_TRACKING] DROP CONSTRAINT [TRACKING_INVOICE_TRACKING]
+/****** Object:  View [dbo].[FURNITURE_LINE_TYPES_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[FURNITURE_LINE_TYPES_V]
 GO
-
-ALTER TABLE [INVOICE_TRACKING] DROP CONSTRAINT [INVOICES_INVOICE_TRACKING]
+/****** Object:  View [dbo].[SCH_REQUEST_VENDORS_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SCH_REQUEST_VENDORS_V]
 GO
-
-ALTER TABLE [INVOICE_TRACKING] DROP CONSTRAINT [CONTACTS_INVOICE_TRACKING]
+/****** Object:  View [dbo].[crystal_JOBS_COMPLETED_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_JOBS_COMPLETED_V]
 GO
-
-ALTER TABLE [INVOICE_TRACKING] DROP CONSTRAINT [USERS_INVOICE_TRACKING]
+/****** Object:  View [dbo].[projects_all_requests_v]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[projects_all_requests_v]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [INVOICE_STATUSES_SERVICE_LINES]
+/****** Object:  View [dbo].[FURNITURE_TYPES_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[FURNITURE_TYPES_V]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [SERVICE_LINE_STATUSES_SERVICE_LINES]
+/****** Object:  View [dbo].[REQUEST_INVOICES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[REQUEST_INVOICES_V]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [SERVICE_STATUSES_SERVICE_LINES]
+/****** Object:  View [dbo].[USER_CUSTOMERS_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[USER_CUSTOMERS_V]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [INVOICE_BATCH_STATUSES_SERVICE_LINES]
+/****** Object:  View [dbo].[workorder_progress_v]    Script Date: 05/03/2010 14:18:10 ******/
+DROP VIEW [dbo].[workorder_progress_v]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [ITEMS_REPORTING_TYPE_SERVICE_LINES]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_CREDIT_REPORT]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_CREDIT_REPORT]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [SERVICES_SERVICE_LINES]
+/****** Object:  Table [dbo].[PDA_RESOURCE_SORT]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[PDA_RESOURCE_SORT]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [RESOURCES_SERVICE_LINES]
+/****** Object:  View [dbo].[invoice_date_range]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[invoice_date_range]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [JOBS_SERVICE_LINES]
+/****** Object:  View [dbo].[SCH_EMAIL_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SCH_EMAIL_V]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [ORGANIZATIONS_SERVICE_LINES]
+/****** Object:  View [dbo].[REQUEST_INVOICES_V_ORIG]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[REQUEST_INVOICES_V_ORIG]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [INVOICES_SERVICE_LINES]
+/****** Object:  View [dbo].[crystal_csc_pkf_WORK_ORDER_MASTER_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[crystal_csc_pkf_WORK_ORDER_MASTER_V]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [ITEMS_SERVICE_LINES]
+/****** Object:  View [dbo].[USERS_V]    Script Date: 05/03/2010 14:18:10 ******/
+DROP VIEW [dbo].[USERS_V]
 GO
-
-ALTER TABLE [SCH_RESOURCES] DROP CONSTRAINT [SERVICES_SCH_RESOURCES]
+/****** Object:  View [dbo].[QUOTE_MAIL_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[QUOTE_MAIL_V]
 GO
-
-ALTER TABLE [SCH_RESOURCES] DROP CONSTRAINT [RESOURCES_SCH_RESOURCES]
+/****** Object:  View [dbo].[quick_quote_requests_v2]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[quick_quote_requests_v2]
 GO
-
-ALTER TABLE [SCH_RESOURCES] DROP CONSTRAINT [JOBS_SCH_RESOURCES]
+/****** Object:  View [dbo].[EMPLOYMENT_TYPES_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[EMPLOYMENT_TYPES_V]
 GO
-
-ALTER TABLE [TRACKING] DROP CONSTRAINT [INVOICE_STATUSES_TRACKING]
+/****** Object:  View [dbo].[INVOICE_COST_CODES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[INVOICE_COST_CODES_V]
 GO
-
-ALTER TABLE [TRACKING] DROP CONSTRAINT [SERVICE_LINE_STATUSES_TRACKING]
+/****** Object:  View [dbo].[crystal_JOB_LOCATIONS_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_JOB_LOCATIONS_V]
 GO
-
-ALTER TABLE [TRACKING] DROP CONSTRAINT [SERVICE_STATUSES_TRACKING]
+/****** Object:  View [dbo].[SERVICE_LINE_PAYROLL_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SERVICE_LINE_PAYROLL_V]
 GO
-
-ALTER TABLE [TRACKING] DROP CONSTRAINT [INVOICE_BATCH_STATUSES_TRACKING]
+/****** Object:  View [dbo].[GP_MPLS_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[GP_MPLS_ITEM_PAYCODES_V]
 GO
-
-ALTER TABLE [TRACKING] DROP CONSTRAINT [SERVICES_TRACKING]
+/****** Object:  StoredProcedure [dbo].[sp_aia_direct_end_user]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_aia_direct_end_user]
 GO
-
-ALTER TABLE [TRACKING] DROP CONSTRAINT [JOBS_TRACKING]
+/****** Object:  View [dbo].[INVOICE_TRACKING_TYPES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[INVOICE_TRACKING_TYPES_V]
 GO
-
-ALTER TABLE [TRACKING] DROP CONSTRAINT [CONTACTS_TRACKING]
+/****** Object:  View [dbo].[SYSCOLUMNS_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SYSCOLUMNS_V]
 GO
-
-ALTER TABLE [TRACKING] DROP CONSTRAINT [USERS_TRACKING]
+/****** Object:  View [dbo].[crystal_JOB_COSTING_TAB_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_JOB_COSTING_TAB_V]
 GO
-
-ALTER TABLE [SERVICE_TASKS] DROP CONSTRAINT [SERVICES_SERVICE_TASKS]
+/****** Object:  View [dbo].[INVOICE_COST_CODES_PROBLEMS_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[INVOICE_COST_CODES_PROBLEMS_V]
 GO
-
-ALTER TABLE [RESOURCE_ESTIMATES] DROP CONSTRAINT [SERVICES_RESOURCE_ESTIMATES]
+/****** Object:  View [dbo].[REQUEST_INVOICES_V2]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[REQUEST_INVOICES_V2]
 GO
-
-ALTER TABLE [RESOURCE_ESTIMATES] DROP CONSTRAINT [RESOURCE_TYPES_RESOURCE_ESTIMATES]
+/****** Object:  View [dbo].[GP_CIMN_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[GP_CIMN_ITEM_PAYCODES_V]
 GO
-
-ALTER TABLE [RESOURCE_ESTIMATES] DROP CONSTRAINT [JOBS_RESOURCE_ESTIMATES]
+/****** Object:  View [dbo].[WORKORDER_DETAIL_V]    Script Date: 05/03/2010 14:18:10 ******/
+DROP VIEW [dbo].[WORKORDER_DETAIL_V]
 GO
-
-ALTER TABLE [RESOURCE_ESTIMATES] DROP CONSTRAINT [JOB_ITEM_RATES_RESOURCE_ESTIMATES]
+/****** Object:  View [dbo].[PDA_ITEMS_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PDA_ITEMS_V]
 GO
-
-ALTER TABLE [QUOTE_STANDARD_CONDITIONS] DROP CONSTRAINT [QUOTES_QUOTE_STANDARD_CONDITIONS]
+/****** Object:  View [dbo].[crystal_MADISON_RPT1_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_MADISON_RPT1_V]
 GO
-
-ALTER TABLE [QUOTE_STANDARD_CONDITIONS] DROP CONSTRAINT [STANDARD_CONDITIONS_QUOTE_STANDARD_CONDITIONS]
+/****** Object:  View [dbo].[USER_RESOURCES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[USER_RESOURCES_V]
 GO
-
-ALTER TABLE [FUNCTIONS] DROP CONSTRAINT [TEMPLATES_FUNCTIONS]
+/****** Object:  View [dbo].[QUICK_QUOTE_REQUESTS_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[QUICK_QUOTE_REQUESTS_V]
 GO
-
-ALTER TABLE [FUNCTIONS] DROP CONSTRAINT [FUNCTION_GROUPS_FUNCTIONS]
+/****** Object:  View [dbo].[ITEM_STATUS_TYPES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[ITEM_STATUS_TYPES_V]
 GO
-
-ALTER TABLE [FUNCTIONS] DROP CONSTRAINT [countries_FUNCTIONS]
+/****** Object:  Table [dbo].[SERVICE_STATUSES]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[SERVICE_STATUSES]
 GO
-
-ALTER TABLE [FUNCTIONS] DROP CONSTRAINT [TEMPLATE_LOCATIONS_FUNCTIONS]
+/****** Object:  View [dbo].[JOB_PAYCODE_VIEW_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[JOB_PAYCODE_VIEW_V]
 GO
-
-ALTER TABLE [PUNCHLISTS] DROP CONSTRAINT [REQUESTS_PUNCHLISTS]
+/****** Object:  View [dbo].[crystal_VAR_TIME_EXP_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_VAR_TIME_EXP_V]
 GO
-
-ALTER TABLE [PUNCHLISTS] DROP CONSTRAINT [PROJECTS_PUNCHLISTS]
+/****** Object:  Table [dbo].[CUSTOMERSBUDGET]    Script Date: 05/03/2010 14:18:03 ******/
+DROP TABLE [dbo].[CUSTOMERSBUDGET]
 GO
-
-ALTER TABLE [purchase_orders] DROP CONSTRAINT [INVOICE_STATUSES_purchase_orders]
+/****** Object:  Table [dbo].[job_location_contacts]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[job_location_contacts]
 GO
-
-ALTER TABLE [purchase_orders] DROP CONSTRAINT [SERVICE_LINE_STATUSES_purchase_orders]
+/****** Object:  View [dbo].[JOBS_OVERVIEW_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[JOBS_OVERVIEW_V]
 GO
-
-ALTER TABLE [purchase_orders] DROP CONSTRAINT [SERVICE_STATUSES_purchase_orders]
+/****** Object:  View [dbo].[JOBS_V_jerry]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[JOBS_V_jerry]
 GO
-
-ALTER TABLE [purchase_orders] DROP CONSTRAINT [INVOICE_BATCH_STATUSES_purchase_orders]
+/****** Object:  Table [dbo].[user_customer_end_users]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[user_customer_end_users]
 GO
-
-ALTER TABLE [purchase_orders] DROP CONSTRAINT [REQUESTS_purchase_orders]
+/****** Object:  View [dbo].[JOBS_READY_TO_BILL_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[JOBS_READY_TO_BILL_V]
 GO
-
-ALTER TABLE [purchase_orders] DROP CONSTRAINT [ITEMS_purchase_orders]
+/****** Object:  View [dbo].[crystal_RETURN_TO_JOB_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_RETURN_TO_JOB_V]
 GO
-
-ALTER TABLE [SERVICES] DROP CONSTRAINT [SERVICE_TASKS_SERVICES]
+/****** Object:  Table [dbo].[XREF_ITEMS]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[XREF_ITEMS]
 GO
-
-ALTER TABLE [SERVICES] DROP CONSTRAINT [QUOTES_SERVICES]
+/****** Object:  View [dbo].[REQUESTS_V_jerry]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[REQUESTS_V_jerry]
 GO
-
-ALTER TABLE [SERVICES] DROP CONSTRAINT [REQUESTS_SERVICES]
+/****** Object:  View [dbo].[JOB_ITEM_RATES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[JOB_ITEM_RATES_V]
 GO
-
-ALTER TABLE [SERVICES] DROP CONSTRAINT [JOB_LOCATIONS_SERVICES]
+/****** Object:  Table [dbo].[XREF_JOBS]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[XREF_JOBS]
 GO
-
-ALTER TABLE [SERVICES] DROP CONSTRAINT [JOBS_SERVICES]
+/****** Object:  View [dbo].[SERVICE_LINES_VERIFY_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SERVICE_LINES_VERIFY_V]
 GO
-
-ALTER TABLE [SERVICES] DROP CONSTRAINT [CONTACTS_SERVICES]
+/****** Object:  UserDefinedFunction [dbo].[nextVal]    Script Date: 05/03/2010 14:18:10 ******/
+DROP FUNCTION [dbo].[nextVal]
 GO
-
-ALTER TABLE [SERVICES] DROP CONSTRAINT [job_location_contacts_SERVICES]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_BILLABLE_VS_NONBILLABLE]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_BILLABLE_VS_NONBILLABLE]
 GO
-
-ALTER TABLE [SERVICES] DROP CONSTRAINT [VERSIONS_SERVICES]
+/****** Object:  Table [dbo].[XREF_NOTES]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[XREF_NOTES]
 GO
-
-ALTER TABLE [CHECKLISTS] DROP CONSTRAINT [REQUESTS_CHECKLISTS]
+/****** Object:  View [dbo].[JOB_SEARCH_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[JOB_SEARCH_V]
 GO
-
-ALTER TABLE [QUOTES] DROP CONSTRAINT [REQUESTS_QUOTES]
+/****** Object:  Table [dbo].[XREF_REASONS]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[XREF_REASONS]
 GO
-
-ALTER TABLE [QUOTES] DROP CONSTRAINT [USERS_QUOTES]
+/****** Object:  View [dbo].[INVOICE_JOB_LOCATIONS_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[INVOICE_JOB_LOCATIONS_V]
 GO
-
-ALTER TABLE [REQUEST_VENDORS] DROP CONSTRAINT [NUMBERS_REQUEST_VENDORS]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_AMEX_PENDING]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_AMEX_PENDING]
 GO
-
-ALTER TABLE [REQUEST_VENDORS] DROP CONSTRAINT [REQUESTS_REQUEST_VENDORS]
+/****** Object:  Table [dbo].[XREF_RESOURCES]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[XREF_RESOURCES]
 GO
-
-ALTER TABLE [REQUEST_VENDORS] DROP CONSTRAINT [CONTACTS_REQUEST_VENDORS]
+/****** Object:  View [dbo].[INVOICE_COST_CODES_JOB_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[INVOICE_COST_CODES_JOB_V]
 GO
-
-ALTER TABLE [REQUEST_DOCUMENTS] DROP CONSTRAINT [REQUESTS_REQUEST_DOCUMENTS]
+/****** Object:  View [dbo].[JOB_STATUS_TYPES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[JOB_STATUS_TYPES_V]
 GO
-
-ALTER TABLE [CUSTOM_COLS] DROP CONSTRAINT [SERVICES_CUSTOM_COLS]
+/****** Object:  Table [dbo].[XREF_SCHED_RESOURCES]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[XREF_SCHED_RESOURCES]
 GO
-
-ALTER TABLE [CUSTOM_COLS] DROP CONSTRAINT [REQUESTS_CUSTOM_COLS]
+/****** Object:  Table [dbo].[CONSTRAINT_NAMES]    Script Date: 05/03/2010 14:18:03 ******/
+DROP TABLE [dbo].[CONSTRAINT_NAMES]
 GO
-
-ALTER TABLE [CUSTOM_COLS] DROP CONSTRAINT [CUSTOM_CUST_COLUMNS_CUSTOM_COLS]
+/****** Object:  View [dbo].[INVOICE_COST_CODES_LINE_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[INVOICE_COST_CODES_LINE_V]
 GO
-
-ALTER TABLE [PAYROLL_BATCH_LINES] DROP CONSTRAINT [EXPENSES_BATCHES_PAYROLL_BATCH_LINES]
+/****** Object:  View [dbo].[JOB_TYPES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[JOB_TYPES_V]
 GO
-
-ALTER TABLE [PAYROLL_BATCH_LINES] DROP CONSTRAINT [PAYROLL_BATCHES_PAYROLL_BATCH_LINES]
+/****** Object:  Table [dbo].[XREF_SERVICES]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[XREF_SERVICES]
 GO
-
-ALTER TABLE [PAYROLL_BATCH_LINES] DROP CONSTRAINT [ITEMS_PAYROLL_BATCH_LINES]
+/****** Object:  View [dbo].[BILLING_CUSTOM_COLS_TARGET_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[BILLING_CUSTOM_COLS_TARGET_V]
 GO
-
-ALTER TABLE [CHECKLIST_DATA] DROP CONSTRAINT [CHECKLISTS_CHECKLIST_DATA]
+/****** Object:  Table [dbo].[states]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[states]
 GO
-
-ALTER TABLE [QUOTE_OTHER_FURNITURE_AD_HOC] DROP CONSTRAINT [NUMBERS_QUOTE_OTHER_FURNITURE_AD_HOC]
+/****** Object:  View [dbo].[LOADING_DOCK_TYPES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[LOADING_DOCK_TYPES_V]
 GO
-
-ALTER TABLE [QUOTE_OTHER_FURNITURE_AD_HOC] DROP CONSTRAINT [QUOTES_QUOTE_OTHER_FURNITURE_AD_HOC]
+/****** Object:  Table [dbo].[XREF_TIME]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[XREF_TIME]
 GO
-
-ALTER TABLE [QUOTE_SPECIFY_OTHER_SERVICES] DROP CONSTRAINT [NUMBERS_QUOTE_SPECIFY_OTHER_SERVICES]
+/****** Object:  View [dbo].[crystal_JOBS_INVOICED_BUT_DOLLARS_REMAIN_IN_JOB_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_JOBS_INVOICED_BUT_DOLLARS_REMAIN_IN_JOB_V]
 GO
-
-ALTER TABLE [QUOTE_SPECIFY_OTHER_SERVICES] DROP CONSTRAINT [QUOTES_QUOTE_SPECIFY_OTHER_SERVICES]
+/****** Object:  View [dbo].[CONDITIONS_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[CONDITIONS_V]
 GO
-
-ALTER TABLE [QUOTE_OTHER_FURNITURE] DROP CONSTRAINT [NUMBERS_QUOTE_OTHER_FURNITURE]
+/****** Object:  Table [dbo].[USER_JOB_TYPES]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[USER_JOB_TYPES]
 GO
-
-ALTER TABLE [QUOTE_OTHER_FURNITURE] DROP CONSTRAINT [QUOTES_QUOTE_OTHER_FURNITURE]
+/****** Object:  View [dbo].[crystal_dashboard_QUOTES_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_dashboard_QUOTES_V]
 GO
-
-ALTER TABLE [QUOTE_WORKSTATION_CONFIGURATIONS] DROP CONSTRAINT [NUMBERS_QUOTE_WORKSTATION_CONFIGURATIONS]
+/****** Object:  View [dbo].[USER_CONTACTS_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[USER_CONTACTS_V]
 GO
-
-ALTER TABLE [QUOTE_WORKSTATION_CONFIGURATIONS] DROP CONSTRAINT [QUOTES_QUOTE_WORKSTATION_CONFIGURATIONS]
+/****** Object:  View [dbo].[LOCATION_TYPES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[LOCATION_TYPES_V]
 GO
-
-ALTER TABLE [ROLES] DROP CONSTRAINT [countries_ROLES]
+/****** Object:  View [dbo].[crystal_dashboard_REQUESTS_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_dashboard_REQUESTS_V]
 GO
-
-ALTER TABLE [LOOKUP_TYPES] DROP CONSTRAINT [countries_LOOKUP_TYPES]
+/****** Object:  View [dbo].[crystal_JOBS_CLOSED_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_JOBS_CLOSED_V]
 GO
-
-ALTER TABLE [PUNCHLIST_ISSUES] DROP CONSTRAINT [INVOICE_STATUSES_PUNCHLIST_ISSUES]
+/****** Object:  View [dbo].[LOOKUPS_QUICK_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[LOOKUPS_QUICK_V]
 GO
-
-ALTER TABLE [PUNCHLIST_ISSUES] DROP CONSTRAINT [SERVICE_LINE_STATUSES_PUNCHLIST_ISSUES]
+/****** Object:  View [dbo].[CUSTOMER_CONTACTS_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[CUSTOMER_CONTACTS_V]
 GO
-
-ALTER TABLE [PUNCHLIST_ISSUES] DROP CONSTRAINT [SERVICE_STATUSES_PUNCHLIST_ISSUES]
+/****** Object:  StoredProcedure [dbo].[ottSOPIntegrationPrep]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[ottSOPIntegrationPrep]
 GO
-
-ALTER TABLE [PUNCHLIST_ISSUES] DROP CONSTRAINT [INVOICE_BATCH_STATUSES_PUNCHLIST_ISSUES]
+/****** Object:  View [dbo].[invoices_arch]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[invoices_arch]
 GO
-
-ALTER TABLE [PUNCHLIST_ISSUES] DROP CONSTRAINT [PUNCHLISTS_PUNCHLIST_ISSUES]
+/****** Object:  View [dbo].[extranet_email_quote_v]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[extranet_email_quote_v]
 GO
-
-ALTER TABLE [USER_VENDORS] DROP CONSTRAINT [CUSTOMERS_USER_VENDORS]
+/****** Object:  View [dbo].[tcn_resource_items_v]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[tcn_resource_items_v]
 GO
-
-ALTER TABLE [USER_VENDORS] DROP CONSTRAINT [USERS_USER_VENDORS]
+/****** Object:  View [dbo].[PDA_TIME_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PDA_TIME_V]
 GO
-
-ALTER TABLE [REQUESTS] DROP CONSTRAINT [CONDITIONS_REQUESTS]
+/****** Object:  View [dbo].[extranet_email_none_quote_v]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[extranet_email_none_quote_v]
 GO
-
-ALTER TABLE [REQUESTS] DROP CONSTRAINT [NUMBERS_REQUESTS]
+/****** Object:  View [dbo].[crystal_REQUESTS_COUNT_USAGE_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_REQUESTS_COUNT_USAGE_V]
 GO
-
-ALTER TABLE [REQUESTS] DROP CONSTRAINT [JOB_LOCATIONS_REQUESTS]
+/****** Object:  View [dbo].[crystal_CHECKLIST_RPT_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[crystal_CHECKLIST_RPT_V]
 GO
-
-ALTER TABLE [REQUESTS] DROP CONSTRAINT [PROJECTS_REQUESTS]
+/****** Object:  View [dbo].[crystal_WPS_Timesheet_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_WPS_Timesheet_V]
 GO
-
-ALTER TABLE [REQUESTS] DROP CONSTRAINT [CONTACTS_REQUESTS]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_AGING]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_AGING]
 GO
-
-ALTER TABLE [REQUESTS] DROP CONSTRAINT [job_location_contacts_REQUESTS]
+/****** Object:  View [dbo].[GP_ECMS_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[GP_ECMS_ITEM_PAYCODES_V]
 GO
-
-ALTER TABLE [REQUESTS] DROP CONSTRAINT [VERSIONS_REQUESTS]
+/****** Object:  View [dbo].[crystal_UNBILLED_OPS_AIA_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_UNBILLED_OPS_AIA_V]
 GO
-
-ALTER TABLE [USER_CUSTOMERS] DROP CONSTRAINT [CUSTOMERS_USER_CUSTOMERS]
+/****** Object:  View [dbo].[FUNCTION_RIGHT_TYPES_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[FUNCTION_RIGHT_TYPES_V]
 GO
-
-ALTER TABLE [USER_CUSTOMERS] DROP CONSTRAINT [USERS_USER_CUSTOMERS]
+/****** Object:  View [dbo].[crystal_SCHEDULE_VS_ACTUAL_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_SCHEDULE_VS_ACTUAL_V]
 GO
-
-ALTER TABLE [RESOURCES] DROP CONSTRAINT [RESOURCE_ESTIMATES_RESOURCES]
+/****** Object:  View [dbo].[crystal_UNBILLED_OPS_V2]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_UNBILLED_OPS_V2]
 GO
-
-ALTER TABLE [RESOURCES] DROP CONSTRAINT [RESOURCE_TYPES_RESOURCES]
+/****** Object:  View [dbo].[PROJECT_NOTES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PROJECT_NOTES_V]
 GO
-
-ALTER TABLE [RESOURCES] DROP CONSTRAINT [USER_ORGANIZATIONS_RESOURCES]
+/****** Object:  View [dbo].[invoice_lines_v]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[invoice_lines_v]
 GO
-
-ALTER TABLE [RESOURCES] DROP CONSTRAINT [ORGANIZATIONS_RESOURCES]
+/****** Object:  View [dbo].[BILLING_CUSTOM_COLS_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[BILLING_CUSTOM_COLS_V]
 GO
-
-ALTER TABLE [RESOURCES] DROP CONSTRAINT [USERS_RESOURCES]
+/****** Object:  View [dbo].[INVOICE_LINES_arch_2004]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[INVOICE_LINES_arch_2004]
 GO
-
-ALTER TABLE [PAYROLL_BATCHES] DROP CONSTRAINT [EXPENSES_BATCHES_PAYROLL_BATCHES]
+/****** Object:  Table [dbo].[POOLED_HOURS_CALC]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[POOLED_HOURS_CALC]
 GO
-
-ALTER TABLE [PAYROLL_BATCHES] DROP CONSTRAINT [ORGANIZATIONS_PAYROLL_BATCHES]
+/****** Object:  View [dbo].[EXPENSES_BATCHES_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[EXPENSES_BATCHES_V]
 GO
-
-ALTER TABLE [RESOURCE_TYPES] DROP CONSTRAINT [countries_RESOURCE_TYPES]
+/****** Object:  View [dbo].[crystal_csc_routing_ticket_v]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[crystal_csc_routing_ticket_v]
 GO
-
-ALTER TABLE [RESOURCE_TYPE_ITEMS] DROP CONSTRAINT [RESOURCE_ESTIMATES_RESOURCE_TYPE_ITEMS]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_JobCostReportWORK]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_JobCostReportWORK]
 GO
-
-ALTER TABLE [RESOURCE_TYPE_ITEMS] DROP CONSTRAINT [RESOURCE_TYPES_RESOURCE_TYPE_ITEMS]
+/****** Object:  View [dbo].[EXPENSES_EXPORT_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[EXPENSES_EXPORT_V]
 GO
-
-ALTER TABLE [RESOURCE_TYPE_ITEMS] DROP CONSTRAINT [ITEMS_RESOURCE_TYPE_ITEMS]
+/****** Object:  View [dbo].[WALL_MOUNT_TYPES_V]    Script Date: 05/03/2010 14:18:10 ******/
+DROP VIEW [dbo].[WALL_MOUNT_TYPES_V]
 GO
-
-ALTER TABLE [RIGHT_TYPES] DROP CONSTRAINT [countries_RIGHT_TYPES]
+/****** Object:  View [dbo].[FAILED_INTEGRATIONS]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[FAILED_INTEGRATIONS]
 GO
-
-ALTER TABLE [QUOTE_CONDITIONS] DROP CONSTRAINT [CONDITIONS_QUOTE_CONDITIONS]
+/****** Object:  View [dbo].[PROJECT_STATUS_TYPES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PROJECT_STATUS_TYPES_V]
 GO
-
-ALTER TABLE [QUOTE_CONDITIONS] DROP CONSTRAINT [QUOTES_QUOTE_CONDITIONS]
+/****** Object:  View [dbo].[PKT_CONTACTS_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PKT_CONTACTS_V]
 GO
-
-ALTER TABLE [JOB_LOCATIONS] DROP CONSTRAINT [CUSTOMERS_JOB_LOCATIONS]
+/****** Object:  View [dbo].[SYS_FOREIGN_KEYS_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SYS_FOREIGN_KEYS_V]
 GO
-
-ALTER TABLE [JOB_LOCATIONS] DROP CONSTRAINT [CONTACTS_JOB_LOCATIONS]
+/****** Object:  View [dbo].[INVOICE_TRACKING_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[INVOICE_TRACKING_V]
 GO
-
-ALTER TABLE [USER_JOB_TYPES] DROP CONSTRAINT [LOOKUPS_USER_JOB_TYPES]
+/****** Object:  View [dbo].[ACTIVITY_CATEGORY_TYPES_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[ACTIVITY_CATEGORY_TYPES_V]
 GO
-
-ALTER TABLE [USER_JOB_TYPES] DROP CONSTRAINT [USERS_USER_JOB_TYPES]
+/****** Object:  View [dbo].[crystal_TIME_CAPTURE_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_TIME_CAPTURE_V]
 GO
-
-ALTER TABLE [RESOURCE_ITEMS] DROP CONSTRAINT [RESOURCES_RESOURCE_ITEMS]
+/****** Object:  View [dbo].[SYS_COLUMNS_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SYS_COLUMNS_V]
 GO
-
-ALTER TABLE [RESOURCE_ITEMS] DROP CONSTRAINT [ITEMS_RESOURCE_ITEMS]
+/****** Object:  View [dbo].[INVOICE_FORMAT_TYPES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[INVOICE_FORMAT_TYPES_V]
 GO
-
-ALTER TABLE [USER_ORGANIZATIONS] DROP CONSTRAINT [USERS_USER_ORGANIZATIONS]
+/****** Object:  View [dbo].[ROOT_CAUSES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[ROOT_CAUSES_V]
 GO
-
-ALTER TABLE [USER_ORGANIZATIONS] DROP CONSTRAINT [ORGANIZATIONS_USER_ORGANIZATIONS]
+/****** Object:  View [dbo].[JOB_PROGRESS_2_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[JOB_PROGRESS_2_V]
 GO
-
-ALTER TABLE [PROJECT_NOTES] DROP CONSTRAINT [PROJECTS_PROJECT_NOTES]
+/****** Object:  View [dbo].[YES_NO_NONE_TYPES_V]    Script Date: 05/03/2010 14:18:10 ******/
+DROP VIEW [dbo].[YES_NO_NONE_TYPES_V]
 GO
-
-ALTER TABLE [JOBS] DROP CONSTRAINT [RESOURCES_JOBS]
+/****** Object:  View [dbo].[PKT_JOB_RESOURCES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PKT_JOB_RESOURCES_V]
 GO
-
-ALTER TABLE [JOBS] DROP CONSTRAINT [PROJECTS_JOBS]
+/****** Object:  View [dbo].[SERV_REQ_STATUS_TYPES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SERV_REQ_STATUS_TYPES_V]
 GO
-
-ALTER TABLE [JOBS] DROP CONSTRAINT [CUSTOMERS_JOBS]
+/****** Object:  View [dbo].[PKT_QUOTES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PKT_QUOTES_V]
 GO
-
-ALTER TABLE [JOBS] DROP CONSTRAINT [CONTACTS_JOBS]
+/****** Object:  Table [dbo].[REQUEST_DOCUMENTS]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[REQUEST_DOCUMENTS]
 GO
-
-ALTER TABLE [JOBS] DROP CONSTRAINT [USERS_JOBS]
+/****** Object:  View [dbo].[QUOTE_REQ_STATUS_TYPES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[QUOTE_REQ_STATUS_TYPES_V]
 GO
-
-ALTER TABLE [ORGANIZATIONS] DROP CONSTRAINT [countries_ORGANIZATIONS]
+/****** Object:  View [dbo].[PKT_REASONS_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PKT_REASONS_V]
 GO
-
-ALTER TABLE [ORGANIZATIONS] DROP CONSTRAINT [CONTACTS_ORGANIZATIONS]
+/****** Object:  Table [dbo].[ottInvHeaderTEMP_Madison]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[ottInvHeaderTEMP_Madison]
 GO
-
-ALTER TABLE [PROJECTS] DROP CONSTRAINT [CUSTOMERS_PROJECTS]
+/****** Object:  View [dbo].[APPROVAL_REQ_TYPES_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[APPROVAL_REQ_TYPES_V]
 GO
-
-ALTER TABLE [PROJECTS] DROP CONSTRAINT [USERS_PROJECTS]
+/****** Object:  View [dbo].[PKT_SERVICES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PKT_SERVICES_V]
 GO
-
-ALTER TABLE [USER_APPROVERS] DROP CONSTRAINT [CUSTOMERS_USER_APPROVERS]
+/****** Object:  View [dbo].[PUNCHLIST_REQUESTS_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PUNCHLIST_REQUESTS_V]
 GO
-
-ALTER TABLE [USER_APPROVERS] DROP CONSTRAINT [USERS_USER_APPROVERS]
+/****** Object:  Table [dbo].[ottInvLineTEMP_Madison]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[ottInvLineTEMP_Madison]
 GO
-
-ALTER TABLE [INVOICES] DROP CONSTRAINT [INVOICE_STATUSES_INVOICES]
+/****** Object:  View [dbo].[MULTI_LEVEL_TYPES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[MULTI_LEVEL_TYPES_V]
 GO
-
-ALTER TABLE [INVOICES] DROP CONSTRAINT [SERVICE_LINE_STATUSES_INVOICES]
+/****** Object:  View [dbo].[ELEVATOR_AVAILABLE_TYPES_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[ELEVATOR_AVAILABLE_TYPES_V]
 GO
-
-ALTER TABLE [INVOICES] DROP CONSTRAINT [SERVICE_STATUSES_INVOICES]
+/****** Object:  View [dbo].[RETURN_TO_JOB_MAD_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[RETURN_TO_JOB_MAD_V]
 GO
-
-ALTER TABLE [INVOICES] DROP CONSTRAINT [INVOICE_BATCH_STATUSES_INVOICES]
+/****** Object:  View [dbo].[PKT_SERVICE_LINES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PKT_SERVICE_LINES_V]
 GO
-
-ALTER TABLE [INVOICES] DROP CONSTRAINT [USER_ORGANIZATIONS_INVOICES]
+/****** Object:  View [dbo].[SERVICE_ACCOUNT_REPORT_NUMBERS]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SERVICE_ACCOUNT_REPORT_NUMBERS]
 GO
-
-ALTER TABLE [INVOICES] DROP CONSTRAINT [JOBS_INVOICES]
+/****** Object:  View [dbo].[NOTIFICATION_TYPES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[NOTIFICATION_TYPES_V]
 GO
-
-ALTER TABLE [INVOICES] DROP CONSTRAINT [ORGANIZATIONS_INVOICES]
+/****** Object:  View [dbo].[REQUEST_TYPES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[REQUEST_TYPES_V]
 GO
-
-ALTER TABLE [INVOICES] DROP CONSTRAINT [CUSTOMERS_INVOICES]
+/****** Object:  View [dbo].[crystal_VAR_REPORT_SUMMARY_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_VAR_REPORT_SUMMARY_V]
 GO
-
-ALTER TABLE [INVOICES] DROP CONSTRAINT [USERS_INVOICES]
+/****** Object:  Table [dbo].[USERS_CRYSTAL]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[USERS_CRYSTAL]
 GO
-
-ALTER TABLE [user_customer_end_users] DROP CONSTRAINT [USER_CUSTOMERS_user_customer_end_users]
+/****** Object:  UserDefinedFunction [dbo].[getShortName]    Script Date: 05/03/2010 14:18:10 ******/
+DROP FUNCTION [dbo].[getShortName]
 GO
-
-ALTER TABLE [user_customer_end_users] DROP CONSTRAINT [CUSTOMERS_user_customer_end_users]
+/****** Object:  View [dbo].[OVERRIDE_REASON_TYPES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[OVERRIDE_REASON_TYPES_V]
 GO
-
-ALTER TABLE [FUNCTION_RIGHT_TYPES] DROP CONSTRAINT [FUNCTIONS_FUNCTION_RIGHT_TYPES]
+/****** Object:  View [dbo].[PRODUCT_DISPOSITION_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PRODUCT_DISPOSITION_V]
 GO
-
-ALTER TABLE [FUNCTION_RIGHT_TYPES] DROP CONSTRAINT [RIGHT_TYPES_FUNCTION_RIGHT_TYPES]
+/****** Object:  UserDefinedFunction [dbo].[getSortName]    Script Date: 05/03/2010 14:18:10 ******/
+DROP FUNCTION [dbo].[getSortName]
 GO
-
-ALTER TABLE [CUSTOMERS] DROP CONSTRAINT [ORGANIZATIONS_CUSTOMERS]
+/****** Object:  UserDefinedFunction [dbo].[truncateDate]    Script Date: 05/03/2010 14:18:10 ******/
+DROP FUNCTION [dbo].[truncateDate]
 GO
-
-ALTER TABLE [CUSTOMERS] DROP CONSTRAINT [CONTACTS_CUSTOMERS]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_DAILYDATACAPTURE]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_DAILYDATACAPTURE]
 GO
-
-ALTER TABLE [ITEMS] DROP CONSTRAINT [countries_ITEMS]
+/****** Object:  View [dbo].[ACCOUNT_TYPES_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[ACCOUNT_TYPES_V]
 GO
-
-ALTER TABLE [ITEMS] DROP CONSTRAINT [ORGANIZATIONS_ITEMS]
+/****** Object:  View [dbo].[USER_ORGANIZATIONS_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[USER_ORGANIZATIONS_V]
 GO
-
-ALTER TABLE [CONTACTS] DROP CONSTRAINT [ORGANIZATIONS_CONTACTS]
+/****** Object:  View [dbo].[PKT_ROSTER_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PKT_ROSTER_V]
 GO
-
-ALTER TABLE [CONTACTS] DROP CONSTRAINT [CUSTOMERS_CONTACTS]
+/****** Object:  View [dbo].[crystal_REQUEST_SENT_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_REQUEST_SENT_V]
 GO
-
-ALTER TABLE [JOB_ITEM_RATES] DROP CONSTRAINT [JOBS_JOB_ITEM_RATES]
+/****** Object:  View [dbo].[projects_v2]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[projects_v2]
 GO
-
-ALTER TABLE [JOB_ITEM_RATES] DROP CONSTRAINT [ITEMS_JOB_ITEM_RATES]
+/****** Object:  View [dbo].[service_line_edit_v]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[service_line_edit_v]
 GO
-
-ALTER TABLE [CONTACT_GROUPS] DROP CONSTRAINT [CONTACTS_CONTACT_GROUPS]
+/****** Object:  View [dbo].[PROJECT_REQUESTS_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PROJECT_REQUESTS_V]
 GO
-
-ALTER TABLE [USERS] DROP CONSTRAINT [USERS_CRYSTAL_USERS]
+/****** Object:  View [dbo].[job_progress_v]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[job_progress_v]
 GO
-
-ALTER TABLE [USERS] DROP CONSTRAINT [CONTACTS_USERS]
+/****** Object:  StoredProcedure [dbo].[sp_estimator]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_estimator]
 GO
-
-ALTER TABLE [job_location_contacts] DROP CONSTRAINT [JOB_LOCATIONS_job_location_contacts]
+/****** Object:  View [dbo].[requests_query_for_Tim_VVV]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[requests_query_for_Tim_VVV]
 GO
-
-ALTER TABLE [job_location_contacts] DROP CONSTRAINT [CONTACTS_job_location_contacts]
+/****** Object:  View [dbo].[invoice_post_total_v]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[invoice_post_total_v]
 GO
-
-ALTER TABLE [DOCUMENTS] DROP CONSTRAINT [countries_DOCUMENTS]
+/****** Object:  View [dbo].[GP_NTLSV_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[GP_NTLSV_ITEM_PAYCODES_V]
 GO
-
-ALTER TABLE [DOCUMENTS] DROP CONSTRAINT [FORMATS_DOCUMENTS]
+/****** Object:  Table [dbo].[SERVICE_TASKS]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[SERVICE_TASKS]
 GO
-
-ALTER TABLE [DOCUMENTS] DROP CONSTRAINT [PROJECTS_DOCUMENTS]
+/****** Object:  View [dbo].[PENDING_TRACKING_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PENDING_TRACKING_V]
 GO
-
-ALTER TABLE [VERSIONS] DROP CONSTRAINT [countries_VERSIONS]
+/****** Object:  View [dbo].[ACTIVE_USERS_COUNT_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[ACTIVE_USERS_COUNT_V]
 GO
-
-ALTER TABLE [VERSIONS] DROP CONSTRAINT [DOCUMENTS_VERSIONS]
+/****** Object:  View [dbo].[PHASE_TYPES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PHASE_TYPES_V]
 GO
-
-ALTER TABLE [CUSTOM_CUST_COLUMNS] DROP CONSTRAINT [CUSTOMERS_CUSTOM_CUST_COLUMNS]
+/****** Object:  View [dbo].[SERVICE_ACCOUNT_REPORT_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SERVICE_ACCOUNT_REPORT_V]
 GO
-
-ALTER TABLE [JOB_DISTRIBUTIONS] DROP CONSTRAINT [SCH_RESOURCES_JOB_DISTRIBUTIONS]
+/****** Object:  StoredProcedure [dbo].[track_waitstats]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[track_waitstats]
 GO
-
-ALTER TABLE [JOB_DISTRIBUTIONS] DROP CONSTRAINT [RESOURCES_JOB_DISTRIBUTIONS]
+/****** Object:  View [dbo].[SERVICE_TYPES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SERVICE_TYPES_V]
 GO
-
-ALTER TABLE [JOB_DISTRIBUTIONS] DROP CONSTRAINT [JOBS_JOB_DISTRIBUTIONS]
+/****** Object:  View [dbo].[crystal_QUOTES_OTHER_FURN_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_QUOTES_OTHER_FURN_V]
 GO
-
-ALTER TABLE [JOB_DISTRIBUTIONS] DROP CONSTRAINT [USERS_JOB_DISTRIBUTIONS]
+/****** Object:  Table [dbo].[ottInvHeaderTEMP]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[ottInvHeaderTEMP]
 GO
-
-ALTER TABLE [CUSTOM_COL_LISTS] DROP CONSTRAINT [CUSTOM_CUST_COLUMNS_CUSTOM_COL_LISTS]
+/****** Object:  View [dbo].[GP_PHX_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[GP_PHX_ITEM_PAYCODES_V]
 GO
-
-ALTER TABLE [ITEM_COSTING_HISTORY] DROP CONSTRAINT [ITEMS_ITEM_COSTING_HISTORY]
+/****** Object:  StoredProcedure [dbo].[sp_reorder_service_no]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_reorder_service_no]
 GO
-
-ALTER TABLE [HOTSHEETS] DROP CONSTRAINT [REQUESTS_HOTSHEETS]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM]
 GO
-
-ALTER TABLE [HOTSHEET_DETAILS] DROP CONSTRAINT [HOTSHEETS_HOTSHEET_DETAILS]
+/****** Object:  View [dbo].[QUOTE_CONDITIONS_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[QUOTE_CONDITIONS_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "z_resource_items"                                          */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-/* Drop table */
-
-DROP TABLE [z_resource_items]
+/****** Object:  View [dbo].[GP_IT_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[GP_IT_ITEM_PAYCODES_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "PDA_RESOURCE_SORT"                                         */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-/* Drop table */
-
-DROP TABLE [PDA_RESOURCE_SORT]
+/****** Object:  View [dbo].[crystal_POSTED_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_POSTED_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "z_resource_type_items"                                     */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-/* Drop table */
-
-DROP TABLE [z_resource_type_items]
+/****** Object:  Table [dbo].[AUTHENTICATION_KEYS]    Script Date: 05/03/2010 14:18:03 ******/
+DROP TABLE [dbo].[AUTHENTICATION_KEYS]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "TABS"                                                      */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [TABS] DROP CONSTRAINT [PK_TABS_DEV_2]
+/****** Object:  View [dbo].[YES_NO_TYPES_V]    Script Date: 05/03/2010 14:18:10 ******/
+DROP VIEW [dbo].[YES_NO_TYPES_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [TABS]
+/****** Object:  View [dbo].[CRYSTAL_CUSTOMER_INVOICE_INTERCOMPANY]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[CRYSTAL_CUSTOMER_INVOICE_INTERCOMPANY]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "TEMPLATES"                                                 */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [TEMPLATES] DROP CONSTRAINT [PK_TEMPLATES]
+/****** Object:  View [dbo].[RESOURCE_STATUS_TYPES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[RESOURCE_STATUS_TYPES_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [TEMPLATES]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_OVERHEAD_HOURS]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_OVERHEAD_HOURS]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "UNBILLED_REPORT_DAILYDATACAPTURE"                          */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [UNBILLED_REPORT_DAILYDATACAPTURE] DROP CONSTRAINT [PK_UNBILLED_REPORT_DAILYDATACAPTURE]
+/****** Object:  View [dbo].[crystal_USERS_AND_RESOURCE_TYPES]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_USERS_AND_RESOURCE_TYPES]
 GO
-
-/* Drop table */
-
-DROP TABLE [UNBILLED_REPORT_DAILYDATACAPTURE]
+/****** Object:  View [dbo].[projects_v]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[projects_v]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "EMAILS"                                                    */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [EMAILS] DROP CONSTRAINT [DEF_EMAILS_EMAIL_SENT_FLAG]
+/****** Object:  View [dbo].[CRYSTAL_CUSTOMER_INVOICE_INTERCOMPANY_DISTRIBUTIONS]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[CRYSTAL_CUSTOMER_INVOICE_INTERCOMPANY_DISTRIBUTIONS]
 GO
-
-ALTER TABLE [EMAILS] DROP CONSTRAINT [DEF_EMAILS_DATE_CREATED]
+/****** Object:  View [dbo].[crystal_JOB_TIME_BY_JOB_WITH_GP_ACCTNUM_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_JOB_TIME_BY_JOB_WITH_GP_ACCTNUM_V]
 GO
-
-ALTER TABLE [EMAILS] DROP CONSTRAINT [PK_EMAILS]
+/****** Object:  View [dbo].[crystal_QUOTES_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_QUOTES_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [EMAILS]
+/****** Object:  View [dbo].[versions_copy_v]    Script Date: 05/03/2010 14:18:10 ******/
+DROP VIEW [dbo].[versions_copy_v]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "XREF_PDS"                                                  */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [XREF_PDS] DROP CONSTRAINT [PK_XREF_PDS]
+/****** Object:  View [dbo].[tcn_resources_v]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[tcn_resources_v]
 GO
-
-/* Drop table */
-
-DROP TABLE [XREF_PDS]
+/****** Object:  Table [dbo].[ITEM_COSTING_HISTORY]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[ITEM_COSTING_HISTORY]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "FUNCTION_GROUPS"                                           */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [FUNCTION_GROUPS] DROP CONSTRAINT [PK_FUNCTION_GROUPS]
+/****** Object:  View [dbo].[Contacts_qry_lookupbyorg]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[Contacts_qry_lookupbyorg]
 GO
-
-ALTER TABLE [FUNCTION_GROUPS] DROP CONSTRAINT [UK_FG_CODE]
+/****** Object:  View [dbo].[Pep_USER_ROLES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[Pep_USER_ROLES_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [FUNCTION_GROUPS]
+/****** Object:  StoredProcedure [dbo].[sp_reorder_req_no2]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_reorder_req_no2]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "INVOICE_STATUSES"                                          */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [INVOICE_STATUSES] DROP CONSTRAINT [PK_INVOICE_STATUSES]
+/****** Object:  View [dbo].[JOBS_NO_OWNER_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[JOBS_NO_OWNER_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [INVOICE_STATUSES]
+/****** Object:  View [dbo].[TC_SERVICES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[TC_SERVICES_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "SEQUENCES"                                                 */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-/* Drop table */
-
-DROP TABLE [SEQUENCES]
+/****** Object:  View [dbo].[UNBILLED_DATA_DAILY_CAPTURE_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[UNBILLED_DATA_DAILY_CAPTURE_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "SERVICE_LINE_STATUSES"                                     */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [SERVICE_LINE_STATUSES] DROP CONSTRAINT [PK_SERVICE_LINE_STATUSES]
+/****** Object:  View [dbo].[JOB_COSTING_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[JOB_COSTING_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [SERVICE_LINE_STATUSES]
+/****** Object:  View [dbo].[PAYROLL_VERIFICATION_V_PATTY]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PAYROLL_VERIFICATION_V_PATTY]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "SERVICE_STATUSES"                                          */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [SERVICE_STATUSES] DROP CONSTRAINT [PK_SERVICE_STATUSES]
+/****** Object:  View [dbo].[crystal_QUOTES_OTHER_SERVICE_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_QUOTES_OTHER_SERVICE_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [SERVICE_STATUSES]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_BILLABLE_VS_NONBILLABLE2006]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_BILLABLE_VS_NONBILLABLE2006]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "CUSTOMERSBUDGET"                                           */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [CUSTOMERSBUDGET] DROP CONSTRAINT [PK_CUSTOMERSBUDGET]
+/****** Object:  View [dbo].[request_mail_v2]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[request_mail_v2]
 GO
-
-/* Drop table */
-
-DROP TABLE [CUSTOMERSBUDGET]
+/****** Object:  StoredProcedure [dbo].[sp_reorder_req_no]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_reorder_req_no]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "XREF_ITEMS"                                                */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [XREF_ITEMS] DROP CONSTRAINT [PK_XREF_ITEMS]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AIA]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AIA]
 GO
-
-/* Drop table */
-
-DROP TABLE [XREF_ITEMS]
+/****** Object:  Table [dbo].[ottInvLineTEMP]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[ottInvLineTEMP]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "XREF_JOBS"                                                 */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [XREF_JOBS] DROP CONSTRAINT [PK_XREF_JOBS]
+/****** Object:  View [dbo].[sch_job_req_info_v]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[sch_job_req_info_v]
 GO
-
-/* Drop table */
-
-DROP TABLE [XREF_JOBS]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM_DATERANGE]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "XREF_NOTES"                                                */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-/* Drop table */
-
-DROP TABLE [XREF_NOTES]
+/****** Object:  Table [dbo].[ottInvTaxesTEMP]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[ottInvTaxesTEMP]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "CONDITIONS"                                                */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [CONDITIONS] DROP CONSTRAINT [PK_CONDITIONS]
+/****** Object:  View [dbo].[QUOTE_STATUS_TYPES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[QUOTE_STATUS_TYPES_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [CONDITIONS]
+/****** Object:  View [dbo].[crystal_Job_time_by_job_v]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_Job_time_by_job_v]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "XREF_REASONS"                                              */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [XREF_REASONS] DROP CONSTRAINT [PK_XREF_REASONS]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMMAD]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMMAD]
 GO
-
-/* Drop table */
-
-DROP TABLE [XREF_REASONS]
+/****** Object:  View [dbo].[invoices_extranet_v]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[invoices_extranet_v]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "quotes_mapping"                                            */
-/* ---------------------------------------------------------------------- */
-
-/* Drop table */
-
-DROP TABLE [quotes_mapping]
+/****** Object:  View [dbo].[project_requests_v2]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[project_requests_v2]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "XREF_RESOURCES"                                            */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [XREF_RESOURCES] DROP CONSTRAINT [PK_XREF_RESOURCES]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CILLC]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CILLC]
 GO
-
-/* Drop table */
-
-DROP TABLE [XREF_RESOURCES]
+/****** Object:  View [dbo].[extranet_email_v]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[extranet_email_v]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "XREF_SERVICES"                                             */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [XREF_SERVICES] DROP CONSTRAINT [PK_XREF_SERVICES]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMMAD_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMMAD_DATERANGE]
 GO
-
-/* Drop table */
-
-DROP TABLE [XREF_SERVICES]
+/****** Object:  View [dbo].[REASON_TYPES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[REASON_TYPES_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "XREF_SCHED_RESOURCES"                                      */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-/* Drop table */
-
-DROP TABLE [XREF_SCHED_RESOURCES]
+/****** Object:  Table [dbo].[ottInvTaxesTEMP_ALL]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[ottInvTaxesTEMP_ALL]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "CONSTRAINT_NAMES"                                          */
-/* ---------------------------------------------------------------------- */
-
-/* Drop table */
-
-DROP TABLE [CONSTRAINT_NAMES]
+/****** Object:  View [dbo].[crystal_Job_Cost_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_Job_Cost_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "countries"                                                 */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [countries] DROP CONSTRAINT [countries_pk]
+/****** Object:  View [dbo].[quick_requests_v2]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[quick_requests_v2]
 GO
-
-/* Drop table */
-
-DROP TABLE [countries]
+/****** Object:  View [dbo].[REPORT_TO_TYPES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[REPORT_TO_TYPES_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "XREF_TIME"                                                 */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [XREF_TIME] DROP CONSTRAINT [PK_XREF_TIME]
+/****** Object:  View [dbo].[PAYROLL_VERIFICATION_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PAYROLL_VERIFICATION_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [XREF_TIME]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_OVERHEAD_HOURS_NODATE]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_OVERHEAD_HOURS_NODATE]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "FORMATS"                                                   */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [FORMATS] DROP CONSTRAINT [PK_FORMATS]
+/****** Object:  View [dbo].[invoice_volume_v]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[invoice_volume_v]
 GO
-
-/* Drop table */
-
-DROP TABLE [FORMATS]
+/****** Object:  View [dbo].[pkt_sch_jobs_v]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[pkt_sch_jobs_v]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "EXPENSES_BATCH_LINES"                                      */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [EXPENSES_BATCH_LINES] DROP CONSTRAINT [PK_EXPENSES_BATCH_LINES]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIINC_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIINC_DATERANGE]
 GO
-
-/* Drop table */
-
-DROP TABLE [EXPENSES_BATCH_LINES]
+/****** Object:  View [dbo].[RESOURCE_CATEGORY_TYPES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[RESOURCE_CATEGORY_TYPES_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "PDA_ROSTER_CHANGES"                                        */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-/* Drop table */
-
-DROP TABLE [PDA_ROSTER_CHANGES]
+/****** Object:  View [dbo].[JOB_OWNER_IS_NULL_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[JOB_OWNER_IS_NULL_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "EXPENSES_BATCHES"                                          */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [EXPENSES_BATCHES] DROP CONSTRAINT [PK_EXPENSES_BATCHES]
+/****** Object:  View [dbo].[PUNCHLIST_ISSUES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PUNCHLIST_ISSUES_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [EXPENSES_BATCHES]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CILLC_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CILLC_DATERANGE]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "ottInvHeaderTEMP_Madison"                                  */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-/* Drop table */
-
-DROP TABLE [ottInvHeaderTEMP_Madison]
+/****** Object:  View [dbo].[PAYROLL_BATCHES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PAYROLL_BATCHES_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "ottInvLineTEMP_Madison"                                    */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-/* Drop table */
-
-DROP TABLE [ottInvLineTEMP_Madison]
+/****** Object:  View [dbo].[TC_VERIFIED_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[TC_VERIFIED_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "USERS_CRYSTAL"                                             */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [USERS_CRYSTAL] DROP CONSTRAINT [PK_Users1]
+/****** Object:  View [dbo].[PUNCHLIST_ITEM_TYPES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PUNCHLIST_ITEM_TYPES_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [USERS_CRYSTAL]
+/****** Object:  View [dbo].[crystal_dashboard_JOB_COSTING_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_dashboard_JOB_COSTING_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "TEMPLATE_LOCATIONS"                                        */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [TEMPLATE_LOCATIONS] DROP CONSTRAINT [PK_TEMPLATE_LOCATIONS]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIMN]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIMN]
 GO
-
-/* Drop table */
-
-DROP TABLE [TEMPLATE_LOCATIONS]
+/****** Object:  Table [dbo].[CUSTOM_COLS]    Script Date: 05/03/2010 14:18:03 ******/
+DROP TABLE [dbo].[CUSTOM_COLS]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "GREAT_PLAINS_TABLES"                                       */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [GREAT_PLAINS_TABLES] DROP CONSTRAINT [PK_GREAT_PLAINS_TABLES]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_JobVarianceReport]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_JobVarianceReport]
 GO
-
-/* Drop table */
-
-DROP TABLE [GREAT_PLAINS_TABLES]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIMN_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIMN_DATERANGE]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "AUTHENTICATION_KEYS"                                       */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [AUTHENTICATION_KEYS] DROP CONSTRAINT [PK_AUTHENTICATION_KEYS]
+/****** Object:  View [dbo].[SERVICE_ACCOUNT_REPORT_V_AZ]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SERVICE_ACCOUNT_REPORT_V_AZ]
 GO
-
-/* Drop table */
-
-DROP TABLE [AUTHENTICATION_KEYS]
+/****** Object:  View [dbo].[RESOURCE_TYPE_ITEMS_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[RESOURCE_TYPE_ITEMS_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "ottInvHeaderTEMP"                                          */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-/* Drop table */
-
-DROP TABLE [ottInvHeaderTEMP]
+/****** Object:  View [dbo].[jobs_with_costs_v]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[jobs_with_costs_v]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "ottInvLineTEMP"                                            */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-/* Drop table */
-
-DROP TABLE [ottInvLineTEMP]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_OpenOrderReport]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_OpenOrderReport]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "ottInvTaxesTEMP"                                           */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-/* Drop table */
-
-DROP TABLE [ottInvTaxesTEMP]
+/****** Object:  View [dbo].[SCH_RESOURCES_ALL_JOBS_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SCH_RESOURCES_ALL_JOBS_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "ottInvHeaderTEMP_ALL"                                      */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-/* Drop table */
-
-DROP TABLE [ottInvHeaderTEMP_ALL]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_ICS]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_ICS]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "ottInvLineTEMP_ALL"                                        */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-/* Drop table */
-
-DROP TABLE [ottInvLineTEMP_ALL]
+/****** Object:  View [dbo].[SERVICE_QUOTES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SERVICE_QUOTES_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "ottInvTaxesTEMP_ALL"                                       */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-/* Drop table */
-
-DROP TABLE [ottInvTaxesTEMP_ALL]
+/****** Object:  View [dbo].[jobs_with_posted_costs_v]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[jobs_with_posted_costs_v]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "INVOICE_BATCH_STATUSES"                                    */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [INVOICE_BATCH_STATUSES] DROP CONSTRAINT [PK_INVOICE_BATCH_STATUSES]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_PriceRealizationReport]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_PriceRealizationReport]
 GO
-
-/* Drop table */
-
-DROP TABLE [INVOICE_BATCH_STATUSES]
+/****** Object:  View [dbo].[crystal_workorder_detail_pkf_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_workorder_detail_pkf_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "ITEMS_REPORTING_TYPE"                                      */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [ITEMS_REPORTING_TYPE] DROP CONSTRAINT [PK_ITEMS_REPORTING_TYPE]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_ICS_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_ICS_DATERANGE]
 GO
-
-/* Drop table */
-
-DROP TABLE [ITEMS_REPORTING_TYPE]
+/****** Object:  View [dbo].[ROLES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[ROLES_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "NUMBERS"                                                   */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [NUMBERS] DROP CONSTRAINT [PK_Table1]
+/****** Object:  View [dbo].[PRIORITY_TYPES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PRIORITY_TYPES_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [NUMBERS]
+/****** Object:  View [dbo].[EXPENSE_REPORT_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[EXPENSE_REPORT_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "ORG_GP_TABLES"                                             */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [ORG_GP_TABLES] DROP CONSTRAINT [PK_ORG_GP_TABLES]
+/****** Object:  View [dbo].[LEVEL_TYPES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[LEVEL_TYPES_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [ORG_GP_TABLES]
+/****** Object:  View [dbo].[TEMPLATE_LOCATIONS_4_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[TEMPLATE_LOCATIONS_4_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "ROLE_FUNCTION_RIGHTS"                                      */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [ROLE_FUNCTION_RIGHTS] DROP CONSTRAINT [PK_ROLE_FUNCTION_RIGHTS]
+/****** Object:  View [dbo].[AIA_OFFICE_INTERIORS_CUSTOMER_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[AIA_OFFICE_INTERIORS_CUSTOMER_V]
 GO
-
-ALTER TABLE [ROLE_FUNCTION_RIGHTS] DROP CONSTRAINT [UK_RFR]
+/****** Object:  View [dbo].[bad_reqs]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[bad_reqs]
 GO
-
-/* Drop table */
-
-DROP TABLE [ROLE_FUNCTION_RIGHTS]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_QuoteLogReport]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_QuoteLogReport]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "USER_ROLES"                                                */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [USER_ROLES] DROP CONSTRAINT [PK_USER_ROLES]
+/****** Object:  View [dbo].[crystal_dashboard_JOB_COSTING_V2]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_dashboard_JOB_COSTING_V2]
 GO
-
-/* Drop table */
-
-DROP TABLE [USER_ROLES]
+/****** Object:  View [dbo].[SCH_VACATIONS_ALL_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SCH_VACATIONS_ALL_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "LOOKUPS"                                                   */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [LOOKUPS] DROP CONSTRAINT [PK_LOOKUPS]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_AR_UNBILLED_REPORT]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_AR_UNBILLED_REPORT]
 GO
-
-/* Drop table */
-
-DROP TABLE [LOOKUPS]
+/****** Object:  View [dbo].[SCHEDULE_TYPES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SCHEDULE_TYPES_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "INVOICE_LINES"                                             */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [INVOICE_LINES] DROP CONSTRAINT [DEF_INVOICE_LINES_INVOICE_LINE_TYPE_ID]
+/****** Object:  View [dbo].[REQUEST_VENDORS_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[REQUEST_VENDORS_V]
 GO
-
-ALTER TABLE [INVOICE_LINES] DROP CONSTRAINT [IL_PK]
+/****** Object:  View [dbo].[crystal_JOB_STATUS_RPT_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_JOB_STATUS_RPT_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [INVOICE_LINES]
+/****** Object:  View [dbo].[WORKORDER_STATUS_TYPES_V]    Script Date: 05/03/2010 14:18:10 ******/
+DROP VIEW [dbo].[WORKORDER_STATUS_TYPES_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "INVOICE_TRACKING"                                          */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [INVOICE_TRACKING] DROP CONSTRAINT [PK_INVOICE_TRACKING]
+/****** Object:  View [dbo].[AIA_JOB_LOCATIONS_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[AIA_JOB_LOCATIONS_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [INVOICE_TRACKING]
+/****** Object:  View [dbo].[crystal_csc_WORK_ORDER_MASTER_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_csc_WORK_ORDER_MASTER_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "SERVICE_LINES"                                             */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [DEF_SERVICE_LINES_POOLED_FLAG]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_QualityPerformanceReport]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_QualityPerformanceReport]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [DEF_SERVICE_LINES_TAXABLE_FLAG]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_DASHBOARD_DSO]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_DASHBOARD_DSO]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [DEF_SERVICE_LINES_TC_QTY]
+/****** Object:  View [dbo].[crystal_SERVICE_REQ_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_SERVICE_REQ_V]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [DEF_SERVICE_LINES_TC_RATE]
+/****** Object:  View [dbo].[job_services_v]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[job_services_v]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [DEF_SERVICE_LINES_PAYROLL_QTY]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM_SALESNUMBERS]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM_SALESNUMBERS]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [DEF_SERVICE_LINES_PAYROLL_RATE]
+/****** Object:  View [dbo].[SCH_RESOURCE_ESTIMATES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SCH_RESOURCE_ESTIMATES_V]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [DEF_SERVICE_LINES_PAYROLL_EXPORTED_FLAG]
+/****** Object:  View [dbo].[ICVERIFY_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[ICVERIFY_V]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [DEF_SERVICE_LINES_EXPENSE_QTY]
+/****** Object:  View [dbo].[LOOKUP_TYPES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[LOOKUP_TYPES_V]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [DEF_SERVICE_LINES_EXPENSE_RATE]
+/****** Object:  StoredProcedure [dbo].[sp_aia_end_user]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_aia_end_user]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [DEF_SERVICE_LINES_EXPENSES_EXPORTED_FLAG]
+/****** Object:  View [dbo].[jobs_effective_customer_v]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[jobs_effective_customer_v]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [DEF_SERVICE_LINES_BILL_QTY]
+/****** Object:  View [dbo].[SURVEY_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SURVEY_V]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [DEF_SERVICE_LINES_BILL_RATE]
+/****** Object:  View [dbo].[GP_ICS_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[GP_ICS_PAY_CODE_V]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [DEF_SERVICE_LINES_BILL_HOURLY_QTY]
+/****** Object:  View [dbo].[SECURITY_TYPES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SECURITY_TYPES_V]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [DEF_SERVICE_LINES_BILL_HOURLY_RATE]
+/****** Object:  View [dbo].[EXPENSES_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[EXPENSES_V]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [DEF_SERVICE_LINES_BILL_EXP_QTY]
+/****** Object:  View [dbo].[SURVEY_REQUEST_VENDORS_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SURVEY_REQUEST_VENDORS_V]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [DEF_SERVICE_LINES_BILL_EXP_RATE]
+/****** Object:  View [dbo].[GP_MAD_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[GP_MAD_PAY_CODE_V]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [DEF_SERVICE_LINES_ALLOCATED_QTY]
+/****** Object:  View [dbo].[GP_ICS_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[GP_ICS_ITEM_PAYCODES_V]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [DEF_SERVICE_LINES_INTERNAL_REQ_FLAG]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_JobEfficiencyReport]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_JobEfficiencyReport]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [DEF_SERVICE_LINES_ENTERED_DATE]
+/****** Object:  View [dbo].[QP3_RESOURCE_TYPES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[QP3_RESOURCE_TYPES_V]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [DEF_SERVICE_LINES_ENTRY_METHOD]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM_DEALERNUMBER_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM_DEALERNUMBER_DATERANGE]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [DEF_SERVICE_LINES_DATE_CREATED]
+/****** Object:  View [dbo].[GP_MAD_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[GP_MAD_ITEM_PAYCODES_V]
 GO
-
-ALTER TABLE [SERVICE_LINES] DROP CONSTRAINT [PK_SERVICE_LINES]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIINC]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIINC]
 GO
-
-/* Drop table */
-
-DROP TABLE [SERVICE_LINES]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "POOLED_HOURS_CALC"                                         */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [POOLED_HOURS_CALC] DROP CONSTRAINT [PK_POOLED_HOURS_CALC]
+/****** Object:  View [dbo].[SERVICE_LINE_EXPENSE_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SERVICE_LINE_EXPENSE_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [POOLED_HOURS_CALC]
+/****** Object:  View [dbo].[REQUEST_NO_PUNCHLISTS_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[REQUEST_NO_PUNCHLISTS_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "SCH_RESOURCES"                                             */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [SCH_RESOURCES] DROP CONSTRAINT [PK_SCH_RESOURCES]
+/****** Object:  View [dbo].[crystal_INVOICE_TOTAL_AND_HOURS_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_INVOICE_TOTAL_AND_HOURS_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [SCH_RESOURCES]
+/****** Object:  View [dbo].[GP_ALABM_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[GP_ALABM_ITEM_PAYCODES_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "TRACKING"                                                  */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [TRACKING] DROP CONSTRAINT [DEF_TRACKING_EMAIL_SENT_FLAG]
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_JobCostReport]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[sp_CRYSTAL_JobCostReport]
 GO
-
-ALTER TABLE [TRACKING] DROP CONSTRAINT [PK_TRACKING]
+/****** Object:  View [dbo].[PROJECT_INVOICES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PROJECT_INVOICES_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [TRACKING]
+/****** Object:  View [dbo].[REQUEST_SCHEDULE_DIFF_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[REQUEST_SCHEDULE_DIFF_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "SERVICE_TASKS"                                             */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [SERVICE_TASKS] DROP CONSTRAINT [PK_SERVICE_TASKS]
+/****** Object:  View [dbo].[MISSING_EMP_HRS_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[MISSING_EMP_HRS_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [SERVICE_TASKS]
+/****** Object:  View [dbo].[SERVICE_LINE_STATUSES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SERVICE_LINE_STATUSES_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "RESOURCE_ESTIMATES"                                        */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [RESOURCE_ESTIMATES] DROP CONSTRAINT [PK_RESOURCE_ESTIMATES]
+/****** Object:  View [dbo].[EXTRANET_REQ_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[EXTRANET_REQ_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [RESOURCE_ESTIMATES]
+/****** Object:  StoredProcedure [dbo].[convert_date_to_time]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[convert_date_to_time]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "QUOTE_STANDARD_CONDITIONS"                                 */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [QUOTE_STANDARD_CONDITIONS] DROP CONSTRAINT [PK_QUOTE_STANDARD_CONDITIONS]
+/****** Object:  View [dbo].[REQ_TYPES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[REQ_TYPES_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [QUOTE_STANDARD_CONDITIONS]
+/****** Object:  StoredProcedure [dbo].[ottSOPIntegrationPrepMadison]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[ottSOPIntegrationPrepMadison]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "FUNCTIONS"                                                 */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [FUNCTIONS] DROP CONSTRAINT [DEF_FUNCTIONS_FUNCTION_GROUP_ID]
+/****** Object:  View [dbo].[QUOTE_REQUESTS_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[QUOTE_REQUESTS_V]
 GO
-
-ALTER TABLE [FUNCTIONS] DROP CONSTRAINT [FU_PK]
+/****** Object:  View [dbo].[SERV_LINE_STATUS_TYPES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SERV_LINE_STATUS_TYPES_V]
 GO
-
-ALTER TABLE [FUNCTIONS] DROP CONSTRAINT [UK_FU_CODE]
+/****** Object:  View [dbo].[SERVICE_LINE_TYPES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SERVICE_LINE_TYPES_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [FUNCTIONS]
+/****** Object:  View [dbo].[GP_MDWST_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[GP_MDWST_ITEM_PAYCODES_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "PUNCHLISTS"                                                */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [PUNCHLISTS] DROP CONSTRAINT [PK_PUNCHLISTS]
+/****** Object:  View [dbo].[SUB_ACTIVITY_TYPES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SUB_ACTIVITY_TYPES_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [PUNCHLISTS]
+/****** Object:  View [dbo].[crystal_SYNCH_REPORT_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_SYNCH_REPORT_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "purchase_orders"                                           */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [purchase_orders] DROP CONSTRAINT [PK_purchase_orders]
+/****** Object:  View [dbo].[QUOTE_CONDITIONS_V2]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[QUOTE_CONDITIONS_V2]
 GO
-
-/* Drop table */
-
-DROP TABLE [purchase_orders]
+/****** Object:  View [dbo].[crystal_RETURN_TO_JOB_MAD_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_RETURN_TO_JOB_MAD_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "SERVICES"                                                  */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [SERVICES] DROP CONSTRAINT [PK_SERVICES]
+/****** Object:  View [dbo].[crystal_TC_VERIFIED_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_TC_VERIFIED_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [SERVICES]
+/****** Object:  View [dbo].[JOB_TIME_BY_EMP_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[JOB_TIME_BY_EMP_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "CHECKLISTS"                                                */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [CHECKLISTS] DROP CONSTRAINT [PK_CHECKLISTS]
+/****** Object:  View [dbo].[TABS_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[TABS_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [CHECKLISTS]
+/****** Object:  View [dbo].[SCH_JOBS_REPORT_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SCH_JOBS_REPORT_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "QUOTES"                                                    */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [QUOTES] DROP CONSTRAINT [DEF_QUOTES_taxable_flag]
+/****** Object:  View [dbo].[GP_CILLC_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[GP_CILLC_ITEM_PAYCODES_V]
 GO
-
-ALTER TABLE [QUOTES] DROP CONSTRAINT [PK_QUOTES]
+/****** Object:  View [dbo].[TABS_V2]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[TABS_V2]
 GO
-
-/* Drop table */
-
-DROP TABLE [QUOTES]
+/****** Object:  Table [dbo].[USER_APPROVERS]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[USER_APPROVERS]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "REQUEST_VENDORS"                                           */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [REQUEST_VENDORS] DROP CONSTRAINT [DEF_REQUEST_VENDORS_ESTIMATED_COST]
+/****** Object:  View [dbo].[USER_ORG_FUNCTION_RIGHTS_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[USER_ORG_FUNCTION_RIGHTS_V]
 GO
-
-ALTER TABLE [REQUEST_VENDORS] DROP CONSTRAINT [DEF_REQUEST_VENDORS_TOTAL_COST]
+/****** Object:  View [dbo].[TEMPLATE_LOCATIONS_1_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[TEMPLATE_LOCATIONS_1_V]
 GO
-
-ALTER TABLE [REQUEST_VENDORS] DROP CONSTRAINT [PK_REQUEST_VENDORS]
+/****** Object:  StoredProcedure [dbo].[ottSOPIntegrationPrepAll]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[ottSOPIntegrationPrepAll]
 GO
-
-/* Drop table */
-
-DROP TABLE [REQUEST_VENDORS]
+/****** Object:  View [dbo].[EMPLOYEES_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[EMPLOYEES_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "REQUEST_DOCUMENTS"                                         */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [REQUEST_DOCUMENTS] DROP CONSTRAINT [PK_REQUEST_DOCUMENTS]
+/****** Object:  View [dbo].[PKT_ITEMS_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PKT_ITEMS_V]
 GO
-
-ALTER TABLE [REQUEST_DOCUMENTS] DROP CONSTRAINT [IX_REQUEST_DOCUMENTS]
+/****** Object:  View [dbo].[NON_SYNC_FOREMAN_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[NON_SYNC_FOREMAN_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [REQUEST_DOCUMENTS]
+/****** Object:  Table [dbo].[STANDARD_CONDITIONS]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[STANDARD_CONDITIONS]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "CUSTOM_COLS"                                               */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [CUSTOM_COLS] DROP CONSTRAINT [DEF_CUSTOM_COLS_DATE_CREATED]
+/****** Object:  Table [dbo].[countries]    Script Date: 05/03/2010 14:18:03 ******/
+DROP TABLE [dbo].[countries]
 GO
-
-ALTER TABLE [CUSTOM_COLS] DROP CONSTRAINT [PK_CUSTOM_COLS]
+/****** Object:  Table [dbo].[RIGHT_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[RIGHT_TYPES]
 GO
-
-/* Drop table */
-
-DROP TABLE [CUSTOM_COLS]
+/****** Object:  Table [dbo].[FORMATS]    Script Date: 05/03/2010 14:18:03 ******/
+DROP TABLE [dbo].[FORMATS]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "SERV_INV_LINES"                                            */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [SERV_INV_LINES] DROP CONSTRAINT [PK_SERVICE_INVOICE_LINES]
+/****** Object:  View [dbo].[jobs_v]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[jobs_v]
 GO
-
-/* Drop table */
-
-DROP TABLE [SERV_INV_LINES]
+/****** Object:  Table [dbo].[TEMPLATES]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[TEMPLATES]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "PAYROLL_BATCH_LINES"                                       */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [PAYROLL_BATCH_LINES] DROP CONSTRAINT [PK_PAYROLL_LINES]
+/****** Object:  Table [dbo].[TABS]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[TABS]
 GO
-
-/* Drop table */
-
-DROP TABLE [PAYROLL_BATCH_LINES]
+/****** Object:  Table [dbo].[TRACKING]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[TRACKING]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "CHECKLIST_DATA"                                            */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [CHECKLIST_DATA] DROP CONSTRAINT [PK_CHECKLIST_DATA]
+/****** Object:  Table [dbo].[USER_ROLES]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[USER_ROLES]
 GO
-
-/* Drop table */
-
-DROP TABLE [CHECKLIST_DATA]
+/****** Object:  View [dbo].[ROLE_FUNCTION_RIGHTS_ALL_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[ROLE_FUNCTION_RIGHTS_ALL_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "QUOTE_OTHER_FURNITURE_AD_HOC"                              */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [QUOTE_OTHER_FURNITURE_AD_HOC] DROP CONSTRAINT [PK_QUOTE_OTHER_FURNITURE_AD_HOC]
+/****** Object:  View [dbo].[PDA_JOBS_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PDA_JOBS_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [QUOTE_OTHER_FURNITURE_AD_HOC]
+/****** Object:  Table [dbo].[REQUESTS]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[REQUESTS]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "QUOTE_SPECIFY_OTHER_SERVICES"                              */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [QUOTE_SPECIFY_OTHER_SERVICES] DROP CONSTRAINT [PK_QUOTE_SPECIFY_OTHER_SERVICES]
+/****** Object:  Table [dbo].[PAYROLL_BATCH_LINES]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[PAYROLL_BATCH_LINES]
 GO
-
-/* Drop table */
-
-DROP TABLE [QUOTE_SPECIFY_OTHER_SERVICES]
+/****** Object:  View [dbo].[invoice_pre_total_v]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[invoice_pre_total_v]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "QUOTE_OTHER_FURNITURE"                                     */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [QUOTE_OTHER_FURNITURE] DROP CONSTRAINT [PK_QUOTE_OTHER_FURNITURE]
+/****** Object:  Table [dbo].[CONTACT_GROUPS]    Script Date: 05/03/2010 14:18:03 ******/
+DROP TABLE [dbo].[CONTACT_GROUPS]
 GO
-
-/* Drop table */
-
-DROP TABLE [QUOTE_OTHER_FURNITURE]
+/****** Object:  View [dbo].[job_time_by_job_v]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[job_time_by_job_v]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "QUOTE_WORKSTATION_CONFIGURATIONS"                          */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [QUOTE_WORKSTATION_CONFIGURATIONS] DROP CONSTRAINT [PK_QUOTE_WORKSTATION_CONFIGURATIONS]
+/****** Object:  Table [dbo].[UNBILLED_REPORT_DAILYDATACAPTURE]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[UNBILLED_REPORT_DAILYDATACAPTURE]
 GO
-
-/* Drop table */
-
-DROP TABLE [QUOTE_WORKSTATION_CONFIGURATIONS]
+/****** Object:  UserDefinedFunction [dbo].[fn_StringToFloat]    Script Date: 05/03/2010 14:18:10 ******/
+DROP FUNCTION [dbo].[fn_StringToFloat]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "ROLES"                                                     */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [ROLES] DROP CONSTRAINT [PK_ROLES]
+/****** Object:  View [dbo].[REQUESTS_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[REQUESTS_V]
 GO
-
-ALTER TABLE [ROLES] DROP CONSTRAINT [UK_RO_CODE]
+/****** Object:  View [dbo].[SERVICE_STATUS_TYPES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SERVICE_STATUS_TYPES_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [ROLES]
+/****** Object:  Table [dbo].[purchase_orders]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[purchase_orders]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "LOOKUP_TYPES"                                              */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [LOOKUP_TYPES] DROP CONSTRAINT [PK_LOOKUP_TYPES]
+/****** Object:  UserDefinedFunction [dbo].[sp_contact_phone]    Script Date: 05/03/2010 14:18:10 ******/
+DROP FUNCTION [dbo].[sp_contact_phone]
 GO
-
-/* Drop table */
-
-DROP TABLE [LOOKUP_TYPES]
+/****** Object:  Table [dbo].[CHECKLISTS]    Script Date: 05/03/2010 14:18:03 ******/
+DROP TABLE [dbo].[CHECKLISTS]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "PUNCHLIST_ISSUES"                                          */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [PUNCHLIST_ISSUES] DROP CONSTRAINT [PK_PUNCHLIST_ISSUES]
+/****** Object:  View [dbo].[PAYROLL_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PAYROLL_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [PUNCHLIST_ISSUES]
+/****** Object:  View [dbo].[DATE_OFFSETS_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[DATE_OFFSETS_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "USER_VENDORS"                                              */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [USER_VENDORS] DROP CONSTRAINT [PK_USER_VENDORS]
+/****** Object:  View [dbo].[INVOICE_TOTALS_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[INVOICE_TOTALS_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [USER_VENDORS]
+/****** Object:  View [dbo].[VAR_JOB_TIME_EXP_V]    Script Date: 05/03/2010 14:18:10 ******/
+DROP VIEW [dbo].[VAR_JOB_TIME_EXP_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "REQUESTS"                                                  */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [REQUESTS] DROP CONSTRAINT [DEF_REQUESTS_IS_COPY]
+/****** Object:  View [dbo].[VAR_JOB_EST_HOURS_V]    Script Date: 05/03/2010 14:18:10 ******/
+DROP VIEW [dbo].[VAR_JOB_EST_HOURS_V]
 GO
-
-ALTER TABLE [REQUESTS] DROP CONSTRAINT [DEF_REQUESTS_IS_SURVEYED]
+/****** Object:  View [dbo].[VAR_JOB_QUOTED_V]    Script Date: 05/03/2010 14:18:10 ******/
+DROP VIEW [dbo].[VAR_JOB_QUOTED_V]
 GO
-
-ALTER TABLE [REQUESTS] DROP CONSTRAINT [DEF_REQUESTS_PROD_DISP_FLAG]
+/****** Object:  View [dbo].[VAR_JOB_ACT_HOURS_V]    Script Date: 05/03/2010 14:18:10 ******/
+DROP VIEW [dbo].[VAR_JOB_ACT_HOURS_V]
 GO
-
-ALTER TABLE [REQUESTS] DROP CONSTRAINT [DEF_REQUESTS_CSC_WO_FIELD_FLAG]
+/****** Object:  View [dbo].[DOCUMENTS_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[DOCUMENTS_V]
 GO
-
-ALTER TABLE [REQUESTS] DROP CONSTRAINT [PK_REQUESTS]
+/****** Object:  View [dbo].[QUICK_REQUEST_VENDORS_HELPER_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[QUICK_REQUEST_VENDORS_HELPER_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [REQUESTS]
+/****** Object:  View [dbo].[PROJECT_QUOTES_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PROJECT_QUOTES_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "STANDARD_CONDITIONS"                                       */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [STANDARD_CONDITIONS] DROP CONSTRAINT [DEF_STANDARD_CONDITIONS_active_flag]
+/****** Object:  Table [dbo].[USER_ORGANIZATIONS]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[USER_ORGANIZATIONS]
 GO
-
-ALTER TABLE [STANDARD_CONDITIONS] DROP CONSTRAINT [PK_STANDARD_CONDITIONS]
+/****** Object:  View [dbo].[billing_v]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[billing_v]
 GO
-
-/* Drop table */
-
-DROP TABLE [STANDARD_CONDITIONS]
+/****** Object:  Table [dbo].[USER_CUSTOMERS]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[USER_CUSTOMERS]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "USER_CUSTOMERS"                                            */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [USER_CUSTOMERS] DROP CONSTRAINT [PK_USER_CUSTOMERS]
+/****** Object:  View [dbo].[request_vendor_totals_v]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[request_vendor_totals_v]
 GO
-
-ALTER TABLE [USER_CUSTOMERS] DROP CONSTRAINT [IX_USER_CUSTOMERS]
+/****** Object:  View [dbo].[ITEM_TYPES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[ITEM_TYPES_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [USER_CUSTOMERS]
+/****** Object:  View [dbo].[INVOICE_LINE_TYPES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[INVOICE_LINE_TYPES_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "RESOURCES"                                                 */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [RESOURCES] DROP CONSTRAINT [PK_RESOURCES]
+/****** Object:  View [dbo].[INVOICE_TYPES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[INVOICE_TYPES_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [RESOURCES]
+/****** Object:  View [dbo].[SCH_RESOURCES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SCH_RESOURCES_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "PAYROLL_BATCHES"                                           */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [PAYROLL_BATCHES] DROP CONSTRAINT [PK_PAYROLL_BATCHES]
+/****** Object:  Table [dbo].[LOOKUP_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[LOOKUP_TYPES]
 GO
-
-ALTER TABLE [PAYROLL_BATCHES] DROP CONSTRAINT [UK_PAYROLL_BATCHES]
+/****** Object:  Table [dbo].[SERV_INV_LINES]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[SERV_INV_LINES]
 GO
-
-/* Drop table */
-
-DROP TABLE [PAYROLL_BATCHES]
+/****** Object:  Table [dbo].[PAYROLL_BATCHES]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[PAYROLL_BATCHES]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "RESOURCE_TYPES"                                            */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [RESOURCE_TYPES] DROP CONSTRAINT [PK_RESOURCE_TYPES]
+/****** Object:  Table [dbo].[FUNCTIONS]    Script Date: 05/03/2010 14:18:03 ******/
+DROP TABLE [dbo].[FUNCTIONS]
 GO
-
-/* Drop table */
-
-DROP TABLE [RESOURCE_TYPES]
+/****** Object:  View [dbo].[GP_CIMN_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[GP_CIMN_PAY_CODE_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "RESOURCE_TYPE_ITEMS"                                       */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [RESOURCE_TYPE_ITEMS] DROP CONSTRAINT [PK_RESOURCE_TYPE_ITEMS]
+/****** Object:  View [dbo].[QUICK_REQUESTS_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[QUICK_REQUESTS_V]
 GO
-
-ALTER TABLE [RESOURCE_TYPE_ITEMS] DROP CONSTRAINT [IX_RTI_RESOURCE_TYPE_ITEMS]
+/****** Object:  Table [dbo].[GREAT_PLAINS_TABLES]    Script Date: 05/03/2010 14:18:03 ******/
+DROP TABLE [dbo].[GREAT_PLAINS_TABLES]
 GO
-
-/* Drop table */
-
-DROP TABLE [RESOURCE_TYPE_ITEMS]
+/****** Object:  Table [dbo].[ORG_GP_TABLES]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[ORG_GP_TABLES]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "RIGHT_TYPES"                                               */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [RIGHT_TYPES] DROP CONSTRAINT [PK_RIGHT_TYPES]
+/****** Object:  Table [dbo].[CHECKLIST_DATA]    Script Date: 05/03/2010 14:18:03 ******/
+DROP TABLE [dbo].[CHECKLIST_DATA]
 GO
-
-ALTER TABLE [RIGHT_TYPES] DROP CONSTRAINT [UK_RT_CODE]
+/****** Object:  StoredProcedure [dbo].[getNextVal]    Script Date: 05/03/2010 14:18:10 ******/
+DROP PROCEDURE [dbo].[getNextVal]
 GO
-
-/* Drop table */
-
-DROP TABLE [RIGHT_TYPES]
+/****** Object:  View [dbo].[SERVICE_CUSTOM_COLS_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SERVICE_CUSTOM_COLS_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "QUOTE_CONDITIONS"                                          */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [QUOTE_CONDITIONS] DROP CONSTRAINT [PK_QUOTE_CONDITIONS]
+/****** Object:  Table [dbo].[QUOTE_CONDITIONS]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[QUOTE_CONDITIONS]
 GO
-
-/* Drop table */
-
-DROP TABLE [QUOTE_CONDITIONS]
+/****** Object:  View [dbo].[Taxes_V_Sum]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[Taxes_V_Sum]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "JOB_LOCATIONS"                                             */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [JOB_LOCATIONS] DROP CONSTRAINT [DEF_JOB_LOCATIONS_active_flag]
+/****** Object:  Table [dbo].[EXPENSES_BATCH_LINES]    Script Date: 05/03/2010 14:18:03 ******/
+DROP TABLE [dbo].[EXPENSES_BATCH_LINES]
 GO
-
-ALTER TABLE [JOB_LOCATIONS] DROP CONSTRAINT [PK_JOB_LOCATIONS]
+/****** Object:  Table [dbo].[CONDITIONS]    Script Date: 05/03/2010 14:18:03 ******/
+DROP TABLE [dbo].[CONDITIONS]
 GO
-
-/* Drop table */
-
-DROP TABLE [JOB_LOCATIONS]
+/****** Object:  View [dbo].[crystal_SCH_ACT_1_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_SCH_ACT_1_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "USER_JOB_TYPES"                                            */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [USER_JOB_TYPES] DROP CONSTRAINT [DEF_USER_JOB_TYPES_DATE_CREATED]
+/****** Object:  View [dbo].[crystal_SCH_ACT_2_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_SCH_ACT_2_V]
 GO
-
-ALTER TABLE [USER_JOB_TYPES] DROP CONSTRAINT [PK_USER_JOB_TYPES]
+/****** Object:  View [dbo].[GP_ECMS_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[GP_ECMS_PAY_CODE_V]
 GO
-
-ALTER TABLE [USER_JOB_TYPES] DROP CONSTRAINT [UK_USER_JOB_TYPES]
+/****** Object:  View [dbo].[crystal_UNBILLED_OPS_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[crystal_UNBILLED_OPS_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [USER_JOB_TYPES]
+/****** Object:  Table [dbo].[PROJECT_NOTES]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[PROJECT_NOTES]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "RESOURCE_ITEMS"                                            */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [RESOURCE_ITEMS] DROP CONSTRAINT [PK_RESOURCE_ITEMS]
+/****** Object:  Table [dbo].[EXPENSES_BATCHES]    Script Date: 05/03/2010 14:18:03 ******/
+DROP TABLE [dbo].[EXPENSES_BATCHES]
 GO
-
-/* Drop table */
-
-DROP TABLE [RESOURCE_ITEMS]
+/****** Object:  View [dbo].[SCH_RESOURCES_ALL_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SCH_RESOURCES_ALL_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "USER_ORGANIZATIONS"                                        */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [USER_ORGANIZATIONS] DROP CONSTRAINT [PK_USER_ORGANIZATIONS]
+/****** Object:  Table [dbo].[ITEMS_REPORTING_TYPE]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[ITEMS_REPORTING_TYPE]
 GO
-
-/* Drop table */
-
-DROP TABLE [USER_ORGANIZATIONS]
+/****** Object:  UserDefinedFunction [dbo].[fn_ProjectManagerListPerProjectID]    Script Date: 05/03/2010 14:18:10 ******/
+DROP FUNCTION [dbo].[fn_ProjectManagerListPerProjectID]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "PROJECT_NOTES"                                             */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [PROJECT_NOTES] DROP CONSTRAINT [PK_PROJECT_NOTES]
+/****** Object:  UserDefinedFunction [dbo].[fn_FurnitureLineListPerProjectID]    Script Date: 05/03/2010 14:18:10 ******/
+DROP FUNCTION [dbo].[fn_FurnitureLineListPerProjectID]
 GO
-
-/* Drop table */
-
-DROP TABLE [PROJECT_NOTES]
+/****** Object:  View [dbo].[JOB_PROGRESS_1_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[JOB_PROGRESS_1_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "JOBS"                                                      */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [JOBS] DROP CONSTRAINT [DEF_JOBS_VIEW_SCHEDULE_FLAG]
+/****** Object:  View [dbo].[SYS_TABLES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SYS_TABLES_V]
 GO
-
-ALTER TABLE [JOBS] DROP CONSTRAINT [DEF_JOBS_SPREADSHEET_BILLING_FLAG]
+/****** Object:  Table [dbo].[quotes_mapping]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[quotes_mapping]
 GO
-
-ALTER TABLE [JOBS] DROP CONSTRAINT [PK_JOBS]
+/****** Object:  View [dbo].[contains_invoice_tracking_v]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[contains_invoice_tracking_v]
 GO
-
-/* Drop table */
-
-DROP TABLE [JOBS]
+/****** Object:  View [dbo].[GP_NTLSV_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[GP_NTLSV_PAY_CODE_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "ORGANIZATIONS"                                             */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [ORGANIZATIONS] DROP CONSTRAINT [DEF_ORGANIZATIONS_DATE_CREATED]
+/****** Object:  View [dbo].[SERVICE_ACCOUNT_REPORT_TEMP]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SERVICE_ACCOUNT_REPORT_TEMP]
 GO
-
-ALTER TABLE [ORGANIZATIONS] DROP CONSTRAINT [PK_ORGANIZATIONS]
+/****** Object:  Table [dbo].[QUOTE_SPECIFY_OTHER_SERVICES]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[QUOTE_SPECIFY_OTHER_SERVICES]
 GO
-
-/* Drop table */
-
-DROP TABLE [ORGANIZATIONS]
+/****** Object:  Table [dbo].[QUOTE_OTHER_FURNITURE_AD_HOC]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[QUOTE_OTHER_FURNITURE_AD_HOC]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "PROJECTS"                                                  */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [PROJECTS] DROP CONSTRAINT [DEF_PROJECTS_IS_NEW]
+/****** Object:  View [dbo].[GP_PHX_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[GP_PHX_PAY_CODE_V]
 GO
-
-ALTER TABLE [PROJECTS] DROP CONSTRAINT [PK_PROJECTS]
+/****** Object:  View [dbo].[GP_IT_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[GP_IT_PAY_CODE_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [PROJECTS]
+/****** Object:  UserDefinedFunction [dbo].[sp_varchar20_to_number]    Script Date: 05/03/2010 14:18:10 ******/
+DROP FUNCTION [dbo].[sp_varchar20_to_number]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "USER_APPROVERS"                                            */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [USER_APPROVERS] DROP CONSTRAINT [PK_USER_APPROVERS]
+/****** Object:  View [dbo].[TIME_CAPTURE_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[TIME_CAPTURE_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [USER_APPROVERS]
+/****** Object:  View [dbo].[GP_MPLS_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[GP_MPLS_PAY_CODE_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "INVOICES"                                                  */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [INVOICES] DROP CONSTRAINT [DEF_INVOICES_BATCH_STATUS_ID]
+/****** Object:  View [dbo].[pkt_job_user_res_v]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[pkt_job_user_res_v]
 GO
-
-ALTER TABLE [INVOICES] DROP CONSTRAINT [INV_PK]
+/****** Object:  Table [dbo].[PUNCHLIST_ISSUES]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[PUNCHLIST_ISSUES]
 GO
-
-/* Drop table */
-
-DROP TABLE [INVOICES]
+/****** Object:  View [dbo].[PUNCHLISTS_V]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[PUNCHLISTS_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "user_customer_end_users"                                   */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [user_customer_end_users] DROP CONSTRAINT [PK_user_customer_end_users]
+/****** Object:  View [dbo].[SERVICE_ACCT_RPT_TEMP_V_AZ]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SERVICE_ACCT_RPT_TEMP_V_AZ]
 GO
-
-/* Drop table */
-
-DROP TABLE [user_customer_end_users]
+/****** Object:  Table [dbo].[RESOURCE_TYPE_ITEMS]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[RESOURCE_TYPE_ITEMS]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "FUNCTION_RIGHT_TYPES"                                      */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [FUNCTION_RIGHT_TYPES] DROP CONSTRAINT [PK_FUNCTION_RIGHT_TYPES]
+/****** Object:  View [dbo].[SCH_VACATION_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SCH_VACATION_V]
 GO
-
-ALTER TABLE [FUNCTION_RIGHT_TYPES] DROP CONSTRAINT [UK_FUNCTION_RIGHT_TYPES]
+/****** Object:  View [dbo].[SITE_CONDITIONS_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SITE_CONDITIONS_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [FUNCTION_RIGHT_TYPES]
+/****** Object:  View [dbo].[SITE_CONDITIONS_MORE_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SITE_CONDITIONS_MORE_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "CUSTOMERS"                                                 */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [CUSTOMERS] DROP CONSTRAINT [PK_CUSTOMERS]
+/****** Object:  View [dbo].[RESOURCE_ESTIMATES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[RESOURCE_ESTIMATES_V]
 GO
-
-ALTER TABLE [CUSTOMERS] DROP CONSTRAINT [IX_DEALER_CUSTOMERS]
+/****** Object:  View [dbo].[GP_ALABM_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[GP_ALABM_PAY_CODE_V]
 GO
-
-ALTER TABLE [CUSTOMERS] DROP CONSTRAINT [IX_ORG_CUSTOMERS]
+/****** Object:  View [dbo].[GP_MDWST_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[GP_MDWST_PAY_CODE_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [CUSTOMERS]
+/****** Object:  Table [dbo].[ottInvLineTEMP_ALL]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[ottInvLineTEMP_ALL]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "ITEMS"                                                     */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [ITEMS] DROP CONSTRAINT [I_PK]
+/****** Object:  Table [dbo].[ottInvHeaderTEMP_ALL]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[ottInvHeaderTEMP_ALL]
 GO
-
-/* Drop table */
-
-DROP TABLE [ITEMS]
+/****** Object:  View [dbo].[ITEMS_BY_JOB_TYPES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[ITEMS_BY_JOB_TYPES_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "CONTACTS"                                                  */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [CONTACTS] DROP CONSTRAINT [PK_CONTACTS]
+/****** Object:  View [dbo].[RESOURCE_ITEM_RATES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[RESOURCE_ITEM_RATES_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [CONTACTS]
+/****** Object:  View [dbo].[CONVERTED_REQUESTS_V]    Script Date: 05/03/2010 14:18:05 ******/
+DROP VIEW [dbo].[CONVERTED_REQUESTS_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "JOB_ITEM_RATES"                                            */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [JOB_ITEM_RATES] DROP CONSTRAINT [PK_JOB_ITEM_RATES]
+/****** Object:  View [dbo].[QUOTE_CONDITION_XJOIN]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[QUOTE_CONDITION_XJOIN]
 GO
-
-ALTER TABLE [JOB_ITEM_RATES] DROP CONSTRAINT [IX_JIR_JOB_ITEMS]
+/****** Object:  View [dbo].[SERVICES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SERVICES_V]
 GO
-
-/* Drop table */
-
-DROP TABLE [JOB_ITEM_RATES]
+/****** Object:  View [dbo].[SERVICE_LINES_SCHD_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SERVICE_LINES_SCHD_V]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "CONTACT_GROUPS"                                            */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [CONTACT_GROUPS] DROP CONSTRAINT [PK_CONTACT_GROUPS]
+/****** Object:  Table [dbo].[SERVICE_LINES]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[SERVICE_LINES]
 GO
-
-ALTER TABLE [CONTACT_GROUPS] DROP CONSTRAINT [IX_CONTACT_GROUPS]
+/****** Object:  Table [dbo].[SERVICES]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[SERVICES]
 GO
-
-/* Drop table */
-
-DROP TABLE [CONTACT_GROUPS]
+/****** Object:  Table [dbo].[INVOICES]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[INVOICES]
 GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "USERS"                                                     */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [USERS] DROP CONSTRAINT [PK_USERS]
-GO
-
-/* Drop table */
-
-DROP TABLE [USERS]
-GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "states"                                                    */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [states] DROP CONSTRAINT [states_pk]
-GO
-
-/* Drop table */
-
-DROP TABLE [states]
-GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "job_location_contacts"                                     */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [job_location_contacts] DROP CONSTRAINT [DEF_job_location_contacts_date_created]
-GO
-
-ALTER TABLE [job_location_contacts] DROP CONSTRAINT [PK_job_location_contacts]
-GO
-
-ALTER TABLE [job_location_contacts] DROP CONSTRAINT [UK_jlc_1]
-GO
-
-/* Drop table */
-
-DROP TABLE [job_location_contacts]
-GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "DOCUMENTS"                                                 */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [DOCUMENTS] DROP CONSTRAINT [PK_DOCUMENTS]
-GO
-
-/* Drop table */
-
-DROP TABLE [DOCUMENTS]
-GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "VERSIONS"                                                  */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [VERSIONS] DROP CONSTRAINT [DEF_VERSIONS_NUM_DOWNLOADS]
-GO
-
-ALTER TABLE [VERSIONS] DROP CONSTRAINT [PK_VERSIONS]
-GO
-
-/* Drop table */
-
-DROP TABLE [VERSIONS]
-GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "CUSTOM_CUST_COLUMNS"                                       */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [CUSTOM_CUST_COLUMNS] DROP CONSTRAINT [DEF_CUSTOM_CUST_COLUMNS_IS_DROPLIST]
-GO
-
-ALTER TABLE [CUSTOM_CUST_COLUMNS] DROP CONSTRAINT [DEF_CUSTOM_CUST_COLUMNS_IS_MANDATORY]
-GO
-
-ALTER TABLE [CUSTOM_CUST_COLUMNS] DROP CONSTRAINT [PK_CUSTOM_CUST_COLUMNS]
-GO
-
-/* Drop table */
-
-DROP TABLE [CUSTOM_CUST_COLUMNS]
-GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "JOB_DISTRIBUTIONS"                                         */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [JOB_DISTRIBUTIONS] DROP CONSTRAINT [PK_JOB_DISTRIBUTIONS]
-GO
-
-/* Drop table */
-
-DROP TABLE [JOB_DISTRIBUTIONS]
-GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "CUSTOM_COL_LISTS"                                          */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [CUSTOM_COL_LISTS] DROP CONSTRAINT [DEF_CUSTOM_COL_LISTS_ACTIVE_FLAG]
-GO
-
-ALTER TABLE [CUSTOM_COL_LISTS] DROP CONSTRAINT [PK_CUSTOM_COL_LISTS]
-GO
-
-/* Drop table */
-
-DROP TABLE [CUSTOM_COL_LISTS]
-GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "ITEM_COSTING_HISTORY"                                      */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [ITEM_COSTING_HISTORY] DROP CONSTRAINT [PK_ITEM_COSTING_HISTORY]
-GO
-
-/* Drop table */
-
-DROP TABLE [ITEM_COSTING_HISTORY]
-GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "HOTSHEETS"                                                 */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [HOTSHEETS] DROP CONSTRAINT [PK_HOTSHEETS]
-GO
-
-/* Drop table */
-
-DROP TABLE [HOTSHEETS]
-GO
-
-/* ---------------------------------------------------------------------- */
-/* Drop table "HOTSHEET_DETAILS"                                          */
-/* ---------------------------------------------------------------------- */
-
-/* Drop constraints */
-
-ALTER TABLE [HOTSHEET_DETAILS] DROP CONSTRAINT [PK_HOTSHEET_DETAILS]
-GO
-
-/* Drop table */
-
-DROP TABLE [HOTSHEET_DETAILS]
+/****** Object:  Table [dbo].[QUOTES]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[QUOTES]
+GO
+/****** Object:  Table [dbo].[INVOICE_STATUSES]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[INVOICE_STATUSES]
+GO
+/****** Object:  Table [dbo].[SERVICE_LINE_STATUSES]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[SERVICE_LINE_STATUSES]
+GO
+/****** Object:  Table [dbo].[PROJECTS]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[PROJECTS]
+GO
+/****** Object:  Table [dbo].[PUNCHLISTS]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[PUNCHLISTS]
+GO
+/****** Object:  View [dbo].[LOOKUPS_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[LOOKUPS_V]
+GO
+/****** Object:  Table [dbo].[JOBS]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[JOBS]
+GO
+/****** Object:  Table [dbo].[REQUEST_VENDORS]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[REQUEST_VENDORS]
+GO
+/****** Object:  Table [dbo].[INVOICE_LINES]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[INVOICE_LINES]
+GO
+/****** Object:  Table [dbo].[JOB_LOCATIONS]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[JOB_LOCATIONS]
+GO
+/****** Object:  View [dbo].[INVOICES_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[INVOICES_V]
+GO
+/****** Object:  View [dbo].[ITEMS_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[ITEMS_V]
+GO
+/****** Object:  Table [dbo].[JOB_ITEM_RATES]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[JOB_ITEM_RATES]
+GO
+/****** Object:  Table [dbo].[SCH_RESOURCES]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[SCH_RESOURCES]
+GO
+/****** Object:  Table [dbo].[INVOICE_TRACKING]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[INVOICE_TRACKING]
+GO
+/****** Object:  View [dbo].[VERSIONS_MAX_NO_V]    Script Date: 05/03/2010 14:18:10 ******/
+DROP VIEW [dbo].[VERSIONS_MAX_NO_V]
+GO
+/****** Object:  Table [dbo].[VERSIONS]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[VERSIONS]
+GO
+/****** Object:  View [dbo].[quotes_v]    Script Date: 05/03/2010 14:18:08 ******/
+DROP VIEW [dbo].[quotes_v]
+GO
+/****** Object:  View [dbo].[SCH_RESOURCE_DATES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[SCH_RESOURCE_DATES_V]
+GO
+/****** Object:  View [dbo].[JOB_LOCATIONS_V]    Script Date: 05/03/2010 14:18:07 ******/
+DROP VIEW [dbo].[JOB_LOCATIONS_V]
+GO
+/****** Object:  Table [dbo].[ROLE_FUNCTION_RIGHTS]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[ROLE_FUNCTION_RIGHTS]
+GO
+/****** Object:  Table [dbo].[FUNCTION_RIGHT_TYPES]    Script Date: 05/03/2010 14:18:03 ******/
+DROP TABLE [dbo].[FUNCTION_RIGHT_TYPES]
+GO
+/****** Object:  Table [dbo].[SEQUENCES]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[SEQUENCES]
+GO
+/****** Object:  Table [dbo].[RESOURCE_ESTIMATES]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[RESOURCE_ESTIMATES]
+GO
+/****** Object:  View [dbo].[CUSTOM_CUST_COLUMNS_V]    Script Date: 05/03/2010 14:18:06 ******/
+DROP VIEW [dbo].[CUSTOM_CUST_COLUMNS_V]
+GO
+/****** Object:  View [dbo].[RESOURCE_TYPES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[RESOURCE_TYPES_V]
+GO
+/****** Object:  Table [dbo].[DOCUMENTS]    Script Date: 05/03/2010 14:18:03 ******/
+DROP TABLE [dbo].[DOCUMENTS]
+GO
+/****** Object:  Table [dbo].[PDA_ROSTER_CHANGES]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[PDA_ROSTER_CHANGES]
+GO
+/****** Object:  Table [dbo].[JOB_DISTRIBUTIONS]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[JOB_DISTRIBUTIONS]
+GO
+/****** Object:  View [dbo].[ROLE_FUNCTIONS_ALL_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[ROLE_FUNCTIONS_ALL_V]
+GO
+/****** Object:  Table [dbo].[CUSTOM_COL_LISTS]    Script Date: 05/03/2010 14:18:03 ******/
+DROP TABLE [dbo].[CUSTOM_COL_LISTS]
+GO
+/****** Object:  View [dbo].[RESOURCE_ITEMS_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[RESOURCE_ITEMS_V]
+GO
+/****** Object:  Table [dbo].[CUSTOMERS]    Script Date: 05/03/2010 14:18:03 ******/
+DROP TABLE [dbo].[CUSTOMERS]
+GO
+/****** Object:  Table [dbo].[USERS]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[USERS]
+GO
+/****** Object:  Table [dbo].[CONTACTS]    Script Date: 05/03/2010 14:18:03 ******/
+DROP TABLE [dbo].[CONTACTS]
+GO
+/****** Object:  Table [dbo].[ITEMS]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[ITEMS]
+GO
+/****** Object:  Table [dbo].[TEMPLATE_LOCATIONS]    Script Date: 05/03/2010 14:18:05 ******/
+DROP TABLE [dbo].[TEMPLATE_LOCATIONS]
+GO
+/****** Object:  Table [dbo].[ORGANIZATIONS]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[ORGANIZATIONS]
+GO
+/****** Object:  Table [dbo].[ROLES]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[ROLES]
+GO
+/****** Object:  Table [dbo].[INVOICE_BATCH_STATUSES]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[INVOICE_BATCH_STATUSES]
+GO
+/****** Object:  View [dbo].[RESOURCES_V]    Script Date: 05/03/2010 14:18:09 ******/
+DROP VIEW [dbo].[RESOURCES_V]
+GO
+/****** Object:  Table [dbo].[FUNCTION_GROUPS]    Script Date: 05/03/2010 14:18:03 ******/
+DROP TABLE [dbo].[FUNCTION_GROUPS]
+GO
+/****** Object:  Table [dbo].[CUSTOM_CUST_COLUMNS]    Script Date: 05/03/2010 14:18:03 ******/
+DROP TABLE [dbo].[CUSTOM_CUST_COLUMNS]
+GO
+/****** Object:  Table [dbo].[RESOURCE_ITEMS]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[RESOURCE_ITEMS]
+GO
+/****** Object:  Table [dbo].[NUMBERS]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[NUMBERS]
+GO
+/****** Object:  Table [dbo].[RESOURCES]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[RESOURCES]
+GO
+/****** Object:  Table [dbo].[LOOKUPS]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[LOOKUPS]
+GO
+/****** Object:  Table [dbo].[RESOURCE_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
+DROP TABLE [dbo].[RESOURCE_TYPES]
 GO
