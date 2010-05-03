@@ -1,3 +1,46 @@
+/****** Object:  View [dbo].[projects_v]    Script Date: 05/03/2010 14:18:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/* $Id: projects_v.sql 1655 2009-08-05 21:24:48Z bvonhaden $ */
+
+CREATE VIEW [dbo].[projects_v]
+AS
+SELECT top 100 percent p.project_id, 
+       p.project_no, 
+       p.project_type_id, 
+       project_type.code AS project_type_code, 
+       project_type.name AS project_type_name, 
+       p.project_status_type_id, 
+       project_status_type.code AS project_status_type_code, 
+       project_status_type.name AS project_status_type_name, 
+       c.organization_id, 
+       p.customer_id, 
+       c.parent_customer_id, 
+       c.ext_dealer_id, 
+       c.dealer_name, 
+       c.ext_customer_id, 
+       c.customer_name, 
+       p.job_name, 
+       p.percent_complete, 
+       p.date_created, 
+       p.created_by, 
+       p.date_modified, 
+       p.modified_by, 
+       u.first_name + ' ' + u.last_name AS created_by_name,
+       p.end_user_id,
+       eu.customer_name end_user_name,
+       eu.ext_customer_id ext_end_user_id,
+       p.is_new
+  FROM dbo.projects p INNER JOIN
+       dbo.lookups project_type ON p.project_type_id  = project_type.lookup_id INNER JOIN
+       dbo.lookups project_status_type ON p.project_status_type_id = project_status_type.lookup_id INNER JOIN
+       dbo.customers c ON p.customer_id = c.customer_id INNER JOIN
+       dbo.users u ON p.created_by = u.user_id LEFT OUTER JOIN
+       dbo.customers eu ON p.end_user_id = eu.customer_id 
+ORDER BY p.project_id
+GO
 /****** Object:  View [dbo].[LOOKUPS_V]    Script Date: 05/03/2010 14:18:07 ******/
 SET ANSI_NULLS ON
 GO
@@ -1313,120 +1356,6 @@ SELECT sl.organization_id,
        dbo.projects p ON j_v.project_id = p.project_id
  WHERE sl.status_id > 3
    AND sl.internal_req_flag = 'N'
-GO
-/****** Object:  View [dbo].[FAILED_INTEGRATIONS]    Script Date: 05/03/2010 14:18:06 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER OFF
-GO
-CREATE VIEW [dbo].[FAILED_INTEGRATIONS] AS
-/* All company database results of batches that have not went over to great plains.  Checked on SOP10200 and SOP30200 table
-based on SOPNUMBE field, where the beginning X # of digits definied by datalength() is the invoice ID from servicetrax
-that is transfered to Great Plains */
-SELECT     INVOICES.INVOICE_ID, INVOICES.ORGANIZATION_ID, INVOICES.PO_NO, INVOICES.INVOICE_TYPE_ID, INVOICES.BILLING_TYPE_ID, 
-                      INVOICES.EXT_BATCH_ID, INVOICES.BATCH_STATUS_ID, INVOICES.ASSIGNED_TO_USER_ID, INVOICES.INVOICE_FORMAT_TYPE_ID, 
-                      INVOICES.EXT_INVOICE_ID, INVOICES.STATUS_ID, INVOICES.JOB_ID, INVOICES.DESCRIPTION, INVOICES.GP_DESCRIPTION, INVOICES.COST_CODES,
-                       INVOICES.START_DATE, INVOICES.END_DATE, INVOICES.BILL_CUSTOMER_ID, INVOICES.EXT_BILL_CUST_ID, INVOICES.SALES_REPS, 
-                      INVOICES.DATE_SENT, INVOICES.DATE_CREATED, INVOICES.CREATED_BY, INVOICES.DATE_MODIFIED, INVOICES.MODIFIED_BY,NAME
-FROM         INVOICES 
-inner join organizations on invoices.organization_id=organizations.organization_id
-WHERE     (INVOICES.BATCH_STATUS_ID = '-1') AND cast(INVOICES.INVOICE_ID as varchar(10)) NOT IN (SELECT LEFT(SOPNUMBE,datalength(INVOICES.INVOICE_ID)) FROM AMBIM..SOP10200)
-and cast(INVOICES.INVOICE_ID as varchar(10)) NOT IN (SELECT LEFT(SOPNUMBE,datalength(INVOICES.INVOICE_ID)) FROM AMBIM..SOP30200)
-and INVOICES.ORGANIZATION_ID=2
-OR
-                      (dbo.INVOICES.BATCH_STATUS_ID = 1) AND (dbo.INVOICES.STATUS_ID = 4)
-union all
-SELECT     INVOICES.INVOICE_ID, INVOICES.ORGANIZATION_ID, INVOICES.PO_NO, INVOICES.INVOICE_TYPE_ID, INVOICES.BILLING_TYPE_ID, 
-                      INVOICES.EXT_BATCH_ID, INVOICES.BATCH_STATUS_ID, INVOICES.ASSIGNED_TO_USER_ID, INVOICES.INVOICE_FORMAT_TYPE_ID, 
-                      INVOICES.EXT_INVOICE_ID, INVOICES.STATUS_ID, INVOICES.JOB_ID, INVOICES.DESCRIPTION, INVOICES.GP_DESCRIPTION, INVOICES.COST_CODES,
-                       INVOICES.START_DATE, INVOICES.END_DATE, INVOICES.BILL_CUSTOMER_ID, INVOICES.EXT_BILL_CUST_ID, INVOICES.SALES_REPS, 
-                      INVOICES.DATE_SENT, INVOICES.DATE_CREATED, INVOICES.CREATED_BY, INVOICES.DATE_MODIFIED, INVOICES.MODIFIED_BY,NAME
-FROM         INVOICES 
-inner join organizations on invoices.organization_id=organizations.organization_id
-WHERE     (INVOICES.BATCH_STATUS_ID = '-1') AND cast(INVOICES.INVOICE_ID as varchar(10)) NOT IN (SELECT LEFT(SOPNUMBE,datalength(INVOICES.INVOICE_ID)) FROM AMMAD..SOP10200)
-and cast(INVOICES.INVOICE_ID as varchar(10)) NOT IN (SELECT LEFT(SOPNUMBE,datalength(INVOICES.INVOICE_ID)) FROM AMMAD..SOP30200)
-and INVOICES.ORGANIZATION_ID=4
-OR
-                      (dbo.INVOICES.BATCH_STATUS_ID = 1)  AND (dbo.INVOICES.STATUS_ID = 4)
-union all
-SELECT     INVOICES.INVOICE_ID, INVOICES.ORGANIZATION_ID, INVOICES.PO_NO, INVOICES.INVOICE_TYPE_ID, INVOICES.BILLING_TYPE_ID, 
-                      INVOICES.EXT_BATCH_ID, INVOICES.BATCH_STATUS_ID, INVOICES.ASSIGNED_TO_USER_ID, INVOICES.INVOICE_FORMAT_TYPE_ID, 
-                      INVOICES.EXT_INVOICE_ID, INVOICES.STATUS_ID, INVOICES.JOB_ID, INVOICES.DESCRIPTION, INVOICES.GP_DESCRIPTION, INVOICES.COST_CODES,
-                       INVOICES.START_DATE, INVOICES.END_DATE, INVOICES.BILL_CUSTOMER_ID, INVOICES.EXT_BILL_CUST_ID, INVOICES.SALES_REPS, 
-                      INVOICES.DATE_SENT, INVOICES.DATE_CREATED, INVOICES.CREATED_BY, INVOICES.DATE_MODIFIED, INVOICES.MODIFIED_BY,NAME
-FROM         INVOICES 
-inner join organizations on invoices.organization_id=organizations.organization_id
-WHERE     (INVOICES.BATCH_STATUS_ID = '-1') AND cast(INVOICES.INVOICE_ID as varchar(10)) NOT IN (SELECT LEFT(SOPNUMBE,datalength(INVOICES.INVOICE_ID)) FROM AIA..SOP10200)
-and cast(INVOICES.INVOICE_ID as varchar(10)) NOT IN (SELECT LEFT(SOPNUMBE,datalength(INVOICES.INVOICE_ID)) FROM AIA..SOP30200)
-and INVOICES.ORGANIZATION_ID=8
-OR
-                      (dbo.INVOICES.BATCH_STATUS_ID = 1)  AND (dbo.INVOICES.STATUS_ID = 4)
-union all
-SELECT     INVOICES.INVOICE_ID, INVOICES.ORGANIZATION_ID, INVOICES.PO_NO, INVOICES.INVOICE_TYPE_ID, INVOICES.BILLING_TYPE_ID, 
-                      INVOICES.EXT_BATCH_ID, INVOICES.BATCH_STATUS_ID, INVOICES.ASSIGNED_TO_USER_ID, INVOICES.INVOICE_FORMAT_TYPE_ID, 
-                      INVOICES.EXT_INVOICE_ID, INVOICES.STATUS_ID, INVOICES.JOB_ID, INVOICES.DESCRIPTION, INVOICES.GP_DESCRIPTION, INVOICES.COST_CODES,
-                       INVOICES.START_DATE, INVOICES.END_DATE, INVOICES.BILL_CUSTOMER_ID, INVOICES.EXT_BILL_CUST_ID, INVOICES.SALES_REPS, 
-                      INVOICES.DATE_SENT, INVOICES.DATE_CREATED, INVOICES.CREATED_BY, INVOICES.DATE_MODIFIED, INVOICES.MODIFIED_BY,NAME
-FROM         INVOICES 
-inner join organizations on invoices.organization_id=organizations.organization_id
-WHERE     (INVOICES.BATCH_STATUS_ID = '-1') AND cast(INVOICES.INVOICE_ID as varchar(10)) NOT IN (SELECT LEFT(SOPNUMBE,datalength(INVOICES.INVOICE_ID)) FROM CIINC..SOP10200)
-and cast(INVOICES.INVOICE_ID as varchar(10)) NOT IN (SELECT LEFT(SOPNUMBE,datalength(INVOICES.INVOICE_ID)) FROM CIINC..SOP30200)
-and INVOICES.ORGANIZATION_ID=10
-OR
-                      (dbo.INVOICES.BATCH_STATUS_ID = 1)  AND (dbo.INVOICES.STATUS_ID = 4)
-union all
-SELECT     INVOICES.INVOICE_ID, INVOICES.ORGANIZATION_ID, INVOICES.PO_NO, INVOICES.INVOICE_TYPE_ID, INVOICES.BILLING_TYPE_ID, 
-                      INVOICES.EXT_BATCH_ID, INVOICES.BATCH_STATUS_ID, INVOICES.ASSIGNED_TO_USER_ID, INVOICES.INVOICE_FORMAT_TYPE_ID, 
-                      INVOICES.EXT_INVOICE_ID, INVOICES.STATUS_ID, INVOICES.JOB_ID, INVOICES.DESCRIPTION, INVOICES.GP_DESCRIPTION, INVOICES.COST_CODES,
-                       INVOICES.START_DATE, INVOICES.END_DATE, INVOICES.BILL_CUSTOMER_ID, INVOICES.EXT_BILL_CUST_ID, INVOICES.SALES_REPS, 
-                      INVOICES.DATE_SENT, INVOICES.DATE_CREATED, INVOICES.CREATED_BY, INVOICES.DATE_MODIFIED, INVOICES.MODIFIED_BY,NAME
-FROM         INVOICES 
-inner join organizations on invoices.organization_id=organizations.organization_id
-WHERE     (INVOICES.BATCH_STATUS_ID = '-1') AND cast(INVOICES.INVOICE_ID as varchar(10)) NOT IN (SELECT LEFT(SOPNUMBE,datalength(INVOICES.INVOICE_ID)) FROM CILLC..SOP10200)
-and cast(INVOICES.INVOICE_ID as varchar(10)) NOT IN (SELECT LEFT(SOPNUMBE,datalength(INVOICES.INVOICE_ID)) FROM CILLC..SOP30200)
-and INVOICES.ORGANIZATION_ID=11
-OR
-                      (dbo.INVOICES.BATCH_STATUS_ID = 1)  AND (dbo.INVOICES.STATUS_ID = 4)
-union all
-SELECT     INVOICES.INVOICE_ID, INVOICES.ORGANIZATION_ID, INVOICES.PO_NO, INVOICES.INVOICE_TYPE_ID, INVOICES.BILLING_TYPE_ID, 
-                      INVOICES.EXT_BATCH_ID, INVOICES.BATCH_STATUS_ID, INVOICES.ASSIGNED_TO_USER_ID, INVOICES.INVOICE_FORMAT_TYPE_ID, 
-                      INVOICES.EXT_INVOICE_ID, INVOICES.STATUS_ID, INVOICES.JOB_ID, INVOICES.DESCRIPTION, INVOICES.GP_DESCRIPTION, INVOICES.COST_CODES,
-                       INVOICES.START_DATE, INVOICES.END_DATE, INVOICES.BILL_CUSTOMER_ID, INVOICES.EXT_BILL_CUST_ID, INVOICES.SALES_REPS, 
-                      INVOICES.DATE_SENT, INVOICES.DATE_CREATED, INVOICES.CREATED_BY, INVOICES.DATE_MODIFIED, INVOICES.MODIFIED_BY,NAME
-FROM         INVOICES 
-inner join organizations on invoices.organization_id=organizations.organization_id
-WHERE     (INVOICES.BATCH_STATUS_ID = '-1') AND cast(INVOICES.INVOICE_ID as varchar(10)) NOT IN (SELECT LEFT(SOPNUMBE,datalength(INVOICES.INVOICE_ID)) FROM ICS..SOP10200)
-and cast(INVOICES.INVOICE_ID as varchar(10)) NOT IN (SELECT LEFT(SOPNUMBE,datalength(INVOICES.INVOICE_ID)) FROM ICS..SOP30200)
-and INVOICES.ORGANIZATION_ID=12
-OR
-                      (dbo.INVOICES.BATCH_STATUS_ID = 1)  AND (dbo.INVOICES.STATUS_ID = 4)
-union all
-SELECT     INVOICES.INVOICE_ID, INVOICES.ORGANIZATION_ID, INVOICES.PO_NO, INVOICES.INVOICE_TYPE_ID, INVOICES.BILLING_TYPE_ID, 
-                      INVOICES.EXT_BATCH_ID, INVOICES.BATCH_STATUS_ID, INVOICES.ASSIGNED_TO_USER_ID, INVOICES.INVOICE_FORMAT_TYPE_ID, 
-                      INVOICES.EXT_INVOICE_ID, INVOICES.STATUS_ID, INVOICES.JOB_ID, INVOICES.DESCRIPTION, INVOICES.GP_DESCRIPTION, INVOICES.COST_CODES,
-                       INVOICES.START_DATE, INVOICES.END_DATE, INVOICES.BILL_CUSTOMER_ID, INVOICES.EXT_BILL_CUST_ID, INVOICES.SALES_REPS, 
-                      INVOICES.DATE_SENT, INVOICES.DATE_CREATED, INVOICES.CREATED_BY, INVOICES.DATE_MODIFIED, INVOICES.MODIFIED_BY,NAME
-FROM         INVOICES 
-inner join organizations on invoices.organization_id=organizations.organization_id
-WHERE     (INVOICES.BATCH_STATUS_ID = '-1') AND cast(INVOICES.INVOICE_ID as varchar(10)) NOT IN (SELECT LEFT(SOPNUMBE,datalength(INVOICES.INVOICE_ID)) FROM ECMS..SOP10200)
-and cast(INVOICES.INVOICE_ID as varchar(10)) NOT IN (SELECT LEFT(SOPNUMBE,datalength(INVOICES.INVOICE_ID)) FROM ECMS..SOP30200)
-and INVOICES.ORGANIZATION_ID=14
-OR
-                      (dbo.INVOICES.BATCH_STATUS_ID = 1)  AND (dbo.INVOICES.STATUS_ID = 4)
-union all
-
-SELECT     INVOICES.INVOICE_ID, INVOICES.ORGANIZATION_ID, INVOICES.PO_NO, INVOICES.INVOICE_TYPE_ID, INVOICES.BILLING_TYPE_ID, 
-                      INVOICES.EXT_BATCH_ID, INVOICES.BATCH_STATUS_ID, INVOICES.ASSIGNED_TO_USER_ID, INVOICES.INVOICE_FORMAT_TYPE_ID, 
-                      INVOICES.EXT_INVOICE_ID, INVOICES.STATUS_ID, INVOICES.JOB_ID, INVOICES.DESCRIPTION, INVOICES.GP_DESCRIPTION, INVOICES.COST_CODES,
-                       INVOICES.START_DATE, INVOICES.END_DATE, INVOICES.BILL_CUSTOMER_ID, INVOICES.EXT_BILL_CUST_ID, INVOICES.SALES_REPS, 
-                      INVOICES.DATE_SENT, INVOICES.DATE_CREATED, INVOICES.CREATED_BY, INVOICES.DATE_MODIFIED, INVOICES.MODIFIED_BY,NAME
-FROM         INVOICES 
-inner join organizations on invoices.organization_id=organizations.organization_id
-WHERE     (INVOICES.BATCH_STATUS_ID = '-1') AND cast(INVOICES.INVOICE_ID as varchar(10)) NOT IN (SELECT LEFT(SOPNUMBE,datalength(INVOICES.INVOICE_ID)) FROM CIMN..SOP10200)
-and cast(INVOICES.INVOICE_ID as varchar(10)) NOT IN (SELECT LEFT(SOPNUMBE,datalength(INVOICES.INVOICE_ID)) FROM CIMN..SOP30200)
-and INVOICES.ORGANIZATION_ID=15
-OR
-                      (dbo.INVOICES.BATCH_STATUS_ID = 1) AND (dbo.INVOICES.STATUS_ID = 4)
 GO
 /****** Object:  View [dbo].[invoices_extranet_v]    Script Date: 05/03/2010 14:18:07 ******/
 SET ANSI_NULLS ON
@@ -13656,247 +13585,6 @@ WHERE     (dbo.CUSTOMERS.EXT_DEALER_ID = '10001') AND (dbo.CUSTOMERS.ACTIVE_FLAG
                       (dbo.CUSTOMERS.EXT_DEALER_ID = '10002') OR
                       (dbo.CUSTOMERS.EXT_DEALER_ID = '10003') OR
                       (dbo.CUSTOMERS.EXT_DEALER_ID = '10000')
-GO
-/****** Object:  View [dbo].[crystal_JOB_TIME_BY_JOB_WITH_GP_ACCTNUM_V]    Script Date: 05/03/2010 14:18:06 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER OFF
-GO
-CREATE VIEW [dbo].[crystal_JOB_TIME_BY_JOB_WITH_GP_ACCTNUM_V]
-AS
-SELECT   'AMBIM' as COMPANYID,ISNULL(dbo.TIME_CAPTURE_V.PAYROLL_QTY, 0) - ISNULL(dbo.TIME_CAPTURE_V.BILL_HOURLY_QTY, 0) AS hours_difference, 
-                      CAST(dbo.JOBS_V.JOB_NO AS VARCHAR) AS job_no_varchar, dbo.TIME_CAPTURE_V.ORGANIZATION_ID, dbo.TIME_CAPTURE_V.TC_JOB_NO, 
-                      dbo.TIME_CAPTURE_V.TC_SERVICE_NO, dbo.TIME_CAPTURE_V.TC_SERVICE_LINE_NO, dbo.TIME_CAPTURE_V.ITEM_NAME, 
-                      dbo.TIME_CAPTURE_V.TC_JOB_ID, dbo.TIME_CAPTURE_V.TC_SERVICE_ID, dbo.TIME_CAPTURE_V.PH_SERVICE_ID, 
-                      dbo.TIME_CAPTURE_V.SERVICE_LINE_ID, dbo.TIME_CAPTURE_V.SERVICE_LINE_DATE, dbo.TIME_CAPTURE_V.STATUS_ID, 
-                      dbo.TIME_CAPTURE_V.status_name, dbo.TIME_CAPTURE_V.RESOURCE_ID, dbo.TIME_CAPTURE_V.ITEM_ID, dbo.TIME_CAPTURE_V.TC_QTY, 
-                      dbo.TIME_CAPTURE_V.TC_RATE, dbo.TIME_CAPTURE_V.TC_TOTAL, dbo.TIME_CAPTURE_V.PAYROLL_QTY, dbo.TIME_CAPTURE_V.EXT_PAY_CODE, 
-                      dbo.RESOURCES_V.EXT_EMPLOYEE_ID, dbo.RESOURCES_V.USER_ID, dbo.JOBS_V.CUSTOMER_ID, dbo.JOBS_V.CUSTOMER_NAME, 
-                      dbo.JOBS_V.FOREMAN_RESOURCE_ID, dbo.JOBS_V.foreman_resource_name, dbo.JOBS_V.JOB_NAME, dbo.RESOURCES_V.resource_name, 
-                      dbo.RESOURCES_V.resource_type_name, dbo.RESOURCES_V.RESOURCE_TYPE_ID, dbo.JOBS_V.billing_user_name, left(isnull(rtrim(AMBIM..GL00100.ACTNUMBR_1),'') + '-' +isnull(rtrim(AMBIM..GL00100.ACTNUMBR_2),'') + 
-	'-' + isnull(rtrim(AMBIM..GL00100.ACTNUMBR_3),'') + '-' + isnull(rtrim(AMBIM..GL00100.ACTNUMBR_4), '') + 
-	'-' + isnull(rtrim(AMBIM..GL00100.ACTNUMBR_5),''),13) as ACTNUM
-FROM         dbo.RESOURCES_V RIGHT OUTER JOIN
-                      dbo.TIME_CAPTURE_V ON dbo.RESOURCES_V.RESOURCE_ID = dbo.TIME_CAPTURE_V.RESOURCE_ID LEFT OUTER JOIN
-                      dbo.JOBS_V ON dbo.TIME_CAPTURE_V.TC_JOB_ID = dbo.JOBS_V.JOB_ID
-inner join AMBIM..IV00101 on ITEM_NAME=AMBIM..IV00101.ITMSHNAM
-inner join AMBIM..GL00100 on AMBIM..IV00101.IVSLSIDX = AMBIM..GL00100.ACTINDX
-union all
-SELECT   'AIA' as COMPANYID,ISNULL(dbo.TIME_CAPTURE_V.PAYROLL_QTY, 0) - ISNULL(dbo.TIME_CAPTURE_V.BILL_HOURLY_QTY, 0) AS hours_difference, 
-                      CAST(dbo.JOBS_V.JOB_NO AS VARCHAR) AS job_no_varchar, dbo.TIME_CAPTURE_V.ORGANIZATION_ID, dbo.TIME_CAPTURE_V.TC_JOB_NO, 
-                      dbo.TIME_CAPTURE_V.TC_SERVICE_NO, dbo.TIME_CAPTURE_V.TC_SERVICE_LINE_NO, dbo.TIME_CAPTURE_V.ITEM_NAME, 
-                      dbo.TIME_CAPTURE_V.TC_JOB_ID, dbo.TIME_CAPTURE_V.TC_SERVICE_ID, dbo.TIME_CAPTURE_V.PH_SERVICE_ID, 
-                      dbo.TIME_CAPTURE_V.SERVICE_LINE_ID, dbo.TIME_CAPTURE_V.SERVICE_LINE_DATE, dbo.TIME_CAPTURE_V.STATUS_ID, 
-                      dbo.TIME_CAPTURE_V.status_name, dbo.TIME_CAPTURE_V.RESOURCE_ID, dbo.TIME_CAPTURE_V.ITEM_ID, dbo.TIME_CAPTURE_V.TC_QTY, 
-                      dbo.TIME_CAPTURE_V.TC_RATE, dbo.TIME_CAPTURE_V.TC_TOTAL, dbo.TIME_CAPTURE_V.PAYROLL_QTY, dbo.TIME_CAPTURE_V.EXT_PAY_CODE, 
-                      dbo.RESOURCES_V.EXT_EMPLOYEE_ID, dbo.RESOURCES_V.USER_ID, dbo.JOBS_V.CUSTOMER_ID, dbo.JOBS_V.CUSTOMER_NAME, 
-                      dbo.JOBS_V.FOREMAN_RESOURCE_ID, dbo.JOBS_V.foreman_resource_name, dbo.JOBS_V.JOB_NAME, dbo.RESOURCES_V.resource_name, 
-                      dbo.RESOURCES_V.resource_type_name, dbo.RESOURCES_V.RESOURCE_TYPE_ID, dbo.JOBS_V.billing_user_name, left(isnull(rtrim(AIA..GL00100.ACTNUMBR_1),'') + '-' +isnull(rtrim(AIA..GL00100.ACTNUMBR_2),'') + 
-	'-' + isnull(rtrim(AIA..GL00100.ACTNUMBR_3),'') + '-' + isnull(rtrim(AIA..GL00100.ACTNUMBR_4), '') + 
-	'-' + isnull(rtrim(AIA..GL00100.ACTNUMBR_5),''),13) as ACTNUM
-FROM         dbo.RESOURCES_V RIGHT OUTER JOIN
-                      dbo.TIME_CAPTURE_V ON dbo.RESOURCES_V.RESOURCE_ID = dbo.TIME_CAPTURE_V.RESOURCE_ID LEFT OUTER JOIN
-                      dbo.JOBS_V ON dbo.TIME_CAPTURE_V.TC_JOB_ID = dbo.JOBS_V.JOB_ID
-inner join AIA..IV00101 on ITEM_NAME=AIA..IV00101.ITMSHNAM
-inner join AIA..GL00100 on AIA..IV00101.IVSLSIDX = AIA..GL00100.ACTINDX
-union all
-SELECT   'AMCOR' as COMPANYID,ISNULL(dbo.TIME_CAPTURE_V.PAYROLL_QTY, 0) - ISNULL(dbo.TIME_CAPTURE_V.BILL_HOURLY_QTY, 0) AS hours_difference, 
-                      CAST(dbo.JOBS_V.JOB_NO AS VARCHAR) AS job_no_varchar, dbo.TIME_CAPTURE_V.ORGANIZATION_ID, dbo.TIME_CAPTURE_V.TC_JOB_NO, 
-                      dbo.TIME_CAPTURE_V.TC_SERVICE_NO, dbo.TIME_CAPTURE_V.TC_SERVICE_LINE_NO, dbo.TIME_CAPTURE_V.ITEM_NAME, 
-                      dbo.TIME_CAPTURE_V.TC_JOB_ID, dbo.TIME_CAPTURE_V.TC_SERVICE_ID, dbo.TIME_CAPTURE_V.PH_SERVICE_ID, 
-                      dbo.TIME_CAPTURE_V.SERVICE_LINE_ID, dbo.TIME_CAPTURE_V.SERVICE_LINE_DATE, dbo.TIME_CAPTURE_V.STATUS_ID, 
-                      dbo.TIME_CAPTURE_V.status_name, dbo.TIME_CAPTURE_V.RESOURCE_ID, dbo.TIME_CAPTURE_V.ITEM_ID, dbo.TIME_CAPTURE_V.TC_QTY, 
-                      dbo.TIME_CAPTURE_V.TC_RATE, dbo.TIME_CAPTURE_V.TC_TOTAL, dbo.TIME_CAPTURE_V.PAYROLL_QTY, dbo.TIME_CAPTURE_V.EXT_PAY_CODE, 
-                      dbo.RESOURCES_V.EXT_EMPLOYEE_ID, dbo.RESOURCES_V.USER_ID, dbo.JOBS_V.CUSTOMER_ID, dbo.JOBS_V.CUSTOMER_NAME, 
-                      dbo.JOBS_V.FOREMAN_RESOURCE_ID, dbo.JOBS_V.foreman_resource_name, dbo.JOBS_V.JOB_NAME, dbo.RESOURCES_V.resource_name, 
-                      dbo.RESOURCES_V.resource_type_name, dbo.RESOURCES_V.RESOURCE_TYPE_ID, dbo.JOBS_V.billing_user_name, left(isnull(rtrim(AMCOR..GL00100.ACTNUMBR_1),'') + '-' +isnull(rtrim(AMCOR..GL00100.ACTNUMBR_2),'') + 
-	'-' + isnull(rtrim(AMCOR..GL00100.ACTNUMBR_3),'') + '-' + isnull(rtrim(AMCOR..GL00100.ACTNUMBR_4), '') + 
-	'-' + isnull(rtrim(AMCOR..GL00100.ACTNUMBR_5),''),13) as ACTNUM
-FROM         dbo.RESOURCES_V RIGHT OUTER JOIN
-                      dbo.TIME_CAPTURE_V ON dbo.RESOURCES_V.RESOURCE_ID = dbo.TIME_CAPTURE_V.RESOURCE_ID LEFT OUTER JOIN
-                      dbo.JOBS_V ON dbo.TIME_CAPTURE_V.TC_JOB_ID = dbo.JOBS_V.JOB_ID
-inner join AMCOR..IV00101 on ITEM_NAME=AMCOR..IV00101.ITMSHNAM
-inner join AMCOR..GL00100 on AMCOR..IV00101.IVSLSIDX = AMCOR..GL00100.ACTINDX  
-union all
-SELECT   'AMMAD' as COMPANYID,ISNULL(dbo.TIME_CAPTURE_V.PAYROLL_QTY, 0) - ISNULL(dbo.TIME_CAPTURE_V.BILL_HOURLY_QTY, 0) AS hours_difference, 
-                      CAST(dbo.JOBS_V.JOB_NO AS VARCHAR) AS job_no_varchar, dbo.TIME_CAPTURE_V.ORGANIZATION_ID, dbo.TIME_CAPTURE_V.TC_JOB_NO, 
-                      dbo.TIME_CAPTURE_V.TC_SERVICE_NO, dbo.TIME_CAPTURE_V.TC_SERVICE_LINE_NO, dbo.TIME_CAPTURE_V.ITEM_NAME, 
-                      dbo.TIME_CAPTURE_V.TC_JOB_ID, dbo.TIME_CAPTURE_V.TC_SERVICE_ID, dbo.TIME_CAPTURE_V.PH_SERVICE_ID, 
-                      dbo.TIME_CAPTURE_V.SERVICE_LINE_ID, dbo.TIME_CAPTURE_V.SERVICE_LINE_DATE, dbo.TIME_CAPTURE_V.STATUS_ID, 
-                      dbo.TIME_CAPTURE_V.status_name, dbo.TIME_CAPTURE_V.RESOURCE_ID, dbo.TIME_CAPTURE_V.ITEM_ID, dbo.TIME_CAPTURE_V.TC_QTY, 
-                      dbo.TIME_CAPTURE_V.TC_RATE, dbo.TIME_CAPTURE_V.TC_TOTAL, dbo.TIME_CAPTURE_V.PAYROLL_QTY, dbo.TIME_CAPTURE_V.EXT_PAY_CODE, 
-                      dbo.RESOURCES_V.EXT_EMPLOYEE_ID, dbo.RESOURCES_V.USER_ID, dbo.JOBS_V.CUSTOMER_ID, dbo.JOBS_V.CUSTOMER_NAME, 
-                      dbo.JOBS_V.FOREMAN_RESOURCE_ID, dbo.JOBS_V.foreman_resource_name, dbo.JOBS_V.JOB_NAME, dbo.RESOURCES_V.resource_name, 
-                      dbo.RESOURCES_V.resource_type_name, dbo.RESOURCES_V.RESOURCE_TYPE_ID, dbo.JOBS_V.billing_user_name, left(isnull(rtrim(AMMAD..GL00100.ACTNUMBR_1),'') + '-' +isnull(rtrim(AMMAD..GL00100.ACTNUMBR_2),'') + 
-	'-' + isnull(rtrim(AMMAD..GL00100.ACTNUMBR_3),'') + '-' + isnull(rtrim(AMMAD..GL00100.ACTNUMBR_4), '') + 
-	'-' + isnull(rtrim(AMMAD..GL00100.ACTNUMBR_5),''),13) as ACTNUM
-FROM         dbo.RESOURCES_V RIGHT OUTER JOIN
-                      dbo.TIME_CAPTURE_V ON dbo.RESOURCES_V.RESOURCE_ID = dbo.TIME_CAPTURE_V.RESOURCE_ID LEFT OUTER JOIN
-                      dbo.JOBS_V ON dbo.TIME_CAPTURE_V.TC_JOB_ID = dbo.JOBS_V.JOB_ID
-inner join AMMAD..IV00101 on ITEM_NAME=AMMAD..IV00101.ITMSHNAM
-inner join AMMAD..GL00100 on AMMAD..IV00101.IVSLSIDX = AMMAD..GL00100.ACTINDX
-union all
-SELECT   'CIINC' as COMPANYID,ISNULL(dbo.TIME_CAPTURE_V.PAYROLL_QTY, 0) - ISNULL(dbo.TIME_CAPTURE_V.BILL_HOURLY_QTY, 0) AS hours_difference, 
-                      CAST(dbo.JOBS_V.JOB_NO AS VARCHAR) AS job_no_varchar, dbo.TIME_CAPTURE_V.ORGANIZATION_ID, dbo.TIME_CAPTURE_V.TC_JOB_NO, 
-                      dbo.TIME_CAPTURE_V.TC_SERVICE_NO, dbo.TIME_CAPTURE_V.TC_SERVICE_LINE_NO, dbo.TIME_CAPTURE_V.ITEM_NAME, 
-                      dbo.TIME_CAPTURE_V.TC_JOB_ID, dbo.TIME_CAPTURE_V.TC_SERVICE_ID, dbo.TIME_CAPTURE_V.PH_SERVICE_ID, 
-                      dbo.TIME_CAPTURE_V.SERVICE_LINE_ID, dbo.TIME_CAPTURE_V.SERVICE_LINE_DATE, dbo.TIME_CAPTURE_V.STATUS_ID, 
-                      dbo.TIME_CAPTURE_V.status_name, dbo.TIME_CAPTURE_V.RESOURCE_ID, dbo.TIME_CAPTURE_V.ITEM_ID, dbo.TIME_CAPTURE_V.TC_QTY, 
-                      dbo.TIME_CAPTURE_V.TC_RATE, dbo.TIME_CAPTURE_V.TC_TOTAL, dbo.TIME_CAPTURE_V.PAYROLL_QTY, dbo.TIME_CAPTURE_V.EXT_PAY_CODE, 
-                      dbo.RESOURCES_V.EXT_EMPLOYEE_ID, dbo.RESOURCES_V.USER_ID, dbo.JOBS_V.CUSTOMER_ID, dbo.JOBS_V.CUSTOMER_NAME, 
-                      dbo.JOBS_V.FOREMAN_RESOURCE_ID, dbo.JOBS_V.foreman_resource_name, dbo.JOBS_V.JOB_NAME, dbo.RESOURCES_V.resource_name, 
-                      dbo.RESOURCES_V.resource_type_name, dbo.RESOURCES_V.RESOURCE_TYPE_ID, dbo.JOBS_V.billing_user_name, left(isnull(rtrim(CIINC..GL00100.ACTNUMBR_1),'') + '-' +isnull(rtrim(CIINC..GL00100.ACTNUMBR_2),'') + 
-	'-' + isnull(rtrim(CIINC..GL00100.ACTNUMBR_3),'') + '-' + isnull(rtrim(CIINC..GL00100.ACTNUMBR_4), '') + 
-	'-' + isnull(rtrim(CIINC..GL00100.ACTNUMBR_5),''),13) as ACTNUM
-FROM         dbo.RESOURCES_V RIGHT OUTER JOIN
-                      dbo.TIME_CAPTURE_V ON dbo.RESOURCES_V.RESOURCE_ID = dbo.TIME_CAPTURE_V.RESOURCE_ID LEFT OUTER JOIN
-                      dbo.JOBS_V ON dbo.TIME_CAPTURE_V.TC_JOB_ID = dbo.JOBS_V.JOB_ID
-inner join CIINC..IV00101 on ITEM_NAME=CIINC..IV00101.ITMSHNAM
-inner join CIINC..GL00100 on CIINC..IV00101.IVSLSIDX = CIINC..GL00100.ACTINDX
-union all
-SELECT   'CILLC' as COMPANYID,ISNULL(dbo.TIME_CAPTURE_V.PAYROLL_QTY, 0) - ISNULL(dbo.TIME_CAPTURE_V.BILL_HOURLY_QTY, 0) AS hours_difference, 
-                      CAST(dbo.JOBS_V.JOB_NO AS VARCHAR) AS job_no_varchar, dbo.TIME_CAPTURE_V.ORGANIZATION_ID, dbo.TIME_CAPTURE_V.TC_JOB_NO, 
-                      dbo.TIME_CAPTURE_V.TC_SERVICE_NO, dbo.TIME_CAPTURE_V.TC_SERVICE_LINE_NO, dbo.TIME_CAPTURE_V.ITEM_NAME, 
-                      dbo.TIME_CAPTURE_V.TC_JOB_ID, dbo.TIME_CAPTURE_V.TC_SERVICE_ID, dbo.TIME_CAPTURE_V.PH_SERVICE_ID, 
-                      dbo.TIME_CAPTURE_V.SERVICE_LINE_ID, dbo.TIME_CAPTURE_V.SERVICE_LINE_DATE, dbo.TIME_CAPTURE_V.STATUS_ID, 
-                      dbo.TIME_CAPTURE_V.status_name, dbo.TIME_CAPTURE_V.RESOURCE_ID, dbo.TIME_CAPTURE_V.ITEM_ID, dbo.TIME_CAPTURE_V.TC_QTY, 
-                      dbo.TIME_CAPTURE_V.TC_RATE, dbo.TIME_CAPTURE_V.TC_TOTAL, dbo.TIME_CAPTURE_V.PAYROLL_QTY, dbo.TIME_CAPTURE_V.EXT_PAY_CODE, 
-                      dbo.RESOURCES_V.EXT_EMPLOYEE_ID, dbo.RESOURCES_V.USER_ID, dbo.JOBS_V.CUSTOMER_ID, dbo.JOBS_V.CUSTOMER_NAME, 
-                      dbo.JOBS_V.FOREMAN_RESOURCE_ID, dbo.JOBS_V.foreman_resource_name, dbo.JOBS_V.JOB_NAME, dbo.RESOURCES_V.resource_name, 
-                      dbo.RESOURCES_V.resource_type_name, dbo.RESOURCES_V.RESOURCE_TYPE_ID, dbo.JOBS_V.billing_user_name, left(isnull(rtrim(CILLC..GL00100.ACTNUMBR_1),'') + '-' +isnull(rtrim(CILLC..GL00100.ACTNUMBR_2),'') + 
-	'-' + isnull(rtrim(CILLC..GL00100.ACTNUMBR_3),'') + '-' + isnull(rtrim(CILLC..GL00100.ACTNUMBR_4), '') + 
-	'-' + isnull(rtrim(CILLC..GL00100.ACTNUMBR_5),''),13) as ACTNUM
-FROM         dbo.RESOURCES_V RIGHT OUTER JOIN
-                      dbo.TIME_CAPTURE_V ON dbo.RESOURCES_V.RESOURCE_ID = dbo.TIME_CAPTURE_V.RESOURCE_ID LEFT OUTER JOIN
-                      dbo.JOBS_V ON dbo.TIME_CAPTURE_V.TC_JOB_ID = dbo.JOBS_V.JOB_ID
-inner join CILLC..IV00101 on ITEM_NAME=CILLC..IV00101.ITMSHNAM
-inner join CILLC..GL00100 on CILLC..IV00101.IVSLSIDX = CILLC..GL00100.ACTINDX
-union all
-SELECT   'ECMS' as COMPANYID,ISNULL(dbo.TIME_CAPTURE_V.PAYROLL_QTY, 0) - ISNULL(dbo.TIME_CAPTURE_V.BILL_HOURLY_QTY, 0) AS hours_difference, 
-                      CAST(dbo.JOBS_V.JOB_NO AS VARCHAR) AS job_no_varchar, dbo.TIME_CAPTURE_V.ORGANIZATION_ID, dbo.TIME_CAPTURE_V.TC_JOB_NO, 
-                      dbo.TIME_CAPTURE_V.TC_SERVICE_NO, dbo.TIME_CAPTURE_V.TC_SERVICE_LINE_NO, dbo.TIME_CAPTURE_V.ITEM_NAME, 
-                      dbo.TIME_CAPTURE_V.TC_JOB_ID, dbo.TIME_CAPTURE_V.TC_SERVICE_ID, dbo.TIME_CAPTURE_V.PH_SERVICE_ID, 
-                      dbo.TIME_CAPTURE_V.SERVICE_LINE_ID, dbo.TIME_CAPTURE_V.SERVICE_LINE_DATE, dbo.TIME_CAPTURE_V.STATUS_ID, 
-                      dbo.TIME_CAPTURE_V.status_name, dbo.TIME_CAPTURE_V.RESOURCE_ID, dbo.TIME_CAPTURE_V.ITEM_ID, dbo.TIME_CAPTURE_V.TC_QTY, 
-                      dbo.TIME_CAPTURE_V.TC_RATE, dbo.TIME_CAPTURE_V.TC_TOTAL, dbo.TIME_CAPTURE_V.PAYROLL_QTY, dbo.TIME_CAPTURE_V.EXT_PAY_CODE, 
-                      dbo.RESOURCES_V.EXT_EMPLOYEE_ID, dbo.RESOURCES_V.USER_ID, dbo.JOBS_V.CUSTOMER_ID, dbo.JOBS_V.CUSTOMER_NAME, 
-                      dbo.JOBS_V.FOREMAN_RESOURCE_ID, dbo.JOBS_V.foreman_resource_name, dbo.JOBS_V.JOB_NAME, dbo.RESOURCES_V.resource_name, 
-                      dbo.RESOURCES_V.resource_type_name, dbo.RESOURCES_V.RESOURCE_TYPE_ID, dbo.JOBS_V.billing_user_name, left(isnull(rtrim(ECMS..GL00100.ACTNUMBR_1),'') + '-' +isnull(rtrim(ECMS..GL00100.ACTNUMBR_2),'') + 
-	'-' + isnull(rtrim(ECMS..GL00100.ACTNUMBR_3),'') + '-' + isnull(rtrim(ECMS..GL00100.ACTNUMBR_4), '') + 
-	'-' + isnull(rtrim(ECMS..GL00100.ACTNUMBR_5),''),13) as ACTNUM
-FROM         dbo.RESOURCES_V RIGHT OUTER JOIN
-                      dbo.TIME_CAPTURE_V ON dbo.RESOURCES_V.RESOURCE_ID = dbo.TIME_CAPTURE_V.RESOURCE_ID LEFT OUTER JOIN
-                      dbo.JOBS_V ON dbo.TIME_CAPTURE_V.TC_JOB_ID = dbo.JOBS_V.JOB_ID
-inner join ECMS..IV00101 on ITEM_NAME=ECMS..IV00101.ITMSHNAM
-inner join ECMS..GL00100 on ECMS..IV00101.IVSLSIDX = ECMS..GL00100.ACTINDX
-union all
-SELECT   'ICS' as COMPANYID,ISNULL(dbo.TIME_CAPTURE_V.PAYROLL_QTY, 0) - ISNULL(dbo.TIME_CAPTURE_V.BILL_HOURLY_QTY, 0) AS hours_difference, 
-                      CAST(dbo.JOBS_V.JOB_NO AS VARCHAR) AS job_no_varchar, dbo.TIME_CAPTURE_V.ORGANIZATION_ID, dbo.TIME_CAPTURE_V.TC_JOB_NO, 
-                      dbo.TIME_CAPTURE_V.TC_SERVICE_NO, dbo.TIME_CAPTURE_V.TC_SERVICE_LINE_NO, dbo.TIME_CAPTURE_V.ITEM_NAME, 
-                      dbo.TIME_CAPTURE_V.TC_JOB_ID, dbo.TIME_CAPTURE_V.TC_SERVICE_ID, dbo.TIME_CAPTURE_V.PH_SERVICE_ID, 
-                      dbo.TIME_CAPTURE_V.SERVICE_LINE_ID, dbo.TIME_CAPTURE_V.SERVICE_LINE_DATE, dbo.TIME_CAPTURE_V.STATUS_ID, 
-                      dbo.TIME_CAPTURE_V.status_name, dbo.TIME_CAPTURE_V.RESOURCE_ID, dbo.TIME_CAPTURE_V.ITEM_ID, dbo.TIME_CAPTURE_V.TC_QTY, 
-                      dbo.TIME_CAPTURE_V.TC_RATE, dbo.TIME_CAPTURE_V.TC_TOTAL, dbo.TIME_CAPTURE_V.PAYROLL_QTY, dbo.TIME_CAPTURE_V.EXT_PAY_CODE, 
-                      dbo.RESOURCES_V.EXT_EMPLOYEE_ID, dbo.RESOURCES_V.USER_ID, dbo.JOBS_V.CUSTOMER_ID, dbo.JOBS_V.CUSTOMER_NAME, 
-                      dbo.JOBS_V.FOREMAN_RESOURCE_ID, dbo.JOBS_V.foreman_resource_name, dbo.JOBS_V.JOB_NAME, dbo.RESOURCES_V.resource_name, 
-                      dbo.RESOURCES_V.resource_type_name, dbo.RESOURCES_V.RESOURCE_TYPE_ID, dbo.JOBS_V.billing_user_name, left(isnull(rtrim(ICS..GL00100.ACTNUMBR_1),'') + '-' +isnull(rtrim(ICS..GL00100.ACTNUMBR_2),'') + 
-	'-' + isnull(rtrim(ICS..GL00100.ACTNUMBR_3),'') + '-' + isnull(rtrim(ICS..GL00100.ACTNUMBR_4), '') + 
-	'-' + isnull(rtrim(ICS..GL00100.ACTNUMBR_5),''),13) as ACTNUM
-FROM         dbo.RESOURCES_V RIGHT OUTER JOIN
-                      dbo.TIME_CAPTURE_V ON dbo.RESOURCES_V.RESOURCE_ID = dbo.TIME_CAPTURE_V.RESOURCE_ID LEFT OUTER JOIN
-                      dbo.JOBS_V ON dbo.TIME_CAPTURE_V.TC_JOB_ID = dbo.JOBS_V.JOB_ID
-inner join ICS..IV00101 on ITEM_NAME=ICS..IV00101.ITMSHNAM
-inner join ICS..GL00100 on ICS..IV00101.IVSLSIDX = ICS..GL00100.ACTINDX 
-union all
-SELECT   'INTRA' as COMPANYID,ISNULL(dbo.TIME_CAPTURE_V.PAYROLL_QTY, 0) - ISNULL(dbo.TIME_CAPTURE_V.BILL_HOURLY_QTY, 0) AS hours_difference, 
-                      CAST(dbo.JOBS_V.JOB_NO AS VARCHAR) AS job_no_varchar, dbo.TIME_CAPTURE_V.ORGANIZATION_ID, dbo.TIME_CAPTURE_V.TC_JOB_NO, 
-                      dbo.TIME_CAPTURE_V.TC_SERVICE_NO, dbo.TIME_CAPTURE_V.TC_SERVICE_LINE_NO, dbo.TIME_CAPTURE_V.ITEM_NAME, 
-                      dbo.TIME_CAPTURE_V.TC_JOB_ID, dbo.TIME_CAPTURE_V.TC_SERVICE_ID, dbo.TIME_CAPTURE_V.PH_SERVICE_ID, 
-                      dbo.TIME_CAPTURE_V.SERVICE_LINE_ID, dbo.TIME_CAPTURE_V.SERVICE_LINE_DATE, dbo.TIME_CAPTURE_V.STATUS_ID, 
-                      dbo.TIME_CAPTURE_V.status_name, dbo.TIME_CAPTURE_V.RESOURCE_ID, dbo.TIME_CAPTURE_V.ITEM_ID, dbo.TIME_CAPTURE_V.TC_QTY, 
-                      dbo.TIME_CAPTURE_V.TC_RATE, dbo.TIME_CAPTURE_V.TC_TOTAL, dbo.TIME_CAPTURE_V.PAYROLL_QTY, dbo.TIME_CAPTURE_V.EXT_PAY_CODE, 
-                      dbo.RESOURCES_V.EXT_EMPLOYEE_ID, dbo.RESOURCES_V.USER_ID, dbo.JOBS_V.CUSTOMER_ID, dbo.JOBS_V.CUSTOMER_NAME, 
-                      dbo.JOBS_V.FOREMAN_RESOURCE_ID, dbo.JOBS_V.foreman_resource_name, dbo.JOBS_V.JOB_NAME, dbo.RESOURCES_V.resource_name, 
-                      dbo.RESOURCES_V.resource_type_name, dbo.RESOURCES_V.RESOURCE_TYPE_ID, dbo.JOBS_V.billing_user_name, left(isnull(rtrim(INTRA..GL00100.ACTNUMBR_1),'') + '-' +isnull(rtrim(INTRA..GL00100.ACTNUMBR_2),'') + 
-	'-' + isnull(rtrim(INTRA..GL00100.ACTNUMBR_3),'') + '-' + isnull(rtrim(INTRA..GL00100.ACTNUMBR_4), '') + 
-	'-' + isnull(rtrim(INTRA..GL00100.ACTNUMBR_5),''),13) as ACTNUM
-FROM         dbo.RESOURCES_V RIGHT OUTER JOIN
-                      dbo.TIME_CAPTURE_V ON dbo.RESOURCES_V.RESOURCE_ID = dbo.TIME_CAPTURE_V.RESOURCE_ID LEFT OUTER JOIN
-                      dbo.JOBS_V ON dbo.TIME_CAPTURE_V.TC_JOB_ID = dbo.JOBS_V.JOB_ID
-inner join INTRA..IV00101 on ITEM_NAME=INTRA..IV00101.ITMSHNAM
-inner join INTRA..GL00100 on INTRA..IV00101.IVSLSIDX = INTRA..GL00100.ACTINDX  
-union all
-SELECT   'IT' as COMPANYID,ISNULL(dbo.TIME_CAPTURE_V.PAYROLL_QTY, 0) - ISNULL(dbo.TIME_CAPTURE_V.BILL_HOURLY_QTY, 0) AS hours_difference, 
-                      CAST(dbo.JOBS_V.JOB_NO AS VARCHAR) AS job_no_varchar, dbo.TIME_CAPTURE_V.ORGANIZATION_ID, dbo.TIME_CAPTURE_V.TC_JOB_NO, 
-                      dbo.TIME_CAPTURE_V.TC_SERVICE_NO, dbo.TIME_CAPTURE_V.TC_SERVICE_LINE_NO, dbo.TIME_CAPTURE_V.ITEM_NAME, 
-                      dbo.TIME_CAPTURE_V.TC_JOB_ID, dbo.TIME_CAPTURE_V.TC_SERVICE_ID, dbo.TIME_CAPTURE_V.PH_SERVICE_ID, 
-                      dbo.TIME_CAPTURE_V.SERVICE_LINE_ID, dbo.TIME_CAPTURE_V.SERVICE_LINE_DATE, dbo.TIME_CAPTURE_V.STATUS_ID, 
-                      dbo.TIME_CAPTURE_V.status_name, dbo.TIME_CAPTURE_V.RESOURCE_ID, dbo.TIME_CAPTURE_V.ITEM_ID, dbo.TIME_CAPTURE_V.TC_QTY, 
-                      dbo.TIME_CAPTURE_V.TC_RATE, dbo.TIME_CAPTURE_V.TC_TOTAL, dbo.TIME_CAPTURE_V.PAYROLL_QTY, dbo.TIME_CAPTURE_V.EXT_PAY_CODE, 
-                      dbo.RESOURCES_V.EXT_EMPLOYEE_ID, dbo.RESOURCES_V.USER_ID, dbo.JOBS_V.CUSTOMER_ID, dbo.JOBS_V.CUSTOMER_NAME, 
-                      dbo.JOBS_V.FOREMAN_RESOURCE_ID, dbo.JOBS_V.foreman_resource_name, dbo.JOBS_V.JOB_NAME, dbo.RESOURCES_V.resource_name, 
-                      dbo.RESOURCES_V.resource_type_name, dbo.RESOURCES_V.RESOURCE_TYPE_ID, dbo.JOBS_V.billing_user_name, left(isnull(rtrim(IT..GL00100.ACTNUMBR_1),'') + '-' +isnull(rtrim(IT..GL00100.ACTNUMBR_2),'') + 
-	'-' + isnull(rtrim(IT..GL00100.ACTNUMBR_3),'') + '-' + isnull(rtrim(IT..GL00100.ACTNUMBR_4), '') + 
-	'-' + isnull(rtrim(IT..GL00100.ACTNUMBR_5),''),13) as ACTNUM
-FROM         dbo.RESOURCES_V RIGHT OUTER JOIN
-                      dbo.TIME_CAPTURE_V ON dbo.RESOURCES_V.RESOURCE_ID = dbo.TIME_CAPTURE_V.RESOURCE_ID LEFT OUTER JOIN
-                      dbo.JOBS_V ON dbo.TIME_CAPTURE_V.TC_JOB_ID = dbo.JOBS_V.JOB_ID
-inner join IT..IV00101 on ITEM_NAME=IT..IV00101.ITMSHNAM
-inner join IT..GL00100 on IT..IV00101.IVSLSIDX = IT..GL00100.ACTINDX
-union all
-SELECT   'OMNI' as COMPANYID,ISNULL(dbo.TIME_CAPTURE_V.PAYROLL_QTY, 0) - ISNULL(dbo.TIME_CAPTURE_V.BILL_HOURLY_QTY, 0) AS hours_difference, 
-                      CAST(dbo.JOBS_V.JOB_NO AS VARCHAR) AS job_no_varchar, dbo.TIME_CAPTURE_V.ORGANIZATION_ID, dbo.TIME_CAPTURE_V.TC_JOB_NO, 
-                      dbo.TIME_CAPTURE_V.TC_SERVICE_NO, dbo.TIME_CAPTURE_V.TC_SERVICE_LINE_NO, dbo.TIME_CAPTURE_V.ITEM_NAME, 
-                      dbo.TIME_CAPTURE_V.TC_JOB_ID, dbo.TIME_CAPTURE_V.TC_SERVICE_ID, dbo.TIME_CAPTURE_V.PH_SERVICE_ID, 
-                      dbo.TIME_CAPTURE_V.SERVICE_LINE_ID, dbo.TIME_CAPTURE_V.SERVICE_LINE_DATE, dbo.TIME_CAPTURE_V.STATUS_ID, 
-                      dbo.TIME_CAPTURE_V.status_name, dbo.TIME_CAPTURE_V.RESOURCE_ID, dbo.TIME_CAPTURE_V.ITEM_ID, dbo.TIME_CAPTURE_V.TC_QTY, 
-                      dbo.TIME_CAPTURE_V.TC_RATE, dbo.TIME_CAPTURE_V.TC_TOTAL, dbo.TIME_CAPTURE_V.PAYROLL_QTY, dbo.TIME_CAPTURE_V.EXT_PAY_CODE, 
-                      dbo.RESOURCES_V.EXT_EMPLOYEE_ID, dbo.RESOURCES_V.USER_ID, dbo.JOBS_V.CUSTOMER_ID, dbo.JOBS_V.CUSTOMER_NAME, 
-                      dbo.JOBS_V.FOREMAN_RESOURCE_ID, dbo.JOBS_V.foreman_resource_name, dbo.JOBS_V.JOB_NAME, dbo.RESOURCES_V.resource_name, 
-                      dbo.RESOURCES_V.resource_type_name, dbo.RESOURCES_V.RESOURCE_TYPE_ID, dbo.JOBS_V.billing_user_name, left(isnull(rtrim(OMNI..GL00100.ACTNUMBR_1),'') + '-' +isnull(rtrim(OMNI..GL00100.ACTNUMBR_2),'') + 
-	'-' + isnull(rtrim(OMNI..GL00100.ACTNUMBR_3),'') + '-' + isnull(rtrim(OMNI..GL00100.ACTNUMBR_4), '') + 
-	'-' + isnull(rtrim(OMNI..GL00100.ACTNUMBR_5),''),13) as ACTNUM
-FROM         dbo.RESOURCES_V RIGHT OUTER JOIN
-                      dbo.TIME_CAPTURE_V ON dbo.RESOURCES_V.RESOURCE_ID = dbo.TIME_CAPTURE_V.RESOURCE_ID LEFT OUTER JOIN
-                      dbo.JOBS_V ON dbo.TIME_CAPTURE_V.TC_JOB_ID = dbo.JOBS_V.JOB_ID
-inner join OMNI..IV00101 on ITEM_NAME=OMNI..IV00101.ITMSHNAM
-inner join OMNI..GL00100 on OMNI..IV00101.IVSLSIDX = OMNI..GL00100.ACTINDX   
-union all
-SELECT   'RVM' as COMPANYID,ISNULL(dbo.TIME_CAPTURE_V.PAYROLL_QTY, 0) - ISNULL(dbo.TIME_CAPTURE_V.BILL_HOURLY_QTY, 0) AS hours_difference, 
-                      CAST(dbo.JOBS_V.JOB_NO AS VARCHAR) AS job_no_varchar, dbo.TIME_CAPTURE_V.ORGANIZATION_ID, dbo.TIME_CAPTURE_V.TC_JOB_NO, 
-                      dbo.TIME_CAPTURE_V.TC_SERVICE_NO, dbo.TIME_CAPTURE_V.TC_SERVICE_LINE_NO, dbo.TIME_CAPTURE_V.ITEM_NAME, 
-                      dbo.TIME_CAPTURE_V.TC_JOB_ID, dbo.TIME_CAPTURE_V.TC_SERVICE_ID, dbo.TIME_CAPTURE_V.PH_SERVICE_ID, 
-                      dbo.TIME_CAPTURE_V.SERVICE_LINE_ID, dbo.TIME_CAPTURE_V.SERVICE_LINE_DATE, dbo.TIME_CAPTURE_V.STATUS_ID, 
-                      dbo.TIME_CAPTURE_V.status_name, dbo.TIME_CAPTURE_V.RESOURCE_ID, dbo.TIME_CAPTURE_V.ITEM_ID, dbo.TIME_CAPTURE_V.TC_QTY, 
-                      dbo.TIME_CAPTURE_V.TC_RATE, dbo.TIME_CAPTURE_V.TC_TOTAL, dbo.TIME_CAPTURE_V.PAYROLL_QTY, dbo.TIME_CAPTURE_V.EXT_PAY_CODE, 
-                      dbo.RESOURCES_V.EXT_EMPLOYEE_ID, dbo.RESOURCES_V.USER_ID, dbo.JOBS_V.CUSTOMER_ID, dbo.JOBS_V.CUSTOMER_NAME, 
-                      dbo.JOBS_V.FOREMAN_RESOURCE_ID, dbo.JOBS_V.foreman_resource_name, dbo.JOBS_V.JOB_NAME, dbo.RESOURCES_V.resource_name, 
-                      dbo.RESOURCES_V.resource_type_name, dbo.RESOURCES_V.RESOURCE_TYPE_ID, dbo.JOBS_V.billing_user_name, left(isnull(rtrim(RVM..GL00100.ACTNUMBR_1),'') + '-' +isnull(rtrim(RVM..GL00100.ACTNUMBR_2),'') + 
-	'-' + isnull(rtrim(RVM..GL00100.ACTNUMBR_3),'') + '-' + isnull(rtrim(RVM..GL00100.ACTNUMBR_4), '') + 
-	'-' + isnull(rtrim(RVM..GL00100.ACTNUMBR_5),''),13) as ACTNUM
-FROM         dbo.RESOURCES_V RIGHT OUTER JOIN
-                      dbo.TIME_CAPTURE_V ON dbo.RESOURCES_V.RESOURCE_ID = dbo.TIME_CAPTURE_V.RESOURCE_ID LEFT OUTER JOIN
-                      dbo.JOBS_V ON dbo.TIME_CAPTURE_V.TC_JOB_ID = dbo.JOBS_V.JOB_ID
-inner join RVM..IV00101 on ITEM_NAME=RVM..IV00101.ITMSHNAM
-inner join RVM..GL00100 on RVM..IV00101.IVSLSIDX = RVM..GL00100.ACTINDX 
-union all
-SELECT   'TEST' as COMPANYID,ISNULL(dbo.TIME_CAPTURE_V.PAYROLL_QTY, 0) - ISNULL(dbo.TIME_CAPTURE_V.BILL_HOURLY_QTY, 0) AS hours_difference, 
-                      CAST(dbo.JOBS_V.JOB_NO AS VARCHAR) AS job_no_varchar, dbo.TIME_CAPTURE_V.ORGANIZATION_ID, dbo.TIME_CAPTURE_V.TC_JOB_NO, 
-                      dbo.TIME_CAPTURE_V.TC_SERVICE_NO, dbo.TIME_CAPTURE_V.TC_SERVICE_LINE_NO, dbo.TIME_CAPTURE_V.ITEM_NAME, 
-                      dbo.TIME_CAPTURE_V.TC_JOB_ID, dbo.TIME_CAPTURE_V.TC_SERVICE_ID, dbo.TIME_CAPTURE_V.PH_SERVICE_ID, 
-                      dbo.TIME_CAPTURE_V.SERVICE_LINE_ID, dbo.TIME_CAPTURE_V.SERVICE_LINE_DATE, dbo.TIME_CAPTURE_V.STATUS_ID, 
-                      dbo.TIME_CAPTURE_V.status_name, dbo.TIME_CAPTURE_V.RESOURCE_ID, dbo.TIME_CAPTURE_V.ITEM_ID, dbo.TIME_CAPTURE_V.TC_QTY, 
-                      dbo.TIME_CAPTURE_V.TC_RATE, dbo.TIME_CAPTURE_V.TC_TOTAL, dbo.TIME_CAPTURE_V.PAYROLL_QTY, dbo.TIME_CAPTURE_V.EXT_PAY_CODE, 
-                      dbo.RESOURCES_V.EXT_EMPLOYEE_ID, dbo.RESOURCES_V.USER_ID, dbo.JOBS_V.CUSTOMER_ID, dbo.JOBS_V.CUSTOMER_NAME, 
-                      dbo.JOBS_V.FOREMAN_RESOURCE_ID, dbo.JOBS_V.foreman_resource_name, dbo.JOBS_V.JOB_NAME, dbo.RESOURCES_V.resource_name, 
-                      dbo.RESOURCES_V.resource_type_name, dbo.RESOURCES_V.RESOURCE_TYPE_ID, dbo.JOBS_V.billing_user_name, left(isnull(rtrim(TEST..GL00100.ACTNUMBR_1),'') + '-' +isnull(rtrim(TEST..GL00100.ACTNUMBR_2),'') + 
-	'-' + isnull(rtrim(TEST..GL00100.ACTNUMBR_3),'') + '-' + isnull(rtrim(TEST..GL00100.ACTNUMBR_4), '') + 
-	'-' + isnull(rtrim(TEST..GL00100.ACTNUMBR_5),''),13) as ACTNUM
-FROM         dbo.RESOURCES_V RIGHT OUTER JOIN
-                      dbo.TIME_CAPTURE_V ON dbo.RESOURCES_V.RESOURCE_ID = dbo.TIME_CAPTURE_V.RESOURCE_ID LEFT OUTER JOIN
-                      dbo.JOBS_V ON dbo.TIME_CAPTURE_V.TC_JOB_ID = dbo.JOBS_V.JOB_ID
-inner join TEST..IV00101 on ITEM_NAME=TEST..IV00101.ITMSHNAM
-inner join TEST..GL00100 on TEST..IV00101.IVSLSIDX = TEST..GL00100.ACTINDX
 GO
 /****** Object:  View [dbo].[crystal_SCH_ACT_1_V]    Script Date: 05/03/2010 14:18:06 ******/
 SET ANSI_NULLS ON
