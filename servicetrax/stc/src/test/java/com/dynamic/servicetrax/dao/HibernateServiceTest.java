@@ -21,12 +21,18 @@ public class HibernateServiceTest extends AbstractTransactionalDataSourceSpringC
 	private HibernateService hibernateService;
 	private QueryService queryService;
 
+    /*
 	@Override
 	public int getAutowireMode()
 	{
 		return AbstractTransactionalDataSourceSpringContextTests.AUTOWIRE_BY_NAME;
+
 	}
-	
+	*/
+    
+    public HibernateServiceTest(){
+        setAutowireMode(AbstractTransactionalDataSourceSpringContextTests.AUTOWIRE_BY_NAME);
+    }
 
 	
 	@Override

@@ -1,5 +1,6 @@
 package com.dynamic.charm.examples;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.dynamic.charm.examples.orm.City;
@@ -9,6 +10,7 @@ public class CityTest extends DummyDataSupport
 {
 
 	@Test
+    @Ignore
 	public void testSomething()
 	{
 		assertTrue(true);
