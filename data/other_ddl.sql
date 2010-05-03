@@ -1,46 +1,4 @@
-/****** Object:  User [PHX]    Script Date: 03/02/2010 13:08:45 ******/
-CREATE USER [PHX] FOR LOGIN [PHX] WITH DEFAULT_SCHEMA=[dbo]
-GO
-/****** Object:  User [NTLSV]    Script Date: 03/02/2010 13:08:45 ******/
-CREATE USER [NTLSV] FOR LOGIN [NTLSV] WITH DEFAULT_SCHEMA=[dbo]
-GO
-/****** Object:  User [MAD]    Script Date: 03/02/2010 13:08:45 ******/
-CREATE USER [MAD] FOR LOGIN [MAD] WITH DEFAULT_SCHEMA=[dbo]
-GO
-/****** Object:  User [ims_new4]    Script Date: 03/02/2010 13:08:45 ******/
-CREATE USER [ims_new4] FOR LOGIN [ims_new4] WITH DEFAULT_SCHEMA=[dbo]
-GO
-/****** Object:  User [ICS]    Script Date: 03/02/2010 13:08:45 ******/
-CREATE USER [ICS] FOR LOGIN [ICS] WITH DEFAULT_SCHEMA=[dbo]
-GO
-/****** Object:  User [GP]    Script Date: 03/02/2010 13:08:45 ******/
-CREATE USER [GP] FOR LOGIN [GP] WITH DEFAULT_SCHEMA=[dbo]
-GO
-/****** Object:  User [ECMS]    Script Date: 03/02/2010 13:08:45 ******/
-CREATE USER [ECMS] FOR LOGIN [ECMS] WITH DEFAULT_SCHEMA=[dbo]
-GO
-/****** Object:  User [DYNSA]    Script Date: 03/02/2010 13:08:45 ******/
-CREATE USER [DYNSA] FOR LOGIN [DYNSA] WITH DEFAULT_SCHEMA=[dbo]
-GO
-/****** Object:  User [crystal]    Script Date: 03/02/2010 13:08:45 ******/
-CREATE USER [crystal] FOR LOGIN [crystal] WITH DEFAULT_SCHEMA=[dbo]
-GO
-/****** Object:  User [CIMN]    Script Date: 03/02/2010 13:08:45 ******/
-CREATE USER [CIMN] FOR LOGIN [CIMN] WITH DEFAULT_SCHEMA=[dbo]
-GO
-/****** Object:  User [CILLC]    Script Date: 03/02/2010 13:08:45 ******/
-CREATE USER [CILLC] FOR LOGIN [CILLC] WITH DEFAULT_SCHEMA=[dbo]
-GO
-/****** Object:  User [CIINC]    Script Date: 03/02/2010 13:08:45 ******/
-CREATE USER [CIINC] FOR LOGIN [CIINC] WITH DEFAULT_SCHEMA=[dbo]
-GO
-/****** Object:  User [ALABM]    Script Date: 03/02/2010 13:08:45 ******/
-CREATE USER [ALABM] FOR LOGIN [ALABM] WITH DEFAULT_SCHEMA=[dbo]
-GO
-/****** Object:  User [AIA]    Script Date: 03/02/2010 13:08:45 ******/
-CREATE USER [AIA] FOR LOGIN [AIA] WITH DEFAULT_SCHEMA=[dbo]
-GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_CREDIT_REPORT]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_CREDIT_REPORT]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -58,7 +16,7 @@ select @sqlStmt = @sqlStmt + 'SELECT dbo.SOP30200.SOPNUMBE, dbo.SOP30200.CUSTNMB
 WHERE     (dbo.SOP30200.SOPTYPE = 4)'
 exec sp_executesql @sqlStmt
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_AMEX_PENDING]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_AMEX_PENDING]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -75,7 +33,7 @@ FROM         SOP10100 INNER JOIN
 WHERE     (SOP10100.BACHNUMB LIKE ''AMPR%'')'
 exec sp_executesql @sqlStmt
 GO
-/****** Object:  UserDefinedFunction [dbo].[sp_varchar20_to_number]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  UserDefinedFunction [dbo].[sp_varchar20_to_number]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -111,7 +69,7 @@ RETURN @result
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_AGING]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_AGING]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -242,7 +200,7 @@ drop table #tbl2
 drop table #tbl3
 drop table #tbl4
 GO
-/****** Object:  UserDefinedFunction [dbo].[getShortName]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  UserDefinedFunction [dbo].[getShortName]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS OFF
 GO
 SET QUOTED_IDENTIFIER OFF
@@ -263,7 +221,7 @@ else
 return @result
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[getSortName]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  UserDefinedFunction [dbo].[getSortName]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS OFF
 GO
 SET QUOTED_IDENTIFIER OFF
@@ -284,7 +242,7 @@ else
 return @result
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[truncateDate]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  UserDefinedFunction [dbo].[truncateDate]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER OFF
@@ -295,7 +253,7 @@ BEGIN
 return convert(datetime, convert(varchar, @val, 101))
 END
 GO
-/****** Object:  StoredProcedure [dbo].[track_waitstats]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  StoredProcedure [dbo].[track_waitstats]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS OFF
 GO
 SET QUOTED_IDENTIFIER OFF
@@ -305,7 +263,7 @@ CREATE PROCEDURE [dbo].[track_waitstats] AS
 IF EXISTS (SELECT 1 FROM sysobjects WHERE name = 'track_waitstats' AND type = 'P')
    DROP proc track_waitstats
 GO
-/****** Object:  StoredProcedure [dbo].[sp_reorder_req_no]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  StoredProcedure [dbo].[sp_reorder_req_no]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -382,7 +340,7 @@ DEALLOCATE @req
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_OpenOrderReport]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_OpenOrderReport]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -458,7 +416,7 @@ where r.request_type_code = 'quote_request'
 
 return
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_QualityPerformanceReport]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_QualityPerformanceReport]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -609,7 +567,7 @@ from #tmpData
 
 return
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_AR_UNBILLED_REPORT]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_AR_UNBILLED_REPORT]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -643,7 +601,7 @@ inner join ' + @company + '..GL00100 on ' + @company + '..IV00101.IVSLSIDX = ' +
 exec sp_executesql @sqlStmt 
 --print @sqlStmt
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_JobEfficiencyReport]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_JobEfficiencyReport]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -773,7 +731,7 @@ from (--break out into inline view to calculate variances
 
 return
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_JobCostReport]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_JobCostReport]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -902,7 +860,7 @@ from (--break out into inline view to calculate variances
 
 return
 GO
-/****** Object:  UserDefinedFunction [dbo].[fn_StringToFloat]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  UserDefinedFunction [dbo].[fn_StringToFloat]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -931,7 +889,7 @@ BEGIN
    RETURN(@string)
 END
 GO
-/****** Object:  StoredProcedure [dbo].[convert_date_to_time]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  StoredProcedure [dbo].[convert_date_to_time]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS OFF
 GO
 SET QUOTED_IDENTIFIER OFF
@@ -944,7 +902,75 @@ AS
 SELECT @result = convert(varchar, @date)
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[sp_estimator]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  Trigger [role_d]    Script Date: 05/03/2010 14:18:11 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE TRIGGER [dbo].[role_d] ON [dbo].[ROLES] 
+FOR  DELETE 
+AS
+DECLARE @role_id as numeric;
+
+SELECT @role_id = role_id FROM deleted
+DELETE FROM role_function_rights WHERE role_id = @role_id;
+GO
+/****** Object:  StoredProcedure [dbo].[sp_aia_end_user]    Script Date: 05/03/2010 14:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_aia_end_user]
+AS
+BEGIN
+
+DECLARE @customer_id numeric(18,0)
+DECLARE @ext_customer_id char(15)
+DECLARE @end_user_type_id numeric(18,0)
+DECLARE @c1 CURSOR
+
+SET @c1 = CURSOR FAST_FORWARD
+FOR
+
+select DISTINCT c.customer_id, c.ext_customer_id 
+  from customers eu JOIN
+       customers c ON eu.ext_dealer_id = c.ext_customer_id           
+ where eu.organization_id=8 
+   and c.organization_id = 8
+   and eu.customer_type_id=738
+   and ISNULL(eu.end_user_parent_id,0) <> c.customer_id
+ and c.customer_type_id=80
+ and c.ext_customer_id is not null
+ORDER BY c.ext_customer_id
+   
+SET @end_user_type_id 
+= (SELECT l.lookup_id 
+     FROM lookups l INNER JOIN lookup_types lt ON l.lookup_type_id=lt.lookup_type_id
+    WHERE lt.code='customer_type' AND l.code='end_user')
+
+OPEN @c1
+FETCH NEXT FROM @c1 INTO @customer_id,@ext_customer_id
+
+WHILE @@FETCH_STATUS=0
+BEGIN
+  UPDATE customers 
+     SET end_user_parent_id=@customer_id,
+         date_modified=getdate(),
+         modified_by=0
+   WHERE customer_type_id = @end_user_type_id
+     AND ext_dealer_id = @ext_customer_id
+     AND organization_id=8
+     AND end_user_parent_id <> @customer_id
+     
+  FETCH NEXT FROM @c1  INTO @customer_id,@ext_customer_id
+END
+
+CLOSE @c1
+DEALLOCATE @c1
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_estimator]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1221,62 +1247,659 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_aia_end_user]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE PROCEDURE [dbo].[sp_aia_end_user]
+CREATE PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM]
 AS
-BEGIN
+set nocount on
 
-DECLARE @customer_id numeric(18,0)
-DECLARE @ext_customer_id char(15)
-DECLARE @end_user_type_id numeric(18,0)
-DECLARE @c1 CURSOR
+declare @tbl TABLE (
+	[TYPE] char(255),
+	[ORGANIZATION_ID] [numeric] (19,0),
+	[CUSTOMER_NAME] varchar(255) ,
+	[UnbilledDollars] [numeric](19, 5) ,
+	[AvgDaySales] [numeric](19, 5),
+	[DSO] [numeric](19, 5)
+) 
 
-SET @c1 = CURSOR FAST_FORWARD
-FOR
+/* Find number of days to divide unbilled $'s by.  Always done by 28 day time periods
+   numdays is calculated as a failsafe if daily data capture missed a day, therefore the count
+   would not include that day
+*/
+declare @numdays int, @begdate datetime, @enddate datetime
+select @numdays=0
+select @begdate = CAST(FLOOR(CAST(getdate()-28 AS FLOAT))AS DATETIME)
+select @enddate = CAST(FLOOR(CAST(getdate()-1 AS FLOAT))AS DATETIME)
+select @numdays=count(*) from (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+	where DATEREPORTRUN <= @enddate and DATEREPORTRUN >= @begdate) a
 
-select DISTINCT c.customer_id, c.ext_customer_id 
-  from customers eu JOIN
-       customers c ON eu.ext_dealer_id = c.ext_customer_id           
- where eu.organization_id=8 
-   and c.organization_id = 8
-   and eu.customer_type_id=738
-   and ISNULL(eu.end_user_parent_id,0) <> c.customer_id
- and c.customer_type_id=80
- and c.ext_customer_id is not null
-ORDER BY c.ext_customer_id
-   
-SET @end_user_type_id 
-= (SELECT l.lookup_id 
-     FROM lookups l INNER JOIN lookup_types lt ON l.lookup_type_id=lt.lookup_type_id
-    WHERE lt.code='customer_type' AND l.code='end_user')
+/* avoid divide by zero error (no data in dailydatacapture)*/
+if @numdays <= 0 goto endprocess
 
-OPEN @c1
-FETCH NEXT FROM @c1 INTO @customer_id,@ext_customer_id
+declare @customer varchar(255),
+				@ORG_ID numeric(19,0),
+				@JOB_NO varchar(255),
+				@sumBillable numeric(19,5),
+				@sumNonBillable numeric(19,5),
+				@sumPooledTotal numeric(19,5),
+				@sumUnbilledOpsInvoices numeric(19,5),
+				@salesTotal numeric(19,5),
+				@unbilledGrandTotal numeric(19,5),
+				@DSOTotal numeric(19,5)
 
-WHILE @@FETCH_STATUS=0
-BEGIN
-  UPDATE customers 
-     SET end_user_parent_id=@customer_id,
-         date_modified=getdate(),
-         modified_by=0
-   WHERE customer_type_id = @end_user_type_id
-     AND ext_dealer_id = @ext_customer_id
-     AND organization_id=8
-     AND end_user_parent_id <> @customer_id
-     
-  FETCH NEXT FROM @c1  INTO @customer_id,@ext_customer_id
-END
+select @ORG_ID=2
 
-CLOSE @c1
-DEALLOCATE @c1
+declare C_Cursor CURSOR for select DISTINCT CUSTOMER_NAME from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) where ORGANIZATION_ID=@ORG_ID order by CUSTOMER_NAME asc
+OPEN C_Cursor
+FETCH NEXT FROM C_Cursor INTO @customer
+WHILE (@@FETCH_STATUS <> -1)
+begin /*Find the totals for this particular customer and organization for this 28 day time period */
+	select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate 
 
-END
+		select @sumPooledTotal=sum(PooledTotal)/@numdays from
+		(select bill_job_id,PooledTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate
+		GROUP BY BILL_JOB_ID,PooledTotal) a 
+
+		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
+		(select bill_job_id,UnbilledOpsInvoicesTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate
+		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
+
+	/*Total sales average for the number of days specified by @numdays */
+	select @salesTotal=sum(DOCAMNT)/@numdays from (
+	SELECT    ltrim(rtrim(str(INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,EXT_DEALER_ID,EXT_CUSTOMER_ID,CUSTOMER_NAME,a.ORGANIZATION_ID
+	FROM         IMS_NEW..INVOICES a LEFT OUTER JOIN CUSTOMERS b on a.BILL_CUSTOMER_ID=b.CUSTOMER_ID
+	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4
+	) a
+	INNER JOIN
+	(
+	select case 
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
+	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
+	END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
+	select CASE SOPTYPE 
+				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
+				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
+				 ELSE ''
+				 END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR 
+	from AMBIM..SOP30200 
+	where DOCDATE between @begdate and @enddate ) x
+	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID
+/* This was the old way of calculating avg sales over 28 day period from servicee trax only 
+	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs WITH (NOLOCK) on jobs.JOB_NO=service_lines.BILL_JOB_NO 
+		inner join CUSTOMERS WITH (NOLOCK) on JOBS.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID and BILLED_FLAG='Y' and SERVICE_LINE_DATE 
+		in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) 
+
+		where DATEREPORTRUN between @begdate and @enddate) and CUSTOMER_NAME=@customer 
+		and service_lines.ORGANIZATION_ID=@ORG_ID
+*/
+	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
+	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
+	begin
+		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
+	end
+	insert into @tbl values('Unbilled OPs',@ORG_ID,@customer,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
+	/* clear the variables for the next loop */
+	select @customer='',@JOB_NO='',@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
+			@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
+	FETCH NEXT FROM C_Cursor INTO @customer
+end
+DEALLOCATE C_Cursor
+
+declare @name varchar(255),
+		@userID int
+
+declare C_Cursor CURSOR for select rtrim(FIRST_NAME) + ' ' + rtrim(LAST_NAME) fullName,USER_ID
+ from USERS WITH (NOLOCK) union
+	select 'UNKNOWN USER','-999'
+OPEN C_Cursor
+FETCH NEXT FROM C_Cursor INTO @name,@userID
+WHILE (@@FETCH_STATUS <> -1)
+begin /*Find the totals for this particular customer and organization for this 28 day time period */
+select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+
+		select @sumPooledTotal=sum(PooledTotal)/@numdays from
+		(select bill_job_id,PooledTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+		GROUP BY BILL_JOB_ID,PooledTotal) a 
+
+		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
+		(select bill_job_id,UnbilledOpsInvoicesTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
+
+	/*Total sales average for the number of days specified by @numdays for user*/
+	select @salesTotal=sum(DOCAMNT)/@numdays from (
+	SELECT    ltrim(rtrim(str(a.INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,a.ORGANIZATION_ID,b.BILLING_USER_ID
+	FROM         IMS_NEW..INVOICES a left outer join JOBS b on a.JOB_ID=b.JOB_ID
+	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4 
+	) a
+	INNER JOIN
+	(
+	select case 
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
+	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
+	END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
+	select CASE SOPTYPE 
+				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
+				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
+				 ELSE ''
+				 END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from AMBIM..SOP30200 
+	where DOCDATE between @begdate and @enddate ) x
+	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where BILLING_USER_ID=@userID
+/* This was the old way of calculating avg sales over 28 day period from service trax only
+	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs_v WITH (NOLOCK) on jobs_v.JOB_NO=service_lines.BILL_JOB_NO
+		inner join CUSTOMERS WITH (NOLOCK) on JOBS_V.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID
+		and SERVICE_LINE_DATE in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where DATEREPORTRUN between @begdate and @enddate)	and BILLING_USER_ID=@resid 
+*/
+	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
+	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
+	begin
+		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
+	end
+	if @unbilledGrandTotal <> 0 
+	begin	
+		insert into @tbl values('Projects',999,@name,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
+	end
+	/* clear the variables for the next loop */
+	select @name='',@userID=-1,@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
+				@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
+	FETCH NEXT FROM C_Cursor INTO @name,@userID
+end
+DEALLOCATE C_Cursor
+
+/*Query for all Unbilled Accounting Items (Pending and Complete)
+SELECT sum(iv.custom_line_total) custom_tot, sum(iv.bill_hourly_total) hours_total, sum(iv.bill_exp_total) exp_tot, iv.ext_batch_id, iv.assigned_to_name, iv.job_no, iv.job_id, iv.batch_status_id, ibs.name batch_status_name,
+						sum(iv.bill_total + iv.custom_line_total) total_tot, iv.invoice_id_trk, iv.invoice_id, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.invoice_format_type_name, iv.po_no, iv.invoice_date_created
+		FROM invoice_pre_total_v iv, invoice_batch_statuses ibs
+		WHERE iv.batch_status_id = ibs.status_id
+		AND iv.invoice_status_id in (2,3) --Pending and Complete
+		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name
+		ORDER BY iv.invoice_id
+*/
+insert into @tbl select 'Unbilled Accounting',iv.ORGANIZATION_ID,customer_name,sum(iv.bill_total + iv.custom_line_total) total_tot,0,0
+		FROM invoice_pre_total_v iv WITH (NOLOCK), invoice_batch_statuses ibs WITH (NOLOCK)
+		WHERE iv.batch_status_id = ibs.status_id
+		AND iv.invoice_status_id in (2,3) --Pending and Complete
+		and iv.ORGANIZATION_ID=@ORG_ID
+		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name, iv.ORGANIZATION_ID
+		ORDER BY iv.invoice_id
+
+select  TYPE,b.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,b.NAME from @tbl a 
+INNER JOIN (SELECT ORGANIZATION_ID,NAME FROM ORGANIZATIONS
+UNION ALL
+SELECT '999', 'PROJECTS') b on a.organization_id=b.organization_id
+--select  TYPE,ORGANIZATIONS.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,NAME from @tbl a
+--left outer join ORGANIZATIONS on ORGANIZATIONS.ORGANIZATION_ID=a.ORGANIZATION_ID
+
+--drop table @tbl
+
+endprocess:
+
+--exec sp_CRYSTAL_UNBILLED_REPORT_AMBIM
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM_SALESNUMBERS]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AIA]    Script Date: 05/03/2010 14:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AIA]
+AS
+set nocount on
+
+declare @tbl TABLE (
+	[TYPE] char(255),
+	[ORGANIZATION_ID] [numeric] (19,0),
+	[CUSTOMER_NAME] varchar(255) ,
+	[UnbilledDollars] [numeric](19, 5) ,
+	[AvgDaySales] [numeric](19, 5),
+	[DSO] [numeric](19, 5)
+) 
+
+/* Find number of days to divide unbilled $'s by.  Always done by 28 day time periods
+   numdays is calculated as a failsafe if daily data capture missed a day, therefore the count
+   would not include that day
+*/
+declare @numdays int, @begdate datetime, @enddate datetime
+select @numdays=0
+select @begdate = CAST(FLOOR(CAST(getdate()-28 AS FLOAT))AS DATETIME)
+select @enddate = CAST(FLOOR(CAST(getdate()-1 AS FLOAT))AS DATETIME)
+select @numdays=count(*) from (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+	where DATEREPORTRUN <= @enddate and DATEREPORTRUN >= @begdate) a
+
+/* avoid divide by zero error (no data in dailydatacapture)*/
+if @numdays <= 0 goto endprocess
+
+declare @customer varchar(255),
+				@ORG_ID numeric(19,0),
+				@JOB_NO varchar(255),
+				@sumBillable numeric(19,5),
+				@sumNonBillable numeric(19,5),
+				@sumPooledTotal numeric(19,5),
+				@sumUnbilledOpsInvoices numeric(19,5),
+				@salesTotal numeric(19,5),
+				@unbilledGrandTotal numeric(19,5),
+				@DSOTotal numeric(19,5)
+
+select @ORG_ID=8
+
+declare C_Cursor CURSOR for select DISTINCT CUSTOMER_NAME from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) where ORGANIZATION_ID=@ORG_ID order by CUSTOMER_NAME asc
+OPEN C_Cursor
+FETCH NEXT FROM C_Cursor INTO @customer
+WHILE (@@FETCH_STATUS <> -1)
+begin /*Find the totals for this particular customer and organization for this 28 day time period */
+	select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate 
+
+		select @sumPooledTotal=sum(PooledTotal)/@numdays from
+		(select bill_job_id,PooledTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate
+		GROUP BY BILL_JOB_ID,PooledTotal) a 
+
+		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
+		(select bill_job_id,UnbilledOpsInvoicesTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate
+		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
+
+	/*Total sales average for the number of days specified by @numdays */
+	select @salesTotal=sum(DOCAMNT)/@numdays from (
+	SELECT    ltrim(rtrim(str(INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,EXT_DEALER_ID,EXT_CUSTOMER_ID,CUSTOMER_NAME,a.ORGANIZATION_ID
+	FROM         IMS_NEW..INVOICES a LEFT OUTER JOIN CUSTOMERS b on a.BILL_CUSTOMER_ID=b.CUSTOMER_ID
+	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4
+	) a
+	INNER JOIN
+	(
+	select case 
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
+	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
+	END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
+	select CASE SOPTYPE 
+				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
+				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
+				 ELSE ''
+				 END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR 
+	from AIA..SOP30200 
+	where DOCDATE between @begdate and @enddate ) x
+	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID
+/* This was the old way of calculating avg sales over 28 day period from servicee trax only 
+	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs WITH (NOLOCK) on jobs.JOB_NO=service_lines.BILL_JOB_NO 
+		inner join CUSTOMERS WITH (NOLOCK) on JOBS.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID and BILLED_FLAG='Y' and SERVICE_LINE_DATE 
+		in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) 
+
+		where DATEREPORTRUN between @begdate and @enddate) and CUSTOMER_NAME=@customer 
+		and service_lines.ORGANIZATION_ID=@ORG_ID
+*/
+	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
+	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
+	begin
+		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
+	end
+	insert into @tbl values('Unbilled OPs',@ORG_ID,@customer,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
+	/* clear the variables for the next loop */
+	select @customer='',@JOB_NO='',@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
+			@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
+	FETCH NEXT FROM C_Cursor INTO @customer
+end
+DEALLOCATE C_Cursor
+
+declare @name varchar(255),
+		@userID int
+
+declare C_Cursor CURSOR for select rtrim(FIRST_NAME) + ' ' + rtrim(LAST_NAME) fullName,USER_ID
+ from USERS WITH (NOLOCK) union
+	select 'UNKNOWN USER','-999'
+OPEN C_Cursor
+FETCH NEXT FROM C_Cursor INTO @name,@userID
+WHILE (@@FETCH_STATUS <> -1)
+begin /*Find the totals for this particular customer and organization for this 28 day time period */
+select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+
+		select @sumPooledTotal=sum(PooledTotal)/@numdays from
+		(select bill_job_id,PooledTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+		GROUP BY BILL_JOB_ID,PooledTotal) a 
+
+		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
+		(select bill_job_id,UnbilledOpsInvoicesTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
+
+	/*Total sales average for the number of days specified by @numdays for user*/
+	select @salesTotal=sum(DOCAMNT)/@numdays from (
+	SELECT    ltrim(rtrim(str(a.INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,a.ORGANIZATION_ID,b.BILLING_USER_ID
+	FROM         IMS_NEW..INVOICES a left outer join JOBS b on a.JOB_ID=b.JOB_ID
+	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4 
+	) a
+	INNER JOIN
+	(
+	select case 
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
+	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
+	END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
+	select CASE SOPTYPE 
+				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
+				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
+				 ELSE ''
+				 END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from AIA..SOP30200 
+	where DOCDATE between @begdate and @enddate ) x
+	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where BILLING_USER_ID=@userID
+/* This was the old way of calculating avg sales over 28 day period from service trax only
+	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs_v WITH (NOLOCK) on jobs_v.JOB_NO=service_lines.BILL_JOB_NO
+		inner join CUSTOMERS WITH (NOLOCK) on JOBS_V.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID
+		and SERVICE_LINE_DATE in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where DATEREPORTRUN between @begdate and @enddate)	and BILLING_USER_ID=@resid 
+*/
+	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
+	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
+	begin
+		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
+	end
+	if @unbilledGrandTotal <> 0 
+	begin	
+		insert into @tbl values('Projects',999,@name,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
+	end
+	/* clear the variables for the next loop */
+	select @name='',@userID=-1,@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
+				@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
+	FETCH NEXT FROM C_Cursor INTO @name,@userID
+end
+DEALLOCATE C_Cursor
+
+/*Query for all Unbilled Accounting Items (Pending and Complete)
+SELECT sum(iv.custom_line_total) custom_tot, sum(iv.bill_hourly_total) hours_total, sum(iv.bill_exp_total) exp_tot, iv.ext_batch_id, iv.assigned_to_name, iv.job_no, iv.job_id, iv.batch_status_id, ibs.name batch_status_name,
+						sum(iv.bill_total + iv.custom_line_total) total_tot, iv.invoice_id_trk, iv.invoice_id, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.invoice_format_type_name, iv.po_no, iv.invoice_date_created
+		FROM invoice_pre_total_v iv, invoice_batch_statuses ibs
+		WHERE iv.batch_status_id = ibs.status_id
+		AND iv.invoice_status_id in (2,3) --Pending and Complete
+		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name
+		ORDER BY iv.invoice_id
+*/
+insert into @tbl select 'Unbilled Accounting',iv.ORGANIZATION_ID,customer_name,sum(iv.bill_total + iv.custom_line_total) total_tot,0,0
+		FROM invoice_pre_total_v iv WITH (NOLOCK), invoice_batch_statuses ibs WITH (NOLOCK)
+		WHERE iv.batch_status_id = ibs.status_id
+		AND iv.invoice_status_id in (2,3) --Pending and Complete
+		and iv.ORGANIZATION_ID=@ORG_ID
+		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name, iv.ORGANIZATION_ID
+		ORDER BY iv.invoice_id
+
+select  TYPE,b.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,b.NAME from @tbl a 
+INNER JOIN (SELECT ORGANIZATION_ID,NAME FROM ORGANIZATIONS
+UNION ALL
+SELECT '999', 'PROJECTS') b on a.organization_id=b.organization_id
+--select  TYPE,ORGANIZATIONS.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,NAME from @tbl a
+--left outer join ORGANIZATIONS on ORGANIZATIONS.ORGANIZATION_ID=a.ORGANIZATION_ID
+
+--drop table @tbl
+
+endprocess:
+
+--exec sp_CRYSTAL_UNBILLED_REPORT_AIA
+GO
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM_DATERANGE]
+	@begdate datetime, @enddate datetime
+AS
+set nocount on
+
+declare @tbl TABLE (
+	[TYPE] char(255),
+	[ORGANIZATION_ID] [numeric] (19,0),
+	[CUSTOMER_NAME] varchar(255) ,
+	[UnbilledDollars] [numeric](19, 5) ,
+	[AvgDaySales] [numeric](19, 5),
+	[DSO] [numeric](19, 5)
+) 
+
+/* Find number of days to divide unbilled $'s by.  Always done by 28 day time periods*/
+declare @numdays int
+select @numdays=0
+select @begdate=CAST(FLOOR(CAST(@begdate AS FLOAT))AS DATETIME)
+select @enddate=CAST(FLOOR(CAST(@enddate AS FLOAT))AS DATETIME)
+select @numdays=count(*) from (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+	where DATEREPORTRUN <= @enddate and DATEREPORTRUN >= @begdate) a
+
+/* avoid divide by zero error (no data in dailydatacapture)*/
+if @numdays <= 0 goto endprocess
+
+declare @customer varchar(255),
+				@ORG_ID numeric(19,0),
+				@JOB_NO varchar(255),
+				@sumBillable numeric(19,5),
+				@sumNonBillable numeric(19,5),
+				@sumPooledTotal numeric(19,5),
+				@sumUnbilledOpsInvoices numeric(19,5),
+				@salesTotal numeric(19,5),
+				@unbilledGrandTotal numeric(19,5),
+				@DSOTotal numeric(19,5)
+
+select @ORG_ID=2
+
+declare C_Cursor CURSOR for select DISTINCT CUSTOMER_NAME from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) where ORGANIZATION_ID=@ORG_ID order by CUSTOMER_NAME asc
+OPEN C_Cursor
+FETCH NEXT FROM C_Cursor INTO @customer
+WHILE (@@FETCH_STATUS <> -1)
+begin /*Find the totals for this particular customer and organization for this 28 day time period */
+	select @sumBillable=sum(billable_total)/@numdays
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate 
+
+		select @sumPooledTotal=sum(PooledTotal)/@numdays from
+		(select bill_job_id,PooledTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate
+		GROUP BY BILL_JOB_ID,PooledTotal) a 
+
+		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
+		(select bill_job_id,UnbilledOpsInvoicesTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate
+		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
+
+	/*Total sales average for the number of days specified by @numdays */
+	select @salesTotal=sum(DOCAMNT)/@numdays from (
+	SELECT    ltrim(rtrim(str(INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,EXT_DEALER_ID,EXT_CUSTOMER_ID,CUSTOMER_NAME,a.ORGANIZATION_ID
+	FROM         IMS_NEW..INVOICES a LEFT OUTER JOIN CUSTOMERS b on a.BILL_CUSTOMER_ID=b.CUSTOMER_ID
+	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4
+	) a
+	INNER JOIN
+	(
+	select case 
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
+	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
+	END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
+	select CASE SOPTYPE 
+				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
+				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
+				 ELSE ''
+				 END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR 
+	from AMBIM..SOP30200 
+	where DOCDATE between @begdate and @enddate ) x
+	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID
+/* This was the old way of calculating avg sales over 28 day period from servicee trax only 
+	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs WITH (NOLOCK) on jobs.JOB_NO=service_lines.BILL_JOB_NO 
+		inner join CUSTOMERS WITH (NOLOCK) on JOBS.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID and BILLED_FLAG='Y' and SERVICE_LINE_DATE 
+		in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) 
+
+		where DATEREPORTRUN between @begdate and @enddate) and CUSTOMER_NAME=@customer 
+		and service_lines.ORGANIZATION_ID=@ORG_ID
+*/
+	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
+	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
+	begin
+		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
+	end
+	insert into @tbl values('Unbilled OPs',@ORG_ID,@customer,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
+	/* clear the variables for the next loop */
+	select @customer='',@JOB_NO='',@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
+			@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
+	FETCH NEXT FROM C_Cursor INTO @customer
+end
+DEALLOCATE C_Cursor
+
+declare @name varchar(255),
+		@userID int
+
+declare C_Cursor CURSOR for select rtrim(FIRST_NAME) + ' ' + rtrim(LAST_NAME) fullName,USER_ID
+ from USERS WITH (NOLOCK) union
+	select 'UNKNOWN USER','-999'
+OPEN C_Cursor
+FETCH NEXT FROM C_Cursor INTO @name,@userID
+WHILE (@@FETCH_STATUS <> -1)
+begin /*Find the totals for this particular customer and organization for this 28 day time period */
+select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+
+		select @sumPooledTotal=sum(PooledTotal)/@numdays from
+		(select bill_job_id,PooledTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+		GROUP BY BILL_JOB_ID,PooledTotal) a 
+
+		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
+		(select bill_job_id,UnbilledOpsInvoicesTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
+
+	/*Total sales average for the number of days specified by @numdays for user*/
+	select @salesTotal=sum(DOCAMNT)/@numdays from (
+	SELECT    ltrim(rtrim(str(a.INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,a.ORGANIZATION_ID,b.BILLING_USER_ID
+	FROM         IMS_NEW..INVOICES a left outer join JOBS b on a.JOB_ID=b.JOB_ID
+	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4 
+	) a
+	INNER JOIN
+	(
+	select case 
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
+	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
+	END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
+	select CASE SOPTYPE 
+				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
+				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
+				 ELSE ''
+				 END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from AMBIM..SOP30200 
+	where DOCDATE between @begdate and @enddate ) x
+	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where BILLING_USER_ID=@userID
+/* This was the old way of calculating avg sales over 28 day period from service trax only
+	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs_v WITH (NOLOCK) on jobs_v.JOB_NO=service_lines.BILL_JOB_NO
+		inner join CUSTOMERS WITH (NOLOCK) on JOBS_V.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID
+		and SERVICE_LINE_DATE in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where DATEREPORTRUN between @begdate and @enddate)	and BILLING_USER_ID=@resid 
+*/
+	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
+	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
+	begin
+		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
+	end
+	if @unbilledGrandTotal <> 0 
+	begin	
+		insert into @tbl values('Projects',999,@name,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
+	end
+	/* clear the variables for the next loop */
+	select @name='',@userID=-1,@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
+				@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
+	FETCH NEXT FROM C_Cursor INTO @name,@userID
+end
+DEALLOCATE C_Cursor
+
+/*Query for all Unbilled Accounting Items (Pending and Complete)
+SELECT sum(iv.custom_line_total) custom_tot, sum(iv.bill_hourly_total) hours_total, sum(iv.bill_exp_total) exp_tot, iv.ext_batch_id, iv.assigned_to_name, iv.job_no, iv.job_id, iv.batch_status_id, ibs.name batch_status_name,
+						sum(iv.bill_total + iv.custom_line_total) total_tot, iv.invoice_id_trk, iv.invoice_id, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.invoice_format_type_name, iv.po_no, iv.invoice_date_created
+		FROM invoice_pre_total_v iv, invoice_batch_statuses ibs
+		WHERE iv.batch_status_id = ibs.status_id
+		AND iv.invoice_status_id in (2,3) --Pending and Complete
+		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name
+		ORDER BY iv.invoice_id
+*/
+insert into @tbl select 'Unbilled Accounting',iv.ORGANIZATION_ID,customer_name,sum(iv.bill_total + iv.custom_line_total) total_tot,0,0
+		FROM invoice_pre_total_v iv WITH (NOLOCK), invoice_batch_statuses ibs WITH (NOLOCK)
+		WHERE iv.batch_status_id = ibs.status_id
+		AND iv.invoice_status_id in (2,3) --Pending and Complete
+		and iv.ORGANIZATION_ID=@ORG_ID
+		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name, iv.ORGANIZATION_ID
+		ORDER BY iv.invoice_id
+
+select  TYPE,b.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,b.NAME from @tbl a 
+INNER JOIN (SELECT ORGANIZATION_ID,NAME FROM ORGANIZATIONS
+UNION ALL
+SELECT '999', 'PROJECTS') b on a.organization_id=b.organization_id
+--select  TYPE,ORGANIZATIONS.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,NAME from @tbl a
+--left outer join ORGANIZATIONS on ORGANIZATIONS.ORGANIZATION_ID=a.ORGANIZATION_ID
+
+--drop table @tbl
+
+endprocess:
+
+--exec sp_CRYSTAL_UNBILLED_REPORT_AMBIM_DATERANGE
+GO
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM_SALESNUMBERS]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1319,7 +1942,441 @@ select @numdays as NumberOfDays,@begdate as BeginDate,@enddate as EndDate,* from
 	where DOCDATE between @begdate and @enddate ) x
 	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where  ORGANIZATION_ID=2
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM_DEALERNUMBER_DATERANGE]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIINC]    Script Date: 05/03/2010 14:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIINC]
+AS
+set nocount on
+
+declare @tbl TABLE (
+	[TYPE] char(255),
+	[ORGANIZATION_ID] [numeric] (19,0),
+	[CUSTOMER_NAME] varchar(255) ,
+	[UnbilledDollars] [numeric](19, 5) ,
+	[AvgDaySales] [numeric](19, 5),
+	[DSO] [numeric](19, 5)
+) 
+
+/* Find number of days to divide unbilled $'s by.  Always done by 28 day time periods
+   numdays is calculated as a failsafe if daily data capture missed a day, therefore the count
+   would not include that day
+*/
+declare @numdays int, @begdate datetime, @enddate datetime
+select @numdays=0
+select @begdate = CAST(FLOOR(CAST(getdate()-28 AS FLOAT))AS DATETIME)
+select @enddate = CAST(FLOOR(CAST(getdate()-1 AS FLOAT))AS DATETIME)
+select @numdays=count(*) from (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+	where DATEREPORTRUN <= @enddate and DATEREPORTRUN >= @begdate) a
+
+/* avoid divide by zero error (no data in dailydatacapture)*/
+if @numdays <= 0 goto endprocess
+
+declare @customer varchar(255),
+				@ORG_ID numeric(19,0),
+				@JOB_NO varchar(255),
+				@sumBillable numeric(19,5),
+				@sumNonBillable numeric(19,5),
+				@sumPooledTotal numeric(19,5),
+				@sumUnbilledOpsInvoices numeric(19,5),
+				@salesTotal numeric(19,5),
+				@unbilledGrandTotal numeric(19,5),
+				@DSOTotal numeric(19,5)
+
+select @ORG_ID=10
+
+declare C_Cursor CURSOR for select DISTINCT CUSTOMER_NAME from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) where ORGANIZATION_ID=@ORG_ID order by CUSTOMER_NAME asc
+OPEN C_Cursor
+FETCH NEXT FROM C_Cursor INTO @customer
+WHILE (@@FETCH_STATUS <> -1)
+begin /*Find the totals for this particular customer and organization for this 28 day time period */
+	select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate 
+
+		select @sumPooledTotal=sum(PooledTotal)/@numdays from
+		(select bill_job_id,PooledTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate
+		GROUP BY BILL_JOB_ID,PooledTotal) a 
+
+		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
+		(select bill_job_id,UnbilledOpsInvoicesTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate
+		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
+
+	/*Total sales average for the number of days specified by @numdays */
+	select @salesTotal=sum(DOCAMNT)/@numdays from (
+	SELECT    ltrim(rtrim(str(INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,EXT_DEALER_ID,EXT_CUSTOMER_ID,CUSTOMER_NAME,a.ORGANIZATION_ID
+	FROM         IMS_NEW..INVOICES a LEFT OUTER JOIN CUSTOMERS b on a.BILL_CUSTOMER_ID=b.CUSTOMER_ID
+	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4
+	) a
+	INNER JOIN
+	(
+	select case right(rtrim(SERVICE_TRAX_INVOICEID),1)
+	WHEN '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
+	WHEN '0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
+	WHEN 'C' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* CM-0XXX */
+	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
+	END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
+	select CASE SOPTYPE 
+				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
+				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
+				 ELSE ''
+				 END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR 
+	from CIINC..SOP30200 
+	where DOCDATE between @begdate and @enddate ) x
+	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID
+/* This was the old way of calculating avg sales over 28 day period from servicee trax only 
+	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs WITH (NOLOCK) on jobs.JOB_NO=service_lines.BILL_JOB_NO 
+		inner join CUSTOMERS WITH (NOLOCK) on JOBS.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID and BILLED_FLAG='Y' and SERVICE_LINE_DATE 
+		in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) 
+
+		where DATEREPORTRUN between @begdate and @enddate) and CUSTOMER_NAME=@customer 
+		and service_lines.ORGANIZATION_ID=@ORG_ID
+*/
+	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
+	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
+	begin
+		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
+	end
+	insert into @tbl values('Unbilled OPs',@ORG_ID,@customer,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
+	/* clear the variables for the next loop */
+	select @customer='',@JOB_NO='',@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
+			@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
+	FETCH NEXT FROM C_Cursor INTO @customer
+end
+DEALLOCATE C_Cursor
+
+declare @name varchar(255),
+		@userID int
+
+declare C_Cursor CURSOR for select rtrim(FIRST_NAME) + ' ' + rtrim(LAST_NAME) fullName,USER_ID
+ from USERS WITH (NOLOCK) union
+	select 'UNKNOWN USER','-999'
+OPEN C_Cursor
+FETCH NEXT FROM C_Cursor INTO @name,@userID
+WHILE (@@FETCH_STATUS <> -1)
+begin /*Find the totals for this particular customer and organization for this 28 day time period */
+select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+
+		select @sumPooledTotal=sum(PooledTotal)/@numdays from
+		(select bill_job_id,PooledTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+		GROUP BY BILL_JOB_ID,PooledTotal) a 
+
+		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
+		(select bill_job_id,UnbilledOpsInvoicesTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
+
+	/*Total sales average for the number of days specified by @numdays for user*/
+	select @salesTotal=sum(DOCAMNT)/@numdays from (
+	SELECT    ltrim(rtrim(str(a.INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,a.ORGANIZATION_ID,b.BILLING_USER_ID
+	FROM         IMS_NEW..INVOICES a left outer join JOBS b on a.JOB_ID=b.JOB_ID
+	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4 
+	) a
+	INNER JOIN
+	(
+	select case right(rtrim(SERVICE_TRAX_INVOICEID),1)
+	WHEN '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
+	WHEN '0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
+	WHEN 'C' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* CM-0XXX */
+	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
+	END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
+	select CASE SOPTYPE 
+				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
+				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
+				 ELSE ''
+				 END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from CIINC..SOP30200 
+	where DOCDATE between @begdate and @enddate ) x
+	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where BILLING_USER_ID=@userID
+/* This was the old way of calculating avg sales over 28 day period from service trax only
+	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs_v WITH (NOLOCK) on jobs_v.JOB_NO=service_lines.BILL_JOB_NO
+		inner join CUSTOMERS WITH (NOLOCK) on JOBS_V.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID
+		and SERVICE_LINE_DATE in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where DATEREPORTRUN between @begdate and @enddate)	and BILLING_USER_ID=@resid 
+*/
+	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
+	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
+	begin
+		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
+	end
+	if @unbilledGrandTotal <> 0 
+	begin	
+		insert into @tbl values('Projects',999,@name,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
+	end
+	/* clear the variables for the next loop */
+	select @name='',@userID=-1,@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
+				@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
+	FETCH NEXT FROM C_Cursor INTO @name,@userID
+end
+DEALLOCATE C_Cursor
+
+/*Query for all Unbilled Accounting Items (Pending and Complete)
+SELECT sum(iv.custom_line_total) custom_tot, sum(iv.bill_hourly_total) hours_total, sum(iv.bill_exp_total) exp_tot, iv.ext_batch_id, iv.assigned_to_name, iv.job_no, iv.job_id, iv.batch_status_id, ibs.name batch_status_name,
+						sum(iv.bill_total + iv.custom_line_total) total_tot, iv.invoice_id_trk, iv.invoice_id, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.invoice_format_type_name, iv.po_no, iv.invoice_date_created
+		FROM invoice_pre_total_v iv, invoice_batch_statuses ibs
+		WHERE iv.batch_status_id = ibs.status_id
+		AND iv.invoice_status_id in (2,3) --Pending and Complete
+		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name
+		ORDER BY iv.invoice_id
+*/
+insert into @tbl select 'Unbilled Accounting',iv.ORGANIZATION_ID,customer_name,sum(iv.bill_total + iv.custom_line_total) total_tot,0,0
+		FROM invoice_pre_total_v iv WITH (NOLOCK), invoice_batch_statuses ibs WITH (NOLOCK)
+		WHERE iv.batch_status_id = ibs.status_id
+		AND iv.invoice_status_id in (2,3) --Pending and Complete
+		and iv.ORGANIZATION_ID=@ORG_ID
+		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name, iv.ORGANIZATION_ID
+		ORDER BY iv.invoice_id
+
+select  TYPE,b.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,b.NAME from @tbl a 
+INNER JOIN (SELECT ORGANIZATION_ID,NAME FROM ORGANIZATIONS
+UNION ALL
+SELECT '999', 'PROJECTS') b on a.organization_id=b.organization_id
+--select  TYPE,ORGANIZATIONS.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,NAME from @tbl a
+--left outer join ORGANIZATIONS on ORGANIZATIONS.ORGANIZATION_ID=a.ORGANIZATION_ID
+
+--drop table @tbl
+
+endprocess:
+
+--exec sp_CRYSTAL_UNBILLED_REPORT_CIINC
+GO
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_ICS_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_ICS_DATERANGE]
+	@begdate datetime, @enddate datetime
+AS
+set nocount on
+
+declare @tbl TABLE (
+	[TYPE] char(255),
+	[ORGANIZATION_ID] [numeric] (19,0),
+	[CUSTOMER_NAME] varchar(255) ,
+	[UnbilledDollars] [numeric](19, 5) ,
+	[AvgDaySales] [numeric](19, 5),
+	[DSO] [numeric](19, 5)
+) 
+
+/* Find number of days to divide unbilled $'s by.  Always done by 28 day time periods*/
+declare @numdays int
+select @numdays=0
+select @begdate=CAST(FLOOR(CAST(@begdate AS FLOAT))AS DATETIME)
+select @enddate=CAST(FLOOR(CAST(@enddate AS FLOAT))AS DATETIME)
+select @numdays=count(*) from (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+	where DATEREPORTRUN <= @enddate and DATEREPORTRUN >= @begdate) a
+
+/* avoid divide by zero error (no data in dailydatacapture)*/
+if @numdays <= 0 goto endprocess
+
+declare @customer varchar(255),
+				@ORG_ID numeric(19,0),
+				@JOB_NO varchar(255),
+				@sumBillable numeric(19,5),
+				@sumNonBillable numeric(19,5),
+				@sumPooledTotal numeric(19,5),
+				@sumUnbilledOpsInvoices numeric(19,5),
+				@salesTotal numeric(19,5),
+				@unbilledGrandTotal numeric(19,5),
+				@DSOTotal numeric(19,5)
+
+select @ORG_ID=12
+
+declare C_Cursor CURSOR for select DISTINCT CUSTOMER_NAME from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) where ORGANIZATION_ID=@ORG_ID order by CUSTOMER_NAME asc
+OPEN C_Cursor
+FETCH NEXT FROM C_Cursor INTO @customer
+WHILE (@@FETCH_STATUS <> -1)
+begin /*Find the totals for this particular customer and organization for this 28 day time period */
+	select @sumBillable=sum(billable_total)/@numdays
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate 
+
+		select @sumPooledTotal=sum(PooledTotal)/@numdays from
+		(select bill_job_id,PooledTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate
+		GROUP BY BILL_JOB_ID,PooledTotal) a 
+
+		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
+		(select bill_job_id,UnbilledOpsInvoicesTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate
+		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
+
+	/*Total sales average for the number of days specified by @numdays */
+	select @salesTotal=sum(DOCAMNT)/@numdays from (
+	SELECT    ltrim(rtrim(str(INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,EXT_DEALER_ID,EXT_CUSTOMER_ID,CUSTOMER_NAME,a.ORGANIZATION_ID
+	FROM         IMS_NEW..INVOICES a LEFT OUTER JOIN CUSTOMERS b on a.BILL_CUSTOMER_ID=b.CUSTOMER_ID
+	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4
+	) a
+	INNER JOIN
+	(
+	select case 
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
+	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
+	END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
+	select CASE SOPTYPE 
+				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
+				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
+				 ELSE ''
+				 END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR 
+	from ICS..SOP30200 
+	where DOCDATE between @begdate and @enddate ) x
+	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID
+/* This was the old way of calculating avg sales over 28 day period from servicee trax only 
+	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs WITH (NOLOCK) on jobs.JOB_NO=service_lines.BILL_JOB_NO 
+		inner join CUSTOMERS WITH (NOLOCK) on JOBS.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID and BILLED_FLAG='Y' and SERVICE_LINE_DATE 
+		in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) 
+
+		where DATEREPORTRUN between @begdate and @enddate) and CUSTOMER_NAME=@customer 
+		and service_lines.ORGANIZATION_ID=@ORG_ID
+*/
+	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
+	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
+	begin
+		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
+	end
+	insert into @tbl values('Unbilled OPs',@ORG_ID,@customer,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
+	/* clear the variables for the next loop */
+	select @customer='',@JOB_NO='',@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
+			@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
+	FETCH NEXT FROM C_Cursor INTO @customer
+end
+DEALLOCATE C_Cursor
+
+declare @name varchar(255),
+		@userID int
+
+declare C_Cursor CURSOR for select rtrim(FIRST_NAME) + ' ' + rtrim(LAST_NAME) fullName,USER_ID
+ from USERS WITH (NOLOCK) union
+	select 'UNKNOWN USER','-999'
+OPEN C_Cursor
+FETCH NEXT FROM C_Cursor INTO @name,@userID
+WHILE (@@FETCH_STATUS <> -1)
+begin /*Find the totals for this particular customer and organization for this 28 day time period */
+select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+
+		select @sumPooledTotal=sum(PooledTotal)/@numdays from
+		(select bill_job_id,PooledTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+		GROUP BY BILL_JOB_ID,PooledTotal) a 
+
+		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
+		(select bill_job_id,UnbilledOpsInvoicesTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
+
+	/*Total sales average for the number of days specified by @numdays for user*/
+	select @salesTotal=sum(DOCAMNT)/@numdays from (
+	SELECT    ltrim(rtrim(str(a.INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,a.ORGANIZATION_ID,b.BILLING_USER_ID
+	FROM         IMS_NEW..INVOICES a left outer join JOBS b on a.JOB_ID=b.JOB_ID
+	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4 
+	) a
+	INNER JOIN
+	(
+	select case 
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
+	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
+	END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
+	select CASE SOPTYPE 
+				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
+				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
+				 ELSE ''
+				 END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from ICS..SOP30200 
+	where DOCDATE between @begdate and @enddate ) x
+	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where BILLING_USER_ID=@userID
+/* This was the old way of calculating avg sales over 28 day period from service trax only
+	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs_v WITH (NOLOCK) on jobs_v.JOB_NO=service_lines.BILL_JOB_NO
+		inner join CUSTOMERS WITH (NOLOCK) on JOBS_V.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID
+		and SERVICE_LINE_DATE in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where DATEREPORTRUN between @begdate and @enddate)	and BILLING_USER_ID=@resid 
+*/
+	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
+	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
+	begin
+		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
+	end
+	if @unbilledGrandTotal <> 0 
+	begin	
+		insert into @tbl values('Projects',999,@name,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
+	end
+	/* clear the variables for the next loop */
+	select @name='',@userID=-1,@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
+				@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
+	FETCH NEXT FROM C_Cursor INTO @name,@userID
+end
+DEALLOCATE C_Cursor
+
+/*Query for all Unbilled Accounting Items (Pending and Complete)
+SELECT sum(iv.custom_line_total) custom_tot, sum(iv.bill_hourly_total) hours_total, sum(iv.bill_exp_total) exp_tot, iv.ext_batch_id, iv.assigned_to_name, iv.job_no, iv.job_id, iv.batch_status_id, ibs.name batch_status_name,
+						sum(iv.bill_total + iv.custom_line_total) total_tot, iv.invoice_id_trk, iv.invoice_id, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.invoice_format_type_name, iv.po_no, iv.invoice_date_created
+		FROM invoice_pre_total_v iv, invoice_batch_statuses ibs
+		WHERE iv.batch_status_id = ibs.status_id
+		AND iv.invoice_status_id in (2,3) --Pending and Complete
+		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name
+		ORDER BY iv.invoice_id
+*/
+insert into @tbl select 'Unbilled Accounting',iv.ORGANIZATION_ID,customer_name,sum(iv.bill_total + iv.custom_line_total) total_tot,0,0
+		FROM invoice_pre_total_v iv WITH (NOLOCK), invoice_batch_statuses ibs WITH (NOLOCK)
+		WHERE iv.batch_status_id = ibs.status_id
+		AND iv.invoice_status_id in (2,3) --Pending and Complete
+		and iv.ORGANIZATION_ID=@ORG_ID
+		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name, iv.ORGANIZATION_ID
+		ORDER BY iv.invoice_id
+
+select  TYPE,b.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,b.NAME from @tbl a 
+INNER JOIN (SELECT ORGANIZATION_ID,NAME FROM ORGANIZATIONS
+UNION ALL
+SELECT '999', 'PROJECTS') b on a.organization_id=b.organization_id
+--select  TYPE,ORGANIZATIONS.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,NAME from @tbl a
+--left outer join ORGANIZATIONS on ORGANIZATIONS.ORGANIZATION_ID=a.ORGANIZATION_ID
+
+--drop table @tbl
+
+endprocess:
+
+--exec sp_CRYSTAL_UNBILLED_REPORT_ICS_DATERANGE
+GO
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM_DEALERNUMBER_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1544,1799 +2601,7 @@ endprocess:
 
 --exec sp_CRYSTAL_UNBILLED_REPORT_AMBIM_DATERANGE
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIINC]    Script Date: 03/02/2010 13:08:54 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIINC]
-AS
-set nocount on
-
-declare @tbl TABLE (
-	[TYPE] char(255),
-	[ORGANIZATION_ID] [numeric] (19,0),
-	[CUSTOMER_NAME] varchar(255) ,
-	[UnbilledDollars] [numeric](19, 5) ,
-	[AvgDaySales] [numeric](19, 5),
-	[DSO] [numeric](19, 5)
-) 
-
-/* Find number of days to divide unbilled $'s by.  Always done by 28 day time periods
-   numdays is calculated as a failsafe if daily data capture missed a day, therefore the count
-   would not include that day
-*/
-declare @numdays int, @begdate datetime, @enddate datetime
-select @numdays=0
-select @begdate = CAST(FLOOR(CAST(getdate()-28 AS FLOAT))AS DATETIME)
-select @enddate = CAST(FLOOR(CAST(getdate()-1 AS FLOAT))AS DATETIME)
-select @numdays=count(*) from (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-	where DATEREPORTRUN <= @enddate and DATEREPORTRUN >= @begdate) a
-
-/* avoid divide by zero error (no data in dailydatacapture)*/
-if @numdays <= 0 goto endprocess
-
-declare @customer varchar(255),
-				@ORG_ID numeric(19,0),
-				@JOB_NO varchar(255),
-				@sumBillable numeric(19,5),
-				@sumNonBillable numeric(19,5),
-				@sumPooledTotal numeric(19,5),
-				@sumUnbilledOpsInvoices numeric(19,5),
-				@salesTotal numeric(19,5),
-				@unbilledGrandTotal numeric(19,5),
-				@DSOTotal numeric(19,5)
-
-select @ORG_ID=10
-
-declare C_Cursor CURSOR for select DISTINCT CUSTOMER_NAME from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) where ORGANIZATION_ID=@ORG_ID order by CUSTOMER_NAME asc
-OPEN C_Cursor
-FETCH NEXT FROM C_Cursor INTO @customer
-WHILE (@@FETCH_STATUS <> -1)
-begin /*Find the totals for this particular customer and organization for this 28 day time period */
-	select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate 
-
-		select @sumPooledTotal=sum(PooledTotal)/@numdays from
-		(select bill_job_id,PooledTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate
-		GROUP BY BILL_JOB_ID,PooledTotal) a 
-
-		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
-		(select bill_job_id,UnbilledOpsInvoicesTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate
-		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
-
-	/*Total sales average for the number of days specified by @numdays */
-	select @salesTotal=sum(DOCAMNT)/@numdays from (
-	SELECT    ltrim(rtrim(str(INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,EXT_DEALER_ID,EXT_CUSTOMER_ID,CUSTOMER_NAME,a.ORGANIZATION_ID
-	FROM         IMS_NEW..INVOICES a LEFT OUTER JOIN CUSTOMERS b on a.BILL_CUSTOMER_ID=b.CUSTOMER_ID
-	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4
-	) a
-	INNER JOIN
-	(
-	select case right(rtrim(SERVICE_TRAX_INVOICEID),1)
-	WHEN '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
-	WHEN '0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
-	WHEN 'C' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* CM-0XXX */
-	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
-	END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
-	select CASE SOPTYPE 
-				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
-				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
-				 ELSE ''
-				 END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR 
-	from CIINC..SOP30200 
-	where DOCDATE between @begdate and @enddate ) x
-	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID
-/* This was the old way of calculating avg sales over 28 day period from servicee trax only 
-	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs WITH (NOLOCK) on jobs.JOB_NO=service_lines.BILL_JOB_NO 
-		inner join CUSTOMERS WITH (NOLOCK) on JOBS.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID and BILLED_FLAG='Y' and SERVICE_LINE_DATE 
-		in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) 
-
-		where DATEREPORTRUN between @begdate and @enddate) and CUSTOMER_NAME=@customer 
-		and service_lines.ORGANIZATION_ID=@ORG_ID
-*/
-	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
-	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
-	begin
-		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
-	end
-	insert into @tbl values('Unbilled OPs',@ORG_ID,@customer,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
-	/* clear the variables for the next loop */
-	select @customer='',@JOB_NO='',@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
-			@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
-	FETCH NEXT FROM C_Cursor INTO @customer
-end
-DEALLOCATE C_Cursor
-
-declare @name varchar(255),
-		@userID int
-
-declare C_Cursor CURSOR for select rtrim(FIRST_NAME) + ' ' + rtrim(LAST_NAME) fullName,USER_ID
- from USERS WITH (NOLOCK) union
-	select 'UNKNOWN USER','-999'
-OPEN C_Cursor
-FETCH NEXT FROM C_Cursor INTO @name,@userID
-WHILE (@@FETCH_STATUS <> -1)
-begin /*Find the totals for this particular customer and organization for this 28 day time period */
-select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-
-		select @sumPooledTotal=sum(PooledTotal)/@numdays from
-		(select bill_job_id,PooledTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-		GROUP BY BILL_JOB_ID,PooledTotal) a 
-
-		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
-		(select bill_job_id,UnbilledOpsInvoicesTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
-
-	/*Total sales average for the number of days specified by @numdays for user*/
-	select @salesTotal=sum(DOCAMNT)/@numdays from (
-	SELECT    ltrim(rtrim(str(a.INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,a.ORGANIZATION_ID,b.BILLING_USER_ID
-	FROM         IMS_NEW..INVOICES a left outer join JOBS b on a.JOB_ID=b.JOB_ID
-	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4 
-	) a
-	INNER JOIN
-	(
-	select case right(rtrim(SERVICE_TRAX_INVOICEID),1)
-	WHEN '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
-	WHEN '0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
-	WHEN 'C' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* CM-0XXX */
-	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
-	END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
-	select CASE SOPTYPE 
-				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
-				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
-				 ELSE ''
-				 END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from CIINC..SOP30200 
-	where DOCDATE between @begdate and @enddate ) x
-	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where BILLING_USER_ID=@userID
-/* This was the old way of calculating avg sales over 28 day period from service trax only
-	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs_v WITH (NOLOCK) on jobs_v.JOB_NO=service_lines.BILL_JOB_NO
-		inner join CUSTOMERS WITH (NOLOCK) on JOBS_V.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID
-		and SERVICE_LINE_DATE in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where DATEREPORTRUN between @begdate and @enddate)	and BILLING_USER_ID=@resid 
-*/
-	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
-	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
-	begin
-		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
-	end
-	if @unbilledGrandTotal <> 0 
-	begin	
-		insert into @tbl values('Projects',999,@name,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
-	end
-	/* clear the variables for the next loop */
-	select @name='',@userID=-1,@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
-				@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
-	FETCH NEXT FROM C_Cursor INTO @name,@userID
-end
-DEALLOCATE C_Cursor
-
-/*Query for all Unbilled Accounting Items (Pending and Complete)
-SELECT sum(iv.custom_line_total) custom_tot, sum(iv.bill_hourly_total) hours_total, sum(iv.bill_exp_total) exp_tot, iv.ext_batch_id, iv.assigned_to_name, iv.job_no, iv.job_id, iv.batch_status_id, ibs.name batch_status_name,
-						sum(iv.bill_total + iv.custom_line_total) total_tot, iv.invoice_id_trk, iv.invoice_id, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.invoice_format_type_name, iv.po_no, iv.invoice_date_created
-		FROM invoice_pre_total_v iv, invoice_batch_statuses ibs
-		WHERE iv.batch_status_id = ibs.status_id
-		AND iv.invoice_status_id in (2,3) --Pending and Complete
-		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name
-		ORDER BY iv.invoice_id
-*/
-insert into @tbl select 'Unbilled Accounting',iv.ORGANIZATION_ID,customer_name,sum(iv.bill_total + iv.custom_line_total) total_tot,0,0
-		FROM invoice_pre_total_v iv WITH (NOLOCK), invoice_batch_statuses ibs WITH (NOLOCK)
-		WHERE iv.batch_status_id = ibs.status_id
-		AND iv.invoice_status_id in (2,3) --Pending and Complete
-		and iv.ORGANIZATION_ID=@ORG_ID
-		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name, iv.ORGANIZATION_ID
-		ORDER BY iv.invoice_id
-
-select  TYPE,b.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,b.NAME from @tbl a 
-INNER JOIN (SELECT ORGANIZATION_ID,NAME FROM ORGANIZATIONS
-UNION ALL
-SELECT '999', 'PROJECTS') b on a.organization_id=b.organization_id
---select  TYPE,ORGANIZATIONS.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,NAME from @tbl a
---left outer join ORGANIZATIONS on ORGANIZATIONS.ORGANIZATION_ID=a.ORGANIZATION_ID
-
---drop table @tbl
-
-endprocess:
-
---exec sp_CRYSTAL_UNBILLED_REPORT_CIINC
-GO
-/****** Object:  StoredProcedure [dbo].[ottSOPIntegrationPrepAll]    Script Date: 03/02/2010 13:08:53 ******/
-SET ANSI_NULLS OFF
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE PROCEDURE [dbo].[ottSOPIntegrationPrepAll]
-	@OrganizationID numeric(18,0)
-AS
-SET NOCOUNT ON
-
-
---DELETE ALL PREVIOUS INTEGRATION DATA
-DELETE FROM ottInvHeaderTEMP_ALL WHERE organization_id=@OrganizationID
-DELETE FROM ottInvLineTEMP_ALL WHERE organization_id=@OrganizationID
---DELETE FROM ottInvTaxesTEMP_ALL WHERE organization_id=@OrganizationID
-
-
---BUILD THE HEADER TABLE
-INSERT INTO ottInvHeaderTEMP_ALL
-	(organization_id, INVOICE_ID, JOB_NO, BILLING_USER_NAME, DOCUMENT_NO, EXT_BATCH_ID, DESCRIPTION, PO_NO, EXT_BILL_CUST_ID, 
-                      SALES_REPS, start_date, end_date, NAME, JOB_NAME, CUSTOMER_NAME, JOB_TYPE_CODE, COST_CODES)
-SELECT @OrganizationID as organization_id, INVOICES.INVOICE_ID, JOBS_V.JOB_NO, JOBS_V.BILLING_USER_NAME, 
-	CAST(INVOICES.INVOICE_ID AS VARCHAR) DOCUMENT_NO, INVOICES.EXT_BATCH_ID,
-	UPPER(INVOICES.GP_DESCRIPTION) DESCRIPTION, INVOICES.PO_NO, RTRIM(INVOICES.EXT_BILL_CUST_ID) EXT_BILL_CUST_ID, 
-	INVOICES.SALES_REPS, 
-	(CASE WHEN JOBS_V.JOB_TYPE_CODE ='service_account' THEN NULL ELSE INVOICES.START_DATE END) start_date, 
-	(CASE WHEN JOBS_V.JOB_TYPE_CODE = 'service_account' THEN NULL ELSE INVOICES.END_DATE END) end_date, 
-	INVOICE_TYPES_V.NAME, UPPER(JOBS_V.JOB_NAME) JOB_NAME, UPPER(JOBS_V.CUSTOMER_NAME) CUSTOMER_NAME, 
-	JOBS_V.JOB_TYPE_CODE,INVOICES.COST_CODES 
-FROM INVOICES, INVOICE_TYPES_V, JOBS_V 
-WHERE INVOICES.INVOICE_TYPE_ID = INVOICE_TYPES_V.LOOKUP_ID AND STATUS_ID = 4 AND BATCH_STATUS_ID = 2 
-	AND INVOICES.JOB_ID = JOBS_V.JOB_ID and invoices.organization_id=@OrganizationID
-
-
---BUILD THE LINES TABLE
-INSERT INTO ottInvLineTEMP_ALL
-	(organization_id, INVOICE_LINE_ID, INVOICE_ID, UNIT_PRICE, QTY, LINE_DESC, EXT_ITEM_ID)
-Select @OrganizationID as organization_id, INVOICE_LINES_V.INVOICE_LINE_ID, INVOICE_LINES_V.INVOICE_ID, INVOICE_LINES_V.UNIT_PRICE, INVOICE_LINES_V.QTY, INVOICE_LINES_V.LINE_DESC, 
-	INVOICE_LINES_V.EXT_ITEM_ID 
-From INVOICE_LINES_V 
-INNER JOIN ottInvHeaderTEMP_ALL ON ottInvHeaderTEMP_ALL.INVOICE_ID = INVOICE_LINES_V.INVOICE_ID
-ORDER BY INVOICE_LINES_V.INVOICE_ID
-
-/*  MAY BE UNNECESSARY - JERRY TO RESPOND
---BUILD TAXES TABLE
-INSERT INTO ottInvTaxesTEMP_ALL
-	(organization_id, INVOICE_ID, Total_tax)
-Select @OrganizationID as organization_id, Taxes_V_Sum.INVOICE_ID,  Taxes_V_Sum.Total_tax
-From Taxes_V_Sum 
-INNER JOIN ottInvHeaderTEMP_ALL ON ottInvHeaderTEMP_ALL.INVOICE_ID = Taxes_V_Sum.INVOICE_ID
-
-*/
-SET NOCOUNT OFF
-GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_ICS_DATERANGE]    Script Date: 03/02/2010 13:08:54 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_ICS_DATERANGE]
-	@begdate datetime, @enddate datetime
-AS
-set nocount on
-
-declare @tbl TABLE (
-	[TYPE] char(255),
-	[ORGANIZATION_ID] [numeric] (19,0),
-	[CUSTOMER_NAME] varchar(255) ,
-	[UnbilledDollars] [numeric](19, 5) ,
-	[AvgDaySales] [numeric](19, 5),
-	[DSO] [numeric](19, 5)
-) 
-
-/* Find number of days to divide unbilled $'s by.  Always done by 28 day time periods*/
-declare @numdays int
-select @numdays=0
-select @begdate=CAST(FLOOR(CAST(@begdate AS FLOAT))AS DATETIME)
-select @enddate=CAST(FLOOR(CAST(@enddate AS FLOAT))AS DATETIME)
-select @numdays=count(*) from (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-	where DATEREPORTRUN <= @enddate and DATEREPORTRUN >= @begdate) a
-
-/* avoid divide by zero error (no data in dailydatacapture)*/
-if @numdays <= 0 goto endprocess
-
-declare @customer varchar(255),
-				@ORG_ID numeric(19,0),
-				@JOB_NO varchar(255),
-				@sumBillable numeric(19,5),
-				@sumNonBillable numeric(19,5),
-				@sumPooledTotal numeric(19,5),
-				@sumUnbilledOpsInvoices numeric(19,5),
-				@salesTotal numeric(19,5),
-				@unbilledGrandTotal numeric(19,5),
-				@DSOTotal numeric(19,5)
-
-select @ORG_ID=12
-
-declare C_Cursor CURSOR for select DISTINCT CUSTOMER_NAME from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) where ORGANIZATION_ID=@ORG_ID order by CUSTOMER_NAME asc
-OPEN C_Cursor
-FETCH NEXT FROM C_Cursor INTO @customer
-WHILE (@@FETCH_STATUS <> -1)
-begin /*Find the totals for this particular customer and organization for this 28 day time period */
-	select @sumBillable=sum(billable_total)/@numdays
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate 
-
-		select @sumPooledTotal=sum(PooledTotal)/@numdays from
-		(select bill_job_id,PooledTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate
-		GROUP BY BILL_JOB_ID,PooledTotal) a 
-
-		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
-		(select bill_job_id,UnbilledOpsInvoicesTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate
-		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
-
-	/*Total sales average for the number of days specified by @numdays */
-	select @salesTotal=sum(DOCAMNT)/@numdays from (
-	SELECT    ltrim(rtrim(str(INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,EXT_DEALER_ID,EXT_CUSTOMER_ID,CUSTOMER_NAME,a.ORGANIZATION_ID
-	FROM         IMS_NEW..INVOICES a LEFT OUTER JOIN CUSTOMERS b on a.BILL_CUSTOMER_ID=b.CUSTOMER_ID
-	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4
-	) a
-	INNER JOIN
-	(
-	select case 
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
-	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
-	END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
-	select CASE SOPTYPE 
-				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
-				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
-				 ELSE ''
-				 END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR 
-	from ICS..SOP30200 
-	where DOCDATE between @begdate and @enddate ) x
-	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID
-/* This was the old way of calculating avg sales over 28 day period from servicee trax only 
-	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs WITH (NOLOCK) on jobs.JOB_NO=service_lines.BILL_JOB_NO 
-		inner join CUSTOMERS WITH (NOLOCK) on JOBS.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID and BILLED_FLAG='Y' and SERVICE_LINE_DATE 
-		in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) 
-
-		where DATEREPORTRUN between @begdate and @enddate) and CUSTOMER_NAME=@customer 
-		and service_lines.ORGANIZATION_ID=@ORG_ID
-*/
-	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
-	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
-	begin
-		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
-	end
-	insert into @tbl values('Unbilled OPs',@ORG_ID,@customer,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
-	/* clear the variables for the next loop */
-	select @customer='',@JOB_NO='',@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
-			@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
-	FETCH NEXT FROM C_Cursor INTO @customer
-end
-DEALLOCATE C_Cursor
-
-declare @name varchar(255),
-		@userID int
-
-declare C_Cursor CURSOR for select rtrim(FIRST_NAME) + ' ' + rtrim(LAST_NAME) fullName,USER_ID
- from USERS WITH (NOLOCK) union
-	select 'UNKNOWN USER','-999'
-OPEN C_Cursor
-FETCH NEXT FROM C_Cursor INTO @name,@userID
-WHILE (@@FETCH_STATUS <> -1)
-begin /*Find the totals for this particular customer and organization for this 28 day time period */
-select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-
-		select @sumPooledTotal=sum(PooledTotal)/@numdays from
-		(select bill_job_id,PooledTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-		GROUP BY BILL_JOB_ID,PooledTotal) a 
-
-		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
-		(select bill_job_id,UnbilledOpsInvoicesTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
-
-	/*Total sales average for the number of days specified by @numdays for user*/
-	select @salesTotal=sum(DOCAMNT)/@numdays from (
-	SELECT    ltrim(rtrim(str(a.INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,a.ORGANIZATION_ID,b.BILLING_USER_ID
-	FROM         IMS_NEW..INVOICES a left outer join JOBS b on a.JOB_ID=b.JOB_ID
-	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4 
-	) a
-	INNER JOIN
-	(
-	select case 
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
-	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
-	END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
-	select CASE SOPTYPE 
-				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
-				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
-				 ELSE ''
-				 END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from ICS..SOP30200 
-	where DOCDATE between @begdate and @enddate ) x
-	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where BILLING_USER_ID=@userID
-/* This was the old way of calculating avg sales over 28 day period from service trax only
-	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs_v WITH (NOLOCK) on jobs_v.JOB_NO=service_lines.BILL_JOB_NO
-		inner join CUSTOMERS WITH (NOLOCK) on JOBS_V.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID
-		and SERVICE_LINE_DATE in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where DATEREPORTRUN between @begdate and @enddate)	and BILLING_USER_ID=@resid 
-*/
-	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
-	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
-	begin
-		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
-	end
-	if @unbilledGrandTotal <> 0 
-	begin	
-		insert into @tbl values('Projects',999,@name,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
-	end
-	/* clear the variables for the next loop */
-	select @name='',@userID=-1,@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
-				@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
-	FETCH NEXT FROM C_Cursor INTO @name,@userID
-end
-DEALLOCATE C_Cursor
-
-/*Query for all Unbilled Accounting Items (Pending and Complete)
-SELECT sum(iv.custom_line_total) custom_tot, sum(iv.bill_hourly_total) hours_total, sum(iv.bill_exp_total) exp_tot, iv.ext_batch_id, iv.assigned_to_name, iv.job_no, iv.job_id, iv.batch_status_id, ibs.name batch_status_name,
-						sum(iv.bill_total + iv.custom_line_total) total_tot, iv.invoice_id_trk, iv.invoice_id, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.invoice_format_type_name, iv.po_no, iv.invoice_date_created
-		FROM invoice_pre_total_v iv, invoice_batch_statuses ibs
-		WHERE iv.batch_status_id = ibs.status_id
-		AND iv.invoice_status_id in (2,3) --Pending and Complete
-		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name
-		ORDER BY iv.invoice_id
-*/
-insert into @tbl select 'Unbilled Accounting',iv.ORGANIZATION_ID,customer_name,sum(iv.bill_total + iv.custom_line_total) total_tot,0,0
-		FROM invoice_pre_total_v iv WITH (NOLOCK), invoice_batch_statuses ibs WITH (NOLOCK)
-		WHERE iv.batch_status_id = ibs.status_id
-		AND iv.invoice_status_id in (2,3) --Pending and Complete
-		and iv.ORGANIZATION_ID=@ORG_ID
-		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name, iv.ORGANIZATION_ID
-		ORDER BY iv.invoice_id
-
-select  TYPE,b.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,b.NAME from @tbl a 
-INNER JOIN (SELECT ORGANIZATION_ID,NAME FROM ORGANIZATIONS
-UNION ALL
-SELECT '999', 'PROJECTS') b on a.organization_id=b.organization_id
---select  TYPE,ORGANIZATIONS.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,NAME from @tbl a
---left outer join ORGANIZATIONS on ORGANIZATIONS.ORGANIZATION_ID=a.ORGANIZATION_ID
-
---drop table @tbl
-
-endprocess:
-
---exec sp_CRYSTAL_UNBILLED_REPORT_ICS_DATERANGE
-GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CILLC_DATERANGE]    Script Date: 03/02/2010 13:08:54 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CILLC_DATERANGE]
-	@begdate datetime, @enddate datetime
-AS
-set nocount on
-
-declare @tbl TABLE (
-	[TYPE] char(255),
-	[ORGANIZATION_ID] [numeric] (19,0),
-	[CUSTOMER_NAME] varchar(255) ,
-	[UnbilledDollars] [numeric](19, 5) ,
-	[AvgDaySales] [numeric](19, 5),
-	[DSO] [numeric](19, 5)
-) 
-
-/* Find number of days to divide unbilled $'s by.  Always done by 28 day time periods*/
-declare @numdays int
-select @numdays=0
-select @begdate=CAST(FLOOR(CAST(@begdate AS FLOAT))AS DATETIME)
-select @enddate=CAST(FLOOR(CAST(@enddate AS FLOAT))AS DATETIME)
-select @numdays=count(*) from (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-	where DATEREPORTRUN <= @enddate and DATEREPORTRUN >= @begdate) a
-
-/* avoid divide by zero error (no data in dailydatacapture)*/
-if @numdays <= 0 goto endprocess
-
-declare @customer varchar(255),
-				@ORG_ID numeric(19,0),
-				@JOB_NO varchar(255),
-				@sumBillable numeric(19,5),
-				@sumNonBillable numeric(19,5),
-				@sumPooledTotal numeric(19,5),
-				@sumUnbilledOpsInvoices numeric(19,5),
-				@salesTotal numeric(19,5),
-				@unbilledGrandTotal numeric(19,5),
-				@DSOTotal numeric(19,5)
-
-select @ORG_ID=11
-
-declare C_Cursor CURSOR for select DISTINCT CUSTOMER_NAME from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) where ORGANIZATION_ID=@ORG_ID order by CUSTOMER_NAME asc
-OPEN C_Cursor
-FETCH NEXT FROM C_Cursor INTO @customer
-WHILE (@@FETCH_STATUS <> -1)
-begin /*Find the totals for this particular customer and organization for this 28 day time period */
-	select @sumBillable=sum(billable_total)/@numdays
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate 
-
-		select @sumPooledTotal=sum(PooledTotal)/@numdays from
-		(select bill_job_id,PooledTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate
-		GROUP BY BILL_JOB_ID,PooledTotal) a 
-
-		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
-		(select bill_job_id,UnbilledOpsInvoicesTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate
-		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
-
-	/*Total sales average for the number of days specified by @numdays */
-	select @salesTotal=sum(DOCAMNT)/@numdays from (
-	SELECT    ltrim(rtrim(str(INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,EXT_DEALER_ID,EXT_CUSTOMER_ID,CUSTOMER_NAME,a.ORGANIZATION_ID
-	FROM         IMS_NEW..INVOICES a LEFT OUTER JOIN CUSTOMERS b on a.BILL_CUSTOMER_ID=b.CUSTOMER_ID
-	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4
-	) a
-	INNER JOIN
-	(
-	select case 
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
-	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
-	END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
-	select CASE SOPTYPE 
-				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
-				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
-				 ELSE ''
-				 END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR 
-	from CILLC..SOP30200 
-	where DOCDATE between @begdate and @enddate ) x
-	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID
-/* This was the old way of calculating avg sales over 28 day period from servicee trax only 
-	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs WITH (NOLOCK) on jobs.JOB_NO=service_lines.BILL_JOB_NO 
-		inner join CUSTOMERS WITH (NOLOCK) on JOBS.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID and BILLED_FLAG='Y' and SERVICE_LINE_DATE 
-		in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) 
-
-		where DATEREPORTRUN between @begdate and @enddate) and CUSTOMER_NAME=@customer 
-		and service_lines.ORGANIZATION_ID=@ORG_ID
-*/
-	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
-	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
-	begin
-		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
-	end
-	insert into @tbl values('Unbilled OPs',@ORG_ID,@customer,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
-	/* clear the variables for the next loop */
-	select @customer='',@JOB_NO='',@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
-			@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
-	FETCH NEXT FROM C_Cursor INTO @customer
-end
-DEALLOCATE C_Cursor
-
-declare @name varchar(255),
-		@userID int
-
-declare C_Cursor CURSOR for select rtrim(FIRST_NAME) + ' ' + rtrim(LAST_NAME) fullName,USER_ID
- from USERS WITH (NOLOCK) union
-	select 'UNKNOWN USER','-999'
-OPEN C_Cursor
-FETCH NEXT FROM C_Cursor INTO @name,@userID
-WHILE (@@FETCH_STATUS <> -1)
-begin /*Find the totals for this particular customer and organization for this 28 day time period */
-select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-
-		select @sumPooledTotal=sum(PooledTotal)/@numdays from
-		(select bill_job_id,PooledTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-		GROUP BY BILL_JOB_ID,PooledTotal) a 
-
-		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
-		(select bill_job_id,UnbilledOpsInvoicesTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
-
-	/*Total sales average for the number of days specified by @numdays for user*/
-	select @salesTotal=sum(DOCAMNT)/@numdays from (
-	SELECT    ltrim(rtrim(str(a.INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,a.ORGANIZATION_ID,b.BILLING_USER_ID
-	FROM         IMS_NEW..INVOICES a left outer join JOBS b on a.JOB_ID=b.JOB_ID
-	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4 
-	) a
-	INNER JOIN
-	(
-	select case 
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
-	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
-	END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
-	select CASE SOPTYPE 
-				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
-				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
-				 ELSE ''
-				 END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from CILLC..SOP30200 
-	where DOCDATE between @begdate and @enddate ) x
-	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where BILLING_USER_ID=@userID
-/* This was the old way of calculating avg sales over 28 day period from service trax only
-	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs_v WITH (NOLOCK) on jobs_v.JOB_NO=service_lines.BILL_JOB_NO
-		inner join CUSTOMERS WITH (NOLOCK) on JOBS_V.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID
-		and SERVICE_LINE_DATE in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where DATEREPORTRUN between @begdate and @enddate)	and BILLING_USER_ID=@resid 
-*/
-	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
-	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
-	begin
-		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
-	end
-	if @unbilledGrandTotal <> 0 
-	begin	
-		insert into @tbl values('Projects',999,@name,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
-	end
-	/* clear the variables for the next loop */
-	select @name='',@userID=-1,@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
-				@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
-	FETCH NEXT FROM C_Cursor INTO @name,@userID
-end
-DEALLOCATE C_Cursor
-
-/*Query for all Unbilled Accounting Items (Pending and Complete)
-SELECT sum(iv.custom_line_total) custom_tot, sum(iv.bill_hourly_total) hours_total, sum(iv.bill_exp_total) exp_tot, iv.ext_batch_id, iv.assigned_to_name, iv.job_no, iv.job_id, iv.batch_status_id, ibs.name batch_status_name,
-						sum(iv.bill_total + iv.custom_line_total) total_tot, iv.invoice_id_trk, iv.invoice_id, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.invoice_format_type_name, iv.po_no, iv.invoice_date_created
-		FROM invoice_pre_total_v iv, invoice_batch_statuses ibs
-		WHERE iv.batch_status_id = ibs.status_id
-		AND iv.invoice_status_id in (2,3) --Pending and Complete
-		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name
-		ORDER BY iv.invoice_id
-*/
-insert into @tbl select 'Unbilled Accounting',iv.ORGANIZATION_ID,customer_name,sum(iv.bill_total + iv.custom_line_total) total_tot,0,0
-		FROM invoice_pre_total_v iv WITH (NOLOCK), invoice_batch_statuses ibs WITH (NOLOCK)
-		WHERE iv.batch_status_id = ibs.status_id
-		AND iv.invoice_status_id in (2,3) --Pending and Complete
-		and iv.ORGANIZATION_ID=@ORG_ID
-		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name, iv.ORGANIZATION_ID
-		ORDER BY iv.invoice_id
-
-select  TYPE,b.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,b.NAME from @tbl a 
-INNER JOIN (SELECT ORGANIZATION_ID,NAME FROM ORGANIZATIONS
-UNION ALL
-SELECT '999', 'PROJECTS') b on a.organization_id=b.organization_id
---select  TYPE,ORGANIZATIONS.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,NAME from @tbl a
---left outer join ORGANIZATIONS on ORGANIZATIONS.ORGANIZATION_ID=a.ORGANIZATION_ID
-
---drop table @tbl
-
-endprocess:
-
---exec sp_CRYSTAL_UNBILLED_REPORT_CILLC_DATERANGE
-GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIMN]    Script Date: 03/02/2010 13:08:54 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIMN]
-AS
-set nocount on
-
-declare @tbl TABLE (
-	[TYPE] char(255),
-	[ORGANIZATION_ID] [numeric] (19,0),
-	[CUSTOMER_NAME] varchar(255) ,
-	[UnbilledDollars] [numeric](19, 5) ,
-	[AvgDaySales] [numeric](19, 5),
-	[DSO] [numeric](19, 5)
-) 
-
-/* Find number of days to divide unbilled $'s by.  Always done by 28 day time periods
-   numdays is calculated as a failsafe if daily data capture missed a day, therefore the count
-   would not include that day
-*/
-declare @numdays int, @begdate datetime, @enddate datetime
-select @numdays=0
-select @begdate = CAST(FLOOR(CAST(getdate()-28 AS FLOAT))AS DATETIME)
-select @enddate = CAST(FLOOR(CAST(getdate()-1 AS FLOAT))AS DATETIME)
-select @numdays=count(*) from (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-	where DATEREPORTRUN <= @enddate and DATEREPORTRUN >= @begdate) a
-
-/* avoid divide by zero error (no data in dailydatacapture)*/
-if @numdays <= 0 goto endprocess
-
-declare @customer varchar(255),
-				@ORG_ID numeric(19,0),
-				@JOB_NO varchar(255),
-				@sumBillable numeric(19,5),
-				@sumNonBillable numeric(19,5),
-				@sumPooledTotal numeric(19,5),
-				@sumUnbilledOpsInvoices numeric(19,5),
-				@salesTotal numeric(19,5),
-				@unbilledGrandTotal numeric(19,5),
-				@DSOTotal numeric(19,5)
-
-select @ORG_ID=15
-
-declare C_Cursor CURSOR for select DISTINCT CUSTOMER_NAME from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) where ORGANIZATION_ID=@ORG_ID order by CUSTOMER_NAME asc
-OPEN C_Cursor
-FETCH NEXT FROM C_Cursor INTO @customer
-WHILE (@@FETCH_STATUS <> -1)
-begin /*Find the totals for this particular customer and organization for this 28 day time period */
-	select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate 
-
-		select @sumPooledTotal=sum(PooledTotal)/@numdays from
-		(select bill_job_id,PooledTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate
-		GROUP BY BILL_JOB_ID,PooledTotal) a 
-
-		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
-		(select bill_job_id,UnbilledOpsInvoicesTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate
-		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
-
-	/*Total sales average for the number of days specified by @numdays */
-	select @salesTotal=sum(DOCAMNT)/@numdays from (
-	SELECT    ltrim(rtrim(str(INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,EXT_DEALER_ID,EXT_CUSTOMER_ID,CUSTOMER_NAME,a.ORGANIZATION_ID
-	FROM         IMS_NEW..INVOICES a LEFT OUTER JOIN CUSTOMERS b on a.BILL_CUSTOMER_ID=b.CUSTOMER_ID
-	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4
-	) a
-	INNER JOIN
-	(
-	select case 
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
-	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
-	END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
-	select CASE SOPTYPE 
-				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
-				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
-				 ELSE ''
-				 END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR 
-	from CIMN..SOP30200 
-	where DOCDATE between @begdate and @enddate ) x
-	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID
-/* This was the old way of calculating avg sales over 28 day period from servicee trax only 
-	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs WITH (NOLOCK) on jobs.JOB_NO=service_lines.BILL_JOB_NO 
-		inner join CUSTOMERS WITH (NOLOCK) on JOBS.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID and BILLED_FLAG='Y' and SERVICE_LINE_DATE 
-		in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) 
-
-		where DATEREPORTRUN between @begdate and @enddate) and CUSTOMER_NAME=@customer 
-		and service_lines.ORGANIZATION_ID=@ORG_ID
-*/
-	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
-	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
-	begin
-		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
-	end
-	insert into @tbl values('Unbilled OPs',@ORG_ID,@customer,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
-	/* clear the variables for the next loop */
-	select @customer='',@JOB_NO='',@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
-			@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
-	FETCH NEXT FROM C_Cursor INTO @customer
-end
-DEALLOCATE C_Cursor
-
-declare @name varchar(255),
-		@userID int
-
-declare C_Cursor CURSOR for select rtrim(FIRST_NAME) + ' ' + rtrim(LAST_NAME) fullName,USER_ID
- from USERS WITH (NOLOCK) union
-	select 'UNKNOWN USER','-999'
-OPEN C_Cursor
-FETCH NEXT FROM C_Cursor INTO @name,@userID
-WHILE (@@FETCH_STATUS <> -1)
-begin /*Find the totals for this particular customer and organization for this 28 day time period */
-select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-
-		select @sumPooledTotal=sum(PooledTotal)/@numdays from
-		(select bill_job_id,PooledTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-		GROUP BY BILL_JOB_ID,PooledTotal) a 
-
-		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
-		(select bill_job_id,UnbilledOpsInvoicesTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
-
-	/*Total sales average for the number of days specified by @numdays for user*/
-	select @salesTotal=sum(DOCAMNT)/@numdays from (
-	SELECT    ltrim(rtrim(str(a.INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,a.ORGANIZATION_ID,b.BILLING_USER_ID
-	FROM         IMS_NEW..INVOICES a left outer join JOBS b on a.JOB_ID=b.JOB_ID
-	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4 
-	) a
-	INNER JOIN
-	(
-	select case 
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
-	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
-	END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
-	select CASE SOPTYPE 
-				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
-				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
-				 ELSE ''
-				 END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from CIMN..SOP30200 
-	where DOCDATE between @begdate and @enddate ) x
-	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where BILLING_USER_ID=@userID
-/* This was the old way of calculating avg sales over 28 day period from service trax only
-	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs_v WITH (NOLOCK) on jobs_v.JOB_NO=service_lines.BILL_JOB_NO
-		inner join CUSTOMERS WITH (NOLOCK) on JOBS_V.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID
-		and SERVICE_LINE_DATE in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where DATEREPORTRUN between @begdate and @enddate)	and BILLING_USER_ID=@resid 
-*/
-	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
-	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
-	begin
-		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
-	end
-	if @unbilledGrandTotal <> 0 
-	begin	
-		insert into @tbl values('Projects',999,@name,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
-	end
-	/* clear the variables for the next loop */
-	select @name='',@userID=-1,@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
-				@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
-	FETCH NEXT FROM C_Cursor INTO @name,@userID
-end
-DEALLOCATE C_Cursor
-
-/*Query for all Unbilled Accounting Items (Pending and Complete)
-SELECT sum(iv.custom_line_total) custom_tot, sum(iv.bill_hourly_total) hours_total, sum(iv.bill_exp_total) exp_tot, iv.ext_batch_id, iv.assigned_to_name, iv.job_no, iv.job_id, iv.batch_status_id, ibs.name batch_status_name,
-						sum(iv.bill_total + iv.custom_line_total) total_tot, iv.invoice_id_trk, iv.invoice_id, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.invoice_format_type_name, iv.po_no, iv.invoice_date_created
-		FROM invoice_pre_total_v iv, invoice_batch_statuses ibs
-		WHERE iv.batch_status_id = ibs.status_id
-		AND iv.invoice_status_id in (2,3) --Pending and Complete
-		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name
-		ORDER BY iv.invoice_id
-*/
-insert into @tbl select 'Unbilled Accounting',iv.ORGANIZATION_ID,customer_name,sum(iv.bill_total + iv.custom_line_total) total_tot,0,0
-		FROM invoice_pre_total_v iv WITH (NOLOCK), invoice_batch_statuses ibs WITH (NOLOCK)
-		WHERE iv.batch_status_id = ibs.status_id
-		AND iv.invoice_status_id in (2,3) --Pending and Complete
-		and iv.ORGANIZATION_ID=@ORG_ID
-		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name, iv.ORGANIZATION_ID
-		ORDER BY iv.invoice_id
-
-select  TYPE,b.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,b.NAME from @tbl a 
-INNER JOIN (SELECT ORGANIZATION_ID,NAME FROM ORGANIZATIONS
-UNION ALL
-SELECT '999', 'PROJECTS') b on a.organization_id=b.organization_id
---select  TYPE,ORGANIZATIONS.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,NAME from @tbl a
---left outer join ORGANIZATIONS on ORGANIZATIONS.ORGANIZATION_ID=a.ORGANIZATION_ID
-
---drop table @tbl
-
-endprocess:
-
---exec sp_CRYSTAL_UNBILLED_REPORT_CIMN
-GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIMN_DATERANGE]    Script Date: 03/02/2010 13:08:54 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIMN_DATERANGE]
-	@begdate datetime, @enddate datetime
-AS
-set nocount on
-
-declare @tbl TABLE (
-	[TYPE] char(255),
-	[ORGANIZATION_ID] [numeric] (19,0),
-	[CUSTOMER_NAME] varchar(255) ,
-	[UnbilledDollars] [numeric](19, 5) ,
-	[AvgDaySales] [numeric](19, 5),
-	[DSO] [numeric](19, 5)
-) 
-
-/* Find number of days to divide unbilled $'s by.  Always done by 28 day time periods*/
-declare @numdays int
-select @numdays=0
-select @begdate=CAST(FLOOR(CAST(@begdate AS FLOAT))AS DATETIME)
-select @enddate=CAST(FLOOR(CAST(@enddate AS FLOAT))AS DATETIME)
-select @numdays=count(*) from (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-	where DATEREPORTRUN <= @enddate and DATEREPORTRUN >= @begdate) a
-
-/* avoid divide by zero error (no data in dailydatacapture)*/
-if @numdays <= 0 goto endprocess
-
-declare @customer varchar(255),
-				@ORG_ID numeric(19,0),
-				@JOB_NO varchar(255),
-				@sumBillable numeric(19,5),
-				@sumNonBillable numeric(19,5),
-				@sumPooledTotal numeric(19,5),
-				@sumUnbilledOpsInvoices numeric(19,5),
-				@salesTotal numeric(19,5),
-				@unbilledGrandTotal numeric(19,5),
-				@DSOTotal numeric(19,5)
-
-select @ORG_ID=15
-
-declare C_Cursor CURSOR for select DISTINCT CUSTOMER_NAME from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) where ORGANIZATION_ID=@ORG_ID order by CUSTOMER_NAME asc
-OPEN C_Cursor
-FETCH NEXT FROM C_Cursor INTO @customer
-WHILE (@@FETCH_STATUS <> -1)
-begin /*Find the totals for this particular customer and organization for this 28 day time period */
-	select @sumBillable=sum(billable_total)/@numdays
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate 
-
-		select @sumPooledTotal=sum(PooledTotal)/@numdays from
-		(select bill_job_id,PooledTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate
-		GROUP BY BILL_JOB_ID,PooledTotal) a 
-
-		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
-		(select bill_job_id,UnbilledOpsInvoicesTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate
-		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
-
-	/*Total sales average for the number of days specified by @numdays */
-	select @salesTotal=sum(DOCAMNT)/@numdays from (
-	SELECT    ltrim(rtrim(str(INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,EXT_DEALER_ID,EXT_CUSTOMER_ID,CUSTOMER_NAME,a.ORGANIZATION_ID
-	FROM         IMS_NEW..INVOICES a LEFT OUTER JOIN CUSTOMERS b on a.BILL_CUSTOMER_ID=b.CUSTOMER_ID
-	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4
-	) a
-	INNER JOIN
-	(
-	select case 
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
-	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
-	END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
-	select CASE SOPTYPE 
-				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
-				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
-				 ELSE ''
-				 END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR 
-	from CIMN..SOP30200 
-	where DOCDATE between @begdate and @enddate ) x
-	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID
-/* This was the old way of calculating avg sales over 28 day period from servicee trax only 
-	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs WITH (NOLOCK) on jobs.JOB_NO=service_lines.BILL_JOB_NO 
-		inner join CUSTOMERS WITH (NOLOCK) on JOBS.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID and BILLED_FLAG='Y' and SERVICE_LINE_DATE 
-		in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) 
-
-		where DATEREPORTRUN between @begdate and @enddate) and CUSTOMER_NAME=@customer 
-		and service_lines.ORGANIZATION_ID=@ORG_ID
-*/
-	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
-	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
-	begin
-		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
-	end
-	insert into @tbl values('Unbilled OPs',@ORG_ID,@customer,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
-	/* clear the variables for the next loop */
-	select @customer='',@JOB_NO='',@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
-			@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
-	FETCH NEXT FROM C_Cursor INTO @customer
-end
-DEALLOCATE C_Cursor
-
-declare @name varchar(255),
-		@userID int
-
-declare C_Cursor CURSOR for select rtrim(FIRST_NAME) + ' ' + rtrim(LAST_NAME) fullName,USER_ID
- from USERS WITH (NOLOCK) union
-	select 'UNKNOWN USER','-999'
-OPEN C_Cursor
-FETCH NEXT FROM C_Cursor INTO @name,@userID
-WHILE (@@FETCH_STATUS <> -1)
-begin /*Find the totals for this particular customer and organization for this 28 day time period */
-select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-
-		select @sumPooledTotal=sum(PooledTotal)/@numdays from
-		(select bill_job_id,PooledTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-		GROUP BY BILL_JOB_ID,PooledTotal) a 
-
-		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
-		(select bill_job_id,UnbilledOpsInvoicesTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
-
-	/*Total sales average for the number of days specified by @numdays for user*/
-	select @salesTotal=sum(DOCAMNT)/@numdays from (
-	SELECT    ltrim(rtrim(str(a.INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,a.ORGANIZATION_ID,b.BILLING_USER_ID
-	FROM         IMS_NEW..INVOICES a left outer join JOBS b on a.JOB_ID=b.JOB_ID
-	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4 
-	) a
-	INNER JOIN
-	(
-	select case 
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
-	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
-	END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
-	select CASE SOPTYPE 
-				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
-				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
-				 ELSE ''
-				 END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from CIMN..SOP30200 
-	where DOCDATE between @begdate and @enddate ) x
-	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where BILLING_USER_ID=@userID
-/* This was the old way of calculating avg sales over 28 day period from service trax only
-	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs_v WITH (NOLOCK) on jobs_v.JOB_NO=service_lines.BILL_JOB_NO
-		inner join CUSTOMERS WITH (NOLOCK) on JOBS_V.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID
-		and SERVICE_LINE_DATE in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where DATEREPORTRUN between @begdate and @enddate)	and BILLING_USER_ID=@resid 
-*/
-	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
-	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
-	begin
-		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
-	end
-	if @unbilledGrandTotal <> 0 
-	begin	
-		insert into @tbl values('Projects',999,@name,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
-	end
-	/* clear the variables for the next loop */
-	select @name='',@userID=-1,@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
-				@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
-	FETCH NEXT FROM C_Cursor INTO @name,@userID
-end
-DEALLOCATE C_Cursor
-
-/*Query for all Unbilled Accounting Items (Pending and Complete)
-SELECT sum(iv.custom_line_total) custom_tot, sum(iv.bill_hourly_total) hours_total, sum(iv.bill_exp_total) exp_tot, iv.ext_batch_id, iv.assigned_to_name, iv.job_no, iv.job_id, iv.batch_status_id, ibs.name batch_status_name,
-						sum(iv.bill_total + iv.custom_line_total) total_tot, iv.invoice_id_trk, iv.invoice_id, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.invoice_format_type_name, iv.po_no, iv.invoice_date_created
-		FROM invoice_pre_total_v iv, invoice_batch_statuses ibs
-		WHERE iv.batch_status_id = ibs.status_id
-		AND iv.invoice_status_id in (2,3) --Pending and Complete
-		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name
-		ORDER BY iv.invoice_id
-*/
-insert into @tbl select 'Unbilled Accounting',iv.ORGANIZATION_ID,customer_name,sum(iv.bill_total + iv.custom_line_total) total_tot,0,0
-		FROM invoice_pre_total_v iv WITH (NOLOCK), invoice_batch_statuses ibs WITH (NOLOCK)
-		WHERE iv.batch_status_id = ibs.status_id
-		AND iv.invoice_status_id in (2,3) --Pending and Complete
-		and iv.ORGANIZATION_ID=@ORG_ID
-		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name, iv.ORGANIZATION_ID
-		ORDER BY iv.invoice_id
-
-select  TYPE,b.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,b.NAME from @tbl a 
-INNER JOIN (SELECT ORGANIZATION_ID,NAME FROM ORGANIZATIONS
-UNION ALL
-SELECT '999', 'PROJECTS') b on a.organization_id=b.organization_id
---select  TYPE,ORGANIZATIONS.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,NAME from @tbl a
---left outer join ORGANIZATIONS on ORGANIZATIONS.ORGANIZATION_ID=a.ORGANIZATION_ID
-
---drop table @tbl
-
-endprocess:
-
---exec sp_CRYSTAL_UNBILLED_REPORT_CIMN_DATERANGE
-GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_ICS]    Script Date: 03/02/2010 13:08:54 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_ICS]
-AS
-set nocount on
-
-declare @tbl TABLE (
-	[TYPE] char(255),
-	[ORGANIZATION_ID] [numeric] (19,0),
-	[CUSTOMER_NAME] varchar(255) ,
-	[UnbilledDollars] [numeric](19, 5) ,
-	[AvgDaySales] [numeric](19, 5),
-	[DSO] [numeric](19, 5)
-) 
-
-/* Find number of days to divide unbilled $'s by.  Always done by 28 day time periods
-   numdays is calculated as a failsafe if daily data capture missed a day, therefore the count
-   would not include that day
-*/
-declare @numdays int, @begdate datetime, @enddate datetime
-select @numdays=0
-select @begdate = CAST(FLOOR(CAST(getdate()-28 AS FLOAT))AS DATETIME)
-select @enddate = CAST(FLOOR(CAST(getdate()-1 AS FLOAT))AS DATETIME)
-select @numdays=count(*) from (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-	where DATEREPORTRUN <= @enddate and DATEREPORTRUN >= @begdate) a
-
-/* avoid divide by zero error (no data in dailydatacapture)*/
-if @numdays <= 0 goto endprocess
-
-declare @customer varchar(255),
-				@ORG_ID numeric(19,0),
-				@JOB_NO varchar(255),
-				@sumBillable numeric(19,5),
-				@sumNonBillable numeric(19,5),
-				@sumPooledTotal numeric(19,5),
-				@sumUnbilledOpsInvoices numeric(19,5),
-				@salesTotal numeric(19,5),
-				@unbilledGrandTotal numeric(19,5),
-				@DSOTotal numeric(19,5)
-
-select @ORG_ID=12
-
-declare C_Cursor CURSOR for select DISTINCT CUSTOMER_NAME from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) where ORGANIZATION_ID=@ORG_ID order by CUSTOMER_NAME asc
-OPEN C_Cursor
-FETCH NEXT FROM C_Cursor INTO @customer
-WHILE (@@FETCH_STATUS <> -1)
-begin /*Find the totals for this particular customer and organization for this 28 day time period */
-	select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate 
-
-		select @sumPooledTotal=sum(PooledTotal)/@numdays from
-		(select bill_job_id,PooledTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate
-		GROUP BY BILL_JOB_ID,PooledTotal) a 
-
-		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
-		(select bill_job_id,UnbilledOpsInvoicesTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate
-		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
-
-	/*Total sales average for the number of days specified by @numdays */
-	select @salesTotal=sum(DOCAMNT)/@numdays from (
-	SELECT    ltrim(rtrim(str(INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,EXT_DEALER_ID,EXT_CUSTOMER_ID,CUSTOMER_NAME,a.ORGANIZATION_ID
-	FROM         IMS_NEW..INVOICES a LEFT OUTER JOIN CUSTOMERS b on a.BILL_CUSTOMER_ID=b.CUSTOMER_ID
-	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4
-	) a
-	INNER JOIN
-	(
-	select case 
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
-	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
-	END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
-	select CASE SOPTYPE 
-				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
-				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
-				 ELSE ''
-				 END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR 
-	from ICS..SOP30200 
-	where DOCDATE between @begdate and @enddate ) x
-	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID
-/* This was the old way of calculating avg sales over 28 day period from servicee trax only 
-	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs WITH (NOLOCK) on jobs.JOB_NO=service_lines.BILL_JOB_NO 
-		inner join CUSTOMERS WITH (NOLOCK) on JOBS.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID and BILLED_FLAG='Y' and SERVICE_LINE_DATE 
-		in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) 
-
-		where DATEREPORTRUN between @begdate and @enddate) and CUSTOMER_NAME=@customer 
-		and service_lines.ORGANIZATION_ID=@ORG_ID
-*/
-	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
-	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
-	begin
-		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
-	end
-	insert into @tbl values('Unbilled OPs',@ORG_ID,@customer,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
-	/* clear the variables for the next loop */
-	select @customer='',@JOB_NO='',@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
-			@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
-	FETCH NEXT FROM C_Cursor INTO @customer
-end
-DEALLOCATE C_Cursor
-
-declare @name varchar(255),
-		@userID int
-
-declare C_Cursor CURSOR for select rtrim(FIRST_NAME) + ' ' + rtrim(LAST_NAME) fullName,USER_ID
- from USERS WITH (NOLOCK) union
-	select 'UNKNOWN USER','-999'
-OPEN C_Cursor
-FETCH NEXT FROM C_Cursor INTO @name,@userID
-WHILE (@@FETCH_STATUS <> -1)
-begin /*Find the totals for this particular customer and organization for this 28 day time period */
-select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-
-		select @sumPooledTotal=sum(PooledTotal)/@numdays from
-		(select bill_job_id,PooledTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-		GROUP BY BILL_JOB_ID,PooledTotal) a 
-
-		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
-		(select bill_job_id,UnbilledOpsInvoicesTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
-
-	/*Total sales average for the number of days specified by @numdays for user*/
-	select @salesTotal=sum(DOCAMNT)/@numdays from (
-	SELECT    ltrim(rtrim(str(a.INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,a.ORGANIZATION_ID,b.BILLING_USER_ID
-	FROM         IMS_NEW..INVOICES a left outer join JOBS b on a.JOB_ID=b.JOB_ID
-	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4 
-	) a
-	INNER JOIN
-	(
-	select case 
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
-	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
-	END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
-	select CASE SOPTYPE 
-				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
-				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
-				 ELSE ''
-				 END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from ICS..SOP30200 
-	where DOCDATE between @begdate and @enddate ) x
-	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where BILLING_USER_ID=@userID
-/* This was the old way of calculating avg sales over 28 day period from service trax only
-	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs_v WITH (NOLOCK) on jobs_v.JOB_NO=service_lines.BILL_JOB_NO
-		inner join CUSTOMERS WITH (NOLOCK) on JOBS_V.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID
-		and SERVICE_LINE_DATE in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where DATEREPORTRUN between @begdate and @enddate)	and BILLING_USER_ID=@resid 
-*/
-	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
-	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
-	begin
-		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
-	end
-	if @unbilledGrandTotal <> 0 
-	begin	
-		insert into @tbl values('Projects',999,@name,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
-	end
-	/* clear the variables for the next loop */
-	select @name='',@userID=-1,@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
-				@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
-	FETCH NEXT FROM C_Cursor INTO @name,@userID
-end
-DEALLOCATE C_Cursor
-
-/*Query for all Unbilled Accounting Items (Pending and Complete)
-SELECT sum(iv.custom_line_total) custom_tot, sum(iv.bill_hourly_total) hours_total, sum(iv.bill_exp_total) exp_tot, iv.ext_batch_id, iv.assigned_to_name, iv.job_no, iv.job_id, iv.batch_status_id, ibs.name batch_status_name,
-						sum(iv.bill_total + iv.custom_line_total) total_tot, iv.invoice_id_trk, iv.invoice_id, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.invoice_format_type_name, iv.po_no, iv.invoice_date_created
-		FROM invoice_pre_total_v iv, invoice_batch_statuses ibs
-		WHERE iv.batch_status_id = ibs.status_id
-		AND iv.invoice_status_id in (2,3) --Pending and Complete
-		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name
-		ORDER BY iv.invoice_id
-*/
-insert into @tbl select 'Unbilled Accounting',iv.ORGANIZATION_ID,customer_name,sum(iv.bill_total + iv.custom_line_total) total_tot,0,0
-		FROM invoice_pre_total_v iv WITH (NOLOCK), invoice_batch_statuses ibs WITH (NOLOCK)
-		WHERE iv.batch_status_id = ibs.status_id
-		AND iv.invoice_status_id in (2,3) --Pending and Complete
-		and iv.ORGANIZATION_ID=@ORG_ID
-		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name, iv.ORGANIZATION_ID
-		ORDER BY iv.invoice_id
-
-select  TYPE,b.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,b.NAME from @tbl a 
-INNER JOIN (SELECT ORGANIZATION_ID,NAME FROM ORGANIZATIONS
-UNION ALL
-SELECT '999', 'PROJECTS') b on a.organization_id=b.organization_id
---select  TYPE,ORGANIZATIONS.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,NAME from @tbl a
---left outer join ORGANIZATIONS on ORGANIZATIONS.ORGANIZATION_ID=a.ORGANIZATION_ID
-
---drop table @tbl
-
-endprocess:
-
---exec sp_CRYSTAL_UNBILLED_REPORT_ICS
-GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM]    Script Date: 03/02/2010 13:08:53 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM]
-AS
-set nocount on
-
-declare @tbl TABLE (
-	[TYPE] char(255),
-	[ORGANIZATION_ID] [numeric] (19,0),
-	[CUSTOMER_NAME] varchar(255) ,
-	[UnbilledDollars] [numeric](19, 5) ,
-	[AvgDaySales] [numeric](19, 5),
-	[DSO] [numeric](19, 5)
-) 
-
-/* Find number of days to divide unbilled $'s by.  Always done by 28 day time periods
-   numdays is calculated as a failsafe if daily data capture missed a day, therefore the count
-   would not include that day
-*/
-declare @numdays int, @begdate datetime, @enddate datetime
-select @numdays=0
-select @begdate = CAST(FLOOR(CAST(getdate()-28 AS FLOAT))AS DATETIME)
-select @enddate = CAST(FLOOR(CAST(getdate()-1 AS FLOAT))AS DATETIME)
-select @numdays=count(*) from (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-	where DATEREPORTRUN <= @enddate and DATEREPORTRUN >= @begdate) a
-
-/* avoid divide by zero error (no data in dailydatacapture)*/
-if @numdays <= 0 goto endprocess
-
-declare @customer varchar(255),
-				@ORG_ID numeric(19,0),
-				@JOB_NO varchar(255),
-				@sumBillable numeric(19,5),
-				@sumNonBillable numeric(19,5),
-				@sumPooledTotal numeric(19,5),
-				@sumUnbilledOpsInvoices numeric(19,5),
-				@salesTotal numeric(19,5),
-				@unbilledGrandTotal numeric(19,5),
-				@DSOTotal numeric(19,5)
-
-select @ORG_ID=2
-
-declare C_Cursor CURSOR for select DISTINCT CUSTOMER_NAME from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) where ORGANIZATION_ID=@ORG_ID order by CUSTOMER_NAME asc
-OPEN C_Cursor
-FETCH NEXT FROM C_Cursor INTO @customer
-WHILE (@@FETCH_STATUS <> -1)
-begin /*Find the totals for this particular customer and organization for this 28 day time period */
-	select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate 
-
-		select @sumPooledTotal=sum(PooledTotal)/@numdays from
-		(select bill_job_id,PooledTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate
-		GROUP BY BILL_JOB_ID,PooledTotal) a 
-
-		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
-		(select bill_job_id,UnbilledOpsInvoicesTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate
-		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
-
-	/*Total sales average for the number of days specified by @numdays */
-	select @salesTotal=sum(DOCAMNT)/@numdays from (
-	SELECT    ltrim(rtrim(str(INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,EXT_DEALER_ID,EXT_CUSTOMER_ID,CUSTOMER_NAME,a.ORGANIZATION_ID
-	FROM         IMS_NEW..INVOICES a LEFT OUTER JOIN CUSTOMERS b on a.BILL_CUSTOMER_ID=b.CUSTOMER_ID
-	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4
-	) a
-	INNER JOIN
-	(
-	select case 
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
-	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
-	END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
-	select CASE SOPTYPE 
-				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
-				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
-				 ELSE ''
-				 END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR 
-	from AMBIM..SOP30200 
-	where DOCDATE between @begdate and @enddate ) x
-	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID
-/* This was the old way of calculating avg sales over 28 day period from servicee trax only 
-	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs WITH (NOLOCK) on jobs.JOB_NO=service_lines.BILL_JOB_NO 
-		inner join CUSTOMERS WITH (NOLOCK) on JOBS.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID and BILLED_FLAG='Y' and SERVICE_LINE_DATE 
-		in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) 
-
-		where DATEREPORTRUN between @begdate and @enddate) and CUSTOMER_NAME=@customer 
-		and service_lines.ORGANIZATION_ID=@ORG_ID
-*/
-	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
-	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
-	begin
-		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
-	end
-	insert into @tbl values('Unbilled OPs',@ORG_ID,@customer,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
-	/* clear the variables for the next loop */
-	select @customer='',@JOB_NO='',@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
-			@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
-	FETCH NEXT FROM C_Cursor INTO @customer
-end
-DEALLOCATE C_Cursor
-
-declare @name varchar(255),
-		@userID int
-
-declare C_Cursor CURSOR for select rtrim(FIRST_NAME) + ' ' + rtrim(LAST_NAME) fullName,USER_ID
- from USERS WITH (NOLOCK) union
-	select 'UNKNOWN USER','-999'
-OPEN C_Cursor
-FETCH NEXT FROM C_Cursor INTO @name,@userID
-WHILE (@@FETCH_STATUS <> -1)
-begin /*Find the totals for this particular customer and organization for this 28 day time period */
-select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-
-		select @sumPooledTotal=sum(PooledTotal)/@numdays from
-		(select bill_job_id,PooledTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-		GROUP BY BILL_JOB_ID,PooledTotal) a 
-
-		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
-		(select bill_job_id,UnbilledOpsInvoicesTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
-
-	/*Total sales average for the number of days specified by @numdays for user*/
-	select @salesTotal=sum(DOCAMNT)/@numdays from (
-	SELECT    ltrim(rtrim(str(a.INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,a.ORGANIZATION_ID,b.BILLING_USER_ID
-	FROM         IMS_NEW..INVOICES a left outer join JOBS b on a.JOB_ID=b.JOB_ID
-	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4 
-	) a
-	INNER JOIN
-	(
-	select case 
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
-	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
-	END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
-	select CASE SOPTYPE 
-				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
-				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
-				 ELSE ''
-				 END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from AMBIM..SOP30200 
-	where DOCDATE between @begdate and @enddate ) x
-	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where BILLING_USER_ID=@userID
-/* This was the old way of calculating avg sales over 28 day period from service trax only
-	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs_v WITH (NOLOCK) on jobs_v.JOB_NO=service_lines.BILL_JOB_NO
-		inner join CUSTOMERS WITH (NOLOCK) on JOBS_V.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID
-		and SERVICE_LINE_DATE in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where DATEREPORTRUN between @begdate and @enddate)	and BILLING_USER_ID=@resid 
-*/
-	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
-	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
-	begin
-		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
-	end
-	if @unbilledGrandTotal <> 0 
-	begin	
-		insert into @tbl values('Projects',999,@name,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
-	end
-	/* clear the variables for the next loop */
-	select @name='',@userID=-1,@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
-				@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
-	FETCH NEXT FROM C_Cursor INTO @name,@userID
-end
-DEALLOCATE C_Cursor
-
-/*Query for all Unbilled Accounting Items (Pending and Complete)
-SELECT sum(iv.custom_line_total) custom_tot, sum(iv.bill_hourly_total) hours_total, sum(iv.bill_exp_total) exp_tot, iv.ext_batch_id, iv.assigned_to_name, iv.job_no, iv.job_id, iv.batch_status_id, ibs.name batch_status_name,
-						sum(iv.bill_total + iv.custom_line_total) total_tot, iv.invoice_id_trk, iv.invoice_id, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.invoice_format_type_name, iv.po_no, iv.invoice_date_created
-		FROM invoice_pre_total_v iv, invoice_batch_statuses ibs
-		WHERE iv.batch_status_id = ibs.status_id
-		AND iv.invoice_status_id in (2,3) --Pending and Complete
-		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name
-		ORDER BY iv.invoice_id
-*/
-insert into @tbl select 'Unbilled Accounting',iv.ORGANIZATION_ID,customer_name,sum(iv.bill_total + iv.custom_line_total) total_tot,0,0
-		FROM invoice_pre_total_v iv WITH (NOLOCK), invoice_batch_statuses ibs WITH (NOLOCK)
-		WHERE iv.batch_status_id = ibs.status_id
-		AND iv.invoice_status_id in (2,3) --Pending and Complete
-		and iv.ORGANIZATION_ID=@ORG_ID
-		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name, iv.ORGANIZATION_ID
-		ORDER BY iv.invoice_id
-
-select  TYPE,b.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,b.NAME from @tbl a 
-INNER JOIN (SELECT ORGANIZATION_ID,NAME FROM ORGANIZATIONS
-UNION ALL
-SELECT '999', 'PROJECTS') b on a.organization_id=b.organization_id
---select  TYPE,ORGANIZATIONS.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,NAME from @tbl a
---left outer join ORGANIZATIONS on ORGANIZATIONS.ORGANIZATION_ID=a.ORGANIZATION_ID
-
---drop table @tbl
-
-endprocess:
-
---exec sp_CRYSTAL_UNBILLED_REPORT_AMBIM
-GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AIA]    Script Date: 03/02/2010 13:08:53 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AIA]
-AS
-set nocount on
-
-declare @tbl TABLE (
-	[TYPE] char(255),
-	[ORGANIZATION_ID] [numeric] (19,0),
-	[CUSTOMER_NAME] varchar(255) ,
-	[UnbilledDollars] [numeric](19, 5) ,
-	[AvgDaySales] [numeric](19, 5),
-	[DSO] [numeric](19, 5)
-) 
-
-/* Find number of days to divide unbilled $'s by.  Always done by 28 day time periods
-   numdays is calculated as a failsafe if daily data capture missed a day, therefore the count
-   would not include that day
-*/
-declare @numdays int, @begdate datetime, @enddate datetime
-select @numdays=0
-select @begdate = CAST(FLOOR(CAST(getdate()-28 AS FLOAT))AS DATETIME)
-select @enddate = CAST(FLOOR(CAST(getdate()-1 AS FLOAT))AS DATETIME)
-select @numdays=count(*) from (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-	where DATEREPORTRUN <= @enddate and DATEREPORTRUN >= @begdate) a
-
-/* avoid divide by zero error (no data in dailydatacapture)*/
-if @numdays <= 0 goto endprocess
-
-declare @customer varchar(255),
-				@ORG_ID numeric(19,0),
-				@JOB_NO varchar(255),
-				@sumBillable numeric(19,5),
-				@sumNonBillable numeric(19,5),
-				@sumPooledTotal numeric(19,5),
-				@sumUnbilledOpsInvoices numeric(19,5),
-				@salesTotal numeric(19,5),
-				@unbilledGrandTotal numeric(19,5),
-				@DSOTotal numeric(19,5)
-
-select @ORG_ID=8
-
-declare C_Cursor CURSOR for select DISTINCT CUSTOMER_NAME from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) where ORGANIZATION_ID=@ORG_ID order by CUSTOMER_NAME asc
-OPEN C_Cursor
-FETCH NEXT FROM C_Cursor INTO @customer
-WHILE (@@FETCH_STATUS <> -1)
-begin /*Find the totals for this particular customer and organization for this 28 day time period */
-	select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate 
-
-		select @sumPooledTotal=sum(PooledTotal)/@numdays from
-		(select bill_job_id,PooledTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate
-		GROUP BY BILL_JOB_ID,PooledTotal) a 
-
-		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
-		(select bill_job_id,UnbilledOpsInvoicesTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
-		DATEREPORTRUN between @begdate and @enddate
-		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
-
-	/*Total sales average for the number of days specified by @numdays */
-	select @salesTotal=sum(DOCAMNT)/@numdays from (
-	SELECT    ltrim(rtrim(str(INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,EXT_DEALER_ID,EXT_CUSTOMER_ID,CUSTOMER_NAME,a.ORGANIZATION_ID
-	FROM         IMS_NEW..INVOICES a LEFT OUTER JOIN CUSTOMERS b on a.BILL_CUSTOMER_ID=b.CUSTOMER_ID
-	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4
-	) a
-	INNER JOIN
-	(
-	select case 
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
-	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
-	END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
-	select CASE SOPTYPE 
-				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
-				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
-				 ELSE ''
-				 END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR 
-	from AIA..SOP30200 
-	where DOCDATE between @begdate and @enddate ) x
-	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID
-/* This was the old way of calculating avg sales over 28 day period from servicee trax only 
-	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs WITH (NOLOCK) on jobs.JOB_NO=service_lines.BILL_JOB_NO 
-		inner join CUSTOMERS WITH (NOLOCK) on JOBS.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID and BILLED_FLAG='Y' and SERVICE_LINE_DATE 
-		in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) 
-
-		where DATEREPORTRUN between @begdate and @enddate) and CUSTOMER_NAME=@customer 
-		and service_lines.ORGANIZATION_ID=@ORG_ID
-*/
-	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
-	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
-	begin
-		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
-	end
-	insert into @tbl values('Unbilled OPs',@ORG_ID,@customer,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
-	/* clear the variables for the next loop */
-	select @customer='',@JOB_NO='',@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
-			@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
-	FETCH NEXT FROM C_Cursor INTO @customer
-end
-DEALLOCATE C_Cursor
-
-declare @name varchar(255),
-		@userID int
-
-declare C_Cursor CURSOR for select rtrim(FIRST_NAME) + ' ' + rtrim(LAST_NAME) fullName,USER_ID
- from USERS WITH (NOLOCK) union
-	select 'UNKNOWN USER','-999'
-OPEN C_Cursor
-FETCH NEXT FROM C_Cursor INTO @name,@userID
-WHILE (@@FETCH_STATUS <> -1)
-begin /*Find the totals for this particular customer and organization for this 28 day time period */
-select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-
-		select @sumPooledTotal=sum(PooledTotal)/@numdays from
-		(select bill_job_id,PooledTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-		GROUP BY BILL_JOB_ID,PooledTotal) a 
-
-		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
-		(select bill_job_id,UnbilledOpsInvoicesTotal
-	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where BILLING_USER_ID=@userID and
-		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
-		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
-
-	/*Total sales average for the number of days specified by @numdays for user*/
-	select @salesTotal=sum(DOCAMNT)/@numdays from (
-	SELECT    ltrim(rtrim(str(a.INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,a.ORGANIZATION_ID,b.BILLING_USER_ID
-	FROM         IMS_NEW..INVOICES a left outer join JOBS b on a.JOB_ID=b.JOB_ID
-	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4 
-	) a
-	INNER JOIN
-	(
-	select case 
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
-	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
-	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
-	END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
-	select CASE SOPTYPE 
-				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
-				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
-				 ELSE ''
-				 END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from AIA..SOP30200 
-	where DOCDATE between @begdate and @enddate ) x
-	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where BILLING_USER_ID=@userID
-/* This was the old way of calculating avg sales over 28 day period from service trax only
-	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs_v WITH (NOLOCK) on jobs_v.JOB_NO=service_lines.BILL_JOB_NO
-		inner join CUSTOMERS WITH (NOLOCK) on JOBS_V.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID
-		and SERVICE_LINE_DATE in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
-		where DATEREPORTRUN between @begdate and @enddate)	and BILLING_USER_ID=@resid 
-*/
-	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
-	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
-	begin
-		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
-	end
-	if @unbilledGrandTotal <> 0 
-	begin	
-		insert into @tbl values('Projects',999,@name,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
-	end
-	/* clear the variables for the next loop */
-	select @name='',@userID=-1,@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
-				@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
-	FETCH NEXT FROM C_Cursor INTO @name,@userID
-end
-DEALLOCATE C_Cursor
-
-/*Query for all Unbilled Accounting Items (Pending and Complete)
-SELECT sum(iv.custom_line_total) custom_tot, sum(iv.bill_hourly_total) hours_total, sum(iv.bill_exp_total) exp_tot, iv.ext_batch_id, iv.assigned_to_name, iv.job_no, iv.job_id, iv.batch_status_id, ibs.name batch_status_name,
-						sum(iv.bill_total + iv.custom_line_total) total_tot, iv.invoice_id_trk, iv.invoice_id, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.invoice_format_type_name, iv.po_no, iv.invoice_date_created
-		FROM invoice_pre_total_v iv, invoice_batch_statuses ibs
-		WHERE iv.batch_status_id = ibs.status_id
-		AND iv.invoice_status_id in (2,3) --Pending and Complete
-		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name
-		ORDER BY iv.invoice_id
-*/
-insert into @tbl select 'Unbilled Accounting',iv.ORGANIZATION_ID,customer_name,sum(iv.bill_total + iv.custom_line_total) total_tot,0,0
-		FROM invoice_pre_total_v iv WITH (NOLOCK), invoice_batch_statuses ibs WITH (NOLOCK)
-		WHERE iv.batch_status_id = ibs.status_id
-		AND iv.invoice_status_id in (2,3) --Pending and Complete
-		and iv.ORGANIZATION_ID=@ORG_ID
-		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name, iv.ORGANIZATION_ID
-		ORDER BY iv.invoice_id
-
-select  TYPE,b.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,b.NAME from @tbl a 
-INNER JOIN (SELECT ORGANIZATION_ID,NAME FROM ORGANIZATIONS
-UNION ALL
-SELECT '999', 'PROJECTS') b on a.organization_id=b.organization_id
---select  TYPE,ORGANIZATIONS.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,NAME from @tbl a
---left outer join ORGANIZATIONS on ORGANIZATIONS.ORGANIZATION_ID=a.ORGANIZATION_ID
-
---drop table @tbl
-
-endprocess:
-
---exec sp_CRYSTAL_UNBILLED_REPORT_AIA
-GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIINC_DATERANGE]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIINC_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3552,7 +2817,223 @@ endprocess:
 
 --exec sp_CRYSTAL_UNBILLED_REPORT_CIINC_DATERANGE
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CILLC]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CILLC_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CILLC_DATERANGE]
+	@begdate datetime, @enddate datetime
+AS
+set nocount on
+
+declare @tbl TABLE (
+	[TYPE] char(255),
+	[ORGANIZATION_ID] [numeric] (19,0),
+	[CUSTOMER_NAME] varchar(255) ,
+	[UnbilledDollars] [numeric](19, 5) ,
+	[AvgDaySales] [numeric](19, 5),
+	[DSO] [numeric](19, 5)
+) 
+
+/* Find number of days to divide unbilled $'s by.  Always done by 28 day time periods*/
+declare @numdays int
+select @numdays=0
+select @begdate=CAST(FLOOR(CAST(@begdate AS FLOAT))AS DATETIME)
+select @enddate=CAST(FLOOR(CAST(@enddate AS FLOAT))AS DATETIME)
+select @numdays=count(*) from (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+	where DATEREPORTRUN <= @enddate and DATEREPORTRUN >= @begdate) a
+
+/* avoid divide by zero error (no data in dailydatacapture)*/
+if @numdays <= 0 goto endprocess
+
+declare @customer varchar(255),
+				@ORG_ID numeric(19,0),
+				@JOB_NO varchar(255),
+				@sumBillable numeric(19,5),
+				@sumNonBillable numeric(19,5),
+				@sumPooledTotal numeric(19,5),
+				@sumUnbilledOpsInvoices numeric(19,5),
+				@salesTotal numeric(19,5),
+				@unbilledGrandTotal numeric(19,5),
+				@DSOTotal numeric(19,5)
+
+select @ORG_ID=11
+
+declare C_Cursor CURSOR for select DISTINCT CUSTOMER_NAME from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) where ORGANIZATION_ID=@ORG_ID order by CUSTOMER_NAME asc
+OPEN C_Cursor
+FETCH NEXT FROM C_Cursor INTO @customer
+WHILE (@@FETCH_STATUS <> -1)
+begin /*Find the totals for this particular customer and organization for this 28 day time period */
+	select @sumBillable=sum(billable_total)/@numdays
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate 
+
+		select @sumPooledTotal=sum(PooledTotal)/@numdays from
+		(select bill_job_id,PooledTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate
+		GROUP BY BILL_JOB_ID,PooledTotal) a 
+
+		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
+		(select bill_job_id,UnbilledOpsInvoicesTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate
+		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
+
+	/*Total sales average for the number of days specified by @numdays */
+	select @salesTotal=sum(DOCAMNT)/@numdays from (
+	SELECT    ltrim(rtrim(str(INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,EXT_DEALER_ID,EXT_CUSTOMER_ID,CUSTOMER_NAME,a.ORGANIZATION_ID
+	FROM         IMS_NEW..INVOICES a LEFT OUTER JOIN CUSTOMERS b on a.BILL_CUSTOMER_ID=b.CUSTOMER_ID
+	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4
+	) a
+	INNER JOIN
+	(
+	select case 
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
+	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
+	END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
+	select CASE SOPTYPE 
+				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
+				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
+				 ELSE ''
+				 END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR 
+	from CILLC..SOP30200 
+	where DOCDATE between @begdate and @enddate ) x
+	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID
+/* This was the old way of calculating avg sales over 28 day period from servicee trax only 
+	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs WITH (NOLOCK) on jobs.JOB_NO=service_lines.BILL_JOB_NO 
+		inner join CUSTOMERS WITH (NOLOCK) on JOBS.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID and BILLED_FLAG='Y' and SERVICE_LINE_DATE 
+		in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) 
+
+		where DATEREPORTRUN between @begdate and @enddate) and CUSTOMER_NAME=@customer 
+		and service_lines.ORGANIZATION_ID=@ORG_ID
+*/
+	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
+	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
+	begin
+		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
+	end
+	insert into @tbl values('Unbilled OPs',@ORG_ID,@customer,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
+	/* clear the variables for the next loop */
+	select @customer='',@JOB_NO='',@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
+			@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
+	FETCH NEXT FROM C_Cursor INTO @customer
+end
+DEALLOCATE C_Cursor
+
+declare @name varchar(255),
+		@userID int
+
+declare C_Cursor CURSOR for select rtrim(FIRST_NAME) + ' ' + rtrim(LAST_NAME) fullName,USER_ID
+ from USERS WITH (NOLOCK) union
+	select 'UNKNOWN USER','-999'
+OPEN C_Cursor
+FETCH NEXT FROM C_Cursor INTO @name,@userID
+WHILE (@@FETCH_STATUS <> -1)
+begin /*Find the totals for this particular customer and organization for this 28 day time period */
+select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+
+		select @sumPooledTotal=sum(PooledTotal)/@numdays from
+		(select bill_job_id,PooledTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+		GROUP BY BILL_JOB_ID,PooledTotal) a 
+
+		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
+		(select bill_job_id,UnbilledOpsInvoicesTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
+
+	/*Total sales average for the number of days specified by @numdays for user*/
+	select @salesTotal=sum(DOCAMNT)/@numdays from (
+	SELECT    ltrim(rtrim(str(a.INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,a.ORGANIZATION_ID,b.BILLING_USER_ID
+	FROM         IMS_NEW..INVOICES a left outer join JOBS b on a.JOB_ID=b.JOB_ID
+	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4 
+	) a
+	INNER JOIN
+	(
+	select case 
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
+	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
+	END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
+	select CASE SOPTYPE 
+				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
+				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
+				 ELSE ''
+				 END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from CILLC..SOP30200 
+	where DOCDATE between @begdate and @enddate ) x
+	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where BILLING_USER_ID=@userID
+/* This was the old way of calculating avg sales over 28 day period from service trax only
+	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs_v WITH (NOLOCK) on jobs_v.JOB_NO=service_lines.BILL_JOB_NO
+		inner join CUSTOMERS WITH (NOLOCK) on JOBS_V.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID
+		and SERVICE_LINE_DATE in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where DATEREPORTRUN between @begdate and @enddate)	and BILLING_USER_ID=@resid 
+*/
+	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
+	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
+	begin
+		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
+	end
+	if @unbilledGrandTotal <> 0 
+	begin	
+		insert into @tbl values('Projects',999,@name,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
+	end
+	/* clear the variables for the next loop */
+	select @name='',@userID=-1,@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
+				@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
+	FETCH NEXT FROM C_Cursor INTO @name,@userID
+end
+DEALLOCATE C_Cursor
+
+/*Query for all Unbilled Accounting Items (Pending and Complete)
+SELECT sum(iv.custom_line_total) custom_tot, sum(iv.bill_hourly_total) hours_total, sum(iv.bill_exp_total) exp_tot, iv.ext_batch_id, iv.assigned_to_name, iv.job_no, iv.job_id, iv.batch_status_id, ibs.name batch_status_name,
+						sum(iv.bill_total + iv.custom_line_total) total_tot, iv.invoice_id_trk, iv.invoice_id, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.invoice_format_type_name, iv.po_no, iv.invoice_date_created
+		FROM invoice_pre_total_v iv, invoice_batch_statuses ibs
+		WHERE iv.batch_status_id = ibs.status_id
+		AND iv.invoice_status_id in (2,3) --Pending and Complete
+		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name
+		ORDER BY iv.invoice_id
+*/
+insert into @tbl select 'Unbilled Accounting',iv.ORGANIZATION_ID,customer_name,sum(iv.bill_total + iv.custom_line_total) total_tot,0,0
+		FROM invoice_pre_total_v iv WITH (NOLOCK), invoice_batch_statuses ibs WITH (NOLOCK)
+		WHERE iv.batch_status_id = ibs.status_id
+		AND iv.invoice_status_id in (2,3) --Pending and Complete
+		and iv.ORGANIZATION_ID=@ORG_ID
+		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name, iv.ORGANIZATION_ID
+		ORDER BY iv.invoice_id
+
+select  TYPE,b.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,b.NAME from @tbl a 
+INNER JOIN (SELECT ORGANIZATION_ID,NAME FROM ORGANIZATIONS
+UNION ALL
+SELECT '999', 'PROJECTS') b on a.organization_id=b.organization_id
+--select  TYPE,ORGANIZATIONS.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,NAME from @tbl a
+--left outer join ORGANIZATIONS on ORGANIZATIONS.ORGANIZATION_ID=a.ORGANIZATION_ID
+
+--drop table @tbl
+
+endprocess:
+
+--exec sp_CRYSTAL_UNBILLED_REPORT_CILLC_DATERANGE
+GO
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CILLC]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3770,12 +3251,12 @@ endprocess:
 
 --exec sp_CRYSTAL_UNBILLED_REPORT_CILLC
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM_DATERANGE]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMMAD_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM_DATERANGE]
+CREATE PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMMAD_DATERANGE]
 	@begdate datetime, @enddate datetime
 AS
 set nocount on
@@ -3811,7 +3292,7 @@ declare @customer varchar(255),
 				@unbilledGrandTotal numeric(19,5),
 				@DSOTotal numeric(19,5)
 
-select @ORG_ID=2
+select @ORG_ID=4
 
 declare C_Cursor CURSOR for select DISTINCT CUSTOMER_NAME from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) where ORGANIZATION_ID=@ORG_ID order by CUSTOMER_NAME asc
 OPEN C_Cursor
@@ -3858,7 +3339,7 @@ begin /*Find the totals for this particular customer and organization for this 2
 				 ELSE ''
 				 END as SERVICE_TRAX_INVOICEID
 	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR 
-	from AMBIM..SOP30200 
+	from AMMAD..SOP30200 
 	where DOCDATE between @begdate and @enddate ) x
 	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID
 /* This was the old way of calculating avg sales over 28 day period from servicee trax only 
@@ -3931,7 +3412,7 @@ select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billabl
 				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
 				 ELSE ''
 				 END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from AMBIM..SOP30200 
+	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from AMMAD..SOP30200 
 	where DOCDATE between @begdate and @enddate ) x
 	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where BILLING_USER_ID=@userID
 /* This was the old way of calculating avg sales over 28 day period from service trax only
@@ -3984,9 +3465,9 @@ SELECT '999', 'PROJECTS') b on a.organization_id=b.organization_id
 
 endprocess:
 
---exec sp_CRYSTAL_UNBILLED_REPORT_AMBIM_DATERANGE
+--exec sp_CRYSTAL_UNBILLED_REPORT_AMMAD_DATERANGE
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMMAD]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMMAD]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4204,13 +3685,12 @@ endprocess:
 
 --exec sp_CRYSTAL_UNBILLED_REPORT_AMMAD
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMMAD_DATERANGE]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIMN]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMMAD_DATERANGE]
-	@begdate datetime, @enddate datetime
+CREATE PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIMN]
 AS
 set nocount on
 
@@ -4223,11 +3703,14 @@ declare @tbl TABLE (
 	[DSO] [numeric](19, 5)
 ) 
 
-/* Find number of days to divide unbilled $'s by.  Always done by 28 day time periods*/
-declare @numdays int
+/* Find number of days to divide unbilled $'s by.  Always done by 28 day time periods
+   numdays is calculated as a failsafe if daily data capture missed a day, therefore the count
+   would not include that day
+*/
+declare @numdays int, @begdate datetime, @enddate datetime
 select @numdays=0
-select @begdate=CAST(FLOOR(CAST(@begdate AS FLOAT))AS DATETIME)
-select @enddate=CAST(FLOOR(CAST(@enddate AS FLOAT))AS DATETIME)
+select @begdate = CAST(FLOOR(CAST(getdate()-28 AS FLOAT))AS DATETIME)
+select @enddate = CAST(FLOOR(CAST(getdate()-1 AS FLOAT))AS DATETIME)
 select @numdays=count(*) from (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
 	where DATEREPORTRUN <= @enddate and DATEREPORTRUN >= @begdate) a
 
@@ -4245,14 +3728,14 @@ declare @customer varchar(255),
 				@unbilledGrandTotal numeric(19,5),
 				@DSOTotal numeric(19,5)
 
-select @ORG_ID=4
+select @ORG_ID=15
 
 declare C_Cursor CURSOR for select DISTINCT CUSTOMER_NAME from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) where ORGANIZATION_ID=@ORG_ID order by CUSTOMER_NAME asc
 OPEN C_Cursor
 FETCH NEXT FROM C_Cursor INTO @customer
 WHILE (@@FETCH_STATUS <> -1)
 begin /*Find the totals for this particular customer and organization for this 28 day time period */
-	select @sumBillable=sum(billable_total)/@numdays
+	select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
 	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
 		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
 		DATEREPORTRUN between @begdate and @enddate 
@@ -4292,7 +3775,7 @@ begin /*Find the totals for this particular customer and organization for this 2
 				 ELSE ''
 				 END as SERVICE_TRAX_INVOICEID
 	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR 
-	from AMMAD..SOP30200 
+	from CIMN..SOP30200 
 	where DOCDATE between @begdate and @enddate ) x
 	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID
 /* This was the old way of calculating avg sales over 28 day period from servicee trax only 
@@ -4365,7 +3848,7 @@ select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billabl
 				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
 				 ELSE ''
 				 END as SERVICE_TRAX_INVOICEID
-	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from AMMAD..SOP30200 
+	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from CIMN..SOP30200 
 	where DOCDATE between @begdate and @enddate ) x
 	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where BILLING_USER_ID=@userID
 /* This was the old way of calculating avg sales over 28 day period from service trax only
@@ -4418,9 +3901,494 @@ SELECT '999', 'PROJECTS') b on a.organization_id=b.organization_id
 
 endprocess:
 
---exec sp_CRYSTAL_UNBILLED_REPORT_AMMAD_DATERANGE
+--exec sp_CRYSTAL_UNBILLED_REPORT_CIMN
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AIA_DATERANGE]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIMN_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIMN_DATERANGE]
+	@begdate datetime, @enddate datetime
+AS
+set nocount on
+
+declare @tbl TABLE (
+	[TYPE] char(255),
+	[ORGANIZATION_ID] [numeric] (19,0),
+	[CUSTOMER_NAME] varchar(255) ,
+	[UnbilledDollars] [numeric](19, 5) ,
+	[AvgDaySales] [numeric](19, 5),
+	[DSO] [numeric](19, 5)
+) 
+
+/* Find number of days to divide unbilled $'s by.  Always done by 28 day time periods*/
+declare @numdays int
+select @numdays=0
+select @begdate=CAST(FLOOR(CAST(@begdate AS FLOAT))AS DATETIME)
+select @enddate=CAST(FLOOR(CAST(@enddate AS FLOAT))AS DATETIME)
+select @numdays=count(*) from (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+	where DATEREPORTRUN <= @enddate and DATEREPORTRUN >= @begdate) a
+
+/* avoid divide by zero error (no data in dailydatacapture)*/
+if @numdays <= 0 goto endprocess
+
+declare @customer varchar(255),
+				@ORG_ID numeric(19,0),
+				@JOB_NO varchar(255),
+				@sumBillable numeric(19,5),
+				@sumNonBillable numeric(19,5),
+				@sumPooledTotal numeric(19,5),
+				@sumUnbilledOpsInvoices numeric(19,5),
+				@salesTotal numeric(19,5),
+				@unbilledGrandTotal numeric(19,5),
+				@DSOTotal numeric(19,5)
+
+select @ORG_ID=15
+
+declare C_Cursor CURSOR for select DISTINCT CUSTOMER_NAME from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) where ORGANIZATION_ID=@ORG_ID order by CUSTOMER_NAME asc
+OPEN C_Cursor
+FETCH NEXT FROM C_Cursor INTO @customer
+WHILE (@@FETCH_STATUS <> -1)
+begin /*Find the totals for this particular customer and organization for this 28 day time period */
+	select @sumBillable=sum(billable_total)/@numdays
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate 
+
+		select @sumPooledTotal=sum(PooledTotal)/@numdays from
+		(select bill_job_id,PooledTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate
+		GROUP BY BILL_JOB_ID,PooledTotal) a 
+
+		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
+		(select bill_job_id,UnbilledOpsInvoicesTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate
+		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
+
+	/*Total sales average for the number of days specified by @numdays */
+	select @salesTotal=sum(DOCAMNT)/@numdays from (
+	SELECT    ltrim(rtrim(str(INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,EXT_DEALER_ID,EXT_CUSTOMER_ID,CUSTOMER_NAME,a.ORGANIZATION_ID
+	FROM         IMS_NEW..INVOICES a LEFT OUTER JOIN CUSTOMERS b on a.BILL_CUSTOMER_ID=b.CUSTOMER_ID
+	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4
+	) a
+	INNER JOIN
+	(
+	select case 
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
+	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
+	END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
+	select CASE SOPTYPE 
+				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
+				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
+				 ELSE ''
+				 END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR 
+	from CIMN..SOP30200 
+	where DOCDATE between @begdate and @enddate ) x
+	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID
+/* This was the old way of calculating avg sales over 28 day period from servicee trax only 
+	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs WITH (NOLOCK) on jobs.JOB_NO=service_lines.BILL_JOB_NO 
+		inner join CUSTOMERS WITH (NOLOCK) on JOBS.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID and BILLED_FLAG='Y' and SERVICE_LINE_DATE 
+		in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) 
+
+		where DATEREPORTRUN between @begdate and @enddate) and CUSTOMER_NAME=@customer 
+		and service_lines.ORGANIZATION_ID=@ORG_ID
+*/
+	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
+	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
+	begin
+		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
+	end
+	insert into @tbl values('Unbilled OPs',@ORG_ID,@customer,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
+	/* clear the variables for the next loop */
+	select @customer='',@JOB_NO='',@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
+			@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
+	FETCH NEXT FROM C_Cursor INTO @customer
+end
+DEALLOCATE C_Cursor
+
+declare @name varchar(255),
+		@userID int
+
+declare C_Cursor CURSOR for select rtrim(FIRST_NAME) + ' ' + rtrim(LAST_NAME) fullName,USER_ID
+ from USERS WITH (NOLOCK) union
+	select 'UNKNOWN USER','-999'
+OPEN C_Cursor
+FETCH NEXT FROM C_Cursor INTO @name,@userID
+WHILE (@@FETCH_STATUS <> -1)
+begin /*Find the totals for this particular customer and organization for this 28 day time period */
+select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+
+		select @sumPooledTotal=sum(PooledTotal)/@numdays from
+		(select bill_job_id,PooledTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+		GROUP BY BILL_JOB_ID,PooledTotal) a 
+
+		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
+		(select bill_job_id,UnbilledOpsInvoicesTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
+
+	/*Total sales average for the number of days specified by @numdays for user*/
+	select @salesTotal=sum(DOCAMNT)/@numdays from (
+	SELECT    ltrim(rtrim(str(a.INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,a.ORGANIZATION_ID,b.BILLING_USER_ID
+	FROM         IMS_NEW..INVOICES a left outer join JOBS b on a.JOB_ID=b.JOB_ID
+	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4 
+	) a
+	INNER JOIN
+	(
+	select case 
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
+	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
+	END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
+	select CASE SOPTYPE 
+				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
+				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
+				 ELSE ''
+				 END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from CIMN..SOP30200 
+	where DOCDATE between @begdate and @enddate ) x
+	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where BILLING_USER_ID=@userID
+/* This was the old way of calculating avg sales over 28 day period from service trax only
+	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs_v WITH (NOLOCK) on jobs_v.JOB_NO=service_lines.BILL_JOB_NO
+		inner join CUSTOMERS WITH (NOLOCK) on JOBS_V.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID
+		and SERVICE_LINE_DATE in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where DATEREPORTRUN between @begdate and @enddate)	and BILLING_USER_ID=@resid 
+*/
+	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
+	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
+	begin
+		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
+	end
+	if @unbilledGrandTotal <> 0 
+	begin	
+		insert into @tbl values('Projects',999,@name,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
+	end
+	/* clear the variables for the next loop */
+	select @name='',@userID=-1,@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
+				@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
+	FETCH NEXT FROM C_Cursor INTO @name,@userID
+end
+DEALLOCATE C_Cursor
+
+/*Query for all Unbilled Accounting Items (Pending and Complete)
+SELECT sum(iv.custom_line_total) custom_tot, sum(iv.bill_hourly_total) hours_total, sum(iv.bill_exp_total) exp_tot, iv.ext_batch_id, iv.assigned_to_name, iv.job_no, iv.job_id, iv.batch_status_id, ibs.name batch_status_name,
+						sum(iv.bill_total + iv.custom_line_total) total_tot, iv.invoice_id_trk, iv.invoice_id, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.invoice_format_type_name, iv.po_no, iv.invoice_date_created
+		FROM invoice_pre_total_v iv, invoice_batch_statuses ibs
+		WHERE iv.batch_status_id = ibs.status_id
+		AND iv.invoice_status_id in (2,3) --Pending and Complete
+		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name
+		ORDER BY iv.invoice_id
+*/
+insert into @tbl select 'Unbilled Accounting',iv.ORGANIZATION_ID,customer_name,sum(iv.bill_total + iv.custom_line_total) total_tot,0,0
+		FROM invoice_pre_total_v iv WITH (NOLOCK), invoice_batch_statuses ibs WITH (NOLOCK)
+		WHERE iv.batch_status_id = ibs.status_id
+		AND iv.invoice_status_id in (2,3) --Pending and Complete
+		and iv.ORGANIZATION_ID=@ORG_ID
+		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name, iv.ORGANIZATION_ID
+		ORDER BY iv.invoice_id
+
+select  TYPE,b.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,b.NAME from @tbl a 
+INNER JOIN (SELECT ORGANIZATION_ID,NAME FROM ORGANIZATIONS
+UNION ALL
+SELECT '999', 'PROJECTS') b on a.organization_id=b.organization_id
+--select  TYPE,ORGANIZATIONS.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,NAME from @tbl a
+--left outer join ORGANIZATIONS on ORGANIZATIONS.ORGANIZATION_ID=a.ORGANIZATION_ID
+
+--drop table @tbl
+
+endprocess:
+
+--exec sp_CRYSTAL_UNBILLED_REPORT_CIMN_DATERANGE
+GO
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_ICS]    Script Date: 05/03/2010 14:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_ICS]
+AS
+set nocount on
+
+declare @tbl TABLE (
+	[TYPE] char(255),
+	[ORGANIZATION_ID] [numeric] (19,0),
+	[CUSTOMER_NAME] varchar(255) ,
+	[UnbilledDollars] [numeric](19, 5) ,
+	[AvgDaySales] [numeric](19, 5),
+	[DSO] [numeric](19, 5)
+) 
+
+/* Find number of days to divide unbilled $'s by.  Always done by 28 day time periods
+   numdays is calculated as a failsafe if daily data capture missed a day, therefore the count
+   would not include that day
+*/
+declare @numdays int, @begdate datetime, @enddate datetime
+select @numdays=0
+select @begdate = CAST(FLOOR(CAST(getdate()-28 AS FLOAT))AS DATETIME)
+select @enddate = CAST(FLOOR(CAST(getdate()-1 AS FLOAT))AS DATETIME)
+select @numdays=count(*) from (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+	where DATEREPORTRUN <= @enddate and DATEREPORTRUN >= @begdate) a
+
+/* avoid divide by zero error (no data in dailydatacapture)*/
+if @numdays <= 0 goto endprocess
+
+declare @customer varchar(255),
+				@ORG_ID numeric(19,0),
+				@JOB_NO varchar(255),
+				@sumBillable numeric(19,5),
+				@sumNonBillable numeric(19,5),
+				@sumPooledTotal numeric(19,5),
+				@sumUnbilledOpsInvoices numeric(19,5),
+				@salesTotal numeric(19,5),
+				@unbilledGrandTotal numeric(19,5),
+				@DSOTotal numeric(19,5)
+
+select @ORG_ID=12
+
+declare C_Cursor CURSOR for select DISTINCT CUSTOMER_NAME from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) where ORGANIZATION_ID=@ORG_ID order by CUSTOMER_NAME asc
+OPEN C_Cursor
+FETCH NEXT FROM C_Cursor INTO @customer
+WHILE (@@FETCH_STATUS <> -1)
+begin /*Find the totals for this particular customer and organization for this 28 day time period */
+	select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate 
+
+		select @sumPooledTotal=sum(PooledTotal)/@numdays from
+		(select bill_job_id,PooledTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate
+		GROUP BY BILL_JOB_ID,PooledTotal) a 
+
+		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
+		(select bill_job_id,UnbilledOpsInvoicesTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID and 
+		DATEREPORTRUN between @begdate and @enddate
+		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
+
+	/*Total sales average for the number of days specified by @numdays */
+	select @salesTotal=sum(DOCAMNT)/@numdays from (
+	SELECT    ltrim(rtrim(str(INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,EXT_DEALER_ID,EXT_CUSTOMER_ID,CUSTOMER_NAME,a.ORGANIZATION_ID
+	FROM         IMS_NEW..INVOICES a LEFT OUTER JOIN CUSTOMERS b on a.BILL_CUSTOMER_ID=b.CUSTOMER_ID
+	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4
+	) a
+	INNER JOIN
+	(
+	select case 
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
+	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
+	END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
+	select CASE SOPTYPE 
+				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
+				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
+				 ELSE ''
+				 END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR 
+	from ICS..SOP30200 
+	where DOCDATE between @begdate and @enddate ) x
+	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where CUSTOMER_NAME=@customer and ORGANIZATION_ID=@ORG_ID
+/* This was the old way of calculating avg sales over 28 day period from servicee trax only 
+	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs WITH (NOLOCK) on jobs.JOB_NO=service_lines.BILL_JOB_NO 
+		inner join CUSTOMERS WITH (NOLOCK) on JOBS.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID and BILLED_FLAG='Y' and SERVICE_LINE_DATE 
+		in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK) 
+
+		where DATEREPORTRUN between @begdate and @enddate) and CUSTOMER_NAME=@customer 
+		and service_lines.ORGANIZATION_ID=@ORG_ID
+*/
+	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
+	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
+	begin
+		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
+	end
+	insert into @tbl values('Unbilled OPs',@ORG_ID,@customer,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
+	/* clear the variables for the next loop */
+	select @customer='',@JOB_NO='',@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
+			@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
+	FETCH NEXT FROM C_Cursor INTO @customer
+end
+DEALLOCATE C_Cursor
+
+declare @name varchar(255),
+		@userID int
+
+declare C_Cursor CURSOR for select rtrim(FIRST_NAME) + ' ' + rtrim(LAST_NAME) fullName,USER_ID
+ from USERS WITH (NOLOCK) union
+	select 'UNKNOWN USER','-999'
+OPEN C_Cursor
+FETCH NEXT FROM C_Cursor INTO @name,@userID
+WHILE (@@FETCH_STATUS <> -1)
+begin /*Find the totals for this particular customer and organization for this 28 day time period */
+select @sumBillable=sum(billable_total)/@numdays,@sumNonBillable=sum(non_billable_total)/@numdays
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+
+		select @sumPooledTotal=sum(PooledTotal)/@numdays from
+		(select bill_job_id,PooledTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+		GROUP BY BILL_JOB_ID,PooledTotal) a 
+
+		select @sumUnbilledOpsInvoices=sum(UnbilledOpsInvoicesTotal)/@numdays from
+		(select bill_job_id,UnbilledOpsInvoicesTotal
+	  from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where BILLING_USER_ID=@userID and
+		DATEREPORTRUN between @begdate and @enddate and ORGANIZATION_ID=@ORG_ID
+		GROUP BY BILL_JOB_ID,UnbilledOpsInvoicesTotal) a 
+
+	/*Total sales average for the number of days specified by @numdays for user*/
+	select @salesTotal=sum(DOCAMNT)/@numdays from (
+	SELECT    ltrim(rtrim(str(a.INVOICE_ID))) INVOICE_ID,BILL_CUSTOMER_ID,EXT_BILL_CUST_ID,SALES_REPS,a.ORGANIZATION_ID,b.BILLING_USER_ID
+	FROM         IMS_NEW..INVOICES a left outer join JOBS b on a.JOB_ID=b.JOB_ID
+	WHERE a.ORGANIZATION_ID=@ORG_ID and a.STATUS_ID=4 
+	) a
+	INNER JOIN
+	(
+	select case 
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),1) = '-' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-1)) /* -XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),2) = '-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-2)) /* -0XXX*/
+	WHEN right(rtrim(SERVICE_TRAX_INVOICEID),4) = 'CM-0' THEN substring(SERVICE_TRAX_INVOICEID,1,abs(datalength(rtrim(SERVICE_TRAX_INVOICEID))-4)) /* CM-0XXX */
+	ELSE SERVICE_TRAX_INVOICEID /* INV suffix */
+	END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from (
+	select CASE SOPTYPE 
+				 WHEN 3 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-3)) /*720,XXX*/
+				 WHEN 4 then substring(SOPNUMBE,1,abs(datalength(rtrim(SOPNUMBE))-6)) /*CR-XXX,CM-XXX*/
+				 ELSE ''
+				 END as SERVICE_TRAX_INVOICEID
+	,SOPNUMBE,SOPTYPE,CASE SOPTYPE WHEN 3 then DOCAMNT WHEN 4 THEN DOCAMNT * -1 END DOCAMNT,BACHNUMB,CUSTNMBR,CUSTNAME,CSTPONBR from ICS..SOP30200 
+	where DOCDATE between @begdate and @enddate ) x
+	) b on b.SERVICE_TRAX_INVOICEID=a.INVOICE_ID where BILLING_USER_ID=@userID
+/* This was the old way of calculating avg sales over 28 day period from service trax only
+	select @salesTotal=sum(bill_total)/@numdays from service_lines WITH (NOLOCK) inner join jobs_v WITH (NOLOCK) on jobs_v.JOB_NO=service_lines.BILL_JOB_NO
+		inner join CUSTOMERS WITH (NOLOCK) on JOBS_V.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID
+		and SERVICE_LINE_DATE in (select distinct DATEREPORTRUN from UNBILLED_REPORT_DAILYDATACAPTURE WITH (NOLOCK)
+		where DATEREPORTRUN between @begdate and @enddate)	and BILLING_USER_ID=@resid 
+*/
+	select @unbilledGrandTotal=isnull(@sumBillable,0)+isnull(@sumPooledTotal,0)+isnull(@sumUnbilledOpsInvoices,0)
+	if isnull(@salesTotal,0) <> 0 --Ensure there are sales for this time period, and not only unbilled sales to avoid divide by zero error
+	begin
+		select @DSOTotal=isnull(@unbilledGrandTotal,0)/isnull(@salesTotal,0)
+	end
+	if @unbilledGrandTotal <> 0 
+	begin	
+		insert into @tbl values('Projects',999,@name,@unbilledGrandTotal,isnull(@salesTotal,0),isnull(@DSOTotal,0))
+	end
+	/* clear the variables for the next loop */
+	select @name='',@userID=-1,@sumBillable=0,@sumNonBillable=0,@sumPooledTotal=0,@sumUnbilledOpsInvoices=0,
+				@salesTotal=0,@unbilledGrandTotal=0,@DSOTotal=0
+	FETCH NEXT FROM C_Cursor INTO @name,@userID
+end
+DEALLOCATE C_Cursor
+
+/*Query for all Unbilled Accounting Items (Pending and Complete)
+SELECT sum(iv.custom_line_total) custom_tot, sum(iv.bill_hourly_total) hours_total, sum(iv.bill_exp_total) exp_tot, iv.ext_batch_id, iv.assigned_to_name, iv.job_no, iv.job_id, iv.batch_status_id, ibs.name batch_status_name,
+						sum(iv.bill_total + iv.custom_line_total) total_tot, iv.invoice_id_trk, iv.invoice_id, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.invoice_format_type_name, iv.po_no, iv.invoice_date_created
+		FROM invoice_pre_total_v iv, invoice_batch_statuses ibs
+		WHERE iv.batch_status_id = ibs.status_id
+		AND iv.invoice_status_id in (2,3) --Pending and Complete
+		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name
+		ORDER BY iv.invoice_id
+*/
+insert into @tbl select 'Unbilled Accounting',iv.ORGANIZATION_ID,customer_name,sum(iv.bill_total + iv.custom_line_total) total_tot,0,0
+		FROM invoice_pre_total_v iv WITH (NOLOCK), invoice_batch_statuses ibs WITH (NOLOCK)
+		WHERE iv.batch_status_id = ibs.status_id
+		AND iv.invoice_status_id in (2,3) --Pending and Complete
+		and iv.ORGANIZATION_ID=@ORG_ID
+		GROUP BY iv.invoice_id, iv.invoice_id_trk, iv.invoice_description, iv.invoice_type_name, iv.invoice_status_id, iv.date_sent, iv.ext_dealer_id, iv.dealer_name, iv.customer_name, iv.ext_batch_id, iv.assigned_to_name, iv.invoice_format_type_name, iv.job_no, iv.job_id, iv.po_no, iv.batch_status_id, iv.invoice_date_created, ibs.name, iv.ORGANIZATION_ID
+		ORDER BY iv.invoice_id
+
+select  TYPE,b.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,b.NAME from @tbl a 
+INNER JOIN (SELECT ORGANIZATION_ID,NAME FROM ORGANIZATIONS
+UNION ALL
+SELECT '999', 'PROJECTS') b on a.organization_id=b.organization_id
+--select  TYPE,ORGANIZATIONS.ORGANIZATION_ID,CUSTOMER_NAME,UnbilledDollars,AvgDaySales,DSO,NAME from @tbl a
+--left outer join ORGANIZATIONS on ORGANIZATIONS.ORGANIZATION_ID=a.ORGANIZATION_ID
+
+--drop table @tbl
+
+endprocess:
+
+--exec sp_CRYSTAL_UNBILLED_REPORT_ICS
+GO
+/****** Object:  StoredProcedure [dbo].[ottSOPIntegrationPrep]    Script Date: 05/03/2010 14:18:10 ******/
+SET ANSI_NULLS OFF
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE PROCEDURE [dbo].[ottSOPIntegrationPrep] AS
+
+--CREATE HEADER TABLE
+if exists(SELECT Name from SYSOBJECTS WHERE NAME='ottInvHeaderTEMP')
+	begin
+	DROP TABLE ottInvHeaderTEMP
+	end
+
+SELECT INVOICES.INVOICE_ID, JOBS_V.JOB_NO, JOBS_V.BILLING_USER_NAME, 
+	CAST(INVOICES.INVOICE_ID AS VARCHAR) DOCUMENT_NO, INVOICES.EXT_BATCH_ID,
+	UPPER(INVOICES.GP_DESCRIPTION) DESCRIPTION, INVOICES.PO_NO, RTRIM(INVOICES.EXT_BILL_CUST_ID) EXT_BILL_CUST_ID, 
+	INVOICES.SALES_REPS, 
+	(CASE WHEN JOBS_V.JOB_TYPE_CODE ='service_account' THEN NULL ELSE INVOICES.START_DATE END) start_date, 
+	(CASE WHEN JOBS_V.JOB_TYPE_CODE = 'service_account' THEN NULL ELSE INVOICES.END_DATE END) end_date, 
+	INVOICE_TYPES_V.NAME, UPPER(JOBS_V.JOB_NAME) JOB_NAME, UPPER(JOBS_V.CUSTOMER_NAME) CUSTOMER_NAME, 
+	JOBS_V.JOB_TYPE_CODE,INVOICES.COST_CODES 
+INTO ottInvHeaderTEMP
+FROM INVOICES, INVOICE_TYPES_V, JOBS_V 
+WHERE INVOICES.INVOICE_TYPE_ID = INVOICE_TYPES_V.LOOKUP_ID AND STATUS_ID = 4 AND BATCH_STATUS_ID = 2 
+	AND INVOICES.JOB_ID = JOBS_V.JOB_ID and invoices.organization_id=2
+
+--CREATE LINES TABLE
+if exists(SELECT Name from SYSOBJECTS WHERE NAME='ottInvLineTEMP')
+	begin
+	DROP TABLE ottInvLineTEMP
+	end
+
+Select INVOICE_LINES_V.INVOICE_ID, INVOICE_LINES_V.UNIT_PRICE, INVOICE_LINES_V.QTY, INVOICE_LINES_V.LINE_DESC, 
+	INVOICE_LINES_V.EXT_ITEM_ID 
+INTO ottInvLineTEMP
+From INVOICE_LINES_V 
+INNER JOIN ottInvHeaderTEMP ON ottInvHeaderTEMP.INVOICE_ID = INVOICE_LINES_V.INVOICE_ID
+ORDER BY INVOICE_LINES_V.INVOICE_ID
+
+--CREATE TAXES TABLE
+if exists(SELECT Name from SYSOBJECTS WHERE NAME='ottInvTaxesTEMP')
+	begin
+	DROP TABLE ottInvTaxesTEMP
+	end
+
+Select Taxes_V_Sum.* 
+INTO ottInvTaxesTEMP
+From Taxes_V_Sum 
+INNER JOIN ottInvHeaderTEMP ON ottInvHeaderTEMP.INVOICE_ID = Taxes_V_Sum.INVOICE_ID
+ORDER BY Taxes_V_Sum.INVOICE_ID
+GO
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AIA_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4620,20 +4588,91 @@ endprocess:
 
 --exec sp_CRYSTAL_UNBILLED_REPORT_AIA_DATERANGE
 GO
-/****** Object:  StoredProcedure [dbo].[ottSOPIntegrationPrep]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  Trigger [upd_invoices]    Script Date: 05/03/2010 14:18:11 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [dbo].[upd_invoices] ON [dbo].[INVOICES] 
+FOR UPDATE 
+AS
+
+DECLARE @invoice_id int
+DECLARE @batch_status_id int
+
+/* WHEN INVOICE PROCESSED SUCCESSFULLY TO GREAT PLAINS, THEN UPDATE THE ASSIGNED SERVICE LINES TO POSTED STATUS */
+if( update(batch_status_id) )
+begin
+	UPDATE service_lines 
+	SET status_id = 5 
+	WHERE status_id = 4 AND invoice_id in (
+		SELECT invoice_id FROM inserted WHERE batch_status_id = 3)
+end
+GO
+/****** Object:  Trigger [ins_cust_bill_id]    Script Date: 05/03/2010 14:18:11 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [dbo].[ins_cust_bill_id] ON [dbo].[INVOICES] 
+FOR INSERT
+AS
+
+  DECLARE @customer_id varchar(15)
+  DECLARE @invoice_id int
+  DECLARE @job_id int
+
+  SELECT @invoice_id = invoice_id,
+	   @job_id = job_id
+     FROM  Inserted
+
+  SELECT @customer_id = customer_id
+     FROM jobs
+  WHERE job_id = @job_id
+
+  UPDATE invoices
+         SET bill_customer_id = @customer_id
+   WHERE invoice_id = @invoice_id
+GO
+/****** Object:  Trigger [del_unassign_lines]    Script Date: 05/03/2010 14:18:11 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [dbo].[del_unassign_lines] ON [dbo].[INVOICES] 
+ instead of DELETE 
+AS
+  UPDATE service_lines
+         SET status_id = 4, 
+	    invoice_id = null
+   WHERE invoice_id in (select invoice_id from deleted)
+
+  DELETE FROM invoice_tracking WHERE invoice_id in (select invoice_id from deleted)
+
+  DELETE FROM INVOICES WHERE INVOICE_ID IN (SELECT INVOICE_ID FROM DELETED)
+GO
+/****** Object:  StoredProcedure [dbo].[ottSOPIntegrationPrepAll]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS OFF
 GO
-SET QUOTED_IDENTIFIER OFF
+SET QUOTED_IDENTIFIER ON
 GO
-CREATE PROCEDURE [dbo].[ottSOPIntegrationPrep] AS
+CREATE PROCEDURE [dbo].[ottSOPIntegrationPrepAll]
+	@OrganizationID numeric(18,0)
+AS
+SET NOCOUNT ON
 
---CREATE HEADER TABLE
-if exists(SELECT Name from SYSOBJECTS WHERE NAME='ottInvHeaderTEMP')
-	begin
-	DROP TABLE ottInvHeaderTEMP
-	end
 
-SELECT INVOICES.INVOICE_ID, JOBS_V.JOB_NO, JOBS_V.BILLING_USER_NAME, 
+--DELETE ALL PREVIOUS INTEGRATION DATA
+DELETE FROM ottInvHeaderTEMP_ALL WHERE organization_id=@OrganizationID
+DELETE FROM ottInvLineTEMP_ALL WHERE organization_id=@OrganizationID
+--DELETE FROM ottInvTaxesTEMP_ALL WHERE organization_id=@OrganizationID
+
+
+--BUILD THE HEADER TABLE
+INSERT INTO ottInvHeaderTEMP_ALL
+	(organization_id, INVOICE_ID, JOB_NO, BILLING_USER_NAME, DOCUMENT_NO, EXT_BATCH_ID, DESCRIPTION, PO_NO, EXT_BILL_CUST_ID, 
+                      SALES_REPS, start_date, end_date, NAME, JOB_NAME, CUSTOMER_NAME, JOB_TYPE_CODE, COST_CODES)
+SELECT @OrganizationID as organization_id, INVOICES.INVOICE_ID, JOBS_V.JOB_NO, JOBS_V.BILLING_USER_NAME, 
 	CAST(INVOICES.INVOICE_ID AS VARCHAR) DOCUMENT_NO, INVOICES.EXT_BATCH_ID,
 	UPPER(INVOICES.GP_DESCRIPTION) DESCRIPTION, INVOICES.PO_NO, RTRIM(INVOICES.EXT_BILL_CUST_ID) EXT_BILL_CUST_ID, 
 	INVOICES.SALES_REPS, 
@@ -4641,82 +4680,56 @@ SELECT INVOICES.INVOICE_ID, JOBS_V.JOB_NO, JOBS_V.BILLING_USER_NAME,
 	(CASE WHEN JOBS_V.JOB_TYPE_CODE = 'service_account' THEN NULL ELSE INVOICES.END_DATE END) end_date, 
 	INVOICE_TYPES_V.NAME, UPPER(JOBS_V.JOB_NAME) JOB_NAME, UPPER(JOBS_V.CUSTOMER_NAME) CUSTOMER_NAME, 
 	JOBS_V.JOB_TYPE_CODE,INVOICES.COST_CODES 
-INTO ottInvHeaderTEMP
 FROM INVOICES, INVOICE_TYPES_V, JOBS_V 
 WHERE INVOICES.INVOICE_TYPE_ID = INVOICE_TYPES_V.LOOKUP_ID AND STATUS_ID = 4 AND BATCH_STATUS_ID = 2 
-	AND INVOICES.JOB_ID = JOBS_V.JOB_ID and invoices.organization_id=2
+	AND INVOICES.JOB_ID = JOBS_V.JOB_ID and invoices.organization_id=@OrganizationID
 
---CREATE LINES TABLE
-if exists(SELECT Name from SYSOBJECTS WHERE NAME='ottInvLineTEMP')
-	begin
-	DROP TABLE ottInvLineTEMP
-	end
 
-Select INVOICE_LINES_V.INVOICE_ID, INVOICE_LINES_V.UNIT_PRICE, INVOICE_LINES_V.QTY, INVOICE_LINES_V.LINE_DESC, 
+--BUILD THE LINES TABLE
+INSERT INTO ottInvLineTEMP_ALL
+	(organization_id, INVOICE_LINE_ID, INVOICE_ID, UNIT_PRICE, QTY, LINE_DESC, EXT_ITEM_ID)
+Select @OrganizationID as organization_id, INVOICE_LINES_V.INVOICE_LINE_ID, INVOICE_LINES_V.INVOICE_ID, INVOICE_LINES_V.UNIT_PRICE, INVOICE_LINES_V.QTY, INVOICE_LINES_V.LINE_DESC, 
 	INVOICE_LINES_V.EXT_ITEM_ID 
-INTO ottInvLineTEMP
 From INVOICE_LINES_V 
-INNER JOIN ottInvHeaderTEMP ON ottInvHeaderTEMP.INVOICE_ID = INVOICE_LINES_V.INVOICE_ID
+INNER JOIN ottInvHeaderTEMP_ALL ON ottInvHeaderTEMP_ALL.INVOICE_ID = INVOICE_LINES_V.INVOICE_ID
 ORDER BY INVOICE_LINES_V.INVOICE_ID
 
---CREATE TAXES TABLE
-if exists(SELECT Name from SYSOBJECTS WHERE NAME='ottInvTaxesTEMP')
-	begin
-	DROP TABLE ottInvTaxesTEMP
-	end
-
-Select Taxes_V_Sum.* 
-INTO ottInvTaxesTEMP
+/*  MAY BE UNNECESSARY - JERRY TO RESPOND
+--BUILD TAXES TABLE
+INSERT INTO ottInvTaxesTEMP_ALL
+	(organization_id, INVOICE_ID, Total_tax)
+Select @OrganizationID as organization_id, Taxes_V_Sum.INVOICE_ID,  Taxes_V_Sum.Total_tax
 From Taxes_V_Sum 
-INNER JOIN ottInvHeaderTEMP ON ottInvHeaderTEMP.INVOICE_ID = Taxes_V_Sum.INVOICE_ID
-ORDER BY Taxes_V_Sum.INVOICE_ID
+INNER JOIN ottInvHeaderTEMP_ALL ON ottInvHeaderTEMP_ALL.INVOICE_ID = Taxes_V_Sum.INVOICE_ID
+
+*/
+SET NOCOUNT OFF
 GO
-/****** Object:  StoredProcedure [dbo].[sp_reorder_req_no2]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  Trigger [ins_services]    Script Date: 05/03/2010 14:18:11 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE PROCEDURE [dbo].[sp_reorder_req_no2]
+CREATE TRIGGER [dbo].[ins_services] ON [dbo].[SERVICES] 
+FOR INSERT
 AS
-BEGIN
 
-DECLARE @request_id numeric(18,0)
-DECLARE @service_no numeric(18,0)
-DECLARE @req CURSOR
-
-SET @req = CURSOR FAST_FORWARD
-FOR
-SELECT s.request_id,s.service_no
-  FROM services s INNER JOIN
-       jobs j ON s.job_id = j.job_id
- WHERE j.project_id=65757
-   AND s.service_no > 58
-ORDER BY s.service_no
-
-
-OPEN @req
-FETCH NEXT FROM @req INTO @request_id,@service_no
-
-WHILE @@FETCH_STATUS=0
-BEGIN
-  PRINT @request_id
-  
-  UPDATE requests
-     SET request_no = @service_no,
-         date_modified=getdate(),
-         modified_by=1
-   WHERE request_id = @request_id
-     AND request_no <>  @service_no
-                             
-  FETCH NEXT FROM @req INTO @request_id,@service_no
-END
-
-CLOSE @req
-DEALLOCATE @req
-
-END
+UPDATE    SERVICES
+SET             
+QUOTE_TOTAL = ISNULL
+                          ((SELECT     dbo.QUOTES.QUOTE_TOTAL
+                              FROM         inserted LEFT OUTER JOIN
+                                                    dbo.REQUESTS ON inserted.REQUEST_ID = dbo.REQUESTS.REQUEST_ID LEFT OUTER JOIN
+                                                    dbo.QUOTES ON dbo.REQUESTS.QUOTE_REQUEST_ID = dbo.QUOTES.REQUEST_ID
+                              WHERE     SERVICES.service_id = inserted.service_id), 0),
+QUOTE_ID = (SELECT     dbo.QUOTES.QUOTE_ID
+                              FROM         inserted LEFT OUTER JOIN
+                                                    dbo.REQUESTS ON inserted.REQUEST_ID = dbo.REQUESTS.REQUEST_ID LEFT OUTER JOIN
+                                                    dbo.QUOTES ON dbo.REQUESTS.QUOTE_REQUEST_ID = dbo.QUOTES.REQUEST_ID
+                              WHERE     SERVICES.service_id = inserted.service_id)
+WHERE     (SERVICE_ID IN  (SELECT service_id FROM inserted))
 GO
-/****** Object:  StoredProcedure [dbo].[sp_reorder_service_no]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  StoredProcedure [dbo].[sp_reorder_service_no]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4764,7 +4777,52 @@ DEALLOCATE @req
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_DASHBOARD_DSO]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  StoredProcedure [dbo].[sp_reorder_req_no2]    Script Date: 05/03/2010 14:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_reorder_req_no2]
+AS
+BEGIN
+
+DECLARE @request_id numeric(18,0)
+DECLARE @service_no numeric(18,0)
+DECLARE @req CURSOR
+
+SET @req = CURSOR FAST_FORWARD
+FOR
+SELECT s.request_id,s.service_no
+  FROM services s INNER JOIN
+       jobs j ON s.job_id = j.job_id
+ WHERE j.project_id=65757
+   AND s.service_no > 58
+ORDER BY s.service_no
+
+
+OPEN @req
+FETCH NEXT FROM @req INTO @request_id,@service_no
+
+WHILE @@FETCH_STATUS=0
+BEGIN
+  PRINT @request_id
+  
+  UPDATE requests
+     SET request_no = @service_no,
+         date_modified=getdate(),
+         modified_by=1
+   WHERE request_id = @request_id
+     AND request_no <>  @service_no
+                             
+  FETCH NEXT FROM @req INTO @request_id,@service_no
+END
+
+CLOSE @req
+DEALLOCATE @req
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_DASHBOARD_DSO]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4902,7 +4960,7 @@ endprocess:
 
 --exec sp_CRYSTAL_UNBILLED_DASHBOARD_DSO
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5032,7 +5090,7 @@ endprocess:
 
 --exec sp_CRYSTAL_UNBILLED_REPORT
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_DAILYDATACAPTURE]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_DAILYDATACAPTURE]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5165,7 +5223,7 @@ drop table #tbl4
 --exec sp_CRYSTAL_UNBILLED_REPORT_DAILYDATACAPTURE '10/7/2005'
 --select * from UNBILLED_REPORT_DAILYDATACAPTURE
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_BILLABLE_VS_NONBILLABLE2006]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_BILLABLE_VS_NONBILLABLE2006]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6081,7 +6139,187 @@ dateadd(day,70,@begdate)-1,dateadd(day,77,@begdate)-1,dateadd(day,84,@begdate)-1
 select * from #tbl
 drop table #tbl
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_BILLABLE_VS_NONBILLABLE]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  Trigger [ud_ph_trig]    Script Date: 05/03/2010 14:18:11 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE TRIGGER [dbo].[ud_ph_trig] ON [dbo].[SERVICE_LINES] 
+FOR UPDATE, DELETE
+AS
+
+print ('---------------------------')  
+print ('ud_ph_trigger')  
+print ('---------------------------')  
+
+DECLARE @inserted_count as numeric(18)
+DECLARE @deleted_count as numeric(18)
+SELECT @inserted_count = count(*)  FROM inserted
+SELECT @deleted_count = count(*) FROM deleted
+print('inserted count = ' + cast(@inserted_count as varchar))
+print('deleted count = ' + cast(@deleted_count as varchar))
+/* pooled_flag updated in iu_service_lines trigger, want this to run after that trigger for updates or deletes, but then it didnt see the old row to update the previous qty. so hide now */
+--IF( UPDATE(pooled_flag) OR @inserted_count = 0 OR @deleted_count > 0)
+
+BEGIN
+
+print ('ud_ph_trigger activated')  
+
+DECLARE @service_id as numeric(18)
+DECLARE @ph_service_id numeric(18)
+DECLARE @rate as numeric(18,3)
+DECLARE @item_id as numeric(18)
+DECLARE @ir_flag as varchar(1)
+DECLARE @pooled_qty as numeric(18,2)
+DECLARE @dist_qty as numeric(18,2)
+
+DECLARE rate_cursor CURSOR LOCAL FORWARD_ONLY READ_ONLY FOR
+SELECT DISTINCT service_id, item_id, rate, ph_service_id, internal_req_flag
+FROM (
+SELECT tc_service_id service_id, item_id, bill_rate rate, ph_service_id, internal_req_flag 
+FROM inserted 
+WHERE internal_req_flag = 'Y' AND status_id > 1
+UNION
+SELECT tc_service_id service_id, item_id, bill_rate rate, ph_service_id, internal_req_flag
+FROM deleted 
+WHERE internal_req_flag = 'Y' AND status_id > 1
+UNION
+SELECT bill_service_id service_id, item_id, bill_rate rate, ph_service_id, internal_req_flag 
+FROM inserted
+WHERE (ph_service_id IS NOT NULL)
+UNION
+SELECT bill_service_id service_id, item_id, bill_rate rate, ph_service_id, internal_req_flag
+FROM deleted 
+WHERE ph_service_id IS NOT NULL
+)  AS NEW
+
+OPEN rate_cursor
+
+-- Perform the first fetch.
+FETCH NEXT FROM rate_cursor
+INTO @service_id, @item_id, @rate, @ph_service_id, @ir_flag
+
+WHILE (@@FETCH_STATUS = 0)
+BEGIN
+   
+	print ('@service_id = '  + isnull(cast( @service_id as varchar), 'NULL'))
+	print ('@ph_service_id = '  + isnull(cast( @ph_service_id as varchar), 'NULL'))
+	print ('@item_id = '  + isnull(cast( @item_id as varchar), 'NULL'))
+	print ('@rate = '  + isnull(cast( @rate as varchar), 'NULL'))
+	print ('@ir_flag = '  + isnull(cast( @ir_flag as varchar), 'NULL'))
+
+	--Make sure it is not a distribution req
+    IF (@ph_service_id IS NULL)
+    BEGIN
+    
+   	--Is this an internal (pooled) requisition
+	IF (@ir_flag = 'Y')
+	BEGIN
+	
+		--determine what our new pooled qty is
+		SELECT @pooled_qty = SUM(sl.tc_qty)
+		FROM service_lines sl
+		WHERE sl.tc_service_id = @service_id
+		AND sl.item_id = @item_id
+		AND sl.bill_rate = @rate
+		AND sl.status_id > 1
+
+		print ('@pooled_qty = '  + isnull(cast( @pooled_qty as varchar), 'NULL'))
+
+		IF (@pooled_qty < 0.01 OR @pooled_qty IS NULL)
+		BEGIN
+			--remove row from calc table
+			print ('Nothing pooled, deleting')	
+			DELETE FROM pooled_hours_calc
+	    	 	WHERE service_id = @service_id
+	    		AND item_id = @item_id
+	    		AND rate = @rate
+
+		END
+		ELSE
+		BEGIN
+			--update our calc table
+			print ('Updateing pooled_hours_calc setting qty_pooled = '+cast( @pooled_qty as varchar))	
+		    	UPDATE pooled_hours_calc
+		    	SET qty_pooled = @pooled_qty
+		    	WHERE service_id = @service_id
+		    	AND item_id = @item_id
+		    	AND rate = @rate
+
+			--if nothing got updated, need to insert intead
+			IF (@@ROWCOUNT = 0)
+			BEGIN
+			
+				print ('Update failed, so we need to insert a new row')			
+				INSERT INTO  pooled_hours_calc (service_id, item_id, rate, qty_pooled, qty_dist)
+				VALUES (@service_id, @item_id, @rate, @pooled_qty, 0)
+	
+			END
+		END
+	
+	END
+    END
+    ELSE
+    BEGIN
+   		--if we got here, that means that ph_service_id is not null, so we need to 
+   		--calc the new distributed qty
+
+		SELECT @dist_qty = SUM(sl.bill_qty)
+		FROM service_lines sl
+		WHERE sl.ph_service_id = @ph_service_id
+		AND sl.item_id = @item_id
+		AND sl.bill_rate = @rate
+
+		print ('@dist_qty = '  + isnull(cast( @dist_qty as varchar), 'NULL'))
+ 
+		IF (@dist_qty IS NULL)
+		BEGIN
+			SET @dist_qty = 0
+		END
+	
+		--update our calc table
+		print ('Updateing pooled_hours_calc setting dist_qty = '+cast( @dist_qty as varchar))	
+	    	UPDATE pooled_hours_calc
+	    	SET qty_dist = @dist_qty
+	    	WHERE service_id = @ph_service_id
+	    	AND item_id = @item_id
+	    	AND rate = @rate
+    END
+  
+   FETCH NEXT FROM rate_cursor
+   INTO @service_id, @item_id, @rate, @ph_service_id, @ir_flag
+END
+
+CLOSE rate_cursor
+DEALLOCATE rate_cursor
+
+END
+GO
+/****** Object:  Trigger [ins_exp_batch_line]    Script Date: 05/03/2010 14:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE TRIGGER [dbo].[ins_exp_batch_line] ON [dbo].[EXPENSES_BATCH_LINES] 
+FOR INSERT
+AS
+
+UPDATE service_lines SET expenses_exported_flag='Y' WHERE service_line_id IN
+(SELECT service_line_id FROM inserted)
+GO
+/****** Object:  Trigger [del_exp_batch_line]    Script Date: 05/03/2010 14:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE TRIGGER [dbo].[del_exp_batch_line] ON [dbo].[EXPENSES_BATCH_LINES] 
+FOR DELETE 
+AS
+
+UPDATE service_lines SET expenses_exported_flag='N' WHERE service_line_id IN
+(SELECT service_line_id FROM deleted)
+GO
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_BILLABLE_VS_NONBILLABLE]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6995,7 +7233,169 @@ dateadd(day,70,@begdate)-1,dateadd(day,77,@begdate)-1,dateadd(day,84,@begdate)-1
 select * from #tbl
 drop table #tbl
 GO
-/****** Object:  UserDefinedFunction [dbo].[fn_FurnitureLineListPerProjectID]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  Trigger [del_payroll_batch_line]    Script Date: 05/03/2010 14:18:11 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE TRIGGER [dbo].[del_payroll_batch_line] ON [dbo].[PAYROLL_BATCH_LINES] 
+FOR DELETE 
+AS
+
+UPDATE service_lines SET payroll_exported_flag='N' WHERE service_line_id IN
+(SELECT service_line_id FROM deleted)
+GO
+/****** Object:  Trigger [ins_payroll_batch_line]    Script Date: 05/03/2010 14:18:11 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE TRIGGER [dbo].[ins_payroll_batch_line] ON [dbo].[PAYROLL_BATCH_LINES] 
+FOR INSERT
+AS
+
+UPDATE service_lines SET payroll_exported_flag='Y' WHERE service_line_id IN
+(SELECT service_line_id FROM inserted)
+GO
+/****** Object:  Trigger [ins_upd_users]    Script Date: 05/03/2010 14:18:11 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [dbo].[ins_upd_users] ON [dbo].[USERS] 
+FOR INSERT, UPDATE
+AS
+
+DECLARE @user_id int
+DECLARE @first_name varchar(100)
+DECLARE @last_name varchar(100)
+
+SELECT @user_id=user_id, @first_name=first_name, @last_name=last_name FROM inserted
+
+UPDATE users SET full_name=@first_name+' '+@last_name WHERE user_id=@user_id
+GO
+/****** Object:  Trigger [d_users]    Script Date: 05/03/2010 14:18:11 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [dbo].[d_users] ON [dbo].[USERS] 
+FOR  DELETE 
+AS
+
+UPDATE resources SET attached_flag = 'N', user_id = null WHERE user_id in (SELECT u.user_id FROM users u, inserted i  WHERE u.user_id = i.user_id)
+GO
+/****** Object:  Trigger [res_sort_trigger]    Script Date: 05/03/2010 14:18:11 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE TRIGGER [dbo].[res_sort_trigger]
+ON [dbo].[RESOURCES] FOR insert, update
+AS
+
+	DROP TABLE dbo.PDA_RESOURCE_SORT
+
+	CREATE TABLE dbo.PDA_RESOURCE_SORT(
+	row_number  int IDENTITY (1, 1),
+	resource_id numeric(9) )
+
+	INSERT INTO dbo.PDA_RESOURCE_SORT (resource_id)
+	SELECT resource_id
+	FROM resources
+	ORDER BY name
+GO
+/****** Object:  Trigger [del_batch]    Script Date: 05/03/2010 14:18:11 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE TRIGGER [dbo].[del_batch] ON [dbo].[PAYROLL_BATCHES] 
+FOR DELETE 
+AS
+
+DELETE FROM payroll_batch_lines WHERE int_batch_id in 
+(SELECT int_batch_id FROM deleted)
+GO
+/****** Object:  Trigger [functions_d]    Script Date: 05/03/2010 14:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE TRIGGER [dbo].[functions_d] ON [dbo].[FUNCTIONS] 
+INSTEAD OF DELETE 
+AS
+BEGIN
+	DECLARE @function_id numeric;
+	SELECT @function_id=function_id FROM deleted;
+	DELETE FROM function_right_types where function_id=@function_id;
+	DELETE FROM role_function_rights where function_id=@function_id;
+	DELETE FROM functions where function_id=@function_id;
+END
+GO
+/****** Object:  Trigger [functions_i]    Script Date: 05/03/2010 14:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [dbo].[functions_i] ON [dbo].[FUNCTIONS] 
+FOR INSERT
+AS
+
+DECLARE @function_id numeric;
+DECLARE @created_by numeric;
+SELECT @function_id = function_id, 
+	 @created_by = created_by FROM inserted;
+
+DECLARE @right_type_id numeric;
+DECLARE right_types_cursor CURSOR FOR 
+	SELECT right_type_id
+	FROM right_types;
+
+OPEN right_types_cursor;
+
+FETCH NEXT FROM right_types_cursor 
+	INTO @right_type_id
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	INSERT INTO function_right_types
+	VALUES(@function_id, @right_type_id,'Y',getDate(), @created_by, null, null)
+	FETCH NEXT FROM right_types_cursor 	
+		INTO @right_type_id
+END
+CLOSE right_types_cursor
+DEALLOCATE right_types_cursor
+GO
+/****** Object:  Trigger [functions_i_def]    Script Date: 05/03/2010 14:18:11 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [dbo].[functions_i_def] ON [dbo].[FUNCTIONS] 
+FOR INSERT
+AS
+
+DECLARE @function_id numeric
+DECLARE @is_nav_function varchar
+DECLARE @is_menu_function varchar
+
+SELECT @function_id=function_id, 
+	@is_nav_function=is_nav_function, 
+	@is_menu_function=is_menu_function
+FROM inserted
+
+if( @is_nav_function is null )
+	set @is_nav_function = 'N';
+if( @is_menu_function is null)
+	set @is_menu_function = 'N';
+
+UPDATE functions SET
+	is_nav_function=@is_nav_function,
+	is_menu_function=@is_menu_function
+WHERE function_id = @function_id;
+GO
+/****** Object:  UserDefinedFunction [dbo].[fn_FurnitureLineListPerProjectID]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7034,7 +7434,7 @@ set @FurnitureLines = case when @FurnitureLines = '' then NULL else @FurnitureLi
    RETURN(@FurnitureLines)
 END
 GO
-/****** Object:  StoredProcedure [dbo].[getNextVal]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  StoredProcedure [dbo].[getNextVal]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS OFF
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7051,7 +7451,87 @@ begin transaction
 		where seq_name = @@seq_name;
 	commit
 GO
-/****** Object:  StoredProcedure [dbo].[ottSOPIntegrationPrepMadison]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  Trigger [del_inv_line_no]    Script Date: 05/03/2010 14:18:11 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [dbo].[del_inv_line_no] ON [dbo].[INVOICE_LINES] 
+FOR DELETE 
+AS
+
+  DECLARE @invoice_line_id int
+
+  SELECT @invoice_line_id = invoice_line_id
+     FROM  Inserted
+
+  DELETE FROM serv_inv_lines
+   WHERE invoice_line_id = @invoice_line_id
+GO
+/****** Object:  Trigger [del_job_loc]    Script Date: 05/03/2010 14:18:11 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [dbo].[del_job_loc] ON [dbo].[JOB_LOCATIONS] 
+instead of  DELETE 
+AS
+
+update services set job_location_id = null where service_id in (select service_id from services where job_location_id in (select job_location_id from deleted))
+delete from job_locations where job_location_id in (select job_location_id from deleted);
+GO
+/****** Object:  Trigger [sch_resources_i]    Script Date: 05/03/2010 14:18:11 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE TRIGGER [dbo].[sch_resources_i] ON [dbo].[SCH_RESOURCES] 
+FOR INSERT
+AS
+
+DECLARE @weekend_flag as VARCHAR
+DECLARE @sch_resource_id as NUMERIC
+DECLARE @weekend_sch_resource_id as NUMERIC
+
+SELECT @weekend_flag=weekend_flag,
+	@sch_resource_id=sch_resource_id,
+	@weekend_sch_resource_id=weekend_sch_resource_id
+FROM inserted
+
+if( @weekend_flag = 'Y'  AND  @weekend_sch_resource_id is null )
+	UPDATE sch_resources 
+		SET weekend_sch_resource_id = @sch_resource_id
+		WHERE sch_resource_id = @sch_resource_id;
+GO
+/****** Object:  Trigger [del_job_distributions]    Script Date: 05/03/2010 14:18:11 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE TRIGGER [dbo].[del_job_distributions] ON [dbo].[JOB_DISTRIBUTIONS] 
+FOR DELETE 
+AS
+
+UPDATE    SCH_RESOURCES
+SET              SEND_TO_PDA_FLAG = 'N'
+WHERE     (SCH_RESOURCE_ID IN 
+                          (SELECT     sch_resource_id
+                            FROM          DELETED
+                            WHERE      remove_date < getDate()))
+GO
+/****** Object:  Trigger [del_exp_batch]    Script Date: 05/03/2010 14:18:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE TRIGGER [dbo].[del_exp_batch] ON [dbo].[EXPENSES_BATCHES] 
+FOR  DELETE 
+AS
+
+DELETE FROM expenses_batch_lines WHERE int_batch_id IN 
+(SELECT int_batch_id FROM deleted)
+GO
+/****** Object:  StoredProcedure [dbo].[ottSOPIntegrationPrepMadison]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS OFF
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7112,7 +7592,7 @@ INNER JOIN ottInvHeaderTEMP ON ottInvHeaderTEMP.INVOICE_ID = Taxes_V_Sum.INVOICE
 ORDER BY Taxes_V_Sum.INVOICE_ID
 */
 GO
-/****** Object:  StoredProcedure [dbo].[sp_aia_direct_end_user]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  StoredProcedure [dbo].[sp_aia_direct_end_user]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7163,7 +7643,7 @@ DEALLOCATE @c1
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_delete_duplicate_customers]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  StoredProcedure [dbo].[sp_delete_duplicate_customers]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7207,7 +7687,30 @@ DEALLOCATE @c1
 
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[fn_ProjectManagerListPerProjectID]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  Trigger [iu_job_item_rates]    Script Date: 05/03/2010 14:18:11 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE TRIGGER [dbo].[iu_job_item_rates] ON [dbo].[JOB_ITEM_RATES] 
+FOR INSERT, UPDATE 
+AS
+
+DECLARE @internal_req_flag varchar
+ 
+/*
+UPDATE service_lines
+SET tc_rate = i.rate
+FROM inserted i
+WHERE i.job_id = service_lines.tc_job_id AND i.item_id = service_lines.item_id 
+
+UPDATE service_lines
+SET bill_rate = i.rate
+FROM inserted i
+WHERE i.job_id = service_lines.bill_job_id AND i.item_id = service_lines.item_id 
+*/
+GO
+/****** Object:  UserDefinedFunction [dbo].[fn_ProjectManagerListPerProjectID]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7246,7 +7749,7 @@ set @ProjectManagers = case when @ProjectManagers = '' then NULL else @ProjectMa
    RETURN(@ProjectManagers)
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[sp_contact_phone]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  UserDefinedFunction [dbo].[sp_contact_phone]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7310,7 +7813,550 @@ RETURN @result
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_JobVarianceReport]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  Trigger [iu_service_lines]    Script Date: 05/03/2010 14:18:11 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [dbo].[iu_service_lines] ON [dbo].[SERVICE_LINES] 
+FOR INSERT, UPDATE
+AS
+
+print ('------------------------------------')  
+print ('iu_service_lines trigger')  
+print ('------------------------------------')  
+
+  DECLARE @allocated_qty numeric(18,2)
+  DECLARE @bill_exp_qty numeric(18,2)
+  DECLARE @bill_exp_rate numeric(18,3)
+  DECLARE @bill_hourly_qty numeric(18,2)
+  DECLARE @bill_hourly_rate numeric(18,3)
+  DECLARE @bill_job_id int
+  DECLARE @bill_job_no numeric(18,2) 
+  DECLARE @bill_qty numeric(18,2)
+  DECLARE @bill_rate numeric(18,3)
+  DECLARE @bill_service_id int
+  DECLARE @bill_service_line_no int
+  DECLARE @bill_service_no numeric(18,2)
+  DECLARE @billable_flag varchar
+  DECLARE @billed_flag varchar
+  DECLARE @expense_qty numeric(18,2)
+  DECLARE @expense_rate numeric(18,3)
+  DECLARE @expenses_exported_flag varchar
+  DECLARE @exported_flag varchar
+  DECLARE @fully_allocated_flag varchar
+  DECLARE @invoice_id numeric
+  DECLARE @inserting varchar
+  DECLARE @internal_req_flag varchar
+  DECLARE @item_id int
+  DECLARE @item_name varchar(200)
+  DECLARE @item_type_code varchar(30)
+  DECLARE @new_rate numeric(18,3)
+  DECLARE @old_allocated_qty numeric(18,2)
+  DECLARE @old_bill_qty numeric(18,2)
+  DECLARE @old_bill_rate numeric(18,3)
+  DECLARE @old_bill_job_id int
+  DECLARE @old_bill_service_id int
+  DECLARE @old_expense_qty numeric(18,2)
+  DECLARE @old_expense_rate numeric(18,3)
+  DECLARE @old_item_id numeric
+  DECLARE @old_item_name varchar(200)
+  DECLARE @old_payroll_qty numeric(18,2)
+  DECLARE @old_payroll_rate numeric(18,3)
+  DECLARE @old_resource_id int
+  DECLARE @old_service_line_id int
+  DECLARE @old_tc_qty numeric(18,2)
+  DECLARE @old_tc_rate numeric(18,3)
+  DECLARE @old_tc_job_id int
+  DECLARE @old_tc_service_id int
+  DECLARE @new_billable_flag varchar
+  DECLARE @organization_id numeric
+  DECLARE @partially_allocated_flag varchar
+  DECLARE @payroll_exported_flag varchar
+  DECLARE @payroll_qty numeric(18,2)
+  DECLARE @payroll_rate numeric(18,3)
+  DECLARE @ph_service_id numeric
+  DECLARE @pooled_flag varchar
+  DECLARE @posted_flag varchar
+  DECLARE @resource_id int
+  DECLARE @resource_name varchar(200)
+  DECLARE @service_line_id int
+  DECLARE @service_status_type_code varchar(50)
+  DECLARE @sl_type_a_m_id int
+  DECLARE @status_id int
+  DECLARE @taxable_flag varchar
+  DECLARE @tc_job_id int
+  DECLARE @tc_job_no numeric(18,2) 
+  DECLARE @tc_qty numeric(18,2)
+  DECLARE @tc_rate numeric(18,3)
+  DECLARE @rate_change varchar
+  DECLARE @tc_service_id int
+  DECLARE @tc_service_line_no int
+  DECLARE @tc_service_no numeric(18,2)
+
+DECLARE sl_cursor CURSOR LOCAL  FAST_FORWARD FOR
+  SELECT 
+allocated_qty,
+bill_qty,
+bill_rate,
+bill_hourly_qty,
+bill_hourly_rate,
+bill_exp_qty,
+bill_exp_rate,
+bill_job_id,
+bill_job_no,
+bill_service_line_no,
+bill_service_id,
+billable_flag,
+billed_flag, 
+expenses_exported_flag,
+expense_qty,
+expense_rate,
+exported_flag,
+fully_allocated_flag,
+internal_req_flag,
+invoice_id,
+item_id,
+item_name,
+partially_allocated_flag,
+payroll_exported_flag,
+payroll_qty,
+payroll_rate,
+ph_service_id,
+posted_flag, 
+resource_id,
+resource_name,
+service_line_id,
+status_id,
+taxable_flag,
+tc_job_id,
+tc_job_no,
+tc_qty,
+tc_rate,
+tc_service_id,
+tc_service_line_no
+  FROM  Inserted as NEW
+
+OPEN sl_cursor
+
+-- Perform the first fetch.
+FETCH NEXT FROM sl_cursor
+INTO
+@allocated_qty,
+@bill_qty,
+@bill_rate,
+@bill_hourly_qty,
+@bill_hourly_rate,
+@bill_exp_qty,
+@bill_exp_rate,
+@bill_job_id,
+@bill_job_no,
+@bill_service_line_no,
+@bill_service_id,
+@billable_flag,
+@billed_flag, 
+@expenses_exported_flag,
+@expense_qty,
+@expense_rate,
+@exported_flag,
+@fully_allocated_flag,
+@internal_req_flag,
+@invoice_id,
+@item_id,
+@item_name,
+@partially_allocated_flag,
+@payroll_exported_flag,
+@payroll_qty,
+@payroll_rate,
+@ph_service_id,
+@posted_flag, 
+@resource_id,
+@resource_name,
+@service_line_id,
+@status_id,
+@taxable_flag,
+@tc_job_id,
+@tc_job_no,
+@tc_qty,
+@tc_rate,
+@tc_service_id,
+@tc_service_line_no
+
+WHILE (@@FETCH_STATUS = 0)
+BEGIN
+
+  /* USED IN THE UPCOMING SECTIONS */
+  SELECT 
+	@old_allocated_qty = allocated_qty,
+	@old_bill_qty = bill_qty,
+	@old_bill_rate = bill_rate,
+	@old_bill_job_id = bill_job_id,
+	@old_bill_service_id = bill_service_id,
+	@old_item_id = item_id,
+	@old_item_name = item_name,
+	@old_resource_id = resource_id,
+	@old_tc_qty = tc_qty,
+	@old_tc_rate = tc_rate,
+	@old_tc_job_id = tc_job_id,
+	@old_tc_service_id = tc_service_id,
+	@old_service_line_id = service_line_id
+  FROM deleted
+  WHERE service_line_id = @service_line_id
+
+IF( @old_allocated_qty IS NULL)  SET @old_allocated_qty = 0
+IF( @old_bill_qty IS NULL)  SET @old_bill_qty = 0
+IF( @old_bill_rate IS NULL)  SET @old_bill_rate = 0
+IF( @old_bill_job_id IS NULL)  SET @old_bill_job_id = 0
+IF( @old_bill_service_id IS NULL)  SET @old_bill_service_id = 0
+IF( @old_item_id IS NULL)  SET @old_item_id = 0
+IF( @old_resource_id IS NULL)  SET @old_resource_id = 0
+IF( @old_tc_qty IS NULL)  SET @old_tc_qty = 0
+IF( @old_tc_rate IS NULL)  SET @old_tc_rate = 0
+IF( @old_tc_job_id IS NULL)  SET @old_tc_job_id = 0
+IF( @old_tc_service_id IS NULL)  SET @old_tc_service_id = 0
+IF( @taxable_flag IS NULL ) SET @taxable_flag = 'N'
+  /*TEST TO SEE IF THERE WAS A DELETED, IF NOT WE ARE INSERTING */
+  IF( @old_service_line_id IS NULL)
+    set @inserting = 'Y'
+ ELSE
+    set @inserting = 'N'
+
+  /* HANDLE INTERNAL_REQ_FLAG */
+  SELECT 
+	@internal_req_flag = s.internal_req_flag, 
+	@service_status_type_code = t.lookup_code
+     FROM services s, service_status_types_v t
+     WHERE s.service_id = @tc_service_id AND s.serv_status_type_id = t.lookup_id
+
+  /* HANDLE POOLED_FLAG */
+  IF( @fully_allocated_flag = 'Y' OR @partially_allocated_flag = 'Y' OR @ph_service_id IS NOT NULL)
+    SET @pooled_flag = 'Y'
+  ELSE
+    SET @pooled_flag = 'N'
+
+  /* GET RESOURCE INFO */
+  SELECT 
+	@resource_name = name
+  FROM resources
+  WHERE resource_id = @resource_id
+
+  /* GET ITEM INFO FOR BILLABLE_FLAG AND QTY/RATE SECTION */
+  SELECT 
+	@organization_id = organization_id,
+	@item_type_code = item_type_code ,
+	@new_billable_flag = billable_flag,
+	@item_name = name
+  FROM items_v
+  WHERE item_id = @item_id
+
+PRINT(' tc_qty = '+cast(ISNULL(@tc_qty,0) as varchar(30)))
+PRINT(' tc_rate = '+cast(ISNULL(@tc_rate,0) as varchar(30)))
+PRINT(' old_tc_qty = '+cast(ISNULL(@old_tc_qty,0) as varchar(30)) )
+PRINT(' old_tc_rate = '+cast(ISNULL(@old_tc_rate,0) as varchar(30)))
+PRINT(' item_type_code = '+ cast(ISNULL(@item_type_code,'none') as varchar(30)))
+PRINT(' bill_qty = '+cast(ISNULL(@bill_qty,0) as varchar(30)))
+PRINT(' bill_rate = '+cast(ISNULL(@bill_rate,0) as varchar(30)))
+PRINT(' old_bill_qty = '+cast(ISNULL(@old_bill_qty,0) as varchar(30)) )
+PRINT(' old_bill_rate = '+cast(ISNULL(@old_bill_rate,0) as varchar(30)))
+
+  /* HANDLE ITEM UPDATE: BILLABLE_FLAG */
+  IF( @item_id <> @old_item_id OR @inserting = 'Y' )
+  BEGIN
+    IF( (@pooled_flag = 'N' AND @billed_flag = 'N' AND @posted_flag = 'N' ) OR @inserting = 'Y')
+      SET @billable_flag = @new_billable_flag;
+    ELSE IF( @inserting = 'N' ) 
+    BEGIN
+      PRINT('setting item_id '+cast(@item_id as varchar(10))+' back to '+cast(@old_item_id as varchar(10)))
+      SET @item_id = @old_item_id  
+    END
+  END
+
+  /* HANDLE RESOURCE UPDATE: RESOURCE_NAME */
+  IF( @resource_id <> @old_resource_id )
+  BEGIN
+    IF( (@pooled_flag = 'Y' OR @billed_flag = 'Y' OR @posted_flag = 'Y') AND @inserting = 'N' )
+    BEGIN
+      PRINT('setting resource_id '+cast(@resource_id as varchar(10))+' back to '+cast(@old_resource_id as varchar(10)))
+      SET @resource_id = @old_resource_id  
+    END
+  END
+
+  /* HANDLE TC_SERVICE_ID AND LINE NUMBER UPDATE */
+  IF( @tc_service_id <> @old_tc_service_id )
+  BEGIN
+    IF( ( @pooled_flag = 'N' ) OR @inserting = 'Y' )
+    BEGIN
+    /* new service means new line_no */
+      PRINT('Setting tc line no')
+      SELECT @tc_service_line_no = ISNULL(MAX(tc_service_line_no),0)+1
+        FROM service_lines
+        WHERE tc_service_id = @tc_service_id AND service_line_id != @service_line_id
+
+      /*update bill_service_id if old tc_service same as old bill service and pooled or posted */
+      IF( (@old_bill_service_id = @old_tc_service_id AND @pooled_flag = 'N' AND @posted_flag = 'N' ) OR @inserting = 'Y' )
+      BEGIN
+        PRINT('copying tc_service_id and tc_job_id into bill_service_id and bill_job_id')
+        SET @bill_service_id = @tc_service_id
+        SET @bill_job_id = @tc_job_id
+      END
+    END
+ ELSE
+    BEGIN
+      PRINT('setting tc_service_id '+cast(@tc_service_id as varchar(10))+' back to '+cast(@old_tc_service_id as varchar(10)))
+      SET @tc_service_id = @old_tc_service_id
+    END
+  END
+
+  /* HANDLE BILL_SERVICE_ID AND LINE NUMBER UPDATE */
+  IF( @bill_service_id <> @old_bill_service_id  )
+  BEGIN
+    IF( (@posted_flag = 'N') OR @inserting = 'Y' )
+    BEGIN
+    /* new service means new line_no */
+      PRINT('Setting bill line no')
+      SELECT @bill_service_line_no = ISNULL(MAX(bill_service_line_no),0)+1
+        FROM service_lines
+        WHERE bill_service_id = @bill_service_id AND service_line_id != @service_line_id
+    END
+    ELSE
+    BEGIN
+      PRINT('setting bill_service_id '+cast(@bill_service_id as varchar(10))+' back to '+cast(@old_bill_service_id as varchar(10)))
+      SET @bill_service_id = @old_bill_service_id
+    END
+  END
+
+  /* HANDLE TC_JOB_NO and TC_SERVICE_NO */
+  SELECT @tc_job_id = j.job_id, @tc_job_no = j.job_no, @tc_service_no = s.service_no 
+    FROM services s, jobs j  
+    WHERE j.job_id = s.job_id and s.service_id = @tc_service_id; 
+
+  /* HANDLE BILL_JOB_NO and BILL_SERVICE_NO */
+  SELECT @bill_job_id = j.job_id, @bill_job_no = j.job_no, @bill_service_no = s.service_no 
+    FROM services s, jobs j  
+    WHERE j.job_id = s.job_id AND s.service_id = @bill_service_id; 
+
+ /* UPDATED ALLOCATED_QTY, IF FULLY_ALLOCATED CHANGE STATUS TO 3 TO DISTINGUISH ALLOCATED FROM 4 SUBMITTED TO BILLING */
+  IF( @allocated_qty != @old_allocated_qty AND @status_id = 4 AND @fully_allocated_flag = 'Y' )
+	SET @status_id = 3;
+  ELSE IF( @status_id = 3 AND @fully_allocated_flag = 'N')
+	SET @status_id = 4;
+
+  /* UPDATED ITEM_ID OR TC_SERVICE_ID or INSERTING HOURLY LINE so GET NEW JOB ITEM RATE */
+  IF( @item_id <> @old_item_id  OR @tc_job_id <> @old_tc_job_id  )
+  BEGIN
+    IF( @item_type_code = 'hours'  AND @pooled_flag = 'N')
+    BEGIN
+      SELECT TOP 1 @new_rate = RATE
+      FROM  dbo.JOB_ITEM_RATES
+      WHERE JOB_ID = @tc_job_id AND ITEM_ID = @item_id  
+print('new rate = ' + cast(isnull(@new_rate,0) as varchar(10)))
+      IF( @new_rate is not null )
+      BEGIN  
+          PRINT('changed tc_rate from '+cast(ISNULL(@tc_rate,0) as varchar(10))+' to '+cast(ISNULL(@new_rate,0) as varchar(10)))
+          SET @tc_rate = @new_rate
+          /*updating tc_rate updates all other rates based on the correct logic down below*/
+      END
+    END
+  END
+
+  /* UPDATED ITEM_ID OR BILL_SERVICE_ID  OR IT IS A NEW LINE so GET NEW JOB ITEM RATE */
+  IF( @item_id <> @old_item_id  OR @bill_job_id <> @old_bill_job_id  )
+  BEGIN
+    IF( @pooled_flag = 'N' AND @posted_flag = 'N' AND @billed_flag ='N' AND (NOT UPDATE(tc_rate) OR @bill_rate IS NULL OR @bill_rate = 0) )
+    BEGIN
+      SELECT TOP 1 @new_rate = RATE
+        FROM  dbo.JOB_ITEM_RATES
+        WHERE JOB_ID = @bill_job_id AND ITEM_ID = @item_id  
+      IF( @new_rate <> 0 AND NOT @item_type_code ='expense' )
+      BEGIN
+        PRINT('changed bill_rate from '+cast(ISNULL(@bill_rate,0) as varchar(10))+' to '+cast(ISNULL(@new_rate,0) as varchar(10)))
+        SET @bill_rate = @new_rate
+      END
+    END
+  END
+
+  /* HANDLE TIME CAPTURE UPDATE OF RATE OR QTY*/
+  IF( @tc_qty <> @old_tc_qty OR @tc_rate <> @old_tc_rate OR @item_id <> @old_item_id  OR @tc_job_id <> @old_tc_job_id )
+
+  BEGIN
+PRINT('in qty rate update for time')
+      /* hours, if we are in time capture and payroll has not been exported then update payroll*/
+      IF( @item_type_code = 'hours' AND (( @pooled_flag = 'N' ) OR @inserting = 'Y'))
+      BEGIN
+         SET @payroll_qty = @tc_qty
+         SET @payroll_rate = @tc_rate
+         SET @expense_qty = 0
+         SET @expense_rate = 0
+      END
+      ELSE /* expense, if we are in time capture and expenses have not been exported then update expenses*/
+      IF( @item_type_code = 'expense' AND (( @pooled_flag = 'N' ) OR @inserting = 'Y'))
+      BEGIN
+         SET @expense_qty = @tc_qty
+         SET @expense_rate = @tc_rate
+         SET @payroll_qty = 0
+         SET @payroll_rate = 0
+      END
+      ELSE /* should not update TC_QTY and TC_RATE since nothing changes */
+      BEGIN
+PRINT('tc getting set back to old_tc_qty and rate');
+         SET @tc_qty = @old_tc_qty
+         SET @tc_rate = @old_tc_rate
+      END
+
+      /* hours, copy tc hours to billing */
+      IF( @item_type_code = 'hours'  AND (
+	(@pooled_flag = 'N' AND @posted_flag = 'N' AND @billed_flag = 'N' AND (@tc_qty <> @old_tc_qty OR @tc_rate <> @old_tc_rate))
+       OR (@inserting = 'Y' AND @pooled_flag = 'N' AND (@tc_qty <> @old_tc_qty OR @tc_rate <> @old_tc_rate)) ) )
+      BEGIN
+PRINT('TC HOURS, setting billing qty and rates using tc qty and rates');
+        SET @bill_qty = @tc_qty
+        SET @bill_rate = @tc_rate
+        SET @bill_hourly_qty = @tc_qty
+        SET @bill_hourly_rate = @tc_rate
+        SET @bill_exp_qty = 0
+        SET @bill_exp_rate = 0
+      END
+      ELSE /* expense, if changing bill rate */
+      IF( @tc_job_id IS NOT NULL AND @item_type_code = 'expense'  AND @pooled_flag = 'N' AND @posted_flag = 'N' AND @billed_flag = 'N')
+      BEGIN
+PRINT('TC EXP, setting billing qty and rates using tc qty and rates');
+        SET @bill_qty = @tc_qty
+        SET @bill_hourly_qty = 0
+        SET @bill_exp_qty = @tc_qty
+        SET @bill_exp_rate = @bill_rate
+        SET @bill_hourly_rate = 0
+      END
+  END
+
+  /* HANDLE BILLING UPDATE OF QTY*/
+  IF( @bill_qty <> @old_bill_qty  OR @item_id <> @old_item_id  OR @bill_job_id <> @old_bill_job_id )
+  BEGIN
+PRINT('in qty update for bill')
+    IF( @item_type_code = 'hours' AND ((@pooled_flag = 'N' AND @posted_flag = 'N')  OR @inserting='Y'))
+    BEGIN
+      SET @bill_hourly_qty = @bill_qty
+      SET @bill_exp_qty = 0
+    END	
+    ELSE IF( @item_type_code = 'expense' AND ((@pooled_flag = 'N' AND @posted_flag = 'N' )  OR @inserting='Y'))
+    BEGIN
+      SET @bill_exp_qty = @bill_qty
+      SET @bill_hourly_qty = 0
+    END
+    ELSE /* should not update BILL_QTY  since nothing changes */
+    BEGIN
+PRINT('bill getting set back to old_bill_qty');
+       SET @bill_qty = @old_bill_qty
+    END
+  END
+
+  /* HANDLE BILLING UPDATE OF RATE*/
+  IF( @bill_rate <> @old_bill_rate OR @item_id <> @old_item_id OR @bill_job_id <> @old_bill_job_id )
+  BEGIN
+PRINT('in bill rate update')
+    IF( @item_type_code = 'hours' AND ((@pooled_flag = 'N' AND @posted_flag = 'N' AND @billed_flag ='N')  OR @inserting='Y'))
+    BEGIN
+      SET @bill_hourly_rate = @bill_rate
+      SET @bill_exp_rate = 0
+    END	
+    ELSE IF( @item_type_code = 'expense' AND ((@pooled_flag = 'N' AND @posted_flag = 'N'  AND @billed_flag ='N')  OR @inserting='Y'))
+    BEGIN
+      SET @bill_exp_rate = @bill_rate
+      SET @bill_hourly_rate = 0
+    END
+    ELSE /* should not update  BILL_RATE since nothing changes */
+    BEGIN
+PRINT('bill getting set back to old_bill_rate');
+       SET @bill_rate = @old_bill_rate
+    END
+  END
+
+
+  UPDATE service_lines
+  SET 
+	bill_qty = @bill_qty,
+	bill_rate = @bill_rate,
+	bill_exp_qty = @bill_exp_qty,
+	bill_exp_rate = @bill_exp_rate,
+	bill_hourly_qty = @bill_hourly_qty,
+	bill_hourly_rate = @bill_hourly_rate,
+	bill_job_id = @bill_job_id,
+	bill_job_no = @bill_job_no,
+	bill_service_id = @bill_service_id,
+	bill_service_line_no = @bill_service_line_no,
+	bill_service_no = @bill_service_no,
+	billable_flag = @billable_flag,
+	expense_qty = @expense_qty,
+	expense_rate = @expense_rate,
+	internal_req_flag = @internal_req_flag,
+	item_id = @item_id,
+	item_name = @item_name, 
+	item_type_code = @item_type_code,
+	organization_id = @organization_id,
+	payroll_qty = @payroll_qty,
+	payroll_rate = @payroll_rate,
+	pooled_flag = @pooled_flag,
+	resource_id = @resource_id,
+	resource_name = @resource_name, 
+	status_id = @status_id,
+	taxable_flag = @taxable_flag,
+	tc_job_id = @tc_job_id,
+	tc_job_no = @tc_job_no,
+	tc_qty = @tc_qty,
+	tc_rate = @tc_rate,
+	tc_service_id = @tc_service_id,
+	tc_service_line_no = @tc_service_line_no,
+	tc_service_no = @tc_service_no
+  WHERE service_line_id = @service_line_id
+
+-- Perform the next fetch.
+FETCH NEXT FROM sl_cursor
+INTO
+@allocated_qty,
+@bill_qty,
+@bill_rate,
+@bill_hourly_qty,
+@bill_hourly_rate,
+@bill_exp_qty,
+@bill_exp_rate,
+@bill_job_id,
+@bill_job_no,
+@bill_service_line_no,
+@bill_service_id,
+@billable_flag,
+@billed_flag, 
+@expenses_exported_flag,
+@expense_qty,
+@expense_rate,
+@exported_flag,
+@fully_allocated_flag,
+@internal_req_flag,
+@invoice_id,
+@item_id,
+@item_name,
+@partially_allocated_flag,
+@payroll_exported_flag,
+@payroll_qty,
+@payroll_rate,
+@ph_service_id,
+@posted_flag, 
+@resource_id,
+@resource_name,
+@service_line_id,
+@status_id,
+@taxable_flag,
+@tc_job_id,
+@tc_job_no,
+@tc_qty,
+@tc_rate,
+@tc_service_id,
+@tc_service_line_no
+
+END
+
+CLOSE sl_cursor
+DEALLOCATE sl_cursor
+GO
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_JobVarianceReport]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER OFF
@@ -7526,7 +8572,7 @@ left outer join (
 
 return
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_JobCostReportWORK]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_JobCostReportWORK]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7656,7 +8702,7 @@ from (--break out into inline view to calculate variances
 
 return
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_PriceRealizationReport]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_PriceRealizationReport]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER OFF
@@ -7849,7 +8895,7 @@ from #tblQuoteInvoicingGPStuff
 
 return
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_OVERHEAD_HOURS_TCI]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_OVERHEAD_HOURS_TCI]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7889,7 +8935,7 @@ AS
 	where SERVICE_LINE_DATE >= @begdate and SERVICE_LINE_DATE < dateadd(day,35,@begdate)
 	and left(job_no_varchar,3) = '109'
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_OVERHEAD_HOURS_NODATE]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_OVERHEAD_HOURS_NODATE]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7959,7 +9005,7 @@ AS
 
             and left(job_no_varchar,3) = '109'
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_OVERHEAD_HOURS]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_OVERHEAD_HOURS]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7999,7 +9045,7 @@ AS
 	where SERVICE_LINE_DATE >= @begdate and SERVICE_LINE_DATE < dateadd(day,35,@begdate)
 	and left(job_no_varchar,3) = '109'
 GO
-/****** Object:  UserDefinedFunction [dbo].[nextVal]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  UserDefinedFunction [dbo].[nextVal]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS OFF
 GO
 SET QUOTED_IDENTIFIER OFF
@@ -8013,7 +9059,7 @@ BEGIN
 	return @seq_num;
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_QuoteLogReport]    Script Date: 03/02/2010 13:08:53 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_QuoteLogReport]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8095,7 +9141,7 @@ where r.request_type_id = 324 --quote_request
 
 return
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_WonOpenQuoteReport]    Script Date: 03/02/2010 13:08:54 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_WonOpenQuoteReport]    Script Date: 05/03/2010 14:18:10 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8236,2279 +9282,4 @@ from (
 
 
 return
-GO
-/****** Object:  Check [ITEMS_COLUMN_POSITION_CHECK]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[ITEMS]  WITH CHECK ADD  CONSTRAINT [ITEMS_COLUMN_POSITION_CHECK] CHECK  (([COLUMN_POSITION] = 'material' or [COLUMN_POSITION] = 'subcontractor'))
-GO
-ALTER TABLE [dbo].[ITEMS] CHECK CONSTRAINT [ITEMS_COLUMN_POSITION_CHECK]
-GO
-/****** Object:  Check [SPREADSHEET_BILLING_YN]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOBS]  WITH CHECK ADD  CONSTRAINT [SPREADSHEET_BILLING_YN] CHECK  (([SPREADSHEET_BILLING_FLAG]='Y' OR [SPREADSHEET_BILLING_FLAG]='N'))
-GO
-ALTER TABLE [dbo].[JOBS] CHECK CONSTRAINT [SPREADSHEET_BILLING_YN]
-GO
-/****** Object:  Check [CSC_WO_FIELD_YN]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH CHECK ADD  CONSTRAINT [CSC_WO_FIELD_YN] CHECK  (([CSC_WO_FIELD_FLAG]='Y' OR [CSC_WO_FIELD_FLAG]='N'))
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [CSC_WO_FIELD_YN]
-GO
-/****** Object:  Check [PROD_DISP_YN]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH CHECK ADD  CONSTRAINT [PROD_DISP_YN] CHECK  (([PROD_DISP_FLAG]='Y' OR [PROD_DISP_FLAG]='N'))
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [PROD_DISP_YN]
-GO
-/****** Object:  Check [CK_STANDARD_CONDITIONS]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[STANDARD_CONDITIONS]  WITH CHECK ADD  CONSTRAINT [CK_STANDARD_CONDITIONS] CHECK  (([active_flag]='N' OR [active_flag]='Y'))
-GO
-ALTER TABLE [dbo].[STANDARD_CONDITIONS] CHECK CONSTRAINT [CK_STANDARD_CONDITIONS]
-GO
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'BOOLEAN' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'STANDARD_CONDITIONS', @level2type=N'CONSTRAINT',@level2name=N'CK_STANDARD_CONDITIONS'
-GO
-/****** Object:  ForeignKey [FK_CHECKLIST_DATA_CHECKLISTS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[CHECKLIST_DATA]  WITH NOCHECK ADD  CONSTRAINT [FK_CHECKLIST_DATA_CHECKLISTS] FOREIGN KEY([CHECKLIST_ID])
-REFERENCES [dbo].[CHECKLISTS] ([CHECKLIST_ID])
-GO
-ALTER TABLE [dbo].[CHECKLIST_DATA] CHECK CONSTRAINT [FK_CHECKLIST_DATA_CHECKLISTS]
-GO
-/****** Object:  ForeignKey [FK_CHECKLISTS_REQUESTS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[CHECKLISTS]  WITH NOCHECK ADD  CONSTRAINT [FK_CHECKLISTS_REQUESTS] FOREIGN KEY([REQUEST_ID])
-REFERENCES [dbo].[REQUESTS] ([REQUEST_ID])
-GO
-ALTER TABLE [dbo].[CHECKLISTS] CHECK CONSTRAINT [FK_CHECKLISTS_REQUESTS]
-GO
-/****** Object:  ForeignKey [FK_CONTACT_GROUPS_CONTACTS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[CONTACT_GROUPS]  WITH NOCHECK ADD  CONSTRAINT [FK_CONTACT_GROUPS_CONTACTS] FOREIGN KEY([CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-ON DELETE CASCADE
-GO
-ALTER TABLE [dbo].[CONTACT_GROUPS] CHECK CONSTRAINT [FK_CONTACT_GROUPS_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_CONTACT_GROUPS_LOOKUPS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[CONTACT_GROUPS]  WITH NOCHECK ADD  CONSTRAINT [FK_CONTACT_GROUPS_LOOKUPS] FOREIGN KEY([CONTACT_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[CONTACT_GROUPS] NOCHECK CONSTRAINT [FK_CONTACT_GROUPS_LOOKUPS]
-GO
-/****** Object:  ForeignKey [FK_C_CONT_STATUS_TYPES]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[CONTACTS]  WITH NOCHECK ADD  CONSTRAINT [FK_C_CONT_STATUS_TYPES] FOREIGN KEY([CONT_STATUS_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[CONTACTS] CHECK CONSTRAINT [FK_C_CONT_STATUS_TYPES]
-GO
-/****** Object:  ForeignKey [FK_C_CONTACT_TYPES]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[CONTACTS]  WITH NOCHECK ADD  CONSTRAINT [FK_C_CONTACT_TYPES] FOREIGN KEY([CONTACT_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[CONTACTS] CHECK CONSTRAINT [FK_C_CONTACT_TYPES]
-GO
-/****** Object:  ForeignKey [FK_CONTACTS_CUSTOMERS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[CONTACTS]  WITH NOCHECK ADD  CONSTRAINT [FK_CONTACTS_CUSTOMERS] FOREIGN KEY([CUSTOMER_ID])
-REFERENCES [dbo].[CUSTOMERS] ([CUSTOMER_ID])
-GO
-ALTER TABLE [dbo].[CONTACTS] CHECK CONSTRAINT [FK_CONTACTS_CUSTOMERS]
-GO
-/****** Object:  ForeignKey [FK_CONTACTS_ORGANIZATIONS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[CONTACTS]  WITH NOCHECK ADD  CONSTRAINT [FK_CONTACTS_ORGANIZATIONS] FOREIGN KEY([ORGANIZATION_ID])
-REFERENCES [dbo].[ORGANIZATIONS] ([ORGANIZATION_ID])
-GO
-ALTER TABLE [dbo].[CONTACTS] CHECK CONSTRAINT [FK_CONTACTS_ORGANIZATIONS]
-GO
-/****** Object:  ForeignKey [FK_CUSTOM_COL_LISTS_CUSTOM_CUST_COLUMNS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[CUSTOM_COL_LISTS]  WITH NOCHECK ADD  CONSTRAINT [FK_CUSTOM_COL_LISTS_CUSTOM_CUST_COLUMNS] FOREIGN KEY([CUSTOM_CUST_COL_ID])
-REFERENCES [dbo].[CUSTOM_CUST_COLUMNS] ([CUSTOM_CUST_COL_ID])
-ON DELETE CASCADE
-GO
-ALTER TABLE [dbo].[CUSTOM_COL_LISTS] CHECK CONSTRAINT [FK_CUSTOM_COL_LISTS_CUSTOM_CUST_COLUMNS]
-GO
-/****** Object:  ForeignKey [FK_CUSTOM_COLS_REQUESTS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[CUSTOM_COLS]  WITH NOCHECK ADD  CONSTRAINT [FK_CUSTOM_COLS_REQUESTS] FOREIGN KEY([REQUEST_ID])
-REFERENCES [dbo].[REQUESTS] ([REQUEST_ID])
-ON DELETE CASCADE
-GO
-ALTER TABLE [dbo].[CUSTOM_COLS] CHECK CONSTRAINT [FK_CUSTOM_COLS_REQUESTS]
-GO
-/****** Object:  ForeignKey [FK_CUSTOM_CUST_COLUMNS_CUSTOMERS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[CUSTOM_CUST_COLUMNS]  WITH NOCHECK ADD  CONSTRAINT [FK_CUSTOM_CUST_COLUMNS_CUSTOMERS] FOREIGN KEY([CUSTOMER_ID])
-REFERENCES [dbo].[CUSTOMERS] ([CUSTOMER_ID])
-ON DELETE CASCADE
-GO
-ALTER TABLE [dbo].[CUSTOM_CUST_COLUMNS] CHECK CONSTRAINT [FK_CUSTOM_CUST_COLUMNS_CUSTOMERS]
-GO
-/****** Object:  ForeignKey [fk_customer_customer_type]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[CUSTOMERS]  WITH CHECK ADD  CONSTRAINT [fk_customer_customer_type] FOREIGN KEY([customer_type_id])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[CUSTOMERS] CHECK CONSTRAINT [fk_customer_customer_type]
-GO
-/****** Object:  ForeignKey [fk_customer_end_user_parent]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[CUSTOMERS]  WITH CHECK ADD  CONSTRAINT [fk_customer_end_user_parent] FOREIGN KEY([end_user_parent_id])
-REFERENCES [dbo].[CUSTOMERS] ([CUSTOMER_ID])
-GO
-ALTER TABLE [dbo].[CUSTOMERS] CHECK CONSTRAINT [fk_customer_end_user_parent]
-GO
-/****** Object:  ForeignKey [fk_customer_parent]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[CUSTOMERS]  WITH CHECK ADD  CONSTRAINT [fk_customer_parent] FOREIGN KEY([PARENT_CUSTOMER_ID])
-REFERENCES [dbo].[CUSTOMERS] ([CUSTOMER_ID])
-GO
-ALTER TABLE [dbo].[CUSTOMERS] CHECK CONSTRAINT [fk_customer_parent]
-GO
-/****** Object:  ForeignKey [FK_CUSTOMERS_ORGANIZATIONS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[CUSTOMERS]  WITH NOCHECK ADD  CONSTRAINT [FK_CUSTOMERS_ORGANIZATIONS] FOREIGN KEY([ORGANIZATION_ID])
-REFERENCES [dbo].[ORGANIZATIONS] ([ORGANIZATION_ID])
-GO
-ALTER TABLE [dbo].[CUSTOMERS] NOCHECK CONSTRAINT [FK_CUSTOMERS_ORGANIZATIONS]
-GO
-/****** Object:  ForeignKey [FK_DOCUMENTS_FORMATS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[DOCUMENTS]  WITH NOCHECK ADD  CONSTRAINT [FK_DOCUMENTS_FORMATS] FOREIGN KEY([FORMAT_ID])
-REFERENCES [dbo].[FORMATS] ([FORMAT_ID])
-GO
-ALTER TABLE [dbo].[DOCUMENTS] CHECK CONSTRAINT [FK_DOCUMENTS_FORMATS]
-GO
-/****** Object:  ForeignKey [FK_DOCUMENTS_PROJECTS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[DOCUMENTS]  WITH NOCHECK ADD  CONSTRAINT [FK_DOCUMENTS_PROJECTS] FOREIGN KEY([PROJECT_ID])
-REFERENCES [dbo].[PROJECTS] ([PROJECT_ID])
-GO
-ALTER TABLE [dbo].[DOCUMENTS] NOCHECK CONSTRAINT [FK_DOCUMENTS_PROJECTS]
-GO
-/****** Object:  ForeignKey [FK_FRT_RIGHT_TYPES]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[FUNCTION_RIGHT_TYPES]  WITH NOCHECK ADD  CONSTRAINT [FK_FRT_RIGHT_TYPES] FOREIGN KEY([RIGHT_TYPE_ID])
-REFERENCES [dbo].[RIGHT_TYPES] ([RIGHT_TYPE_ID])
-GO
-ALTER TABLE [dbo].[FUNCTION_RIGHT_TYPES] CHECK CONSTRAINT [FK_FRT_RIGHT_TYPES]
-GO
-/****** Object:  ForeignKey [FK_FUNCTION_RIGHT_TYPES_FUNCTIONS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[FUNCTION_RIGHT_TYPES]  WITH CHECK ADD  CONSTRAINT [FK_FUNCTION_RIGHT_TYPES_FUNCTIONS] FOREIGN KEY([FUNCTION_ID])
-REFERENCES [dbo].[FUNCTIONS] ([FUNCTION_ID])
-GO
-ALTER TABLE [dbo].[FUNCTION_RIGHT_TYPES] CHECK CONSTRAINT [FK_FUNCTION_RIGHT_TYPES_FUNCTIONS]
-GO
-/****** Object:  ForeignKey [FK_FUNCTIONS_FUNCTION_GROUPS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[FUNCTIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_FUNCTIONS_FUNCTION_GROUPS] FOREIGN KEY([FUNCTION_GROUP_ID])
-REFERENCES [dbo].[FUNCTION_GROUPS] ([FUNCTION_GROUP_ID])
-GO
-ALTER TABLE [dbo].[FUNCTIONS] CHECK CONSTRAINT [FK_FUNCTIONS_FUNCTION_GROUPS]
-GO
-/****** Object:  ForeignKey [FK_FUNCTIONS_TEMPLATE_LOCATIONS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[FUNCTIONS]  WITH CHECK ADD  CONSTRAINT [FK_FUNCTIONS_TEMPLATE_LOCATIONS] FOREIGN KEY([TEMPLATE_LOCATION_ID])
-REFERENCES [dbo].[TEMPLATE_LOCATIONS] ([TEMPLATE_LOCATION_ID])
-GO
-ALTER TABLE [dbo].[FUNCTIONS] CHECK CONSTRAINT [FK_FUNCTIONS_TEMPLATE_LOCATIONS]
-GO
-/****** Object:  ForeignKey [FK_FUNCTIONS_TEMPLATES]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[FUNCTIONS]  WITH CHECK ADD  CONSTRAINT [FK_FUNCTIONS_TEMPLATES] FOREIGN KEY([TEMPLATE_ID])
-REFERENCES [dbo].[TEMPLATES] ([TEMPLATE_ID])
-GO
-ALTER TABLE [dbo].[FUNCTIONS] CHECK CONSTRAINT [FK_FUNCTIONS_TEMPLATES]
-GO
-/****** Object:  ForeignKey [fk_il_bill_service_id]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[INVOICE_LINES]  WITH CHECK ADD  CONSTRAINT [fk_il_bill_service_id] FOREIGN KEY([bill_service_id])
-REFERENCES [dbo].[SERVICES] ([SERVICE_ID])
-GO
-ALTER TABLE [dbo].[INVOICE_LINES] CHECK CONSTRAINT [fk_il_bill_service_id]
-GO
-/****** Object:  ForeignKey [FK_IL_INVOICES]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[INVOICE_LINES]  WITH NOCHECK ADD  CONSTRAINT [FK_IL_INVOICES] FOREIGN KEY([INVOICE_ID])
-REFERENCES [dbo].[INVOICES] ([INVOICE_ID])
-ON DELETE CASCADE
-GO
-ALTER TABLE [dbo].[INVOICE_LINES] CHECK CONSTRAINT [FK_IL_INVOICES]
-GO
-/****** Object:  ForeignKey [FK_IL_ITEMS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[INVOICE_LINES]  WITH NOCHECK ADD  CONSTRAINT [FK_IL_ITEMS] FOREIGN KEY([ITEM_ID])
-REFERENCES [dbo].[ITEMS] ([ITEM_ID])
-GO
-ALTER TABLE [dbo].[INVOICE_LINES] CHECK CONSTRAINT [FK_IL_ITEMS]
-GO
-/****** Object:  ForeignKey [FK_IL_TYPES]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[INVOICE_LINES]  WITH NOCHECK ADD  CONSTRAINT [FK_IL_TYPES] FOREIGN KEY([INVOICE_LINE_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[INVOICE_LINES] CHECK CONSTRAINT [FK_IL_TYPES]
-GO
-/****** Object:  ForeignKey [FK_IT_CONTACTS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[INVOICE_TRACKING]  WITH NOCHECK ADD  CONSTRAINT [FK_IT_CONTACTS] FOREIGN KEY([TO_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[INVOICE_TRACKING] CHECK CONSTRAINT [FK_IT_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_IT_INVOICE_TRACKING_TYPES]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[INVOICE_TRACKING]  WITH NOCHECK ADD  CONSTRAINT [FK_IT_INVOICE_TRACKING_TYPES] FOREIGN KEY([INVOICE_TRACKING_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[INVOICE_TRACKING] CHECK CONSTRAINT [FK_IT_INVOICE_TRACKING_TYPES]
-GO
-/****** Object:  ForeignKey [FK_IT_INVOICES]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[INVOICE_TRACKING]  WITH NOCHECK ADD  CONSTRAINT [FK_IT_INVOICES] FOREIGN KEY([INVOICE_ID])
-REFERENCES [dbo].[INVOICES] ([INVOICE_ID])
-GO
-ALTER TABLE [dbo].[INVOICE_TRACKING] CHECK CONSTRAINT [FK_IT_INVOICES]
-GO
-/****** Object:  ForeignKey [FK_IT_NEW_INVOICE_STATUSES]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[INVOICE_TRACKING]  WITH NOCHECK ADD  CONSTRAINT [FK_IT_NEW_INVOICE_STATUSES] FOREIGN KEY([NEW_STATUS_ID])
-REFERENCES [dbo].[INVOICE_STATUSES] ([STATUS_ID])
-GO
-ALTER TABLE [dbo].[INVOICE_TRACKING] CHECK CONSTRAINT [FK_IT_NEW_INVOICE_STATUSES]
-GO
-/****** Object:  ForeignKey [FK_IT_OLD_INVOICE_STATUSES]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[INVOICE_TRACKING]  WITH NOCHECK ADD  CONSTRAINT [FK_IT_OLD_INVOICE_STATUSES] FOREIGN KEY([OLD_STATUS_ID])
-REFERENCES [dbo].[INVOICE_STATUSES] ([STATUS_ID])
-GO
-ALTER TABLE [dbo].[INVOICE_TRACKING] CHECK CONSTRAINT [FK_IT_OLD_INVOICE_STATUSES]
-GO
-/****** Object:  ForeignKey [FK_I_BATCH_STATUSES]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[INVOICES]  WITH NOCHECK ADD  CONSTRAINT [FK_I_BATCH_STATUSES] FOREIGN KEY([BATCH_STATUS_ID])
-REFERENCES [dbo].[INVOICE_BATCH_STATUSES] ([STATUS_ID])
-GO
-ALTER TABLE [dbo].[INVOICES] CHECK CONSTRAINT [FK_I_BATCH_STATUSES]
-GO
-/****** Object:  ForeignKey [FK_I_BILLING_TYPES]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[INVOICES]  WITH NOCHECK ADD  CONSTRAINT [FK_I_BILLING_TYPES] FOREIGN KEY([BILLING_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[INVOICES] CHECK CONSTRAINT [FK_I_BILLING_TYPES]
-GO
-/****** Object:  ForeignKey [FK_I_CUSTOMERS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[INVOICES]  WITH NOCHECK ADD  CONSTRAINT [FK_I_CUSTOMERS] FOREIGN KEY([BILL_CUSTOMER_ID])
-REFERENCES [dbo].[CUSTOMERS] ([CUSTOMER_ID])
-GO
-ALTER TABLE [dbo].[INVOICES] CHECK CONSTRAINT [FK_I_CUSTOMERS]
-GO
-/****** Object:  ForeignKey [FK_I_INVOICE_FORMAT_TYPES]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[INVOICES]  WITH NOCHECK ADD  CONSTRAINT [FK_I_INVOICE_FORMAT_TYPES] FOREIGN KEY([INVOICE_FORMAT_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[INVOICES] CHECK CONSTRAINT [FK_I_INVOICE_FORMAT_TYPES]
-GO
-/****** Object:  ForeignKey [FK_I_INVOICE_STATUSES]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[INVOICES]  WITH NOCHECK ADD  CONSTRAINT [FK_I_INVOICE_STATUSES] FOREIGN KEY([STATUS_ID])
-REFERENCES [dbo].[INVOICE_STATUSES] ([STATUS_ID])
-GO
-ALTER TABLE [dbo].[INVOICES] CHECK CONSTRAINT [FK_I_INVOICE_STATUSES]
-GO
-/****** Object:  ForeignKey [FK_I_INVOICE_TYPES]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[INVOICES]  WITH NOCHECK ADD  CONSTRAINT [FK_I_INVOICE_TYPES] FOREIGN KEY([INVOICE_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[INVOICES] CHECK CONSTRAINT [FK_I_INVOICE_TYPES]
-GO
-/****** Object:  ForeignKey [FK_I_JOBS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[INVOICES]  WITH NOCHECK ADD  CONSTRAINT [FK_I_JOBS] FOREIGN KEY([JOB_ID])
-REFERENCES [dbo].[JOBS] ([JOB_ID])
-GO
-ALTER TABLE [dbo].[INVOICES] CHECK CONSTRAINT [FK_I_JOBS]
-GO
-/****** Object:  ForeignKey [FK_I_ORGANIZATIONS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[INVOICES]  WITH NOCHECK ADD  CONSTRAINT [FK_I_ORGANIZATIONS] FOREIGN KEY([ORGANIZATION_ID])
-REFERENCES [dbo].[ORGANIZATIONS] ([ORGANIZATION_ID])
-GO
-ALTER TABLE [dbo].[INVOICES] CHECK CONSTRAINT [FK_I_ORGANIZATIONS]
-GO
-/****** Object:  ForeignKey [FK_I_STATUSES]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[INVOICES]  WITH NOCHECK ADD  CONSTRAINT [FK_I_STATUSES] FOREIGN KEY([STATUS_ID])
-REFERENCES [dbo].[INVOICE_STATUSES] ([STATUS_ID])
-GO
-ALTER TABLE [dbo].[INVOICES] CHECK CONSTRAINT [FK_I_STATUSES]
-GO
-/****** Object:  ForeignKey [FK_ITEMS_ITEM_ID]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[ITEM_COSTING_HISTORY]  WITH CHECK ADD  CONSTRAINT [FK_ITEMS_ITEM_ID] FOREIGN KEY([ITEM_ID])
-REFERENCES [dbo].[ITEMS] ([ITEM_ID])
-GO
-ALTER TABLE [dbo].[ITEM_COSTING_HISTORY] CHECK CONSTRAINT [FK_ITEMS_ITEM_ID]
-GO
-/****** Object:  ForeignKey [FK_ITEM_ORGANIZATIONS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[ITEMS]  WITH NOCHECK ADD  CONSTRAINT [FK_ITEM_ORGANIZATIONS] FOREIGN KEY([ORGANIZATION_ID])
-REFERENCES [dbo].[ORGANIZATIONS] ([ORGANIZATION_ID])
-GO
-ALTER TABLE [dbo].[ITEMS] CHECK CONSTRAINT [FK_ITEM_ORGANIZATIONS]
-GO
-/****** Object:  ForeignKey [FK_ITEM_STATUSES]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[ITEMS]  WITH NOCHECK ADD  CONSTRAINT [FK_ITEM_STATUSES] FOREIGN KEY([ITEM_STATUS_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[ITEMS] CHECK CONSTRAINT [FK_ITEM_STATUSES]
-GO
-/****** Object:  ForeignKey [FK_ITEM_TYPES]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[ITEMS]  WITH NOCHECK ADD  CONSTRAINT [FK_ITEM_TYPES] FOREIGN KEY([ITEM_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[ITEMS] CHECK CONSTRAINT [FK_ITEM_TYPES]
-GO
-/****** Object:  ForeignKey [fk_items_category_lookups]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[ITEMS]  WITH CHECK ADD  CONSTRAINT [fk_items_category_lookups] FOREIGN KEY([item_category_type_id])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[ITEMS] CHECK CONSTRAINT [fk_items_category_lookups]
-GO
-/****** Object:  ForeignKey [FK_ITEMS_TYPE_TYPES]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[ITEMS]  WITH CHECK ADD  CONSTRAINT [FK_ITEMS_TYPE_TYPES] FOREIGN KEY([JOB_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[ITEMS] CHECK CONSTRAINT [FK_ITEMS_TYPE_TYPES]
-GO
-/****** Object:  ForeignKey [FK_JD_JOBS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[JOB_DISTRIBUTIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_JD_JOBS] FOREIGN KEY([JOB_ID])
-REFERENCES [dbo].[JOBS] ([JOB_ID])
-ON DELETE CASCADE
-GO
-ALTER TABLE [dbo].[JOB_DISTRIBUTIONS] CHECK CONSTRAINT [FK_JD_JOBS]
-GO
-/****** Object:  ForeignKey [FK_JIR_ITEMS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[JOB_ITEM_RATES]  WITH NOCHECK ADD  CONSTRAINT [FK_JIR_ITEMS] FOREIGN KEY([ITEM_ID])
-REFERENCES [dbo].[ITEMS] ([ITEM_ID])
-GO
-ALTER TABLE [dbo].[JOB_ITEM_RATES] CHECK CONSTRAINT [FK_JIR_ITEMS]
-GO
-/****** Object:  ForeignKey [FK_JIR_JOBS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[JOB_ITEM_RATES]  WITH NOCHECK ADD  CONSTRAINT [FK_JIR_JOBS] FOREIGN KEY([JOB_ID])
-REFERENCES [dbo].[JOBS] ([JOB_ID])
-GO
-ALTER TABLE [dbo].[JOB_ITEM_RATES] CHECK CONSTRAINT [FK_JIR_JOBS]
-GO
-/****** Object:  ForeignKey [FK_JIR_UOMS]    Script Date: 03/02/2010 13:08:45 ******/
-ALTER TABLE [dbo].[JOB_ITEM_RATES]  WITH NOCHECK ADD  CONSTRAINT [FK_JIR_UOMS] FOREIGN KEY([UOM_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[JOB_ITEM_RATES] CHECK CONSTRAINT [FK_JIR_UOMS]
-GO
-/****** Object:  ForeignKey [FK_jlc_contact]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[job_location_contacts]  WITH CHECK ADD  CONSTRAINT [FK_jlc_contact] FOREIGN KEY([contact_id])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[job_location_contacts] CHECK CONSTRAINT [FK_jlc_contact]
-GO
-/****** Object:  ForeignKey [FK_jlc_job_location]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[job_location_contacts]  WITH CHECK ADD  CONSTRAINT [FK_jlc_job_location] FOREIGN KEY([job_location_id])
-REFERENCES [dbo].[JOB_LOCATIONS] ([JOB_LOCATION_ID])
-GO
-ALTER TABLE [dbo].[job_location_contacts] CHECK CONSTRAINT [FK_jlc_job_location]
-GO
-/****** Object:  ForeignKey [FK_JL_BLDG_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOB_LOCATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_JL_BLDG_CONTACTS] FOREIGN KEY([BLDG_MGMT_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[JOB_LOCATIONS] CHECK CONSTRAINT [FK_JL_BLDG_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_JL_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOB_LOCATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_JL_CONTACTS] FOREIGN KEY([JOB_LOC_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[JOB_LOCATIONS] CHECK CONSTRAINT [FK_JL_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_JL_CUSTOMERS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOB_LOCATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_JL_CUSTOMERS] FOREIGN KEY([CUSTOMER_ID])
-REFERENCES [dbo].[CUSTOMERS] ([CUSTOMER_ID])
-GO
-ALTER TABLE [dbo].[JOB_LOCATIONS] CHECK CONSTRAINT [FK_JL_CUSTOMERS]
-GO
-/****** Object:  ForeignKey [FK_JL_DOCK_RESERV_REQ_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOB_LOCATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_JL_DOCK_RESERV_REQ_TYPES] FOREIGN KEY([DOCK_RESERV_REQ_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[JOB_LOCATIONS] CHECK CONSTRAINT [FK_JL_DOCK_RESERV_REQ_TYPES]
-GO
-/****** Object:  ForeignKey [FK_JL_DOOR_PROT_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOB_LOCATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_JL_DOOR_PROT_TYPES] FOREIGN KEY([DOORWAY_PROT_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[JOB_LOCATIONS] CHECK CONSTRAINT [FK_JL_DOOR_PROT_TYPES]
-GO
-/****** Object:  ForeignKey [FK_JL_ELEV_AVAIL_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOB_LOCATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_JL_ELEV_AVAIL_TYPES] FOREIGN KEY([ELEVATOR_AVAIL_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[JOB_LOCATIONS] CHECK CONSTRAINT [FK_JL_ELEV_AVAIL_TYPES]
-GO
-/****** Object:  ForeignKey [FK_JL_ELEV_RESERV_REQ_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOB_LOCATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_JL_ELEV_RESERV_REQ_TYPES] FOREIGN KEY([ELEVATOR_RESERV_REQ_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[JOB_LOCATIONS] CHECK CONSTRAINT [FK_JL_ELEV_RESERV_REQ_TYPES]
-GO
-/****** Object:  ForeignKey [FK_JL_FLOOR_PROT_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOB_LOCATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_JL_FLOOR_PROT_TYPES] FOREIGN KEY([FLOOR_PROTECTION_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[JOB_LOCATIONS] CHECK CONSTRAINT [FK_JL_FLOOR_PROT_TYPES]
-GO
-/****** Object:  ForeignKey [FK_JL_LOADING_DOCK_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOB_LOCATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_JL_LOADING_DOCK_TYPES] FOREIGN KEY([LOADING_DOCK_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[JOB_LOCATIONS] CHECK CONSTRAINT [FK_JL_LOADING_DOCK_TYPES]
-GO
-/****** Object:  ForeignKey [FK_JL_MULTI_LEVEL_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOB_LOCATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_JL_MULTI_LEVEL_TYPES] FOREIGN KEY([MULTI_LEVEL_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[JOB_LOCATIONS] CHECK CONSTRAINT [FK_JL_MULTI_LEVEL_TYPES]
-GO
-/****** Object:  ForeignKey [FK_JL_SECURITY_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOB_LOCATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_JL_SECURITY_TYPES] FOREIGN KEY([SECURITY_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[JOB_LOCATIONS] CHECK CONSTRAINT [FK_JL_SECURITY_TYPES]
-GO
-/****** Object:  ForeignKey [FK_JL_SEMI_ACCESS_TYES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOB_LOCATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_JL_SEMI_ACCESS_TYES] FOREIGN KEY([SEMI_ACCESS_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[JOB_LOCATIONS] CHECK CONSTRAINT [FK_JL_SEMI_ACCESS_TYES]
-GO
-/****** Object:  ForeignKey [FK_JL_STAIR_CARRY_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOB_LOCATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_JL_STAIR_CARRY_TYPES] FOREIGN KEY([STAIR_CARRY_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[JOB_LOCATIONS] CHECK CONSTRAINT [FK_JL_STAIR_CARRY_TYPES]
-GO
-/****** Object:  ForeignKey [FK_JL_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOB_LOCATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_JL_TYPES] FOREIGN KEY([LOCATION_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[JOB_LOCATIONS] CHECK CONSTRAINT [FK_JL_TYPES]
-GO
-/****** Object:  ForeignKey [FK_JL_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOB_LOCATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_JL_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[JOB_LOCATIONS] CHECK CONSTRAINT [FK_JL_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_JL_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOB_LOCATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_JL_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[JOB_LOCATIONS] CHECK CONSTRAINT [FK_JL_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_JL_WALL_PROT_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOB_LOCATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_JL_WALL_PROT_TYPES] FOREIGN KEY([WALL_PROTECTION_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[JOB_LOCATIONS] CHECK CONSTRAINT [FK_JL_WALL_PROT_TYPES]
-GO
-/****** Object:  ForeignKey [fk_job_end_user]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOBS]  WITH CHECK ADD  CONSTRAINT [fk_job_end_user] FOREIGN KEY([end_user_id])
-REFERENCES [dbo].[CUSTOMERS] ([CUSTOMER_ID])
-GO
-ALTER TABLE [dbo].[JOBS] CHECK CONSTRAINT [fk_job_end_user]
-GO
-/****** Object:  ForeignKey [FK_JOBS_BILLING_USERS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOBS]  WITH NOCHECK ADD  CONSTRAINT [FK_JOBS_BILLING_USERS] FOREIGN KEY([BILLING_USER_ID])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[JOBS] CHECK CONSTRAINT [FK_JOBS_BILLING_USERS]
-GO
-/****** Object:  ForeignKey [FK_JOBS_CUSTOMERS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOBS]  WITH NOCHECK ADD  CONSTRAINT [FK_JOBS_CUSTOMERS] FOREIGN KEY([CUSTOMER_ID])
-REFERENCES [dbo].[CUSTOMERS] ([CUSTOMER_ID])
-GO
-ALTER TABLE [dbo].[JOBS] CHECK CONSTRAINT [FK_JOBS_CUSTOMERS]
-GO
-/****** Object:  ForeignKey [FK_JOBS_FOREMAN_RESOURCES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOBS]  WITH NOCHECK ADD  CONSTRAINT [FK_JOBS_FOREMAN_RESOURCES] FOREIGN KEY([FOREMAN_RESOURCE_ID])
-REFERENCES [dbo].[RESOURCES] ([RESOURCE_ID])
-GO
-ALTER TABLE [dbo].[JOBS] CHECK CONSTRAINT [FK_JOBS_FOREMAN_RESOURCES]
-GO
-/****** Object:  ForeignKey [FK_JOBS_PROJECTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOBS]  WITH NOCHECK ADD  CONSTRAINT [FK_JOBS_PROJECTS] FOREIGN KEY([PROJECT_ID])
-REFERENCES [dbo].[PROJECTS] ([PROJECT_ID])
-GO
-ALTER TABLE [dbo].[JOBS] CHECK CONSTRAINT [FK_JOBS_PROJECTS]
-GO
-/****** Object:  ForeignKey [FK_JOBS_STATUSES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOBS]  WITH NOCHECK ADD  CONSTRAINT [FK_JOBS_STATUSES] FOREIGN KEY([JOB_STATUS_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[JOBS] CHECK CONSTRAINT [FK_JOBS_STATUSES]
-GO
-/****** Object:  ForeignKey [FK_JOBS_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOBS]  WITH NOCHECK ADD  CONSTRAINT [FK_JOBS_TYPES] FOREIGN KEY([JOB_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[JOBS] CHECK CONSTRAINT [FK_JOBS_TYPES]
-GO
-/****** Object:  ForeignKey [FK_JOBS_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOBS]  WITH NOCHECK ADD  CONSTRAINT [FK_JOBS_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[JOBS] CHECK CONSTRAINT [FK_JOBS_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_JOBS_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[JOBS]  WITH NOCHECK ADD  CONSTRAINT [FK_JOBS_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[JOBS] CHECK CONSTRAINT [FK_JOBS_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_LOOKUP_TYPE_PARENTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[LOOKUP_TYPES]  WITH NOCHECK ADD  CONSTRAINT [FK_LOOKUP_TYPE_PARENTS] FOREIGN KEY([PARENT_TYPE_ID])
-REFERENCES [dbo].[LOOKUP_TYPES] ([LOOKUP_TYPE_ID])
-GO
-ALTER TABLE [dbo].[LOOKUP_TYPES] CHECK CONSTRAINT [FK_LOOKUP_TYPE_PARENTS]
-GO
-/****** Object:  ForeignKey [FK_LT_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[LOOKUP_TYPES]  WITH NOCHECK ADD  CONSTRAINT [FK_LT_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[LOOKUP_TYPES] CHECK CONSTRAINT [FK_LT_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_LT_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[LOOKUP_TYPES]  WITH NOCHECK ADD  CONSTRAINT [FK_LT_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[LOOKUP_TYPES] CHECK CONSTRAINT [FK_LT_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_L_LOOKUP_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[LOOKUPS]  WITH NOCHECK ADD  CONSTRAINT [FK_L_LOOKUP_TYPES] FOREIGN KEY([LOOKUP_TYPE_ID])
-REFERENCES [dbo].[LOOKUP_TYPES] ([LOOKUP_TYPE_ID])
-GO
-ALTER TABLE [dbo].[LOOKUPS] CHECK CONSTRAINT [FK_L_LOOKUP_TYPES]
-GO
-/****** Object:  ForeignKey [FK_L_LOOKUPS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[LOOKUPS]  WITH NOCHECK ADD  CONSTRAINT [FK_L_LOOKUPS] FOREIGN KEY([PARENT_LOOKUP_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[LOOKUPS] CHECK CONSTRAINT [FK_L_LOOKUPS]
-GO
-/****** Object:  ForeignKey [FK_O_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[ORGANIZATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_O_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[ORGANIZATIONS] CHECK CONSTRAINT [FK_O_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_O_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[ORGANIZATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_O_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[ORGANIZATIONS] CHECK CONSTRAINT [FK_O_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_PBL_SERVICE_LINES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[PAYROLL_BATCH_LINES]  WITH NOCHECK ADD  CONSTRAINT [FK_PBL_SERVICE_LINES] FOREIGN KEY([SERVICE_LINE_ID])
-REFERENCES [dbo].[SERVICE_LINES] ([SERVICE_LINE_ID])
-GO
-ALTER TABLE [dbo].[PAYROLL_BATCH_LINES] CHECK CONSTRAINT [FK_PBL_SERVICE_LINES]
-GO
-/****** Object:  ForeignKey [FK_PAYROLL_BATCH_STATUS_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[PAYROLL_BATCHES]  WITH NOCHECK ADD  CONSTRAINT [FK_PAYROLL_BATCH_STATUS_TYPES] FOREIGN KEY([PAYROLL_BATCH_STATUS_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[PAYROLL_BATCHES] CHECK CONSTRAINT [FK_PAYROLL_BATCH_STATUS_TYPES]
-GO
-/****** Object:  ForeignKey [FK_PAYROLL_BATCHE_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[PAYROLL_BATCHES]  WITH NOCHECK ADD  CONSTRAINT [FK_PAYROLL_BATCHE_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[PAYROLL_BATCHES] CHECK CONSTRAINT [FK_PAYROLL_BATCHE_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_PB_ORGANIZATIONS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[PAYROLL_BATCHES]  WITH NOCHECK ADD  CONSTRAINT [FK_PB_ORGANIZATIONS] FOREIGN KEY([ORGANIZATION_ID])
-REFERENCES [dbo].[ORGANIZATIONS] ([ORGANIZATION_ID])
-GO
-ALTER TABLE [dbo].[PAYROLL_BATCHES] CHECK CONSTRAINT [FK_PB_ORGANIZATIONS]
-GO
-/****** Object:  ForeignKey [FK_PHC_ITEMS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[POOLED_HOURS_CALC]  WITH NOCHECK ADD  CONSTRAINT [FK_PHC_ITEMS] FOREIGN KEY([ITEM_ID])
-REFERENCES [dbo].[ITEMS] ([ITEM_ID])
-GO
-ALTER TABLE [dbo].[POOLED_HOURS_CALC] CHECK CONSTRAINT [FK_PHC_ITEMS]
-GO
-/****** Object:  ForeignKey [FK_PHC_SERVICES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[POOLED_HOURS_CALC]  WITH NOCHECK ADD  CONSTRAINT [FK_PHC_SERVICES] FOREIGN KEY([SERVICE_ID])
-REFERENCES [dbo].[SERVICES] ([SERVICE_ID])
-ON DELETE CASCADE
-GO
-ALTER TABLE [dbo].[POOLED_HOURS_CALC] CHECK CONSTRAINT [FK_PHC_SERVICES]
-GO
-/****** Object:  ForeignKey [FK_PN_PROJECTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[PROJECT_NOTES]  WITH CHECK ADD  CONSTRAINT [FK_PN_PROJECTS] FOREIGN KEY([PROJECT_ID])
-REFERENCES [dbo].[PROJECTS] ([PROJECT_ID])
-GO
-ALTER TABLE [dbo].[PROJECT_NOTES] CHECK CONSTRAINT [FK_PN_PROJECTS]
-GO
-/****** Object:  ForeignKey [FK_PN_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[PROJECT_NOTES]  WITH NOCHECK ADD  CONSTRAINT [FK_PN_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[PROJECT_NOTES] CHECK CONSTRAINT [FK_PN_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_PN_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[PROJECT_NOTES]  WITH NOCHECK ADD  CONSTRAINT [FK_PN_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[PROJECT_NOTES] CHECK CONSTRAINT [FK_PN_USERS_M]
-GO
-/****** Object:  ForeignKey [fk_project_end_user]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[PROJECTS]  WITH CHECK ADD  CONSTRAINT [fk_project_end_user] FOREIGN KEY([END_USER_ID])
-REFERENCES [dbo].[CUSTOMERS] ([CUSTOMER_ID])
-GO
-ALTER TABLE [dbo].[PROJECTS] CHECK CONSTRAINT [fk_project_end_user]
-GO
-/****** Object:  ForeignKey [FK_PROJECT_STATUSES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[PROJECTS]  WITH CHECK ADD  CONSTRAINT [FK_PROJECT_STATUSES] FOREIGN KEY([PROJECT_STATUS_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[PROJECTS] CHECK CONSTRAINT [FK_PROJECT_STATUSES]
-GO
-/****** Object:  ForeignKey [FK_PROJECT_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[PROJECTS]  WITH CHECK ADD  CONSTRAINT [FK_PROJECT_TYPES] FOREIGN KEY([PROJECT_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[PROJECTS] CHECK CONSTRAINT [FK_PROJECT_TYPES]
-GO
-/****** Object:  ForeignKey [FK_PROJECTS_CUSTOMERS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[PROJECTS]  WITH NOCHECK ADD  CONSTRAINT [FK_PROJECTS_CUSTOMERS] FOREIGN KEY([CUSTOMER_ID])
-REFERENCES [dbo].[CUSTOMERS] ([CUSTOMER_ID])
-GO
-ALTER TABLE [dbo].[PROJECTS] CHECK CONSTRAINT [FK_PROJECTS_CUSTOMERS]
-GO
-/****** Object:  ForeignKey [FK_PROJECTS_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[PROJECTS]  WITH NOCHECK ADD  CONSTRAINT [FK_PROJECTS_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[PROJECTS] CHECK CONSTRAINT [FK_PROJECTS_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_PROJECTS_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[PROJECTS]  WITH NOCHECK ADD  CONSTRAINT [FK_PROJECTS_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[PROJECTS] CHECK CONSTRAINT [FK_PROJECTS_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_PI_PUNCHLISTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[PUNCHLIST_ISSUES]  WITH NOCHECK ADD  CONSTRAINT [FK_PI_PUNCHLISTS] FOREIGN KEY([PUNCHLIST_ID])
-REFERENCES [dbo].[PUNCHLISTS] ([PUNCHLIST_ID])
-GO
-ALTER TABLE [dbo].[PUNCHLIST_ISSUES] CHECK CONSTRAINT [FK_PI_PUNCHLISTS]
-GO
-/****** Object:  ForeignKey [FK_PI_ROOT_CAUSES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[PUNCHLIST_ISSUES]  WITH NOCHECK ADD  CONSTRAINT [FK_PI_ROOT_CAUSES] FOREIGN KEY([ROOT_CAUSE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[PUNCHLIST_ISSUES] CHECK CONSTRAINT [FK_PI_ROOT_CAUSES]
-GO
-/****** Object:  ForeignKey [FK_PI_STATUS_ID]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[PUNCHLIST_ISSUES]  WITH NOCHECK ADD  CONSTRAINT [FK_PI_STATUS_ID] FOREIGN KEY([STATUS_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[PUNCHLIST_ISSUES] CHECK CONSTRAINT [FK_PI_STATUS_ID]
-GO
-/****** Object:  ForeignKey [FK_PI_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[PUNCHLIST_ISSUES]  WITH NOCHECK ADD  CONSTRAINT [FK_PI_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[PUNCHLIST_ISSUES] CHECK CONSTRAINT [FK_PI_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_PI_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[PUNCHLIST_ISSUES]  WITH NOCHECK ADD  CONSTRAINT [FK_PI_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[PUNCHLIST_ISSUES] CHECK CONSTRAINT [FK_PI_USERS_M]
-GO
-/****** Object:  ForeignKey [fk_punchlist_requests]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[PUNCHLISTS]  WITH NOCHECK ADD  CONSTRAINT [fk_punchlist_requests] FOREIGN KEY([request_id])
-REFERENCES [dbo].[REQUESTS] ([REQUEST_ID])
-GO
-ALTER TABLE [dbo].[PUNCHLISTS] CHECK CONSTRAINT [fk_punchlist_requests]
-GO
-/****** Object:  ForeignKey [FK_PUNCHLISTS_PROJECTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[PUNCHLISTS]  WITH NOCHECK ADD  CONSTRAINT [FK_PUNCHLISTS_PROJECTS] FOREIGN KEY([PROJECT_ID])
-REFERENCES [dbo].[PROJECTS] ([PROJECT_ID])
-GO
-ALTER TABLE [dbo].[PUNCHLISTS] CHECK CONSTRAINT [FK_PUNCHLISTS_PROJECTS]
-GO
-/****** Object:  ForeignKey [FK_PUNCHLISTS_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[PUNCHLISTS]  WITH NOCHECK ADD  CONSTRAINT [FK_PUNCHLISTS_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[PUNCHLISTS] CHECK CONSTRAINT [FK_PUNCHLISTS_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_PUNCHLISTS_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[PUNCHLISTS]  WITH NOCHECK ADD  CONSTRAINT [FK_PUNCHLISTS_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[PUNCHLISTS] CHECK CONSTRAINT [FK_PUNCHLISTS_USERS_M]
-GO
-/****** Object:  ForeignKey [fk_po_billing_type_id]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[purchase_orders]  WITH CHECK ADD  CONSTRAINT [fk_po_billing_type_id] FOREIGN KEY([billing_type_id])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[purchase_orders] CHECK CONSTRAINT [fk_po_billing_type_id]
-GO
-/****** Object:  ForeignKey [fk_po_item_id]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[purchase_orders]  WITH CHECK ADD  CONSTRAINT [fk_po_item_id] FOREIGN KEY([item_id])
-REFERENCES [dbo].[ITEMS] ([ITEM_ID])
-GO
-ALTER TABLE [dbo].[purchase_orders] CHECK CONSTRAINT [fk_po_item_id]
-GO
-/****** Object:  ForeignKey [fk_po_request_id]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[purchase_orders]  WITH CHECK ADD  CONSTRAINT [fk_po_request_id] FOREIGN KEY([request_id])
-REFERENCES [dbo].[REQUESTS] ([REQUEST_ID])
-GO
-ALTER TABLE [dbo].[purchase_orders] CHECK CONSTRAINT [fk_po_request_id]
-GO
-/****** Object:  ForeignKey [fk_po_status_id]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[purchase_orders]  WITH CHECK ADD  CONSTRAINT [fk_po_status_id] FOREIGN KEY([po_status_id])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[purchase_orders] CHECK CONSTRAINT [fk_po_status_id]
-GO
-/****** Object:  ForeignKey [FK_QC_CONDITIONS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTE_CONDITIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_QC_CONDITIONS] FOREIGN KEY([CONDITION_ID])
-REFERENCES [dbo].[CONDITIONS] ([CONDITION_ID])
-GO
-ALTER TABLE [dbo].[QUOTE_CONDITIONS] CHECK CONSTRAINT [FK_QC_CONDITIONS]
-GO
-/****** Object:  ForeignKey [FK_QC_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTE_CONDITIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_QC_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[QUOTE_CONDITIONS] CHECK CONSTRAINT [FK_QC_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_QC_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTE_CONDITIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_QC_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[QUOTE_CONDITIONS] CHECK CONSTRAINT [FK_QC_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_QOF_QUOTES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTE_OTHER_FURNITURE]  WITH NOCHECK ADD  CONSTRAINT [FK_QOF_QUOTES] FOREIGN KEY([QUOTE_ID])
-REFERENCES [dbo].[QUOTES] ([quote_id])
-GO
-ALTER TABLE [dbo].[QUOTE_OTHER_FURNITURE] CHECK CONSTRAINT [FK_QOF_QUOTES]
-GO
-/****** Object:  ForeignKey [FK_QOF_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTE_OTHER_FURNITURE]  WITH NOCHECK ADD  CONSTRAINT [FK_QOF_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[QUOTE_OTHER_FURNITURE] CHECK CONSTRAINT [FK_QOF_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_QOF_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTE_OTHER_FURNITURE]  WITH NOCHECK ADD  CONSTRAINT [FK_QOF_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[QUOTE_OTHER_FURNITURE] CHECK CONSTRAINT [FK_QOF_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_QOFAH_QUOTES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTE_OTHER_FURNITURE_AD_HOC]  WITH NOCHECK ADD  CONSTRAINT [FK_QOFAH_QUOTES] FOREIGN KEY([QUOTE_ID])
-REFERENCES [dbo].[QUOTES] ([quote_id])
-GO
-ALTER TABLE [dbo].[QUOTE_OTHER_FURNITURE_AD_HOC] CHECK CONSTRAINT [FK_QOFAH_QUOTES]
-GO
-/****** Object:  ForeignKey [FK_QOFAH_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTE_OTHER_FURNITURE_AD_HOC]  WITH NOCHECK ADD  CONSTRAINT [FK_QOFAH_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[QUOTE_OTHER_FURNITURE_AD_HOC] CHECK CONSTRAINT [FK_QOFAH_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_QOFAH_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTE_OTHER_FURNITURE_AD_HOC]  WITH NOCHECK ADD  CONSTRAINT [FK_QOFAH_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[QUOTE_OTHER_FURNITURE_AD_HOC] CHECK CONSTRAINT [FK_QOFAH_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_QSOS_QUOTES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTE_SPECIFY_OTHER_SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_QSOS_QUOTES] FOREIGN KEY([QUOTE_ID])
-REFERENCES [dbo].[QUOTES] ([quote_id])
-GO
-ALTER TABLE [dbo].[QUOTE_SPECIFY_OTHER_SERVICES] CHECK CONSTRAINT [FK_QSOS_QUOTES]
-GO
-/****** Object:  ForeignKey [FK_QSOS_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTE_SPECIFY_OTHER_SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_QSOS_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[QUOTE_SPECIFY_OTHER_SERVICES] CHECK CONSTRAINT [FK_QSOS_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_QSOS_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTE_SPECIFY_OTHER_SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_QSOS_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[QUOTE_SPECIFY_OTHER_SERVICES] CHECK CONSTRAINT [FK_QSOS_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_QSC_QUOTES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTE_STANDARD_CONDITIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_QSC_QUOTES] FOREIGN KEY([QUOTE_ID])
-REFERENCES [dbo].[QUOTES] ([quote_id])
-GO
-ALTER TABLE [dbo].[QUOTE_STANDARD_CONDITIONS] CHECK CONSTRAINT [FK_QSC_QUOTES]
-GO
-/****** Object:  ForeignKey [FK_QSC_STANDARD_CONDITIONS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTE_STANDARD_CONDITIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_QSC_STANDARD_CONDITIONS] FOREIGN KEY([STANDARD_CONDITION_ID])
-REFERENCES [dbo].[STANDARD_CONDITIONS] ([standard_condition_id])
-GO
-ALTER TABLE [dbo].[QUOTE_STANDARD_CONDITIONS] CHECK CONSTRAINT [FK_QSC_STANDARD_CONDITIONS]
-GO
-/****** Object:  ForeignKey [FK_QSC_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTE_STANDARD_CONDITIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_QSC_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[QUOTE_STANDARD_CONDITIONS] CHECK CONSTRAINT [FK_QSC_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_QSC_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTE_STANDARD_CONDITIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_QSC_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[QUOTE_STANDARD_CONDITIONS] CHECK CONSTRAINT [FK_QSC_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_QWC_QUOTES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTE_WORKSTATION_CONFIGURATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_QWC_QUOTES] FOREIGN KEY([QUOTE_ID])
-REFERENCES [dbo].[QUOTES] ([quote_id])
-GO
-ALTER TABLE [dbo].[QUOTE_WORKSTATION_CONFIGURATIONS] CHECK CONSTRAINT [FK_QWC_QUOTES]
-GO
-/****** Object:  ForeignKey [FK_QWC_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTE_WORKSTATION_CONFIGURATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_QWC_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[QUOTE_WORKSTATION_CONFIGURATIONS] CHECK CONSTRAINT [FK_QWC_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_QWC_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTE_WORKSTATION_CONFIGURATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_QWC_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[QUOTE_WORKSTATION_CONFIGURATIONS] CHECK CONSTRAINT [FK_QWC_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_QUOTE_REQUEST_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTES]  WITH NOCHECK ADD  CONSTRAINT [FK_QUOTE_REQUEST_TYPES] FOREIGN KEY([request_type_id])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[QUOTES] CHECK CONSTRAINT [FK_QUOTE_REQUEST_TYPES]
-GO
-/****** Object:  ForeignKey [FK_QUOTE_REQUESTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTES]  WITH NOCHECK ADD  CONSTRAINT [FK_QUOTE_REQUESTS] FOREIGN KEY([request_id])
-REFERENCES [dbo].[REQUESTS] ([REQUEST_ID])
-GO
-ALTER TABLE [dbo].[QUOTES] CHECK CONSTRAINT [FK_QUOTE_REQUESTS]
-GO
-/****** Object:  ForeignKey [FK_QUOTE_STATUSES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTES]  WITH NOCHECK ADD  CONSTRAINT [FK_QUOTE_STATUSES] FOREIGN KEY([quote_status_type_id])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[QUOTES] CHECK CONSTRAINT [FK_QUOTE_STATUSES]
-GO
-/****** Object:  ForeignKey [FK_QUOTE_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTES]  WITH NOCHECK ADD  CONSTRAINT [FK_QUOTE_TYPES] FOREIGN KEY([quote_type_id])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[QUOTES] CHECK CONSTRAINT [FK_QUOTE_TYPES]
-GO
-/****** Object:  ForeignKey [FK_QUOTE_USERS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTES]  WITH NOCHECK ADD  CONSTRAINT [FK_QUOTE_USERS] FOREIGN KEY([quoted_by_user_id])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[QUOTES] CHECK CONSTRAINT [FK_QUOTE_USERS]
-GO
-/****** Object:  ForeignKey [FK_QUOTE_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTES]  WITH NOCHECK ADD  CONSTRAINT [FK_QUOTE_USERS_C] FOREIGN KEY([created_by])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[QUOTES] CHECK CONSTRAINT [FK_QUOTE_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_QUOTE_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[QUOTES]  WITH NOCHECK ADD  CONSTRAINT [FK_QUOTE_USERS_M] FOREIGN KEY([modified_by])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[QUOTES] CHECK CONSTRAINT [FK_QUOTE_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_DOCUMENTS_CREATED_BY]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUEST_DOCUMENTS]  WITH CHECK ADD  CONSTRAINT [FK_REQUEST_DOCUMENTS_CREATED_BY] FOREIGN KEY([created_by])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[REQUEST_DOCUMENTS] CHECK CONSTRAINT [FK_REQUEST_DOCUMENTS_CREATED_BY]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_DOCUMENTS_MODIFIED_BY]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUEST_DOCUMENTS]  WITH CHECK ADD  CONSTRAINT [FK_REQUEST_DOCUMENTS_MODIFIED_BY] FOREIGN KEY([modified_by])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[REQUEST_DOCUMENTS] CHECK CONSTRAINT [FK_REQUEST_DOCUMENTS_MODIFIED_BY]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_DOCUMENTS_REQUESTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUEST_DOCUMENTS]  WITH CHECK ADD  CONSTRAINT [FK_REQUEST_DOCUMENTS_REQUESTS] FOREIGN KEY([request_id])
-REFERENCES [dbo].[REQUESTS] ([REQUEST_ID])
-GO
-ALTER TABLE [dbo].[REQUEST_DOCUMENTS] CHECK CONSTRAINT [FK_REQUEST_DOCUMENTS_REQUESTS]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_VENDOR_CONTACT]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUEST_VENDORS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_VENDOR_CONTACT] FOREIGN KEY([VENDOR_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUEST_VENDORS] CHECK CONSTRAINT [FK_REQUEST_VENDOR_CONTACT]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_VENDOR_CREATED_BY]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUEST_VENDORS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_VENDOR_CREATED_BY] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[REQUEST_VENDORS] CHECK CONSTRAINT [FK_REQUEST_VENDOR_CREATED_BY]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_VENDOR_MODIFIED_BY]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUEST_VENDORS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_VENDOR_MODIFIED_BY] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[REQUEST_VENDORS] CHECK CONSTRAINT [FK_REQUEST_VENDOR_MODIFIED_BY]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_VENDORS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUEST_VENDORS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_VENDORS] FOREIGN KEY([REQUEST_ID])
-REFERENCES [dbo].[REQUESTS] ([REQUEST_ID])
-GO
-ALTER TABLE [dbo].[REQUEST_VENDORS] CHECK CONSTRAINT [FK_REQUEST_VENDORS]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_A_D_DESIGNER_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_A_D_DESIGNER_CONTACTS] FOREIGN KEY([A_D_DESIGNER_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_A_D_DESIGNER_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_A_M_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_A_M_CONTACTS] FOREIGN KEY([A_M_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_A_M_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_A_M_INSTALLER_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_A_M_INSTALLER_CONTACTS] FOREIGN KEY([A_M_INSTALL_SUP_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_A_M_INSTALLER_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_ACCOUNT_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_ACCOUNT_TYPES] FOREIGN KEY([ACCOUNT_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_ACCOUNT_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_CAT_TYPES1]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES1] FOREIGN KEY([ACTIVITY_CAT_TYPE_ID1])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES1]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_CAT_TYPES10]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES10] FOREIGN KEY([ACTIVITY_CAT_TYPE_ID10])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES10]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_CAT_TYPES2]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES2] FOREIGN KEY([ACTIVITY_CAT_TYPE_ID2])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES2]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_CAT_TYPES3]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES3] FOREIGN KEY([ACTIVITY_CAT_TYPE_ID3])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES3]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_CAT_TYPES4]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES4] FOREIGN KEY([ACTIVITY_CAT_TYPE_ID4])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES4]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_CAT_TYPES5]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES5] FOREIGN KEY([ACTIVITY_CAT_TYPE_ID5])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES5]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_CAT_TYPES6]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES6] FOREIGN KEY([ACTIVITY_CAT_TYPE_ID6])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES6]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_CAT_TYPES7]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES7] FOREIGN KEY([ACTIVITY_CAT_TYPE_ID7])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES7]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_CAT_TYPES8]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES8] FOREIGN KEY([ACTIVITY_CAT_TYPE_ID8])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES8]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_CAT_TYPES9]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES9] FOREIGN KEY([ACTIVITY_CAT_TYPE_ID9])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_ACTIVITY_CAT_TYPES9]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_TYPE1]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_ACTIVITY_TYPE1] FOREIGN KEY([ACTIVITY_TYPE_ID1])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_ACTIVITY_TYPE1]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_TYPES10]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES10] FOREIGN KEY([ACTIVITY_TYPE_ID10])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES10]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_TYPES2]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES2] FOREIGN KEY([ACTIVITY_TYPE_ID2])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES2]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_TYPES3]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES3] FOREIGN KEY([ACTIVITY_TYPE_ID3])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES3]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_TYPES4]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES4] FOREIGN KEY([ACTIVITY_TYPE_ID4])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES4]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_TYPES5]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES5] FOREIGN KEY([ACTIVITY_TYPE_ID5])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES5]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_TYPES6]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES6] FOREIGN KEY([ACTIVITY_TYPE_ID6])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES6]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_TYPES7]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES7] FOREIGN KEY([ACTIVITY_TYPE_ID7])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES7]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_TYPES8]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES8] FOREIGN KEY([ACTIVITY_TYPE_ID8])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES8]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_ACTIVITY_TYPES9]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES9] FOREIGN KEY([ACTIVITY_TYPE_ID9])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_ACTIVITY_TYPES9]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_ALT_CUST_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_ALT_CUST_CONTACTS] FOREIGN KEY([ALT_CUSTOMER_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_ALT_CUST_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_APPROVAL_REQ_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_APPROVAL_REQ_TYPES] FOREIGN KEY([APPROVAL_REQ_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_APPROVAL_REQ_TYPES]
-GO
-/****** Object:  ForeignKey [fk_request_approver_contact]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [fk_request_approver_contact] FOREIGN KEY([APPROVER_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [fk_request_approver_contact]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_BLDG_MGR_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_BLDG_MGR_CONTACTS] FOREIGN KEY([BLDG_MGR_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_BLDG_MGR_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_CARPET_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_CARPET_CONTACTS] FOREIGN KEY([CARPET_LAYER_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_CARPET_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_CASE_FURN_LINE_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_CASE_FURN_LINE_TYPES] FOREIGN KEY([CASE_FURN_LINE_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_CASE_FURN_LINE_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_CASE_FURN_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_CASE_FURN_TYPES] FOREIGN KEY([CASE_FURN_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_CASE_FURN_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_COORD_ELECTRICAL_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_COORD_ELECTRICAL_TYPES] FOREIGN KEY([COORD_ELECTRICAL_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_COORD_ELECTRICAL_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_COORD_FLOOR_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_COORD_FLOOR_TYPES] FOREIGN KEY([COORD_FLOOR_COVR_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_COORD_FLOOR_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_COORD_MOVER_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_COORD_MOVER_TYPES] FOREIGN KEY([COORD_MOVER_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_COORD_MOVER_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_COORD_PHONE_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_COORD_PHONE_TYPES] FOREIGN KEY([COORD_PHONE_DATA_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_COORD_PHONE_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_COORD_WALL_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_COORD_WALL_TYPES] FOREIGN KEY([COORD_WALL_COVR_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_COORD_WALL_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_COST_TO_CUST_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_COST_TO_CUST_TYPES] FOREIGN KEY([COST_TO_CUST_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_COST_TO_CUST_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_COST_TO_JOB_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_COST_TO_JOB_TYPES] FOREIGN KEY([COST_TO_JOB_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_COST_TO_JOB_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_COST_TO_VENDOR_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_COST_TO_VENDOR_TYPES] FOREIGN KEY([COST_TO_VEND_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_COST_TO_VENDOR_TYPES]
-GO
-/****** Object:  ForeignKey [fk_request_customer_contact2]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH CHECK ADD  CONSTRAINT [fk_request_customer_contact2] FOREIGN KEY([CUSTOMER_CONTACT2_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [fk_request_customer_contact2]
-GO
-/****** Object:  ForeignKey [fk_request_customer_contact3]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH CHECK ADD  CONSTRAINT [fk_request_customer_contact3] FOREIGN KEY([CUSTOMER_CONTACT3_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [fk_request_customer_contact3]
-GO
-/****** Object:  ForeignKey [fk_request_customer_contact4]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH CHECK ADD  CONSTRAINT [fk_request_customer_contact4] FOREIGN KEY([CUSTOMER_CONTACT4_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [fk_request_customer_contact4]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_CUSTOMER_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_CUSTOMER_CONTACTS] FOREIGN KEY([CUSTOMER_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_CUSTOMER_CONTACTS]
-GO
-/****** Object:  ForeignKey [fk_request_customer_costing_type]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH CHECK ADD  CONSTRAINT [fk_request_customer_costing_type] FOREIGN KEY([CUSTOMER_COSTING_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [fk_request_customer_costing_type]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_D_DESIGNER_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_D_DESIGNER_CONTACTS] FOREIGN KEY([D_DESIGNER_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_D_DESIGNER_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_D_PROJ_MGR_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_D_PROJ_MGR_CONTACTS] FOREIGN KEY([D_PROJ_MGR_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_D_PROJ_MGR_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_D_SALES_REP_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_D_SALES_REP_CONTACTS] FOREIGN KEY([D_SALES_REP_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_D_SALES_REP_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_D_SALES_SUP_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_D_SALES_SUP_CONTACTS] FOREIGN KEY([D_SALES_SUP_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_D_SALES_SUP_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_DATA_PHONE_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_DATA_PHONE_CONTACTS] FOREIGN KEY([DATA_PHONE_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_DATA_PHONE_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_DELIVERY_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_DELIVERY_TYPES] FOREIGN KEY([DELIVERY_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_DELIVERY_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_DUMPSTER_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_DUMPSTER_TYPES] FOREIGN KEY([DUMPSTER_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_DUMPSTER_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_DUR_TIME_UOM_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_DUR_TIME_UOM_TYPES] FOREIGN KEY([DURATION_TIME_UOM_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_DUR_TIME_UOM_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_ELECTRICIAN_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_ELECTRICIAN_CONTACTS] FOREIGN KEY([ELECTRICIAN_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_ELECTRICIAN_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_EVENING_HOURS_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_EVENING_HOURS_TYPES] FOREIGN KEY([EVENING_HOURS_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_EVENING_HOURS_TYPES]
-GO
-/****** Object:  ForeignKey [fk_request_floor_number_types]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [fk_request_floor_number_types] FOREIGN KEY([FLOOR_NUMBER_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [fk_request_floor_number_types]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_FURN_PLAN_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_FURN_PLAN_TYPES] FOREIGN KEY([FURN_PLAN_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_FURN_PLAN_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_FURN_SPEC_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_FURN_SPEC_TYPES] FOREIGN KEY([FURN_SPEC_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_FURN_SPEC_TYPES]
-GO
-/****** Object:  ForeignKey [fk_request_furn1_contact]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [fk_request_furn1_contact] FOREIGN KEY([FURNITURE1_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [fk_request_furn1_contact]
-GO
-/****** Object:  ForeignKey [fk_request_furn2_contact]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [fk_request_furn2_contact] FOREIGN KEY([FURNITURE2_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [fk_request_furn2_contact]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_GEN_CONTRACT_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_GEN_CONTRACT_CONTACTS] FOREIGN KEY([GEN_CONTRACTOR_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_GEN_CONTRACT_CONTACTS]
-GO
-/****** Object:  ForeignKey [fk_request_job_loc_contact]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH CHECK ADD  CONSTRAINT [fk_request_job_loc_contact] FOREIGN KEY([JOB_LOCATION_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [fk_request_job_loc_contact]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_JOB_LOCATIONS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_JOB_LOCATIONS] FOREIGN KEY([JOB_LOCATION_ID])
-REFERENCES [dbo].[JOB_LOCATIONS] ([JOB_LOCATION_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_JOB_LOCATIONS]
-GO
-/****** Object:  ForeignKey [fk_request_level_types]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [fk_request_level_types] FOREIGN KEY([LEVEL_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [fk_request_level_types]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_MOVER_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_MOVER_CONTACTS] FOREIGN KEY([MOVER_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_MOVER_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_NEW_SITE_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_NEW_SITE_TYPES] FOREIGN KEY([NEW_SITE_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_NEW_SITE_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_OCCUPIED_SITE_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_OCCUPIED_SITE_TYPES] FOREIGN KEY([OCCUPIED_SITE_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_OCCUPIED_SITE_TYPES]
-GO
-/****** Object:  ForeignKey [fk_request_order_type]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH CHECK ADD  CONSTRAINT [fk_request_order_type] FOREIGN KEY([ORDER_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [fk_request_order_type]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_OTHER_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_OTHER_CONTACTS] FOREIGN KEY([OTHER_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_OTHER_CONTACTS]
-GO
-/****** Object:  ForeignKey [fk_request_other_delivery_type]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH CHECK ADD  CONSTRAINT [fk_request_other_delivery_type] FOREIGN KEY([OTHER_DELIVERY_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [fk_request_other_delivery_type]
-GO
-/****** Object:  ForeignKey [fk_request_other_furn_type]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH CHECK ADD  CONSTRAINT [fk_request_other_furn_type] FOREIGN KEY([OTHER_FURNITURE_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [fk_request_other_furn_type]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_PHASED_INSTALL_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_PHASED_INSTALL_TYPES] FOREIGN KEY([PHASED_INSTALL_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_PHASED_INSTALL_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_PRI_FURN_LINE_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_PRI_FURN_LINE_TYPES] FOREIGN KEY([PRI_FURN_LINE_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_PRI_FURN_LINE_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_PRI_FURN_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_PRI_FURN_TYPES] FOREIGN KEY([PRI_FURN_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_PRI_FURN_TYPES]
-GO
-/****** Object:  ForeignKey [fk_request_priority_types]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [fk_request_priority_types] FOREIGN KEY([PRIORITY_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [fk_request_priority_types]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_PROJECTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_PROJECTS] FOREIGN KEY([PROJECT_ID])
-REFERENCES [dbo].[PROJECTS] ([PROJECT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_PROJECTS]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_PUNCHLIST_ITEM_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_PUNCHLIST_ITEM_TYPES] FOREIGN KEY([PUNCHLIST_ITEM_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_PUNCHLIST_ITEM_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_QUOTE_REQUESTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_QUOTE_REQUESTS] FOREIGN KEY([QUOTE_REQUEST_ID])
-REFERENCES [dbo].[REQUESTS] ([REQUEST_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_QUOTE_REQUESTS]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_QUOTE_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_QUOTE_TYPES] FOREIGN KEY([QUOTE_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_QUOTE_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_REGULAR_HOURS_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_REGULAR_HOURS_TYPES] FOREIGN KEY([REGULAR_HOURS_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_REGULAR_HOURS_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_SCHEDULE_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_SCHEDULE_TYPES] FOREIGN KEY([SCHEDULE_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_SCHEDULE_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_SEC_FURN_LINE_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_SEC_FURN_LINE_TYPES] FOREIGN KEY([SEC_FURN_LINE_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_SEC_FURN_LINE_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_SEC_FURN_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_SEC_FURN_TYPES] FOREIGN KEY([SEC_FURN_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_SEC_FURN_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_SECURITY_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_SECURITY_CONTACTS] FOREIGN KEY([SECURITY_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_SECURITY_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_SITE_VISIT_REQ_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_SITE_VISIT_REQ_TYPES] FOREIGN KEY([SITE_VISIT_REQ_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_SITE_VISIT_REQ_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_STAGING_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_STAGING_TYPES] FOREIGN KEY([STAGING_AREA_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_STAGING_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_STATION_TYPICAL_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_STATION_TYPICAL_TYPES] FOREIGN KEY([WORKSTATION_TYPICAL_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_STATION_TYPICAL_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_STATUSES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_STATUSES] FOREIGN KEY([REQUEST_STATUS_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_STATUSES]
-GO
-/****** Object:  ForeignKey [fk_request_sys_furn_line_type]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH CHECK ADD  CONSTRAINT [fk_request_sys_furn_line_type] FOREIGN KEY([SYSTEM_FURNITURE_LINE_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [fk_request_sys_furn_line_type]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_TYPES] FOREIGN KEY([REQUEST_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_UNION_LABOR_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_UNION_LABOR_TYPES] FOREIGN KEY([UNION_LABOR_REQ_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_UNION_LABOR_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_WALKBOARD_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_WALKBOARD_TYPES] FOREIGN KEY([WALKBOARD_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_WALKBOARD_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_WALL_MOUNT_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_WALL_MOUNT_TYPES] FOREIGN KEY([WALL_MOUNT_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_WALL_MOUNT_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_WAREHOUSE_FEE_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_WAREHOUSE_FEE_TYPES] FOREIGN KEY([WAREHOUSE_FEE_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_WAREHOUSE_FEE_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_WEEKEND_HOURS_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_WEEKEND_HOURS_TYPES] FOREIGN KEY([WEEKEND_HOURS_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_WEEKEND_HOURS_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUEST_WOOD_PRODUCT_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH NOCHECK ADD  CONSTRAINT [FK_REQUEST_WOOD_PRODUCT_TYPES] FOREIGN KEY([WOOD_PRODUCT_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUEST_WOOD_PRODUCT_TYPES]
-GO
-/****** Object:  ForeignKey [FK_REQUESTS_A_M_SALES_CONTACT_ID]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH CHECK ADD  CONSTRAINT [FK_REQUESTS_A_M_SALES_CONTACT_ID] FOREIGN KEY([A_M_SALES_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUESTS_A_M_SALES_CONTACT_ID]
-GO
-/****** Object:  ForeignKey [FK_REQUESTS_PROD_DIST]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[REQUESTS]  WITH CHECK ADD  CONSTRAINT [FK_REQUESTS_PROD_DIST] FOREIGN KEY([PROD_DISP_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[REQUESTS] CHECK CONSTRAINT [FK_REQUESTS_PROD_DIST]
-GO
-/****** Object:  ForeignKey [FK_RE_JOB_ITEM_RATES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[RESOURCE_ESTIMATES]  WITH NOCHECK ADD  CONSTRAINT [FK_RE_JOB_ITEM_RATES] FOREIGN KEY([JOB_ITEM_RATE_ID])
-REFERENCES [dbo].[JOB_ITEM_RATES] ([JOB_ITEM_RATE_ID])
-GO
-ALTER TABLE [dbo].[RESOURCE_ESTIMATES] CHECK CONSTRAINT [FK_RE_JOB_ITEM_RATES]
-GO
-/****** Object:  ForeignKey [FK_RE_JOBS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[RESOURCE_ESTIMATES]  WITH NOCHECK ADD  CONSTRAINT [FK_RE_JOBS] FOREIGN KEY([JOB_ID])
-REFERENCES [dbo].[JOBS] ([JOB_ID])
-GO
-ALTER TABLE [dbo].[RESOURCE_ESTIMATES] CHECK CONSTRAINT [FK_RE_JOBS]
-GO
-/****** Object:  ForeignKey [FK_RE_RESOURCE_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[RESOURCE_ESTIMATES]  WITH CHECK ADD  CONSTRAINT [FK_RE_RESOURCE_TYPES] FOREIGN KEY([RESOURCE_TYPE_ID])
-REFERENCES [dbo].[RESOURCE_TYPES] ([RESOURCE_TYPE_ID])
-GO
-ALTER TABLE [dbo].[RESOURCE_ESTIMATES] CHECK CONSTRAINT [FK_RE_RESOURCE_TYPES]
-GO
-/****** Object:  ForeignKey [FK_RE_SERVICES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[RESOURCE_ESTIMATES]  WITH NOCHECK ADD  CONSTRAINT [FK_RE_SERVICES] FOREIGN KEY([SERVICE_ID])
-REFERENCES [dbo].[SERVICES] ([SERVICE_ID])
-GO
-ALTER TABLE [dbo].[RESOURCE_ESTIMATES] CHECK CONSTRAINT [FK_RE_SERVICES]
-GO
-/****** Object:  ForeignKey [FK_RE_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[RESOURCE_ESTIMATES]  WITH NOCHECK ADD  CONSTRAINT [FK_RE_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[RESOURCE_ESTIMATES] CHECK CONSTRAINT [FK_RE_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_RE_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[RESOURCE_ESTIMATES]  WITH NOCHECK ADD  CONSTRAINT [FK_RE_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[RESOURCE_ESTIMATES] CHECK CONSTRAINT [FK_RE_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_RI_ITEMS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[RESOURCE_ITEMS]  WITH NOCHECK ADD  CONSTRAINT [FK_RI_ITEMS] FOREIGN KEY([ITEM_ID])
-REFERENCES [dbo].[ITEMS] ([ITEM_ID])
-GO
-ALTER TABLE [dbo].[RESOURCE_ITEMS] CHECK CONSTRAINT [FK_RI_ITEMS]
-GO
-/****** Object:  ForeignKey [FK_RI_RESOURCES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[RESOURCE_ITEMS]  WITH NOCHECK ADD  CONSTRAINT [FK_RI_RESOURCES] FOREIGN KEY([RESOURCE_ID])
-REFERENCES [dbo].[RESOURCES] ([RESOURCE_ID])
-GO
-ALTER TABLE [dbo].[RESOURCE_ITEMS] NOCHECK CONSTRAINT [FK_RI_RESOURCES]
-GO
-/****** Object:  ForeignKey [FK_RI_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[RESOURCE_ITEMS]  WITH NOCHECK ADD  CONSTRAINT [FK_RI_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[RESOURCE_ITEMS] CHECK CONSTRAINT [FK_RI_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_RI_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[RESOURCE_ITEMS]  WITH NOCHECK ADD  CONSTRAINT [FK_RI_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[RESOURCE_ITEMS] CHECK CONSTRAINT [FK_RI_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_RTI_ITEMS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[RESOURCE_TYPE_ITEMS]  WITH NOCHECK ADD  CONSTRAINT [FK_RTI_ITEMS] FOREIGN KEY([ITEM_ID])
-REFERENCES [dbo].[ITEMS] ([ITEM_ID])
-GO
-ALTER TABLE [dbo].[RESOURCE_TYPE_ITEMS] CHECK CONSTRAINT [FK_RTI_ITEMS]
-GO
-/****** Object:  ForeignKey [FK_RTI_RESOURCE_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[RESOURCE_TYPE_ITEMS]  WITH NOCHECK ADD  CONSTRAINT [FK_RTI_RESOURCE_TYPES] FOREIGN KEY([RESOURCE_TYPE_ID])
-REFERENCES [dbo].[RESOURCE_TYPES] ([RESOURCE_TYPE_ID])
-GO
-ALTER TABLE [dbo].[RESOURCE_TYPE_ITEMS] CHECK CONSTRAINT [FK_RTI_RESOURCE_TYPES]
-GO
-/****** Object:  ForeignKey [FK_RTI_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[RESOURCE_TYPE_ITEMS]  WITH NOCHECK ADD  CONSTRAINT [FK_RTI_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[RESOURCE_TYPE_ITEMS] CHECK CONSTRAINT [FK_RTI_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_RTI_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[RESOURCE_TYPE_ITEMS]  WITH NOCHECK ADD  CONSTRAINT [FK_RTI_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[RESOURCE_TYPE_ITEMS] CHECK CONSTRAINT [FK_RTI_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_RT_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[RESOURCE_TYPES]  WITH NOCHECK ADD  CONSTRAINT [FK_RT_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[RESOURCE_TYPES] CHECK CONSTRAINT [FK_RT_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_RT_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[RESOURCE_TYPES]  WITH NOCHECK ADD  CONSTRAINT [FK_RT_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[RESOURCE_TYPES] CHECK CONSTRAINT [FK_RT_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_RESOURCE_ORGANIZATIONS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[RESOURCES]  WITH NOCHECK ADD  CONSTRAINT [FK_RESOURCE_ORGANIZATIONS] FOREIGN KEY([ORGANIZATION_ID])
-REFERENCES [dbo].[ORGANIZATIONS] ([ORGANIZATION_ID])
-GO
-ALTER TABLE [dbo].[RESOURCES] CHECK CONSTRAINT [FK_RESOURCE_ORGANIZATIONS]
-GO
-/****** Object:  ForeignKey [FK_RESOURCE_RESOURCE_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[RESOURCES]  WITH NOCHECK ADD  CONSTRAINT [FK_RESOURCE_RESOURCE_TYPES] FOREIGN KEY([RESOURCE_TYPE_ID])
-REFERENCES [dbo].[RESOURCE_TYPES] ([RESOURCE_TYPE_ID])
-GO
-ALTER TABLE [dbo].[RESOURCES] CHECK CONSTRAINT [FK_RESOURCE_RESOURCE_TYPES]
-GO
-/****** Object:  ForeignKey [FK_RESOURCE_USERS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[RESOURCES]  WITH NOCHECK ADD  CONSTRAINT [FK_RESOURCE_USERS] FOREIGN KEY([USER_ID])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[RESOURCES] CHECK CONSTRAINT [FK_RESOURCE_USERS]
-GO
-/****** Object:  ForeignKey [FK_RESOURCE_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[RESOURCES]  WITH NOCHECK ADD  CONSTRAINT [FK_RESOURCE_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[RESOURCES] CHECK CONSTRAINT [FK_RESOURCE_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_RESOURCE_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[RESOURCES]  WITH NOCHECK ADD  CONSTRAINT [FK_RESOURCE_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[RESOURCES] CHECK CONSTRAINT [FK_RESOURCE_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_RIGHT_TYPE_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[RIGHT_TYPES]  WITH NOCHECK ADD  CONSTRAINT [FK_RIGHT_TYPE_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[RIGHT_TYPES] CHECK CONSTRAINT [FK_RIGHT_TYPE_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_RIGHT_TYPE_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[RIGHT_TYPES]  WITH NOCHECK ADD  CONSTRAINT [FK_RIGHT_TYPE_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[RIGHT_TYPES] CHECK CONSTRAINT [FK_RIGHT_TYPE_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_RFR_FUNCTIONS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[ROLE_FUNCTION_RIGHTS]  WITH NOCHECK ADD  CONSTRAINT [FK_RFR_FUNCTIONS] FOREIGN KEY([FUNCTION_ID])
-REFERENCES [dbo].[FUNCTIONS] ([FUNCTION_ID])
-ON DELETE CASCADE
-GO
-ALTER TABLE [dbo].[ROLE_FUNCTION_RIGHTS] CHECK CONSTRAINT [FK_RFR_FUNCTIONS]
-GO
-/****** Object:  ForeignKey [FK_RFR_RIGHT_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[ROLE_FUNCTION_RIGHTS]  WITH NOCHECK ADD  CONSTRAINT [FK_RFR_RIGHT_TYPES] FOREIGN KEY([RIGHT_TYPE_ID])
-REFERENCES [dbo].[RIGHT_TYPES] ([RIGHT_TYPE_ID])
-GO
-ALTER TABLE [dbo].[ROLE_FUNCTION_RIGHTS] CHECK CONSTRAINT [FK_RFR_RIGHT_TYPES]
-GO
-/****** Object:  ForeignKey [FK_RFR_ROLES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[ROLE_FUNCTION_RIGHTS]  WITH NOCHECK ADD  CONSTRAINT [FK_RFR_ROLES] FOREIGN KEY([ROLE_ID])
-REFERENCES [dbo].[ROLES] ([ROLE_ID])
-ON DELETE CASCADE
-GO
-ALTER TABLE [dbo].[ROLE_FUNCTION_RIGHTS] CHECK CONSTRAINT [FK_RFR_ROLES]
-GO
-/****** Object:  ForeignKey [FK_RFR_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[ROLE_FUNCTION_RIGHTS]  WITH NOCHECK ADD  CONSTRAINT [FK_RFR_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[ROLE_FUNCTION_RIGHTS] CHECK CONSTRAINT [FK_RFR_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_RFR_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[ROLE_FUNCTION_RIGHTS]  WITH NOCHECK ADD  CONSTRAINT [FK_RFR_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[ROLE_FUNCTION_RIGHTS] CHECK CONSTRAINT [FK_RFR_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_ROLE_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[ROLES]  WITH NOCHECK ADD  CONSTRAINT [FK_ROLE_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[ROLES] CHECK CONSTRAINT [FK_ROLE_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_ROLE_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[ROLES]  WITH NOCHECK ADD  CONSTRAINT [FK_ROLE_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[ROLES] CHECK CONSTRAINT [FK_ROLE_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_RESOURCE_SCH_RESOURCES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SCH_RESOURCES]  WITH NOCHECK ADD  CONSTRAINT [FK_RESOURCE_SCH_RESOURCES] FOREIGN KEY([RESOURCE_ID])
-REFERENCES [dbo].[RESOURCES] ([RESOURCE_ID])
-GO
-ALTER TABLE [dbo].[SCH_RESOURCES] CHECK CONSTRAINT [FK_RESOURCE_SCH_RESOURCES]
-GO
-/****** Object:  ForeignKey [FK_SR_DATE_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SCH_RESOURCES]  WITH NOCHECK ADD  CONSTRAINT [FK_SR_DATE_TYPES] FOREIGN KEY([DATE_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[SCH_RESOURCES] CHECK CONSTRAINT [FK_SR_DATE_TYPES]
-GO
-/****** Object:  ForeignKey [FK_SR_HIDDEN_SERVICES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SCH_RESOURCES]  WITH NOCHECK ADD  CONSTRAINT [FK_SR_HIDDEN_SERVICES] FOREIGN KEY([HIDDEN_SERVICE_ID])
-REFERENCES [dbo].[SERVICES] ([SERVICE_ID])
-GO
-ALTER TABLE [dbo].[SCH_RESOURCES] CHECK CONSTRAINT [FK_SR_HIDDEN_SERVICES]
-GO
-/****** Object:  ForeignKey [FK_SR_JOBS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SCH_RESOURCES]  WITH NOCHECK ADD  CONSTRAINT [FK_SR_JOBS] FOREIGN KEY([JOB_ID])
-REFERENCES [dbo].[JOBS] ([JOB_ID])
-GO
-ALTER TABLE [dbo].[SCH_RESOURCES] CHECK CONSTRAINT [FK_SR_JOBS]
-GO
-/****** Object:  ForeignKey [FK_SR_REASON_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SCH_RESOURCES]  WITH NOCHECK ADD  CONSTRAINT [FK_SR_REASON_TYPES] FOREIGN KEY([REASON_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[SCH_RESOURCES] CHECK CONSTRAINT [FK_SR_REASON_TYPES]
-GO
-/****** Object:  ForeignKey [FK_SR_REPORT_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SCH_RESOURCES]  WITH NOCHECK ADD  CONSTRAINT [FK_SR_REPORT_TYPES] FOREIGN KEY([REPORT_TO_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[SCH_RESOURCES] CHECK CONSTRAINT [FK_SR_REPORT_TYPES]
-GO
-/****** Object:  ForeignKey [FK_SR_RES_STATUS_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SCH_RESOURCES]  WITH NOCHECK ADD  CONSTRAINT [FK_SR_RES_STATUS_TYPES] FOREIGN KEY([RES_STATUS_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[SCH_RESOURCES] CHECK CONSTRAINT [FK_SR_RES_STATUS_TYPES]
-GO
-/****** Object:  ForeignKey [FK_SR_RESOURCES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SCH_RESOURCES]  WITH NOCHECK ADD  CONSTRAINT [FK_SR_RESOURCES] FOREIGN KEY([RESOURCE_ID])
-REFERENCES [dbo].[RESOURCES] ([RESOURCE_ID])
-GO
-ALTER TABLE [dbo].[SCH_RESOURCES] CHECK CONSTRAINT [FK_SR_RESOURCES]
-GO
-/****** Object:  ForeignKey [FK_SR_SERVICES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SCH_RESOURCES]  WITH NOCHECK ADD  CONSTRAINT [FK_SR_SERVICES] FOREIGN KEY([SERVICE_ID])
-REFERENCES [dbo].[SERVICES] ([SERVICE_ID])
-GO
-ALTER TABLE [dbo].[SCH_RESOURCES] CHECK CONSTRAINT [FK_SR_SERVICES]
-GO
-/****** Object:  ForeignKey [FK_SR_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SCH_RESOURCES]  WITH NOCHECK ADD  CONSTRAINT [FK_SR_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[SCH_RESOURCES] CHECK CONSTRAINT [FK_SR_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_SR_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SCH_RESOURCES]  WITH NOCHECK ADD  CONSTRAINT [FK_SR_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[SCH_RESOURCES] CHECK CONSTRAINT [FK_SR_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_SR_WEEKEND]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SCH_RESOURCES]  WITH NOCHECK ADD  CONSTRAINT [FK_SR_WEEKEND] FOREIGN KEY([WEEKEND_SCH_RESOURCE_ID])
-REFERENCES [dbo].[SCH_RESOURCES] ([SCH_RESOURCE_ID])
-GO
-ALTER TABLE [dbo].[SCH_RESOURCES] CHECK CONSTRAINT [FK_SR_WEEKEND]
-GO
-/****** Object:  ForeignKey [FK_SIL_INVOICE_LINES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERV_INV_LINES]  WITH NOCHECK ADD  CONSTRAINT [FK_SIL_INVOICE_LINES] FOREIGN KEY([INVOICE_LINE_ID])
-REFERENCES [dbo].[INVOICE_LINES] ([INVOICE_LINE_ID])
-ON DELETE CASCADE
-GO
-ALTER TABLE [dbo].[SERV_INV_LINES] CHECK CONSTRAINT [FK_SIL_INVOICE_LINES]
-GO
-/****** Object:  ForeignKey [FK_SIL_SERVICE_LINES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERV_INV_LINES]  WITH NOCHECK ADD  CONSTRAINT [FK_SIL_SERVICE_LINES] FOREIGN KEY([SERVICE_LINE_ID])
-REFERENCES [dbo].[SERVICE_LINES] ([SERVICE_LINE_ID])
-GO
-ALTER TABLE [dbo].[SERV_INV_LINES] CHECK CONSTRAINT [FK_SIL_SERVICE_LINES]
-GO
-/****** Object:  ForeignKey [FK_SL_BILL_SERVICES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICE_LINES]  WITH NOCHECK ADD  CONSTRAINT [FK_SL_BILL_SERVICES] FOREIGN KEY([BILL_SERVICE_ID])
-REFERENCES [dbo].[SERVICES] ([SERVICE_ID])
-GO
-ALTER TABLE [dbo].[SERVICE_LINES] CHECK CONSTRAINT [FK_SL_BILL_SERVICES]
-GO
-/****** Object:  ForeignKey [FK_SL_ENTERED_BY]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICE_LINES]  WITH NOCHECK ADD  CONSTRAINT [FK_SL_ENTERED_BY] FOREIGN KEY([ENTERED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[SERVICE_LINES] CHECK CONSTRAINT [FK_SL_ENTERED_BY]
-GO
-/****** Object:  ForeignKey [FK_SL_INVOICES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICE_LINES]  WITH NOCHECK ADD  CONSTRAINT [FK_SL_INVOICES] FOREIGN KEY([INVOICE_ID])
-REFERENCES [dbo].[INVOICES] ([INVOICE_ID])
-GO
-ALTER TABLE [dbo].[SERVICE_LINES] CHECK CONSTRAINT [FK_SL_INVOICES]
-GO
-/****** Object:  ForeignKey [FK_SL_ITEMS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICE_LINES]  WITH NOCHECK ADD  CONSTRAINT [FK_SL_ITEMS] FOREIGN KEY([ITEM_ID])
-REFERENCES [dbo].[ITEMS] ([ITEM_ID])
-GO
-ALTER TABLE [dbo].[SERVICE_LINES] CHECK CONSTRAINT [FK_SL_ITEMS]
-GO
-/****** Object:  ForeignKey [FK_SL_OVERRIDE_BY]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICE_LINES]  WITH NOCHECK ADD  CONSTRAINT [FK_SL_OVERRIDE_BY] FOREIGN KEY([OVERRIDE_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[SERVICE_LINES] CHECK CONSTRAINT [FK_SL_OVERRIDE_BY]
-GO
-/****** Object:  ForeignKey [FK_SL_OVERRIDE_REASON_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICE_LINES]  WITH NOCHECK ADD  CONSTRAINT [FK_SL_OVERRIDE_REASON_TYPES] FOREIGN KEY([OVERRIDE_REASON])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[SERVICE_LINES] CHECK CONSTRAINT [FK_SL_OVERRIDE_REASON_TYPES]
-GO
-/****** Object:  ForeignKey [FK_SL_POOL_SERVICE_ID]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICE_LINES]  WITH NOCHECK ADD  CONSTRAINT [FK_SL_POOL_SERVICE_ID] FOREIGN KEY([PH_SERVICE_ID])
-REFERENCES [dbo].[SERVICES] ([SERVICE_ID])
-GO
-ALTER TABLE [dbo].[SERVICE_LINES] CHECK CONSTRAINT [FK_SL_POOL_SERVICE_ID]
-GO
-/****** Object:  ForeignKey [FK_SL_RESOURCES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICE_LINES]  WITH NOCHECK ADD  CONSTRAINT [FK_SL_RESOURCES] FOREIGN KEY([RESOURCE_ID])
-REFERENCES [dbo].[RESOURCES] ([RESOURCE_ID])
-GO
-ALTER TABLE [dbo].[SERVICE_LINES] CHECK CONSTRAINT [FK_SL_RESOURCES]
-GO
-/****** Object:  ForeignKey [FK_SL_SERVICE_LINE_STATUSES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICE_LINES]  WITH NOCHECK ADD  CONSTRAINT [FK_SL_SERVICE_LINE_STATUSES] FOREIGN KEY([STATUS_ID])
-REFERENCES [dbo].[SERVICE_LINE_STATUSES] ([STATUS_ID])
-GO
-ALTER TABLE [dbo].[SERVICE_LINES] CHECK CONSTRAINT [FK_SL_SERVICE_LINE_STATUSES]
-GO
-/****** Object:  ForeignKey [FK_SL_SERVICES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICE_LINES]  WITH NOCHECK ADD  CONSTRAINT [FK_SL_SERVICES] FOREIGN KEY([TC_SERVICE_ID])
-REFERENCES [dbo].[SERVICES] ([SERVICE_ID])
-GO
-ALTER TABLE [dbo].[SERVICE_LINES] CHECK CONSTRAINT [FK_SL_SERVICES]
-GO
-/****** Object:  ForeignKey [FK_SL_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICE_LINES]  WITH NOCHECK ADD  CONSTRAINT [FK_SL_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[SERVICE_LINES] CHECK CONSTRAINT [FK_SL_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_SL_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICE_LINES]  WITH NOCHECK ADD  CONSTRAINT [FK_SL_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[SERVICE_LINES] CHECK CONSTRAINT [FK_SL_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_SL_VERIFIED_BY]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICE_LINES]  WITH NOCHECK ADD  CONSTRAINT [FK_SL_VERIFIED_BY] FOREIGN KEY([VERIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[SERVICE_LINES] CHECK CONSTRAINT [FK_SL_VERIFIED_BY]
-GO
-/****** Object:  ForeignKey [FK_ST_PHASE_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICE_TASKS]  WITH CHECK ADD  CONSTRAINT [FK_ST_PHASE_TYPES] FOREIGN KEY([PHASE_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[SERVICE_TASKS] CHECK CONSTRAINT [FK_ST_PHASE_TYPES]
-GO
-/****** Object:  ForeignKey [FK_ST_SERVICES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICE_TASKS]  WITH NOCHECK ADD  CONSTRAINT [FK_ST_SERVICES] FOREIGN KEY([SERVICE_ID])
-REFERENCES [dbo].[SERVICES] ([SERVICE_ID])
-GO
-ALTER TABLE [dbo].[SERVICE_TASKS] CHECK CONSTRAINT [FK_ST_SERVICES]
-GO
-/****** Object:  ForeignKey [FK_ST_SUB_ACT_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICE_TASKS]  WITH CHECK ADD  CONSTRAINT [FK_ST_SUB_ACT_TYPES] FOREIGN KEY([SUB_ACT_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[SERVICE_TASKS] CHECK CONSTRAINT [FK_ST_SUB_ACT_TYPES]
-GO
-/****** Object:  ForeignKey [FK_ST_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICE_TASKS]  WITH NOCHECK ADD  CONSTRAINT [FK_ST_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[SERVICE_TASKS] CHECK CONSTRAINT [FK_ST_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_ST_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICE_TASKS]  WITH CHECK ADD  CONSTRAINT [FK_ST_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[SERVICE_TASKS] CHECK CONSTRAINT [FK_ST_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_JL_SERVICES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_JL_SERVICES] FOREIGN KEY([JOB_LOCATION_ID])
-REFERENCES [dbo].[JOB_LOCATIONS] ([JOB_LOCATION_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [FK_JL_SERVICES]
-GO
-/****** Object:  ForeignKey [fk_service_customer_contact2]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH CHECK ADD  CONSTRAINT [fk_service_customer_contact2] FOREIGN KEY([customer_contact2_id])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [fk_service_customer_contact2]
-GO
-/****** Object:  ForeignKey [fk_service_customer_contact3]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH CHECK ADD  CONSTRAINT [fk_service_customer_contact3] FOREIGN KEY([customer_contact3_id])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [fk_service_customer_contact3]
-GO
-/****** Object:  ForeignKey [fk_service_customer_contact4]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH CHECK ADD  CONSTRAINT [fk_service_customer_contact4] FOREIGN KEY([customer_contact4_id])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [fk_service_customer_contact4]
-GO
-/****** Object:  ForeignKey [fk_service_job_loc_contact]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH CHECK ADD  CONSTRAINT [fk_service_job_loc_contact] FOREIGN KEY([job_location_contact_id])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [fk_service_job_loc_contact]
-GO
-/****** Object:  ForeignKey [FK_SERVICE_REQUESTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_SERVICE_REQUESTS] FOREIGN KEY([REQUEST_ID])
-REFERENCES [dbo].[REQUESTS] ([REQUEST_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] NOCHECK CONSTRAINT [FK_SERVICE_REQUESTS]
-GO
-/****** Object:  ForeignKey [FK_SERVICES_BILLING_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_SERVICES_BILLING_TYPES] FOREIGN KEY([BILLING_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [FK_SERVICES_BILLING_TYPES]
-GO
-/****** Object:  ForeignKey [FK_SERVICES_CUSTOMER_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_SERVICES_CUSTOMER_CONTACTS] FOREIGN KEY([CUSTOMER_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [FK_SERVICES_CUSTOMER_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_SERVICES_DELIVERY_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_SERVICES_DELIVERY_TYPES] FOREIGN KEY([DELIVERY_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [FK_SERVICES_DELIVERY_TYPES]
-GO
-/****** Object:  ForeignKey [FK_SERVICES_DESIGNER_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_SERVICES_DESIGNER_CONTACTS] FOREIGN KEY([DESIGNER_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [FK_SERVICES_DESIGNER_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_SERVICES_IDM_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_SERVICES_IDM_CONTACTS] FOREIGN KEY([IDM_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [FK_SERVICES_IDM_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_SERVICES_JOB_LOCATIONS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_SERVICES_JOB_LOCATIONS] FOREIGN KEY([JOB_LOCATION_ID])
-REFERENCES [dbo].[JOB_LOCATIONS] ([JOB_LOCATION_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [FK_SERVICES_JOB_LOCATIONS]
-GO
-/****** Object:  ForeignKey [FK_SERVICES_JOBS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_SERVICES_JOBS] FOREIGN KEY([JOB_ID])
-REFERENCES [dbo].[JOBS] ([JOB_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] NOCHECK CONSTRAINT [FK_SERVICES_JOBS]
-GO
-/****** Object:  ForeignKey [FK_SERVICES_PRI_FURN_LINE_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_SERVICES_PRI_FURN_LINE_TYPES] FOREIGN KEY([PRI_FURN_LINE_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [FK_SERVICES_PRI_FURN_LINE_TYPES]
-GO
-/****** Object:  ForeignKey [FK_SERVICES_PRI_FURN_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_SERVICES_PRI_FURN_TYPES] FOREIGN KEY([PRI_FURN_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [FK_SERVICES_PRI_FURN_TYPES]
-GO
-/****** Object:  ForeignKey [FK_SERVICES_PROJ_MRG_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_SERVICES_PROJ_MRG_CONTACTS] FOREIGN KEY([PROJECT_MGR_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [FK_SERVICES_PROJ_MRG_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_SERVICES_PUNCHLIST_TYPE_ID]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_SERVICES_PUNCHLIST_TYPE_ID] FOREIGN KEY([PUNCHLIST_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [FK_SERVICES_PUNCHLIST_TYPE_ID]
-GO
-/****** Object:  ForeignKey [FK_SERVICES_REPORT_TO_LOCS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_SERVICES_REPORT_TO_LOCS] FOREIGN KEY([REPORT_TO_LOC_ID])
-REFERENCES [dbo].[JOB_LOCATIONS] ([JOB_LOCATION_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [FK_SERVICES_REPORT_TO_LOCS]
-GO
-/****** Object:  ForeignKey [FK_SERVICES_SALES_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_SERVICES_SALES_CONTACTS] FOREIGN KEY([SALES_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [FK_SERVICES_SALES_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_SERVICES_SCHEDULE_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_SERVICES_SCHEDULE_TYPES] FOREIGN KEY([SCHEDULE_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [FK_SERVICES_SCHEDULE_TYPES]
-GO
-/****** Object:  ForeignKey [FK_SERVICES_SEC_FURN_LINE_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_SERVICES_SEC_FURN_LINE_TYPES] FOREIGN KEY([SEC_FURN_LINE_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [FK_SERVICES_SEC_FURN_LINE_TYPES]
-GO
-/****** Object:  ForeignKey [FK_SERVICES_SEC_FURN_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_SERVICES_SEC_FURN_TYPES] FOREIGN KEY([SEC_FURN_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [FK_SERVICES_SEC_FURN_TYPES]
-GO
-/****** Object:  ForeignKey [FK_SERVICES_STATUS_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_SERVICES_STATUS_TYPES] FOREIGN KEY([SERV_STATUS_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [FK_SERVICES_STATUS_TYPES]
-GO
-/****** Object:  ForeignKey [FK_SERVICES_SUPPORT_CONTACTS]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_SERVICES_SUPPORT_CONTACTS] FOREIGN KEY([SUPPORT_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [FK_SERVICES_SUPPORT_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_SERVICES_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_SERVICES_TYPES] FOREIGN KEY([SERVICE_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [FK_SERVICES_TYPES]
-GO
-/****** Object:  ForeignKey [FK_SERVICES_USERS_C]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_SERVICES_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [FK_SERVICES_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_SERVICES_USERS_M]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_SERVICES_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [FK_SERVICES_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_SERVICES_WOOD_PRODUCT_TYPES]    Script Date: 03/02/2010 13:08:46 ******/
-ALTER TABLE [dbo].[SERVICES]  WITH NOCHECK ADD  CONSTRAINT [FK_SERVICES_WOOD_PRODUCT_TYPES] FOREIGN KEY([WOOD_PRODUCT_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[SERVICES] CHECK CONSTRAINT [FK_SERVICES_WOOD_PRODUCT_TYPES]
-GO
-/****** Object:  ForeignKey [FK_SC_USERS_C]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[STANDARD_CONDITIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_SC_USERS_C] FOREIGN KEY([created_by])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[STANDARD_CONDITIONS] CHECK CONSTRAINT [FK_SC_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_SC_USERS_M]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[STANDARD_CONDITIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_SC_USERS_M] FOREIGN KEY([modified_by])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[STANDARD_CONDITIONS] CHECK CONSTRAINT [FK_SC_USERS_M]
-GO
-/****** Object:  ForeignKey [fk_states_country]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[states]  WITH CHECK ADD  CONSTRAINT [fk_states_country] FOREIGN KEY([country_code])
-REFERENCES [dbo].[countries] ([code])
-GO
-ALTER TABLE [dbo].[states] CHECK CONSTRAINT [fk_states_country]
-GO
-/****** Object:  ForeignKey [FK_TRACKING_FROM_USERS]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[TRACKING]  WITH NOCHECK ADD  CONSTRAINT [FK_TRACKING_FROM_USERS] FOREIGN KEY([FROM_USER_ID])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[TRACKING] CHECK CONSTRAINT [FK_TRACKING_FROM_USERS]
-GO
-/****** Object:  ForeignKey [FK_TRACKING_JOBS]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[TRACKING]  WITH NOCHECK ADD  CONSTRAINT [FK_TRACKING_JOBS] FOREIGN KEY([JOB_ID])
-REFERENCES [dbo].[JOBS] ([JOB_ID])
-GO
-ALTER TABLE [dbo].[TRACKING] CHECK CONSTRAINT [FK_TRACKING_JOBS]
-GO
-/****** Object:  ForeignKey [FK_TRACKING_NEW_STATUSES]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[TRACKING]  WITH CHECK ADD  CONSTRAINT [FK_TRACKING_NEW_STATUSES] FOREIGN KEY([NEW_STATUS_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[TRACKING] CHECK CONSTRAINT [FK_TRACKING_NEW_STATUSES]
-GO
-/****** Object:  ForeignKey [FK_TRACKING_OLD_STATUSES]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[TRACKING]  WITH CHECK ADD  CONSTRAINT [FK_TRACKING_OLD_STATUSES] FOREIGN KEY([OLD_STATUS_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[TRACKING] CHECK CONSTRAINT [FK_TRACKING_OLD_STATUSES]
-GO
-/****** Object:  ForeignKey [FK_TRACKING_SERVICES]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[TRACKING]  WITH NOCHECK ADD  CONSTRAINT [FK_TRACKING_SERVICES] FOREIGN KEY([SERVICE_ID])
-REFERENCES [dbo].[SERVICES] ([SERVICE_ID])
-GO
-ALTER TABLE [dbo].[TRACKING] CHECK CONSTRAINT [FK_TRACKING_SERVICES]
-GO
-/****** Object:  ForeignKey [FK_TRACKING_TO_CONTACTS]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[TRACKING]  WITH NOCHECK ADD  CONSTRAINT [FK_TRACKING_TO_CONTACTS] FOREIGN KEY([TO_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[TRACKING] CHECK CONSTRAINT [FK_TRACKING_TO_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_TRACKING_TYPES]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[TRACKING]  WITH CHECK ADD  CONSTRAINT [FK_TRACKING_TYPES] FOREIGN KEY([TRACKING_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[TRACKING] CHECK CONSTRAINT [FK_TRACKING_TYPES]
-GO
-/****** Object:  ForeignKey [FK_TRACKING_USERS_C]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[TRACKING]  WITH NOCHECK ADD  CONSTRAINT [FK_TRACKING_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[TRACKING] CHECK CONSTRAINT [FK_TRACKING_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_TRACKING_USERS_M]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[TRACKING]  WITH NOCHECK ADD  CONSTRAINT [FK_TRACKING_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[TRACKING] CHECK CONSTRAINT [FK_TRACKING_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_USER_APPROVERS_CUSTOMERS]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[USER_APPROVERS]  WITH CHECK ADD  CONSTRAINT [FK_USER_APPROVERS_CUSTOMERS] FOREIGN KEY([customer_id])
-REFERENCES [dbo].[CUSTOMERS] ([CUSTOMER_ID])
-ON DELETE CASCADE
-GO
-ALTER TABLE [dbo].[USER_APPROVERS] CHECK CONSTRAINT [FK_USER_APPROVERS_CUSTOMERS]
-GO
-/****** Object:  ForeignKey [FK_USER_APPROVERS_USERS]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[USER_APPROVERS]  WITH CHECK ADD  CONSTRAINT [FK_USER_APPROVERS_USERS] FOREIGN KEY([user_id])
-REFERENCES [dbo].[USERS] ([USER_ID])
-ON DELETE CASCADE
-GO
-ALTER TABLE [dbo].[USER_APPROVERS] CHECK CONSTRAINT [FK_USER_APPROVERS_USERS]
-GO
-/****** Object:  ForeignKey [fk_uceu_customer_id]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[user_customer_end_users]  WITH CHECK ADD  CONSTRAINT [fk_uceu_customer_id] FOREIGN KEY([customer_id])
-REFERENCES [dbo].[CUSTOMERS] ([CUSTOMER_ID])
-GO
-ALTER TABLE [dbo].[user_customer_end_users] CHECK CONSTRAINT [fk_uceu_customer_id]
-GO
-/****** Object:  ForeignKey [fk_uceu_user_customer_id]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[user_customer_end_users]  WITH CHECK ADD  CONSTRAINT [fk_uceu_user_customer_id] FOREIGN KEY([user_customer_id])
-REFERENCES [dbo].[USER_CUSTOMERS] ([user_customer_id])
-ON DELETE CASCADE
-GO
-ALTER TABLE [dbo].[user_customer_end_users] CHECK CONSTRAINT [fk_uceu_user_customer_id]
-GO
-/****** Object:  ForeignKey [FK_USER_CUSTOMERS_CUSTOMERS]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[USER_CUSTOMERS]  WITH CHECK ADD  CONSTRAINT [FK_USER_CUSTOMERS_CUSTOMERS] FOREIGN KEY([customer_id])
-REFERENCES [dbo].[CUSTOMERS] ([CUSTOMER_ID])
-GO
-ALTER TABLE [dbo].[USER_CUSTOMERS] CHECK CONSTRAINT [FK_USER_CUSTOMERS_CUSTOMERS]
-GO
-/****** Object:  ForeignKey [FK_USER_CUSTOMERS_USERS]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[USER_CUSTOMERS]  WITH CHECK ADD  CONSTRAINT [FK_USER_CUSTOMERS_USERS] FOREIGN KEY([user_id])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[USER_CUSTOMERS] CHECK CONSTRAINT [FK_USER_CUSTOMERS_USERS]
-GO
-/****** Object:  ForeignKey [FK_USER_JOB_TYPES_LOOKUPS]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[USER_JOB_TYPES]  WITH CHECK ADD  CONSTRAINT [FK_USER_JOB_TYPES_LOOKUPS] FOREIGN KEY([LOOKUP_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[USER_JOB_TYPES] CHECK CONSTRAINT [FK_USER_JOB_TYPES_LOOKUPS]
-GO
-/****** Object:  ForeignKey [FK_USER_JOB_TYPES_USERS]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[USER_JOB_TYPES]  WITH CHECK ADD  CONSTRAINT [FK_USER_JOB_TYPES_USERS] FOREIGN KEY([USER_ID])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[USER_JOB_TYPES] CHECK CONSTRAINT [FK_USER_JOB_TYPES_USERS]
-GO
-/****** Object:  ForeignKey [FK_UO_ORGANIZATIONS]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[USER_ORGANIZATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_UO_ORGANIZATIONS] FOREIGN KEY([ORGANIZATION_ID])
-REFERENCES [dbo].[ORGANIZATIONS] ([ORGANIZATION_ID])
-GO
-ALTER TABLE [dbo].[USER_ORGANIZATIONS] CHECK CONSTRAINT [FK_UO_ORGANIZATIONS]
-GO
-/****** Object:  ForeignKey [FK_UO_USERS]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[USER_ORGANIZATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_UO_USERS] FOREIGN KEY([USER_ID])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[USER_ORGANIZATIONS] CHECK CONSTRAINT [FK_UO_USERS]
-GO
-/****** Object:  ForeignKey [FK_UO_USERS_C]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[USER_ORGANIZATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_UO_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[USER_ORGANIZATIONS] CHECK CONSTRAINT [FK_UO_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_UO_USERS_M]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[USER_ORGANIZATIONS]  WITH NOCHECK ADD  CONSTRAINT [FK_UO_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[USER_ORGANIZATIONS] CHECK CONSTRAINT [FK_UO_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_UR_ROLES]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[USER_ROLES]  WITH CHECK ADD  CONSTRAINT [FK_UR_ROLES] FOREIGN KEY([ROLE_ID])
-REFERENCES [dbo].[ROLES] ([ROLE_ID])
-GO
-ALTER TABLE [dbo].[USER_ROLES] CHECK CONSTRAINT [FK_UR_ROLES]
-GO
-/****** Object:  ForeignKey [FK_UR_USERS]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[USER_ROLES]  WITH NOCHECK ADD  CONSTRAINT [FK_UR_USERS] FOREIGN KEY([USER_ID])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[USER_ROLES] CHECK CONSTRAINT [FK_UR_USERS]
-GO
-/****** Object:  ForeignKey [FK_UR_USERS_C]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[USER_ROLES]  WITH NOCHECK ADD  CONSTRAINT [FK_UR_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[USER_ROLES] CHECK CONSTRAINT [FK_UR_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_UR_USERS_M]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[USER_ROLES]  WITH NOCHECK ADD  CONSTRAINT [FK_UR_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[USER_ROLES] CHECK CONSTRAINT [FK_UR_USERS_M]
-GO
-/****** Object:  ForeignKey [FK_USER_VENDORS_CUSTOMERS]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[USER_VENDORS]  WITH CHECK ADD  CONSTRAINT [FK_USER_VENDORS_CUSTOMERS] FOREIGN KEY([customer_id])
-REFERENCES [dbo].[CUSTOMERS] ([CUSTOMER_ID])
-ON DELETE CASCADE
-GO
-ALTER TABLE [dbo].[USER_VENDORS] CHECK CONSTRAINT [FK_USER_VENDORS_CUSTOMERS]
-GO
-/****** Object:  ForeignKey [FK_USER_VENDORS_USERS]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[USER_VENDORS]  WITH CHECK ADD  CONSTRAINT [FK_USER_VENDORS_USERS] FOREIGN KEY([user_id])
-REFERENCES [dbo].[USERS] ([USER_ID])
-ON DELETE CASCADE
-GO
-ALTER TABLE [dbo].[USER_VENDORS] CHECK CONSTRAINT [FK_USER_VENDORS_USERS]
-GO
-/****** Object:  ForeignKey [FK_USER_CONTACTS]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[USERS]  WITH NOCHECK ADD  CONSTRAINT [FK_USER_CONTACTS] FOREIGN KEY([CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[USERS] CHECK CONSTRAINT [FK_USER_CONTACTS]
-GO
-/****** Object:  ForeignKey [FK_USER_EMPLOYMENT_TYPES]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[USERS]  WITH NOCHECK ADD  CONSTRAINT [FK_USER_EMPLOYMENT_TYPES] FOREIGN KEY([EMPLOYMENT_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[USERS] CHECK CONSTRAINT [FK_USER_EMPLOYMENT_TYPES]
-GO
-/****** Object:  ForeignKey [FK_USER_TYPES]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[USERS]  WITH NOCHECK ADD  CONSTRAINT [FK_USER_TYPES] FOREIGN KEY([USER_TYPE_ID])
-REFERENCES [dbo].[LOOKUPS] ([LOOKUP_ID])
-GO
-ALTER TABLE [dbo].[USERS] CHECK CONSTRAINT [FK_USER_TYPES]
-GO
-/****** Object:  ForeignKey [FK_USER_USERS_C]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[USERS]  WITH NOCHECK ADD  CONSTRAINT [FK_USER_USERS_C] FOREIGN KEY([CREATED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[USERS] CHECK CONSTRAINT [FK_USER_USERS_C]
-GO
-/****** Object:  ForeignKey [FK_USER_USERS_M]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[USERS]  WITH NOCHECK ADD  CONSTRAINT [FK_USER_USERS_M] FOREIGN KEY([MODIFIED_BY])
-REFERENCES [dbo].[USERS] ([USER_ID])
-GO
-ALTER TABLE [dbo].[USERS] CHECK CONSTRAINT [FK_USER_USERS_M]
-GO
-/****** Object:  ForeignKey [fk_user_vendor_contact]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[USERS]  WITH NOCHECK ADD  CONSTRAINT [fk_user_vendor_contact] FOREIGN KEY([VENDOR_CONTACT_ID])
-REFERENCES [dbo].[CONTACTS] ([CONTACT_ID])
-GO
-ALTER TABLE [dbo].[USERS] CHECK CONSTRAINT [fk_user_vendor_contact]
-GO
-/****** Object:  ForeignKey [FK_VERSIONS_DOCUMENTS]    Script Date: 03/02/2010 13:08:47 ******/
-ALTER TABLE [dbo].[VERSIONS]  WITH CHECK ADD  CONSTRAINT [FK_VERSIONS_DOCUMENTS] FOREIGN KEY([DOCUMENT_ID])
-REFERENCES [dbo].[DOCUMENTS] ([DOCUMENT_ID])
-ON DELETE CASCADE
-GO
-ALTER TABLE [dbo].[VERSIONS] CHECK CONSTRAINT [FK_VERSIONS_DOCUMENTS]
 GO
