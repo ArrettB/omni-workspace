@@ -1,0 +1,74 @@
+<project name="omni" basedir="." default="rebuildDbAndLoadConfigData">
+
+    <property file="omniConfig.properties"/>
+
+    <path id="cp">
+        <fileset dir="../common/3rd Party Libraries" includes="**/*.jar"/>
+        <pathelement location="baseline"/>
+    </path>
+
+
+    <taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask" classpathref="cp"/>
+
+    <target name="loadConfigData">
+        <dbunit url="${jdbc.url}"
+                driver="${jdbc.driver}"
+                userid="${jdbc.user}"
+                password="${jdbc.password}"
+                classpathref="cp">
+            <operation type="MSSQL_INSERT" src="baseline/conditions.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/countries.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/formats.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/function_groups.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/invoice_batch_statuses.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/invoice_statuses.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/items_reporting_type.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/lookup_types.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/lookups.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/numbers.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/org_gp_tables.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/organizations.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/resource_types.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/service_line_statuses.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/standard_conditions.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/states.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/tabs.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/template_locations.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/templates.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/users.xml"/>
+        </dbunit>
+    </target>
+
+    <target name="dropDb">
+        <sql onerror="continue"
+             autocommit="true"
+             classpathref="cp"
+             url="${jdbc.url}"
+             driver="${jdbc.driver}"
+             userid="${jdbc.user}"
+             password="${jdbc.password}"
+             delimiter="GO">
+            <transaction src="dropTablesOnly.sql"/>
+        </sql>
+    </target>
+
+    <target name="createDb">
+        <sql onerror="continue"
+             autocommit="true"
+             classpathref="cp"
+             url="${jdbc.url}"
+             driver="${jdbc.driver}"
+             userid="${jdbc.user}"
+             password="${jdbc.password}"
+             delimiter="GO"
+             delimitertype="row">
+            <transaction src="tables.sql"/>
+            <!--<transaction src="views.sql"/>-->
+        </sql>
+
+    </target>
+
+    <target name="rebuildDb" depends="dropDb, createDb"/>
+    <target name="rebuildDbAndLoadConfigData" depends="dropDb, createDb, loadConfigData"/>
+
+</project>

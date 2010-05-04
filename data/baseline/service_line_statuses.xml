@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+    <SERVICE_LINE_STATUSES
+            STATUS_ID="1"
+            CODE="New"
+            NAME="New"/>
+    <SERVICE_LINE_STATUSES
+            STATUS_ID="2"
+            CODE="Verified"
+            NAME="Verified"/>
+    <SERVICE_LINE_STATUSES
+            STATUS_ID="4"
+            CODE="Submitted"
+            NAME="Submitted to Billing"/>
+    <SERVICE_LINE_STATUSES
+            STATUS_ID="5"
+            CODE="Posted"
+            NAME="Posted to Billing"/>
+    <SERVICE_LINE_STATUSES
+            STATUS_ID="3"
+            CODE="Approved"
+            NAME="Approved"/>
+    <SERVICE_LINE_STATUSES
+            STATUS_ID="0"
+            CODE="Temp"
+            NAME="Temp"/>
+</dataset>

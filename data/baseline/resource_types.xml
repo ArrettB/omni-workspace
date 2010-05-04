@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="MacRoman"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<DbVisualizer-Export>
+
 <dataset>
   <RESOURCE_TYPES 
 	RESOURCE_TYPE_ID="13" 
@@ -796,4 +796,4 @@
 	DATE_CREATED="2008-11-25 15:23:07" 
 	CREATED_BY="208"/>
 </dataset>
-</DbVisualizer-Export>
+

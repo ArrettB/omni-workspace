@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="MacRoman"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<DbVisualizer-Export>
+
 <dataset>
   <countries 
 	code="CA" 
@@ -9,4 +9,4 @@
 	code="US" 
 	name="United States"/>
 </dataset>
-</DbVisualizer-Export>
+

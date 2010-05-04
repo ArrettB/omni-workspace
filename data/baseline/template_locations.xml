@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="MacRoman"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<DbVisualizer-Export>
+
 <dataset>
   <TEMPLATE_LOCATIONS 
 	TEMPLATE_LOCATION_ID="1" 
@@ -351,4 +351,4 @@
 	LEVEL_1_TAB="33" 
 	LEVEL_1_TEMPLATE="133"/>
 </dataset>
-</DbVisualizer-Export>
+

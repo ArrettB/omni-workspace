@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+    <USERS
+            USER_ID="1"
+            EXT_EMPLOYEE_ID="123456"
+            CONTACT_ID="1"
+            EMPLOYMENT_TYPE_ID="233"
+            EXT_DEALER_ID="100"
+            DEALER_NAME="KRC"
+            FIRST_NAME="Kettle"
+            LAST_NAME="River"
+            LOGIN="kriver"
+            PASSWORD="kriver"
+            PIN="1234"
+            ACTIVE_FLAG="N"
+            DATE_CREATED="1970-01-01 00:00:00"
+            CREATED_BY="1"
+            DATE_MODIFIED="1970-01-01 00:00:00"
+            MODIFIED_BY="999"
+            FULL_NAME="Kettle River"/>
+
+    <CONTACTS
+            CONTACT_ID="1"
+            CONTACT_NAME="Kettle River"
+            ORGANIZATION_ID="2"
+            EXT_DEALER_ID="10001          "
+            CONTACT_TYPE_ID="51"
+            CONT_STATUS_TYPE_ID="128"
+            PHONE_HOME="612-605-1977"
+            STREET1="15280 Tonto St NW"
+            STREET2=""
+            CITY="Ramsey"
+            STATE="MN"
+            ZIP="55303"
+            DATE_CREATED="1970-01-01 00:00:00"
+            CREATED_BY="1"/>
+</dataset>

@@ -245,10 +245,10 @@
 						<containerId>tomcat5x</containerId>
 						<home>C:\dev\tools\apache-tomcat-5.5.12</home>
 					</container>
-					<properties>
-						<dir>${project.build.directory}/tomcat</dir>
-						<cargo.servlet.port>8081</cargo.servlet.port>
-					</properties>
+					<!--<properties>-->
+						<!--<dir>${project.build.directory}/tomcat</dir>-->
+						<!--<cargo.servlet.port>8081</cargo.servlet.port>-->
+					<!--</properties>-->
 				</configuration>
 			</plugin>
 		</plugins>

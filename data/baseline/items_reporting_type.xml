@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="MacRoman"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<DbVisualizer-Export>
+
 <dataset>
   <ITEMS_REPORTING_TYPE 
 	ITEMS_REPORTING_TYPE_ID="1" 
@@ -867,4 +867,4 @@
 	ITEM_NAME="Whse-W-Reg" 
 	REPORTING_TYPE="warehouse"/>
 </dataset>
-</DbVisualizer-Export>
+

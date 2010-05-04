@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="MacRoman"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<DbVisualizer-Export>
+
 <dataset>
   <FORMATS 
 	FORMAT_ID="1" 
@@ -82,4 +82,4 @@ File"
 	DATE_CREATED="2003-09-16 11:04:17" 
 	CREATED_BY="1"/>
 </dataset>
-</DbVisualizer-Export>
+

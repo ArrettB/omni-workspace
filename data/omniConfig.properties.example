@@ -1,0 +1,4 @@
+jdbc.user=pgarvie
+jdbc.password=6622jake
+jdbc.driver=net.sourceforge.jtds.jdbc.Driver
+jdbc.url=jdbc:jtds:sqlserver://rolla.kettleriverconsulting.com:1433/omni_paul;

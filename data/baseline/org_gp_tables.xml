@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="MacRoman"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<DbVisualizer-Export>
+
 <dataset>
   <ORG_GP_TABLES 
 	ORG_TABLE_ID="1" 
@@ -43,4 +43,4 @@
 	ORG_ID="4" 
 	VIEW_NAME="GP_MAD_ITEM_PAYCODES_V"/>
 </dataset>
-</DbVisualizer-Export>
+

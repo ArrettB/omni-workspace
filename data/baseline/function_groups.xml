@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="MacRoman"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<DbVisualizer-Export>
+
 <dataset>
   <FUNCTION_GROUPS 
 	FUNCTION_GROUP_ID="1" 
@@ -39,4 +39,4 @@
 	NAME="Reports" 
 	CODE="rep"/>
 </dataset>
-</DbVisualizer-Export>
+

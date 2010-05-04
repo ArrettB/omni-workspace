@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="MacRoman"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<DbVisualizer-Export>
+
 <dataset>
   <LOOKUPS 
 	LOOKUP_ID="0" 
@@ -7808,4 +7808,4 @@
 	DATE_CREATED="2010-02-11 11:42:22" 
 	CREATED_BY="2250"/>
 </dataset>
-</DbVisualizer-Export>
+

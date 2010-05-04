@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="MacRoman"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<DbVisualizer-Export>
+
 <dataset>
   <INVOICE_BATCH_STATUSES 
 	STATUS_ID="-1" 
@@ -19,4 +19,4 @@
 	CODE="PROCESSED" 
 	NAME="Processed"/>
 </dataset>
-</DbVisualizer-Export>
+

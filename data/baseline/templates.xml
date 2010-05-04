@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="MacRoman"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<DbVisualizer-Export>
+
 <dataset>
   <TEMPLATES 
 	TEMPLATE_ID="1" 
@@ -354,4 +354,4 @@
 	TEMPLATE_ID="133" 
 	TEMPLATE_NAME="enet&#47;proj&#47;service_account.html"/>
 </dataset>
-</DbVisualizer-Export>
+
