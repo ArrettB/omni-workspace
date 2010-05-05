@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+    <CONTACTS
+            CONTACT_ID="1"
+            CONTACT_NAME="Aaron Kahle"
+            ORGANIZATION_ID="2"
+            EXT_DEALER_ID="10001          "
+            CONTACT_TYPE_ID="51"
+            CONT_STATUS_TYPE_ID="128"
+            DATE_CREATED="2001-07-27 13:42:00"
+            CREATED_BY="1"
+            DATE_MODIFIED="2003-01-28 12:36:23"
+            MODIFIED_BY="723"/>
+    <CONTACTS
+            CONTACT_ID="2"
+            CONTACT_NAME="Aaron Stone"
+            ORGANIZATION_ID="2"
+            EXT_DEALER_ID="10001          "
+            CONTACT_TYPE_ID="51"
+            CONT_STATUS_TYPE_ID="128"
+            PHONE_HOME="(763)757-0685"
+            DATE_CREATED="2001-07-27 13:42:00"
+            CREATED_BY="1"
+            DATE_MODIFIED="2002-06-06 10:42:08"
+            MODIFIED_BY="240"/>
+    <CONTACTS
+            CONTACT_ID="3"
+            CONTACT_NAME="Abdihamid Osman"
+            ORGANIZATION_ID="2"
+            EXT_DEALER_ID="10001          "
+            CONTACT_TYPE_ID="51"
+            CONT_STATUS_TYPE_ID="128"
+            PHONE_HOME="(612)874-9546"
+            STREET1="2631 Columbus Ave."
+            STREET2="# 303"
+            CITY="Minneapolis"
+            STATE="MN"
+            ZIP="55407"
+            DATE_CREATED="2001-07-27 13:42:11"
+            CREATED_BY="1"/>
+    <CONTACTS
+            CONTACT_ID="4"
+            CONTACT_NAME="Adam Sanocki"
+            ORGANIZATION_ID="2"
+            EXT_DEALER_ID="10001          "
+            CONTACT_TYPE_ID="51"
+            CONT_STATUS_TYPE_ID="128"
+            PHONE_HOME="(763)559-0018"
+            STREET1="6640 Yucca Ln"
+            STREET2=""
+            CITY="Maple Grove"
+            STATE="MN"
+            ZIP="55341"
+            DATE_CREATED="2001-07-27 13:42:11"
+            CREATED_BY="1"/>
+    <CONTACTS
+            CONTACT_ID="5"
+            CONTACT_NAME="Adam Wyszynski"
+            ORGANIZATION_ID="2"
+            EXT_DEALER_ID="10001          "
+            CONTACT_TYPE_ID="137"
+            CONT_STATUS_TYPE_ID="128"
+            PHONE_WORK="612-627-1600"
+            DATE_CREATED="2001-07-27 13:42:00"
+            CREATED_BY="1"
+            DATE_MODIFIED="2003-08-18 10:19:57"
+            MODIFIED_BY="723"/>
+    <CONTACTS
+            CONTACT_ID="6"
+            CONTACT_NAME="Aligass Yusuf"
+            ORGANIZATION_ID="2"
+            EXT_DEALER_ID="10001          "
+            CONTACT_TYPE_ID="51"
+            CONT_STATUS_TYPE_ID="128"
+            PHONE_HOME="(612)874-9546"
+            STREET1="2631 Columbus Ave. S"
+            STREET2="Apt. # 303"
+            CITY="Minneapolis"
+            STATE="MN"
+            ZIP="55407"
+            DATE_CREATED="2001-07-27 13:42:11"
+            CREATED_BY="1"/>
+</dataset>

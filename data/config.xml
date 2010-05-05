@@ -17,6 +17,7 @@
                 password="${jdbc.password}"
                 classpathref="cp">
             <operation type="MSSQL_INSERT" src="baseline/conditions.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/contacts.xml"/>
             <operation type="MSSQL_INSERT" src="baseline/countries.xml"/>
             <operation type="MSSQL_INSERT" src="baseline/formats.xml"/>
             <operation type="MSSQL_INSERT" src="baseline/function_groups.xml"/>
@@ -48,11 +49,11 @@
              userid="${jdbc.user}"
              password="${jdbc.password}"
              delimiter="GO">
-            <transaction src="dropTablesOnly.sql"/>
+            <transaction src="drop.sql"/>
         </sql>
     </target>
 
-    <target name="createDb">
+    <target name="createTables">
         <sql onerror="continue"
              autocommit="true"
              classpathref="cp"
@@ -63,12 +64,26 @@
              delimiter="GO"
              delimitertype="row">
             <transaction src="tables.sql"/>
-            <!--<transaction src="views.sql"/>-->
         </sql>
+    </target>
+
+    <target name="createViews">
+        <sql onerror="continue"
+             autocommit="true"
+             classpathref="cp"
+             url="${jdbc.url}"
+             driver="${jdbc.driver}"
+             userid="${jdbc.user}"
+             password="${jdbc.password}"
+             delimiter="GO"
+             delimitertype="row">
+            <transaction src="views.sql"/>
+        </sql>
+
 
     </target>
 
-    <target name="rebuildDb" depends="dropDb, createDb"/>
-    <target name="rebuildDbAndLoadConfigData" depends="dropDb, createDb, loadConfigData"/>
+    <target name="rebuildDb" depends="dropDb, createTables, createViews"/>
+    <target name="rebuildDbAndLoadConfigData" depends="dropDb, createTables, loadConfigData, createViews"/>
 
 </project>

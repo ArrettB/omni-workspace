@@ -5,8 +5,8 @@ GO
 DROP VIEW [dbo].[USER_FUNCTION_RIGHTS_V]
 GO
 /****** Object:  View [dbo].[pep_vendor_user_v]    Script Date: 05/03/2010 14:18:08 ******/
--- DROP VIEW [dbo].[pep_vendor_user_v]
--- GO
+DROP VIEW [dbo].[pep_vendor_user_v]
+GO
 /****** Object:  View [dbo].[USER_ROLES_V]    Script Date: 05/03/2010 14:18:09 ******/
 DROP VIEW [dbo].[USER_ROLES_V]
 GO
@@ -83,8 +83,8 @@ GO
 DROP VIEW [dbo].[PDA_SCHED_RES_V]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_delete_duplicate_customers]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_delete_duplicate_customers]
--- GO
+DROP PROCEDURE [dbo].[sp_delete_duplicate_customers]
+GO
 /****** Object:  View [dbo].[crystal_UNBILL_ACCT_V]    Script Date: 05/03/2010 14:18:06 ******/
 DROP VIEW [dbo].[crystal_UNBILL_ACCT_V]
 GO
@@ -92,8 +92,8 @@ GO
 DROP VIEW [dbo].[crystal_JOB_CST_COMIS_ECMS_V]
 GO
 /****** Object:  View [dbo].[GP_AIA_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:06 ******/
--- DROP VIEW [dbo].[GP_AIA_ITEM_PAYCODES_V]
--- GO
+DROP VIEW [dbo].[GP_AIA_ITEM_PAYCODES_V]
+GO
 /****** Object:  View [dbo].[BILLING_TYPES_V]    Script Date: 05/03/2010 14:18:05 ******/
 DROP VIEW [dbo].[BILLING_TYPES_V]
 GO
@@ -119,8 +119,8 @@ GO
 DROP VIEW [dbo].[PDA_REASONS_V]
 GO
 /****** Object:  View [dbo].[crystal_VAR_JOB_INVOICED_V]    Script Date: 05/03/2010 14:18:06 ******/
--- DROP VIEW [dbo].[crystal_VAR_JOB_INVOICED_V]
--- GO
+DROP VIEW [dbo].[crystal_VAR_JOB_INVOICED_V]
+GO
 /****** Object:  View [dbo].[CUSTOMERS_V]    Script Date: 05/03/2010 14:18:06 ******/
 DROP VIEW [dbo].[CUSTOMERS_V]
 GO
@@ -128,17 +128,17 @@ GO
 DROP VIEW [dbo].[CONTACT_STATUS_TYPES_V]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_OVERHEAD_HOURS_TCI]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_OVERHEAD_HOURS_TCI]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_OVERHEAD_HOURS_TCI]
+GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_WonOpenQuoteReport]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_WonOpenQuoteReport]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_WonOpenQuoteReport]
+GO
 /****** Object:  View [dbo].[bill_jobs_v]    Script Date: 05/03/2010 14:18:05 ******/
 DROP VIEW [dbo].[bill_jobs_v]
 GO
 /****** Object:  View [dbo].[Taxes_V]    Script Date: 05/03/2010 14:18:09 ******/
--- DROP VIEW [dbo].[Taxes_V]
--- GO
+DROP VIEW [dbo].[Taxes_V]
+GO
 /****** Object:  View [dbo].[CHECKLISTS_V]    Script Date: 05/03/2010 14:18:05 ******/
 DROP VIEW [dbo].[CHECKLISTS_V]
 GO
@@ -170,8 +170,8 @@ GO
 DROP VIEW [dbo].[PDA_RESOURCES_V]
 GO
 /****** Object:  View [dbo].[GP_AIA_PAY_CODE_V]    Script Date: 05/03/2010 14:18:06 ******/
--- DROP VIEW [dbo].[GP_AIA_PAY_CODE_V]
--- GO
+DROP VIEW [dbo].[GP_AIA_PAY_CODE_V]
+GO
 /****** Object:  View [dbo].[UNVERIFIED_HRS_V]    Script Date: 05/03/2010 14:18:09 ******/
 DROP VIEW [dbo].[UNVERIFIED_HRS_V]
 GO
@@ -179,8 +179,8 @@ GO
 DROP VIEW [dbo].[CONTACT_TYPES_V]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AIA_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AIA_DATERANGE]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AIA_DATERANGE]
+GO
 /****** Object:  View [dbo].[USERS_VQ]    Script Date: 05/03/2010 14:18:10 ******/
 DROP VIEW [dbo].[USERS_VQ]
 GO
@@ -200,8 +200,8 @@ GO
 DROP VIEW [dbo].[HOURS_BY_PAYCODE_V]
 GO
 /****** Object:  View [dbo].[vendors_v]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP VIEW [dbo].[vendors_v]
--- GO
+DROP VIEW [dbo].[vendors_v]
+GO
 /****** Object:  View [dbo].[CUSTOMER_TYPES_V]    Script Date: 05/03/2010 14:18:06 ******/
 DROP VIEW [dbo].[CUSTOMER_TYPES_V]
 GO
@@ -215,11 +215,11 @@ GO
 DROP TABLE [dbo].[XREF_PDS]
 GO
 /****** Object:  View [dbo].[GP_CIINC_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
--- DROP VIEW [dbo].[GP_CIINC_PAY_CODE_V]
--- GO
+DROP VIEW [dbo].[GP_CIINC_PAY_CODE_V]
+GO
 /****** Object:  View [dbo].[GP_CIINC_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
--- DROP VIEW [dbo].[GP_CIINC_ITEM_PAYCODES_V]
--- GO
+DROP VIEW [dbo].[GP_CIINC_ITEM_PAYCODES_V]
+GO
 /****** Object:  View [dbo].[REQUEST_MAX_VERSION_V]    Script Date: 05/03/2010 14:18:08 ******/
 DROP VIEW [dbo].[REQUEST_MAX_VERSION_V]
 GO
@@ -263,8 +263,8 @@ GO
 DROP VIEW [dbo].[MAX_REQ_NO_V]
 GO
 /****** Object:  View [dbo].[GP_CILLC_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
--- DROP VIEW [dbo].[GP_CILLC_PAY_CODE_V]
--- GO
+DROP VIEW [dbo].[GP_CILLC_PAY_CODE_V]
+GO
 /****** Object:  View [dbo].[VAR_REPORT_V]    Script Date: 05/03/2010 14:18:10 ******/
 DROP VIEW [dbo].[VAR_REPORT_V]
 GO
@@ -314,8 +314,8 @@ GO
 DROP VIEW [dbo].[workorder_progress_v]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_CREDIT_REPORT]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_CREDIT_REPORT]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_CREDIT_REPORT]
+GO
 /****** Object:  Table [dbo].[PDA_RESOURCE_SORT]    Script Date: 05/03/2010 14:18:04 ******/
 DROP TABLE [dbo].[PDA_RESOURCE_SORT]
 GO
@@ -350,14 +350,14 @@ GO
 DROP VIEW [dbo].[crystal_JOB_LOCATIONS_V]
 GO
 /****** Object:  View [dbo].[SERVICE_LINE_PAYROLL_V]    Script Date: 05/03/2010 14:18:09 ******/
--- DROP VIEW [dbo].[SERVICE_LINE_PAYROLL_V]
--- GO
+DROP VIEW [dbo].[SERVICE_LINE_PAYROLL_V]
+GO
 /****** Object:  View [dbo].[GP_MPLS_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
--- DROP VIEW [dbo].[GP_MPLS_ITEM_PAYCODES_V]
--- GO
+DROP VIEW [dbo].[GP_MPLS_ITEM_PAYCODES_V]
+GO
 /****** Object:  StoredProcedure [dbo].[sp_aia_direct_end_user]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_aia_direct_end_user]
--- GO
+DROP PROCEDURE [dbo].[sp_aia_direct_end_user]
+GO
 /****** Object:  View [dbo].[INVOICE_TRACKING_TYPES_V]    Script Date: 05/03/2010 14:18:07 ******/
 DROP VIEW [dbo].[INVOICE_TRACKING_TYPES_V]
 GO
@@ -374,8 +374,8 @@ GO
 DROP VIEW [dbo].[REQUEST_INVOICES_V2]
 GO
 /****** Object:  View [dbo].[GP_CIMN_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
--- DROP VIEW [dbo].[GP_CIMN_ITEM_PAYCODES_V]
--- GO
+DROP VIEW [dbo].[GP_CIMN_ITEM_PAYCODES_V]
+GO
 /****** Object:  View [dbo].[WORKORDER_DETAIL_V]    Script Date: 05/03/2010 14:18:10 ******/
 DROP VIEW [dbo].[WORKORDER_DETAIL_V]
 GO
@@ -440,11 +440,11 @@ GO
 DROP VIEW [dbo].[SERVICE_LINES_VERIFY_V]
 GO
 /****** Object:  UserDefinedFunction [dbo].[nextVal]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP FUNCTION [dbo].[nextVal]
--- GO
+DROP FUNCTION [dbo].[nextVal]
+GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_BILLABLE_VS_NONBILLABLE]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_BILLABLE_VS_NONBILLABLE]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_BILLABLE_VS_NONBILLABLE]
+GO
 /****** Object:  Table [dbo].[XREF_NOTES]    Script Date: 05/03/2010 14:18:05 ******/
 DROP TABLE [dbo].[XREF_NOTES]
 GO
@@ -458,8 +458,8 @@ GO
 DROP VIEW [dbo].[INVOICE_JOB_LOCATIONS_V]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_AMEX_PENDING]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_AMEX_PENDING]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_AMEX_PENDING]
+GO
 /****** Object:  Table [dbo].[XREF_RESOURCES]    Script Date: 05/03/2010 14:18:05 ******/
 DROP TABLE [dbo].[XREF_RESOURCES]
 GO
@@ -527,8 +527,8 @@ GO
 DROP VIEW [dbo].[CUSTOMER_CONTACTS_V]
 GO
 /****** Object:  StoredProcedure [dbo].[ottSOPIntegrationPrep]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[ottSOPIntegrationPrep]
--- GO
+DROP PROCEDURE [dbo].[ottSOPIntegrationPrep]
+GO
 /****** Object:  View [dbo].[invoices_arch]    Script Date: 05/03/2010 14:18:07 ******/
 DROP VIEW [dbo].[invoices_arch]
 GO
@@ -554,11 +554,11 @@ GO
 DROP VIEW [dbo].[crystal_WPS_Timesheet_V]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_AGING]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_AGING]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_AGING]
+GO
 /****** Object:  View [dbo].[GP_ECMS_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
--- DROP VIEW [dbo].[GP_ECMS_ITEM_PAYCODES_V]
--- GO
+DROP VIEW [dbo].[GP_ECMS_ITEM_PAYCODES_V]
+GO
 /****** Object:  View [dbo].[crystal_UNBILLED_OPS_AIA_V]    Script Date: 05/03/2010 14:18:06 ******/
 DROP VIEW [dbo].[crystal_UNBILLED_OPS_AIA_V]
 GO
@@ -569,8 +569,8 @@ GO
 DROP VIEW [dbo].[crystal_SCHEDULE_VS_ACTUAL_V]
 GO
 /****** Object:  View [dbo].[crystal_UNBILLED_OPS_V2]    Script Date: 05/03/2010 14:18:06 ******/
--- DROP VIEW [dbo].[crystal_UNBILLED_OPS_V2]
--- GO
+DROP VIEW [dbo].[crystal_UNBILLED_OPS_V2]
+GO
 /****** Object:  View [dbo].[PROJECT_NOTES_V]    Script Date: 05/03/2010 14:18:08 ******/
 DROP VIEW [dbo].[PROJECT_NOTES_V]
 GO
@@ -593,8 +593,8 @@ GO
 DROP VIEW [dbo].[crystal_csc_routing_ticket_v]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_JobCostReportWORK]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_JobCostReportWORK]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_JobCostReportWORK]
+GO
 /****** Object:  View [dbo].[EXPENSES_EXPORT_V]    Script Date: 05/03/2010 14:18:06 ******/
 DROP VIEW [dbo].[EXPENSES_EXPORT_V]
 GO
@@ -602,8 +602,8 @@ GO
 DROP VIEW [dbo].[WALL_MOUNT_TYPES_V]
 GO
 /****** Object:  View [dbo].[FAILED_INTEGRATIONS]    Script Date: 05/03/2010 14:18:06 ******/
--- DROP VIEW [dbo].[FAILED_INTEGRATIONS]
--- GO
+DROP VIEW [dbo].[FAILED_INTEGRATIONS]
+GO
 /****** Object:  View [dbo].[PROJECT_STATUS_TYPES_V]    Script Date: 05/03/2010 14:18:08 ******/
 DROP VIEW [dbo].[PROJECT_STATUS_TYPES_V]
 GO
@@ -620,8 +620,8 @@ GO
 DROP VIEW [dbo].[ACTIVITY_CATEGORY_TYPES_V]
 GO
 /****** Object:  View [dbo].[crystal_TIME_CAPTURE_V]    Script Date: 05/03/2010 14:18:06 ******/
--- DROP VIEW [dbo].[crystal_TIME_CAPTURE_V]
--- GO
+DROP VIEW [dbo].[crystal_TIME_CAPTURE_V]
+GO
 /****** Object:  View [dbo].[SYS_COLUMNS_V]    Script Date: 05/03/2010 14:18:09 ******/
 DROP VIEW [dbo].[SYS_COLUMNS_V]
 GO
@@ -683,8 +683,8 @@ GO
 DROP VIEW [dbo].[PKT_SERVICE_LINES_V]
 GO
 /****** Object:  View [dbo].[SERVICE_ACCOUNT_REPORT_NUMBERS]    Script Date: 05/03/2010 14:18:09 ******/
--- DROP VIEW [dbo].[SERVICE_ACCOUNT_REPORT_NUMBERS]
--- GO
+DROP VIEW [dbo].[SERVICE_ACCOUNT_REPORT_NUMBERS]
+GO
 /****** Object:  View [dbo].[NOTIFICATION_TYPES_V]    Script Date: 05/03/2010 14:18:08 ******/
 DROP VIEW [dbo].[NOTIFICATION_TYPES_V]
 GO
@@ -692,14 +692,14 @@ GO
 DROP VIEW [dbo].[REQUEST_TYPES_V]
 GO
 /****** Object:  View [dbo].[crystal_VAR_REPORT_SUMMARY_V]    Script Date: 05/03/2010 14:18:06 ******/
--- DROP VIEW [dbo].[crystal_VAR_REPORT_SUMMARY_V]
--- GO
+DROP VIEW [dbo].[crystal_VAR_REPORT_SUMMARY_V]
+GO
 /****** Object:  Table [dbo].[USERS_CRYSTAL]    Script Date: 05/03/2010 14:18:05 ******/
 DROP TABLE [dbo].[USERS_CRYSTAL]
 GO
 /****** Object:  UserDefinedFunction [dbo].[getShortName]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP FUNCTION [dbo].[getShortName]
--- GO
+DROP FUNCTION [dbo].[getShortName]
+GO
 /****** Object:  View [dbo].[OVERRIDE_REASON_TYPES_V]    Script Date: 05/03/2010 14:18:08 ******/
 DROP VIEW [dbo].[OVERRIDE_REASON_TYPES_V]
 GO
@@ -707,14 +707,14 @@ GO
 DROP VIEW [dbo].[PRODUCT_DISPOSITION_V]
 GO
 /****** Object:  UserDefinedFunction [dbo].[getSortName]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP FUNCTION [dbo].[getSortName]
--- GO
+DROP FUNCTION [dbo].[getSortName]
+GO
 /****** Object:  UserDefinedFunction [dbo].[truncateDate]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP FUNCTION [dbo].[truncateDate]
--- GO
+DROP FUNCTION [dbo].[truncateDate]
+GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_DAILYDATACAPTURE]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_DAILYDATACAPTURE]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_DAILYDATACAPTURE]
+GO
 /****** Object:  View [dbo].[ACCOUNT_TYPES_V]    Script Date: 05/03/2010 14:18:05 ******/
 DROP VIEW [dbo].[ACCOUNT_TYPES_V]
 GO
@@ -740,8 +740,8 @@ GO
 DROP VIEW [dbo].[job_progress_v]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_estimator]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_estimator]
--- GO
+DROP PROCEDURE [dbo].[sp_estimator]
+GO
 /****** Object:  View [dbo].[requests_query_for_Tim_VVV]    Script Date: 05/03/2010 14:18:08 ******/
 DROP VIEW [dbo].[requests_query_for_Tim_VVV]
 GO
@@ -749,8 +749,8 @@ GO
 DROP VIEW [dbo].[invoice_post_total_v]
 GO
 /****** Object:  View [dbo].[GP_NTLSV_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
--- DROP VIEW [dbo].[GP_NTLSV_ITEM_PAYCODES_V]
--- GO
+DROP VIEW [dbo].[GP_NTLSV_ITEM_PAYCODES_V]
+GO
 /****** Object:  Table [dbo].[SERVICE_TASKS]    Script Date: 05/03/2010 14:18:05 ******/
 DROP TABLE [dbo].[SERVICE_TASKS]
 GO
@@ -758,8 +758,8 @@ GO
 DROP VIEW [dbo].[PENDING_TRACKING_V]
 GO
 /****** Object:  View [dbo].[ACTIVE_USERS_COUNT_V]    Script Date: 05/03/2010 14:18:05 ******/
--- DROP VIEW [dbo].[ACTIVE_USERS_COUNT_V]
--- GO
+DROP VIEW [dbo].[ACTIVE_USERS_COUNT_V]
+GO
 /****** Object:  View [dbo].[PHASE_TYPES_V]    Script Date: 05/03/2010 14:18:08 ******/
 DROP VIEW [dbo].[PHASE_TYPES_V]
 GO
@@ -767,8 +767,8 @@ GO
 DROP VIEW [dbo].[SERVICE_ACCOUNT_REPORT_V]
 GO
 /****** Object:  StoredProcedure [dbo].[track_waitstats]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[track_waitstats]
--- GO
+DROP PROCEDURE [dbo].[track_waitstats]
+GO
 /****** Object:  View [dbo].[SERVICE_TYPES_V]    Script Date: 05/03/2010 14:18:09 ******/
 DROP VIEW [dbo].[SERVICE_TYPES_V]
 GO
@@ -779,20 +779,20 @@ GO
 DROP TABLE [dbo].[ottInvHeaderTEMP]
 GO
 /****** Object:  View [dbo].[GP_PHX_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
--- DROP VIEW [dbo].[GP_PHX_ITEM_PAYCODES_V]
--- GO
+DROP VIEW [dbo].[GP_PHX_ITEM_PAYCODES_V]
+GO
 /****** Object:  StoredProcedure [dbo].[sp_reorder_service_no]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_reorder_service_no]
--- GO
+DROP PROCEDURE [dbo].[sp_reorder_service_no]
+GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM]
+GO
 /****** Object:  View [dbo].[QUOTE_CONDITIONS_V]    Script Date: 05/03/2010 14:18:08 ******/
 DROP VIEW [dbo].[QUOTE_CONDITIONS_V]
 GO
 /****** Object:  View [dbo].[GP_IT_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
--- DROP VIEW [dbo].[GP_IT_ITEM_PAYCODES_V]
--- GO
+DROP VIEW [dbo].[GP_IT_ITEM_PAYCODES_V]
+GO
 /****** Object:  View [dbo].[crystal_POSTED_V]    Script Date: 05/03/2010 14:18:06 ******/
 DROP VIEW [dbo].[crystal_POSTED_V]
 GO
@@ -803,14 +803,14 @@ GO
 DROP VIEW [dbo].[YES_NO_TYPES_V]
 GO
 /****** Object:  View [dbo].[CRYSTAL_CUSTOMER_INVOICE_INTERCOMPANY]    Script Date: 05/03/2010 14:18:06 ******/
--- DROP VIEW [dbo].[CRYSTAL_CUSTOMER_INVOICE_INTERCOMPANY]
--- GO
+DROP VIEW [dbo].[CRYSTAL_CUSTOMER_INVOICE_INTERCOMPANY]
+GO
 /****** Object:  View [dbo].[RESOURCE_STATUS_TYPES_V]    Script Date: 05/03/2010 14:18:09 ******/
 DROP VIEW [dbo].[RESOURCE_STATUS_TYPES_V]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_OVERHEAD_HOURS]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_OVERHEAD_HOURS]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_OVERHEAD_HOURS]
+GO
 /****** Object:  View [dbo].[crystal_USERS_AND_RESOURCE_TYPES]    Script Date: 05/03/2010 14:18:06 ******/
 DROP VIEW [dbo].[crystal_USERS_AND_RESOURCE_TYPES]
 GO
@@ -818,11 +818,11 @@ GO
 DROP VIEW [dbo].[projects_v]
 GO
 /****** Object:  View [dbo].[CRYSTAL_CUSTOMER_INVOICE_INTERCOMPANY_DISTRIBUTIONS]    Script Date: 05/03/2010 14:18:06 ******/
--- DROP VIEW [dbo].[CRYSTAL_CUSTOMER_INVOICE_INTERCOMPANY_DISTRIBUTIONS]
--- GO
+DROP VIEW [dbo].[CRYSTAL_CUSTOMER_INVOICE_INTERCOMPANY_DISTRIBUTIONS]
+GO
 /****** Object:  View [dbo].[crystal_JOB_TIME_BY_JOB_WITH_GP_ACCTNUM_V]    Script Date: 05/03/2010 14:18:06 ******/
--- DROP VIEW [dbo].[crystal_JOB_TIME_BY_JOB_WITH_GP_ACCTNUM_V]
--- GO
+DROP VIEW [dbo].[crystal_JOB_TIME_BY_JOB_WITH_GP_ACCTNUM_V]
+GO
 /****** Object:  View [dbo].[crystal_QUOTES_V]    Script Date: 05/03/2010 14:18:06 ******/
 DROP VIEW [dbo].[crystal_QUOTES_V]
 GO
@@ -842,8 +842,8 @@ GO
 DROP VIEW [dbo].[Pep_USER_ROLES_V]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_reorder_req_no2]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_reorder_req_no2]
--- GO
+DROP PROCEDURE [dbo].[sp_reorder_req_no2]
+GO
 /****** Object:  View [dbo].[JOBS_NO_OWNER_V]    Script Date: 05/03/2010 14:18:07 ******/
 DROP VIEW [dbo].[JOBS_NO_OWNER_V]
 GO
@@ -857,23 +857,23 @@ GO
 DROP VIEW [dbo].[JOB_COSTING_V]
 GO
 /****** Object:  View [dbo].[PAYROLL_VERIFICATION_V_PATTY]    Script Date: 05/03/2010 14:18:08 ******/
--- DROP VIEW [dbo].[PAYROLL_VERIFICATION_V_PATTY]
--- GO
+DROP VIEW [dbo].[PAYROLL_VERIFICATION_V_PATTY]
+GO
 /****** Object:  View [dbo].[crystal_QUOTES_OTHER_SERVICE_V]    Script Date: 05/03/2010 14:18:06 ******/
 DROP VIEW [dbo].[crystal_QUOTES_OTHER_SERVICE_V]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_BILLABLE_VS_NONBILLABLE2006]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_BILLABLE_VS_NONBILLABLE2006]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_BILLABLE_VS_NONBILLABLE2006]
+GO
 /****** Object:  View [dbo].[request_mail_v2]    Script Date: 05/03/2010 14:18:08 ******/
 DROP VIEW [dbo].[request_mail_v2]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_reorder_req_no]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_reorder_req_no]
--- GO
+DROP PROCEDURE [dbo].[sp_reorder_req_no]
+GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AIA]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AIA]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AIA]
+GO
 /****** Object:  Table [dbo].[ottInvLineTEMP]    Script Date: 05/03/2010 14:18:04 ******/
 DROP TABLE [dbo].[ottInvLineTEMP]
 GO
@@ -881,8 +881,8 @@ GO
 DROP VIEW [dbo].[sch_job_req_info_v]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM_DATERANGE]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM_DATERANGE]
+GO
 /****** Object:  Table [dbo].[ottInvTaxesTEMP]    Script Date: 05/03/2010 14:18:04 ******/
 DROP TABLE [dbo].[ottInvTaxesTEMP]
 GO
@@ -893,8 +893,8 @@ GO
 DROP VIEW [dbo].[crystal_Job_time_by_job_v]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMMAD]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMMAD]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMMAD]
+GO
 /****** Object:  View [dbo].[invoices_extranet_v]    Script Date: 05/03/2010 14:18:07 ******/
 DROP VIEW [dbo].[invoices_extranet_v]
 GO
@@ -902,14 +902,14 @@ GO
 DROP VIEW [dbo].[project_requests_v2]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CILLC]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CILLC]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CILLC]
+GO
 /****** Object:  View [dbo].[extranet_email_v]    Script Date: 05/03/2010 14:18:06 ******/
 DROP VIEW [dbo].[extranet_email_v]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMMAD_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMMAD_DATERANGE]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMMAD_DATERANGE]
+GO
 /****** Object:  View [dbo].[REASON_TYPES_V]    Script Date: 05/03/2010 14:18:08 ******/
 DROP VIEW [dbo].[REASON_TYPES_V]
 GO
@@ -917,8 +917,8 @@ GO
 DROP TABLE [dbo].[ottInvTaxesTEMP_ALL]
 GO
 /****** Object:  View [dbo].[crystal_Job_Cost_V]    Script Date: 05/03/2010 14:18:06 ******/
--- DROP VIEW [dbo].[crystal_Job_Cost_V]
--- GO
+DROP VIEW [dbo].[crystal_Job_Cost_V]
+GO
 /****** Object:  View [dbo].[quick_requests_v2]    Script Date: 05/03/2010 14:18:08 ******/
 DROP VIEW [dbo].[quick_requests_v2]
 GO
@@ -926,11 +926,11 @@ GO
 DROP VIEW [dbo].[REPORT_TO_TYPES_V]
 GO
 /****** Object:  View [dbo].[PAYROLL_VERIFICATION_V]    Script Date: 05/03/2010 14:18:08 ******/
--- DROP VIEW [dbo].[PAYROLL_VERIFICATION_V]
--- GO
+DROP VIEW [dbo].[PAYROLL_VERIFICATION_V]
+GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_OVERHEAD_HOURS_NODATE]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_OVERHEAD_HOURS_NODATE]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_OVERHEAD_HOURS_NODATE]
+GO
 /****** Object:  View [dbo].[invoice_volume_v]    Script Date: 05/03/2010 14:18:07 ******/
 DROP VIEW [dbo].[invoice_volume_v]
 GO
@@ -938,8 +938,8 @@ GO
 DROP VIEW [dbo].[pkt_sch_jobs_v]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIINC_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIINC_DATERANGE]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIINC_DATERANGE]
+GO
 /****** Object:  View [dbo].[RESOURCE_CATEGORY_TYPES_V]    Script Date: 05/03/2010 14:18:09 ******/
 DROP VIEW [dbo].[RESOURCE_CATEGORY_TYPES_V]
 GO
@@ -950,8 +950,8 @@ GO
 DROP VIEW [dbo].[PUNCHLIST_ISSUES_V]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CILLC_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CILLC_DATERANGE]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CILLC_DATERANGE]
+GO
 /****** Object:  View [dbo].[PAYROLL_BATCHES_V]    Script Date: 05/03/2010 14:18:08 ******/
 DROP VIEW [dbo].[PAYROLL_BATCHES_V]
 GO
@@ -965,17 +965,17 @@ GO
 DROP VIEW [dbo].[crystal_dashboard_JOB_COSTING_V]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIMN]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIMN]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIMN]
+GO
 /****** Object:  Table [dbo].[CUSTOM_COLS]    Script Date: 05/03/2010 14:18:03 ******/
 DROP TABLE [dbo].[CUSTOM_COLS]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_JobVarianceReport]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_JobVarianceReport]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_JobVarianceReport]
+GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIMN_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIMN_DATERANGE]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIMN_DATERANGE]
+GO
 /****** Object:  View [dbo].[SERVICE_ACCOUNT_REPORT_V_AZ]    Script Date: 05/03/2010 14:18:09 ******/
 DROP VIEW [dbo].[SERVICE_ACCOUNT_REPORT_V_AZ]
 GO
@@ -986,14 +986,14 @@ GO
 DROP VIEW [dbo].[jobs_with_costs_v]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_OpenOrderReport]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_OpenOrderReport]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_OpenOrderReport]
+GO
 /****** Object:  View [dbo].[SCH_RESOURCES_ALL_JOBS_V]    Script Date: 05/03/2010 14:18:09 ******/
 DROP VIEW [dbo].[SCH_RESOURCES_ALL_JOBS_V]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_ICS]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_ICS]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_ICS]
+GO
 /****** Object:  View [dbo].[SERVICE_QUOTES_V]    Script Date: 05/03/2010 14:18:09 ******/
 DROP VIEW [dbo].[SERVICE_QUOTES_V]
 GO
@@ -1001,14 +1001,14 @@ GO
 DROP VIEW [dbo].[jobs_with_posted_costs_v]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_PriceRealizationReport]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_PriceRealizationReport]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_PriceRealizationReport]
+GO
 /****** Object:  View [dbo].[crystal_workorder_detail_pkf_V]    Script Date: 05/03/2010 14:18:06 ******/
 DROP VIEW [dbo].[crystal_workorder_detail_pkf_V]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_ICS_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_ICS_DATERANGE]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_ICS_DATERANGE]
+GO
 /****** Object:  View [dbo].[ROLES_V]    Script Date: 05/03/2010 14:18:09 ******/
 DROP VIEW [dbo].[ROLES_V]
 GO
@@ -1031,8 +1031,8 @@ GO
 DROP VIEW [dbo].[bad_reqs]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_QuoteLogReport]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_QuoteLogReport]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_QuoteLogReport]
+GO
 /****** Object:  View [dbo].[crystal_dashboard_JOB_COSTING_V2]    Script Date: 05/03/2010 14:18:06 ******/
 DROP VIEW [dbo].[crystal_dashboard_JOB_COSTING_V2]
 GO
@@ -1040,8 +1040,8 @@ GO
 DROP VIEW [dbo].[SCH_VACATIONS_ALL_V]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_AR_UNBILLED_REPORT]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_AR_UNBILLED_REPORT]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_AR_UNBILLED_REPORT]
+GO
 /****** Object:  View [dbo].[SCHEDULE_TYPES_V]    Script Date: 05/03/2010 14:18:09 ******/
 DROP VIEW [dbo].[SCHEDULE_TYPES_V]
 GO
@@ -1061,11 +1061,11 @@ GO
 DROP VIEW [dbo].[crystal_csc_WORK_ORDER_MASTER_V]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_QualityPerformanceReport]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_QualityPerformanceReport]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_QualityPerformanceReport]
+GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_DASHBOARD_DSO]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_DASHBOARD_DSO]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_DASHBOARD_DSO]
+GO
 /****** Object:  View [dbo].[crystal_SERVICE_REQ_V]    Script Date: 05/03/2010 14:18:06 ******/
 DROP VIEW [dbo].[crystal_SERVICE_REQ_V]
 GO
@@ -1073,8 +1073,8 @@ GO
 DROP VIEW [dbo].[job_services_v]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM_SALESNUMBERS]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM_SALESNUMBERS]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM_SALESNUMBERS]
+GO
 /****** Object:  View [dbo].[SCH_RESOURCE_ESTIMATES_V]    Script Date: 05/03/2010 14:18:09 ******/
 DROP VIEW [dbo].[SCH_RESOURCE_ESTIMATES_V]
 GO
@@ -1085,8 +1085,8 @@ GO
 DROP VIEW [dbo].[LOOKUP_TYPES_V]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_aia_end_user]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_aia_end_user]
--- GO
+DROP PROCEDURE [dbo].[sp_aia_end_user]
+GO
 /****** Object:  View [dbo].[jobs_effective_customer_v]    Script Date: 05/03/2010 14:18:07 ******/
 DROP VIEW [dbo].[jobs_effective_customer_v]
 GO
@@ -1094,8 +1094,8 @@ GO
 DROP VIEW [dbo].[SURVEY_V]
 GO
 /****** Object:  View [dbo].[GP_ICS_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
--- DROP VIEW [dbo].[GP_ICS_PAY_CODE_V]
--- GO
+DROP VIEW [dbo].[GP_ICS_PAY_CODE_V]
+GO
 /****** Object:  View [dbo].[SECURITY_TYPES_V]    Script Date: 05/03/2010 14:18:09 ******/
 DROP VIEW [dbo].[SECURITY_TYPES_V]
 GO
@@ -1106,32 +1106,32 @@ GO
 DROP VIEW [dbo].[SURVEY_REQUEST_VENDORS_V]
 GO
 /****** Object:  View [dbo].[GP_MAD_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
--- DROP VIEW [dbo].[GP_MAD_PAY_CODE_V]
--- GO
+DROP VIEW [dbo].[GP_MAD_PAY_CODE_V]
+GO
 /****** Object:  View [dbo].[GP_ICS_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
--- DROP VIEW [dbo].[GP_ICS_ITEM_PAYCODES_V]
--- GO
+DROP VIEW [dbo].[GP_ICS_ITEM_PAYCODES_V]
+GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_JobEfficiencyReport]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_JobEfficiencyReport]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_JobEfficiencyReport]
+GO
 /****** Object:  View [dbo].[QP3_RESOURCE_TYPES_V]    Script Date: 05/03/2010 14:18:08 ******/
 DROP VIEW [dbo].[QP3_RESOURCE_TYPES_V]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM_DEALERNUMBER_DATERANGE]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM_DEALERNUMBER_DATERANGE]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_AMBIM_DEALERNUMBER_DATERANGE]
+GO
 /****** Object:  View [dbo].[GP_MAD_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
--- DROP VIEW [dbo].[GP_MAD_ITEM_PAYCODES_V]
--- GO
+DROP VIEW [dbo].[GP_MAD_ITEM_PAYCODES_V]
+GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIINC]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIINC]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT_CIINC]
+GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_UNBILLED_REPORT]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_UNBILLED_REPORT]
+GO
 /****** Object:  View [dbo].[SERVICE_LINE_EXPENSE_V]    Script Date: 05/03/2010 14:18:09 ******/
--- DROP VIEW [dbo].[SERVICE_LINE_EXPENSE_V]
--- GO
+DROP VIEW [dbo].[SERVICE_LINE_EXPENSE_V]
+GO
 /****** Object:  View [dbo].[REQUEST_NO_PUNCHLISTS_V]    Script Date: 05/03/2010 14:18:08 ******/
 DROP VIEW [dbo].[REQUEST_NO_PUNCHLISTS_V]
 GO
@@ -1139,11 +1139,11 @@ GO
 DROP VIEW [dbo].[crystal_INVOICE_TOTAL_AND_HOURS_V]
 GO
 /****** Object:  View [dbo].[GP_ALABM_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:06 ******/
--- DROP VIEW [dbo].[GP_ALABM_ITEM_PAYCODES_V]
--- GO
+DROP VIEW [dbo].[GP_ALABM_ITEM_PAYCODES_V]
+GO
 /****** Object:  StoredProcedure [dbo].[sp_CRYSTAL_JobCostReport]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[sp_CRYSTAL_JobCostReport]
--- GO
+DROP PROCEDURE [dbo].[sp_CRYSTAL_JobCostReport]
+GO
 /****** Object:  View [dbo].[PROJECT_INVOICES_V]    Script Date: 05/03/2010 14:18:08 ******/
 DROP VIEW [dbo].[PROJECT_INVOICES_V]
 GO
@@ -1160,14 +1160,14 @@ GO
 DROP VIEW [dbo].[EXTRANET_REQ_V]
 GO
 /****** Object:  StoredProcedure [dbo].[convert_date_to_time]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[convert_date_to_time]
--- GO
+DROP PROCEDURE [dbo].[convert_date_to_time]
+GO
 /****** Object:  View [dbo].[REQ_TYPES_V]    Script Date: 05/03/2010 14:18:08 ******/
 DROP VIEW [dbo].[REQ_TYPES_V]
 GO
 /****** Object:  StoredProcedure [dbo].[ottSOPIntegrationPrepMadison]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[ottSOPIntegrationPrepMadison]
--- GO
+DROP PROCEDURE [dbo].[ottSOPIntegrationPrepMadison]
+GO
 /****** Object:  View [dbo].[QUOTE_REQUESTS_V]    Script Date: 05/03/2010 14:18:08 ******/
 DROP VIEW [dbo].[QUOTE_REQUESTS_V]
 GO
@@ -1178,8 +1178,8 @@ GO
 DROP VIEW [dbo].[SERVICE_LINE_TYPES_V]
 GO
 /****** Object:  View [dbo].[GP_MDWST_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
--- DROP VIEW [dbo].[GP_MDWST_ITEM_PAYCODES_V]
--- GO
+DROP VIEW [dbo].[GP_MDWST_ITEM_PAYCODES_V]
+GO
 /****** Object:  View [dbo].[SUB_ACTIVITY_TYPES_V]    Script Date: 05/03/2010 14:18:09 ******/
 DROP VIEW [dbo].[SUB_ACTIVITY_TYPES_V]
 GO
@@ -1205,8 +1205,8 @@ GO
 DROP VIEW [dbo].[SCH_JOBS_REPORT_V]
 GO
 /****** Object:  View [dbo].[GP_CILLC_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
--- DROP VIEW [dbo].[GP_CILLC_ITEM_PAYCODES_V]
--- GO
+DROP VIEW [dbo].[GP_CILLC_ITEM_PAYCODES_V]
+GO
 /****** Object:  View [dbo].[TABS_V2]    Script Date: 05/03/2010 14:18:09 ******/
 DROP VIEW [dbo].[TABS_V2]
 GO
@@ -1220,8 +1220,8 @@ GO
 DROP VIEW [dbo].[TEMPLATE_LOCATIONS_1_V]
 GO
 /****** Object:  StoredProcedure [dbo].[ottSOPIntegrationPrepAll]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[ottSOPIntegrationPrepAll]
--- GO
+DROP PROCEDURE [dbo].[ottSOPIntegrationPrepAll]
+GO
 /****** Object:  View [dbo].[EMPLOYEES_V]    Script Date: 05/03/2010 14:18:06 ******/
 DROP VIEW [dbo].[EMPLOYEES_V]
 GO
@@ -1283,8 +1283,8 @@ GO
 DROP TABLE [dbo].[UNBILLED_REPORT_DAILYDATACAPTURE]
 GO
 /****** Object:  UserDefinedFunction [dbo].[fn_StringToFloat]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP FUNCTION [dbo].[fn_StringToFloat]
--- GO
+DROP FUNCTION [dbo].[fn_StringToFloat]
+GO
 /****** Object:  View [dbo].[REQUESTS_V]    Script Date: 05/03/2010 14:18:09 ******/
 DROP VIEW [dbo].[REQUESTS_V]
 GO
@@ -1367,8 +1367,8 @@ GO
 DROP TABLE [dbo].[FUNCTIONS]
 GO
 /****** Object:  View [dbo].[GP_CIMN_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
--- DROP VIEW [dbo].[GP_CIMN_PAY_CODE_V]
--- GO
+DROP VIEW [dbo].[GP_CIMN_PAY_CODE_V]
+GO
 /****** Object:  View [dbo].[QUICK_REQUESTS_V]    Script Date: 05/03/2010 14:18:08 ******/
 DROP VIEW [dbo].[QUICK_REQUESTS_V]
 GO
@@ -1382,8 +1382,8 @@ GO
 DROP TABLE [dbo].[CHECKLIST_DATA]
 GO
 /****** Object:  StoredProcedure [dbo].[getNextVal]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[getNextVal]
--- GO
+DROP PROCEDURE [dbo].[getNextVal]
+GO
 /****** Object:  View [dbo].[SERVICE_CUSTOM_COLS_V]    Script Date: 05/03/2010 14:18:09 ******/
 DROP VIEW [dbo].[SERVICE_CUSTOM_COLS_V]
 GO
@@ -1391,8 +1391,8 @@ GO
 DROP TABLE [dbo].[QUOTE_CONDITIONS]
 GO
 /****** Object:  View [dbo].[Taxes_V_Sum]    Script Date: 05/03/2010 14:18:09 ******/
--- DROP VIEW [dbo].[Taxes_V_Sum]
--- GO
+DROP VIEW [dbo].[Taxes_V_Sum]
+GO
 /****** Object:  Table [dbo].[EXPENSES_BATCH_LINES]    Script Date: 05/03/2010 14:18:03 ******/
 DROP TABLE [dbo].[EXPENSES_BATCH_LINES]
 GO
@@ -1406,8 +1406,8 @@ GO
 DROP VIEW [dbo].[crystal_SCH_ACT_2_V]
 GO
 /****** Object:  View [dbo].[GP_ECMS_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
--- DROP VIEW [dbo].[GP_ECMS_PAY_CODE_V]
--- GO
+DROP VIEW [dbo].[GP_ECMS_PAY_CODE_V]
+GO
 /****** Object:  View [dbo].[crystal_UNBILLED_OPS_V]    Script Date: 05/03/2010 14:18:06 ******/
 DROP VIEW [dbo].[crystal_UNBILLED_OPS_V]
 GO
@@ -1424,11 +1424,11 @@ GO
 DROP TABLE [dbo].[ITEMS_REPORTING_TYPE]
 GO
 /****** Object:  UserDefinedFunction [dbo].[fn_ProjectManagerListPerProjectID]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP FUNCTION [dbo].[fn_ProjectManagerListPerProjectID]
--- GO
+DROP FUNCTION [dbo].[fn_ProjectManagerListPerProjectID]
+GO
 /****** Object:  UserDefinedFunction [dbo].[fn_FurnitureLineListPerProjectID]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP FUNCTION [dbo].[fn_FurnitureLineListPerProjectID]
--- GO
+DROP FUNCTION [dbo].[fn_FurnitureLineListPerProjectID]
+GO
 /****** Object:  View [dbo].[JOB_PROGRESS_1_V]    Script Date: 05/03/2010 14:18:07 ******/
 DROP VIEW [dbo].[JOB_PROGRESS_1_V]
 GO
@@ -1442,8 +1442,8 @@ GO
 DROP VIEW [dbo].[contains_invoice_tracking_v]
 GO
 /****** Object:  View [dbo].[GP_NTLSV_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
--- DROP VIEW [dbo].[GP_NTLSV_PAY_CODE_V]
--- GO
+DROP VIEW [dbo].[GP_NTLSV_PAY_CODE_V]
+GO
 /****** Object:  View [dbo].[SERVICE_ACCOUNT_REPORT_TEMP]    Script Date: 05/03/2010 14:18:09 ******/
 DROP VIEW [dbo].[SERVICE_ACCOUNT_REPORT_TEMP]
 GO
@@ -1454,11 +1454,11 @@ GO
 DROP TABLE [dbo].[QUOTE_OTHER_FURNITURE_AD_HOC]
 GO
 /****** Object:  View [dbo].[GP_PHX_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
--- DROP VIEW [dbo].[GP_PHX_PAY_CODE_V]
--- GO
+DROP VIEW [dbo].[GP_PHX_PAY_CODE_V]
+GO
 /****** Object:  View [dbo].[GP_IT_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
--- DROP VIEW [dbo].[GP_IT_PAY_CODE_V]
--- GO
+DROP VIEW [dbo].[GP_IT_PAY_CODE_V]
+GO
 /****** Object:  UserDefinedFunction [dbo].[sp_varchar20_to_number]    Script Date: 05/03/2010 14:18:10 ******/
 DROP FUNCTION [dbo].[sp_varchar20_to_number]
 GO
@@ -1466,8 +1466,8 @@ GO
 DROP VIEW [dbo].[TIME_CAPTURE_V]
 GO
 /****** Object:  View [dbo].[GP_MPLS_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
--- DROP VIEW [dbo].[GP_MPLS_PAY_CODE_V]
--- GO
+DROP VIEW [dbo].[GP_MPLS_PAY_CODE_V]
+GO
 /****** Object:  View [dbo].[pkt_job_user_res_v]    Script Date: 05/03/2010 14:18:08 ******/
 DROP VIEW [dbo].[pkt_job_user_res_v]
 GO
@@ -1496,11 +1496,11 @@ GO
 DROP VIEW [dbo].[RESOURCE_ESTIMATES_V]
 GO
 /****** Object:  View [dbo].[GP_ALABM_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
--- DROP VIEW [dbo].[GP_ALABM_PAY_CODE_V]
--- GO
+DROP VIEW [dbo].[GP_ALABM_PAY_CODE_V]
+GO
 /****** Object:  View [dbo].[GP_MDWST_PAY_CODE_V]    Script Date: 05/03/2010 14:18:07 ******/
--- DROP VIEW [dbo].[GP_MDWST_PAY_CODE_V]
--- GO
+DROP VIEW [dbo].[GP_MDWST_PAY_CODE_V]
+GO
 /****** Object:  Table [dbo].[ottInvLineTEMP_ALL]    Script Date: 05/03/2010 14:18:04 ******/
 DROP TABLE [dbo].[ottInvLineTEMP_ALL]
 GO

@@ -1,95 +1,3 @@
-CREATE FUNCTION sp_varchar20_to_number (@in_value varchar(20)) RETURNS numeric(18,2)
-AS
-BEGIN
-
-DECLARE @l_value varchar(20)
-DECLARE @result numeric(18,2)
-
-SET @result = 0.00
-
-IF @in_value IS NOT NULL
-  BEGIN
-    SET @l_value = REPLACE(REPLACE(REPLACE(REPLACE(@in_value,' ',''),'$',''),'-',''),',','')
-
-    IF @l_value IS NULL
-      BEGIN
-        SET @result = 0.00
-      END
-    ELSE IF @l_value = ''
-      BEGIN
-        SET @result = 0.00
-      END
-    ELSE
-      BEGIN
-        SET @result = CONVERT(NUMERIC(18,2), @l_value)
-      END
-   END
-
-RETURN @result
-
-END
-GO
-
-CREATE FUNCTION sp_contact_phone (@in_contact_id numeric(18,0)) RETURNS varchar(100)
-AS
-BEGIN
-
-DECLARE @phone_w varchar(50)
-DECLARE @phone_c varchar(50)
-DECLARE @phone_h varchar(50)
-DECLARE @contact_phones CURSOR
-DECLARE @result varchar(100)
-
-SET @result = ''
-
-SET @contact_phones = CURSOR FAST_FORWARD
-FOR
-SELECT phone_work,
-       phone_cell,
-       phone_home
-  FROM contacts
- WHERE contact_id = @in_contact_id
-
-
-OPEN @contact_phones
-FETCH NEXT FROM @contact_phones INTO @phone_w,@phone_c,@phone_h
-
-WHILE @@FETCH_STATUS=0
-BEGIN
-
-  IF @phone_w IS NOT NULL
-    BEGIN
-      SET @result = @phone_w + '(W)'
-
-      IF @phone_c IS NOT NULL
-        BEGIN
-          SET @result = @result + ', ' + @phone_c + '(C)'
-        END
-    END
-  ELSE
-    BEGIN
-      IF @phone_c IS NOT NULL
-        BEGIN
-          SET @result = @phone_c + '(C)'
-        END
-      ELSE
-        IF @phone_h IS NOT NULL
-          BEGIN
-            SET @result = @phone_h + '(H)'
-          END
-    END
-
-  FETCH NEXT FROM @contact_phones INTO @phone_w,@phone_c,@phone_h
-END
-
-CLOSE @contact_phones
-DEALLOCATE @contact_phones
-
-RETURN @result
-
-END
-GO
-
 /****** Object:  View [dbo].[projects_v]    Script Date: 05/03/2010 14:18:08 ******/
 SET ANSI_NULLS ON
 GO
@@ -340,6 +248,23 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE VIEW [dbo].[PDA_REASONS_V] AS SELECT dbo.LOOKUPS.LOOKUP_ID AS reason_id, SUBSTRING(dbo.LOOKUPS.NAME, 0, 20) AS reason FROM dbo.LOOKUPS INNER JOIN dbo.LOOKUP_TYPES ON dbo.LOOKUPS.LOOKUP_TYPE_ID = dbo.LOOKUP_TYPES.LOOKUP_TYPE_ID WHERE (dbo.LOOKUP_TYPES.CODE = 'override_reason_type') AND (dbo.LOOKUP_TYPES.ACTIVE_FLAG = 'Y')
 GO
+/****** Object:  View [dbo].[CHECKLISTS_V]    Script Date: 05/03/2010 14:18:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[CHECKLISTS_V]
+AS
+SELECT     dbo.PROJECTS_ALL_REQUESTS_V.ORGANIZATION_ID, dbo.CHECKLISTS.CHECKLIST_ID, dbo.PROJECTS_ALL_REQUESTS_V.PROJECT_ID, 
+                      dbo.CHECKLISTS.REQUEST_ID, dbo.PROJECTS_ALL_REQUESTS_V.record_no, dbo.CHECKLISTS.NUM_STATIONS, dbo.CHECKLISTS.DATE_CREATED, 
+                      dbo.CHECKLISTS.CREATED_BY, CREATED_BY.FIRST_NAME + ' ' + CREATED_BY.LAST_NAME AS created_by_name, 
+                      dbo.CHECKLISTS.DATE_MODIFIED, UPDATED_BY.FIRST_NAME + ' ' + UPDATED_BY.LAST_NAME AS modified_by_name
+FROM         dbo.CHECKLISTS INNER JOIN
+                      dbo.PROJECTS_ALL_REQUESTS_V ON dbo.CHECKLISTS.REQUEST_ID = dbo.PROJECTS_ALL_REQUESTS_V.record_id LEFT OUTER JOIN
+                      dbo.USERS CREATED_BY ON dbo.CHECKLISTS.CREATED_BY = CREATED_BY.USER_ID LEFT OUTER JOIN
+                      dbo.USERS UPDATED_BY ON dbo.CHECKLISTS.MODIFIED_BY = UPDATED_BY.USER_ID
+WHERE     (dbo.PROJECTS_ALL_REQUESTS_V.record_type_code = 'service_request')
+GO
 /****** Object:  View [dbo].[MAX_REQ_NO_V]    Script Date: 05/03/2010 14:18:07 ******/
 SET ANSI_NULLS ON
 GO
@@ -373,6 +298,26 @@ FROM         dbo.QUOTES LEFT OUTER JOIN
                       dbo.REQUESTS ON dbo.QUOTES.REQUEST_ID = dbo.REQUESTS.REQUEST_ID
 WHERE     (dbo.REQUESTS.PROJECT_ID = 22045)
 GO
+/****** Object:  View [dbo].[crystal_UNBILLED_OPS_V]    Script Date: 05/03/2010 14:18:06 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE VIEW [dbo].[crystal_UNBILLED_OPS_V]
+AS
+SELECT     dbo.BILLING_V.ORGANIZATION_ID, dbo.BILLING_V.BILL_JOB_NO, dbo.BILLING_V.BILL_JOB_ID, dbo.BILLING_V.job_status_type_name, dbo.BILLING_V.job_name,
+                      dbo.BILLING_V.BILLING_USER_ID, dbo.BILLING_V.EXT_DEALER_ID, dbo.BILLING_V.DEALER_NAME, dbo.BILLING_V.CUSTOMER_NAME, 
+                      cast(dbo.BILLING_V.billing_user_name as varchar) as job_owner, MAX(dbo.SERVICES.EST_END_DATE) AS max_est_end_date, convert(varchar(12), MAX(dbo.SERVICES.EST_END_DATE), 101) max_est_end_date_varchar,
+                      SUM(CASE billable_flag WHEN 'Y' THEN bill_total ELSE 0 END) billable_total, SUM(CASE billable_flag WHEN 'N' THEN bill_total ELSE 0 END) 
+                      non_billable_total, dbo.SERVICES.PO_NO
+FROM         dbo.BILLING_V INNER JOIN
+                      dbo.SERVICES ON dbo.BILLING_V.BILL_SERVICE_ID = dbo.SERVICES.SERVICE_ID
+WHERE     (dbo.BILLING_V.invoice_status_id = 1 OR
+                      dbo.BILLING_V.invoice_status_id IS NULL)  and status_id = 4
+GROUP BY dbo.BILLING_V.ORGANIZATION_ID, dbo.BILLING_V.BILL_JOB_ID, dbo.BILLING_V.BILL_JOB_NO, dbo.BILLING_V.BILLING_USER_ID, 
+                      dbo.BILLING_V.DEALER_NAME, dbo.BILLING_V.EXT_DEALER_ID, dbo.BILLING_V.CUSTOMER_NAME, dbo.BILLING_V.billing_user_name, 
+                      dbo.BILLING_V.job_status_type_name, dbo.BILLING_V.job_name, dbo.SERVICES.PO_NO
+GO
 /****** Object:  View [dbo].[SYSCOLUMNS_V]    Script Date: 05/03/2010 14:18:09 ******/
 SET ANSI_NULLS ON
 GO
@@ -388,64 +333,37 @@ WHERE     (dbo.sysobjects.xtype = 'U') OR
                       (dbo.sysobjects.xtype = 'V')
 ORDER BY table_name, column_name
 GO
-
-/****** View [dbo].[Taxes_V]  ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
---
--- CREATE VIEW
---     [dbo].[Taxes_V] ( ITEMNMBR, TAXOPTNS, CUSTNMBR, TAXSCHID, INVOICE_ID, ext_item_id, UNIT_PRICE, QTY, Total_line, line_tax, ORGANIZATION_ID ) AS
--- SELECT
---     TOP 100 PERCENT AMBIM.dbo.IV00101.ITEMNMBR,
---     AMBIM.dbo.IV00101.TAXOPTNS,
---     AMBIM.dbo.RM00101.CUSTNMBR,
---     AMBIM.dbo.RM00101.TAXSCHID,
---     dbo.INVOICES.INVOICE_ID,
---     dbo.INVOICE_LINES_V.ext_item_id,
---     dbo.INVOICE_LINES_V.UNIT_PRICE,
---     dbo.INVOICE_LINES_V.QTY,
---     dbo.INVOICE_LINES_V.UNIT_PRICE * dbo.INVOICE_LINES_V.QTY       AS Total_line,
---     dbo.INVOICE_LINES_V.UNIT_PRICE * dbo.INVOICE_LINES_V.QTY * .07 AS line_tax,
---     dbo.INVOICES.ORGANIZATION_ID
--- FROM
---     dbo.INVOICES
--- INNER JOIN AMBGP_MPLS_PAY_CODE_VIM.dbo.RM00101
--- ON
---     CAST(dbo.INVOICES.EXT_BILL_CUST_ID AS CHAR(15)) = AMBIM.dbo.RM00101.CUSTNMBR
--- INNER JOIN AMBIM.dbo.IV00101
--- INNER JOIN dbo.INVOICE_LINES_V
--- ON
---     AMBIM.dbo.IV00101.ITEMNMBR = CAST(dbo.INVOICE_LINES_V.ext_item_id AS CHAR(31))
--- ON
---     dbo.INVOICES.INVOICE_ID = dbo.INVOICE_LINES_V.INVOICE_ID
--- WHERE
---     (
---         dbo.INVOICES.ORGANIZATION_ID = 2
---     )
--- AND
---     (                                         `
---         AMBIM.dbo.RM00101.TAXSCHID <> 'EXEMPT'
---     )
--- ORDER BY
---     dbo.INVOICES.INVOICE_ID
---
--- GO
-
+/****** Object:  View [dbo].[INVOICE_COST_CODES_PROBLEMS_V]    Script Date: 05/03/2010 14:18:07 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[INVOICE_COST_CODES_PROBLEMS_V]
+AS
+SELECT     dbo.INVOICE_COST_CODES_V.INVOICE_ID, dbo.INVOICE_COST_CODES_V.SERVICE_ID, INVOICE_COST_CODES_V_1.SERVICE_ID AS Expr6, 
+                      dbo.INVOICE_COST_CODES_V.cost_to_cust, dbo.INVOICE_COST_CODES_V.cost_to_vend, dbo.INVOICE_COST_CODES_V.cost_to_job, 
+                      dbo.INVOICE_COST_CODES_V.warehouse_fee, INVOICE_COST_CODES_V_1.INVOICE_ID AS Expr1, INVOICE_COST_CODES_V_1.cost_to_cust AS Expr2,
+                       INVOICE_COST_CODES_V_1.cost_to_vend AS Expr3, INVOICE_COST_CODES_V_1.cost_to_job AS Expr4, 
+                      INVOICE_COST_CODES_V_1.warehouse_fee AS Expr5
+FROM         dbo.INVOICE_COST_CODES_V INNER JOIN
+                      dbo.INVOICE_COST_CODES_V INVOICE_COST_CODES_V_1 ON 
+                      dbo.INVOICE_COST_CODES_V.SERVICE_ID <> INVOICE_COST_CODES_V_1.SERVICE_ID AND 
+                      dbo.INVOICE_COST_CODES_V.INVOICE_ID = INVOICE_COST_CODES_V_1.INVOICE_ID AND 
+                      dbo.INVOICE_COST_CODES_V.cost_to_cust <> INVOICE_COST_CODES_V_1.cost_to_cust
+GO
 /****** Object:  View [dbo].[Taxes_V_Sum]    Script Date: 05/03/2010 14:18:09 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
--- CREATE VIEW [dbo].[Taxes_V_Sum]
--- AS
--- SELECT     TOP 100 PERCENT INVOICE_ID, SUM(line_tax) AS Total_tax
--- FROM         dbo.Taxes_V
--- WHERE     (TAXOPTNS = 1)
--- GROUP BY INVOICE_ID
--- ORDER BY INVOICE_ID
--- GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[Taxes_V_Sum]
+AS
+SELECT     TOP 100 PERCENT INVOICE_ID, SUM(line_tax) AS Total_tax
+FROM         dbo.Taxes_V
+WHERE     (TAXOPTNS = 1)
+GROUP BY INVOICE_ID
+ORDER BY INVOICE_ID
+GO
 /****** Object:  View [dbo].[PDA_ITEMS_V]    Script Date: 05/03/2010 14:18:08 ******/
 SET ANSI_NULLS ON
 GO
@@ -461,6 +379,20 @@ FROM         dbo.RESOURCES PALM_RESOURCE INNER JOIN
                       dbo.LOOKUPS LOOKUPS_1 ON dbo.ITEMS.ITEM_TYPE_ID = LOOKUPS_1.LOOKUP_ID ON 
                       PALM_RESOURCE.ORGANIZATION_ID = dbo.ITEMS.ORGANIZATION_ID
 WHERE     (status.CODE = 'active')
+GO
+/****** Object:  View [dbo].[crystal_VAR_TIME_EXP_V]    Script Date: 05/03/2010 14:18:06 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[crystal_VAR_TIME_EXP_V]
+AS
+SELECT     TOP 100 PERCENT TC_JOB_ID AS job_id, SUM(ISNULL(TC_QTY * BILL_RATE, 0)) AS sum_time_exp, SUM(ISNULL(PAYROLL_QTY * BILL_RATE, 0)) 
+                      AS sum_time, SUM(ISNULL(EXPENSE_QTY * BILL_RATE, 0)) AS sum_exp
+FROM         dbo.TIME_CAPTURE_V
+GROUP BY TC_JOB_ID, PH_SERVICE_ID
+HAVING      (PH_SERVICE_ID IS NULL)
+ORDER BY TC_JOB_ID
 GO
 /****** Object:  View [dbo].[JOBS_V_jerry]    Script Date: 05/03/2010 14:18:07 ******/
 SET ANSI_NULLS ON
@@ -595,70 +527,26 @@ End
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'JOBS_V_jerry'
 GO
-
-/****** Object:  View [dbo].[SERVICES_V]    Script Date: 05/03/2010 14:18:09 ******/
+/****** Object:  View [dbo].[JOBS_READY_TO_BILL_V]    Script Date: 05/03/2010 14:18:07 ******/
 SET ANSI_NULLS ON
 GO
-SET QUOTED_IDENTIFIER ON
+SET QUOTED_IDENTIFIER OFF
 GO
-CREATE VIEW [dbo].[SERVICES_V]
+CREATE VIEW [dbo].[JOBS_READY_TO_BILL_V]
 AS
-SELECT     dbo.SERVICES.JOB_ID, dbo.JOBS.JOB_NO, dbo.SERVICES.SERVICE_ID, dbo.SERVICES.SERVICE_NO, CAST(dbo.SERVICES.SERVICE_NO AS varchar)
-                      + ' - ' + ISNULL(dbo.SERVICES.DESCRIPTION, '') AS service_no_desc, dbo.SERVICES.REQUEST_ID, dbo.CUSTOMERS.CUSTOMER_NAME,
-                      dbo.CUSTOMERS.DEALER_NAME, dbo.JOBS.JOB_NAME, dbo.SERVICES.WATCH_FLAG, dbo.SERVICES.SERVICE_TYPE_ID,
-                      SERVICE_TYPES.CODE AS service_type_code, SERVICE_TYPES.NAME AS service_type_name, dbo.SERVICES.INTERNAL_REQ_FLAG,
-                      dbo.SERVICES.REPORT_TO_LOC_ID, REPORT_TO_LOC_TYPES.CODE AS report_to_loc_code,
-                      REPORT_TO_LOC_TYPES.NAME AS report_to_loc_name, dbo.SERVICES.DESCRIPTION, dbo.SERVICES.SERV_STATUS_TYPE_ID,
-                      SERVICE_STATUS_TYPES.CODE AS serv_status_type_code, SERVICE_STATUS_TYPES.NAME AS serv_status_type_name,
-                      SERVICE_STATUS_TYPES.SEQUENCE_NO AS serv_status_type_seq_no, dbo.RESOURCES.NAME AS resource_name,
-                      dbo.JOBS.FOREMAN_RESOURCE_ID, dbo.JOBS.JOB_TYPE_ID, JOB_TYPES_1.CODE AS job_type_code, JOB_TYPES_1.NAME AS job_type_name,
-                      dbo.JOBS.JOB_STATUS_TYPE_ID, JOB_STATUS_TYPE.CODE AS job_status_type_code, JOB_STATUS_TYPE.NAME AS job_status_type_name,
-                      dbo.JOBS.CUSTOMER_ID, dbo.JOBS.EXT_PRICE_LEVEL_ID, dbo.CUSTOMERS.EXT_DEALER_ID, dbo.CUSTOMERS.ORGANIZATION_ID,
-                      dbo.JOBS.DATE_CREATED AS job_date_created, dbo.SERVICES.JOB_LOCATION_ID, dbo.JOB_LOCATIONS.JOB_LOCATION_NAME,
-                      dbo.SERVICES.CUSTOMER_REF_NO, dbo.SERVICES.PO_NO, dbo.SERVICES.BILLING_TYPE_ID, dbo.SERVICES.IDM_CONTACT_ID,
-                      dbo.SERVICES.CUSTOMER_CONTACT_ID, dbo.CONTACTS.CONTACT_NAME AS idm_contact_name, dbo.SERVICES.SALES_CONTACT_ID,
-                      dbo.SERVICES.SUPPORT_CONTACT_ID, dbo.SERVICES.DESIGNER_CONTACT_ID, dbo.SERVICES.PROJECT_MGR_CONTACT_ID,
-                      dbo.SERVICES.PRODUCT_SETUP_DESC, dbo.SERVICES.DELIVERY_TYPE_ID, dbo.SERVICES.WAREHOUSE_LOC, dbo.SERVICES.PRI_FURN_TYPE_ID,
-                       dbo.SERVICES.PRI_FURN_LINE_TYPE_ID, dbo.SERVICES.SEC_FURN_TYPE_ID, dbo.SERVICES.SEC_FURN_LINE_TYPE_ID,
-                      dbo.SERVICES.NUM_STATIONS, dbo.SERVICES.PRODUCT_QTY, ISNULL(dbo.SERVICES.WOOD_PRODUCT_TYPE_ID, 142) AS wood_product_type_id,
-                      dbo.SERVICES.PUNCHLIST_TYPE_ID, PUNCH_LIST_TYPES.CODE AS punchlist_type_code, PUNCH_LIST_TYPES.NAME AS punchlist_type_name,
-                      dbo.SERVICES.BLUEPRINT_LOCATION, dbo.SERVICES.SCHEDULE_TYPE_ID, SCHEDULE_TYPES.CODE AS schedule_type_code,
-                      SCHEDULE_TYPES.NAME AS schedule_type_name, dbo.SERVICES.ORDERED_BY, dbo.SERVICES.ORDERED_DATE,
-                      dbo.SERVICES.EST_START_DATE, dbo.SERVICES.EST_START_TIME, dbo.SERVICES.EST_END_DATE, dbo.SERVICES.SCH_START_DATE,
-                      dbo.SERVICES.SCH_START_TIME, dbo.SERVICES.SCH_END_DATE, dbo.SERVICES.ACT_START_DATE, dbo.SERVICES.ACT_START_TIME,
-                      dbo.SERVICES.ACT_END_DATE, dbo.SERVICES.TRUCK_SHIP_DATE, dbo.SERVICES.TRUCK_ARRIVAL_DATE, dbo.SERVICES.HEAD_VAL_FLAG,
-                      dbo.SERVICES.LOC_VAL_FLAG, dbo.SERVICES.PROD_VAL_FLAG, dbo.SERVICES.SCH_VAL_FLAG, dbo.SERVICES.TASK_VAL_FLAG,
-                      dbo.SERVICES.RES_VAL_FLAG, dbo.SERVICES.CUST_VAL_FLAG, dbo.SERVICES.BILL_VAL_FLAG, dbo.SERVICES.DATE_CREATED,
-                      dbo.SERVICES.CREATED_BY, CREATE_USER.FIRST_NAME + ' ' + CREATE_USER.LAST_NAME AS created_by_name, dbo.SERVICES.DATE_MODIFIED,
-                      dbo.SERVICES.MODIFIED_BY, MOD_USER.FIRST_NAME + ' ' + MOD_USER.LAST_NAME AS modified_by_name, dbo.SERVICES.CUST_COL_1,
-                      dbo.SERVICES.CUST_COL_2, dbo.SERVICES.CUST_COL_3, dbo.SERVICES.CUST_COL_4, dbo.SERVICES.CUST_COL_5, dbo.SERVICES.CUST_COL_6,
-                      dbo.SERVICES.CUST_COL_7, dbo.SERVICES.CUST_COL_8, dbo.SERVICES.CUST_COL_9, dbo.SERVICES.CUST_COL_10,
-                      dbo.SERVICES.WEEKEND_FLAG, dbo.SERVICES.TAXABLE_FLAG, dbo.SERVICES.PRIORITY_TYPE_ID, PRIORITY_TYPES.CODE AS priority_type_code,
-                      PRIORITY_TYPES.NAME AS priority_type_name, dbo.SERVICES.MISC
-FROM         dbo.LOOKUPS SERVICE_STATUS_TYPES RIGHT OUTER JOIN
-                      dbo.LOOKUPS SERVICE_TYPES RIGHT OUTER JOIN
-                      dbo.USERS MOD_USER RIGHT OUTER JOIN
-                      dbo.LOOKUPS REPORT_TO_LOC_TYPES RIGHT OUTER JOIN
-                      dbo.CONTACTS RIGHT OUTER JOIN
-                      dbo.SERVICES LEFT OUTER JOIN
-                      dbo.LOOKUPS PRIORITY_TYPES ON dbo.SERVICES.PRIORITY_TYPE_ID = PRIORITY_TYPES.LOOKUP_ID ON
-                      dbo.CONTACTS.CONTACT_ID = dbo.SERVICES.IDM_CONTACT_ID ON REPORT_TO_LOC_TYPES.LOOKUP_ID = dbo.SERVICES.REPORT_TO_LOC_ID ON
-                      MOD_USER.USER_ID = dbo.SERVICES.MODIFIED_BY LEFT OUTER JOIN
-                      dbo.USERS CREATE_USER ON dbo.SERVICES.CREATED_BY = CREATE_USER.USER_ID LEFT OUTER JOIN
-                      dbo.LOOKUPS PUNCH_LIST_TYPES ON dbo.SERVICES.PUNCHLIST_TYPE_ID = PUNCH_LIST_TYPES.LOOKUP_ID LEFT OUTER JOIN
-                      dbo.LOOKUPS SCHEDULE_TYPES ON dbo.SERVICES.SCHEDULE_TYPE_ID = SCHEDULE_TYPES.LOOKUP_ID ON
-                      SERVICE_TYPES.LOOKUP_ID = dbo.SERVICES.SERVICE_TYPE_ID ON
-                      SERVICE_STATUS_TYPES.LOOKUP_ID = dbo.SERVICES.SERV_STATUS_TYPE_ID LEFT OUTER JOIN
-                      dbo.JOB_LOCATIONS ON dbo.SERVICES.JOB_LOCATION_ID = dbo.JOB_LOCATIONS.JOB_LOCATION_ID FULL OUTER JOIN
-                      dbo.RESOURCES RIGHT OUTER JOIN
-                      dbo.CUSTOMERS INNER JOIN
-                      dbo.JOBS ON dbo.CUSTOMERS.CUSTOMER_ID = dbo.JOBS.CUSTOMER_ID ON
-                      dbo.RESOURCES.RESOURCE_ID = dbo.JOBS.FOREMAN_RESOURCE_ID FULL OUTER JOIN
-                      dbo.LOOKUPS JOB_TYPES_1 ON dbo.JOBS.JOB_TYPE_ID = JOB_TYPES_1.LOOKUP_ID FULL OUTER JOIN
-                      dbo.LOOKUPS JOB_STATUS_TYPE ON dbo.JOBS.JOB_STATUS_TYPE_ID = JOB_STATUS_TYPE.LOOKUP_ID ON
-                      dbo.SERVICES.JOB_ID = dbo.JOBS.JOB_ID
+SELECT     dbo.BILLING_V.ORGANIZATION_ID, dbo.BILLING_V.BILL_JOB_NO, dbo.BILLING_V.BILL_JOB_ID, dbo.BILLING_V.job_status_type_name, dbo.BILLING_V.job_name,
+                      dbo.BILLING_V.BILLING_USER_ID, dbo.BILLING_V.EXT_DEALER_ID, dbo.BILLING_V.DEALER_NAME, dbo.BILLING_V.CUSTOMER_NAME, 
+                      dbo.BILLING_V.billing_user_name, MAX(dbo.SERVICES.EST_END_DATE) AS max_est_end_date, convert(varchar(12), MAX(dbo.SERVICES.EST_END_DATE), 101) max_est_end_date_varchar,
+                      SUM(CASE billable_flag WHEN 'Y' THEN bill_total ELSE 0 END) billable_total, SUM(CASE billable_flag WHEN 'N' THEN bill_total ELSE 0 END) 
+                      non_billable_total
+FROM         dbo.BILLING_V INNER JOIN
+                      dbo.SERVICES ON dbo.BILLING_V.BILL_SERVICE_ID = dbo.SERVICES.SERVICE_ID
+WHERE     (dbo.BILLING_V.invoice_status_id = 1 OR
+                      dbo.BILLING_V.invoice_status_id IS NULL)  and status_id = 4
+GROUP BY dbo.BILLING_V.ORGANIZATION_ID, dbo.BILLING_V.BILL_JOB_ID, dbo.BILLING_V.BILL_JOB_NO, dbo.BILLING_V.BILLING_USER_ID, 
+                      dbo.BILLING_V.DEALER_NAME, dbo.BILLING_V.EXT_DEALER_ID, dbo.BILLING_V.CUSTOMER_NAME, dbo.BILLING_V.billing_user_name, 
+                      dbo.BILLING_V.job_status_type_name, dbo.BILLING_V.job_name
 GO
-
 /****** Object:  View [dbo].[JOB_SEARCH_V]    Script Date: 05/03/2010 14:18:07 ******/
 SET ANSI_NULLS ON
 GO
@@ -666,8 +554,8 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE VIEW [dbo].[JOB_SEARCH_V]
 AS
-SELECT     jobs_1.ORGANIZATION_ID, jobs_1.JOB_NO, jobs_1.JOB_ID, jobs_1.JOB_NAME, s.SERVICE_ID, s.SERVICE_NO, jobs_1.CUSTOMER_NAME,
-                      jobs_1.CUSTOMER_ID, jl.JOB_LOCATION_NAME, jobs_1.JOB_STATUS_TYPE_ID, jobs_1.JOB_TYPE_ID, jobs_1.DATE_CREATED, s.service_no_desc,
+SELECT     jobs_1.ORGANIZATION_ID, jobs_1.JOB_NO, jobs_1.JOB_ID, jobs_1.JOB_NAME, s.SERVICE_ID, s.SERVICE_NO, jobs_1.CUSTOMER_NAME, 
+                      jobs_1.CUSTOMER_ID, jl.JOB_LOCATION_NAME, jobs_1.JOB_STATUS_TYPE_ID, jobs_1.JOB_TYPE_ID, jobs_1.DATE_CREATED, s.service_no_desc, 
                       s.serv_status_type_name
 FROM         dbo.JOBS_V jobs_1 LEFT OUTER JOIN
                       dbo.SERVICES_V s ON jobs_1.JOB_ID = s.JOB_ID LEFT OUTER JOIN
@@ -732,7 +620,33 @@ FROM         dbo.USERS USERS_2 RIGHT OUTER JOIN
                       USERS_2.USER_ID = dbo.FUNCTION_RIGHT_TYPES.MODIFIED_BY LEFT OUTER JOIN
                       dbo.USERS USERS_1 ON dbo.FUNCTION_RIGHT_TYPES.CREATED_BY = USERS_1.USER_ID
 GO
-
+/****** Object:  View [dbo].[crystal_UNBILLED_OPS_V2]    Script Date: 05/03/2010 14:18:06 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[crystal_UNBILLED_OPS_V2]
+AS
+SELECT     TOP 100 PERCENT billing_user_id, bill_job_no, bill_job_id, non_billable_total, billable_total, dealer_name, customer_name, 
+                      max_est_end_date_varchar, billing_user_name, job_status_type_name, job_name, organization_id
+FROM         dbo.BILL_JOBS_V
+WHERE     (organization_id = 2) AND (job_status_type_name = 'invoiced')
+GO
+/****** Object:  View [dbo].[EXPENSES_EXPORT_V]    Script Date: 05/03/2010 14:18:06 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[EXPENSES_EXPORT_V]
+AS
+SELECT     ORGANIZATION_ID, SERVICE_LINE_ID, TC_JOB_ID, TC_JOB_NO, TC_SERVICE_LINE_NO, SERVICE_LINE_DATE, SERVICE_LINE_DATE_VARCHAR, 
+                      SERVICE_LINE_WEEK, SERVICE_LINE_WEEK_VARCHAR, EXPENSE_QTY, EXPENSE_RATE, EXPENSE_TOTAL, ITEM_ID, ITEM_NAME, 
+                      ITEM_TYPE_CODE, EXT_ITEM_ID, EXT_EMPLOYEE_ID, employee_name, EXPENSES_EXPORTED_FLAG, EXPENSE_EXPORT_CODE, USER_ID, 
+                      resource_name, STATUS_ID
+FROM         dbo.EXPENSES_V
+WHERE     (USER_ID IS NOT NULL) AND (EXPENSE_EXPORT_CODE IS NOT NULL) OR
+                      (USER_ID IS NOT NULL) AND (EXPENSE_EXPORT_CODE <> '')
+GO
 /****** Object:  View [dbo].[INVOICE_FORMAT_TYPES_V]    Script Date: 05/03/2010 14:18:07 ******/
 SET ANSI_NULLS ON
 GO
@@ -834,6 +748,94 @@ SELECT     LOOKUP_TYPE_ID, type_code, type_name, type_active_flag, type_date_cre
 FROM         dbo.LOOKUPS_V
 WHERE     (type_code = 'wall_mount_type') AND (lookup_active_flag <> 'N') AND (type_active_flag <> 'N')
 GO
+/****** Object:  View [dbo].[SERVICE_ACCOUNT_REPORT_NUMBERS]    Script Date: 05/03/2010 14:18:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE VIEW [dbo].[SERVICE_ACCOUNT_REPORT_NUMBERS]
+AS
+SELECT     JOB_ID, JOB_NO, JOB_NAME, JOB_NO_NAME, DESCRIPTION, req_po_no, JOB_TYPE_ID, job_type_code, job_type_name, JOB_STATUS_TYPE_ID, 
+                      job_status_type_code, job_status_type_name, job_status_seq_no, CUSTOMER_ID, ORGANIZATION_ID, DEALER_NAME, EXT_DEALER_ID, 
+                      CUSTOMER_NAME, job_location_name, EXT_CUSTOMER_ID, INVOICE_ID, Invoice_Desc, PO_NO, EST_START_DATE, SERVICE_LINE_DATE, 
+                      invoice_status_id, invoice_status_code, invoice_status_name, SERVICE_ID, SERVICE_NO, TC_SERVICE_LINE_NO, RESOURCE_TYPE_ID, 
+                      resource_type_code, resource_type_name, res_cat_type_id, res_cat_type_code, res_cat_type_name, ITEM_ID, item_name, ITEM_TYPE_ID, 
+                      item_type_name, item_type_code, BILLABLE_FLAG, taxable_flag, bill_total, EXT_PAY_CODE, SL_BILLABLE_FLAG, hourly_rate, expense_rate, 
+                      BILL_QTY, col1, col1_enabled, CUST_COL_1, col2, col2_enabled, CUST_COL_2, col3, col3_enabled, CUST_COL_3, col4, col4_enabled, CUST_COL_4, 
+                      col5, col5_enabled, CUST_COL_5, col6, col6_enabled, CUST_COL_6, col7, col7_enabled, CUST_COL_7, col8, col8_enabled, CUST_COL_8, col9, 
+                      col9_enabled, CUST_COL_9, col10, col10_enabled, CUST_COL_10, SUM(other_rate) AS other_rate, SUM(other_qty) AS other_qty, SUM(other_total) 
+                      AS other_total, SUM(baggies_rate) AS baggies_rate, SUM(baggies_qty) AS baggies_qty, SUM(baggies_total) AS baggies_total, SUM(boxes_rate) 
+                      AS boxes_rate, SUM(boxes_qty) AS boxes_qty, SUM(boxes_total) AS boxes_total, SUM(EquipRental_rate) AS EquipRental_rate, SUM(EquipRental_qty) 
+                      AS EquipRental_qty, SUM(EquipRental_total) AS EquipRental_total, SUM(fasteners_rate) AS fasteners_rate, SUM(fasteners_qty) AS fasteners_qty, 
+                      SUM(fasteners_total) AS fasteners_total, SUM(labels_rate) AS labels_rate, SUM(labels_qty) AS labels_qty, SUM(labels_total) AS labels_total, 
+                      SUM(MileageInTown_rate) AS MileageInTown_rate, SUM(MileageInTown_qty) AS MileageInTown_qty, SUM(MileageInTown_total) 
+                      AS MileageInTown_total, SUM(MiscHardware_rate) AS MiscHardware_rate, SUM(MiscHardware_qty) AS MiscHardware_qty, SUM(MiscHardware_total) 
+                      AS MiscHardware_total, SUM(PieceCountIn_rate) AS PieceCountIn_rate, SUM(PieceCountIn_qty) AS PieceCountIn_qty, SUM(PieceCountIn_total) 
+                      AS PieceCountIn_total, SUM(PieceCountOut_rate) AS PieceCountOut_rate, SUM(PieceCountOut_qty) AS PieceCountOut_qty, SUM(PieceCountOut_total) 
+                      AS PieceCountOut_total, SUM(supplies_rate) AS supplies_rate, SUM(supplies_qty) AS supplies_qty, SUM(supplies_total) AS supplies_total, 
+                      SUM(tape_rate) AS tape_rate, SUM(tape_qty) AS tape_qty, SUM(tape_total) AS tape_total, SUM(trash_rate) AS trash_rate, SUM(trash_qty) AS trash_qty, 
+                      SUM(trash_total) AS trash_total, SUM(dollies_rate) AS dollies_rate, SUM(dollies_qty) AS dollies_qty, SUM(dollies_total) AS dollies_total, 
+                      SUM(bookcarts_rate) AS bookcarts_rate, SUM(bookcarts_qty) AS bookcarts_qty, SUM(bookcarts_total) AS bookcarts_total, SUM(truck_rate) 
+                      AS truck_rate, SUM(truck_qty) AS truck_qty, SUM(truck_total) AS truck_total, SUM(van_rate) AS van_rate, SUM(van_qty) AS van_qty, SUM(van_total) 
+                      AS van_total, SUM(perdiem) AS perdiem, SUM(lodging) AS lodging, SUM(ac_reg_rate) AS ac_reg_rate, SUM(ac_reg_qty) AS ac_reg_qty, 
+                      SUM(ac_reg_total) AS ac_reg_total, SUM(ac_ot_rate) AS ac_ot_rate, SUM(ac_ot_qty) AS ac_ot_qty, SUM(ac_ot_total) AS ac_ot_total, SUM(am_reg_rate) 
+                      AS am_reg_rate, SUM(am_reg_qty) AS am_reg_qty, SUM(am_reg_total) AS am_reg_total, SUM(am_ot_rate) AS am_ot_rate, SUM(am_ot_qty) 
+                      AS am_ot_qty, SUM(am_ot_total) AS am_ot_total, SUM(am_spec_reg_rate) AS am_spec_reg_rate, SUM(am_spec_reg_qty) AS am_spec_reg_qty, 
+                      SUM(am_spec_reg_total) AS am_spec_reg_total, SUM(am_spec_ot_rate) AS am_spec_ot_rate, SUM(am_spec_ot_qty) AS am_spec_ot_qty, 
+                      SUM(am_spec_ot_total) AS am_spec_ot_total, SUM(AssetHdlr_reg_rate) AS AssetHdlr_reg_rate, SUM(AssetHdlr_reg_qty) AS AssetHdlr_reg_qty, 
+                      SUM(AssetHdlr_reg_total) AS AssetHdlr_reg_total, SUM(AssetHdlr_ot_rate) AS AssetHdlr_ot_rate, SUM(AssetHdlr_ot_qty) AS AssetHdlr_ot_qty, 
+                      SUM(AssetHdlr_ot_total) AS AssetHdlr_ot_total, SUM(campfurnmgr_reg_rate) AS campfurnmgr_reg_rate, SUM(campfurnmgr_reg_qty) 
+                      AS campfurnmgr_reg_qty, SUM(campfurnmgr_reg_total) AS campfurnmgr_reg_total, SUM(campfurnmgr_ot_rate) AS campfurnmgr_ot_rate, 
+                      SUM(campfurnmgr_ot_qty) AS campfurnmgr_ot_qty, SUM(campfurnmgr_ot_total) AS campfurnmgr_ot_total, SUM(custom_reg_rate) AS custom_reg_rate, 
+                      SUM(custom_reg_qty) AS custom_reg_qty, SUM(custom_reg_total) AS custom_reg_total, SUM(custom_ot_rate) AS custom_ot_rate, 
+                      SUM(custom_ot_qty) AS custom_ot_qty, SUM(custom_ot_total) AS custom_ot_total, SUM(delivery_reg_rate) AS delivery_reg_rate, 
+                      SUM(delivery_reg_qty) AS delivery_reg_qty, SUM(delivery_reg_total) AS delivery_reg_total, SUM(delivery_ot_rate) AS delivery_ot_rate, 
+                      SUM(delivery_ot_qty) AS delivery_ot_qty, SUM(delivery_ot_total) AS delivery_ot_total, SUM(driver_reg_rate) AS Driver_reg_rate, SUM(driver_reg_qty) 
+                      AS Driver_reg_qty, SUM(driver_reg_total) AS Driver_reg_total, SUM(driver_ot_rate) AS Driver_ot_rate, SUM(driver_ot_qty) AS Driver_ot_qty, 
+                      SUM(driver_ot_total) AS Driver_ot_total, SUM(Foreman_reg_rate) AS Foreman_reg_rate, SUM(Foreman_reg_qty) AS Foreman_reg_qty, 
+                      SUM(Foreman_reg_total) AS Foreman_reg_total, SUM(Foreman_ot_rate) AS Foreman_ot_rate, SUM(Foreman_ot_qty) AS Foreman_ot_qty, 
+                      SUM(Foreman_ot_total) AS Foreman_ot_total, SUM(GenLabor_reg_rate) AS GenLabor_reg_rate, SUM(GenLabor_reg_qty) AS GenLabor_reg_qty, 
+                      SUM(GenLabor_reg_total) AS GenLabor_reg_total, SUM(GenLabor_ot_rate) AS GenLabor_ot_rate, SUM(GenLabor_ot_qty) AS GenLabor_ot_qty, 
+                      SUM(GenLabor_ot_total) AS GenLabor_ot_total, SUM(installer_reg_rate) AS installer_reg_rate, SUM(installer_reg_qty) AS installer_reg_qty, 
+                      SUM(installer_reg_total) AS installer_reg_total, SUM(installer_ot_rate) AS installer_ot_rate, SUM(installer_ot_qty) AS installer_ot_qty, 
+                      SUM(installer_ot_total) AS installer_ot_total, SUM(lead_reg_rate) AS lead_reg_rate, SUM(lead_reg_qty) AS lead_reg_qty, SUM(lead_reg_total) 
+                      AS lead_reg_total, SUM(lead_ot_rate) AS lead_ot_rate, SUM(lead_ot_qty) AS lead_ot_qty, SUM(lead_ot_total) AS lead_ot_total, SUM(mac_reg_rate) 
+                      AS mac_reg_rate, SUM(mac_reg_qty) AS mac_reg_qty, SUM(mac_reg_total) AS mac_reg_total, SUM(mac_ot_rate) AS mac_ot_rate, SUM(mac_ot_qty) 
+                      AS mac_ot_qty, SUM(mac_ot_total) AS mac_ot_total, SUM(mps_reg_rate) AS mps_reg_rate, SUM(mps_reg_qty) AS mps_reg_qty, SUM(mps_reg_total) 
+                      AS mps_reg_total, SUM(mps_ot_rate) AS mps_ot_rate, SUM(mps_ot_qty) AS mps_ot_qty, SUM(mps_ot_total) AS mps_ot_total, 
+                      SUM(Mover_Reg_Hrs_rate) AS mover_reg_hrs_rate, SUM(Mover_Reg_Hrs_qty) AS mover_reg_hrs_qty, SUM(Mover_Reg_Hrs_total) 
+                      AS mover_reg_hrs_total, SUM(Mover_OT_Hrs_rate) AS mover_ot_hrs_rate, SUM(Mover_OT_Hrs_qty) AS mover_ot_hrs_qty, SUM(Mover_OT_Hrs_total) 
+                      AS mover_ot_hrs_total, SUM(pc_fab_reg_rate) AS pc_fab_reg_rate, SUM(pc_fab_reg_qty) AS pc_fab_reg_qty, SUM(pc_fab_reg_total) 
+                      AS pc_fab_reg_total, SUM(pc_fab_ot_rate) AS pc_fab_ot_rate, SUM(pc_fab_ot_qty) AS pc_fab_ot_qty, SUM(pc_fab_ot_total) AS pc_fab_ot_total, 
+                      SUM(pc_coord_reg_rate) AS pc_coord_reg_rate, SUM(pc_coord_reg_qty) AS pc_coord_reg_qty, SUM(pc_coord_reg_total) AS pc_coord_reg_total, 
+                      SUM(pc_coord_ot_rate) AS pc_coord_ot_rate, SUM(pc_coord_ot_qty) AS pc_coord_ot_qty, SUM(pc_coord_ot_total) AS pc_coord_ot_total, 
+                      SUM(pc_mover_reg_rate) AS pc_mover_reg_rate, SUM(pc_mover_reg_qty) AS pc_mover_reg_qty, SUM(pc_mover_reg_total) AS pc_mover_reg_total, 
+                      SUM(pc_mover_ot_rate) AS pc_mover_ot_rate, SUM(pc_mover_ot_qty) AS pc_mover_ot_qty, SUM(pc_mover_ot_total) AS pc_mover_ot_total, 
+                      SUM(ProjMgr_reg_rate) AS ProjMgr_reg_rate, SUM(ProjMgr_reg_qty) AS ProjMgr_reg_qty, SUM(ProjMgr_reg_total) AS ProjMgr_reg_total, 
+                      SUM(ProjMgr_ot_rate) AS ProjMgr_ot_rate, SUM(ProjMgr_ot_qty) AS ProjMgr_ot_qty, SUM(ProjMgr_ot_total) AS ProjMgr_ot_total, SUM(ps_reg_rate) 
+                      AS ps_reg_rate, SUM(ps_reg_qty) AS ps_reg_qty, SUM(ps_reg_total) AS ps_reg_total, SUM(ps_ot_rate) AS ps_ot_rate, SUM(ps_ot_qty) AS ps_ot_qty, 
+                      SUM(ps_ot_total) AS ps_ot_total, SUM(regProjMgr_reg_rate) AS regProjMgr_reg_rate, SUM(regProjMgr_reg_qty) AS regProjMgr_reg_qty, 
+                      SUM(regProjMgr_reg_total) AS regProjMgr_reg_total, SUM(regProjMgr_ot_rate) AS regProjMgr_ot_rate, SUM(regProjMgr_ot_qty) AS regProjMgr_ot_qty, 
+                      SUM(regProjMgr_ot_total) AS regProjMgr_ot_total, SUM(sub_reg_rate) AS sub_reg_rate, SUM(sub_reg_qty) AS sub_reg_qty, SUM(sub_reg_total) 
+                      AS sub_reg_total, SUM(sub_ot_rate) AS sub_ot_rate, SUM(sub_ot_qty) AS sub_ot_qty, SUM(sub_ot_total) AS sub_ot_total, SUM(sub_exp_rate) 
+                      AS sub_exp_rate, SUM(sub_exp_qty) AS sub_exp_qty, SUM(sub_exp_total) AS sub_exp_total, SUM(whse_reg_rate) AS whse_reg_rate, 
+                      SUM(whse_reg_qty) AS whse_reg_qty, SUM(whse_reg_total) AS whse_reg_total, SUM(whse_ot_rate) AS whse_ot_rate, SUM(whse_ot_qty) 
+                      AS whse_ot_qty, SUM(whse_ot_total) AS whse_ot_total, SUM(WhseSup_reg_rate) AS WhseSup_reg_rate, SUM(WhseSup_reg_qty) 
+                      AS WhseSup_reg_qty, SUM(WhseSup_reg_total) AS WhseSup_reg_total, SUM(WhseSup_ot_rate) AS WhseSup_ot_rate, SUM(WhseSup_ot_qty) 
+                      AS WhseSup_ot_qty, SUM(WhseSup_ot_total) AS WhseSup_ot_total, SUM(xerox_reg_rate) AS xerox_reg_rate, SUM(xerox_reg_qty) AS xerox_reg_qty, 
+                      SUM(xerox_reg_total) AS xerox_reg_total, SUM(xerox_ot_rate) AS xerox_ot_rate, SUM(xerox_ot_qty) AS xerox_ot_qty, SUM(xerox_ot_total) 
+                      AS xerox_ot_total
+FROM         dbo.SERVICE_ACCOUNT_REPORT_V
+GROUP BY JOB_ID, JOB_NO, JOB_NAME, JOB_NO_NAME, DESCRIPTION, req_po_no, JOB_TYPE_ID, job_type_code, job_type_name, JOB_STATUS_TYPE_ID, 
+                      job_status_type_code, job_status_type_name, job_status_seq_no, CUSTOMER_ID, ORGANIZATION_ID, DEALER_NAME, EXT_DEALER_ID, 
+                      CUSTOMER_NAME, EXT_CUSTOMER_ID, INVOICE_ID, PO_NO, invoice_status_id, invoice_status_code, invoice_status_name, SERVICE_ID, 
+                      SERVICE_NO, TC_SERVICE_LINE_NO, RESOURCE_TYPE_ID, resource_type_code, resource_type_name, res_cat_type_id, res_cat_type_code, 
+                      res_cat_type_name, ITEM_ID, item_name, ITEM_TYPE_ID, item_type_name, item_type_code, BILLABLE_FLAG, EXT_PAY_CODE, SL_BILLABLE_FLAG, 
+                      taxable_flag, bill_total, hourly_rate, expense_rate, BILL_QTY, col1, col1_enabled, CUST_COL_1, col2, col2_enabled, CUST_COL_2, col3, col3_enabled,
+                       CUST_COL_3, col4, col4_enabled, CUST_COL_4, col5, col5_enabled, CUST_COL_5, col6, col6_enabled, CUST_COL_6, col7, col7_enabled, 
+                      CUST_COL_7, col8, col8_enabled, CUST_COL_8, col9, col9_enabled, CUST_COL_9, col10, col10_enabled, CUST_COL_10, Invoice_Desc, 
+                      EST_START_DATE, SERVICE_LINE_DATE, job_location_name
+GO
 /****** Object:  View [dbo].[PDA_JOBS_V]    Script Date: 05/03/2010 14:18:08 ******/
 SET ANSI_NULLS ON
 GO
@@ -932,6 +934,37 @@ SELECT     JOB_ID, PROJECT_ID, JOB_NO, JOB_NAME, JOB_NO_NAME, JOB_TYPE_ID, JOB_S
 FROM         dbo.JOBS_V
 WHERE     (BILLING_USER_ID IS NULL)
 GO
+/****** Object:  View [dbo].[SERVICE_QUOTES_V]    Script Date: 05/03/2010 14:18:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE VIEW [dbo].[SERVICE_QUOTES_V]
+AS
+SELECT     dbo.PROJECTS_V.PROJECT_ID, QUOTE_REQUESTS.REQUEST_ID AS quote_request_id, SERVICE_REQUESTS.REQUEST_ID AS service_request_id, 
+                      dbo.QUOTES_V.QUOTE_ID, dbo.SERVICES.JOB_ID, dbo.SERVICES.SERVICE_ID, dbo.PROJECTS_V.PROJECT_NO, dbo.QUOTES_V.QUOTE_NO, 
+                      dbo.QUOTES_V.project_quote_no, dbo.QUOTES_V.QUOTE_TOTAL
+FROM         dbo.REQUESTS QUOTE_REQUESTS INNER JOIN
+                      dbo.REQUESTS SERVICE_REQUESTS INNER JOIN
+                      dbo.SERVICES ON SERVICE_REQUESTS.REQUEST_ID = dbo.SERVICES.REQUEST_ID ON 
+                      QUOTE_REQUESTS.REQUEST_ID = SERVICE_REQUESTS.QUOTE_REQUEST_ID INNER JOIN
+                      dbo.QUOTES_V ON QUOTE_REQUESTS.REQUEST_ID = dbo.QUOTES_V.REQUEST_ID INNER JOIN
+                      dbo.PROJECTS_V ON QUOTE_REQUESTS.PROJECT_ID = dbo.PROJECTS_V.PROJECT_ID
+GO
+/****** Object:  View [dbo].[EXPENSE_REPORT_V]    Script Date: 05/03/2010 14:18:06 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE VIEW [dbo].[EXPENSE_REPORT_V]
+AS
+SELECT     dbo.EXPENSES_V.ORGANIZATION_ID, dbo.EXPENSES_V.TC_JOB_NO, dbo.JOBS_V.JOB_NAME, dbo.EXPENSES_V.item_name, 
+                      dbo.EXPENSES_V.SERVICE_LINE_DATE, dbo.EXPENSES_V.EXPENSE_QTY, dbo.EXPENSES_V.EXPENSE_RATE, dbo.EXPENSES_V.EXPENSE_TOTAL, 
+                      dbo.EXPENSES_V.EXPENSES_EXPORTED_FLAG, dbo.EXPENSES_V.TC_JOB_ID, dbo.EXPENSES_V.ITEM_ID, dbo.EXPENSES_V.item_type_code, 
+                      dbo.EXPENSES_V.USER_ID, dbo.EXPENSES_V.EXT_EMPLOYEE_ID, dbo.EXPENSES_V.employee_name
+FROM         dbo.JOBS_V RIGHT OUTER JOIN
+                      dbo.EXPENSES_V ON dbo.JOBS_V.JOB_ID = dbo.EXPENSES_V.TC_JOB_ID
+GO
 /****** Object:  View [dbo].[ROLES_V]    Script Date: 05/03/2010 14:18:09 ******/
 SET ANSI_NULLS ON
 GO
@@ -971,6 +1004,16 @@ SELECT     LOOKUP_TYPE_ID, type_code, type_name, type_active_flag, type_date_cre
 FROM         dbo.LOOKUPS_V
 WHERE     (type_code = 'schedule_type') AND (lookup_active_flag <> 'N') AND (type_active_flag <> 'N')
 GO
+/****** Object:  View [dbo].[ICVERIFY_V]    Script Date: 05/03/2010 14:18:07 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[ICVERIFY_V]
+AS
+SELECT     JOB_ID, JOB_NO, CUSTOMER_NAME, INVOICE_ID, CAST(bill_total AS money) AS Bill_Total, CUST_COL_4
+FROM         dbo.SERVICE_ACCOUNT_REPORT_TEMP
+GO
 /****** Object:  View [dbo].[LOOKUP_TYPES_V]    Script Date: 05/03/2010 14:18:07 ******/
 SET ANSI_NULLS ON
 GO
@@ -987,6 +1030,25 @@ SELECT     dbo.LOOKUP_TYPES.LOOKUP_TYPE_ID, dbo.LOOKUP_TYPES.CODE AS type_code, 
 FROM         dbo.LOOKUP_TYPES LEFT OUTER JOIN
                       dbo.USERS modified_by_name ON dbo.LOOKUP_TYPES.MODIFIED_BY = modified_by_name.USER_ID LEFT OUTER JOIN
                       dbo.USERS created_by_name ON dbo.LOOKUP_TYPES.CREATED_BY = created_by_name.USER_ID
+GO
+/****** Object:  View [dbo].[SCH_VACATION_V]    Script Date: 05/03/2010 14:18:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[SCH_VACATION_V]
+AS
+SELECT     res_sch_id, RESOURCE_ID, SCH_RESOURCE_ID, WEEKEND_SCH_RESOURCE_ID, resource_name, JOB_ID, JOB_NO, SERVICE_ID, 
+                      HIDDEN_SERVICE_ID, actual_service_id, SERVICE_NO, FOREMAN_RESOURCE_ID, FOREMAN_USER_ID, RES_STATUS_TYPE_ID, 
+                      res_status_type_code, res_status_type_name, REASON_TYPE_ID, reason_type_code, reason_type_name, RES_CATEGORY_TYPE_ID, 
+                      res_cat_type_code, res_cat_type_name, RESOURCE_TYPE_ID, resource_type_code, resource_type_name, UNIQUE_FLAG, NOTES, PIN, 
+                      FOREMAN_FLAG, ACTIVE_FLAG, EXT_VENDOR_ID, employment_type_name, employment_type_code, EMPLOYMENT_TYPE_ID, USER_ID, 
+                      user_full_name, user_contact_id, user_contact_name, res_modified_by_name, res_modified_by, res_date_modified, res_created_by_name, 
+                      res_created_by, res_date_created, sch_foreman_flag, RES_START_DATE, RES_START_TIME, RES_END_DATE, DATE_CONFIRMED, RESOURCE_QTY, 
+                      SCH_NOTES, WEEKEND_FLAG, sch_date_created, sch_created_by, sch_created_by_name, sch_date_modified, sch_modified_by, 
+                      sch_modified_by_name, unconfirmed_flag
+FROM         dbo.SCH_RESOURCES_V
+WHERE     (reason_type_code = 'vacation')
 GO
 /****** Object:  View [dbo].[SERVICE_LINE_TYPES_V]    Script Date: 05/03/2010 14:18:09 ******/
 SET ANSI_NULLS ON
@@ -1013,6 +1075,20 @@ SELECT     LOOKUP_TYPE_ID, type_code, type_name, type_active_flag, type_date_cre
                       lookup_date_created, lookup_created_by, lookup_created_by_name, lookup_date_modified, lookup_modified_by, lookup_modified_by_name
 FROM         dbo.LOOKUPS_V
 WHERE     (type_code = 'service_status_type') AND (lookup_active_flag <> 'N') AND (type_active_flag <> 'N')
+GO
+/****** Object:  View [dbo].[CONVERTED_REQUESTS_V]    Script Date: 05/03/2010 14:18:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[CONVERTED_REQUESTS_V]  
+AS  
+SELECT project_id, request_no, is_converted = CASE ISNULL(service_id, '-1')
+WHEN -1 THEN 'N'
+ELSE 'Y' END
+, record_seq_no
+FROM   dbo.REQUESTS_V
+WHERE request_type_code = 'service_request'
 GO
 /****** Object:  View [dbo].[SUB_ACTIVITY_TYPES_V]    Script Date: 05/03/2010 14:18:09 ******/
 SET ANSI_NULLS ON
@@ -1174,102 +1250,102 @@ GO
 
 CREATE VIEW [dbo].[billing_v]
 AS
-SELECT sl.organization_id,
-       sl.service_line_id,
-       CAST(sl.bill_job_id AS VARCHAR) + '-' + CAST(sl.item_id AS VARCHAR) + '-' + CAST(sl.status_id AS VARCHAR) AS job_item_status_id,
-       CAST(sl.bill_service_id AS VARCHAR) + '-' + CAST(sl.item_id AS VARCHAR) + '-' + CAST(sl.status_id AS VARCHAR) AS service_item_status_id,
+SELECT sl.organization_id, 
+       sl.service_line_id, 
+       CAST(sl.bill_job_id AS VARCHAR) + '-' + CAST(sl.item_id AS VARCHAR) + '-' + CAST(sl.status_id AS VARCHAR) AS job_item_status_id, 
+       CAST(sl.bill_service_id AS VARCHAR) + '-' + CAST(sl.item_id AS VARCHAR) + '-' + CAST(sl.status_id AS VARCHAR) AS service_item_status_id, 
        CAST(sl.bill_service_id AS VARCHAR) + '-' + CAST(sl.status_id AS VARCHAR) AS bill_service_status_id,
-       sl.bill_job_no,
-       sl.bill_service_no,
-       sl.bill_service_line_no,
-       j_v.job_status_type_name,
-       sl.service_line_date,
-       sl.service_line_date_VARCHAR,
-       sl.service_line_week,
-       sl.service_line_week_VARCHAR,
-       sl.status_id,
-       sls.name AS status_name,
-       sl.exported_flag,
-       sl.billed_flag,
-       sl.posted_flag,
-       sl.pooled_flag,
+       sl.bill_job_no, 
+       sl.bill_service_no, 
+       sl.bill_service_line_no, 
+       j_v.job_status_type_name, 
+       sl.service_line_date, 
+       sl.service_line_date_VARCHAR, 
+       sl.service_line_week, 
+       sl.service_line_week_VARCHAR, 
+       sl.status_id, 
+       sls.name AS status_name, 
+       sl.exported_flag, 
+       sl.billed_flag, 
+       sl.posted_flag, 
+       sl.pooled_flag, 
        sl.internal_req_flag,
-       sl.bill_job_id,
+       sl.bill_job_id, 
        sl.bill_service_id,
        sl.ph_service_id,
-       sl.resource_id,
+       sl.resource_id, 
        sl.resource_name,
        sl.item_id,
        sl.item_name,
-       sl.item_type_code,
+       sl.item_type_code, 
        sl.invoice_id,
-       i.description AS invoice_description,
-       sl.posted_from_invoice_id,
+       i.description AS invoice_description, 
+       sl.posted_from_invoice_id, 
        ist.status_id AS invoice_status_id,
-       ist.name AS invoice_status_name,
-       sl.billable_flag,
+       ist.name AS invoice_status_name, 
+       sl.billable_flag, 
        s.taxable_flag AS service_taxable_flag,
-       sl.taxable_flag,
+       sl.taxable_flag, 
        sl.ext_pay_code,
        sl.tc_qty,
        sl.payroll_qty,
-       sl.bill_qty,
-       sl.bill_rate,
-       sl.bill_total,
-       sl.bill_exp_qty,
-       sl.bill_exp_rate,
+       sl.bill_qty, 
+       sl.bill_rate, 
+       sl.bill_total, 
+       sl.bill_exp_qty, 
+       sl.bill_exp_rate, 
        sl.bill_exp_total,
        sl.bill_hourly_qty,
-       sl.bill_hourly_rate,
+       sl.bill_hourly_rate, 
        sl.bill_hourly_total,
        s.quote_total,
        s.quote_id,
-       j_v.job_name,
+       j_v.job_name, 
        j_v.billing_user_name,
        j_v.dealer_name,
        j_v.ext_dealer_id,
-       j_v.customer_name,
+       j_v.customer_name, 
        j_v.ext_customer_id,
        j_v.billing_user_id,
-       j_v.foreman_resource_name AS supervisor_name,
+       j_v.foreman_resource_name AS supervisor_name, 
        j_v.foreman_user_id AS sup_user_id,
        s.billing_type_id,
-       billing_types.code AS billing_type_code,
+       billing_types.code AS billing_type_code, 
        billing_types.name AS billing_type_name,
        s.po_no,
        s.cust_col_1,
-       s.cust_col_2,
+       s.cust_col_2, 
        s.cust_col_3,
        s.cust_col_4,
        s.cust_col_5,
-       s.cust_col_6,
-       s.cust_col_7,
+       s.cust_col_6, 
+       s.cust_col_7, 
        s.cust_col_8,
        s.cust_col_9,
-       s.cust_col_10,
-       s.est_start_date,
+       s.cust_col_10, 
+       s.est_start_date, 
        s.est_end_date,
-       sl.palm_rep_id,
-       s.description AS service_description,
-       CAST(j_v.job_no AS VARCHAR) + ' - ' + ISNULL(j_v.job_name, '') AS job_no_name2,
-       CAST(s.service_no AS VARCHAR) + ' - ' + ISNULL(s.description, '') AS service_no_description2,
-       sl.entered_date,
-       sl.entered_by,
-       sl.entry_method,
-       sl.override_date,
-       sl.override_by,
-       sl.override_reason,
-       sl.verified_date,
-       sl.verified_by,
-       sl.date_created,
-       sl.created_by,
-       sl.date_modified,
-       sl.modified_by,
-       ISNULL(sl.invoice_post_date, i.date_sent) AS invoiced_date,
+       sl.palm_rep_id, 
+       s.description AS service_description, 
+       CAST(j_v.job_no AS VARCHAR) + ' - ' + ISNULL(j_v.job_name, '') AS job_no_name2, 
+       CAST(s.service_no AS VARCHAR) + ' - ' + ISNULL(s.description, '') AS service_no_description2, 
+       sl.entered_date, 
+       sl.entered_by, 
+       sl.entry_method, 
+       sl.override_date, 
+       sl.override_by, 
+       sl.override_reason, 
+       sl.verified_date, 
+       sl.verified_by, 
+       sl.date_created, 
+       sl.created_by, 
+       sl.date_modified, 
+       sl.modified_by, 
+       ISNULL(sl.invoice_post_date, i.date_sent) AS invoiced_date, 
        sl.invoice_post_date,
        ISNULL(q.quote_total, 0) quoted_total,
        ISNULL(p.is_new, 'N') is_new
-  FROM dbo.service_lines sl LEFT OUTER JOIN
+  FROM dbo.service_lines sl LEFT OUTER JOIN 
        dbo.services s ON sl.bill_service_id = s.service_id LEFT OUTER JOIN
        dbo.jobs_v j_v ON sl.bill_job_id = j_v.job_id LEFT OUTER JOIN
        dbo.invoices i ON sl.invoice_id = i.invoice_id LEFT OUTER JOIN
@@ -1281,49 +1357,6 @@ SELECT sl.organization_id,
  WHERE sl.status_id > 3
    AND sl.internal_req_flag = 'N'
 GO
-
-/****** Object:  View [dbo].[JOBS_READY_TO_BILL_V]    Script Date: 05/03/2010 14:18:07 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER OFF
-GO
-CREATE VIEW [dbo].[JOBS_READY_TO_BILL_V]
-AS
-SELECT     dbo.BILLING_V.ORGANIZATION_ID, dbo.BILLING_V.BILL_JOB_NO, dbo.BILLING_V.BILL_JOB_ID, dbo.BILLING_V.job_status_type_name, dbo.BILLING_V.job_name,
-                      dbo.BILLING_V.BILLING_USER_ID, dbo.BILLING_V.EXT_DEALER_ID, dbo.BILLING_V.DEALER_NAME, dbo.BILLING_V.CUSTOMER_NAME,
-                      dbo.BILLING_V.billing_user_name, MAX(dbo.SERVICES.EST_END_DATE) AS max_est_end_date, convert(varchar(12), MAX(dbo.SERVICES.EST_END_DATE), 101) max_est_end_date_varchar,
-                      SUM(CASE billable_flag WHEN 'Y' THEN bill_total ELSE 0 END) billable_total, SUM(CASE billable_flag WHEN 'N' THEN bill_total ELSE 0 END)
-                      non_billable_total
-FROM         dbo.BILLING_V INNER JOIN
-                      dbo.SERVICES ON dbo.BILLING_V.BILL_SERVICE_ID = dbo.SERVICES.SERVICE_ID
-WHERE     (dbo.BILLING_V.invoice_status_id = 1 OR
-                      dbo.BILLING_V.invoice_status_id IS NULL)  and status_id = 4
-GROUP BY dbo.BILLING_V.ORGANIZATION_ID, dbo.BILLING_V.BILL_JOB_ID, dbo.BILLING_V.BILL_JOB_NO, dbo.BILLING_V.BILLING_USER_ID,
-                      dbo.BILLING_V.DEALER_NAME, dbo.BILLING_V.EXT_DEALER_ID, dbo.BILLING_V.CUSTOMER_NAME, dbo.BILLING_V.billing_user_name,
-                      dbo.BILLING_V.job_status_type_name, dbo.BILLING_V.job_name
-GO
-
-/****** Object:  View [dbo].[crystal_UNBILLED_OPS_V]    Script Date: 05/03/2010 14:18:06 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER OFF
-GO
-CREATE VIEW [dbo].[crystal_UNBILLED_OPS_V]
-AS
-SELECT     dbo.BILLING_V.ORGANIZATION_ID, dbo.BILLING_V.BILL_JOB_NO, dbo.BILLING_V.BILL_JOB_ID, dbo.BILLING_V.job_status_type_name, dbo.BILLING_V.job_name,
-                      dbo.BILLING_V.BILLING_USER_ID, dbo.BILLING_V.EXT_DEALER_ID, dbo.BILLING_V.DEALER_NAME, dbo.BILLING_V.CUSTOMER_NAME,
-                      cast(dbo.BILLING_V.billing_user_name as varchar) as job_owner, MAX(dbo.SERVICES.EST_END_DATE) AS max_est_end_date, convert(varchar(12), MAX(dbo.SERVICES.EST_END_DATE), 101) max_est_end_date_varchar,
-                      SUM(CASE billable_flag WHEN 'Y' THEN bill_total ELSE 0 END) billable_total, SUM(CASE billable_flag WHEN 'N' THEN bill_total ELSE 0 END)
-                      non_billable_total, dbo.SERVICES.PO_NO
-FROM         dbo.BILLING_V INNER JOIN
-                      dbo.SERVICES ON dbo.BILLING_V.BILL_SERVICE_ID = dbo.SERVICES.SERVICE_ID
-WHERE     (dbo.BILLING_V.invoice_status_id = 1 OR
-                      dbo.BILLING_V.invoice_status_id IS NULL)  and status_id = 4
-GROUP BY dbo.BILLING_V.ORGANIZATION_ID, dbo.BILLING_V.BILL_JOB_ID, dbo.BILLING_V.BILL_JOB_NO, dbo.BILLING_V.BILLING_USER_ID,
-                      dbo.BILLING_V.DEALER_NAME, dbo.BILLING_V.EXT_DEALER_ID, dbo.BILLING_V.CUSTOMER_NAME, dbo.BILLING_V.billing_user_name,
-                      dbo.BILLING_V.job_status_type_name, dbo.BILLING_V.job_name, dbo.SERVICES.PO_NO
-GO
-
 /****** Object:  View [dbo].[invoices_extranet_v]    Script Date: 05/03/2010 14:18:07 ******/
 SET ANSI_NULLS ON
 GO
@@ -1912,20 +1945,6 @@ GROUP BY j.billing_user_id,
          c.ext_dealer_id,
          j.project_id
 GO
-
-/****** Object:  View [dbo].[crystal_UNBILLED_OPS_V2]    Script Date: 05/03/2010 14:18:06 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
--- CREATE VIEW [dbo].[crystal_UNBILLED_OPS_V2]
--- AS
--- SELECT     TOP 100 PERCENT billing_user_id, bill_job_no, bill_job_id, non_billable_total, billable_total, dealer_name, customer_name,
---                       max_est_end_date_varchar, billing_user_name, job_status_type_name, job_name, organization_id
--- FROM         dbo.BILL_JOBS_V
--- WHERE     (organization_id = 2) AND (job_status_type_name = 'invoiced')
--- GO
-
 /****** Object:  View [dbo].[BILLING_V_DAILYREPORTCAPTURE]    Script Date: 05/03/2010 14:18:05 ******/
 SET ANSI_NULLS ON
 GO
@@ -1993,6 +2012,24 @@ FROM         dbo.INVOICES INNER JOIN
                       dbo.INVOICE_LINES ON dbo.INVOICES.INVOICE_ID = dbo.INVOICE_LINES.INVOICE_ID FULL OUTER JOIN
                       dbo.SERVICE_LINES ON dbo.INVOICES.INVOICE_ID = dbo.SERVICE_LINES.INVOICE_ID
 WHERE     (dbo.INVOICES.ORGANIZATION_ID = 11)
+GO
+/****** Object:  View [dbo].[crystal_VAR_JOB_INVOICED_V]    Script Date: 05/03/2010 14:18:06 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[crystal_VAR_JOB_INVOICED_V]
+AS
+SELECT     TOP 100 PERCENT dbo.JOBS.JOB_ID, SUM(ISNULL(dbo.INVOICE_LINES.UNIT_PRICE, 0) * ISNULL(dbo.INVOICE_LINES.QTY, 0)) AS sum_inv, 
+                      MIN(CAST(dbo.INVOICES.DATE_SENT AS datetime)) AS min_date_sent, MAX(dbo.INVOICES.DATE_SENT) AS max_date_sent, 
+                      dbo.INVOICES.INVOICE_ID
+FROM         dbo.JOBS RIGHT OUTER JOIN
+                      dbo.INVOICE_LINES RIGHT OUTER JOIN
+                      dbo.INVOICES ON dbo.INVOICE_LINES.INVOICE_ID = dbo.INVOICES.INVOICE_ID ON dbo.JOBS.JOB_ID = dbo.INVOICES.JOB_ID
+WHERE     (dbo.INVOICES.STATUS_ID > 3)
+GROUP BY dbo.JOBS.JOB_ID, dbo.INVOICES.INVOICE_ID
+HAVING      (SUM(ISNULL(dbo.INVOICE_LINES.UNIT_PRICE, 0) * ISNULL(dbo.INVOICE_LINES.QTY, 0)) > 0)
+ORDER BY dbo.JOBS.JOB_ID
 GO
 /****** Object:  View [dbo].[INVOICE_TOTALS_V]    Script Date: 05/03/2010 14:18:07 ******/
 SET ANSI_NULLS ON
@@ -2277,22 +2314,6 @@ SELECT dbo.SERVICE_LINES.ORGANIZATION_ID,
        dbo.USERS USERS_2 ON dbo.SERVICE_LINES.VERIFIED_BY = USERS_2.USER_ID ON USERS_4.USER_ID = dbo.SERVICE_LINES.MODIFIED_BY LEFT OUTER JOIN
        dbo.USERS USERS_3 ON dbo.SERVICE_LINES.CREATED_BY = USERS_3.USER_ID ON dbo.SERVICE_LINE_STATUSES.STATUS_ID = dbo.SERVICE_LINES.STATUS_ID ON dbo.SERVICES.SERVICE_ID = dbo.SERVICE_LINES.TC_SERVICE_ID
 GO
-
-/****** Object:  View [dbo].[crystal_VAR_TIME_EXP_V]    Script Date: 05/03/2010 14:18:06 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE VIEW [dbo].[crystal_VAR_TIME_EXP_V]
-AS
-SELECT     TOP 100 PERCENT TC_JOB_ID AS job_id, SUM(ISNULL(TC_QTY * BILL_RATE, 0)) AS sum_time_exp, SUM(ISNULL(PAYROLL_QTY * BILL_RATE, 0))
-                      AS sum_time, SUM(ISNULL(EXPENSE_QTY * BILL_RATE, 0)) AS sum_exp
-FROM         dbo.TIME_CAPTURE_V
-GROUP BY TC_JOB_ID, PH_SERVICE_ID
-HAVING      (PH_SERVICE_ID IS NULL)
-ORDER BY TC_JOB_ID
-GO
-
 /****** Object:  View [dbo].[crystal_AIA_REQUESTS_V]    Script Date: 05/03/2010 14:18:05 ******/
 SET ANSI_NULLS ON
 GO
@@ -2918,22 +2939,6 @@ FROM         dbo.LOOKUPS SITE_VISIT_REQ_TYPE RIGHT OUTER JOIN
                       dbo.REQUESTS.PROJECT_ID = dbo.PROJECTS_V.PROJECT_ID LEFT OUTER JOIN
                       dbo.CONTACTS A_M_CONTACT ON dbo.REQUESTS.A_M_CONTACT_ID = A_M_CONTACT.CONTACT_ID
 GO
-
-/****** Object:  View [dbo].[CONVERTED_REQUESTS_V]    Script Date: 05/03/2010 14:18:05 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE VIEW [dbo].[CONVERTED_REQUESTS_V]
-AS
-SELECT project_id, request_no, is_converted = CASE ISNULL(service_id, '-1')
-WHEN -1 THEN 'N'
-ELSE 'Y' END
-, record_seq_no
-FROM   dbo.REQUESTS_V
-WHERE request_type_code = 'service_request'
-GO
-
 /****** Object:  View [dbo].[job_services_v]    Script Date: 05/03/2010 14:18:07 ******/
 SET ANSI_NULLS ON
 GO
@@ -4289,60 +4294,60 @@ FROM         dbo.SERVICE_LINES INNER JOIN
                       dbo.ITEMS ON dbo.SERVICE_LINES.ITEM_ID = dbo.ITEMS.ITEM_ID
 GO
 /****** Object:  View [dbo].[crystal_TIME_CAPTURE_V]    Script Date: 05/03/2010 14:18:06 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER OFF
--- GO
--- CREATE VIEW [dbo].[crystal_TIME_CAPTURE_V]
--- AS
--- SELECT     dbo.SERVICE_LINES.ORGANIZATION_ID, dbo.SERVICE_LINES.TC_JOB_NO, dbo.SERVICE_LINES.TC_SERVICE_NO,
---                       dbo.SERVICE_LINES.TC_SERVICE_LINE_NO, dbo.SERVICE_LINES.BILL_JOB_NO, dbo.SERVICE_LINES.BILL_SERVICE_NO,
---                       dbo.SERVICE_LINES.BILL_SERVICE_LINE_NO, dbo.JOBS_V.JOB_NAME, dbo.SERVICE_LINES.RESOURCE_NAME, dbo.SERVICE_LINES.ITEM_NAME,
---                       dbo.JOBS_V.billing_user_name, dbo.JOBS_V.foreman_resource_name, dbo.SERVICE_LINES.TC_JOB_ID, dbo.SERVICE_LINES.TC_SERVICE_ID,
---                       dbo.SERVICE_LINES.BILL_JOB_ID, dbo.SERVICE_LINES.BILL_SERVICE_ID, dbo.SERVICE_LINES.PH_SERVICE_ID,
---                       dbo.SERVICE_LINES.SERVICE_LINE_ID, CAST(dbo.SERVICES.JOB_ID AS varchar) + '-' + CAST(dbo.SERVICE_LINES.ITEM_ID AS varchar)
---                       + '-' + CAST(dbo.SERVICE_LINES.STATUS_ID AS varchar) AS job_item_status_id, CAST(dbo.SERVICE_LINES.TC_SERVICE_ID AS varchar)
---                       + '-' + CAST(dbo.SERVICE_LINES.STATUS_ID AS varchar) AS service_status_id, CAST(dbo.SERVICES.SERVICE_ID AS varchar)
---                       + '-' + CAST(dbo.SERVICE_LINES.ITEM_ID AS varchar) + '-' + CAST(dbo.SERVICE_LINES.STATUS_ID AS varchar) AS service_item_status_id,
---                       dbo.JOBS_V.BILLING_USER_ID, dbo.JOBS_V.foreman_user_id, CAST(dbo.SERVICE_LINES.SERVICE_LINE_DATE AS datetime)
---                       AS SERVICE_LINE_DATE, dbo.SERVICE_LINES.SERVICE_LINE_DATE_VARCHAR, CAST(dbo.SERVICE_LINES.SERVICE_LINE_WEEK AS DATETIME)
---                       AS SERVICE_LINE_WEEK, dbo.SERVICE_LINES.SERVICE_LINE_WEEK_VARCHAR, dbo.JOBS_V.job_status_type_code,
---                       dbo.JOBS_V.job_status_type_name, SERV_STATUS_TYPES.CODE AS serv_status_type_code,
---                       SERV_STATUS_TYPES.NAME AS serv_status_type_name, dbo.SERVICE_LINES.STATUS_ID, dbo.SERVICE_LINE_STATUSES.NAME AS status_name,
---                       dbo.SERVICE_LINES.EXPORTED_FLAG, dbo.SERVICE_LINES.BILLED_FLAG, dbo.SERVICE_LINES.POSTED_FLAG,
---                       dbo.SERVICE_LINES.POOLED_FLAG, dbo.SERVICE_LINES.RESOURCE_ID, dbo.SERVICE_LINES.ITEM_ID, dbo.SERVICE_LINES.ITEM_TYPE_CODE,
---                       dbo.SERVICE_LINES.BILLABLE_FLAG, dbo.SERVICE_LINES.TC_QTY, dbo.SERVICE_LINES.TC_RATE, dbo.SERVICE_LINES.TC_TOTAL,
---                       dbo.SERVICE_LINES.PAYROLL_QTY, dbo.SERVICE_LINES.PAYROLL_RATE, dbo.SERVICE_LINES.PAYROLL_TOTAL,
---                       dbo.SERVICE_LINES.EXT_PAY_CODE, dbo.SERVICE_LINES.EXPENSE_QTY, dbo.SERVICE_LINES.EXPENSE_RATE,
---                       dbo.SERVICE_LINES.EXPENSE_TOTAL, dbo.SERVICE_LINES.BILL_QTY, dbo.SERVICE_LINES.BILL_RATE, dbo.SERVICE_LINES.BILL_TOTAL,
---                       dbo.SERVICE_LINES.BILL_EXP_QTY, dbo.SERVICE_LINES.BILL_EXP_RATE, dbo.SERVICE_LINES.BILL_EXP_TOTAL,
---                       dbo.SERVICE_LINES.BILL_HOURLY_QTY, dbo.SERVICE_LINES.BILL_HOURLY_RATE, dbo.SERVICE_LINES.BILL_HOURLY_TOTAL,
---                       dbo.SERVICE_LINES.ALLOCATED_QTY, dbo.SERVICE_LINES.INTERNAL_REQ_FLAG, dbo.SERVICE_LINES.PARTIALLY_ALLOCATED_FLAG,
---                       dbo.SERVICE_LINES.FULLY_ALLOCATED_FLAG, dbo.SERVICE_LINES.PALM_REP_ID, CAST(dbo.SERVICE_LINES.ENTERED_DATE AS SMALLDATETIME(10)) AS DATE_ENTERED,
---                       dbo.SERVICE_LINES.ENTERED_BY, USERS_1.FULL_NAME AS entered_by_name, dbo.SERVICE_LINES.ENTRY_METHOD,
---                       dbo.SERVICE_LINES.OVERRIDE_DATE, dbo.SERVICE_LINES.OVERRIDE_BY, USERS_1.FULL_NAME AS override_by_name,
---                       dbo.SERVICE_LINES.OVERRIDE_REASON, dbo.SERVICE_LINES.VERIFIED_DATE, dbo.SERVICE_LINES.VERIFIED_BY,
---                       USERS_2.FULL_NAME AS verified_by_name, dbo.SERVICES.DESCRIPTION AS service_description,
---                       Convert(varchar, dbo.SERVICE_LINES.DATE_CREATED,101) as DATE_CREATED , dbo.SERVICE_LINES.CREATED_BY,
---                       USERS_3.FULL_NAME AS created_by_name, dbo.SERVICE_LINES.DATE_MODIFIED, dbo.SERVICE_LINES.MODIFIED_BY,
---                       USERS_4.FULL_NAME AS modified_by_name
--- FROM         dbo.LOOKUPS SERV_STATUS_TYPES RIGHT OUTER JOIN
---                       dbo.JOBS_V RIGHT OUTER JOIN
---                       dbo.SERVICES ON dbo.JOBS_V.JOB_ID = dbo.SERVICES.JOB_ID ON
---                       SERV_STATUS_TYPES.LOOKUP_ID = dbo.SERVICES.SERV_STATUS_TYPE_ID RIGHT OUTER JOIN
---                       dbo.SERVICE_LINE_STATUSES RIGHT OUTER JOIN
---                       dbo.USERS USERS_4 RIGHT OUTER JOIN
---                       dbo.USERS USERS_5 RIGHT OUTER JOIN
---                       dbo.USERS USERS_1 RIGHT OUTER JOIN
---                       dbo.SERVICE_LINES ON USERS_1.USER_ID = dbo.SERVICE_LINES.OVERRIDE_BY ON
---                       USERS_5.USER_ID = dbo.SERVICE_LINES.ENTERED_BY LEFT OUTER JOIN
---                       dbo.USERS USERS_2 ON dbo.SERVICE_LINES.VERIFIED_BY = USERS_2.USER_ID ON
---                       USERS_4.USER_ID = dbo.SERVICE_LINES.MODIFIED_BY LEFT OUTER JOIN
---                       dbo.USERS USERS_3 ON dbo.SERVICE_LINES.CREATED_BY = USERS_3.USER_ID ON
---                       dbo.SERVICE_LINE_STATUSES.STATUS_ID = dbo.SERVICE_LINES.STATUS_ID ON
---                       dbo.SERVICES.SERVICE_ID = dbo.SERVICE_LINES.TC_SERVICE_ID
--- WHERE     (dbo.SERVICE_LINES.RESOURCE_NAME IS NOT NULL)
--- GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE VIEW [dbo].[crystal_TIME_CAPTURE_V]
+AS
+SELECT     dbo.SERVICE_LINES.ORGANIZATION_ID, dbo.SERVICE_LINES.TC_JOB_NO, dbo.SERVICE_LINES.TC_SERVICE_NO, 
+                      dbo.SERVICE_LINES.TC_SERVICE_LINE_NO, dbo.SERVICE_LINES.BILL_JOB_NO, dbo.SERVICE_LINES.BILL_SERVICE_NO, 
+                      dbo.SERVICE_LINES.BILL_SERVICE_LINE_NO, dbo.JOBS_V.JOB_NAME, dbo.SERVICE_LINES.RESOURCE_NAME, dbo.SERVICE_LINES.ITEM_NAME, 
+                      dbo.JOBS_V.billing_user_name, dbo.JOBS_V.foreman_resource_name, dbo.SERVICE_LINES.TC_JOB_ID, dbo.SERVICE_LINES.TC_SERVICE_ID, 
+                      dbo.SERVICE_LINES.BILL_JOB_ID, dbo.SERVICE_LINES.BILL_SERVICE_ID, dbo.SERVICE_LINES.PH_SERVICE_ID, 
+                      dbo.SERVICE_LINES.SERVICE_LINE_ID, CAST(dbo.SERVICES.JOB_ID AS varchar) + '-' + CAST(dbo.SERVICE_LINES.ITEM_ID AS varchar) 
+                      + '-' + CAST(dbo.SERVICE_LINES.STATUS_ID AS varchar) AS job_item_status_id, CAST(dbo.SERVICE_LINES.TC_SERVICE_ID AS varchar) 
+                      + '-' + CAST(dbo.SERVICE_LINES.STATUS_ID AS varchar) AS service_status_id, CAST(dbo.SERVICES.SERVICE_ID AS varchar) 
+                      + '-' + CAST(dbo.SERVICE_LINES.ITEM_ID AS varchar) + '-' + CAST(dbo.SERVICE_LINES.STATUS_ID AS varchar) AS service_item_status_id, 
+                      dbo.JOBS_V.BILLING_USER_ID, dbo.JOBS_V.foreman_user_id, CAST(dbo.SERVICE_LINES.SERVICE_LINE_DATE AS datetime) 
+                      AS SERVICE_LINE_DATE, dbo.SERVICE_LINES.SERVICE_LINE_DATE_VARCHAR, CAST(dbo.SERVICE_LINES.SERVICE_LINE_WEEK AS DATETIME) 
+                      AS SERVICE_LINE_WEEK, dbo.SERVICE_LINES.SERVICE_LINE_WEEK_VARCHAR, dbo.JOBS_V.job_status_type_code, 
+                      dbo.JOBS_V.job_status_type_name, SERV_STATUS_TYPES.CODE AS serv_status_type_code, 
+                      SERV_STATUS_TYPES.NAME AS serv_status_type_name, dbo.SERVICE_LINES.STATUS_ID, dbo.SERVICE_LINE_STATUSES.NAME AS status_name, 
+                      dbo.SERVICE_LINES.EXPORTED_FLAG, dbo.SERVICE_LINES.BILLED_FLAG, dbo.SERVICE_LINES.POSTED_FLAG, 
+                      dbo.SERVICE_LINES.POOLED_FLAG, dbo.SERVICE_LINES.RESOURCE_ID, dbo.SERVICE_LINES.ITEM_ID, dbo.SERVICE_LINES.ITEM_TYPE_CODE, 
+                      dbo.SERVICE_LINES.BILLABLE_FLAG, dbo.SERVICE_LINES.TC_QTY, dbo.SERVICE_LINES.TC_RATE, dbo.SERVICE_LINES.TC_TOTAL, 
+                      dbo.SERVICE_LINES.PAYROLL_QTY, dbo.SERVICE_LINES.PAYROLL_RATE, dbo.SERVICE_LINES.PAYROLL_TOTAL, 
+                      dbo.SERVICE_LINES.EXT_PAY_CODE, dbo.SERVICE_LINES.EXPENSE_QTY, dbo.SERVICE_LINES.EXPENSE_RATE, 
+                      dbo.SERVICE_LINES.EXPENSE_TOTAL, dbo.SERVICE_LINES.BILL_QTY, dbo.SERVICE_LINES.BILL_RATE, dbo.SERVICE_LINES.BILL_TOTAL, 
+                      dbo.SERVICE_LINES.BILL_EXP_QTY, dbo.SERVICE_LINES.BILL_EXP_RATE, dbo.SERVICE_LINES.BILL_EXP_TOTAL, 
+                      dbo.SERVICE_LINES.BILL_HOURLY_QTY, dbo.SERVICE_LINES.BILL_HOURLY_RATE, dbo.SERVICE_LINES.BILL_HOURLY_TOTAL, 
+                      dbo.SERVICE_LINES.ALLOCATED_QTY, dbo.SERVICE_LINES.INTERNAL_REQ_FLAG, dbo.SERVICE_LINES.PARTIALLY_ALLOCATED_FLAG, 
+                      dbo.SERVICE_LINES.FULLY_ALLOCATED_FLAG, dbo.SERVICE_LINES.PALM_REP_ID, CAST(dbo.SERVICE_LINES.ENTERED_DATE AS SMALLDATETIME(10)) AS DATE_ENTERED, 
+                      dbo.SERVICE_LINES.ENTERED_BY, USERS_1.FULL_NAME AS entered_by_name, dbo.SERVICE_LINES.ENTRY_METHOD, 
+                      dbo.SERVICE_LINES.OVERRIDE_DATE, dbo.SERVICE_LINES.OVERRIDE_BY, USERS_1.FULL_NAME AS override_by_name, 
+                      dbo.SERVICE_LINES.OVERRIDE_REASON, dbo.SERVICE_LINES.VERIFIED_DATE, dbo.SERVICE_LINES.VERIFIED_BY, 
+                      USERS_2.FULL_NAME AS verified_by_name, dbo.SERVICES.DESCRIPTION AS service_description, 
+                      Convert(varchar, dbo.SERVICE_LINES.DATE_CREATED,101) as DATE_CREATED , dbo.SERVICE_LINES.CREATED_BY, 
+                      USERS_3.FULL_NAME AS created_by_name, dbo.SERVICE_LINES.DATE_MODIFIED, dbo.SERVICE_LINES.MODIFIED_BY, 
+                      USERS_4.FULL_NAME AS modified_by_name
+FROM         dbo.LOOKUPS SERV_STATUS_TYPES RIGHT OUTER JOIN
+                      dbo.JOBS_V RIGHT OUTER JOIN
+                      dbo.SERVICES ON dbo.JOBS_V.JOB_ID = dbo.SERVICES.JOB_ID ON 
+                      SERV_STATUS_TYPES.LOOKUP_ID = dbo.SERVICES.SERV_STATUS_TYPE_ID RIGHT OUTER JOIN
+                      dbo.SERVICE_LINE_STATUSES RIGHT OUTER JOIN
+                      dbo.USERS USERS_4 RIGHT OUTER JOIN
+                      dbo.USERS USERS_5 RIGHT OUTER JOIN
+                      dbo.USERS USERS_1 RIGHT OUTER JOIN
+                      dbo.SERVICE_LINES ON USERS_1.USER_ID = dbo.SERVICE_LINES.OVERRIDE_BY ON 
+                      USERS_5.USER_ID = dbo.SERVICE_LINES.ENTERED_BY LEFT OUTER JOIN
+                      dbo.USERS USERS_2 ON dbo.SERVICE_LINES.VERIFIED_BY = USERS_2.USER_ID ON 
+                      USERS_4.USER_ID = dbo.SERVICE_LINES.MODIFIED_BY LEFT OUTER JOIN
+                      dbo.USERS USERS_3 ON dbo.SERVICE_LINES.CREATED_BY = USERS_3.USER_ID ON 
+                      dbo.SERVICE_LINE_STATUSES.STATUS_ID = dbo.SERVICE_LINES.STATUS_ID ON 
+                      dbo.SERVICES.SERVICE_ID = dbo.SERVICE_LINES.TC_SERVICE_ID
+WHERE     (dbo.SERVICE_LINES.RESOURCE_NAME IS NOT NULL)
+GO
 /****** Object:  View [dbo].[EXPENSES_BATCHES_V]    Script Date: 05/03/2010 14:18:06 ******/
 SET ANSI_NULLS ON
 GO
@@ -4539,36 +4544,6 @@ FROM         dbo.SERVICE_LINES LEFT OUTER JOIN
                       dbo.ITEMS ON dbo.SERVICE_LINES.ITEM_ID = dbo.ITEMS.ITEM_ID
 WHERE     (dbo.SERVICE_LINES.STATUS_ID > 1) AND (dbo.SERVICE_LINES.EXPENSE_QTY > 0) AND (dbo.SERVICE_LINES.ITEM_TYPE_CODE = 'expense') AND 
                       (dbo.ITEMS.EXPENSE_EXPORT_CODE IS NOT NULL AND dbo.ITEMS.EXPENSE_EXPORT_CODE <> '')
-GO
-/****** Object:  View [dbo].[EXPENSE_REPORT_V]    Script Date: 05/03/2010 14:18:06 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER OFF
-GO
-CREATE VIEW [dbo].[EXPENSE_REPORT_V]
-AS
-SELECT     dbo.EXPENSES_V.ORGANIZATION_ID, dbo.EXPENSES_V.TC_JOB_NO, dbo.JOBS_V.JOB_NAME, dbo.EXPENSES_V.item_name,
-                      dbo.EXPENSES_V.SERVICE_LINE_DATE, dbo.EXPENSES_V.EXPENSE_QTY, dbo.EXPENSES_V.EXPENSE_RATE, dbo.EXPENSES_V.EXPENSE_TOTAL,
-                      dbo.EXPENSES_V.EXPENSES_EXPORTED_FLAG, dbo.EXPENSES_V.TC_JOB_ID, dbo.EXPENSES_V.ITEM_ID, dbo.EXPENSES_V.item_type_code,
-                      dbo.EXPENSES_V.USER_ID, dbo.EXPENSES_V.EXT_EMPLOYEE_ID, dbo.EXPENSES_V.employee_name
-FROM         dbo.JOBS_V RIGHT OUTER JOIN
-                      dbo.EXPENSES_V ON dbo.JOBS_V.JOB_ID = dbo.EXPENSES_V.TC_JOB_ID
-GO
-
-/****** Object:  View [dbo].[EXPENSES_EXPORT_V]    Script Date: 05/03/2010 14:18:06 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE VIEW [dbo].[EXPENSES_EXPORT_V]
-AS
-SELECT     ORGANIZATION_ID, SERVICE_LINE_ID, TC_JOB_ID, TC_JOB_NO, TC_SERVICE_LINE_NO, SERVICE_LINE_DATE, SERVICE_LINE_DATE_VARCHAR,
-                      SERVICE_LINE_WEEK, SERVICE_LINE_WEEK_VARCHAR, EXPENSE_QTY, EXPENSE_RATE, EXPENSE_TOTAL, ITEM_ID, ITEM_NAME,
-                      ITEM_TYPE_CODE, EXT_ITEM_ID, EXT_EMPLOYEE_ID, employee_name, EXPENSES_EXPORTED_FLAG, EXPENSE_EXPORT_CODE, USER_ID,
-                      resource_name, STATUS_ID
-FROM         dbo.EXPENSES_V
-WHERE     (USER_ID IS NOT NULL) AND (EXPENSE_EXPORT_CODE IS NOT NULL) OR
-                      (USER_ID IS NOT NULL) AND (EXPENSE_EXPORT_CODE <> '')
 GO
 /****** Object:  View [dbo].[crystal_JOB_STATUS_RPT_V]    Script Date: 05/03/2010 14:18:06 ******/
 SET ANSI_NULLS ON
@@ -5225,7 +5200,68 @@ FROM         dbo.CUSTOMERS c RIGHT OUTER JOIN
 WHERE     (dbo.LOOKUPS_V.type_code = 'workorder_status_type') AND (dbo.LOOKUPS_V.lookup_code = 'approved')
 ORDER BY rv.SCH_START_DATE
 GO
-
+/****** Object:  View [dbo].[SERVICES_V]    Script Date: 05/03/2010 14:18:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[SERVICES_V]
+AS
+SELECT     dbo.SERVICES.JOB_ID, dbo.JOBS.JOB_NO, dbo.SERVICES.SERVICE_ID, dbo.SERVICES.SERVICE_NO, CAST(dbo.SERVICES.SERVICE_NO AS varchar) 
+                      + ' - ' + ISNULL(dbo.SERVICES.DESCRIPTION, '') AS service_no_desc, dbo.SERVICES.REQUEST_ID, dbo.CUSTOMERS.CUSTOMER_NAME, 
+                      dbo.CUSTOMERS.DEALER_NAME, dbo.JOBS.JOB_NAME, dbo.SERVICES.WATCH_FLAG, dbo.SERVICES.SERVICE_TYPE_ID, 
+                      SERVICE_TYPES.CODE AS service_type_code, SERVICE_TYPES.NAME AS service_type_name, dbo.SERVICES.INTERNAL_REQ_FLAG, 
+                      dbo.SERVICES.REPORT_TO_LOC_ID, REPORT_TO_LOC_TYPES.CODE AS report_to_loc_code, 
+                      REPORT_TO_LOC_TYPES.NAME AS report_to_loc_name, dbo.SERVICES.DESCRIPTION, dbo.SERVICES.SERV_STATUS_TYPE_ID, 
+                      SERVICE_STATUS_TYPES.CODE AS serv_status_type_code, SERVICE_STATUS_TYPES.NAME AS serv_status_type_name, 
+                      SERVICE_STATUS_TYPES.SEQUENCE_NO AS serv_status_type_seq_no, dbo.RESOURCES.NAME AS resource_name, 
+                      dbo.JOBS.FOREMAN_RESOURCE_ID, dbo.JOBS.JOB_TYPE_ID, JOB_TYPES_1.CODE AS job_type_code, JOB_TYPES_1.NAME AS job_type_name, 
+                      dbo.JOBS.JOB_STATUS_TYPE_ID, JOB_STATUS_TYPE.CODE AS job_status_type_code, JOB_STATUS_TYPE.NAME AS job_status_type_name, 
+                      dbo.JOBS.CUSTOMER_ID, dbo.JOBS.EXT_PRICE_LEVEL_ID, dbo.CUSTOMERS.EXT_DEALER_ID, dbo.CUSTOMERS.ORGANIZATION_ID, 
+                      dbo.JOBS.DATE_CREATED AS job_date_created, dbo.SERVICES.JOB_LOCATION_ID, dbo.JOB_LOCATIONS.JOB_LOCATION_NAME, 
+                      dbo.SERVICES.CUSTOMER_REF_NO, dbo.SERVICES.PO_NO, dbo.SERVICES.BILLING_TYPE_ID, dbo.SERVICES.IDM_CONTACT_ID, 
+                      dbo.SERVICES.CUSTOMER_CONTACT_ID, dbo.CONTACTS.CONTACT_NAME AS idm_contact_name, dbo.SERVICES.SALES_CONTACT_ID, 
+                      dbo.SERVICES.SUPPORT_CONTACT_ID, dbo.SERVICES.DESIGNER_CONTACT_ID, dbo.SERVICES.PROJECT_MGR_CONTACT_ID, 
+                      dbo.SERVICES.PRODUCT_SETUP_DESC, dbo.SERVICES.DELIVERY_TYPE_ID, dbo.SERVICES.WAREHOUSE_LOC, dbo.SERVICES.PRI_FURN_TYPE_ID,
+                       dbo.SERVICES.PRI_FURN_LINE_TYPE_ID, dbo.SERVICES.SEC_FURN_TYPE_ID, dbo.SERVICES.SEC_FURN_LINE_TYPE_ID, 
+                      dbo.SERVICES.NUM_STATIONS, dbo.SERVICES.PRODUCT_QTY, ISNULL(dbo.SERVICES.WOOD_PRODUCT_TYPE_ID, 142) AS wood_product_type_id, 
+                      dbo.SERVICES.PUNCHLIST_TYPE_ID, PUNCH_LIST_TYPES.CODE AS punchlist_type_code, PUNCH_LIST_TYPES.NAME AS punchlist_type_name, 
+                      dbo.SERVICES.BLUEPRINT_LOCATION, dbo.SERVICES.SCHEDULE_TYPE_ID, SCHEDULE_TYPES.CODE AS schedule_type_code, 
+                      SCHEDULE_TYPES.NAME AS schedule_type_name, dbo.SERVICES.ORDERED_BY, dbo.SERVICES.ORDERED_DATE, 
+                      dbo.SERVICES.EST_START_DATE, dbo.SERVICES.EST_START_TIME, dbo.SERVICES.EST_END_DATE, dbo.SERVICES.SCH_START_DATE, 
+                      dbo.SERVICES.SCH_START_TIME, dbo.SERVICES.SCH_END_DATE, dbo.SERVICES.ACT_START_DATE, dbo.SERVICES.ACT_START_TIME, 
+                      dbo.SERVICES.ACT_END_DATE, dbo.SERVICES.TRUCK_SHIP_DATE, dbo.SERVICES.TRUCK_ARRIVAL_DATE, dbo.SERVICES.HEAD_VAL_FLAG, 
+                      dbo.SERVICES.LOC_VAL_FLAG, dbo.SERVICES.PROD_VAL_FLAG, dbo.SERVICES.SCH_VAL_FLAG, dbo.SERVICES.TASK_VAL_FLAG, 
+                      dbo.SERVICES.RES_VAL_FLAG, dbo.SERVICES.CUST_VAL_FLAG, dbo.SERVICES.BILL_VAL_FLAG, dbo.SERVICES.DATE_CREATED, 
+                      dbo.SERVICES.CREATED_BY, CREATE_USER.FIRST_NAME + ' ' + CREATE_USER.LAST_NAME AS created_by_name, dbo.SERVICES.DATE_MODIFIED, 
+                      dbo.SERVICES.MODIFIED_BY, MOD_USER.FIRST_NAME + ' ' + MOD_USER.LAST_NAME AS modified_by_name, dbo.SERVICES.CUST_COL_1, 
+                      dbo.SERVICES.CUST_COL_2, dbo.SERVICES.CUST_COL_3, dbo.SERVICES.CUST_COL_4, dbo.SERVICES.CUST_COL_5, dbo.SERVICES.CUST_COL_6, 
+                      dbo.SERVICES.CUST_COL_7, dbo.SERVICES.CUST_COL_8, dbo.SERVICES.CUST_COL_9, dbo.SERVICES.CUST_COL_10, 
+                      dbo.SERVICES.WEEKEND_FLAG, dbo.SERVICES.TAXABLE_FLAG, dbo.SERVICES.PRIORITY_TYPE_ID, PRIORITY_TYPES.CODE AS priority_type_code, 
+                      PRIORITY_TYPES.NAME AS priority_type_name, dbo.SERVICES.MISC
+FROM         dbo.LOOKUPS SERVICE_STATUS_TYPES RIGHT OUTER JOIN
+                      dbo.LOOKUPS SERVICE_TYPES RIGHT OUTER JOIN
+                      dbo.USERS MOD_USER RIGHT OUTER JOIN
+                      dbo.LOOKUPS REPORT_TO_LOC_TYPES RIGHT OUTER JOIN
+                      dbo.CONTACTS RIGHT OUTER JOIN
+                      dbo.SERVICES LEFT OUTER JOIN
+                      dbo.LOOKUPS PRIORITY_TYPES ON dbo.SERVICES.PRIORITY_TYPE_ID = PRIORITY_TYPES.LOOKUP_ID ON 
+                      dbo.CONTACTS.CONTACT_ID = dbo.SERVICES.IDM_CONTACT_ID ON REPORT_TO_LOC_TYPES.LOOKUP_ID = dbo.SERVICES.REPORT_TO_LOC_ID ON 
+                      MOD_USER.USER_ID = dbo.SERVICES.MODIFIED_BY LEFT OUTER JOIN
+                      dbo.USERS CREATE_USER ON dbo.SERVICES.CREATED_BY = CREATE_USER.USER_ID LEFT OUTER JOIN
+                      dbo.LOOKUPS PUNCH_LIST_TYPES ON dbo.SERVICES.PUNCHLIST_TYPE_ID = PUNCH_LIST_TYPES.LOOKUP_ID LEFT OUTER JOIN
+                      dbo.LOOKUPS SCHEDULE_TYPES ON dbo.SERVICES.SCHEDULE_TYPE_ID = SCHEDULE_TYPES.LOOKUP_ID ON 
+                      SERVICE_TYPES.LOOKUP_ID = dbo.SERVICES.SERVICE_TYPE_ID ON 
+                      SERVICE_STATUS_TYPES.LOOKUP_ID = dbo.SERVICES.SERV_STATUS_TYPE_ID LEFT OUTER JOIN
+                      dbo.JOB_LOCATIONS ON dbo.SERVICES.JOB_LOCATION_ID = dbo.JOB_LOCATIONS.JOB_LOCATION_ID FULL OUTER JOIN
+                      dbo.RESOURCES RIGHT OUTER JOIN
+                      dbo.CUSTOMERS INNER JOIN
+                      dbo.JOBS ON dbo.CUSTOMERS.CUSTOMER_ID = dbo.JOBS.CUSTOMER_ID ON 
+                      dbo.RESOURCES.RESOURCE_ID = dbo.JOBS.FOREMAN_RESOURCE_ID FULL OUTER JOIN
+                      dbo.LOOKUPS JOB_TYPES_1 ON dbo.JOBS.JOB_TYPE_ID = JOB_TYPES_1.LOOKUP_ID FULL OUTER JOIN
+                      dbo.LOOKUPS JOB_STATUS_TYPE ON dbo.JOBS.JOB_STATUS_TYPE_ID = JOB_STATUS_TYPE.LOOKUP_ID ON 
+                      dbo.SERVICES.JOB_ID = dbo.JOBS.JOB_ID
+GO
 /****** Object:  View [dbo].[QP3_RESOURCE_TYPES_V]    Script Date: 05/03/2010 14:18:08 ******/
 SET ANSI_NULLS ON
 GO
@@ -5257,6 +5293,61 @@ FROM         dbo.USERS INNER JOIN
                       dbo.RESOURCE_TYPES ON dbo.RESOURCES.RESOURCE_TYPE_ID = dbo.RESOURCE_TYPES.RESOURCE_TYPE_ID INNER JOIN
                       dbo.ORGANIZATIONS ON dbo.RESOURCES.ORGANIZATION_ID = dbo.ORGANIZATIONS.ORGANIZATION_ID
 WHERE     (dbo.RESOURCES.ACTIVE_FLAG = 'y')
+GO
+/****** Object:  View [dbo].[projects_v]    Script Date: 05/03/2010 14:18:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/* $Id: projects_v.sql 1655 2009-08-05 21:24:48Z bvonhaden $ */
+
+CREATE VIEW [dbo].[projects_v]
+AS
+SELECT top 100 percent p.project_id, 
+       p.project_no, 
+       p.project_type_id, 
+       project_type.code AS project_type_code, 
+       project_type.name AS project_type_name, 
+       p.project_status_type_id, 
+       project_status_type.code AS project_status_type_code, 
+       project_status_type.name AS project_status_type_name, 
+       c.organization_id, 
+       p.customer_id, 
+       c.parent_customer_id, 
+       c.ext_dealer_id, 
+       c.dealer_name, 
+       c.ext_customer_id, 
+       c.customer_name, 
+       p.job_name, 
+       p.percent_complete, 
+       p.date_created, 
+       p.created_by, 
+       p.date_modified, 
+       p.modified_by, 
+       u.first_name + ' ' + u.last_name AS created_by_name,
+       p.end_user_id,
+       eu.customer_name end_user_name,
+       eu.ext_customer_id ext_end_user_id,
+       p.is_new
+  FROM dbo.projects p INNER JOIN
+       dbo.lookups project_type ON p.project_type_id  = project_type.lookup_id INNER JOIN
+       dbo.lookups project_status_type ON p.project_status_type_id = project_status_type.lookup_id INNER JOIN
+       dbo.customers c ON p.customer_id = c.customer_id INNER JOIN
+       dbo.users u ON p.created_by = u.user_id LEFT OUTER JOIN
+       dbo.customers eu ON p.end_user_id = eu.customer_id 
+ORDER BY p.project_id
+GO
+/****** Object:  View [dbo].[ACTIVE_USERS_COUNT_V]    Script Date: 05/03/2010 14:18:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[ACTIVE_USERS_COUNT_V]
+AS
+SELECT     USER_ID, CONTACT_ID, EMPLOYMENT_TYPE_ID, EXT_DEALER_ID, DEALER_NAME, CUSTOMER_ID, USER_TYPE_ID, FIRST_NAME, LAST_NAME, 
+                      LOGIN, LAST_LOGIN, ACTIVE_FLAG, FULL_NAME
+FROM         dbo.USERS
+WHERE     (ACTIVE_FLAG = 'y') AND (LAST_LOGIN > CONVERT(DATETIME, '2004-01-01 00:00:00', 102))
 GO
 /****** Object:  View [dbo].[quotes_v]    Script Date: 05/03/2010 14:18:08 ******/
 SET ANSI_NULLS ON
@@ -5326,24 +5417,6 @@ SELECT c.organization_id,
 		      ON p.project_id = r.project_id 
 		      ON c.customer_id = p.customer_id
 GO
-/****** Object:  View [dbo].[SERVICE_QUOTES_V]    Script Date: 05/03/2010 14:18:09 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER OFF
-GO
-CREATE VIEW [dbo].[SERVICE_QUOTES_V]
-AS
-SELECT     dbo.PROJECTS_V.PROJECT_ID, QUOTE_REQUESTS.REQUEST_ID AS quote_request_id, SERVICE_REQUESTS.REQUEST_ID AS service_request_id,
-                      dbo.QUOTES_V.QUOTE_ID, dbo.SERVICES.JOB_ID, dbo.SERVICES.SERVICE_ID, dbo.PROJECTS_V.PROJECT_NO, dbo.QUOTES_V.QUOTE_NO,
-                      dbo.QUOTES_V.project_quote_no, dbo.QUOTES_V.QUOTE_TOTAL
-FROM         dbo.REQUESTS QUOTE_REQUESTS INNER JOIN
-                      dbo.REQUESTS SERVICE_REQUESTS INNER JOIN
-                      dbo.SERVICES ON SERVICE_REQUESTS.REQUEST_ID = dbo.SERVICES.REQUEST_ID ON
-                      QUOTE_REQUESTS.REQUEST_ID = SERVICE_REQUESTS.QUOTE_REQUEST_ID INNER JOIN
-                      dbo.QUOTES_V ON QUOTE_REQUESTS.REQUEST_ID = dbo.QUOTES_V.REQUEST_ID INNER JOIN
-                      dbo.PROJECTS_V ON QUOTE_REQUESTS.PROJECT_ID = dbo.PROJECTS_V.PROJECT_ID
-GO
-
 /****** Object:  View [dbo].[jobs_v]    Script Date: 05/03/2010 14:18:07 ******/
 SET ANSI_NULLS ON
 GO
@@ -5505,18 +5578,18 @@ FROM         dbo.CONTACTS Quoted_by_contact RIGHT OUTER JOIN
                       dbo.CUSTOMERS.CUSTOMER_ID = dbo.PROJECTS.CUSTOMER_ID ON dbo.QUOTES.REQUEST_ID = dbo.REQUESTS.REQUEST_ID
 GO
 /****** Object:  View [dbo].[pep_vendor_user_v]    Script Date: 05/03/2010 14:18:08 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
--- CREATE VIEW [dbo].[pep_vendor_user_v]
--- AS
--- SELECT     TOP 100 PERCENT dbo.USERS.LAST_NAME, dbo.USERS.FULL_NAME, dbo.USERS.CUSTOMER_ID, dbo.USERS.VENDOR_CONTACT_ID,
---                       dbo.CUSTOMERS.CUSTOMER_NAME
--- FROM         dbo.USERS INNER JOIN
---                       dbo.CUSTOMERS ON dbo.USERS.CUSTOMER_ID = dbo.CUSTOMERS.CUSTOMER_ID
--- ORDER BY dbo.USERS.LAST_NAME
--- GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[pep_vendor_user_v]
+AS
+SELECT     TOP 100 PERCENT dbo.USERS.LAST_NAME, dbo.USERS.FULL_NAME, dbo.USERS.CUSTOMER_ID, dbo.USERS.VENDOR_CONTACT_ID, 
+                      dbo.CUSTOMERS.CUSTOMER_NAME
+FROM         dbo.USERS INNER JOIN
+                      dbo.CUSTOMERS ON dbo.USERS.CUSTOMER_ID = dbo.CUSTOMERS.CUSTOMER_ID
+ORDER BY dbo.USERS.LAST_NAME
+GO
 /****** Object:  View [dbo].[ITEMS_V]    Script Date: 05/03/2010 14:18:07 ******/
 SET ANSI_NULLS ON
 GO
@@ -5718,6 +5791,21 @@ SELECT     ORGANIZATION_ID, BILL_JOB_NO, BILL_JOB_ID, job_status_type_name, job_
 FROM         dbo.crystal_UNBILLED_OPS_V
 WHERE     (ORGANIZATION_ID = 8)
 GO
+/****** Object:  View [dbo].[PKT_JOB_RESOURCES_V]    Script Date: 05/03/2010 14:18:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[PKT_JOB_RESOURCES_V]
+AS
+SELECT     dbo.JOBS.JOB_ID, dbo.RESOURCES.RESOURCE_ID, dbo.RESOURCES.NAME AS resource_name
+FROM         dbo.RESOURCES INNER JOIN
+                      dbo.PKT_JOB_USER_RES_V INNER JOIN
+                      dbo.JOBS INNER JOIN
+                      dbo.LOOKUPS ON dbo.JOBS.JOB_STATUS_TYPE_ID = dbo.LOOKUPS.LOOKUP_ID ON dbo.PKT_JOB_USER_RES_V.JOB_ID = dbo.JOBS.JOB_ID ON 
+                      dbo.RESOURCES.RESOURCE_ID = dbo.PKT_JOB_USER_RES_V.RESOURCE_ID
+WHERE     (dbo.LOOKUPS.CODE <> 'install_complete') AND (dbo.LOOKUPS.CODE <> 'invoiced') AND (dbo.LOOKUPS.CODE <> 'closed')
+GO
 /****** Object:  View [dbo].[PKT_ROSTER_V]    Script Date: 05/03/2010 14:18:08 ******/
 SET ANSI_NULLS ON
 GO
@@ -5771,21 +5859,6 @@ SELECT job_id,
                dbo.resources r ON prc.resource_id = r.resource_id
          WHERE r.active_flag = 'Y') tmp
 GO
-/****** Object:  View [dbo].[PKT_JOB_RESOURCES_V]    Script Date: 05/03/2010 14:18:08 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE VIEW [dbo].[PKT_JOB_RESOURCES_V]
-AS
-SELECT     dbo.JOBS.JOB_ID, dbo.RESOURCES.RESOURCE_ID, dbo.RESOURCES.NAME AS resource_name
-FROM         dbo.RESOURCES INNER JOIN
-                      dbo.PKT_JOB_USER_RES_V INNER JOIN
-                      dbo.JOBS INNER JOIN
-                      dbo.LOOKUPS ON dbo.JOBS.JOB_STATUS_TYPE_ID = dbo.LOOKUPS.LOOKUP_ID ON dbo.PKT_JOB_USER_RES_V.JOB_ID = dbo.JOBS.JOB_ID ON
-                      dbo.RESOURCES.RESOURCE_ID = dbo.PKT_JOB_USER_RES_V.RESOURCE_ID
-WHERE     (dbo.LOOKUPS.CODE <> 'install_complete') AND (dbo.LOOKUPS.CODE <> 'invoiced') AND (dbo.LOOKUPS.CODE <> 'closed')
-GO
 /****** Object:  View [dbo].[RESOURCES_V]    Script Date: 05/03/2010 14:18:09 ******/
 SET ANSI_NULLS ON
 GO
@@ -5816,59 +5889,45 @@ FROM         dbo.LOOKUPS EMPLOYMENT_TYPES RIGHT OUTER JOIN
                       dbo.USERS CREATED_BY ON dbo.RESOURCES.CREATED_BY = CREATED_BY.USER_ID ON 
                       RESOURCE_USER.USER_ID = dbo.RESOURCES.USER_ID ON EMPLOYMENT_TYPES.LOOKUP_ID = RESOURCE_USER.EMPLOYMENT_TYPE_ID
 GO
-
-/****** Object:  View [dbo].[ACTIVE_USERS_COUNT_V]    Script Date: 05/03/2010 14:18:05 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
--- CREATE VIEW [dbo].[ACTIVE_USERS_COUNT_V]
--- AS
--- SELECT     USER_ID, CONTACT_ID, EMPLOYMENT_TYPE_ID, EXT_DEALER_ID, DEALER_NAME, CUSTOMER_ID, USER_TYPE_ID, FIRST_NAME, LAST_NAME,
---                       LOGIN, LAST_LOGIN, ACTIVE_FLAG, FULL_NAME
--- FROM         dbo.USERS
--- WHERE     (ACTIVE_FLAG = 'y') AND (LAST_LOGIN > CONVERT(DATETIME, '2004-01-01 00:00:00', 102))
--- GO
-
 /****** Object:  View [dbo].[SERVICE_LINE_EXPENSE_V]    Script Date: 05/03/2010 14:18:09 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
--- CREATE VIEW [dbo].[SERVICE_LINE_EXPENSE_V]
--- AS
--- SELECT     dbo.RESOURCES.RESOURCE_ID, dbo.SERVICES.JOB_ID, dbo.JOBS.JOB_NO, dbo.SERVICE_LINES.SERVICE_ID, dbo.SERVICES.SERVICE_NO,
---                       dbo.RESOURCES.NAME AS resource_name, dbo.RESOURCES.RES_CATEGORY_TYPE_ID, LOOKUPS_4.CODE AS res_cat_type_code,
---                       LOOKUPS_4.NAME AS res_cat_type_name, dbo.RESOURCES.RESOURCE_TYPE_ID, dbo.RESOURCES.USER_ID,
---                       dbo.USERS.FIRST_NAME + ' ' + dbo.USERS.LAST_NAME AS user_name, dbo.RESOURCES.ACTIVE_FLAG, dbo.SERVICE_LINES.STATUS_ID,
---                       dbo.SERVICE_LINES.ITEM_ID, dbo.ITEMS.NAME AS item_name, dbo.SERVICE_LINES.EXT_PAY_CODE, ITEM_TYPE.CODE AS item_type_code,
---                       ITEM_TYPE.NAME AS item_type_name, dbo.RESOURCE_TYPES.CODE AS resource_type_code,
---                       dbo.RESOURCE_TYPES.NAME AS resource_type_name, dbo.SERVICE_LINES.QTY, dbo.SERVICE_LINES.SERVICE_LINE_DATE, DATEADD(day,
---                       7 - DATEPART(dw, dbo.SERVICE_LINES.SERVICE_LINE_DATE), dbo.SERVICE_LINES.SERVICE_LINE_DATE) AS service_line_week,
---                       dbo.USERS.FIRST_NAME + ' ' + dbo.USERS.LAST_NAME AS employee_name, dbo.SERVICE_LINES.RATE, dbo.CUSTOMERS.CUSTOMER_NAME,
---                       dbo.SERVICE_LINES.EXPENSES_EXPORTED_FLAG, dbo.USERS.EXT_EMPLOYEE_ID, dbo.SERVICE_LINES.RATE * dbo.SERVICE_LINES.QTY AS total,
---                       dbo.SERVICE_LINES.SERVICE_LINE_NO, dbo.SERVICE_LINES.SERVICE_LINE_ID, dbo.JOBS.JOB_NAME, dbo.JOBS.CUSTOMER_ID,
---                       dbo.CUSTOMERS.ORGANIZATION_ID, dbo.ORGANIZATIONS.CODE AS organization_code, ITEM_STATUS_TYPE.CODE AS item_status_type_code,
---                       ITEM_STATUS_TYPE.NAME AS item_status_type_name
--- FROM         dbo.LOOKUPS ITEM_STATUS_TYPE RIGHT OUTER JOIN
---                       dbo.LOOKUPS ITEM_TYPE INNER JOIN
---                       dbo.ITEMS INNER JOIN
---                       dbo.JOBS INNER JOIN
---                       dbo.SERVICES INNER JOIN
---                       dbo.SERVICE_LINES ON dbo.SERVICES.SERVICE_ID = dbo.SERVICE_LINES.SERVICE_ID ON dbo.JOBS.JOB_ID = dbo.SERVICES.JOB_ID ON
---                       dbo.ITEMS.ITEM_ID = dbo.SERVICE_LINES.ITEM_ID ON ITEM_TYPE.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID ON
---                       ITEM_STATUS_TYPE.LOOKUP_ID = dbo.ITEMS.ITEM_STATUS_TYPE_ID RIGHT OUTER JOIN
---                       dbo.USERS INNER JOIN
---                       dbo.RESOURCE_TYPES INNER JOIN
---                       dbo.RESOURCES ON dbo.RESOURCE_TYPES.RESOURCE_TYPE_ID = dbo.RESOURCES.RESOURCE_TYPE_ID INNER JOIN
---                       dbo.LOOKUPS LOOKUPS_4 ON dbo.RESOURCES.RES_CATEGORY_TYPE_ID = LOOKUPS_4.LOOKUP_ID ON
---                       dbo.USERS.USER_ID = dbo.RESOURCES.USER_ID ON dbo.SERVICE_LINES.RESOURCE_ID = dbo.RESOURCES.RESOURCE_ID LEFT OUTER JOIN
---                       dbo.CUSTOMERS ON dbo.JOBS.CUSTOMER_ID = dbo.CUSTOMERS.CUSTOMER_ID LEFT OUTER JOIN
---                       dbo.ORGANIZATIONS ON dbo.CUSTOMERS.ORGANIZATION_ID = dbo.ORGANIZATIONS.ORGANIZATION_ID
--- WHERE     (dbo.SERVICE_LINES.STATUS_ID > 1 OR
---                       dbo.SERVICE_LINES.STATUS_ID IS NULL) AND (dbo.RESOURCES.ACTIVE_FLAG = 'Y') AND (ITEM_TYPE.CODE = 'expense') AND
---                       (LOOKUPS_4.CODE = 'employee')
--- GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[SERVICE_LINE_EXPENSE_V]
+AS
+SELECT     dbo.RESOURCES.RESOURCE_ID, dbo.SERVICES.JOB_ID, dbo.JOBS.JOB_NO, dbo.SERVICE_LINES.SERVICE_ID, dbo.SERVICES.SERVICE_NO, 
+                      dbo.RESOURCES.NAME AS resource_name, dbo.RESOURCES.RES_CATEGORY_TYPE_ID, LOOKUPS_4.CODE AS res_cat_type_code, 
+                      LOOKUPS_4.NAME AS res_cat_type_name, dbo.RESOURCES.RESOURCE_TYPE_ID, dbo.RESOURCES.USER_ID, 
+                      dbo.USERS.FIRST_NAME + ' ' + dbo.USERS.LAST_NAME AS user_name, dbo.RESOURCES.ACTIVE_FLAG, dbo.SERVICE_LINES.STATUS_ID, 
+                      dbo.SERVICE_LINES.ITEM_ID, dbo.ITEMS.NAME AS item_name, dbo.SERVICE_LINES.EXT_PAY_CODE, ITEM_TYPE.CODE AS item_type_code, 
+                      ITEM_TYPE.NAME AS item_type_name, dbo.RESOURCE_TYPES.CODE AS resource_type_code, 
+                      dbo.RESOURCE_TYPES.NAME AS resource_type_name, dbo.SERVICE_LINES.QTY, dbo.SERVICE_LINES.SERVICE_LINE_DATE, DATEADD(day, 
+                      7 - DATEPART(dw, dbo.SERVICE_LINES.SERVICE_LINE_DATE), dbo.SERVICE_LINES.SERVICE_LINE_DATE) AS service_line_week, 
+                      dbo.USERS.FIRST_NAME + ' ' + dbo.USERS.LAST_NAME AS employee_name, dbo.SERVICE_LINES.RATE, dbo.CUSTOMERS.CUSTOMER_NAME, 
+                      dbo.SERVICE_LINES.EXPENSES_EXPORTED_FLAG, dbo.USERS.EXT_EMPLOYEE_ID, dbo.SERVICE_LINES.RATE * dbo.SERVICE_LINES.QTY AS total, 
+                      dbo.SERVICE_LINES.SERVICE_LINE_NO, dbo.SERVICE_LINES.SERVICE_LINE_ID, dbo.JOBS.JOB_NAME, dbo.JOBS.CUSTOMER_ID, 
+                      dbo.CUSTOMERS.ORGANIZATION_ID, dbo.ORGANIZATIONS.CODE AS organization_code, ITEM_STATUS_TYPE.CODE AS item_status_type_code, 
+                      ITEM_STATUS_TYPE.NAME AS item_status_type_name
+FROM         dbo.LOOKUPS ITEM_STATUS_TYPE RIGHT OUTER JOIN
+                      dbo.LOOKUPS ITEM_TYPE INNER JOIN
+                      dbo.ITEMS INNER JOIN
+                      dbo.JOBS INNER JOIN
+                      dbo.SERVICES INNER JOIN
+                      dbo.SERVICE_LINES ON dbo.SERVICES.SERVICE_ID = dbo.SERVICE_LINES.SERVICE_ID ON dbo.JOBS.JOB_ID = dbo.SERVICES.JOB_ID ON 
+                      dbo.ITEMS.ITEM_ID = dbo.SERVICE_LINES.ITEM_ID ON ITEM_TYPE.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID ON 
+                      ITEM_STATUS_TYPE.LOOKUP_ID = dbo.ITEMS.ITEM_STATUS_TYPE_ID RIGHT OUTER JOIN
+                      dbo.USERS INNER JOIN
+                      dbo.RESOURCE_TYPES INNER JOIN
+                      dbo.RESOURCES ON dbo.RESOURCE_TYPES.RESOURCE_TYPE_ID = dbo.RESOURCES.RESOURCE_TYPE_ID INNER JOIN
+                      dbo.LOOKUPS LOOKUPS_4 ON dbo.RESOURCES.RES_CATEGORY_TYPE_ID = LOOKUPS_4.LOOKUP_ID ON 
+                      dbo.USERS.USER_ID = dbo.RESOURCES.USER_ID ON dbo.SERVICE_LINES.RESOURCE_ID = dbo.RESOURCES.RESOURCE_ID LEFT OUTER JOIN
+                      dbo.CUSTOMERS ON dbo.JOBS.CUSTOMER_ID = dbo.CUSTOMERS.CUSTOMER_ID LEFT OUTER JOIN
+                      dbo.ORGANIZATIONS ON dbo.CUSTOMERS.ORGANIZATION_ID = dbo.ORGANIZATIONS.ORGANIZATION_ID
+WHERE     (dbo.SERVICE_LINES.STATUS_ID > 1 OR
+                      dbo.SERVICE_LINES.STATUS_ID IS NULL) AND (dbo.RESOURCES.ACTIVE_FLAG = 'Y') AND (ITEM_TYPE.CODE = 'expense') AND 
+                      (LOOKUPS_4.CODE = 'employee')
+GO
 /****** Object:  View [dbo].[USER_RESOURCES_V]    Script Date: 05/03/2010 14:18:09 ******/
 SET ANSI_NULLS ON
 GO
@@ -5876,58 +5935,56 @@ SET QUOTED_IDENTIFIER OFF
 GO
 CREATE VIEW [dbo].[USER_RESOURCES_V]
 AS
-SELECT     dbo.USERS.USER_ID, CAST(dbo.USERS.EXT_EMPLOYEE_ID AS NUMERIC) AS emp_no,
-                      dbo.USERS.FIRST_NAME + ' ' + dbo.USERS.LAST_NAME AS employee_name, dbo.RESOURCES.ORGANIZATION_ID, dbo.RESOURCES.RESOURCE_ID,
+SELECT     dbo.USERS.USER_ID, CAST(dbo.USERS.EXT_EMPLOYEE_ID AS NUMERIC) AS emp_no, 
+                      dbo.USERS.FIRST_NAME + ' ' + dbo.USERS.LAST_NAME AS employee_name, dbo.RESOURCES.ORGANIZATION_ID, dbo.RESOURCES.RESOURCE_ID, 
                       dbo.USERS.EMPLOYMENT_TYPE_ID, dbo.LOOKUPS.CODE, dbo.LOOKUPS.NAME, dbo.RESOURCES.ACTIVE_FLAG
 FROM         dbo.USERS INNER JOIN
                       dbo.RESOURCES ON dbo.USERS.USER_ID = dbo.RESOURCES.USER_ID LEFT OUTER JOIN
                       dbo.LOOKUPS ON dbo.USERS.EMPLOYMENT_TYPE_ID = dbo.LOOKUPS.LOOKUP_ID
 GO
-
-
 /****** Object:  View [dbo].[SERVICE_LINE_PAYROLL_V]    Script Date: 05/03/2010 14:18:09 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
--- CREATE VIEW [dbo].[SERVICE_LINE_PAYROLL_V]
--- AS
--- SELECT     dbo.CUSTOMERS.ORGANIZATION_ID, dbo.RESOURCES.RESOURCE_ID, dbo.SERVICES.JOB_ID, dbo.JOBS.JOB_NO,
---                       dbo.SERVICE_LINES.SERVICE_ID, dbo.SERVICES.SERVICE_NO, dbo.RESOURCES.NAME AS resource_name,
---                       dbo.RESOURCES.RES_CATEGORY_TYPE_ID, LOOKUPS_4.CODE AS res_cat_type_code, LOOKUPS_4.NAME AS res_cat_type_name,
---                       dbo.RESOURCES.RESOURCE_TYPE_ID, dbo.RESOURCES.USER_ID, dbo.RESOURCES.ACTIVE_FLAG, dbo.SERVICE_LINES.STATUS_ID,
---                       dbo.SERVICE_LINES.ITEM_ID, dbo.ITEMS.NAME AS item_name, dbo.SERVICE_LINES.EXT_PAY_CODE, LOOKUPS_3.CODE AS item_type_code,
---                       LOOKUPS_3.NAME AS item_type_name, dbo.RESOURCE_TYPES.CODE AS resource_type_code,
---                       dbo.RESOURCE_TYPES.NAME AS resource_type_name, dbo.SERVICE_LINES.QTY AS hours_qty, dbo.SERVICE_LINES.SERVICE_LINE_DATE,
---                       dbo.USERS.EXT_EMPLOYEE_ID, dbo.USERS.FIRST_NAME + ' ' + dbo.USERS.LAST_NAME AS employee_name,
---                       dbo.SERVICE_LINES.SERVICE_LINE_ID, dbo.SERVICE_LINES.SERVICE_LINE_NO, dbo.SERVICE_LINES.SERVICE_LINE_WEEK,
---                       dbo.PAYROLL_BATCHES.STATUS_ID AS batch_status_id, dbo.PAYROLL_BATCHES.INT_BATCH_ID, dbo.PAYROLL_BATCHES.EXT_BATCH_ID,
---                       dbo.PAYROLL_BATCHES.BEGIN_DATE, dbo.PAYROLL_BATCHES.END_DATE, dbo.PAYROLL_BATCH_STATUSES.CODE AS batch_status_code,
---                       dbo.PAYROLL_BATCH_STATUSES.NAME AS batch_status_name, dbo.JOBS.CUSTOMER_ID, dbo.ITEMS.EXT_ITEM_ID, CONVERT(varchar(12),
---                       dbo.PAYROLL_BATCHES.BEGIN_DATE, 101) AS begin_date_varchar, CONVERT(varchar(12), dbo.PAYROLL_BATCHES.END_DATE, 101)
---                       AS end_date_varchar, CONVERT(varchar(12), dbo.SERVICE_LINES.SERVICE_LINE_DATE, 101) AS service_line_date_varchar
--- FROM         dbo.SERVICES LEFT OUTER JOIN
---                       dbo.CUSTOMERS RIGHT OUTER JOIN
---                       dbo.JOBS ON dbo.CUSTOMERS.CUSTOMER_ID = dbo.JOBS.CUSTOMER_ID ON dbo.SERVICES.JOB_ID = dbo.JOBS.JOB_ID RIGHT OUTER JOIN
---                       dbo.RESOURCES LEFT OUTER JOIN
---                       dbo.USERS ON dbo.RESOURCES.USER_ID = dbo.USERS.USER_ID LEFT OUTER JOIN
---                       dbo.SERVICE_LINES LEFT OUTER JOIN
---                       dbo.PAYROLL_BATCH_LINES LEFT OUTER JOIN
---                       dbo.PAYROLL_BATCH_STATUSES RIGHT OUTER JOIN
---                       dbo.PAYROLL_BATCHES ON dbo.PAYROLL_BATCH_STATUSES.STATUS_ID = dbo.PAYROLL_BATCHES.STATUS_ID ON
---                       dbo.PAYROLL_BATCH_LINES.INT_BATCH_ID = dbo.PAYROLL_BATCHES.INT_BATCH_ID ON
---                       dbo.SERVICE_LINES.SERVICE_LINE_ID = dbo.PAYROLL_BATCH_LINES.SERVICE_LINE_ID ON
---                       dbo.RESOURCES.RESOURCE_ID = dbo.SERVICE_LINES.RESOURCE_ID LEFT OUTER JOIN
---                       dbo.RESOURCE_TYPES ON dbo.RESOURCES.RESOURCE_TYPE_ID = dbo.RESOURCE_TYPES.RESOURCE_TYPE_ID LEFT OUTER JOIN
---                       dbo.LOOKUPS LOOKUPS_4 ON dbo.RESOURCES.RES_CATEGORY_TYPE_ID = LOOKUPS_4.LOOKUP_ID ON
---                       dbo.SERVICES.SERVICE_ID = dbo.SERVICE_LINES.SERVICE_ID LEFT OUTER JOIN
---                       dbo.ITEMS ON dbo.SERVICE_LINES.ITEM_ID = dbo.ITEMS.ITEM_ID LEFT OUTER JOIN
---                       dbo.LOOKUPS LOOKUPS_3 ON dbo.ITEMS.ITEM_TYPE_ID = LOOKUPS_3.LOOKUP_ID
--- WHERE     (dbo.SERVICE_LINES.STATUS_ID > 1 OR
---                       dbo.SERVICE_LINES.STATUS_ID IS NULL) AND (LOOKUPS_4.CODE = 'employee') AND (dbo.RESOURCES.ACTIVE_FLAG = 'Y') AND
---                       (LOOKUPS_3.CODE = 'hours' OR
---                       LOOKUPS_3.CODE IS NULL)
--- GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[SERVICE_LINE_PAYROLL_V]
+AS
+SELECT     dbo.CUSTOMERS.ORGANIZATION_ID, dbo.RESOURCES.RESOURCE_ID, dbo.SERVICES.JOB_ID, dbo.JOBS.JOB_NO, 
+                      dbo.SERVICE_LINES.SERVICE_ID, dbo.SERVICES.SERVICE_NO, dbo.RESOURCES.NAME AS resource_name, 
+                      dbo.RESOURCES.RES_CATEGORY_TYPE_ID, LOOKUPS_4.CODE AS res_cat_type_code, LOOKUPS_4.NAME AS res_cat_type_name, 
+                      dbo.RESOURCES.RESOURCE_TYPE_ID, dbo.RESOURCES.USER_ID, dbo.RESOURCES.ACTIVE_FLAG, dbo.SERVICE_LINES.STATUS_ID, 
+                      dbo.SERVICE_LINES.ITEM_ID, dbo.ITEMS.NAME AS item_name, dbo.SERVICE_LINES.EXT_PAY_CODE, LOOKUPS_3.CODE AS item_type_code, 
+                      LOOKUPS_3.NAME AS item_type_name, dbo.RESOURCE_TYPES.CODE AS resource_type_code, 
+                      dbo.RESOURCE_TYPES.NAME AS resource_type_name, dbo.SERVICE_LINES.QTY AS hours_qty, dbo.SERVICE_LINES.SERVICE_LINE_DATE, 
+                      dbo.USERS.EXT_EMPLOYEE_ID, dbo.USERS.FIRST_NAME + ' ' + dbo.USERS.LAST_NAME AS employee_name, 
+                      dbo.SERVICE_LINES.SERVICE_LINE_ID, dbo.SERVICE_LINES.SERVICE_LINE_NO, dbo.SERVICE_LINES.SERVICE_LINE_WEEK, 
+                      dbo.PAYROLL_BATCHES.STATUS_ID AS batch_status_id, dbo.PAYROLL_BATCHES.INT_BATCH_ID, dbo.PAYROLL_BATCHES.EXT_BATCH_ID, 
+                      dbo.PAYROLL_BATCHES.BEGIN_DATE, dbo.PAYROLL_BATCHES.END_DATE, dbo.PAYROLL_BATCH_STATUSES.CODE AS batch_status_code, 
+                      dbo.PAYROLL_BATCH_STATUSES.NAME AS batch_status_name, dbo.JOBS.CUSTOMER_ID, dbo.ITEMS.EXT_ITEM_ID, CONVERT(varchar(12), 
+                      dbo.PAYROLL_BATCHES.BEGIN_DATE, 101) AS begin_date_varchar, CONVERT(varchar(12), dbo.PAYROLL_BATCHES.END_DATE, 101) 
+                      AS end_date_varchar, CONVERT(varchar(12), dbo.SERVICE_LINES.SERVICE_LINE_DATE, 101) AS service_line_date_varchar
+FROM         dbo.SERVICES LEFT OUTER JOIN
+                      dbo.CUSTOMERS RIGHT OUTER JOIN
+                      dbo.JOBS ON dbo.CUSTOMERS.CUSTOMER_ID = dbo.JOBS.CUSTOMER_ID ON dbo.SERVICES.JOB_ID = dbo.JOBS.JOB_ID RIGHT OUTER JOIN
+                      dbo.RESOURCES LEFT OUTER JOIN
+                      dbo.USERS ON dbo.RESOURCES.USER_ID = dbo.USERS.USER_ID LEFT OUTER JOIN
+                      dbo.SERVICE_LINES LEFT OUTER JOIN
+                      dbo.PAYROLL_BATCH_LINES LEFT OUTER JOIN
+                      dbo.PAYROLL_BATCH_STATUSES RIGHT OUTER JOIN
+                      dbo.PAYROLL_BATCHES ON dbo.PAYROLL_BATCH_STATUSES.STATUS_ID = dbo.PAYROLL_BATCHES.STATUS_ID ON 
+                      dbo.PAYROLL_BATCH_LINES.INT_BATCH_ID = dbo.PAYROLL_BATCHES.INT_BATCH_ID ON 
+                      dbo.SERVICE_LINES.SERVICE_LINE_ID = dbo.PAYROLL_BATCH_LINES.SERVICE_LINE_ID ON 
+                      dbo.RESOURCES.RESOURCE_ID = dbo.SERVICE_LINES.RESOURCE_ID LEFT OUTER JOIN
+                      dbo.RESOURCE_TYPES ON dbo.RESOURCES.RESOURCE_TYPE_ID = dbo.RESOURCE_TYPES.RESOURCE_TYPE_ID LEFT OUTER JOIN
+                      dbo.LOOKUPS LOOKUPS_4 ON dbo.RESOURCES.RES_CATEGORY_TYPE_ID = LOOKUPS_4.LOOKUP_ID ON 
+                      dbo.SERVICES.SERVICE_ID = dbo.SERVICE_LINES.SERVICE_ID LEFT OUTER JOIN
+                      dbo.ITEMS ON dbo.SERVICE_LINES.ITEM_ID = dbo.ITEMS.ITEM_ID LEFT OUTER JOIN
+                      dbo.LOOKUPS LOOKUPS_3 ON dbo.ITEMS.ITEM_TYPE_ID = LOOKUPS_3.LOOKUP_ID
+WHERE     (dbo.SERVICE_LINES.STATUS_ID > 1 OR
+                      dbo.SERVICE_LINES.STATUS_ID IS NULL) AND (LOOKUPS_4.CODE = 'employee') AND (dbo.RESOURCES.ACTIVE_FLAG = 'Y') AND 
+                      (LOOKUPS_3.CODE = 'hours' OR
+                      LOOKUPS_3.CODE IS NULL)
+GO
 /****** Object:  View [dbo].[PEP_RESOURCES_V]    Script Date: 05/03/2010 14:18:08 ******/
 SET ANSI_NULLS ON
 GO
@@ -6226,139 +6283,90 @@ FROM         dbo.REQUESTS LEFT OUTER JOIN
                       dbo.LOOKUPS LOOKUPS_1 ON dbo.REQUESTS.DUMPSTER_TYPE_ID = LOOKUPS_1.LOOKUP_ID LEFT OUTER JOIN
                       dbo.LOOKUPS ON dbo.REQUESTS.STAGING_AREA_TYPE_ID = dbo.LOOKUPS.LOOKUP_ID
 GO
-
-
-/****** View [dbo].[GP_ALABM_PAY_CODE_V]  ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
---
--- CREATE VIEW
---     [dbo].[GP_ALABM_PAY_CODE_V] ( PAYRCORD, DSCRIPTN, INACTIVE, PAYTYPE, BSPAYRCD, PAYRTAMT, PAYUNIT, PAYUNPER, PAYPEROD, PAYPRPRD, MXPYPPER, TipType, PAYADVNC, RPTASWGS, W2BXNMBR, W2BXLABL, TAXABLE, SBJTFDTX, SBJTSSEC, SBJTMCAR, SBJTSTTX, SBJTLTAX, SBJTFUTA, SBJTSUTA, FFEDTXRT, FLSTTXRT, ACRUVACN, ACRUSTIM, NOTEINDX, DATAENTDFLT, SHFTCODE, PAYFACTR, BSDONRTE, DEX_ROW_ID ) AS
--- SELECT
---     *
--- FROM
---     ALABM.dbo.UPR40600
--- WHERE
---     (
---         PAYRCORD IN ('1', '2', '3', '4', '8', '16')
---     )
--- AND
---     (
---         INACTIVE = 0
---     )
--- GO
-
 /****** Object:  View [dbo].[GP_ALABM_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:06 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
--- CREATE VIEW [dbo].[GP_ALABM_ITEM_PAYCODES_V]
--- AS
--- SELECT     ITEM_ID, item_name, pay_code, defaulted
--- FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
---                        FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
---                                               dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
---                                               dbo.GP_ALABM_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1)
---                                               = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                        WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                               (ITEM_TYPES.CODE = 'hours') AND organization_id = 6
---                        UNION
---                        SELECT     '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
---                        FROM         dbo.ITEMS INNER JOIN
---                                              dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
---                        WHERE     (item_types.CODE = 'hours') AND (dbo.ITEMS.ITEM_ID NOT IN
---                                                  (SELECT     dbo.ITEMS.ITEM_ID
---                                                    FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
---                                                                           dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
---                                                                           dbo.GP_ALABM_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1)
---                                                                           = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                                                    WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                                                           (ITEM_TYPES.CODE = 'hours') AND dbo.items.organization_id = 6))) DERIVEDTBL
--- GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[GP_ALABM_ITEM_PAYCODES_V]
+AS
+SELECT     ITEM_ID, item_name, pay_code, defaulted
+FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
+                       FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
+                                              dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
+                                              dbo.GP_ALABM_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                              = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                       WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                              (ITEM_TYPES.CODE = 'hours') AND organization_id = 6
+                       UNION
+                       SELECT     '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
+                       FROM         dbo.ITEMS INNER JOIN
+                                             dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
+                       WHERE     (item_types.CODE = 'hours') AND (dbo.ITEMS.ITEM_ID NOT IN
+                                                 (SELECT     dbo.ITEMS.ITEM_ID
+                                                   FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
+                                                                          dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
+                                                                          dbo.GP_ALABM_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                                                          = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                                                   WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                                                          (ITEM_TYPES.CODE = 'hours') AND dbo.items.organization_id = 6))) DERIVEDTBL
+GO
 /****** Object:  View [dbo].[GP_ICS_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
--- CREATE VIEW [dbo].[GP_ICS_ITEM_PAYCODES_V]
--- AS
--- SELECT     ITEM_ID, item_name, pay_code, defaulted
--- FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
---                        FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
---                                               dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
---                                               dbo.GP_ICS_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1)
---                                               = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                        WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                               (ITEM_TYPES.CODE = 'hours')
---                        UNION
---                        SELECT     '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
---                        FROM         dbo.ITEMS INNER JOIN
---                                              dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
---                        WHERE     (item_types.CODE = 'hours') AND (dbo.ITEMS.ITEM_ID NOT IN
---                                                  (SELECT     dbo.ITEMS.ITEM_ID
---                                                    FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
---                                                                           dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
---                                                                           dbo.GP_ICS_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1)
---                                                                           = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                                                    WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                                                           (ITEM_TYPES.CODE = 'hours')))) DERIVEDTBL
--- GO
-
-
-/****** View [dbo].[GP_MAD_PAY_CODE_V]  ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
---
--- CREATE VIEW
---     [dbo].[GP_MAD_PAY_CODE_V] ( PAYRCORD, DSCRIPTN, INACTIVE, PAYTYPE, BSPAYRCD, PAYRTAMT, PAYUNIT, PAYUNPER, PAYPEROD, PAYPRPRD, MXPYPPER, TipType, PAYADVNC, RPTASWGS, W2BXNMBR, W2BXLABL, TAXABLE, SBJTFDTX, SBJTSSEC, SBJTMCAR, SBJTSTTX, SBJTLTAX, SBJTFUTA, SBJTSUTA, FFEDTXRT, FLSTTXRT, ACRUVACN, ACRUSTIM, NOTEINDX, DATAENTDFLT, SHFTCODE, PAYFACTR, BSDONRTE, DEX_ROW_ID ) AS
--- SELECT
---     *
--- FROM
---     AMMAD.dbo.UPR40600
--- WHERE
---     (
---         PAYRCORD IN ('1', '2', '3', '4', '8', '16')
---     )
--- AND
---     (
---         INACTIVE = 0
---     )
---
--- GO
-
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[GP_ICS_ITEM_PAYCODES_V]
+AS
+SELECT     ITEM_ID, item_name, pay_code, defaulted
+FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
+                       FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
+                                              dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
+                                              dbo.GP_ICS_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                              = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                       WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                              (ITEM_TYPES.CODE = 'hours')
+                       UNION
+                       SELECT     '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
+                       FROM         dbo.ITEMS INNER JOIN
+                                             dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
+                       WHERE     (item_types.CODE = 'hours') AND (dbo.ITEMS.ITEM_ID NOT IN
+                                                 (SELECT     dbo.ITEMS.ITEM_ID
+                                                   FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
+                                                                          dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
+                                                                          dbo.GP_ICS_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                                                          = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                                                   WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                                                          (ITEM_TYPES.CODE = 'hours')))) DERIVEDTBL
+GO
 /****** Object:  View [dbo].[GP_MAD_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
--- CREATE VIEW [dbo].[GP_MAD_ITEM_PAYCODES_V]
--- AS
--- SELECT     ITEM_ID, item_name, pay_code, defaulted
--- FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
---                        FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
---                                               dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
---                                               dbo.GP_MAD_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1)
---                                               = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                        WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                               (ITEM_TYPES.CODE = 'hours') AND organization_id = 4
---                        UNION
---                        SELECT     '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
---                        FROM         dbo.ITEMS INNER JOIN
---                                              dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
---                        WHERE     (item_types.CODE = 'hours') AND (dbo.ITEMS.ITEM_ID NOT IN
---                                                  (SELECT     dbo.ITEMS.ITEM_ID
---                                                    FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
---                                                                           dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
---                                                                           dbo.GP_MAD_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1)
---                                                                           = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                                                    WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                                                           (ITEM_TYPES.CODE = 'hours') AND dbo.items.organization_id = 4))) DERIVEDTBL
--- GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[GP_MAD_ITEM_PAYCODES_V]
+AS
+SELECT     ITEM_ID, item_name, pay_code, defaulted
+FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
+                       FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
+                                              dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
+                                              dbo.GP_MAD_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                              = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                       WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                              (ITEM_TYPES.CODE = 'hours') AND organization_id = 4
+                       UNION
+                       SELECT     '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
+                       FROM         dbo.ITEMS INNER JOIN
+                                             dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
+                       WHERE     (item_types.CODE = 'hours') AND (dbo.ITEMS.ITEM_ID NOT IN
+                                                 (SELECT     dbo.ITEMS.ITEM_ID
+                                                   FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
+                                                                          dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
+                                                                          dbo.GP_MAD_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                                                          = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                                                   WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                                                          (ITEM_TYPES.CODE = 'hours') AND dbo.items.organization_id = 4))) DERIVEDTBL
+GO
 /****** Object:  View [dbo].[crystal_workorder_detail_pkf_V]    Script Date: 05/03/2010 14:18:06 ******/
 SET ANSI_NULLS ON
 GO
@@ -6434,182 +6442,156 @@ SELECT p.project_id,
        dbo.contacts cc3 ON r.customer_contact3_id = cc3.contact_id LEFT OUTER JOIN
        dbo.contacts cc4 ON r.customer_contact4_id = cc4.contact_id
 GO
-
-/****** View [dbo].[GP_PHX_PAY_CODE_V]  ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
---
--- CREATE VIEW
---     [dbo].[GP_PHX_PAY_CODE_V] ( PAYRCORD, DSCRIPTN, INACTIVE, PAYTYPE, BSPAYRCD, PAYRTAMT, PAYUNIT, PAYUNPER, PAYPEROD, PAYPRPRD, MXPYPPER, TipType, PAYADVNC, RPTASWGS, W2BXNMBR, W2BXLABL, TAXABLE, SBJTFDTX, SBJTSSEC, SBJTMCAR, SBJTSTTX, SBJTLTAX, SBJTFUTA, SBJTSUTA, FFEDTXRT, FLSTTXRT, ACRUVACN, ACRUSTIM, NOTEINDX, DATAENTDFLT, SHFTCODE, PAYFACTR, BSDONRTE, DEX_ROW_ID ) AS
--- SELECT
---     *
--- FROM
---     PHX.dbo.UPR40600
--- WHERE
---     (
---         PAYRCORD IN ('1', '2', '3', '4', '8', '16')
---     )
--- AND
---     (
---         INACTIVE = 0
---     )
---
--- GO
-
-
 /****** Object:  View [dbo].[GP_PHX_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
--- CREATE VIEW [dbo].[GP_PHX_ITEM_PAYCODES_V]
--- AS
--- SELECT     ITEM_ID, item_name, pay_code, defaulted
--- FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
---                        FROM          dbo.LOOKUPS AS ITEM_TYPES INNER JOIN
---                                               dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
---                                               dbo.GP_PHX_PAY_CODE_V AS GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1)
---                                               = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                        WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                               (ITEM_TYPES.CODE = 'hours') AND (dbo.ITEMS.ORGANIZATION_ID = 20)
---                        UNION
---                        SELECT     '1' AS pay_code, ITEMS_2.NAME AS item_name, ITEMS_2.ITEM_ID, 't' AS defaulted
---                        FROM         dbo.ITEMS AS ITEMS_2 INNER JOIN
---                                              dbo.LOOKUPS AS item_types ON ITEMS_2.ITEM_TYPE_ID = item_types.LOOKUP_ID
---                        WHERE     (item_types.CODE = 'hours') AND (ITEMS_2.ITEM_ID NOT IN
---                                                  (SELECT     ITEMS_1.ITEM_ID
---                                                    FROM          dbo.LOOKUPS AS ITEM_TYPES INNER JOIN
---                                                                           dbo.ITEMS AS ITEMS_1 ON ITEM_TYPES.LOOKUP_ID = ITEMS_1.ITEM_TYPE_ID INNER JOIN
---                                                                           dbo.GP_PHX_PAY_CODE_V AS GP_PAYCODES ON RIGHT(ITEMS_1.NAME, CHARINDEX('-', REVERSE(ITEMS_1.NAME)) - 1)
---                                                                           = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                                                    WHERE      (CHARINDEX('-', REVERSE(ITEMS_1.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                                                           (ITEM_TYPES.CODE = 'hours') AND (ITEMS_1.ORGANIZATION_ID = 20)))) AS DERIVEDTBL
--- GO
--- EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPane1', @value=N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
--- Begin DesignProperties =
---    Begin PaneConfigurations =
---       Begin PaneConfiguration = 0
---          NumPanes = 4
---          Configuration = "(H (1[40] 4[20] 2[20] 3) )"
---       End
---       Begin PaneConfiguration = 1
---          NumPanes = 3
---          Configuration = "(H (1 [50] 4 [25] 3))"
---       End
---       Begin PaneConfiguration = 2
---          NumPanes = 3
---          Configuration = "(H (1 [50] 2 [25] 3))"
---       End
---       Begin PaneConfiguration = 3
---          NumPanes = 3
---          Configuration = "(H (4 [30] 2 [40] 3))"
---       End
---       Begin PaneConfiguration = 4
---          NumPanes = 2
---          Configuration = "(H (1 [56] 3))"
---       End
---       Begin PaneConfiguration = 5
---          NumPanes = 2
---          Configuration = "(H (2 [66] 3))"
---       End
---       Begin PaneConfiguration = 6
---          NumPanes = 2
---          Configuration = "(H (4 [50] 3))"
---       End
---       Begin PaneConfiguration = 7
---          NumPanes = 1
---          Configuration = "(V (3))"
---       End
---       Begin PaneConfiguration = 8
---          NumPanes = 3
---          Configuration = "(H (1[56] 4[18] 2) )"
---       End
---       Begin PaneConfiguration = 9
---          NumPanes = 2
---          Configuration = "(H (1 [75] 4))"
---       End
---       Begin PaneConfiguration = 10
---          NumPanes = 2
---          Configuration = "(H (1[66] 2) )"
---       End
---       Begin PaneConfiguration = 11
---          NumPanes = 2
---          Configuration = "(H (4 [60] 2))"
---       End
---       Begin PaneConfiguration = 12
---          NumPanes = 1
---          Configuration = "(H (1) )"
---       End
---       Begin PaneConfiguration = 13
---          NumPanes = 1
---          Configuration = "(V (4))"
---       End
---       Begin PaneConfiguration = 14
---          NumPanes = 1
---          Configuration = "(V (2))"
---       End
---       ActivePaneConfig = 0
---    End
---    Begin DiagramPane =
---       Begin Origin =
---          Top = 0
---          Left = 0
---       End
---       Begin Tables =
---          Begin Table = "DERIVEDTBL"
---             Begin Extent =
---                Top = 6
---                Left = 38
---                Bottom = 114
---                Right = 189
---             End
---             DisplayFlags = 280
---             TopColumn = 0
---          End
---       End
---    End
---    Begin SQLPane =
---    End
---    Begin DataPane =
---       Begin ParameterDefaults = ""
---       End
---       Begin ColumnWidths = 9
---          Width = 284
---          Width = 1500
---          Width = 1500
---          Width = 1500
---          Width = 1500
---          Width = 1500
---          Width = 1500
---          Width = 1500
---          Width = 1500
---       End
---    End
---    Begin CriteriaPane =
---       Begin ColumnWidths = 11
---          Column = 1440
---          Alias = 900
---          Table = 1170
---          Output = 720
---          Append = 1400
---          NewValue = 1170
---          SortType = 1350
---          SortOrder = 1410
---          GroupBy = 1350
---          Filter = 1350
---          Or = 1350
---          Or = 1350
---          Or = 1350
---       End
---    End
--- End
--- ' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'GP_PHX_ITEM_PAYCODES_V'
--- GO
--- EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'GP_PHX_ITEM_PAYCODES_V'
--- GO
-
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[GP_PHX_ITEM_PAYCODES_V]
+AS
+SELECT     ITEM_ID, item_name, pay_code, defaulted
+FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
+                       FROM          dbo.LOOKUPS AS ITEM_TYPES INNER JOIN
+                                              dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
+                                              dbo.GP_PHX_PAY_CODE_V AS GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                              = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                       WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                              (ITEM_TYPES.CODE = 'hours') AND (dbo.ITEMS.ORGANIZATION_ID = 20)
+                       UNION
+                       SELECT     '1' AS pay_code, ITEMS_2.NAME AS item_name, ITEMS_2.ITEM_ID, 't' AS defaulted
+                       FROM         dbo.ITEMS AS ITEMS_2 INNER JOIN
+                                             dbo.LOOKUPS AS item_types ON ITEMS_2.ITEM_TYPE_ID = item_types.LOOKUP_ID
+                       WHERE     (item_types.CODE = 'hours') AND (ITEMS_2.ITEM_ID NOT IN
+                                                 (SELECT     ITEMS_1.ITEM_ID
+                                                   FROM          dbo.LOOKUPS AS ITEM_TYPES INNER JOIN
+                                                                          dbo.ITEMS AS ITEMS_1 ON ITEM_TYPES.LOOKUP_ID = ITEMS_1.ITEM_TYPE_ID INNER JOIN
+                                                                          dbo.GP_PHX_PAY_CODE_V AS GP_PAYCODES ON RIGHT(ITEMS_1.NAME, CHARINDEX('-', REVERSE(ITEMS_1.NAME)) - 1) 
+                                                                          = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                                                   WHERE      (CHARINDEX('-', REVERSE(ITEMS_1.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                                                          (ITEM_TYPES.CODE = 'hours') AND (ITEMS_1.ORGANIZATION_ID = 20)))) AS DERIVEDTBL
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPane1', @value=N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
+Begin DesignProperties = 
+   Begin PaneConfigurations = 
+      Begin PaneConfiguration = 0
+         NumPanes = 4
+         Configuration = "(H (1[40] 4[20] 2[20] 3) )"
+      End
+      Begin PaneConfiguration = 1
+         NumPanes = 3
+         Configuration = "(H (1 [50] 4 [25] 3))"
+      End
+      Begin PaneConfiguration = 2
+         NumPanes = 3
+         Configuration = "(H (1 [50] 2 [25] 3))"
+      End
+      Begin PaneConfiguration = 3
+         NumPanes = 3
+         Configuration = "(H (4 [30] 2 [40] 3))"
+      End
+      Begin PaneConfiguration = 4
+         NumPanes = 2
+         Configuration = "(H (1 [56] 3))"
+      End
+      Begin PaneConfiguration = 5
+         NumPanes = 2
+         Configuration = "(H (2 [66] 3))"
+      End
+      Begin PaneConfiguration = 6
+         NumPanes = 2
+         Configuration = "(H (4 [50] 3))"
+      End
+      Begin PaneConfiguration = 7
+         NumPanes = 1
+         Configuration = "(V (3))"
+      End
+      Begin PaneConfiguration = 8
+         NumPanes = 3
+         Configuration = "(H (1[56] 4[18] 2) )"
+      End
+      Begin PaneConfiguration = 9
+         NumPanes = 2
+         Configuration = "(H (1 [75] 4))"
+      End
+      Begin PaneConfiguration = 10
+         NumPanes = 2
+         Configuration = "(H (1[66] 2) )"
+      End
+      Begin PaneConfiguration = 11
+         NumPanes = 2
+         Configuration = "(H (4 [60] 2))"
+      End
+      Begin PaneConfiguration = 12
+         NumPanes = 1
+         Configuration = "(H (1) )"
+      End
+      Begin PaneConfiguration = 13
+         NumPanes = 1
+         Configuration = "(V (4))"
+      End
+      Begin PaneConfiguration = 14
+         NumPanes = 1
+         Configuration = "(V (2))"
+      End
+      ActivePaneConfig = 0
+   End
+   Begin DiagramPane = 
+      Begin Origin = 
+         Top = 0
+         Left = 0
+      End
+      Begin Tables = 
+         Begin Table = "DERIVEDTBL"
+            Begin Extent = 
+               Top = 6
+               Left = 38
+               Bottom = 114
+               Right = 189
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+      End
+   End
+   Begin SQLPane = 
+   End
+   Begin DataPane = 
+      Begin ParameterDefaults = ""
+      End
+      Begin ColumnWidths = 9
+         Width = 284
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+         Width = 1500
+      End
+   End
+   Begin CriteriaPane = 
+      Begin ColumnWidths = 11
+         Column = 1440
+         Alias = 900
+         Table = 1170
+         Output = 720
+         Append = 1400
+         NewValue = 1170
+         SortType = 1350
+         SortOrder = 1410
+         GroupBy = 1350
+         Filter = 1350
+         Or = 1350
+         Or = 1350
+         Or = 1350
+      End
+   End
+End
+' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'GP_PHX_ITEM_PAYCODES_V'
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'GP_PHX_ITEM_PAYCODES_V'
+GO
 /****** Object:  View [dbo].[Contacts_qry_lookupbyorg]    Script Date: 05/03/2010 14:18:05 ******/
 SET ANSI_NULLS ON
 GO
@@ -6681,58 +6663,34 @@ FROM         dbo.USERS USERS_1 RIGHT OUTER JOIN
                       USERS_1.USER_ID = dbo.RESOURCE_TYPES.CREATED_BY LEFT OUTER JOIN
                       dbo.LOOKUPS LOOKUPS_2 ON dbo.RESOURCE_TYPES.DEF_TIME_UOM_TYPE_ID = LOOKUPS_2.LOOKUP_ID
 GO
-
-/****** View [dbo].[GP_PHX_PAY_CODE_V]  ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
---
--- CREATE VIEW
---     [dbo].[GP_PHX_PAY_CODE_V] ( PAYRCORD, DSCRIPTN, INACTIVE, PAYTYPE, BSPAYRCD, PAYRTAMT, PAYUNIT, PAYUNPER, PAYPEROD, PAYPRPRD, MXPYPPER, TipType, PAYADVNC, RPTASWGS, W2BXNMBR, W2BXLABL, TAXABLE, SBJTFDTX, SBJTSSEC, SBJTMCAR, SBJTSTTX, SBJTLTAX, SBJTFUTA, SBJTSUTA, FFEDTXRT, FLSTTXRT, ACRUVACN, ACRUSTIM, NOTEINDX, DATAENTDFLT, SHFTCODE, PAYFACTR, BSDONRTE, DEX_ROW_ID ) AS
--- SELECT
---     *
--- FROM
---     PHX.dbo.UPR40600
--- WHERE
---     (
---         PAYRCORD IN ('1', '2', '3', '4', '8', '16')
---     )
--- AND
---     (
---         INACTIVE = 0
---     )
---
--- GO
-
 /****** Object:  View [dbo].[GP_IT_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
--- CREATE VIEW [dbo].[GP_IT_ITEM_PAYCODES_V]
--- AS
--- SELECT     ITEM_ID, item_name, pay_code, defaulted
--- FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
---                        FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
---                                               dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
---                                               dbo.GP_IT_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1)
---                                               = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                        WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                               (ITEM_TYPES.CODE = 'hours')
---                        UNION
---                        SELECT     '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
---                        FROM         dbo.ITEMS INNER JOIN
---                                              dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
---                        WHERE     (item_types.CODE = 'hours') AND (dbo.ITEMS.ITEM_ID NOT IN
---                                                  (SELECT     dbo.ITEMS.ITEM_ID
---                                                    FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
---                                                                           dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
---                                                                           dbo.GP_IT_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1)
---                                                                           = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                                                    WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                                                           (ITEM_TYPES.CODE = 'hours')))) DERIVEDTBL
--- GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[GP_IT_ITEM_PAYCODES_V]
+AS
+SELECT     ITEM_ID, item_name, pay_code, defaulted
+FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
+                       FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
+                                              dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
+                                              dbo.GP_IT_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                              = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                       WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                              (ITEM_TYPES.CODE = 'hours')
+                       UNION
+                       SELECT     '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
+                       FROM         dbo.ITEMS INNER JOIN
+                                             dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
+                       WHERE     (item_types.CODE = 'hours') AND (dbo.ITEMS.ITEM_ID NOT IN
+                                                 (SELECT     dbo.ITEMS.ITEM_ID
+                                                   FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
+                                                                          dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
+                                                                          dbo.GP_IT_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                                                          = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                                                   WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                                                          (ITEM_TYPES.CODE = 'hours')))) DERIVEDTBL
+GO
 /****** Object:  View [dbo].[requests_query_for_Tim_VVV]    Script Date: 05/03/2010 14:18:08 ******/
 SET ANSI_NULLS ON
 GO
@@ -6751,58 +6709,34 @@ FROM         dbo.LOOKUPS INNER JOIN
                       dbo.PROJECTS ON dbo.REQUESTS.PROJECT_ID = dbo.PROJECTS.PROJECT_ID INNER JOIN
                       dbo.CUSTOMERS ON dbo.PROJECTS.CUSTOMER_ID = dbo.CUSTOMERS.CUSTOMER_ID
 GO
-
-/****** View [dbo].[GP_NTLSV_PAY_CODE_V]  ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
---
--- CREATE VIEW
---     [dbo].[GP_NTLSV_PAY_CODE_V] ( PAYRCORD, DSCRIPTN, INACTIVE, PAYTYPE, BSPAYRCD, PAYRTAMT, PAYUNIT, PAYUNPER, PAYPEROD, PAYPRPRD, MXPYPPER, TipType, PAYADVNC, RPTASWGS, W2BXNMBR, W2BXLABL, TAXABLE, SBJTFDTX, SBJTSSEC, SBJTMCAR, SBJTSTTX, SBJTLTAX, SBJTFUTA, SBJTSUTA, FFEDTXRT, FLSTTXRT, ACRUVACN, ACRUSTIM, NOTEINDX, DATAENTDFLT, SHFTCODE, PAYFACTR, BSDONRTE, DEX_ROW_ID ) AS
--- SELECT
---     *
--- FROM
---     NTLSV.dbo.UPR40600
--- WHERE
---     (
---         PAYRCORD IN ('1', '2', '3', '4', '8', '16')
---     )
--- AND
---     (
---         INACTIVE = 0
---     )
---
--- GO
-
 /****** Object:  View [dbo].[GP_NTLSV_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
--- CREATE VIEW [dbo].[GP_NTLSV_ITEM_PAYCODES_V]
--- AS
--- SELECT     ITEM_ID, item_name, pay_code, defaulted
--- FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
---                        FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
---                                               dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
---                                               dbo.GP_NTLSV_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1)
---                                               = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                        WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                               (ITEM_TYPES.CODE = 'hours') AND organization_id = 6
---                        UNION
---                        SELECT     '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
---                        FROM         dbo.ITEMS INNER JOIN
---                                              dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
---                        WHERE     (item_types.CODE = 'hours') AND (dbo.ITEMS.ITEM_ID NOT IN
---                                                  (SELECT     dbo.ITEMS.ITEM_ID
---                                                    FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
---                                                                           dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
---                                                                           dbo.GP_NTLSV_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1)
---                                                                           = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                                                    WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                                                           (ITEM_TYPES.CODE = 'hours') AND dbo.items.organization_id = 6))) DERIVEDTBL
--- GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[GP_NTLSV_ITEM_PAYCODES_V]
+AS
+SELECT     ITEM_ID, item_name, pay_code, defaulted
+FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
+                       FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
+                                              dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
+                                              dbo.GP_NTLSV_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                              = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                       WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                              (ITEM_TYPES.CODE = 'hours') AND organization_id = 6
+                       UNION
+                       SELECT     '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
+                       FROM         dbo.ITEMS INNER JOIN
+                                             dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
+                       WHERE     (item_types.CODE = 'hours') AND (dbo.ITEMS.ITEM_ID NOT IN
+                                                 (SELECT     dbo.ITEMS.ITEM_ID
+                                                   FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
+                                                                          dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
+                                                                          dbo.GP_NTLSV_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                                                          = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                                                   WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                                                          (ITEM_TYPES.CODE = 'hours') AND dbo.items.organization_id = 6))) DERIVEDTBL
+GO
 /****** Object:  View [dbo].[JOB_LOCATIONS_V]    Script Date: 05/03/2010 14:18:07 ******/
 SET ANSI_NULLS ON
 GO
@@ -6969,56 +6903,34 @@ FROM         dbo.CONTAINS_INVOICE_TRACKING_V RIGHT OUTER JOIN
                       dbo.USERS USERS_1 ON dbo.INVOICES.MODIFIED_BY = USERS_1.USER_ID
 ORDER BY dbo.INVOICES.INVOICE_ID
 GO
-
-/****** View [dbo].[GP_AIA_PAY_CODE_V]  ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
---
--- CREATE VIEW
---     [dbo].[GP_AIA_PAY_CODE_V] ( PAYRCORD, DSCRIPTN, INACTIVE, PAYTYPE, BSPAYRCD, PAYRTAMT, PAYUNIT, PAYUNPER, PAYPEROD, PAYPRPRD, MXPYPPER, TipType, PAYADVNC, RPTASWGS, W2BXNMBR, W2BXLABL, TAXABLE, SBJTFDTX, SBJTSSEC, SBJTMCAR, SBJTSTTX, SBJTLTAX, SBJTFUTA, SBJTSUTA, FFEDTXRT, FLSTTXRT, ACRUVACN, ACRUSTIM, NOTEINDX, DATAENTDFLT, SHFTCODE, PAYFACTR, BSDONRTE, DEX_ROW_ID ) AS
--- SELECT
---     *
--- FROM
---     AIA.dbo.UPR40600
--- WHERE
---     (
---         PAYRCORD IN ('1', '2', '3', '4', '8', '16')
---     )
--- AND
---     (
---         INACTIVE = 0
---     )
--- GO
 /****** Object:  View [dbo].[GP_AIA_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:06 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
--- CREATE VIEW [dbo].[GP_AIA_ITEM_PAYCODES_V]
--- AS
--- SELECT     ITEM_ID, item_name, pay_code, defaulted
--- FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
---                        FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
---                                               dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
---                                               dbo.GP_AIA_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1)
---                                               = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                        WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                               (ITEM_TYPES.CODE = 'hours') AND organization_id = 6
---                        UNION
---                        SELECT     '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
---                        FROM         dbo.ITEMS INNER JOIN
---                                              dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
---                        WHERE     (item_types.CODE = 'hours') AND (dbo.ITEMS.ITEM_ID NOT IN
---                                                  (SELECT     dbo.ITEMS.ITEM_ID
---                                                    FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
---                                                                           dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
---                                                                           dbo.GP_AIA_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1)
---                                                                           = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                                                    WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                                                           (ITEM_TYPES.CODE = 'hours') AND dbo.items.organization_id = 6))) DERIVEDTBL
--- GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[GP_AIA_ITEM_PAYCODES_V]
+AS
+SELECT     ITEM_ID, item_name, pay_code, defaulted
+FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
+                       FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
+                                              dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
+                                              dbo.GP_AIA_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                              = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                       WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                              (ITEM_TYPES.CODE = 'hours') AND organization_id = 6
+                       UNION
+                       SELECT     '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
+                       FROM         dbo.ITEMS INNER JOIN
+                                             dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
+                       WHERE     (item_types.CODE = 'hours') AND (dbo.ITEMS.ITEM_ID NOT IN
+                                                 (SELECT     dbo.ITEMS.ITEM_ID
+                                                   FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
+                                                                          dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
+                                                                          dbo.GP_AIA_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                                                          = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                                                   WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                                                          (ITEM_TYPES.CODE = 'hours') AND dbo.items.organization_id = 6))) DERIVEDTBL
+GO
 /****** Object:  View [dbo].[CONTACT_EMAILS_V]    Script Date: 05/03/2010 14:18:05 ******/
 SET ANSI_NULLS ON
 GO
@@ -7200,33 +7112,33 @@ SELECT p.project_id,
        dbo.customers eu ON p.end_user_id = eu.customer_id
 GO
 /****** Object:  View [dbo].[GP_CIINC_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
--- CREATE VIEW [dbo].[GP_CIINC_ITEM_PAYCODES_V]
--- AS
--- SELECT     ITEM_ID, item_name, pay_code, defaulted
--- FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
---                        FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
---                                               dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
---                                               dbo.GP_MPLS_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
---                                               = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                        WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                               (ITEM_TYPES.CODE = 'hours')
---                        UNION
---                        SELECT     '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
---                        FROM         dbo.ITEMS INNER JOIN
---                                              dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
---                        WHERE     (item_types.CODE = 'hours') AND (dbo.ITEMS.ITEM_ID NOT IN
---                                                  (SELECT     dbo.ITEMS.ITEM_ID
---                                                    FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
---                                                                           dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
---                                                                           dbo.GP_MPLS_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1)
---                                                                           = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                                                    WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                                                           (ITEM_TYPES.CODE = 'hours')))) DERIVEDTBL
--- GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[GP_CIINC_ITEM_PAYCODES_V]
+AS
+SELECT     ITEM_ID, item_name, pay_code, defaulted
+FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
+                       FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
+                                              dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
+                                              dbo.GP_MPLS_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                              = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                       WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                              (ITEM_TYPES.CODE = 'hours')
+                       UNION
+                       SELECT     '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
+                       FROM         dbo.ITEMS INNER JOIN
+                                             dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
+                       WHERE     (item_types.CODE = 'hours') AND (dbo.ITEMS.ITEM_ID NOT IN
+                                                 (SELECT     dbo.ITEMS.ITEM_ID
+                                                   FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
+                                                                          dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
+                                                                          dbo.GP_MPLS_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                                                          = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                                                   WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                                                          (ITEM_TYPES.CODE = 'hours')))) DERIVEDTBL
+GO
 /****** Object:  View [dbo].[INVOICE_COST_CODES_V]    Script Date: 05/03/2010 14:18:07 ******/
 SET ANSI_NULLS ON
 GO
@@ -7256,82 +7168,62 @@ HAVING      (dbo.LOOKUPS.CODE = 'Y') OR
                       (LOOKUPS_3.CODE = 'Y')
 ORDER BY dbo.INVOICES.INVOICE_ID
 GO
-
-/****** Object:  View [dbo].[INVOICE_COST_CODES_PROBLEMS_V]    Script Date: 05/03/2010 14:18:07 ******/
+/****** Object:  View [dbo].[GP_MPLS_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE VIEW [dbo].[INVOICE_COST_CODES_PROBLEMS_V]
+CREATE VIEW [dbo].[GP_MPLS_ITEM_PAYCODES_V]
 AS
-SELECT     dbo.INVOICE_COST_CODES_V.INVOICE_ID, dbo.INVOICE_COST_CODES_V.SERVICE_ID, INVOICE_COST_CODES_V_1.SERVICE_ID AS Expr6,
-                      dbo.INVOICE_COST_CODES_V.cost_to_cust, dbo.INVOICE_COST_CODES_V.cost_to_vend, dbo.INVOICE_COST_CODES_V.cost_to_job,
-                      dbo.INVOICE_COST_CODES_V.warehouse_fee, INVOICE_COST_CODES_V_1.INVOICE_ID AS Expr1, INVOICE_COST_CODES_V_1.cost_to_cust AS Expr2,
-                       INVOICE_COST_CODES_V_1.cost_to_vend AS Expr3, INVOICE_COST_CODES_V_1.cost_to_job AS Expr4,
-                      INVOICE_COST_CODES_V_1.warehouse_fee AS Expr5
-FROM         dbo.INVOICE_COST_CODES_V INNER JOIN
-                      dbo.INVOICE_COST_CODES_V INVOICE_COST_CODES_V_1 ON
-                      dbo.INVOICE_COST_CODES_V.SERVICE_ID <> INVOICE_COST_CODES_V_1.SERVICE_ID AND
-                      dbo.INVOICE_COST_CODES_V.INVOICE_ID = INVOICE_COST_CODES_V_1.INVOICE_ID AND
-                      dbo.INVOICE_COST_CODES_V.cost_to_cust <> INVOICE_COST_CODES_V_1.cost_to_cust
+SELECT     ITEM_ID, item_name, pay_code, defaulted
+FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
+                       FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
+                                              dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
+                                              dbo.GP_MPLS_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                              = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                       WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                              (ITEM_TYPES.CODE = 'hours')
+                       UNION
+                       SELECT     '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
+                       FROM         dbo.ITEMS INNER JOIN
+                                             dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
+                       WHERE     (item_types.CODE = 'hours') AND (dbo.ITEMS.ITEM_ID NOT IN
+                                                 (SELECT     dbo.ITEMS.ITEM_ID
+                                                   FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
+                                                                          dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
+                                                                          dbo.GP_MPLS_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                                                          = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                                                   WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                                                          (ITEM_TYPES.CODE = 'hours')))) DERIVEDTBL
 GO
-
-/****** Object:  View [dbo].[GP_MPLS_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
--- CREATE VIEW [dbo].[GP_MPLS_ITEM_PAYCODES_V]
--- AS
--- SELECT     ITEM_ID, item_name, pay_code, defaulted
--- FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
---                        FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
---                                               dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
---                                               dbo.GP_MPLS_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1)
---                                               = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                        WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                               (ITEM_TYPES.CODE = 'hours')
---                        UNION
---                        SELECT     '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
---                        FROM         dbo.ITEMS INNER JOIN
---                                              dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
---                        WHERE     (item_types.CODE = 'hours') AND (dbo.ITEMS.ITEM_ID NOT IN
---                                                  (SELECT     dbo.ITEMS.ITEM_ID
---                                                    FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
---                                                                           dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
---                                                                           dbo.GP_MPLS_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1)
---                                                                           = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                                                    WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                                                           (ITEM_TYPES.CODE = 'hours')))) DERIVEDTBL
--- GO
 /****** Object:  View [dbo].[GP_CIMN_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
--- CREATE VIEW [dbo].[GP_CIMN_ITEM_PAYCODES_V]
--- AS
--- SELECT     ITEM_ID, item_name, pay_code, defaulted
--- FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
---                        FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
---                                               dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
---                                               dbo.GP_CIMN_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1)
---                                               = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                        WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                               (ITEM_TYPES.CODE = 'hours') AND organization_id = 15
---                        UNION
---                        SELECT     '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
---                        FROM         dbo.ITEMS INNER JOIN
---                                              dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
---                        WHERE     (item_types.CODE = 'hours') AND (dbo.ITEMS.ITEM_ID NOT IN
---                                                  (SELECT     dbo.ITEMS.ITEM_ID
---                                                    FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
---                                                                           dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
---                                                                           dbo.GP_CIMN_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
---                                                                           = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                                                    WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                                                           (ITEM_TYPES.CODE = 'hours') AND dbo.items.organization_id = 15))) DERIVEDTBL
--- GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[GP_CIMN_ITEM_PAYCODES_V]
+AS
+SELECT     ITEM_ID, item_name, pay_code, defaulted
+FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
+                       FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
+                                              dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
+                                              dbo.GP_CIMN_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                              = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                       WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                              (ITEM_TYPES.CODE = 'hours') AND organization_id = 15
+                       UNION
+                       SELECT     '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
+                       FROM         dbo.ITEMS INNER JOIN
+                                             dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
+                       WHERE     (item_types.CODE = 'hours') AND (dbo.ITEMS.ITEM_ID NOT IN
+                                                 (SELECT     dbo.ITEMS.ITEM_ID
+                                                   FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
+                                                                          dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
+                                                                          dbo.GP_CIMN_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                                                          = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                                                   WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                                                          (ITEM_TYPES.CODE = 'hours') AND dbo.items.organization_id = 15))) DERIVEDTBL
+GO
 /****** Object:  View [dbo].[crystal_MADISON_RPT1_V]    Script Date: 05/03/2010 14:18:06 ******/
 SET ANSI_NULLS ON
 GO
@@ -7698,33 +7590,33 @@ FROM         dbo.JOBS LEFT OUTER JOIN
 GROUP BY dbo.JOBS.JOB_ID
 GO
 /****** Object:  View [dbo].[GP_ECMS_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
--- CREATE VIEW [dbo].[GP_ECMS_ITEM_PAYCODES_V]
--- AS
--- SELECT     ITEM_ID, item_name, pay_code, defaulted
--- FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
---                        FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
---                                               dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
---                                               dbo.GP_ECMS_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1)
---                                               = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                        WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                               (ITEM_TYPES.CODE = 'hours')
---                        UNION
---                        SELECT     '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
---                        FROM         dbo.ITEMS INNER JOIN
---                                              dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
---                        WHERE     (item_types.CODE = 'hours') AND (dbo.ITEMS.ITEM_ID NOT IN
---                                                  (SELECT     dbo.ITEMS.ITEM_ID
---                                                    FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
---                                                                           dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
---                                                                           dbo.GP_ECMS_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
---                                                                           = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                                                    WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                                                           (ITEM_TYPES.CODE = 'hours')))) DERIVEDTBL
--- GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[GP_ECMS_ITEM_PAYCODES_V]
+AS
+SELECT     ITEM_ID, item_name, pay_code, defaulted
+FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
+                       FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
+                                              dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
+                                              dbo.GP_ECMS_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                              = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                       WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                              (ITEM_TYPES.CODE = 'hours')
+                       UNION
+                       SELECT     '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
+                       FROM         dbo.ITEMS INNER JOIN
+                                             dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
+                       WHERE     (item_types.CODE = 'hours') AND (dbo.ITEMS.ITEM_ID NOT IN
+                                                 (SELECT     dbo.ITEMS.ITEM_ID
+                                                   FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
+                                                                          dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
+                                                                          dbo.GP_ECMS_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                                                          = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                                                   WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                                                          (ITEM_TYPES.CODE = 'hours')))) DERIVEDTBL
+GO
 /****** Object:  View [dbo].[crystal_JOBS_CLOSED_V]    Script Date: 05/03/2010 14:18:06 ******/
 SET ANSI_NULLS ON
 GO
@@ -7777,33 +7669,33 @@ FROM         dbo.REQUESTS w INNER JOIN
                       dbo.SERVICES ON w.REQUEST_ID = dbo.SERVICES.REQUEST_ID
 GO
 /****** Object:  View [dbo].[GP_MDWST_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
--- CREATE VIEW [dbo].[GP_MDWST_ITEM_PAYCODES_V]
--- AS
--- SELECT     ITEM_ID, item_name, pay_code, defaulted
--- FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
---                        FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
---                                               dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
---                                               dbo.GP_MDWST_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1)
---                                               = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                        WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                               (ITEM_TYPES.CODE = 'hours') AND organization_id = 6
---                        UNION
---                        SELECT     '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
---                        FROM         dbo.ITEMS INNER JOIN
---                                              dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
---                        WHERE     (item_types.CODE = 'hours') AND (dbo.ITEMS.ITEM_ID NOT IN
---                                                  (SELECT     dbo.ITEMS.ITEM_ID
---                                                    FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
---                                                                           dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
---                                                                           dbo.[dbo].[INVOICE_COST_CODES_PROBLEMS_V]GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1)
---                                                                           = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                                                    WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND
---                                                                           (ITEM_TYPES.CODE = 'hours') AND dbo.items.organization_id = 6))) DERIVEDTBL
--- GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[GP_MDWST_ITEM_PAYCODES_V]
+AS
+SELECT     ITEM_ID, item_name, pay_code, defaulted
+FROM         (SELECT     GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
+                       FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
+                                              dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
+                                              dbo.GP_MDWST_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                              = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                       WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                              (ITEM_TYPES.CODE = 'hours') AND organization_id = 6
+                       UNION
+                       SELECT     '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
+                       FROM         dbo.ITEMS INNER JOIN
+                                             dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
+                       WHERE     (item_types.CODE = 'hours') AND (dbo.ITEMS.ITEM_ID NOT IN
+                                                 (SELECT     dbo.ITEMS.ITEM_ID
+                                                   FROM          dbo.LOOKUPS ITEM_TYPES INNER JOIN
+                                                                          dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID INNER JOIN
+                                                                          dbo.GP_MDWST_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                                                          = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                                                   WHERE      (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND 
+                                                                          (ITEM_TYPES.CODE = 'hours') AND dbo.items.organization_id = 6))) DERIVEDTBL
+GO
 /****** Object:  View [dbo].[REQUEST_SCHEDULE_DIFF_V]    Script Date: 05/03/2010 14:18:08 ******/
 SET ANSI_NULLS ON
 GO
@@ -7880,41 +7772,41 @@ GROUP BY dbo.PROJECTS_V.PROJECT_ID, dbo.JOBS.JOB_STATUS_TYPE_ID, dbo.PROJECTS_V.
                       CONTACTS_4.CONTACT_NAME
 GO
 /****** Object:  View [dbo].[GP_CILLC_ITEM_PAYCODES_V]    Script Date: 05/03/2010 14:18:07 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
--- CREATE VIEW [dbo].[GP_CILLC_ITEM_PAYCODES_V] AS
--- SELECT ITEM_ID, item_name, pay_code, defaulted
---   FROM (SELECT GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
---           FROM dbo.LOOKUPS ITEM_TYPES INNER JOIN dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID
---                                       INNER JOIN dbo.GP_MPLS_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1)
---                                               = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---          WHERE (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND (ITEM_TYPES.CODE = 'hours')
---        UNION
---         SELECT '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
---           FROM dbo.ITEMS INNER JOIN dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
---          WHERE (item_types.CODE = 'hours')
---            AND (dbo.ITEMS.ITEM_ID NOT IN (SELECT dbo.ITEMS.ITEM_ID
---                                             FROM dbo.LOOKUPS ITEM_TYPES INNER JOIN dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID
---                                                                         INNER JOIN dbo.GP_MPLS_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1)
---                                                                           = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                                            WHERE (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0)
---                                              AND (ITEM_TYPES.CODE = 'hours')))
---            AND RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) <> 'DT'
---        UNION
---         SELECT '16' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
---           FROM dbo.ITEMS INNER JOIN dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
---          WHERE (item_types.CODE = 'hours')
---            AND (dbo.ITEMS.ITEM_ID NOT IN (SELECT dbo.ITEMS.ITEM_ID
---                                             FROM dbo.LOOKUPS ITEM_TYPES INNER JOIN dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID
---                                                                         INNER JOIN dbo.GP_MPLS_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1)
---                                                                           = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
---                                            WHERE (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0)
---                                              AND (ITEM_TYPES.CODE = 'hours')))
---            AND RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) = 'DT'
---         ) DERIVEDTBL
--- GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[GP_CILLC_ITEM_PAYCODES_V] AS
+SELECT ITEM_ID, item_name, pay_code, defaulted
+  FROM (SELECT GP_PAYCODES.PAYRCORD AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 'f' AS defaulted
+          FROM dbo.LOOKUPS ITEM_TYPES INNER JOIN dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID 
+                                      INNER JOIN dbo.GP_MPLS_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                              = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+         WHERE (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) AND (ITEM_TYPES.CODE = 'hours')
+       UNION
+        SELECT '1' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
+          FROM dbo.ITEMS INNER JOIN dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
+         WHERE (item_types.CODE = 'hours') 
+           AND (dbo.ITEMS.ITEM_ID NOT IN (SELECT dbo.ITEMS.ITEM_ID
+                                            FROM dbo.LOOKUPS ITEM_TYPES INNER JOIN dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID
+                                                                        INNER JOIN dbo.GP_MPLS_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                                                          = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                                           WHERE (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) 
+                                             AND (ITEM_TYPES.CODE = 'hours')))
+           AND RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) <> 'DT' 
+       UNION
+        SELECT '16' AS pay_code, dbo.ITEMS.NAME AS item_name, dbo.ITEMS.ITEM_ID, 't' AS defaulted
+          FROM dbo.ITEMS INNER JOIN dbo.LOOKUPS item_types ON dbo.ITEMS.ITEM_TYPE_ID = item_types.LOOKUP_ID
+         WHERE (item_types.CODE = 'hours') 
+           AND (dbo.ITEMS.ITEM_ID NOT IN (SELECT dbo.ITEMS.ITEM_ID
+                                            FROM dbo.LOOKUPS ITEM_TYPES INNER JOIN dbo.ITEMS ON ITEM_TYPES.LOOKUP_ID = dbo.ITEMS.ITEM_TYPE_ID
+                                                                        INNER JOIN dbo.GP_MPLS_PAY_CODE_V GP_PAYCODES ON RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) 
+                                                                          = RIGHT(GP_PAYCODES.DSCRIPTN, CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) - 1)
+                                           WHERE (CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) > 0) AND (CHARINDEX('-', REVERSE(GP_PAYCODES.DSCRIPTN)) > 0) 
+                                             AND (ITEM_TYPES.CODE = 'hours')))
+           AND RIGHT(dbo.ITEMS.NAME, CHARINDEX('-', REVERSE(dbo.ITEMS.NAME)) - 1) = 'DT'       
+        ) DERIVEDTBL
+GO
 /****** Object:  View [dbo].[SERVICE_CUSTOM_COLS_V]    Script Date: 05/03/2010 14:18:09 ******/
 SET ANSI_NULLS ON
 GO
@@ -9169,62 +9061,6 @@ FROM         dbo.LOOKUPS_V
 WHERE     (lookup_active_flag <> 'N') AND (type_active_flag <> 'N')
 ORDER BY type_name, SEQUENCE_NO
 GO
-
-/****** Object:  View [dbo].[SCH_RESOURCES_V]    Script Date: 05/03/2010 14:18:09 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER OFF
-GO
-CREATE VIEW [dbo].[SCH_RESOURCES_V]
-AS
-SELECT     CAST(dbo.RESOURCES_V.RESOURCE_ID AS varchar(30)) + ':' + ISNULL(CAST(dbo.SCH_RESOURCES.SCH_RESOURCE_ID AS varchar(30)), '')
-                      AS res_sch_id, dbo.RESOURCES_V.RESOURCE_ID, dbo.RESOURCES_V.ORGANIZATION_ID, dbo.SCH_RESOURCES.SCH_RESOURCE_ID,
-                      dbo.SCH_RESOURCES.WEEKEND_SCH_RESOURCE_ID, dbo.RESOURCES_V.NAME AS resource_name, dbo.SCH_RESOURCES.JOB_ID,
-                      dbo.SCH_RESOURCES.SERVICE_ID, dbo.SERVICES.SERVICE_NO, dbo.SCH_RESOURCES.HIDDEN_SERVICE_ID,
-                      ISNULL(dbo.SCH_RESOURCES.SERVICE_ID, dbo.SCH_RESOURCES.HIDDEN_SERVICE_ID) AS actual_service_id,
-                      dbo.SCH_RESOURCES.RES_STATUS_TYPE_ID, RES_STATUS_TYPES.CODE AS res_status_type_code, ISNULL(RES_STATUS_TYPES.NAME,
-                      'Available') AS res_status_type_name, dbo.SCH_RESOURCES.REASON_TYPE_ID, REASON_TYPE.CODE AS reason_type_code,
-                      REASON_TYPE.NAME AS reason_type_name, dbo.RESOURCES_V.RES_CATEGORY_TYPE_ID, dbo.RESOURCES_V.res_cat_type_code,
-                      dbo.RESOURCES_V.res_cat_type_name, dbo.RESOURCES_V.RESOURCE_TYPE_ID, dbo.RESOURCES_V.resource_type_code,
-                      dbo.RESOURCES_V.resource_type_name, dbo.RESOURCES_V.UNIQUE_FLAG, dbo.RESOURCES_V.NOTES, dbo.RESOURCES_V.PIN,
-                      dbo.RESOURCES_V.FOREMAN_FLAG, dbo.RESOURCES_V.ACTIVE_FLAG, dbo.RESOURCES_V.EXT_VENDOR_ID,
-                      dbo.RESOURCES_V.EXT_EMPLOYEE_ID, dbo.RESOURCES_V.employment_type_name, dbo.RESOURCES_V.employment_type_code,
-                      dbo.RESOURCES_V.EMPLOYMENT_TYPE_ID, dbo.RESOURCES_V.USER_ID, dbo.RESOURCES_V.user_full_name,
-                      dbo.RESOURCES_V.user_contact_id, dbo.RESOURCES_V.user_contact_name, dbo.RESOURCES_V.modified_by_name AS res_modified_by_name,
-                      dbo.RESOURCES_V.MODIFIED_BY AS res_modified_by, dbo.RESOURCES_V.DATE_MODIFIED AS res_date_modified,
-                      dbo.RESOURCES_V.created_by_name AS res_created_by_name, dbo.RESOURCES_V.CREATED_BY AS res_created_by,
-                      dbo.RESOURCES_V.DATE_CREATED AS res_date_created, ISNULL(dbo.SCH_RESOURCES.FOREMAN_FLAG, 'N') AS sch_foreman_flag,
-                      dbo.SCH_RESOURCES.RES_START_DATE, dbo.SCH_RESOURCES.RES_START_TIME, dbo.SCH_RESOURCES.RES_END_DATE,
-                      dbo.SCH_RESOURCES.RES_END_TIME, dbo.SCH_RESOURCES.DATE_CONFIRMED, dbo.SCH_RESOURCES.RESOURCE_QTY,
-                      dbo.SCH_RESOURCES.SCH_NOTES, dbo.SCH_RESOURCES.WEEKEND_FLAG, dbo.SCH_RESOURCES.DATE_CREATED AS sch_date_created,
-                      dbo.SCH_RESOURCES.CREATED_BY AS sch_created_by, CREATED_BY.FIRST_NAME + ' ' + CREATED_BY.LAST_NAME AS sch_created_by_name,
-                      dbo.SCH_RESOURCES.DATE_MODIFIED AS sch_date_modified, dbo.SCH_RESOURCES.MODIFIED_BY AS sch_modified_by,
-                      MODIFIED_BY.FIRST_NAME + ' ' + MODIFIED_BY.LAST_NAME AS sch_modified_by_name, ISNULL(report_to.NAME, 'Job Location')
-                      AS report_to_name, dbo.SCH_RESOURCES.DATE_TYPE_ID, dbo.SERVICES.SERV_STATUS_TYPE_ID,
-                      SERV_STATUS_TYPES.CODE AS serv_status_type_code, SERV_STATUS_TYPES.NAME AS serv_status_type_name,
-                      SERV_STATUS_TYPES.SEQUENCE_NO AS serv_status_type_seq_no, dbo.JOBS_V.JOB_ID AS Expr1, dbo.JOBS_V.JOB_NO, dbo.JOBS_V.JOB_NAME,
-                      dbo.JOBS_V.JOB_TYPE_ID, dbo.JOBS_V.job_type_code, dbo.JOBS_V.job_type_name, dbo.JOBS_V.JOB_STATUS_TYPE_ID,
-                      dbo.JOBS_V.job_status_type_code, dbo.JOBS_V.job_status_type_name, dbo.JOBS_V.CUSTOMER_ID, dbo.JOBS_V.FOREMAN_RESOURCE_ID,
-                      dbo.JOBS_V.foreman_resource_name, dbo.JOBS_V.foreman_user_id, dbo.JOBS_V.foreman_user_name,
-                      dbo.SCH_RESOURCES.REPORT_TO_TYPE_ID, dbo.SCH_RESOURCES.SEND_TO_PDA_FLAG,
-                      (CASE reason_type.code WHEN 'unconfirmed' THEN 'Y' ELSE 'N' END) AS unconfirmed_flag
-FROM         dbo.RESOURCES_V RIGHT OUTER JOIN
-                      dbo.LOOKUPS RES_STATUS_TYPES RIGHT OUTER JOIN
-                      dbo.LOOKUPS report_to RIGHT OUTER JOIN
-                      dbo.USERS MODIFIED_BY RIGHT OUTER JOIN
-                      dbo.SCH_RESOURCES LEFT OUTER JOIN
-                      dbo.JOBS_V ON dbo.SCH_RESOURCES.JOB_ID = dbo.JOBS_V.JOB_ID LEFT OUTER JOIN
-                      dbo.LOOKUPS SERV_STATUS_TYPES RIGHT OUTER JOIN
-                      dbo.SERVICES ON SERV_STATUS_TYPES.LOOKUP_ID = dbo.SERVICES.SERV_STATUS_TYPE_ID ON
-                      dbo.SCH_RESOURCES.SERVICE_ID = dbo.SERVICES.SERVICE_ID LEFT OUTER JOIN
-                      dbo.USERS CREATED_BY ON dbo.SCH_RESOURCES.CREATED_BY = CREATED_BY.USER_ID ON
-                      MODIFIED_BY.USER_ID = dbo.SCH_RESOURCES.MODIFIED_BY ON
-                      report_to.LOOKUP_ID = dbo.SCH_RESOURCES.REPORT_TO_TYPE_ID LEFT OUTER JOIN
-                      dbo.LOOKUPS REASON_TYPE ON dbo.SCH_RESOURCES.REASON_TYPE_ID = REASON_TYPE.LOOKUP_ID ON
-                      RES_STATUS_TYPES.LOOKUP_ID = dbo.SCH_RESOURCES.RES_STATUS_TYPE_ID ON
-                      dbo.RESOURCES_V.RESOURCE_ID = dbo.SCH_RESOURCES.RESOURCE_ID
-GO
-
 /****** Object:  View [dbo].[PDA_SCHED_RES_V]    Script Date: 05/03/2010 14:18:08 ******/
 SET ANSI_NULLS ON
 GO
@@ -9232,7 +9068,6 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE VIEW [dbo].[PDA_SCHED_RES_V] AS SELECT dbo.SCH_RESOURCES_V.SCH_RESOURCE_ID AS sched_resource_id, dbo.SCH_RESOURCES_V.JOB_ID, dbo.SCH_RESOURCES_V.RESOURCE_ID, dbo.SCH_RESOURCES_V.resource_name AS name, dbo.PDA_JOBS_V.ims_user_id FROM dbo.SCH_RESOURCES_V INNER JOIN dbo.PDA_JOBS_V ON dbo.SCH_RESOURCES_V.JOB_ID = dbo.PDA_JOBS_V.JOB_ID WHERE (CONVERT(datetime, CONVERT(varchar, dbo.SCH_RESOURCES_V.RES_START_DATE, 101)) <= CONVERT(datetime, CONVERT(varchar, GETDATE(), 101))) AND (ISNULL(CONVERT(datetime, CONVERT(varchar, dbo.SCH_RESOURCES_V.RES_END_DATE, 101)), DATEADD(day, 1, CONVERT(datetime, CONVERT(varchar, GETDATE(), 101)))) >= CONVERT(datetime, CONVERT(varchar, GETDATE(), 101))) AND (dbo.PDA_JOBS_V.ims_user_id IS NOT NULL)
 GO
-
 /****** Object:  View [dbo].[PROJECT_NOTES_V]    Script Date: 05/03/2010 14:18:08 ******/
 SET ANSI_NULLS ON
 GO
@@ -9297,209 +9132,6 @@ AS
 (SELECT j.job_id, i.item_id
 FROM dbo.jobs j INNER JOIN dbo.items i ON j.job_type_id = i.job_type_id)
 GO
-
-/****** Object:  View [dbo].[projects_all_requests_v]    Script Date: 05/03/2010 14:18:08 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE VIEW [dbo].[projects_all_requests_v]
-AS
-SELECT p_v.project_id,
-       p_v.project_no,
-       r.request_id,
-       r.request_no,
-       q_v.quote_id,
-       q_v.quote_no,
-       CONVERT(VARCHAR, p_v.project_no) + '-' + CONVERT(VARCHAR, r.request_no) + '.' + CONVERT(VARCHAR, r.version_no) AS record_no,
-       r.request_id AS record_id,
-       r.request_no AS record_seq_no,
-       r.version_no,
-       dbo.versions_max_no_v.max_version_no,
-       r.request_type_id AS record_type_id,
-       request_type.code AS record_type_code,
-       request_type.name AS record_type_name,
-       request_type.sequence_no AS record_type_seq_no,
-       r.request_status_type_id AS record_status_type_id,
-       request_status_type.code AS record_status_type_code,
-       request_status_type.name AS record_status_type_name,
-       r.is_sent AS record_is_sent,
-       ISNULL(r.date_modified, r.date_created) AS record_last_modified,
-       r.date_created AS record_created,
-       r.date_modified AS record_modified,
-       p_v.project_status_type_id,
-       p_v.project_status_type_code,
-       p_v.project_status_type_name,
-       p_v.parent_customer_id,
-       p_v.organization_id,
-       p_v.ext_dealer_id,
-       p_v.dealer_name,
-       p_v.ext_customer_id,
-       p_v.customer_id,
-       p_v.customer_name,
-       p_v.end_user_id,
-       p_v.end_user_name,
-       p_v.refusal_email_info,
-       p_v.survey_location,
-       p_v.job_name,
-       r.quote_request_id,
-       r.request_type_id,
-       request_type.code AS request_type_code,
-       request_type.name AS request_type_name,
-       r.request_status_type_id,
-       request_status_type.code AS request_status_type_code,
-       request_status_type.name AS request_status_type_name,
-       r.is_sent AS request_is_sent,
-       r.dealer_po_no,
-       r.customer_po_no,
-       r.dealer_project_no,
-       r.design_project_no,
-       r.est_start_date,
-       CONVERT(VARCHAR(12), r.est_start_date, 101) AS est_start_date_varchar,
-       r.a_m_contact_id,
-       r.a_m_sales_contact_id,
-       r.customer_contact_id,
-       r.customer_contact2_id,
-       r.customer_contact3_id,
-       r.customer_contact4_id,
-       r.d_sales_rep_contact_id,
-       r.d_sales_sup_contact_id,
-       r.d_designer_contact_id,
-       r.d_proj_mgr_contact_id,
-       r.a_m_install_sup_contact_id,
-       r.a_d_designer_contact_id,
-       r.gen_contractor_contact_id,
-       r.electrician_contact_id,
-       r.data_phone_contact_id,
-       r.phone_contact_id,
-       r.carpet_layer_contact_id,
-       r.bldg_mgr_contact_id,
-       r.security_contact_id,
-       r.mover_contact_id,
-       r.other_contact_id,
-       r.furniture1_contact_id,
-       r.furniture2_contact_id,
-       r.is_quoted,
-       r.description,
-       r.approver_contact_id,
-       r.alt_customer_contact_id,
-       q_v.is_sent AS quote_is_sent,
-       q_v.quote_type_id,
-       q_v.quote_type_code,
-       q_v.quote_type_name,
-       q_v.quote_status_type_id,
-       q_v.quote_status_type_code,
-       q_v.quote_status_type_name,
-       q_v.date_quoted,
-       q_v.quote_total,
-       q_v.quoted_by_user_id,
-       q_v.quoted_by_user_name,
-       p_v.is_new
-  FROM dbo.projects_v2 p_v LEFT OUTER JOIN
-       dbo.requests r ON p_v.project_id = r.project_id LEFT OUTER JOIN
-       dbo.lookups request_type ON r.request_type_id = request_type.lookup_id LEFT OUTER JOIN
-       dbo.lookups request_status_type ON r.request_status_type_id = request_status_type.lookup_id LEFT OUTER JOIN
-       dbo.quotes_v q_v ON r.request_id = q_v.request_id  LEFT OUTER JOIN
-       dbo.versions_max_no_v ON r.request_no = dbo.versions_max_no_v.request_no AND r.project_id = dbo.versions_max_no_v.project_id
-UNION
-SELECT p_v.project_id,
-       p_v.project_no,
-       r.request_id,
-       r.request_no,
-       q_v.quote_id,
-       q_v.quote_no,
-       CONVERT(VARCHAR, p_v.project_no) + '-' + CONVERT(VARCHAR, q_v.quote_no) + '.' + ISNULL(CONVERT(VARCHAR, q_v.version),' ') AS record_no,
-       q_v.quote_id record_id,
-       q_v.quote_no AS record_seq_no,
-       1 version_no,
-       1 max_version_no,
-       q_v.request_type_id AS record_type_id,
-       q_v.request_type_code AS record_type_code,
-       q_v.request_type_name AS record_type_name,
-       q_v.request_type_sequence_no AS record_type_seq_no,
-       q_v.quote_status_type_id record_status_type_id,
-       q_v.quote_status_type_code AS record_status_type_code,
-       q_v.quote_status_type_name AS record_status_type_name,
-       q_v.is_sent AS record_is_sent,
-       ISNULL(q_v.date_modified, q_v.date_created) AS record_date,
-       q_v.date_created AS record_created,
-       q_v.date_modified AS record_modified,
-       p_v.project_status_type_id,
-       p_v.project_status_type_code,
-       p_v.project_status_type_name,
-       p_v.parent_customer_id,
-       p_v.organization_id,
-       p_v.ext_dealer_id,
-       p_v.dealer_name,
-       p_v.ext_customer_id,
-       p_v.customer_id,
-       p_v.customer_name,
-       p_v.end_user_id,
-       p_v.end_user_name,
-       p_v.refusal_email_info,
-       p_v.survey_location,
-       p_v.job_name,
-       r.quote_request_id,
-       r.request_type_id,
-       request_type.code AS request_type_code,
-       request_type.name AS request_type_name,
-       r.request_status_type_id,
-       request_status_type.code AS request_status_type_code,
-       request_status_type.name AS request_status_type_name,
-       r.is_sent AS request_is_sent,
-       r.dealer_po_no,
-       r.customer_po_no,
-       r.dealer_project_no,
-       r.design_project_no,
-       r.est_start_date,
-       CONVERT(VARCHAR(12), r.est_start_date, 101) AS est_start_date_varchar,
-       r.a_m_contact_id,
-       r.a_m_sales_contact_id,
-       r.customer_contact_id,
-       r.customer_contact2_id,
-       r.customer_contact3_id,
-       r.customer_contact4_id,
-       r.d_sales_rep_contact_id,
-       r.d_sales_sup_contact_id,
-       r.d_designer_contact_id,
-       r.d_proj_mgr_contact_id,
-       r.a_m_install_sup_contact_id,
-       r.a_d_designer_contact_id,
-       r.gen_contractor_contact_id,
-       r.electrician_contact_id,
-       r.data_phone_contact_id,
-       r.phone_contact_id,
-       r.carpet_layer_contact_id,
-       r.bldg_mgr_contact_id,
-       r.security_contact_id,
-       r.mover_contact_id,
-       r.other_contact_id,
-       r.furniture1_contact_id,
-       r.furniture2_contact_id,
-       r.is_quoted,
-       r.description,
-       r.approver_contact_id,
-       r.alt_customer_contact_id,
-       q_v.is_sent AS quote_is_sent,
-       q_v.quote_type_id,
-       q_v.quote_type_code,
-       q_v.quote_type_name,
-       q_v.quote_status_type_id,
-       q_v.quote_status_type_code,
-       q_v.quote_status_type_name,
-       q_v.date_quoted,
-       q_v.quote_total,
-       q_v.quoted_by_user_id,
-       q_v.quoted_by_user_name,
-       p_v.is_new
-  FROM dbo.projects_v2 p_v INNER JOIN
-       dbo.requests r ON p_v.project_id = r.project_id INNER JOIN
-       dbo.lookups request_type ON r.request_type_id = request_type.lookup_id INNER JOIN
-       dbo.lookups request_status_type ON r.request_status_type_id = request_status_type.lookup_id INNER JOIN
-       dbo.quotes_v q_v  ON r.request_id = q_v.request_id
- WHERE quote_id IS NOT NULL
-GO
-
 /****** Object:  View [dbo].[extranet_email_v]    Script Date: 05/03/2010 14:18:06 ******/
 SET ANSI_NULLS ON
 GO
@@ -9568,27 +9200,6 @@ FROM         dbo.REQUESTS INNER JOIN
                       dbo.REQUESTS.REQUEST_NO = dbo.VERSIONS_MAX_NO_V.REQUEST_NO AND 
                       dbo.REQUESTS.VERSION_NO = dbo.VERSIONS_MAX_NO_V.max_version_no
 GO
-
-/****** Object:  View [dbo].[SCH_VACATION_V]    Script Date: 05/03/2010 14:18:09 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE VIEW [dbo].[SCH_VACATION_V]
-AS
-SELECT     res_sch_id, RESOURCE_ID, SCH_RESOURCE_ID, WEEKEND_SCH_RESOURCE_ID, resource_name, JOB_ID, JOB_NO, SERVICE_ID,
-                      HIDDEN_SERVICE_ID, actual_service_id, SERVICE_NO, FOREMAN_RESOURCE_ID, FOREMAN_USER_ID, RES_STATUS_TYPE_ID,
-                      res_status_type_code, res_status_type_name, REASON_TYPE_ID, reason_type_code, reason_type_name, RES_CATEGORY_TYPE_ID,
-                      res_cat_type_code, res_cat_type_name, RESOURCE_TYPE_ID, resource_type_code, resource_type_name, UNIQUE_FLAG, NOTES, PIN,
-                      FOREMAN_FLAG, ACTIVE_FLAG, EXT_VENDOR_ID, employment_type_name, employment_type_code, EMPLOYMENT_TYPE_ID, USER_ID,
-                      user_full_name, user_contact_id, user_contact_name, res_modified_by_name, res_modified_by, res_date_modified, res_created_by_name,
-                      res_created_by, res_date_created, sch_foreman_flag, RES_START_DATE, RES_START_TIME, RES_END_DATE, DATE_CONFIRMED, RESOURCE_QTY,
-                      SCH_NOTES, WEEKEND_FLAG, sch_date_created, sch_created_by, sch_created_by_name, sch_date_modified, sch_modified_by,
-                      sch_modified_by_name, unconfirmed_flag
-FROM         dbo.SCH_RESOURCES_V
-WHERE     (reason_type_code = 'vacation')
-GO
-
 /****** Object:  View [dbo].[SCH_VACATIONS_ALL_V]    Script Date: 05/03/2010 14:18:09 ******/
 SET ANSI_NULLS ON
 GO
@@ -10532,18 +10143,6 @@ End
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=2 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'SERVICE_ACCOUNT_REPORT_TEMP'
 GO
-
-/****** Object:  View [dbo].[ICVERIFY_V]    Script Date: 05/03/2010 14:18:07 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE VIEW [dbo].[ICVERIFY_V]
-AS
-SELECT     JOB_ID, JOB_NO, CUSTOMER_NAME, INVOICE_ID, CAST(bill_total AS money) AS Bill_Total, CUST_COL_4
-FROM         dbo.SERVICE_ACCOUNT_REPORT_TEMP
-GO
-
 /****** Object:  View [dbo].[SERVICE_ACCT_RPT_TEMP_V_AZ]    Script Date: 05/03/2010 14:18:09 ******/
 SET ANSI_NULLS ON
 GO
@@ -11192,206 +10791,206 @@ GO
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=2 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'SERVICE_ACCT_RPT_TEMP_V_AZ'
 GO
 /****** Object:  View [dbo].[PAYROLL_VERIFICATION_V]    Script Date: 05/03/2010 14:18:08 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
--- CREATE VIEW [dbo].[PAYROLL_VERIFICATION_V]
--- AS
--- SELECT     pay.ORGANIZATION_ID, sl.RESOURCE_ID, pay.TC_JOB_ID AS JOB_ID, pay.TC_JOB_NO AS JOB_NO, pay.TC_SERVICE_ID AS SERVICE_ID,
---                       pay.TC_SERVICE_NO AS SERVICE_NO, pay.resource_name, dbo.RESOURCES_V.RES_CATEGORY_TYPE_ID, dbo.RESOURCES_V.res_cat_type_code,
---                       dbo.RESOURCES_V.res_cat_type_name, dbo.jobs_v.ext_customer_id, dbo.jobs_v.dealer_name, dbo.jobs_v.ext_dealer_id, sl.VERIFIED_DATE,
---                       sl.VERIFIED_BY, sl.PAYROLL_QTY AS hours_qty, sl.BILL_HOURLY_QTY AS hours_bill_qty, sl.BILL_HOURLY_RATE AS hours_bill_rate,
---                       pay.EXT_EMPLOYEE_ID, pay.employee_name, CONVERT(varchar(12), DATEADD(day, - 6, sl.SERVICE_LINE_WEEK), 101) AS begin_date,
---                       CONVERT(varchar(12), sl.SERVICE_LINE_WEEK, 101) AS end_date, pay.SERVICE_LINE_DATE, pay.ITEM_ID, pay.ITEM_NAME, pay.EXT_PAY_CODE,
---                       pay.ITEM_TYPE_CODE, dbo.ITEMS_V.item_type_name, sl.bill_hourly_total AS hours_bill_price, dbo.jobs_v.job_no_name, sl.ENTERED_DATE,
---                       sl.EXT_PAY_CODE AS EXT_PAYCODE, dbo.GP_MPLS_PAY_CODE_V.PAYRCORD, dbo.GP_MPLS_PAY_CODE_V.DSCRIPTN, sl.ENTERED_BY,
---                       sl.entered_by_name, dbo.USERS.USER_ID, dbo.USERS.FIRST_NAME, dbo.USERS.LAST_NAME, dbo.USERS.EXT_EMPLOYEE_ID AS EMP_ID,
---                       sl.verified_by_name, sl.ENTRY_METHOD, sl.TC_QTY, sl.TC_RATE, sl.tc_total, dbo.jobs_v.foreman_resource_name, sl.modified_by_name
--- FROM         dbo.USERS RIGHT OUTER JOIN
---                       dbo.ITEMS_V RIGHT OUTER JOIN
---                       dbo.PAYROLL_V AS pay ON dbo.ITEMS_V.ITEM_ID = pay.ITEM_ID LEFT OUTER JOIN
---                       dbo.jobs_v ON pay.TC_JOB_ID = dbo.jobs_v.job_id LEFT OUTER JOIN
---                       dbo.RESOURCES_V RIGHT OUTER JOIN
---                       dbo.TIME_CAPTURE_V AS sl ON dbo.RESOURCES_V.RESOURCE_ID = sl.RESOURCE_ID ON pay.SERVICE_LINE_ID = sl.SERVICE_LINE_ID ON
---                       dbo.USERS.USER_ID = sl.ENTERED_BY LEFT OUTER JOIN
---                       dbo.GP_MPLS_PAY_CODE_V ON sl.EXT_PAY_CODE = dbo.GP_MPLS_PAY_CODE_V.PAYRCORD
--- WHERE     (pay.PAYROLL_EXPORTED_FLAG = 'N') OR
---                       (pay.PAYROLL_EXPORTED_FLAG = 'N')
--- GO
--- EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPane1', @value=N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
--- Begin DesignProperties =
---    Begin PaneConfigurations =
---       Begin PaneConfiguration = 0
---          NumPanes = 4
---          Configuration = "(H (1[40] 4[20] 2[20] 3) )"
---       End
---       Begin PaneConfiguration = 1
---          NumPanes = 3
---          Configuration = "(H (1 [50] 4 [25] 3))"
---       End
---       Begin PaneConfiguration = 2
---          NumPanes = 3
---          Configuration = "(H (1 [50] 2 [25] 3))"
---       End
---       Begin PaneConfiguration = 3
---          NumPanes = 3
---          Configuration = "(H (4 [30] 2 [40] 3))"
---       End
---       Begin PaneConfiguration = 4
---          NumPanes = 2
---          Configuration = "(H (1 [56] 3))"
---       End
---       Begin PaneConfiguration = 5
---          NumPanes = 2
---          Configuration = "(H (2 [66] 3))"
---       End
---       Begin PaneConfiguration = 6
---          NumPanes = 2
---          Configuration = "(H (4 [50] 3))"
---       End
---       Begin PaneConfiguration = 7
---          NumPanes = 1
---          Configuration = "(V (3))"
---       End
---       Begin PaneConfiguration = 8
---          NumPanes = 3
---          Configuration = "(H (1[56] 4[18] 2) )"
---       End
---       Begin PaneConfiguration = 9
---          NumPanes = 2
---          Configuration = "(H (1 [75] 4))"
---       End
---       Begin PaneConfiguration = 10
---          NumPanes = 2
---          Configuration = "(H (1[66] 2) )"
---       End
---       Begin PaneConfiguration = 11
---          NumPanes = 2
---          Configuration = "(H (4 [60] 2))"
---       End
---       Begin PaneConfiguration = 12
---          NumPanes = 1
---          Configuration = "(H (1) )"
---       End
---       Begin PaneConfiguration = 13
---          NumPanes = 1
---          Configuration = "(V (4))"
---       End
---       Begin PaneConfiguration = 14
---          NumPanes = 1
---          Configuration = "(V (2))"
---       End
---       ActivePaneConfig = 0
---    End
---    Begin DiagramPane =
---       Begin Origin =
---          Top = -480
---          Left = 0
---       End
---       Begin Tables =
---          Begin Table = "USERS"
---             Begin Extent =
---                Top = 6
---                Left = 38
---                Bottom = 121
---                Right = 232
---             End
---             DisplayFlags = 280
---             TopColumn = 0
---          End
---          Begin Table = "ITEMS_V"
---             Begin Extent =
---                Top = 126
---                Left = 38
---                Bottom = 241
---                Right = 248
---             End
---             DisplayFlags = 280
---             TopColumn = 0
---          End
---          Begin Table = "pay"
---             Begin Extent =
---                Top = 246
---                Left = 38
---                Bottom = 361
---                Right = 277
---             End
---             DisplayFlags = 280
---             TopColumn = 0
---          End
---          Begin Table = "jobs_v"
---             Begin Extent =
---                Top = 6
---                Left = 270
---                Bottom = 121
---                Right = 471
---             End
---             DisplayFlags = 280
---             TopColumn = 18
---          End
---          Begin Table = "RESOURCES_V"
---             Begin Extent =
---                Top = 366
---                Left = 38
---                Bottom = 481
---                Right = 245
---             End
---             DisplayFlags = 280
---             TopColumn = 0
---          End
---          Begin Table = "sl"
---             Begin Extent =
---                Top = 486
---                Left = 38
---                Bottom = 699
---                Right = 395
---             End
---             DisplayFlags = 280
---             TopColumn = 74
---          End
---          Begin Table = "GP_MPLS_PAY_CODE_V"
---             Begin Extent =
---                Top = 126
---                Left = 286
---                Bottom = 241
---                Right = 438
---             End
---             DisplayFlags ' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'PAYROLL_VERIFICATION_V'
--- GO
--- EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPane2', @value=N'= 280
---             TopColumn = 0
---          End
---       End
---    End
---    Begin SQLPane =
---    End
---    Begin DataPane =
---       Begin ParameterDefaults = ""
---       End
---    End
---    Begin CriteriaPane =
---       Begin ColumnWidths = 11
---          Column = 1440
---          Alias = 900
---          Table = 1170
---          Output = 720
---          Append = 1400
---          NewValue = 1170
---          SortType = 1350
---          SortOrder = 1410
---          GroupBy = 1350
---          Filter = 1350
---          Or = 1350
---          Or = 1350
---          Or = 1350
---       End
---    End
--- End
--- ' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'PAYROLL_VERIFICATION_V'
--- GO
--- EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=2 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'PAYROLL_VERIFICATION_V'
--- GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[PAYROLL_VERIFICATION_V]
+AS
+SELECT     pay.ORGANIZATION_ID, sl.RESOURCE_ID, pay.TC_JOB_ID AS JOB_ID, pay.TC_JOB_NO AS JOB_NO, pay.TC_SERVICE_ID AS SERVICE_ID, 
+                      pay.TC_SERVICE_NO AS SERVICE_NO, pay.resource_name, dbo.RESOURCES_V.RES_CATEGORY_TYPE_ID, dbo.RESOURCES_V.res_cat_type_code, 
+                      dbo.RESOURCES_V.res_cat_type_name, dbo.jobs_v.ext_customer_id, dbo.jobs_v.dealer_name, dbo.jobs_v.ext_dealer_id, sl.VERIFIED_DATE, 
+                      sl.VERIFIED_BY, sl.PAYROLL_QTY AS hours_qty, sl.BILL_HOURLY_QTY AS hours_bill_qty, sl.BILL_HOURLY_RATE AS hours_bill_rate, 
+                      pay.EXT_EMPLOYEE_ID, pay.employee_name, CONVERT(varchar(12), DATEADD(day, - 6, sl.SERVICE_LINE_WEEK), 101) AS begin_date, 
+                      CONVERT(varchar(12), sl.SERVICE_LINE_WEEK, 101) AS end_date, pay.SERVICE_LINE_DATE, pay.ITEM_ID, pay.ITEM_NAME, pay.EXT_PAY_CODE, 
+                      pay.ITEM_TYPE_CODE, dbo.ITEMS_V.item_type_name, sl.bill_hourly_total AS hours_bill_price, dbo.jobs_v.job_no_name, sl.ENTERED_DATE, 
+                      sl.EXT_PAY_CODE AS EXT_PAYCODE, dbo.GP_MPLS_PAY_CODE_V.PAYRCORD, dbo.GP_MPLS_PAY_CODE_V.DSCRIPTN, sl.ENTERED_BY, 
+                      sl.entered_by_name, dbo.USERS.USER_ID, dbo.USERS.FIRST_NAME, dbo.USERS.LAST_NAME, dbo.USERS.EXT_EMPLOYEE_ID AS EMP_ID, 
+                      sl.verified_by_name, sl.ENTRY_METHOD, sl.TC_QTY, sl.TC_RATE, sl.tc_total, dbo.jobs_v.foreman_resource_name, sl.modified_by_name
+FROM         dbo.USERS RIGHT OUTER JOIN
+                      dbo.ITEMS_V RIGHT OUTER JOIN
+                      dbo.PAYROLL_V AS pay ON dbo.ITEMS_V.ITEM_ID = pay.ITEM_ID LEFT OUTER JOIN
+                      dbo.jobs_v ON pay.TC_JOB_ID = dbo.jobs_v.job_id LEFT OUTER JOIN
+                      dbo.RESOURCES_V RIGHT OUTER JOIN
+                      dbo.TIME_CAPTURE_V AS sl ON dbo.RESOURCES_V.RESOURCE_ID = sl.RESOURCE_ID ON pay.SERVICE_LINE_ID = sl.SERVICE_LINE_ID ON 
+                      dbo.USERS.USER_ID = sl.ENTERED_BY LEFT OUTER JOIN
+                      dbo.GP_MPLS_PAY_CODE_V ON sl.EXT_PAY_CODE = dbo.GP_MPLS_PAY_CODE_V.PAYRCORD
+WHERE     (pay.PAYROLL_EXPORTED_FLAG = 'N') OR
+                      (pay.PAYROLL_EXPORTED_FLAG = 'N')
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPane1', @value=N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
+Begin DesignProperties = 
+   Begin PaneConfigurations = 
+      Begin PaneConfiguration = 0
+         NumPanes = 4
+         Configuration = "(H (1[40] 4[20] 2[20] 3) )"
+      End
+      Begin PaneConfiguration = 1
+         NumPanes = 3
+         Configuration = "(H (1 [50] 4 [25] 3))"
+      End
+      Begin PaneConfiguration = 2
+         NumPanes = 3
+         Configuration = "(H (1 [50] 2 [25] 3))"
+      End
+      Begin PaneConfiguration = 3
+         NumPanes = 3
+         Configuration = "(H (4 [30] 2 [40] 3))"
+      End
+      Begin PaneConfiguration = 4
+         NumPanes = 2
+         Configuration = "(H (1 [56] 3))"
+      End
+      Begin PaneConfiguration = 5
+         NumPanes = 2
+         Configuration = "(H (2 [66] 3))"
+      End
+      Begin PaneConfiguration = 6
+         NumPanes = 2
+         Configuration = "(H (4 [50] 3))"
+      End
+      Begin PaneConfiguration = 7
+         NumPanes = 1
+         Configuration = "(V (3))"
+      End
+      Begin PaneConfiguration = 8
+         NumPanes = 3
+         Configuration = "(H (1[56] 4[18] 2) )"
+      End
+      Begin PaneConfiguration = 9
+         NumPanes = 2
+         Configuration = "(H (1 [75] 4))"
+      End
+      Begin PaneConfiguration = 10
+         NumPanes = 2
+         Configuration = "(H (1[66] 2) )"
+      End
+      Begin PaneConfiguration = 11
+         NumPanes = 2
+         Configuration = "(H (4 [60] 2))"
+      End
+      Begin PaneConfiguration = 12
+         NumPanes = 1
+         Configuration = "(H (1) )"
+      End
+      Begin PaneConfiguration = 13
+         NumPanes = 1
+         Configuration = "(V (4))"
+      End
+      Begin PaneConfiguration = 14
+         NumPanes = 1
+         Configuration = "(V (2))"
+      End
+      ActivePaneConfig = 0
+   End
+   Begin DiagramPane = 
+      Begin Origin = 
+         Top = -480
+         Left = 0
+      End
+      Begin Tables = 
+         Begin Table = "USERS"
+            Begin Extent = 
+               Top = 6
+               Left = 38
+               Bottom = 121
+               Right = 232
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "ITEMS_V"
+            Begin Extent = 
+               Top = 126
+               Left = 38
+               Bottom = 241
+               Right = 248
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "pay"
+            Begin Extent = 
+               Top = 246
+               Left = 38
+               Bottom = 361
+               Right = 277
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "jobs_v"
+            Begin Extent = 
+               Top = 6
+               Left = 270
+               Bottom = 121
+               Right = 471
+            End
+            DisplayFlags = 280
+            TopColumn = 18
+         End
+         Begin Table = "RESOURCES_V"
+            Begin Extent = 
+               Top = 366
+               Left = 38
+               Bottom = 481
+               Right = 245
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "sl"
+            Begin Extent = 
+               Top = 486
+               Left = 38
+               Bottom = 699
+               Right = 395
+            End
+            DisplayFlags = 280
+            TopColumn = 74
+         End
+         Begin Table = "GP_MPLS_PAY_CODE_V"
+            Begin Extent = 
+               Top = 126
+               Left = 286
+               Bottom = 241
+               Right = 438
+            End
+            DisplayFlags ' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'PAYROLL_VERIFICATION_V'
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPane2', @value=N'= 280
+            TopColumn = 0
+         End
+      End
+   End
+   Begin SQLPane = 
+   End
+   Begin DataPane = 
+      Begin ParameterDefaults = ""
+      End
+   End
+   Begin CriteriaPane = 
+      Begin ColumnWidths = 11
+         Column = 1440
+         Alias = 900
+         Table = 1170
+         Output = 720
+         Append = 1400
+         NewValue = 1170
+         SortType = 1350
+         SortOrder = 1410
+         GroupBy = 1350
+         Filter = 1350
+         Or = 1350
+         Or = 1350
+         Or = 1350
+      End
+   End
+End
+' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'PAYROLL_VERIFICATION_V'
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=2 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'PAYROLL_VERIFICATION_V'
+GO
 /****** Object:  View [dbo].[PUNCHLIST_ISSUES_V]    Script Date: 05/03/2010 14:18:08 ******/
 SET ANSI_NULLS ON
 GO
@@ -13020,114 +12619,34 @@ FROM         dbo.JOBS_V LEFT OUTER JOIN
                       dbo.VAR_JOB_EST_HOURS_V ON dbo.JOBS_V.JOB_ID = dbo.VAR_JOB_EST_HOURS_V.JOB_ID
 GO
 /****** Object:  View [dbo].[PAYROLL_VERIFICATION_V_PATTY]    Script Date: 05/03/2010 14:18:08 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
--- CREATE VIEW [dbo].[PAYROLL_VERIFICATION_V_PATTY]
--- AS
--- SELECT     pay.ORGANIZATION_ID, sl.RESOURCE_ID, pay.TC_JOB_ID AS JOB_ID, pay.TC_JOB_NO AS JOB_NO, pay.TC_SERVICE_ID AS SERVICE_ID,
---                       pay.TC_SERVICE_NO AS SERVICE_NO, pay.resource_name, dbo.RESOURCES_V.RES_CATEGORY_TYPE_ID, dbo.RESOURCES_V.res_cat_type_code,
---                       dbo.RESOURCES_V.res_cat_type_name, dbo.JOBS_V.EXT_CUSTOMER_ID, dbo.JOBS_V.DEALER_NAME, dbo.JOBS_V.EXT_DEALER_ID,
---                       sl.VERIFIED_DATE, sl.VERIFIED_BY, sl.PAYROLL_QTY AS hours_qty, sl.BILL_HOURLY_QTY AS hours_bill_qty,
---                       sl.BILL_HOURLY_RATE AS hours_bill_rate, pay.EXT_EMPLOYEE_ID, pay.employee_name, CONVERT(varchar(12), DATEADD(day, - 6,
---                       sl.SERVICE_LINE_WEEK), 101) AS begin_date, CONVERT(varchar(12), sl.SERVICE_LINE_WEEK, 101) AS end_date, pay.SERVICE_LINE_DATE,
---                       pay.ITEM_ID, pay.ITEM_NAME, pay.EXT_PAY_CODE, pay.ITEM_TYPE_CODE, dbo.ITEMS_V.item_type_name,
---                       sl.BILL_HOURLY_TOTAL AS hours_bill_price, dbo.JOBS_V.JOB_NO_NAME, sl.ENTERED_DATE, sl.EXT_PAY_CODE AS EXT_PAYCODE,
---                       dbo.GP_MPLS_PAY_CODE_V.PAYRCORD, dbo.GP_MPLS_PAY_CODE_V.DSCRIPTN, sl.ENTERED_BY, sl.entered_by_name, dbo.USERS.USER_ID,
---                       dbo.USERS.FIRST_NAME, dbo.USERS.LAST_NAME, dbo.USERS.EXT_EMPLOYEE_ID AS EMP_ID, sl.verified_by_name, sl.ENTRY_METHOD,
---                       sl.TC_QTY, sl.TC_RATE, sl.TC_TOTAL
--- FROM         dbo.USERS RIGHT OUTER JOIN
---                       dbo.ITEMS_V RIGHT OUTER JOIN
---                       dbo.PAYROLL_V pay ON dbo.ITEMS_V.ITEM_ID = pay.ITEM_ID LEFT OUTER JOIN
---                       dbo.JOBS_V ON pay.TC_JOB_ID = dbo.JOBS_V.JOB_ID LEFT OUTER JOIN
---                       dbo.RESOURCES_V RIGHT OUTER JOIN
---                       dbo.TIME_CAPTURE_V sl ON dbo.RESOURCES_V.RESOURCE_ID = sl.RESOURCE_ID ON pay.SERVICE_LINE_ID = sl.SERVICE_LINE_ID ON
---                       dbo.USERS.USER_ID = sl.ENTERED_BY LEFT OUTER JOIN
---                       dbo.GP_MPLS_PAY_CODE_V ON sl.EXT_PAY_CODE = dbo.GP_MPLS_PAY_CODE_V.PAYRCORD
--- WHERE     (sl.VERIFIED_BY IS NOT NULL) OR
---                       (sl.OVERRIDE_BY IS NOT NULL)
--- GO
-
-/****** Object:  View [dbo].[invoice_pre_total_v]    Script Date: 05/03/2010 14:18:07 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE VIEW [dbo].[invoice_pre_total_v]
+CREATE VIEW [dbo].[PAYROLL_VERIFICATION_V_PATTY]
 AS
-SELECT i_v.organization_id,
-       i_v.job_id,
-       j_v.job_no,
-       b_v.bill_service_id AS service_id,
-       i_v.invoice_id,
-       i_v.invoice_id_trk,
-       i_v.description AS invoice_description,
-       i_v.status_id AS invoice_status_id,
-       i_v.ext_batch_id,
-       i_v.date_sent,
-       i_v.invoice_type_name,
-       i_v.invoice_type_code,
-       i_v.batch_status_id,
-       0 AS custom_line_total,
-       ISNULL(b_v.bill_hourly_total, 0) AS bill_hourly_total,
-       ISNULL(b_v.bill_exp_total, 0) AS bill_exp_total,
-       ISNULL(b_v.bill_total, 0) AS bill_total,
-       i_v.assigned_to_name,
-       j_v.billing_user_id,
-       j_v.billing_user_name,
-       i_v.billing_type_name,
-       i_v.invoice_format_type_name,
-       i_v.po_no,
-       j_v.dealer_name,
-       j_v.ext_dealer_id,
-       j_v.customer_name,
-       j_v.end_user_name,
-       i_v.date_created AS invoice_date_created,
-       j_v.job_type_name,
-       j_v.job_type_code
-  FROM dbo.invoices_v i_v LEFT OUTER JOIN
-       dbo.jobs_v j_v ON i_v.job_id = j_v.job_id LEFT OUTER JOIN
-       dbo.billing_v b_v ON i_v.invoice_id = b_v.invoice_id
-UNION ALL
-SELECT j_v.organization_id,
-       i_v.job_id,
-       j_v.job_no,
-       NULL,
-       i_v.invoice_id,
-       i_v.invoice_id_trk,
-       i_v.description,
-       i_v.status_id,
-       i_v.ext_batch_id,
-       i_v.date_sent,
-       i_v.invoice_type_name,
-       i_v.invoice_type_code,
-       i_v.batch_status_id,
-       (il_v.unit_price * il_v.qty) custom_line_total,
-       0,
-       0,
-       0,
-       i_v.assigned_to_name,
-       j_v.billing_user_id,
-       j_v.billing_user_name,
-       i_v.billing_type_name,
-       i_v.invoice_format_type_name,
-       i_v.po_no,
-       j_v.dealer_name,
-       j_v.ext_dealer_id,
-       j_v.customer_name,
-       j_v.end_user_name,
-       i_v.date_created invoice_date_created,
-       j_v.job_type_name,
-       j_v.job_type_code
-  FROM dbo.jobs_v j_v RIGHT OUTER JOIN
-       dbo.invoice_lines_v il_v on j_v.job_id = il_v.job_id RIGHT OUTER JOIN
-       dbo.invoices_v i_v ON il_v.invoice_id = i_v.invoice_id
- WHERE i_v.invoice_id = il_v.invoice_id
-   AND il_v.job_id = j_v.job_id
-   AND il_v.invoice_line_type_code = 'custom'
+SELECT     pay.ORGANIZATION_ID, sl.RESOURCE_ID, pay.TC_JOB_ID AS JOB_ID, pay.TC_JOB_NO AS JOB_NO, pay.TC_SERVICE_ID AS SERVICE_ID, 
+                      pay.TC_SERVICE_NO AS SERVICE_NO, pay.resource_name, dbo.RESOURCES_V.RES_CATEGORY_TYPE_ID, dbo.RESOURCES_V.res_cat_type_code, 
+                      dbo.RESOURCES_V.res_cat_type_name, dbo.JOBS_V.EXT_CUSTOMER_ID, dbo.JOBS_V.DEALER_NAME, dbo.JOBS_V.EXT_DEALER_ID, 
+                      sl.VERIFIED_DATE, sl.VERIFIED_BY, sl.PAYROLL_QTY AS hours_qty, sl.BILL_HOURLY_QTY AS hours_bill_qty, 
+                      sl.BILL_HOURLY_RATE AS hours_bill_rate, pay.EXT_EMPLOYEE_ID, pay.employee_name, CONVERT(varchar(12), DATEADD(day, - 6, 
+                      sl.SERVICE_LINE_WEEK), 101) AS begin_date, CONVERT(varchar(12), sl.SERVICE_LINE_WEEK, 101) AS end_date, pay.SERVICE_LINE_DATE, 
+                      pay.ITEM_ID, pay.ITEM_NAME, pay.EXT_PAY_CODE, pay.ITEM_TYPE_CODE, dbo.ITEMS_V.item_type_name, 
+                      sl.BILL_HOURLY_TOTAL AS hours_bill_price, dbo.JOBS_V.JOB_NO_NAME, sl.ENTERED_DATE, sl.EXT_PAY_CODE AS EXT_PAYCODE, 
+                      dbo.GP_MPLS_PAY_CODE_V.PAYRCORD, dbo.GP_MPLS_PAY_CODE_V.DSCRIPTN, sl.ENTERED_BY, sl.entered_by_name, dbo.USERS.USER_ID, 
+                      dbo.USERS.FIRST_NAME, dbo.USERS.LAST_NAME, dbo.USERS.EXT_EMPLOYEE_ID AS EMP_ID, sl.verified_by_name, sl.ENTRY_METHOD, 
+                      sl.TC_QTY, sl.TC_RATE, sl.TC_TOTAL
+FROM         dbo.USERS RIGHT OUTER JOIN
+                      dbo.ITEMS_V RIGHT OUTER JOIN
+                      dbo.PAYROLL_V pay ON dbo.ITEMS_V.ITEM_ID = pay.ITEM_ID LEFT OUTER JOIN
+                      dbo.JOBS_V ON pay.TC_JOB_ID = dbo.JOBS_V.JOB_ID LEFT OUTER JOIN
+                      dbo.RESOURCES_V RIGHT OUTER JOIN
+                      dbo.TIME_CAPTURE_V sl ON dbo.RESOURCES_V.RESOURCE_ID = sl.RESOURCE_ID ON pay.SERVICE_LINE_ID = sl.SERVICE_LINE_ID ON 
+                      dbo.USERS.USER_ID = sl.ENTERED_BY LEFT OUTER JOIN
+                      dbo.GP_MPLS_PAY_CODE_V ON sl.EXT_PAY_CODE = dbo.GP_MPLS_PAY_CODE_V.PAYRCORD
+WHERE     (sl.VERIFIED_BY IS NOT NULL) OR
+                      (sl.OVERRIDE_BY IS NOT NULL)
 GO
-
 /****** Object:  View [dbo].[crystal_UNBILL_ACCT_V]    Script Date: 05/03/2010 14:18:06 ******/
 SET ANSI_NULLS ON
 GO
@@ -13303,24 +12822,207 @@ SELECT organization_id,
          END AS duration
   FROM dbo.REQUEST_VENDOR_TOTALS_V
 GO
-/****** Object:  View [dbo].[CHECKLISTS_V]    Script Date: 05/03/2010 14:18:05 ******/
+/****** Object:  View [dbo].[projects_all_requests_v]    Script Date: 05/03/2010 14:18:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE VIEW [dbo].[CHECKLISTS_V]
+CREATE VIEW [dbo].[projects_all_requests_v]
 AS
-SELECT     dbo.PROJECTS_ALL_REQUESTS_V.ORGANIZATION_ID, dbo.CHECKLISTS.CHECKLIST_ID, dbo.PROJECTS_ALL_REQUESTS_V.PROJECT_ID,
-                      dbo.CHECKLISTS.REQUEST_ID, dbo.PROJECTS_ALL_REQUESTS_V.record_no, dbo.CHECKLISTS.NUM_STATIONS, dbo.CHECKLISTS.DATE_CREATED,
-                      dbo.CHECKLISTS.CREATED_BY, CREATED_BY.FIRST_NAME + ' ' + CREATED_BY.LAST_NAME AS created_by_name,
-                      dbo.CHECKLISTS.DATE_MODIFIED, UPDATED_BY.FIRST_NAME + ' ' + UPDATED_BY.LAST_NAME AS modified_by_name
-FROM         dbo.CHECKLISTS INNER JOIN
-                      dbo.PROJECTS_ALL_REQUESTS_V ON dbo.CHECKLISTS.REQUEST_ID = dbo.PROJECTS_ALL_REQUESTS_V.record_id LEFT OUTER JOIN
-                      dbo.USERS CREATED_BY ON dbo.CHECKLISTS.CREATED_BY = CREATED_BY.USER_ID LEFT OUTER JOIN
-                      dbo.USERS UPDATED_BY ON dbo.CHECKLISTS.MODIFIED_BY = UPDATED_BY.USER_ID
-WHERE     (dbo.PROJECTS_ALL_REQUESTS_V.record_type_code = 'service_request')
+SELECT p_v.project_id, 
+       p_v.project_no,
+       r.request_id, 
+       r.request_no, 
+       q_v.quote_id, 
+       q_v.quote_no,
+       CONVERT(VARCHAR, p_v.project_no) + '-' + CONVERT(VARCHAR, r.request_no) + '.' + CONVERT(VARCHAR, r.version_no) AS record_no, 
+       r.request_id AS record_id, 
+       r.request_no AS record_seq_no, 
+       r.version_no, 
+       dbo.versions_max_no_v.max_version_no, 
+       r.request_type_id AS record_type_id, 
+       request_type.code AS record_type_code, 
+       request_type.name AS record_type_name, 
+       request_type.sequence_no AS record_type_seq_no, 
+       r.request_status_type_id AS record_status_type_id, 
+       request_status_type.code AS record_status_type_code, 
+       request_status_type.name AS record_status_type_name, 
+       r.is_sent AS record_is_sent, 
+       ISNULL(r.date_modified, r.date_created) AS record_last_modified, 
+       r.date_created AS record_created, 
+       r.date_modified AS record_modified, 
+       p_v.project_status_type_id, 
+       p_v.project_status_type_code, 
+       p_v.project_status_type_name, 
+       p_v.parent_customer_id, 
+       p_v.organization_id, 
+       p_v.ext_dealer_id, 
+       p_v.dealer_name, 
+       p_v.ext_customer_id,
+       p_v.customer_id, 
+       p_v.customer_name,
+       p_v.end_user_id,
+       p_v.end_user_name,
+       p_v.refusal_email_info, 
+       p_v.survey_location,      
+       p_v.job_name, 
+       r.quote_request_id, 
+       r.request_type_id, 
+       request_type.code AS request_type_code, 
+       request_type.name AS request_type_name, 
+       r.request_status_type_id, 
+       request_status_type.code AS request_status_type_code, 
+       request_status_type.name AS request_status_type_name, 
+       r.is_sent AS request_is_sent, 
+       r.dealer_po_no, 
+       r.customer_po_no, 
+       r.dealer_project_no, 
+       r.design_project_no, 
+       r.est_start_date, 
+       CONVERT(VARCHAR(12), r.est_start_date, 101) AS est_start_date_varchar, 
+       r.a_m_contact_id, 
+       r.a_m_sales_contact_id, 
+       r.customer_contact_id,
+       r.customer_contact2_id,
+       r.customer_contact3_id,
+       r.customer_contact4_id,
+       r.d_sales_rep_contact_id, 
+       r.d_sales_sup_contact_id, 
+       r.d_designer_contact_id, 
+       r.d_proj_mgr_contact_id, 
+       r.a_m_install_sup_contact_id, 
+       r.a_d_designer_contact_id, 
+       r.gen_contractor_contact_id, 
+       r.electrician_contact_id, 
+       r.data_phone_contact_id, 
+       r.phone_contact_id, 
+       r.carpet_layer_contact_id, 
+       r.bldg_mgr_contact_id, 
+       r.security_contact_id, 
+       r.mover_contact_id, 
+       r.other_contact_id, 
+       r.furniture1_contact_id, 
+       r.furniture2_contact_id, 
+       r.is_quoted, 
+       r.description, 
+       r.approver_contact_id, 
+       r.alt_customer_contact_id,   
+       q_v.is_sent AS quote_is_sent, 
+       q_v.quote_type_id, 
+       q_v.quote_type_code, 
+       q_v.quote_type_name, 
+       q_v.quote_status_type_id, 
+       q_v.quote_status_type_code, 
+       q_v.quote_status_type_name, 
+       q_v.date_quoted, 
+       q_v.quote_total, 
+       q_v.quoted_by_user_id,        
+       q_v.quoted_by_user_name,
+       p_v.is_new
+  FROM dbo.projects_v2 p_v LEFT OUTER JOIN
+       dbo.requests r ON p_v.project_id = r.project_id LEFT OUTER JOIN
+       dbo.lookups request_type ON r.request_type_id = request_type.lookup_id LEFT OUTER JOIN
+       dbo.lookups request_status_type ON r.request_status_type_id = request_status_type.lookup_id LEFT OUTER JOIN
+       dbo.quotes_v q_v ON r.request_id = q_v.request_id  LEFT OUTER JOIN
+       dbo.versions_max_no_v ON r.request_no = dbo.versions_max_no_v.request_no AND r.project_id = dbo.versions_max_no_v.project_id
+UNION
+SELECT p_v.project_id, 
+       p_v.project_no,
+       r.request_id, 
+       r.request_no, 
+       q_v.quote_id, 
+       q_v.quote_no, 
+       CONVERT(VARCHAR, p_v.project_no) + '-' + CONVERT(VARCHAR, q_v.quote_no) + '.' + ISNULL(CONVERT(VARCHAR, q_v.version),' ') AS record_no, 
+       q_v.quote_id record_id, 
+       q_v.quote_no AS record_seq_no, 
+       1 version_no, 
+       1 max_version_no, 
+       q_v.request_type_id AS record_type_id, 
+       q_v.request_type_code AS record_type_code, 
+       q_v.request_type_name AS record_type_name, 
+       q_v.request_type_sequence_no AS record_type_seq_no, 
+       q_v.quote_status_type_id record_status_type_id, 
+       q_v.quote_status_type_code AS record_status_type_code, 
+       q_v.quote_status_type_name AS record_status_type_name, 
+       q_v.is_sent AS record_is_sent, 
+       ISNULL(q_v.date_modified, q_v.date_created) AS record_date, 
+       q_v.date_created AS record_created, 
+       q_v.date_modified AS record_modified, 
+       p_v.project_status_type_id,  
+       p_v.project_status_type_code, 
+       p_v.project_status_type_name,
+       p_v.parent_customer_id, 
+       p_v.organization_id, 
+       p_v.ext_dealer_id, 
+       p_v.dealer_name, 
+       p_v.ext_customer_id,
+       p_v.customer_id, 
+       p_v.customer_name,
+       p_v.end_user_id, 
+       p_v.end_user_name,
+       p_v.refusal_email_info, 
+       p_v.survey_location, 
+       p_v.job_name,        
+       r.quote_request_id,       
+       r.request_type_id, 
+       request_type.code AS request_type_code, 
+       request_type.name AS request_type_name, 
+       r.request_status_type_id, 
+       request_status_type.code AS request_status_type_code, 
+       request_status_type.name AS request_status_type_name, 
+       r.is_sent AS request_is_sent, 
+       r.dealer_po_no, 
+       r.customer_po_no, 
+       r.dealer_project_no, 
+       r.design_project_no, 
+       r.est_start_date, 
+       CONVERT(VARCHAR(12), r.est_start_date, 101) AS est_start_date_varchar,
+       r.a_m_contact_id, 
+       r.a_m_sales_contact_id, 
+       r.customer_contact_id, 
+       r.customer_contact2_id,
+       r.customer_contact3_id,
+       r.customer_contact4_id,
+       r.d_sales_rep_contact_id, 
+       r.d_sales_sup_contact_id, 
+       r.d_designer_contact_id, 
+       r.d_proj_mgr_contact_id, 
+       r.a_m_install_sup_contact_id, 
+       r.a_d_designer_contact_id,  
+       r.gen_contractor_contact_id,  
+       r.electrician_contact_id, 
+       r.data_phone_contact_id, 
+       r.phone_contact_id, 
+       r.carpet_layer_contact_id, 
+       r.bldg_mgr_contact_id, 
+       r.security_contact_id, 
+       r.mover_contact_id, 
+       r.other_contact_id, 
+       r.furniture1_contact_id, 
+       r.furniture2_contact_id,
+       r.is_quoted, 
+       r.description, 
+       r.approver_contact_id, 
+       r.alt_customer_contact_id,
+       q_v.is_sent AS quote_is_sent, 
+       q_v.quote_type_id, 
+       q_v.quote_type_code, 
+       q_v.quote_type_name, 
+       q_v.quote_status_type_id, 
+       q_v.quote_status_type_code, 
+       q_v.quote_status_type_name, 
+       q_v.date_quoted, 
+       q_v.quote_total, 
+       q_v.quoted_by_user_id, 
+       q_v.quoted_by_user_name,
+       p_v.is_new
+  FROM dbo.projects_v2 p_v INNER JOIN
+       dbo.requests r ON p_v.project_id = r.project_id INNER JOIN
+       dbo.lookups request_type ON r.request_type_id = request_type.lookup_id INNER JOIN  
+       dbo.lookups request_status_type ON r.request_status_type_id = request_status_type.lookup_id INNER JOIN
+       dbo.quotes_v q_v  ON r.request_id = q_v.request_id 
+ WHERE quote_id IS NOT NULL
 GO
-
 /****** Object:  View [dbo].[PROJECT_QUOTES_V]    Script Date: 05/03/2010 14:18:08 ******/
 SET ANSI_NULLS ON
 GO
@@ -13511,6 +13213,60 @@ SELECT j.job_id,
    AND job_status_type.code <> 'invoiced' 
    AND job_status_type.code <> 'closed'
 GO
+/****** Object:  View [dbo].[SCH_RESOURCES_V]    Script Date: 05/03/2010 14:18:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE VIEW [dbo].[SCH_RESOURCES_V]
+AS
+SELECT     CAST(dbo.RESOURCES_V.RESOURCE_ID AS varchar(30)) + ':' + ISNULL(CAST(dbo.SCH_RESOURCES.SCH_RESOURCE_ID AS varchar(30)), '') 
+                      AS res_sch_id, dbo.RESOURCES_V.RESOURCE_ID, dbo.RESOURCES_V.ORGANIZATION_ID, dbo.SCH_RESOURCES.SCH_RESOURCE_ID, 
+                      dbo.SCH_RESOURCES.WEEKEND_SCH_RESOURCE_ID, dbo.RESOURCES_V.NAME AS resource_name, dbo.SCH_RESOURCES.JOB_ID, 
+                      dbo.SCH_RESOURCES.SERVICE_ID, dbo.SERVICES.SERVICE_NO, dbo.SCH_RESOURCES.HIDDEN_SERVICE_ID, 
+                      ISNULL(dbo.SCH_RESOURCES.SERVICE_ID, dbo.SCH_RESOURCES.HIDDEN_SERVICE_ID) AS actual_service_id, 
+                      dbo.SCH_RESOURCES.RES_STATUS_TYPE_ID, RES_STATUS_TYPES.CODE AS res_status_type_code, ISNULL(RES_STATUS_TYPES.NAME, 
+                      'Available') AS res_status_type_name, dbo.SCH_RESOURCES.REASON_TYPE_ID, REASON_TYPE.CODE AS reason_type_code, 
+                      REASON_TYPE.NAME AS reason_type_name, dbo.RESOURCES_V.RES_CATEGORY_TYPE_ID, dbo.RESOURCES_V.res_cat_type_code, 
+                      dbo.RESOURCES_V.res_cat_type_name, dbo.RESOURCES_V.RESOURCE_TYPE_ID, dbo.RESOURCES_V.resource_type_code, 
+                      dbo.RESOURCES_V.resource_type_name, dbo.RESOURCES_V.UNIQUE_FLAG, dbo.RESOURCES_V.NOTES, dbo.RESOURCES_V.PIN, 
+                      dbo.RESOURCES_V.FOREMAN_FLAG, dbo.RESOURCES_V.ACTIVE_FLAG, dbo.RESOURCES_V.EXT_VENDOR_ID, 
+                      dbo.RESOURCES_V.EXT_EMPLOYEE_ID, dbo.RESOURCES_V.employment_type_name, dbo.RESOURCES_V.employment_type_code, 
+                      dbo.RESOURCES_V.EMPLOYMENT_TYPE_ID, dbo.RESOURCES_V.USER_ID, dbo.RESOURCES_V.user_full_name, 
+                      dbo.RESOURCES_V.user_contact_id, dbo.RESOURCES_V.user_contact_name, dbo.RESOURCES_V.modified_by_name AS res_modified_by_name, 
+                      dbo.RESOURCES_V.MODIFIED_BY AS res_modified_by, dbo.RESOURCES_V.DATE_MODIFIED AS res_date_modified, 
+                      dbo.RESOURCES_V.created_by_name AS res_created_by_name, dbo.RESOURCES_V.CREATED_BY AS res_created_by, 
+                      dbo.RESOURCES_V.DATE_CREATED AS res_date_created, ISNULL(dbo.SCH_RESOURCES.FOREMAN_FLAG, 'N') AS sch_foreman_flag, 
+                      dbo.SCH_RESOURCES.RES_START_DATE, dbo.SCH_RESOURCES.RES_START_TIME, dbo.SCH_RESOURCES.RES_END_DATE, 
+                      dbo.SCH_RESOURCES.RES_END_TIME, dbo.SCH_RESOURCES.DATE_CONFIRMED, dbo.SCH_RESOURCES.RESOURCE_QTY, 
+                      dbo.SCH_RESOURCES.SCH_NOTES, dbo.SCH_RESOURCES.WEEKEND_FLAG, dbo.SCH_RESOURCES.DATE_CREATED AS sch_date_created, 
+                      dbo.SCH_RESOURCES.CREATED_BY AS sch_created_by, CREATED_BY.FIRST_NAME + ' ' + CREATED_BY.LAST_NAME AS sch_created_by_name, 
+                      dbo.SCH_RESOURCES.DATE_MODIFIED AS sch_date_modified, dbo.SCH_RESOURCES.MODIFIED_BY AS sch_modified_by, 
+                      MODIFIED_BY.FIRST_NAME + ' ' + MODIFIED_BY.LAST_NAME AS sch_modified_by_name, ISNULL(report_to.NAME, 'Job Location') 
+                      AS report_to_name, dbo.SCH_RESOURCES.DATE_TYPE_ID, dbo.SERVICES.SERV_STATUS_TYPE_ID, 
+                      SERV_STATUS_TYPES.CODE AS serv_status_type_code, SERV_STATUS_TYPES.NAME AS serv_status_type_name, 
+                      SERV_STATUS_TYPES.SEQUENCE_NO AS serv_status_type_seq_no, dbo.JOBS_V.JOB_ID AS Expr1, dbo.JOBS_V.JOB_NO, dbo.JOBS_V.JOB_NAME, 
+                      dbo.JOBS_V.JOB_TYPE_ID, dbo.JOBS_V.job_type_code, dbo.JOBS_V.job_type_name, dbo.JOBS_V.JOB_STATUS_TYPE_ID, 
+                      dbo.JOBS_V.job_status_type_code, dbo.JOBS_V.job_status_type_name, dbo.JOBS_V.CUSTOMER_ID, dbo.JOBS_V.FOREMAN_RESOURCE_ID, 
+                      dbo.JOBS_V.foreman_resource_name, dbo.JOBS_V.foreman_user_id, dbo.JOBS_V.foreman_user_name, 
+                      dbo.SCH_RESOURCES.REPORT_TO_TYPE_ID, dbo.SCH_RESOURCES.SEND_TO_PDA_FLAG, 
+                      (CASE reason_type.code WHEN 'unconfirmed' THEN 'Y' ELSE 'N' END) AS unconfirmed_flag
+FROM         dbo.RESOURCES_V RIGHT OUTER JOIN
+                      dbo.LOOKUPS RES_STATUS_TYPES RIGHT OUTER JOIN
+                      dbo.LOOKUPS report_to RIGHT OUTER JOIN
+                      dbo.USERS MODIFIED_BY RIGHT OUTER JOIN
+                      dbo.SCH_RESOURCES LEFT OUTER JOIN
+                      dbo.JOBS_V ON dbo.SCH_RESOURCES.JOB_ID = dbo.JOBS_V.JOB_ID LEFT OUTER JOIN
+                      dbo.LOOKUPS SERV_STATUS_TYPES RIGHT OUTER JOIN
+                      dbo.SERVICES ON SERV_STATUS_TYPES.LOOKUP_ID = dbo.SERVICES.SERV_STATUS_TYPE_ID ON 
+                      dbo.SCH_RESOURCES.SERVICE_ID = dbo.SERVICES.SERVICE_ID LEFT OUTER JOIN
+                      dbo.USERS CREATED_BY ON dbo.SCH_RESOURCES.CREATED_BY = CREATED_BY.USER_ID ON 
+                      MODIFIED_BY.USER_ID = dbo.SCH_RESOURCES.MODIFIED_BY ON 
+                      report_to.LOOKUP_ID = dbo.SCH_RESOURCES.REPORT_TO_TYPE_ID LEFT OUTER JOIN
+                      dbo.LOOKUPS REASON_TYPE ON dbo.SCH_RESOURCES.REASON_TYPE_ID = REASON_TYPE.LOOKUP_ID ON 
+                      RES_STATUS_TYPES.LOOKUP_ID = dbo.SCH_RESOURCES.RES_STATUS_TYPE_ID ON 
+                      dbo.RESOURCES_V.RESOURCE_ID = dbo.SCH_RESOURCES.RESOURCE_ID
+GO
 /****** Object:  View [dbo].[crystal_SERVICE_REQ_V]    Script Date: 05/03/2010 14:18:06 ******/
 SET ANSI_NULLS ON
 GO
@@ -13594,85 +13350,64 @@ SELECT     dbo.quick_requests_v.*, dbo.CONTACTS.CONTACT_NAME AS A_M_CONTACT_NAME
 FROM         dbo.quick_requests_v LEFT OUTER JOIN
                       dbo.CONTACTS ON dbo.quick_requests_v.A_M_CONTACT_ID = dbo.CONTACTS.CONTACT_ID
 GO
-
-/****** Object:  View [dbo].[crystal_VAR_JOB_INVOICED_V]    Script Date: 05/03/2010 14:18:06 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER ON
--- GO
--- CREATE VIEW [dbo].[crystal_VAR_JOB_INVOICED_V]
--- AS
--- SELECT     TOP 100 PERCENT dbo.JOBS.JOB_ID, SUM(ISNULL(dbo.INVOICE_LINES.UNIT_PRICE, 0) * ISNULL(dbo.INVOICE_LINES.QTY, 0)) AS sum_inv,
---                       MIN(CAST(dbo.INVOICES.DATE_SENT AS datetime)) AS min_date_sent, MAX(dbo.INVOICES.DATE_SENT) AS max_date_sent,
---                       dbo.INVOICES.INVOICE_ID
--- FROM         dbo.JOBS RIGHT OUTER JOIN
---                       dbo.INVOICE_LINES RIGHT OUTER JOIN
---                       dbo.INVOICES ON dbo.INVOICE_LINES.INVOICE_ID = dbo.INVOICES.INVOICE_ID ON dbo.JOBS.JOB_ID = dbo.INVOICES.JOB_ID
--- WHERE     (dbo.INVOICES.STATUS_ID > 3)
--- GROUP BY dbo.JOBS.JOB_ID, dbo.INVOICES.INVOICE_ID
--- HAVING      (SUM(ISNULL(dbo.INVOICE_LINES.UNIT_PRICE, 0) * ISNULL(dbo.INVOICE_LINES.QTY, 0)) > 0)
--- ORDER BY dbo.JOBS.JOB_ID
--- GO
-
-
 /****** Object:  View [dbo].[crystal_VAR_REPORT_SUMMARY_V]    Script Date: 05/03/2010 14:18:06 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER OFF
--- GO
--- CREATE VIEW [dbo].[crystal_VAR_REPORT_SUMMARY_V]
--- AS
--- SELECT
--- 	dbo.JOBS_V.ORGANIZATION_ID,
--- 	dbo.JOBS_V.JOB_ID,
--- 	dbo.JOBS_V.EXT_DEALER_ID,
--- 	dbo.JOBS_V.CUSTOMER_ID,
--- 	dbo.JOBS_V.CUSTOMER_NAME,
--- 	dbo.JOBS_V.JOB_NO,
--- 	dbo.JOBS_V.DEALER_NAME,
--- 	dbo.JOBS_V.JOB_NAME,
--- 	cast(dbo.JOBS_V.billing_user_name as varchar) as JOB_OWNER,
--- 	dbo.JOBS_V.JOB_TYPE_CODE,
--- 	dbo.JOBS_V.FOREMAN_RESOURCE_ID,
--- 	dbo.JOBS_V.BILLING_USER_ID,
--- 	cast (dbo.VAR_JOB_INVOICED_V.min_date_sent as smalldatetime (8)) as start_date,
--- 	cast (dbo.VAR_JOB_INVOICED_V.max_date_sent as smalldatetime (8)) as end_date,
--- 	dbo.VAR_JOB_INVOICED_V.sum_inv,
--- 	dbo.VAR_JOB_TIME_EXP_V.sum_time_exp,
--- 	dbo.VAR_JOB_TIME_EXP_V.sum_time,
--- 	dbo.VAR_JOB_TIME_EXP_V.sum_exp,
--- 	dbo.VAR_JOB_QUOTED_V.sum_quote,
--- 	dbo.VAR_JOB_ACT_HOURS_V.sum_payroll_qty,
--- 	dbo.VAR_JOB_EST_HOURS_V.sum_estimated_hours,
---
--- 	(CAST(ISNULL(dbo.VAR_JOB_INVOICED_V.sum_inv,0) AS money) - CAST(ISNULL(dbo.VAR_JOB_TIME_EXP_V.sum_time_exp,0) AS money)) AS sum_inv_var,
--- 	(CASE ISNULL(dbo.VAR_JOB_INVOICED_V.sum_inv,0) WHEN 0 THEN 0 ELSE
--- 		(CAST(ISNULL(dbo.VAR_JOB_INVOICED_V.sum_inv,0) AS money) - CAST(ISNULL(dbo.VAR_JOB_TIME_EXP_V.sum_time_exp,0) AS money))
--- 		/ CAST(dbo.VAR_JOB_INVOICED_V.sum_inv AS MONEY) END) AS sum_inv_var_percent,
---
--- 	(CAST(dbo.VAR_JOB_QUOTED_V.sum_quote AS MONEY) - CAST(dbo.VAR_JOB_TIME_EXP_V.sum_time_exp AS MONEY)) AS sum_q_te_var,
--- 	(CASE ISNULL(dbo.VAR_JOB_TIME_EXP_V.sum_time_exp,0) WHEN 0 THEN 0 ELSE
--- 		(CAST(dbo.VAR_JOB_QUOTED_V.sum_quote AS money) - CAST(dbo.VAR_JOB_TIME_EXP_V.sum_time_exp AS MONEY))
--- 		/ CAST(dbo.VAR_JOB_TIME_EXP_V.sum_time_exp AS MONEY) END) AS sum_q_te_var_percent,
---
--- 	(CAST(dbo.VAR_JOB_INVOICED_V.sum_inv AS MONEY) - CAST(dbo.VAR_JOB_QUOTED_V.sum_quote AS MONEY))  AS sum_inv_q_var,
--- 	(CASE ISNULL(dbo.VAR_JOB_INVOICED_V.sum_inv,0) WHEN 0 THEN 0 ELSE
--- 		(CAST(dbo.VAR_JOB_INVOICED_V.sum_inv AS MONEY) - CAST(dbo.VAR_JOB_QUOTED_V.sum_quote AS MONEY))
--- 		/ CAST(dbo.VAR_JOB_INVOICED_V.sum_inv AS MONEY) END) AS sum_inv_q_var_percent,
---
--- 	CAST((CAST(ISNULL(dbo.VAR_JOB_EST_HOURS_V.sum_estimated_hours,0) as DECIMAL) - CAST(ISNULL(dbo.VAR_JOB_ACT_HOURS_V.sum_payroll_qty,0) AS DECIMAL)) as numeric(18,2)) AS sum_est_act_hours_var,
--- 	(CASE ISNULL(dbo.VAR_JOB_ACT_HOURS_V.sum_payroll_qty,0) WHEN 0 THEN 0 ELSE
--- 		(CAST(ISNULL(dbo.VAR_JOB_EST_HOURS_V.sum_estimated_hours,0) AS DECIMAL)  - CAST(ISNULL(dbo.VAR_JOB_ACT_HOURS_V.sum_payroll_qty,0) AS DECIMAL))
--- 		/ CAST(dbo.VAR_JOB_ACT_HOURS_V.sum_payroll_qty AS DECIMAL) END) AS sum_est_act_hours_var_percent
---
--- FROM         dbo.VAR_JOB_QUOTED_V RIGHT OUTER JOIN
---                       dbo.JOBS_V INNER JOIN
---                       dbo.VAR_JOB_INVOICED_V ON dbo.JOBS_V.JOB_ID = dbo.VAR_JOB_INVOICED_V.JOB_ID LEFT OUTER JOIN
---                       dbo.VAR_JOB_TIME_EXP_V ON dbo.JOBS_V.JOB_ID = dbo.VAR_JOB_TIME_EXP_V.JOB_ID ON
---                       dbo.VAR_JOB_QUOTED_V.JOB_ID = dbo.JOBS_V.JOB_ID LEFT OUTER JOIN
---                       dbo.VAR_JOB_ACT_HOURS_V ON dbo.JOBS_V.JOB_ID = dbo.VAR_JOB_ACT_HOURS_V.JOB_ID LEFT OUTER JOIN
---                       dbo.VAR_JOB_EST_HOURS_V ON dbo.JOBS_V.JOB_ID = dbo.VAR_JOB_EST_HOURS_V.JOB_ID
--- GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE VIEW [dbo].[crystal_VAR_REPORT_SUMMARY_V]
+AS
+SELECT     
+	dbo.JOBS_V.ORGANIZATION_ID,
+	dbo.JOBS_V.JOB_ID,
+	dbo.JOBS_V.EXT_DEALER_ID,
+	dbo.JOBS_V.CUSTOMER_ID,
+	dbo.JOBS_V.CUSTOMER_NAME,
+	dbo.JOBS_V.JOB_NO,
+	dbo.JOBS_V.DEALER_NAME,
+	dbo.JOBS_V.JOB_NAME,
+	cast(dbo.JOBS_V.billing_user_name as varchar) as JOB_OWNER, 
+	dbo.JOBS_V.JOB_TYPE_CODE,
+	dbo.JOBS_V.FOREMAN_RESOURCE_ID,
+	dbo.JOBS_V.BILLING_USER_ID, 
+	cast (dbo.VAR_JOB_INVOICED_V.min_date_sent as smalldatetime (8)) as start_date,
+	cast (dbo.VAR_JOB_INVOICED_V.max_date_sent as smalldatetime (8)) as end_date,
+	dbo.VAR_JOB_INVOICED_V.sum_inv, 
+	dbo.VAR_JOB_TIME_EXP_V.sum_time_exp, 
+	dbo.VAR_JOB_TIME_EXP_V.sum_time, 
+	dbo.VAR_JOB_TIME_EXP_V.sum_exp, 
+	dbo.VAR_JOB_QUOTED_V.sum_quote, 
+	dbo.VAR_JOB_ACT_HOURS_V.sum_payroll_qty, 
+	dbo.VAR_JOB_EST_HOURS_V.sum_estimated_hours, 
+
+	(CAST(ISNULL(dbo.VAR_JOB_INVOICED_V.sum_inv,0) AS money) - CAST(ISNULL(dbo.VAR_JOB_TIME_EXP_V.sum_time_exp,0) AS money)) AS sum_inv_var,
+	(CASE ISNULL(dbo.VAR_JOB_INVOICED_V.sum_inv,0) WHEN 0 THEN 0 ELSE 
+		(CAST(ISNULL(dbo.VAR_JOB_INVOICED_V.sum_inv,0) AS money) - CAST(ISNULL(dbo.VAR_JOB_TIME_EXP_V.sum_time_exp,0) AS money))
+		/ CAST(dbo.VAR_JOB_INVOICED_V.sum_inv AS MONEY) END) AS sum_inv_var_percent, 
+
+	(CAST(dbo.VAR_JOB_QUOTED_V.sum_quote AS MONEY) - CAST(dbo.VAR_JOB_TIME_EXP_V.sum_time_exp AS MONEY)) AS sum_q_te_var,
+	(CASE ISNULL(dbo.VAR_JOB_TIME_EXP_V.sum_time_exp,0) WHEN 0 THEN 0 ELSE 
+		(CAST(dbo.VAR_JOB_QUOTED_V.sum_quote AS money) - CAST(dbo.VAR_JOB_TIME_EXP_V.sum_time_exp AS MONEY))
+		/ CAST(dbo.VAR_JOB_TIME_EXP_V.sum_time_exp AS MONEY) END) AS sum_q_te_var_percent, 
+
+	(CAST(dbo.VAR_JOB_INVOICED_V.sum_inv AS MONEY) - CAST(dbo.VAR_JOB_QUOTED_V.sum_quote AS MONEY))  AS sum_inv_q_var,
+	(CASE ISNULL(dbo.VAR_JOB_INVOICED_V.sum_inv,0) WHEN 0 THEN 0 ELSE 
+		(CAST(dbo.VAR_JOB_INVOICED_V.sum_inv AS MONEY) - CAST(dbo.VAR_JOB_QUOTED_V.sum_quote AS MONEY)) 
+		/ CAST(dbo.VAR_JOB_INVOICED_V.sum_inv AS MONEY) END) AS sum_inv_q_var_percent, 
+
+	CAST((CAST(ISNULL(dbo.VAR_JOB_EST_HOURS_V.sum_estimated_hours,0) as DECIMAL) - CAST(ISNULL(dbo.VAR_JOB_ACT_HOURS_V.sum_payroll_qty,0) AS DECIMAL)) as numeric(18,2)) AS sum_est_act_hours_var,
+	(CASE ISNULL(dbo.VAR_JOB_ACT_HOURS_V.sum_payroll_qty,0) WHEN 0 THEN 0 ELSE 
+		(CAST(ISNULL(dbo.VAR_JOB_EST_HOURS_V.sum_estimated_hours,0) AS DECIMAL)  - CAST(ISNULL(dbo.VAR_JOB_ACT_HOURS_V.sum_payroll_qty,0) AS DECIMAL))
+		/ CAST(dbo.VAR_JOB_ACT_HOURS_V.sum_payroll_qty AS DECIMAL) END) AS sum_est_act_hours_var_percent
+		
+FROM         dbo.VAR_JOB_QUOTED_V RIGHT OUTER JOIN
+                      dbo.JOBS_V INNER JOIN
+                      dbo.VAR_JOB_INVOICED_V ON dbo.JOBS_V.JOB_ID = dbo.VAR_JOB_INVOICED_V.JOB_ID LEFT OUTER JOIN
+                      dbo.VAR_JOB_TIME_EXP_V ON dbo.JOBS_V.JOB_ID = dbo.VAR_JOB_TIME_EXP_V.JOB_ID ON 
+                      dbo.VAR_JOB_QUOTED_V.JOB_ID = dbo.JOBS_V.JOB_ID LEFT OUTER JOIN
+                      dbo.VAR_JOB_ACT_HOURS_V ON dbo.JOBS_V.JOB_ID = dbo.VAR_JOB_ACT_HOURS_V.JOB_ID LEFT OUTER JOIN
+                      dbo.VAR_JOB_EST_HOURS_V ON dbo.JOBS_V.JOB_ID = dbo.VAR_JOB_EST_HOURS_V.JOB_ID
+GO
 /****** Object:  View [dbo].[DOCS_CURRENT_V]    Script Date: 05/03/2010 14:18:06 ******/
 SET ANSI_NULLS ON
 GO
@@ -13689,6 +13424,84 @@ WHERE     (VERSION_ID =
                                                        (SELECT     MAX(date_created)
                                                          FROM          versions
                                                          WHERE      document_id = dv.document_id)))
+GO
+/****** Object:  View [dbo].[invoice_pre_total_v]    Script Date: 05/03/2010 14:18:07 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[invoice_pre_total_v] 
+AS
+SELECT i_v.organization_id, 
+       i_v.job_id, 
+       j_v.job_no, 
+       b_v.bill_service_id AS service_id, 
+       i_v.invoice_id, 
+       i_v.invoice_id_trk, 
+       i_v.description AS invoice_description, 
+       i_v.status_id AS invoice_status_id, 
+       i_v.ext_batch_id, 
+       i_v.date_sent, 
+       i_v.invoice_type_name, 
+       i_v.invoice_type_code, 
+       i_v.batch_status_id, 
+       0 AS custom_line_total, 
+       ISNULL(b_v.bill_hourly_total, 0) AS bill_hourly_total, 
+       ISNULL(b_v.bill_exp_total, 0) AS bill_exp_total, 
+       ISNULL(b_v.bill_total, 0) AS bill_total, 
+       i_v.assigned_to_name, 
+       j_v.billing_user_id, 
+       j_v.billing_user_name, 
+       i_v.billing_type_name, 
+       i_v.invoice_format_type_name, 
+       i_v.po_no, 
+       j_v.dealer_name, 
+       j_v.ext_dealer_id,
+       j_v.customer_name,
+       j_v.end_user_name,
+       i_v.date_created AS invoice_date_created,
+       j_v.job_type_name, 
+       j_v.job_type_code
+  FROM dbo.invoices_v i_v LEFT OUTER JOIN
+       dbo.jobs_v j_v ON i_v.job_id = j_v.job_id LEFT OUTER JOIN
+       dbo.billing_v b_v ON i_v.invoice_id = b_v.invoice_id
+UNION ALL
+SELECT j_v.organization_id, 
+       i_v.job_id, 
+       j_v.job_no, 
+       NULL, 
+       i_v.invoice_id, 
+       i_v.invoice_id_trk, 
+       i_v.description,
+       i_v.status_id,
+       i_v.ext_batch_id,
+       i_v.date_sent, 
+       i_v.invoice_type_name,
+       i_v.invoice_type_code, 
+       i_v.batch_status_id,
+       (il_v.unit_price * il_v.qty) custom_line_total, 
+       0,
+       0, 
+       0,
+       i_v.assigned_to_name, 
+       j_v.billing_user_id, 
+       j_v.billing_user_name,
+       i_v.billing_type_name,
+       i_v.invoice_format_type_name,
+       i_v.po_no,
+       j_v.dealer_name,
+       j_v.ext_dealer_id, 
+       j_v.customer_name,
+       j_v.end_user_name,
+       i_v.date_created invoice_date_created,
+       j_v.job_type_name, 
+       j_v.job_type_code
+  FROM dbo.jobs_v j_v RIGHT OUTER JOIN
+       dbo.invoice_lines_v il_v on j_v.job_id = il_v.job_id RIGHT OUTER JOIN
+       dbo.invoices_v i_v ON il_v.invoice_id = i_v.invoice_id
+ WHERE i_v.invoice_id = il_v.invoice_id 
+   AND il_v.job_id = j_v.job_id 
+   AND il_v.invoice_line_type_code = 'custom'
 GO
 /****** Object:  View [dbo].[HOURS_BY_PAYCODE_V]    Script Date: 05/03/2010 14:18:07 ******/
 SET ANSI_NULLS ON
@@ -14722,97 +14535,7 @@ End
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'SERVICE_ACCOUNT_REPORT_V'
 GO
-
-/****** Object:  View [dbo].[SERVICE_ACCOUNT_REPORT_NUMBERS]    Script Date: 05/03/2010 14:18:09 ******/
--- SET ANSI_NULLS ON
--- GO
--- SET QUOTED_IDENTIFIER OFF
--- GO
--- CREATE VIEW [dbo].[SERVICE_ACCOUNT_REPORT_NUMBERS]
--- AS
--- SELECT     JOB_ID, JOB_NO, JOB_NAME, JOB_NO_NAME, DESCRIPTION, req_po_no, JOB_TYPE_ID, job_type_code, job_type_name, JOB_STATUS_TYPE_ID,
---                       job_status_type_code, job_status_type_name, job_status_seq_no, CUSTOMER_ID, ORGANIZATION_ID, DEALER_NAME, EXT_DEALER_ID,
---                       CUSTOMER_NAME, job_location_name, EXT_CUSTOMER_ID, INVOICE_ID, Invoice_Desc, PO_NO, EST_START_DATE, SERVICE_LINE_DATE,
---                       invoice_status_id, invoice_status_code, invoice_status_name, SERVICE_ID, SERVICE_NO, TC_SERVICE_LINE_NO, RESOURCE_TYPE_ID,
---                       resource_type_code, resource_type_name, res_cat_type_id, res_cat_type_code, res_cat_type_name, ITEM_ID, item_name, ITEM_TYPE_ID,
---                       item_type_name, item_type_code, BILLABLE_FLAG, taxable_flag, bill_total, EXT_PAY_CODE, SL_BILLABLE_FLAG, hourly_rate, expense_rate,
---                       BILL_QTY, col1, col1_enabled, CUST_COL_1, col2, col2_enabled, CUST_COL_2, col3, col3_enabled, CUST_COL_3, col4, col4_enabled, CUST_COL_4,
---                       col5, col5_enabled, CUST_COL_5, col6, col6_enabled, CUST_COL_6, col7, col7_enabled, CUST_COL_7, col8, col8_enabled, CUST_COL_8, col9,
---                       col9_enabled, CUST_COL_9, col10, col10_enabled, CUST_COL_10, SUM(other_rate) AS other_rate, SUM(other_qty) AS other_qty, SUM(other_total)
---                       AS other_total, SUM(baggies_rate) AS baggies_rate, SUM(baggies_qty) AS baggies_qty, SUM(baggies_total) AS baggies_total, SUM(boxes_rate)
---                       AS boxes_rate, SUM(boxes_qty) AS boxes_qty, SUM(boxes_total) AS boxes_total, SUM(EquipRental_rate) AS EquipRental_rate, SUM(EquipRental_qty)
---                       AS EquipRental_qty, SUM(EquipRental_total) AS EquipRental_total, SUM(fasteners_rate) AS fasteners_rate, SUM(fasteners_qty) AS fasteners_qty,
---                       SUM(fasteners_total) AS fasteners_total, SUM(labels_rate) AS labels_rate, SUM(labels_qty) AS labels_qty, SUM(labels_total) AS labels_total,
---                       SUM(MileageInTown_rate) AS MileageInTown_rate, SUM(MileageInTown_qty) AS MileageInTown_qty, SUM(MileageInTown_total)
---                       AS MileageInTown_total, SUM(MiscHardware_rate) AS MiscHardware_rate, SUM(MiscHardware_qty) AS MiscHardware_qty, SUM(MiscHardware_total)
---                       AS MiscHardware_total, SUM(PieceCountIn_rate) AS PieceCountIn_rate, SUM(PieceCountIn_qty) AS PieceCountIn_qty, SUM(PieceCountIn_total)
---                       AS PieceCountIn_total, SUM(PieceCountOut_rate) AS PieceCountOut_rate, SUM(PieceCountOut_qty) AS PieceCountOut_qty, SUM(PieceCountOut_total)
---                       AS PieceCountOut_total, SUM(supplies_rate) AS supplies_rate, SUM(supplies_qty) AS supplies_qty, SUM(supplies_total) AS supplies_total,
---                       SUM(tape_rate) AS tape_rate, SUM(tape_qty) AS tape_qty, SUM(tape_total) AS tape_total, SUM(trash_rate) AS trash_rate, SUM(trash_qty) AS trash_qty,
---                       SUM(trash_total) AS trash_total, SUM(dollies_rate) AS dollies_rate, SUM(dollies_qty) AS dollies_qty, SUM(dollies_total) AS dollies_total,
---                       SUM(bookcarts_rate) AS bookcarts_rate, SUM(bookcarts_qty) AS bookcarts_qty, SUM(bookcarts_total) AS bookcarts_total, SUM(truck_rate)
---                       AS truck_rate, SUM(truck_qty) AS truck_qty, SUM(truck_total) AS truck_total, SUM(van_rate) AS van_rate, SUM(van_qty) AS van_qty, SUM(van_total)
---                       AS van_total, SUM(perdiem) AS perdiem, SUM(lodging) AS lodging, SUM(ac_reg_rate) AS ac_reg_rate, SUM(ac_reg_qty) AS ac_reg_qty,
---                       SUM(ac_reg_total) AS ac_reg_total, SUM(ac_ot_rate) AS ac_ot_rate, SUM(ac_ot_qty) AS ac_ot_qty, SUM(ac_ot_total) AS ac_ot_total, SUM(am_reg_rate)
---                       AS am_reg_rate, SUM(am_reg_qty) AS am_reg_qty, SUM(am_reg_total) AS am_reg_total, SUM(am_ot_rate) AS am_ot_rate, SUM(am_ot_qty)
---                       AS am_ot_qty, SUM(am_ot_total) AS am_ot_total, SUM(am_spec_reg_rate) AS am_spec_reg_rate, SUM(am_spec_reg_qty) AS am_spec_reg_qty,
---                       SUM(am_spec_reg_total) AS am_spec_reg_total, SUM(am_spec_ot_rate) AS am_spec_ot_rate, SUM(am_spec_ot_qty) AS am_spec_ot_qty,
---                       SUM(am_spec_ot_total) AS am_spec_ot_total, SUM(AssetHdlr_reg_rate) AS AssetHdlr_reg_rate, SUM(AssetHdlr_reg_qty) AS AssetHdlr_reg_qty,
---                       SUM(AssetHdlr_reg_total) AS AssetHdlr_reg_total, SUM(AssetHdlr_ot_rate) AS AssetHdlr_ot_rate, SUM(AssetHdlr_ot_qty) AS AssetHdlr_ot_qty,
---                       SUM(AssetHdlr_ot_total) AS AssetHdlr_ot_total, SUM(campfurnmgr_reg_rate) AS campfurnmgr_reg_rate, SUM(campfurnmgr_reg_qty)
---                       AS campfurnmgr_reg_qty, SUM(campfurnmgr_reg_total) AS campfurnmgr_reg_total, SUM(campfurnmgr_ot_rate) AS campfurnmgr_ot_rate,
---                       SUM(campfurnmgr_ot_qty) AS campfurnmgr_ot_qty, SUM(campfurnmgr_ot_total) AS campfurnmgr_ot_total, SUM(custom_reg_rate) AS custom_reg_rate,
---                       SUM(custom_reg_qty) AS custom_reg_qty, SUM(custom_reg_total) AS custom_reg_total, SUM(custom_ot_rate) AS custom_ot_rate,
---                       SUM(custom_ot_qty) AS custom_ot_qty, SUM(custom_ot_total) AS custom_ot_total, SUM(delivery_reg_rate) AS delivery_reg_rate,
---                       SUM(delivery_reg_qty) AS delivery_reg_qty, SUM(delivery_reg_total) AS delivery_reg_total, SUM(delivery_ot_rate) AS delivery_ot_rate,
---                       SUM(delivery_ot_qty) AS delivery_ot_qty, SUM(delivery_ot_total) AS delivery_ot_total, SUM(driver_reg_rate) AS Driver_reg_rate, SUM(driver_reg_qty)
---                       AS Driver_reg_qty, SUM(driver_reg_total) AS Driver_reg_total, SUM(driver_ot_rate) AS Driver_ot_rate, SUM(driver_ot_qty) AS Driver_ot_qty,
---                       SUM(driver_ot_total) AS Driver_ot_total, SUM(Foreman_reg_rate) AS Foreman_reg_rate, SUM(Foreman_reg_qty) AS Foreman_reg_qty,
---                       SUM(Foreman_reg_total) AS Foreman_reg_total, SUM(Foreman_ot_rate) AS Foreman_ot_rate, SUM(Foreman_ot_qty) AS Foreman_ot_qty,
---                       SUM(Foreman_ot_total) AS Foreman_ot_total, SUM(GenLabor_reg_rate) AS GenLabor_reg_rate, SUM(GenLabor_reg_qty) AS GenLabor_reg_qty,
---                       SUM(GenLabor_reg_total) AS GenLabor_reg_total, SUM(GenLabor_ot_rate) AS GenLabor_ot_rate, SUM(GenLabor_ot_qty) AS GenLabor_ot_qty,
---                       SUM(GenLabor_ot_total) AS GenLabor_ot_total, SUM(installer_reg_rate) AS installer_reg_rate, SUM(installer_reg_qty) AS installer_reg_qty,
---                       SUM(installer_reg_total) AS installer_reg_total, SUM(installer_ot_rate) AS installer_ot_rate, SUM(installer_ot_qty) AS installer_ot_qty,
---                       SUM(installer_ot_total) AS installer_ot_total, SUM(lead_reg_rate) AS lead_reg_rate, SUM(lead_reg_qty) AS lead_reg_qty, SUM(lead_reg_total)
---                       AS lead_reg_total, SUM(lead_ot_rate) AS lead_ot_rate, SUM(lead_ot_qty) AS lead_ot_qty, SUM(lead_ot_total) AS lead_ot_total, SUM(mac_reg_rate)
---                       AS mac_reg_rate, SUM(mac_reg_qty) AS mac_reg_qty, SUM(mac_reg_total) AS mac_reg_total, SUM(mac_ot_rate) AS mac_ot_rate, SUM(mac_ot_qty)
---                       AS mac_ot_qty, SUM(mac_ot_total) AS mac_ot_total, SUM(mps_reg_rate) AS mps_reg_rate, SUM(mps_reg_qty) AS mps_reg_qty, SUM(mps_reg_total)
---                       AS mps_reg_total, SUM(mps_ot_rate) AS mps_ot_rate, SUM(mps_ot_qty) AS mps_ot_qty, SUM(mps_ot_total) AS mps_ot_total,
---                       SUM(Mover_Reg_Hrs_rate) AS mover_reg_hrs_rate, SUM(Mover_Reg_Hrs_qty) AS mover_reg_hrs_qty, SUM(Mover_Reg_Hrs_total)
---                       AS mover_reg_hrs_total, SUM(Mover_OT_Hrs_rate) AS mover_ot_hrs_rate, SUM(Mover_OT_Hrs_qty) AS mover_ot_hrs_qty, SUM(Mover_OT_Hrs_total)
---                       AS mover_ot_hrs_total, SUM(pc_fab_reg_rate) AS pc_fab_reg_rate, SUM(pc_fab_reg_qty) AS pc_fab_reg_qty, SUM(pc_fab_reg_total)
---                       AS pc_fab_reg_total, SUM(pc_fab_ot_rate) AS pc_fab_ot_rate, SUM(pc_fab_ot_qty) AS pc_fab_ot_qty, SUM(pc_fab_ot_total) AS pc_fab_ot_total,
---                       SUM(pc_coord_reg_rate) AS pc_coord_reg_rate, SUM(pc_coord_reg_qty) AS pc_coord_reg_qty, SUM(pc_coord_reg_total) AS pc_coord_reg_total,
---                       SUM(pc_coord_ot_rate) AS pc_coord_ot_rate, SUM(pc_coord_ot_qty) AS pc_coord_ot_qty, SUM(pc_coord_ot_total) AS pc_coord_ot_total,
---                       SUM(pc_mover_reg_rate) AS pc_mover_reg_rate, SUM(pc_mover_reg_qty) AS pc_mover_reg_qty, SUM(pc_mover_reg_total) AS pc_mover_reg_total,
---                       SUM(pc_mover_ot_rate) AS pc_mover_ot_rate, SUM(pc_mover_ot_qty) AS pc_mover_ot_qty, SUM(pc_mover_ot_total) AS pc_mover_ot_total,
---                       SUM(ProjMgr_reg_rate) AS ProjMgr_reg_rate, SUM(ProjMgr_reg_qty) AS ProjMgr_reg_qty, SUM(ProjMgr_reg_total) AS ProjMgr_reg_total,
---                       SUM(ProjMgr_ot_rate) AS ProjMgr_ot_rate, SUM(ProjMgr_ot_qty) AS ProjMgr_ot_qty, SUM(ProjMgr_ot_total) AS ProjMgr_ot_total, SUM(ps_reg_rate)
---                       AS ps_reg_rate, SUM(ps_reg_qty) AS ps_reg_qty, SUM(ps_reg_total) AS ps_reg_total, SUM(ps_ot_rate) AS ps_ot_rate, SUM(ps_ot_qty) AS ps_ot_qty,
---                       SUM(ps_ot_total) AS ps_ot_total, SUM(regProjMgr_reg_rate) AS regProjMgr_reg_rate, SUM(regProjMgr_reg_qty) AS regProjMgr_reg_qty,
---                       SUM(regProjMgr_reg_total) AS regProjMgr_reg_total, SUM(regProjMgr_ot_rate) AS regProjMgr_ot_rate, SUM(regProjMgr_ot_qty) AS regProjMgr_ot_qty,
---                       SUM(regProjMgr_ot_total) AS regProjMgr_ot_total, SUM(sub_reg_rate) AS sub_reg_rate, SUM(sub_reg_qty) AS sub_reg_qty, SUM(sub_reg_total)
---                       AS sub_reg_total, SUM(sub_ot_rate) AS sub_ot_rate, SUM(sub_ot_qty) AS sub_ot_qty, SUM(sub_ot_total) AS sub_ot_total, SUM(sub_exp_rate)
---                       AS sub_exp_rate, SUM(sub_exp_qty) AS sub_exp_qty, SUM(sub_exp_total) AS sub_exp_total, SUM(whse_reg_rate) AS whse_reg_rate,
---                       SUM(whse_reg_qty) AS whse_reg_qty, SUM(whse_reg_total) AS whse_reg_total, SUM(whse_ot_rate) AS whse_ot_rate, SUM(whse_ot_qty)
---                       AS whse_ot_qty, SUM(whse_ot_total) AS whse_ot_total, SUM(WhseSup_reg_rate) AS WhseSup_reg_rate, SUM(WhseSup_reg_qty)
---                       AS WhseSup_reg_qty, SUM(WhseSup_reg_total) AS WhseSup_reg_total, SUM(WhseSup_ot_rate) AS WhseSup_ot_rate, SUM(WhseSup_ot_qty)
---                       AS WhseSup_ot_qty, SUM(WhseSup_ot_total) AS WhseSup_ot_total, SUM(xerox_reg_rate) AS xerox_reg_rate, SUM(xerox_reg_qty) AS xerox_reg_qty,
---                       SUM(xerox_reg_total) AS xerox_reg_total, SUM(xerox_ot_rate) AS xerox_ot_rate, SUM(xerox_ot_qty) AS xerox_ot_qty, SUM(xerox_ot_total)
---                       AS xerox_ot_total
--- FROM         dbo.SERVICE_ACCOUNT_REPORT_V
--- GROUP BY JOB_ID, JOB_NO, JOB_NAME, JOB_NO_NAME, DESCRIPTION, req_po_no, JOB_TYPE_ID, job_type_code, job_type_name, JOB_STATUS_TYPE_ID,
---                       job_status_type_code, job_status_type_name, job_status_seq_no, CUSTOMER_ID, ORGANIZATION_ID, DEALER_NAME, EXT_DEALER_ID,
---                       CUSTOMER_NAME, EXT_CUSTOMER_ID, INVOICE_ID, PO_NO, invoice_status_id, invoice_status_code, invoice_status_name, SERVICE_ID,
---                       SERVICE_NO, TC_SERVICE_LINE_NO, RESOURCE_TYPE_ID, resource_type_code, resource_type_name, res_cat_type_id, res_cat_type_code,
---                       res_cat_type_name, ITEM_ID, item_name, ITEM_TYPE_ID, item_type_name, item_type_code, BILLABLE_FLAG, EXT_PAY_CODE, SL_BILLABLE_FLAG,
---                       taxable_flag, bill_total, hourly_rate, expense_rate, BILL_QTY, col1, col1_enabled, CUST_COL_1, col2, col2_enabled, CUST_COL_2, col3, col3_enabled,
---                        CUST_COL_3, col4, col4_enabled, CUST_COL_4, col5, col5_enabled, CUST_COL_5, col6, col6_enabled, CUST_COL_6, col7, col7_enabled,
---                       CUST_COL_7, col8, col8_enabled, CUST_COL_8, col9, col9_enabled, CUST_COL_9, col10, col10_enabled, CUST_COL_10, Invoice_Desc,
---                       EST_START_DATE, SERVICE_LINE_DATE, job_location_name
--- GO
-
-/***** Object:  View [dbo].[crystal_SCHEDULE_VS_ACTUAL_V]    Script Date: 05/03/2010 14:18:06 ******/
+/****** Object:  View [dbo].[crystal_SCHEDULE_VS_ACTUAL_V]    Script Date: 05/03/2010 14:18:06 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

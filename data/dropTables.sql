@@ -224,3 +224,11 @@ DROP TABLE [dbo].[z_resource_items]
 GO
 DROP TABLE [dbo].[z_resource_type_items]
 GO
+DROP VIEW [dbo].[USERS_VQ]
+GO
+DROP VIEW [dbo].[USERS_V]
+GO
+DROP VIEW [dbo].[RESOURCE_STATUS_TYPES_V]
+GO
+DROP VIEW [dbo].[LOOKUPS_V]
+
