@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+  <USER_ROLES 
+	USER_ID="1" 
+	ROLE_ID="1" 
+	DATE_CREATED="2010-05-05 15:27:05" 
+	CREATED_BY="1"/>
+</dataset>

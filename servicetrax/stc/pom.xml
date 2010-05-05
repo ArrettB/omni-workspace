@@ -289,6 +289,16 @@
 				</configuration>
 			</plugin>
 
+            <!-- To use the plugin goals in your POM or parent POM -->
+              <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>tomcat-maven-plugin</artifactId>
+                <version>1.0-beta-1</version>
+                <configuration>
+                  <server>localdev</server>
+                  <path>/stc</path>
+                </configuration>
+              </plugin>
 		</plugins>
 	</build>
 

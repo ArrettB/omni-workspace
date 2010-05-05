@@ -15,7 +15,7 @@ INTO
         UPDATABLE_FLAG,
         PARENT_TYPE_ID,
         DATE_CREATED,
-        CREATED_BY,
+        CREATED_BY
     )
     VALUES
     (
@@ -24,8 +24,6 @@ INTO
         'Hotsheet Detail',
         'Y',
         'Y',
-        0,
-        '',
         NULL,
         CURRENT_TIMESTAMP,
         2

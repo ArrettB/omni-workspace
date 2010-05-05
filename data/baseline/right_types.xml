@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+  <RIGHT_TYPES 
+	RIGHT_TYPE_ID="1" 
+	CODE="view" 
+	NAME="View" 
+	DESCRIPTION="The user may view" 
+	CREATED_BY="31" 
+	DATE_CREATED="2001-02-09 15:59:56"/>
+  <RIGHT_TYPES 
+	RIGHT_TYPE_ID="2" 
+	CODE="insert" 
+	NAME="Insert" 
+	DESCRIPTION="The user may create" 
+	CREATED_BY="31" 
+	DATE_CREATED="2001-02-09 15:59:56"/>
+  <RIGHT_TYPES 
+	RIGHT_TYPE_ID="3" 
+	CODE="update" 
+	NAME="Update" 
+	DESCRIPTION="The user may update" 
+	CREATED_BY="31" 
+	DATE_CREATED="2001-02-09 15:59:56"/>
+  <RIGHT_TYPES 
+	RIGHT_TYPE_ID="4" 
+	CODE="delete" 
+	NAME="Delete" 
+	DESCRIPTION="The user may delete" 
+	CREATED_BY="31" 
+	DATE_CREATED="2001-02-09 15:59:56"/>
+</dataset>

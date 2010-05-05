@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+  <ROLES 
+	ROLE_ID="1" 
+	NAME="Admin" 
+	CODE="admin" 
+	DATE_CREATED="2000-11-30 00:00:00" 
+	CREATED_BY="1" 
+	DATE_MODIFIED="2009-01-09 12:30:18" 
+	MODIFIED_BY="2250"/>
+  <ROLES 
+	ROLE_ID="2" 
+	NAME="Processing Dept" 
+	CODE="processing_dept" 
+	DATE_CREATED="2000-11-30 00:00:00" 
+	CREATED_BY="1" 
+	DATE_MODIFIED="2008-11-21 11:51:48" 
+	MODIFIED_BY="129"/>
+  <ROLES 
+	ROLE_ID="3" 
+	NAME="Scheduler" 
+	CODE="scheduler" 
+	DATE_CREATED="2000-11-30 00:00:00" 
+	CREATED_BY="1" 
+	DATE_MODIFIED="2009-04-02 14:32:40" 
+	MODIFIED_BY="129"/>
+  <ROLES 
+	ROLE_ID="4" 
+	NAME="IDM" 
+	CODE="idm" 
+	DATE_CREATED="2000-11-30 00:00:00" 
+	CREATED_BY="1" 
+	DATE_MODIFIED="2010-03-24 09:33:39" 
+	MODIFIED_BY="2250"/>
+  <ROLES 
+	ROLE_ID="5" 
+	NAME="Supervisor" 
+	CODE="supervisor" 
+	DATE_CREATED="2000-11-30 00:00:00" 
+	CREATED_BY="1" 
+	DATE_MODIFIED="2008-01-29 11:27:27" 
+	MODIFIED_BY="2250"/>
+  <ROLES 
+	ROLE_ID="6" 
+	NAME="Driver" 
+	CODE="driver" 
+	DATE_CREATED="2000-11-30 00:00:00" 
+	CREATED_BY="1" 
+	DATE_MODIFIED="2008-01-31 07:12:28" 
+	MODIFIED_BY="508"/>
+  <ROLES 
+	ROLE_ID="7" 
+	NAME="Foreman" 
+	CODE="foreman" 
+	DATE_CREATED="2001-02-03 00:00:00" 
+	CREATED_BY="3" 
+	DATE_MODIFIED="2007-04-04 22:39:44" 
+	MODIFIED_BY="129"/>
+  <ROLES 
+	ROLE_ID="8" 
+	NAME="Major Acct Coord" 
+	CODE="major_acct_coord" 
+	DATE_CREATED="2001-03-06 00:00:00" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2008-07-01 10:06:40" 
+	MODIFIED_BY="129"/>
+  <ROLES 
+	ROLE_ID="9" 
+	NAME="Warehouse" 
+	CODE="warehouse" 
+	DATE_CREATED="2001-04-09 00:00:00" 
+	CREATED_BY="2" 
+	DATE_MODIFIED="2007-04-04 22:48:24" 
+	MODIFIED_BY="129"/>
+  <ROLES 
+	ROLE_ID="11" 
+	NAME="Dealer Sales Support-Multi Dealer" 
+	CODE="dealer_sales_support" 
+	DATE_CREATED="2001-05-23 08:31:00" 
+	CREATED_BY="1" 
+	DATE_MODIFIED="2008-02-04 10:51:03" 
+	MODIFIED_BY="2250"/>
+  <ROLES 
+	ROLE_ID="14" 
+	NAME="Dealer Sales" 
+	CODE="dealer_sales" 
+	DATE_CREATED="2001-06-08 03:53:00" 
+	CREATED_BY="1" 
+	DATE_MODIFIED="2008-01-31 07:09:37" 
+	MODIFIED_BY="508"/>
+  <ROLES 
+	ROLE_ID="15" 
+	NAME="Installer" 
+	CODE="installer" 
+	DATE_CREATED="2001-06-13 02:52:00" 
+	CREATED_BY="1" 
+	DATE_MODIFIED="2007-04-04 22:43:37" 
+	MODIFIED_BY="129"/>
+  <ROLES 
+	ROLE_ID="16" 
+	NAME="Human Resources" 
+	CODE="human_resources" 
+	DATE_CREATED="2001-06-19 17:37:00" 
+	CREATED_BY="1" 
+	DATE_MODIFIED="2007-04-04 22:41:13" 
+	MODIFIED_BY="129"/>
+  <ROLES 
+	ROLE_ID="17" 
+	NAME="Dealer Admin" 
+	CODE="dealer_admin" 
+	DATE_CREATED="2001-07-03 10:55:00" 
+	CREATED_BY="102" 
+	DATE_MODIFIED="2008-03-07 15:06:03" 
+	MODIFIED_BY="2250"/>
+  <ROLES 
+	ROLE_ID="18" 
+	NAME="Asset Mgmt Specialist" 
+	CODE="asset_mgmt_specialist" 
+	DATE_CREATED="2001-08-16 10:28:00" 
+	CREATED_BY="247" 
+	DATE_MODIFIED="2008-01-31 07:03:03" 
+	MODIFIED_BY="508"/>
+  <ROLES 
+	ROLE_ID="19" 
+	NAME="Account Coordinator" 
+	CODE="account_coordinator" 
+	DATE_CREATED="2001-09-05 13:29:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2008-01-31 07:01:16" 
+	MODIFIED_BY="508"/>
+  <ROLES 
+	ROLE_ID="20" 
+	NAME="Dealer Sales Coordinator" 
+	CODE="dealer_sales_coordinator" 
+	DATE_CREATED="2002-02-06 10:18:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2008-01-31 07:10:17" 
+	MODIFIED_BY="508"/>
+  <ROLES 
+	ROLE_ID="21" 
+	NAME="Dealer Admin - Rowley" 
+	CODE="dealer_admin_-_rowley" 
+	DATE_CREATED="2002-02-06 12:26:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2008-02-04 10:11:35" 
+	MODIFIED_BY="508"/>
+  <ROLES 
+	ROLE_ID="22" 
+	NAME="Dealer Sales Coordinator - Rowley" 
+	CODE="dealer_sales_coord_-_rowley" 
+	DATE_CREATED="2002-02-06 12:30:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2008-01-31 07:10:56" 
+	MODIFIED_BY="508"/>
+  <ROLES 
+	ROLE_ID="23" 
+	NAME="Dealer Sales Support - Rowley" 
+	CODE="dealer_sales_support_-_rowley" 
+	DATE_CREATED="2002-02-06 12:35:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2008-01-31 07:11:14" 
+	MODIFIED_BY="508"/>
+  <ROLES 
+	ROLE_ID="24" 
+	NAME="Dealer Sales - Rowley" 
+	CODE="dealer_sales_-_rowley" 
+	DATE_CREATED="2002-02-06 12:43:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2008-01-31 07:09:58" 
+	MODIFIED_BY="508"/>
+  <ROLES 
+	ROLE_ID="25" 
+	NAME="Account Manager" 
+	CODE="account_manager" 
+	DATE_CREATED="2002-10-28 09:29:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2008-07-01 10:03:53" 
+	MODIFIED_BY="129"/>
+  <ROLES 
+	ROLE_ID="26" 
+	NAME="Dealer Sales Sup. - Mad &amp; GB - Rowley" 
+	CODE="dealer_sales_sup._-_mad___gb_-_rowley" 
+	DATE_CREATED="2002-12-02 11:55:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2008-05-14 10:34:04" 
+	MODIFIED_BY="257"/>
+  <ROLES 
+	ROLE_ID="27" 
+	NAME="Customer Direct-CSC" 
+	CODE="customer-direct" 
+	DATE_CREATED="2003-09-04 09:04:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2008-09-15 11:49:23" 
+	MODIFIED_BY="2250"/>
+  <ROLES 
+	ROLE_ID="28" 
+	NAME="MAC - CSC" 
+	CODE="mac_-_csc" 
+	DATE_CREATED="2003-09-26 09:40:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2008-09-15 11:48:16" 
+	MODIFIED_BY="2250"/>
+  <ROLES 
+	ROLE_ID="29" 
+	NAME="CSC Installer" 
+	CODE="csc_installer" 
+	DATE_CREATED="2003-10-16 10:50:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2008-10-27 10:55:58" 
+	MODIFIED_BY="257"/>
+  <ROLES 
+	ROLE_ID="30" 
+	NAME="CSC Supervisor" 
+	CODE="csc_lead" 
+	DATE_CREATED="2003-10-16 11:41:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2007-04-04 22:38:49" 
+	MODIFIED_BY="129"/>
+  <ROLES 
+	ROLE_ID="31" 
+	NAME="Account Coor - CSC" 
+	CODE="account_coor_-_csc" 
+	DATE_CREATED="2003-12-18 13:40:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2008-01-31 07:00:42" 
+	MODIFIED_BY="508"/>
+  <ROLES 
+	ROLE_ID="32" 
+	NAME="Foreman-CSC" 
+	CODE="foreman-csc" 
+	DATE_CREATED="2003-12-18 13:43:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2007-04-04 22:39:59" 
+	MODIFIED_BY="129"/>
+  <ROLES 
+	ROLE_ID="33" 
+	NAME="Dealer-CSC" 
+	CODE="dealer-csc" 
+	DATE_CREATED="2004-02-18 10:49:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2008-09-15 11:50:38" 
+	MODIFIED_BY="2250"/>
+  <ROLES 
+	ROLE_ID="34" 
+	NAME="Installer Ent&#47;Ver Own TC" 
+	CODE="installer_w_tc" 
+	DATE_CREATED="2004-02-18 14:05:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2007-09-17 12:52:44" 
+	MODIFIED_BY="257"/>
+  <ROLES 
+	ROLE_ID="35" 
+	NAME="Installer Ver Own TC only" 
+	CODE="installer_ver_own_tc_only" 
+	DATE_CREATED="2004-04-01 11:31:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2007-09-17 10:57:49" 
+	MODIFIED_BY="257"/>
+  <ROLES 
+	ROLE_ID="36" 
+	NAME="Installer - Enter&#47;Ver Any" 
+	CODE="installer_-_enter_ver_any" 
+	DATE_CREATED="2004-04-28 10:46:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2007-04-04 22:43:55" 
+	MODIFIED_BY="129"/>
+  <ROLES 
+	ROLE_ID="37" 
+	NAME="Receptionist" 
+	CODE="hr_-_enter_ver_own_tc" 
+	DATE_CREATED="2004-06-23 10:19:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2007-11-26 12:48:44" 
+	MODIFIED_BY="257"/>
+  <ROLES 
+	ROLE_ID="39" 
+	NAME="Dealer Users-Single Dealer-Add Cust" 
+	CODE="dealer_sort" 
+	DATE_CREATED="2005-01-13 14:38:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2008-02-04 10:10:40" 
+	MODIFIED_BY="508"/>
+  <ROLES 
+	ROLE_ID="40" 
+	NAME="Admin - Non-A&amp;M" 
+	CODE="admin_-_non-a_m" 
+	DATE_CREATED="2005-02-16 12:54:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2008-11-25 15:48:59" 
+	MODIFIED_BY="129"/>
+  <ROLES 
+	ROLE_ID="41" 
+	NAME="Customer of Dealer-CSC" 
+	CODE="customer_of_dealer-csc" 
+	DATE_CREATED="2005-02-24 13:44:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2009-03-17 12:27:25" 
+	MODIFIED_BY="2250"/>
+  <ROLES 
+	ROLE_ID="43" 
+	NAME="Admin-Non-A&amp;M-No Cust. Adds" 
+	CODE="admin-non-a_m-no_cust._adds" 
+	DATE_CREATED="2005-08-08 16:30:00" 
+	CREATED_BY="247" 
+	DATE_MODIFIED="2008-07-01 10:04:17" 
+	MODIFIED_BY="129"/>
+  <ROLES 
+	ROLE_ID="44" 
+	NAME="Admin - ICS" 
+	CODE="admin_-_ics" 
+	DATE_CREATED="2006-01-25 10:50:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2007-04-04 22:37:51" 
+	MODIFIED_BY="129"/>
+  <ROLES 
+	ROLE_ID="45" 
+	NAME="Dealer Users-Single Dealer-No Cust Add" 
+	CODE="dealer_users-single_dealer-no_cust_add" 
+	DATE_CREATED="2006-02-01 13:38:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2008-01-31 07:12:15" 
+	MODIFIED_BY="508"/>
+  <ROLES 
+	ROLE_ID="46" 
+	NAME="View Workorder only" 
+	CODE="view_workorder_only" 
+	DATE_CREATED="2006-03-30 09:50:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2006-03-30 11:16:14" 
+	MODIFIED_BY="257"/>
+  <ROLES 
+	ROLE_ID="47" 
+	NAME="IDM - AIA" 
+	CODE="idm_-_aia" 
+	DATE_CREATED="2006-07-20 12:21:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2009-04-02 14:31:47" 
+	MODIFIED_BY="129"/>
+  <ROLES 
+	ROLE_ID="48" 
+	NAME="Vendor View SR" 
+	CODE="vendor_view_sr" 
+	DATE_CREATED="2006-09-28 11:48:58" 
+	CREATED_BY="247"/>
+  <ROLES 
+	ROLE_ID="49" 
+	NAME="Proj. Mgr. - see his jobs only" 
+	CODE="proj._mgr._-_see_his_jobs_only" 
+	DATE_CREATED="2006-11-06 10:25:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2007-04-04 22:46:53" 
+	MODIFIED_BY="129"/>
+  <ROLES 
+	ROLE_ID="50" 
+	NAME="Scheduler Daily" 
+	CODE="scheduler_daily" 
+	DATE_CREATED="2007-03-04 19:56:49" 
+	CREATED_BY="257"/>
+  <ROLES 
+	ROLE_ID="51" 
+	NAME="IDM Daily" 
+	CODE="idm_daily" 
+	DATE_CREATED="2007-03-04 20:14:28" 
+	CREATED_BY="257"/>
+  <ROLES 
+	ROLE_ID="52" 
+	NAME="Installer Daily" 
+	CODE="installer_daily" 
+	DATE_CREATED="2007-03-04 20:15:43" 
+	CREATED_BY="257"/>
+  <ROLES 
+	ROLE_ID="53" 
+	NAME="Maintenance Daily" 
+	CODE="maintenance_daily" 
+	DATE_CREATED="2007-03-04 20:18:39" 
+	CREATED_BY="257"/>
+  <ROLES 
+	ROLE_ID="54" 
+	NAME="Driver Daily" 
+	CODE="driver_daily" 
+	DATE_CREATED="2007-03-04 20:22:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2007-04-04 22:39:26" 
+	MODIFIED_BY="129"/>
+  <ROLES 
+	ROLE_ID="55" 
+	NAME="Installer - Enter&#47;Ver any Daily" 
+	CODE="installer_-_enter_ver_any_daily" 
+	DATE_CREATED="2007-03-04 20:25:19" 
+	CREATED_BY="257"/>
+  <ROLES 
+	ROLE_ID="56" 
+	NAME="Installer Ent&#47;Ver Own Daily" 
+	CODE="installer_ent_ver_own_daily" 
+	DATE_CREATED="2007-03-04 20:27:00" 
+	CREATED_BY="257" 
+	DATE_MODIFIED="2007-09-17 12:54:48" 
+	MODIFIED_BY="257"/>
+  <ROLES 
+	ROLE_ID="57" 
+	NAME="Installer Ver Own TC Only Daily" 
+	CODE="installer_ver_own_tc_only_daily" 
+	DATE_CREATED="2007-03-04 20:28:47" 
+	CREATED_BY="257"/>
+  <ROLES 
+	ROLE_ID="58" 
+	NAME="Warehouse Daily" 
+	CODE="warehouse_daily" 
+	DATE_CREATED="2007-03-28 10:08:30" 
+	CREATED_BY="2250"/>
+  <ROLES 
+	ROLE_ID="59" 
+	NAME="IDM - Illinois" 
+	CODE="idm_-_illinois" 
+	DATE_CREATED="2008-01-07 13:13:32" 
+	CREATED_BY="257"/>
+  <ROLES 
+	ROLE_ID="60" 
+	NAME="PSG USER" 
+	CODE="psg_user" 
+	DATE_CREATED="2008-02-11 15:16:00" 
+	CREATED_BY="2250" 
+	DATE_MODIFIED="2008-02-11 15:41:44" 
+	MODIFIED_BY="2250"/>
+  <ROLES 
+	ROLE_ID="61" 
+	NAME="CUSTOMER RANSTAD" 
+	CODE="customer_ranstad" 
+	DATE_CREATED="2008-02-25 09:55:00" 
+	CREATED_BY="2250" 
+	DATE_MODIFIED="2008-05-27 13:48:45" 
+	MODIFIED_BY="129"/>
+  <ROLES 
+	ROLE_ID="62" 
+	NAME="Customer of Dealer-CSC- With Q.R." 
+	CODE="customer_of_dealer-csc-_with_q.r." 
+	DATE_CREATED="2008-09-10 15:15:00" 
+	CREATED_BY="2250" 
+	DATE_MODIFIED="2009-03-17 12:27:04" 
+	MODIFIED_BY="2250"/>
+  <ROLES 
+	ROLE_ID="63" 
+	NAME="Proj. Mgr. - AZ" 
+	CODE="idm_-_az" 
+	DATE_CREATED="2008-11-06 11:14:00" 
+	CREATED_BY="2250" 
+	DATE_MODIFIED="2008-12-10 13:25:25" 
+	MODIFIED_BY="2250"/>
+  <ROLES 
+	ROLE_ID="64" 
+	NAME="Scheduler AZ" 
+	CODE="scheduler_az" 
+	DATE_CREATED="2008-11-18 13:05:44" 
+	CREATED_BY="2250"/>
+  <ROLES 
+	ROLE_ID="65" 
+	NAME="Admin AZ" 
+	CODE="admin_az" 
+	DATE_CREATED="2008-11-18 13:13:00" 
+	CREATED_BY="2250" 
+	DATE_MODIFIED="2009-01-05 10:25:20" 
+	MODIFIED_BY="2250"/>
+  <ROLES 
+	ROLE_ID="66" 
+	NAME="Processing Dept - AZ" 
+	CODE="job_processing" 
+	DATE_CREATED="2008-12-09 13:28:00" 
+	CREATED_BY="2250" 
+	DATE_MODIFIED="2008-12-09 13:31:43" 
+	MODIFIED_BY="2250"/>
+  <ROLES 
+	ROLE_ID="67" 
+	NAME="Sales ECMS" 
+	CODE="sales_ecms" 
+	DATE_CREATED="2010-01-26 14:25:00" 
+	CREATED_BY="2250" 
+	DATE_MODIFIED="2010-01-27 11:37:41" 
+	MODIFIED_BY="2250"/>
+</dataset>

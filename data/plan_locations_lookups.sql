@@ -1,5 +1,5 @@
 /*
- * SQL script to create the HOTSHEET_DETAILS lookup types and LOOKUPS entries
+ * SQL script to create the Plan Locations lookup types and LOOKUPS entries
  *
  * Created by Dave Andreasen - Kettle River Consulting
  */
@@ -15,7 +15,7 @@ INTO
         UPDATABLE_FLAG,
         PARENT_TYPE_ID,
         DATE_CREATED,
-        CREATED_BY,
+        CREATED_BY
     )
     VALUES
     (
@@ -24,8 +24,6 @@ INTO
         'Plan Locations',
         'Y',
         'Y',
-        0,
-        '',
         NULL,
         CURRENT_TIMESTAMP,
         2

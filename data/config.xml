@@ -37,6 +37,12 @@
             <operation type="MSSQL_INSERT" src="baseline/template_locations.xml"/>
             <operation type="MSSQL_INSERT" src="baseline/templates.xml"/>
             <operation type="MSSQL_INSERT" src="baseline/users.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/roles.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/role_function_rights.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/right_types.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/function_right_types.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/functions.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/user_roles.xml"/>
         </dbunit>
     </target>
 
