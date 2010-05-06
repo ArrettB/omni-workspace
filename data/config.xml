@@ -19,6 +19,7 @@
             <operation type="MSSQL_INSERT" src="baseline/conditions.xml"/>
             <operation type="MSSQL_INSERT" src="baseline/contacts.xml"/>
             <operation type="MSSQL_INSERT" src="baseline/countries.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/customers.xml"/>
             <operation type="MSSQL_INSERT" src="baseline/formats.xml"/>
             <operation type="MSSQL_INSERT" src="baseline/function_groups.xml"/>
             <operation type="MSSQL_INSERT" src="baseline/invoice_batch_statuses.xml"/>
