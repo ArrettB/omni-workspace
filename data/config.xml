@@ -18,6 +18,7 @@
                 classpathref="cp">
             <operation type="MSSQL_INSERT" src="baseline/conditions.xml"/>
             <operation type="MSSQL_INSERT" src="baseline/contacts.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/contact_groups.xml"/>
             <operation type="MSSQL_INSERT" src="baseline/countries.xml"/>
             <operation type="MSSQL_INSERT" src="baseline/customers.xml"/>
             <operation type="MSSQL_INSERT" src="baseline/formats.xml"/>
@@ -44,6 +45,8 @@
             <operation type="MSSQL_INSERT" src="baseline/function_right_types.xml"/>
             <operation type="MSSQL_INSERT" src="baseline/functions.xml"/>
             <operation type="MSSQL_INSERT" src="baseline/user_roles.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/user_job_types.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/sequences.xml"/>
         </dbunit>
     </target>
 
@@ -90,7 +93,23 @@
 
     </target>
 
-    <target name="rebuildDb" depends="dropDb, createTables, createViews"/>
-    <target name="rebuildDbAndLoadConfigData" depends="dropDb, createTables, loadConfigData, createViews"/>
+    <target name="createProcedures">
+        <sql onerror="continue"
+             autocommit="true"
+             classpathref="cp"
+             url="${jdbc.url}"
+             driver="${jdbc.driver}"
+             userid="${jdbc.user}"
+             password="${jdbc.password}"
+             delimiter="GO"
+             delimitertype="row">
+            <transaction src="procedures.sql"/>
+        </sql>
+
+
+    </target>
+
+    <target name="rebuildDb" depends="dropDb, createTables, createViews, createProcedures"/>
+    <target name="rebuildDbAndLoadConfigData" depends="dropDb, createTables, loadConfigData, createViews, createProcedures"/>
 
 </project>

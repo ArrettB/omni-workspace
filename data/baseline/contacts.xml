@@ -81,4 +81,28 @@
             ZIP="55407"
             DATE_CREATED="2001-07-27 13:42:11"
             CREATED_BY="1"/>
+    <CONTACTS 
+            CONTACT_ID="7" 
+            CONTACT_NAME="NATE BAUER-USER" 
+            ORGANIZATION_ID="2" 
+            EXT_DEALER_ID="10001          " 
+            CONT_STATUS_TYPE_ID="128" 
+            PHONE_WORK="612-627-1638" 
+            PHONE_CELL="847-812-1510" 
+            DATE_CREATED="2001-07-27 13:42:00" 
+            CREATED_BY="1" 
+            DATE_MODIFIED="2007-08-20 21:02:45" 
+            MODIFIED_BY="1"/>
+    <CONTACTS 
+            CONTACT_ID="9" 
+            CONTACT_NAME="AMY BUCHANAN-USER" 
+            ORGANIZATION_ID="2" 
+            EXT_DEALER_ID="10001          " 
+            CONTACT_TYPE_ID="279" 
+            CONT_STATUS_TYPE_ID="128" 
+            PHONE_HOME="(612)795-9394" 
+            DATE_CREATED="2001-07-27 13:42:00" 
+            CREATED_BY="1" 
+            DATE_MODIFIED="2007-08-20 21:02:45" 
+            MODIFIED_BY="1"/>
 </dataset>

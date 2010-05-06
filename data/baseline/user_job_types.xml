@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+  <USER_JOB_TYPES 
+        USER_JOB_TYPE_ID="1"
+	USER_ID="1" 
+        LOOKUP_ID="4"
+	DATE_CREATED="2010-05-05 15:27:05" 
+	CREATED_BY="0"/>
+</dataset>
