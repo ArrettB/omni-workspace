@@ -420,6 +420,12 @@ function validateSendCommons()
 	result = false;
   }
 
+  if (result && document.getElementById("plan_location_type_id").value == "")
+  {
+    alert("Plan Location is required.");
+    document.getElementById("plan_location_type_id").focus();
+    result = false;
+  }
   return result;
 }
 

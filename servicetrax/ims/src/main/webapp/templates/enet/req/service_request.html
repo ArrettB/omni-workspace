@@ -1618,7 +1618,13 @@ function validateEmail(str){
       <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="Wall Mount:" div="&nbsp;</td><td>" style="width:230" name="wall_mount_type_id" type="droplist" table="wall_mount_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
       <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="Delivery Conditions:" div="&nbsp;</td><td>" style="width:230" name="elevator_avail_type_id" type="droplist" table="elevator_available_types_v" display="lookup_name" key="lookup_id" --></td></tr>
       <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="Stair Carry Required:" div="&nbsp;</td><td>" style="width:230" name="is_stair_carry_required" type="boolean" --></td></tr>
-      <tr><td class="regularLabel"><!--#SMARTFIELD title="Plan Location:" div="&nbsp;</td><td>" style="width:230" name="plan_location" type="text" --></td></tr>
+      <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="Plan Location:" div="&nbsp;</td><td>" style="width:230" name="plan_location_type_id" type="droplist"
+                            query="SELECT l.lookup_id plan_location_type_id, l.name
+                                     FROM lookups l INNER JOIN
+                                          lookup_types lt ON l.lookup_type_id=lt.lookup_type_id
+                                    WHERE lt.code='plan_locations_type'
+                                      AND l.active_flag='Y'
+                                 ORDER BY l.sequence_no" --></td></tr>
    </table>
   </td>
 
