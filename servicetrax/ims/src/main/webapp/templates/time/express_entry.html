@@ -3,252 +3,388 @@
 <!--#REQUIRED data="<?s:user?>"-->
 <!--#REQUIRED data="<?s:rights.time/tc_edit.view?>"-->
 
+<script type="text/javascript" src="/ims/js/external.js"></script>
+
 <body class="BodyTag" onload="">
 
-	<table cellspacing="0" cellpadding="0" border="0" width="500">
-		<tr height="20">
-			<td width="100" align="center">
-				<a href="{!s:action!}launchCharm?address=time.html%3FjobId={!s:job_id!}" target="_new">Add Hours</a>
-			</td>
-			<td width="100" align="center">
-				<A href="{!s:showPage!}time/tc_edit.html?item_type_code=expense&amp;prev_template=time/job_tc_main.html&amp;p_job_id={!s:job_id!}&amp;module=time&amp;module_mode=create&amp;level=job">Add Expenses</A>
-			</td>
-			<td width="100" align="center">
-				<A href="{!s:showPage!}time/expense_express_entry.html?prev_template=time/job_tc_main.html">Expense Express</A>
-			</td>
-			<td width="100" align="center">
-				Hrs Multi Member
-			</td>
-			<td width="100" align="center">
-				<A href="{!s:showPage!}time/express_entry_mr.html?prev_template=time/job_tc_main.html">Hrs Multi Req</A>
-			</td>
-		</tr>
-		<tr height="5"><td>&nbsp;</td></tr>
-	</table>
+<table cellspacing="0" cellpadding="0" border="0" width="500">
+    <tr height="20">
+        <td width="100" align="center">
+            <a href="{!s:action!}launchCharm?address=time.html%3FjobId={!s:job_id!}" target="_new">Add Hours</a>
+        </td>
+        <td width="100" align="center">
+            <A href="{!s:showPage!}time/tc_edit.html?item_type_code=expense&amp;prev_template=time/job_tc_main.html&amp;p_job_id={!s:job_id!}&amp;module=time&amp;module_mode=create&amp;level=job">Add
+                Expenses</A>
+        </td>
+        <td width="100" align="center">
+            <A href="{!s:showPage!}time/expense_express_entry.html?prev_template=time/job_tc_main.html">Expense
+                Express</A>
+        </td>
+        <td width="100" align="center">
+            Hrs Multi Member
+        </td>
+        <td width="100" align="center">
+            <A href="{!s:showPage!}time/express_entry_mr.html?prev_template=time/job_tc_main.html">Hrs Multi Req</A>
+        </td>
+    </tr>
+    <tr height="5">
+        <td>&nbsp;</td>
+    </tr>
+</table>
 
 <!--#SQLLOOP name="test" query="SELECT 'x' FROM jobs_v WHERE job_id = <?s:job_id.toPStmtInt()?> and job_status_type_code != 'closed'" -->
 
 <table border="0" cellpadding="0" cellspacing="0" class="SmartTable">
-	<tr>
-		<td class="TableTitle" colspan="6">Line Info</td>
-	</tr>
+    <tr>
+        <td class="TableTitle" colspan="6">Line Info</td>
+    </tr>
 </table>
 
-<form action="{!s:action!}expressEntry/time/express_entry.html" METHOD="POST" name="enterHoursForm">
-<input type="hidden" name="redirect" value="{!s:showPage!}/time/express_entry.html" >
+<form action="{!s:action!}expressEntry/time/express_entry.html" METHOD="POST" id="enterHoursForm" name="enterHoursForm"
+      onsubmit="return calculateHoursOnSubmit();">
+<input type="hidden" name="redirect" value="{!s:showPage!}/time/express_entry.html">
 <!--#IF defined="<?s:pay_code_warning?>"-->
 <table>
-	<tr>
-		<td align="center" colspan="20">
-			<span class="warningText">Warning - The paycode does not match the work code.</span>
-		</td>
-	</tr>
+    <tr>
+        <td align="center" colspan="20">
+            <span class="warningText">Warning - The paycode does not match the work code.</span>
+        </td>
+    </tr>
 </table>
 <!--#/IF-->
 <!--#EXEC handler="ims.handlers.session.SessionDatumRemover" session_datum_name="pay_code_warning" -->
 <!--#IF defined="<?d:pay_code_warning?>"-->
 <table>
-	<tr>
-		<td align="center" colspan="20">
-			<span class="warningText">Warning - The paycode {!p:ext_pay_code!} should not be allowed for this work code.</span>
-		</td>
-	</tr>
+    <tr>
+        <td align="center" colspan="20">
+            <span class="warningText">Warning - The paycode {!p:ext_pay_code!} should not be allowed for this work code.</span>
+        </td>
+    </tr>
 </table>
 <!--#/IF-->
 
-<table width="100%"border="0" cellpadding="2" cellspacing="2">
-	<!--#IF defined="<?d:err@resource_id?>"-->
-	<tr>
-		<td class="Error" colspan="6">
-			{!d:err@resource_id!}
-		</td>
-	</tr>
-	<!--#/IF-->
-	<!--#IF defined="<?d:err@service_id?>"-->
-	<tr>
-		<td class="Error" colspan="6">
-			{!d:err@service_id!}
-		</td>
-	</tr>
-	<!--#/IF-->
-	<!--#IF defined="<?d:err@line_date?>"-->
-	<tr>
-		<td class="Error" colspan="6">
-			{!d:err@line_date!}
-		</td>
-	</tr>
-	<!--#/IF-->
-	<!--#IF defined="<?d:err@num_hours?>"-->
-	<tr>
-		<td class="Error" colspan="6">
-			{!d:err@num_hours!}
-		</td>
-	</tr>
-	<!--#/IF-->
-	<!--#IF defined="<?d:err@pay_code?>"-->
-	<tr>
-		<td class="Error" colspan="6">
-			{!d:err@pay_code!}
-		</td>
-	</tr>
-	<!--#/IF-->
-	<!--#IF defined="<?d:err@item_id?>"-->
-	<tr>
-		<td class="Error" colspan="6">
-			{!d:err@item_id!}
-		</td>
-	</tr>
-	<!--#/IF-->
+<table width="100%" border="0" cellpadding="2" cellspacing="2">
+<!--#IF defined="<?d:err@resource_id?>"-->
+<tr>
+    <td class="Error" colspan="6">
+        {!d:err@resource_id!}
+    </td>
+</tr>
+<!--#/IF-->
+<!--#IF defined="<?d:err@service_id?>"-->
+<tr>
+    <td class="Error" colspan="6">
+        {!d:err@service_id!}
+    </td>
+</tr>
+<!--#/IF-->
+<!--#IF defined="<?d:err@line_date?>"-->
+<tr>
+    <td class="Error" colspan="6">
+        {!d:err@line_date!}
+    </td>
+</tr>
+<!--#/IF-->
+<!--#IF defined="<?d:err@num_hours?>"-->
+<tr>
+    <td class="Error" colspan="6">
+        {!d:err@num_hours!}
+    </td>
+</tr>
+<!--#/IF-->
+<!--#IF defined="<?d:err@pay_code?>"-->
+<tr>
+    <td class="Error" colspan="6">
+        {!d:err@pay_code!}
+    </td>
+</tr>
+<!--#/IF-->
+<!--#IF defined="<?d:err@item_id?>"-->
+<tr>
+    <td class="Error" colspan="6">
+        {!d:err@item_id!}
+    </td>
+</tr>
+<!--#/IF-->
 
 
-	<tr><td><table>
-		<tr>
-			<td>
-				Member
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<!--#SQLLOOP name="res"
-					query="SELECT resource_id, resource_name
-						FROM resources_v
-						WHERE (res_cat_type_code = 'employee' OR res_cat_type_code ='contractor' OR res_cat_type_code='truck')
-						AND active_flag = 'Y'
-						AND organization_id=<?s:org_id.toPStmtInt()?>
-						ORDER BY resource_name"
-				-->
-				<!--#SQLHEADER-->
-				<select name="resource_id" size="10" multiple class="regular">
-				<!--#/SQLHEADER-->
-					<option value="{!r:res:resource_id!}">{!r:res:resource_name!}</option>
-				<!--#SQLFOOTER-->
-				</select>
-				<!--#/SQLFOOTER-->
+<tr>
+<td>
+    <table>
+        <tr>
+            <td>
+                Member
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <!--#SQLLOOP name="res"
+                    query="SELECT resource_id, resource_name
+                        FROM resources_v
+                        WHERE (res_cat_type_code = 'employee' OR res_cat_type_code ='contractor' OR res_cat_type_code='truck')
+                        AND active_flag = 'Y'
+                        AND organization_id=<?s:org_id.toPStmtInt()?>
+                        ORDER BY resource_name"
+                -->
+                <!--#SQLHEADER-->
+                <select name="resource_id" size="10" multiple class="regular">
+                    <!--#/SQLHEADER-->
+                    <option value="{!r:res:resource_id!}">{!r:res:resource_name!}</option>
+                    <!--#SQLFOOTER-->
+                </select>
+                <!--#/SQLFOOTER-->
 
-				<!--#/SQLLOOP-->
-			</td>
-		</tr>
-	</table></td>
-	<td valign="top"><table>
-		<tr>
-			<td colspan="4">
-				Requisition
-			</td>
-		</tr>
-		<tr>
-			<td colspan="4">
-				<!--#SELECT
-					name="tc_service_id"
-					query="SELECT service_id, service_no_desc FROM tc_services_v WHERE job_id = <?s:job_id.toPStmtInt()?> AND serv_status_type_code != 'closed' ORDER BY service_no" style="width:500"
-					currentValue="<?p:tc_service_id?>"
-					class="regular"
-					firstOption="            "
-					firstOptionValue=""
-				-->
-			</td>
-		</tr>
-		<tr>
-			<td>
-				Date
-			</td>
-			<td>
-				Work Code
-			</td>
-			<td>
-				Hours
-			</td>
-			<td>
-				Pay Code
-			</td>
-		</tr>
-		<tr>
-			<td>
-	     		<!--#CHECKSECURITY right="rights.time_modify_date.view"-->
-					<!--#IF defined="<?p:line_date?>"-->
-			     		<input type="text" name="line_date" value="{!p:line_date!}" size="12" class="regular">
-						<script type="text/javascript">makeButton('selectDate','calendar_off','calendar_on','chooseDate(line_date)')</script>
-					<!--#ELSE-->
-						<!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) AS from_date" name="dateQuery"-->
-							<input type="text" name="line_date" value="{!r:dateQuery:from_date!}" size="12" class="regular">
-							<script type="text/javascript">makeButton('selectDate','calendar_off','calendar_on','chooseDate(line_date)')</script>
-						<!--#/SQLLOOP-->
-					<!--#/IF-->
-				<!--#ELSE-->
-					<!--#IF defined="<?p:line_date?>"-->
-			     		<input type="text" name="line_date" value="{!p:line_date!}" size="12" class="readonly" readonly>
-					<!--#ELSE-->
-						<!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) AS from_date" name="dateQuery"-->
-							<input type="text" name="line_date" value="{!r:dateQuery:from_date!}" size="12" class="readonly" readonly>
-						<!--#/SQLLOOP-->
-					<!--#/IF-->
-				<!--#/CHECKSECURITY-->
-			</td>
-			<td>
-				<!--#SELECT
-					name="item_id"
-					query="SELECT i.item_id, i.name
-					         FROM items i INNER JOIN
-					              lookups item_type ON i.item_type_id = item_type.lookup_id INNER JOIN
-					              job_item_rates jir ON i.item_id = jir.item_id INNER JOIN
-					              jobs j ON i.job_type_id = j.job_type_id
-					        WHERE jir.job_id = j.job_id
-					          AND item_type.code = 'hours'
-					          AND j.job_id = <?s:job_id.toPStmtInt()?>
- 						 ORDER BY i.name"
-					currentValue="<?p:item_id?>"
-					class="regular"
-					firstOption="            "
-					firstOptionValue=""
-				-->
-			</td>
-			<td>
-				<input type="text" name="num_hours" size="10" value="{!p:num_hours!}" class="regular">
-			</td>
-			<td>
-				<!--#SELECT
-					name="pay_code"
-					query="SELECT RTRIM(payrcord) AS payrcord, dscriptn FROM <?s:pay_code_table?> ORDER BY payrcord"
-					currentValue="<?p:pay_code?>"
-					class="regular"
-					firstOption="            "
-					firstOptionValue=""
-				-->
-			</td>
-		</tr>
-		<tr>
-			<td colspan="4">
-				<input type="submit" name="button" value="Add" class="Button">
-			</td>
-		</tr>
-	</table></td></tr>
+                <!--#/SQLLOOP-->
+            </td>
+        </tr>
+    </table>
+</td>
+<td valign="top">
+<table>
+<tr>
+    <td colspan="4">
+        Requisition
+    </td>
+</tr>
+<tr>
+    <td colspan="4">
+        <!--#SELECT
+            name="tc_service_id"
+            query="SELECT service_id, service_no_desc FROM tc_services_v WHERE job_id = <?s:job_id.toPStmtInt()?> AND serv_status_type_code != 'closed' ORDER BY service_no" style="width:500"
+            currentValue="<?p:tc_service_id?>"
+            class="regular"
+            firstOption="            "
+            firstOptionValue=""
+        -->
+    </td>
+</tr>
+<tr>
+    <td style="padding-top:55px; padding-bottom:5px;">
+        <label style="padding-bottom:5px;">
+            Date
+        </label>
+
+        <!--#CHECKSECURITY right="rights.time_modify_date.view"-->
+        <!--#IF defined="<?p:line_date?>"-->
+        <input type="text" name="line_date" value="{!p:line_date!}" size="12" class="regular">
+        <script type="text/javascript">makeButton('selectDate', 'calendar_off', 'calendar_on', 'chooseDate(line_date)')</script>
+        <!--#ELSE-->
+        <!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) AS from_date" name="dateQuery"-->
+        <input type="text" name="line_date" value="{!r:dateQuery:from_date!}" size="12" class="regular">
+        <script type="text/javascript">makeButton('selectDate', 'calendar_off', 'calendar_on', 'chooseDate(line_date)')</script>
+        <!--#/SQLLOOP-->
+        <!--#/IF-->
+        <!--#ELSE-->
+        <!--#IF defined="<?p:line_date?>"-->
+        <input type="text" name="line_date" value="{!p:line_date!}" size="12" class="readonly" readonly>
+        <!--#ELSE-->
+        <!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) AS from_date" name="dateQuery"-->
+        <input type="text" name="line_date" value="{!r:dateQuery:from_date!}" size="12" class="readonly"
+               readonly>
+        <!--#/SQLLOOP-->
+        <!--#/IF-->
+        <!--#/CHECKSECURITY-->
+    </td>
+    <td style="padding-top:55px;">
+        <label style="padding-bottom:5px;"> Work Code </label>
+        <!--#SELECT
+            name="item_id"
+            query="SELECT i.item_id, i.name
+                     FROM items i INNER JOIN
+                          lookups item_type ON i.item_type_id = item_type.lookup_id INNER JOIN
+                          job_item_rates jir ON i.item_id = jir.item_id INNER JOIN
+                          jobs j ON i.job_type_id = j.job_type_id
+                    WHERE jir.job_id = j.job_id
+                      AND item_type.code = 'hours'
+                      AND j.job_id = <?s:job_id.toPStmtInt()?>
+                  ORDER BY i.name"
+            currentValue="<?p:item_id?>"
+            class="regular"
+            firstOption="            "
+            firstOptionValue=""
+        -->
+    </td>
+    <td style="padding-top:10px; padding-left:0; padding-right:15px;">
+        <table border="0" style="margin-left:-25px;">
+            <tr>
+                <td>
+                    Start Time:
+                </td>
+                <td style="padding-left:5px;">
+                    <label>
+                        <select name="start_time_hour" id="start_time_hour" class="regular"
+                                onchange="calculateHours();">
+                            <option value="0">12</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                        </select>
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        <select name="start_time_minutes" id="start_time_minutes" class="regular"
+                                onchange="calculateHours();">
+                            <option value="00">00</option>
+                            <option value="15">15</option>
+                            <option value="30">30</option>
+                            <option value="45">45</option>
+                        </select>
+                    </label>
+                </td>
+
+                <td>
+                    <label>
+                        <select name="start_time_AMPM" id="start_time_AMPM" class="regular"
+                                onchange="calculateHours();">
+                            <option value="AM">AM</option>
+                            <option value="PM">PM</option>
+                        </select>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    End Time:
+                </td>
+                <td style="padding-left:5px;">
+                    <label>
+                        <select name="end_time_hour" id="end_time_hour" class="regular"
+                                onchange="calculateHours();">
+                            <option value="0">12</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                        </select>
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        <select name="end_time_minutes" id="end_time_minutes" class="regular"
+                                onchange="calculateHours();">
+                            <option value="00">00</option>
+                            <option value="15">15</option>
+                            <option value="30">30</option>
+                            <option value="45">45</option>
+                        </select>
+                    </label>
+                </td>
+
+                <td>
+                    <label>
+                        <select name="end_time_AMPM" id="end_time_AMPM" class="regular"
+                                onchange="calculateHours();">
+                            <option value="AM">AM</option>
+                            <option value="PM">PM</option>
+                        </select>
+                    </label>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Lunch/Dinner
+                </td>
+                <td style="padding-left:5px;">
+                    <label>
+                        <select name="lunch_dinner_hours" id="lunch_dinner_hours" class="regular"
+                                onchange="calculateHours();">
+                            <option value="0">0&nbsp;&nbsp;</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select>
+                    </label>
+                </td>
+                <td colspan="2">
+                    <label>
+                        <select name="lunch_dinner_minutes" id="lunch_dinner_minutes" class="regular"
+                                onchange="calculateHours();">
+                            <option value="00">00</option>
+                            <option value="15">15</option>
+                            <option value="30">30</option>
+                            <option value="45">45</option>
+                        </select>
+                    </label>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding-top:10px;">
+                    Hrs. Worked
+                </td>
+                <td colspan="3" style="padding-top:10px;">
+                    <label>
+                        <input type="text" id=num_hours name="num_hours" size="10" value="{!p:num_hours!}"
+                               class="regular" disabled style="padding-left:5px;">
+                    </label>
+                </td>
+            </tr>
+        </table>
+    </td>
+    <td>
+        <label style="padding-bottom:5px; padding-top:55px;"> Pay Code </label>
+        <!--#SELECT
+            name="pay_code"
+            query="SELECT RTRIM(payrcord) AS payrcord, dscriptn FROM <?s:pay_code_table?> ORDER BY payrcord"
+            currentValue="<?p:pay_code?>"
+            class="regular"
+            firstOption="            "
+            firstOptionValue=""
+        -->
+    </td>
+</tr>
+<tr>
+    <td colspan="4">
+        <input type="submit" name="button" value="Add" class="Button" id="add_time_button">
+    </td>
+</tr>
+</table>
+</td>
+</tr>
 
 
-
-<hr><br>
+<hr>
+<br>
 
 <table border="0" cellpadding="0" cellspacing="0">
 
-	<!--#IF defined="<?d:err@line_date_update?>"-->
-	<tr>
-		<td class="Error" colspan="5">
-			{!d:err@line_date_update!}
-		</td>
-	</tr>
-	<!--#/IF-->
-	<!--#IF defined="<?d:err@num_hours_update?>"-->
-	<tr>
-		<td class="Error" colspan="5">
-			{!d:err@num_hours_update!}
-		</td>
-	</tr>
-	<!--#/IF-->
-	<!--#IF defined="<?d:err@pay_code_update?>"-->
-	<tr>
-		<td class="Error" colspan="5">
-			{!d:err@pay_code_update!}
-		</td>
-	</tr>
-	<!--#/IF-->
+    <!--#IF defined="<?d:err@line_date_update?>"-->
+    <tr>
+        <td class="Error" colspan="5">
+            {!d:err@line_date_update!}
+        </td>
+    </tr>
+    <!--#/IF-->
+    <!--#IF defined="<?d:err@num_hours_update?>"-->
+    <tr>
+        <td class="Error" colspan="5">
+            {!d:err@num_hours_update!}
+        </td>
+    </tr>
+    <!--#/IF-->
+    <!--#IF defined="<?d:err@pay_code_update?>"-->
+    <tr>
+        <td class="Error" colspan="5">
+            {!d:err@pay_code_update!}
+        </td>
+    </tr>
+    <!--#/IF-->
 </table>
 
 
@@ -268,120 +404,142 @@
 
 
 <table name="service_lines" id="service_lines" class="SmartTable" border="0" cellpadding="0" cellspacing="0">
-	<tr height="22">
-		<td height="22" class="TableTitle" width="2%">
-			<INPUT TYPE="checkbox" name="CheckAllBox" onclick="checkAllBoxes(this.form.CheckAllBox, this.form.checked_sl)">
-		</td>
-		<td height="22" class="TableTitle" width="8%">
-			Line No
-		</td>
-		<td height="22" class="TableTitle" width="20%">
-			Member
-		</td>
-		<td height="22" class="TableTitle" width="20%">
-			Requisition
-		</td>
-		<td height="22" class="TableTitle" width="20%">
-			Item
-		</td>
-		<td height="22" class="TableTitle" width="10%">
-			Pay Code
-		</td>
-		<td height="22" class="TableTitle" width="10%">
-			Date
-		</td>
-		<td height="22" class="TableTitle" width="10%" align="right">
-			Hours
-		</td>
-	</tr>
-<!--#/SQLHEADER-->
-	<input type="hidden" name="service_line_id" value='{!r:q2:service_line_id!}'>
-	<tr height="15">
-		<td height="15" class="TableRow1" width="2%">
-			<INPUT TYPE='checkbox' name='checked_sl' value='{!r:q2:service_line_id!}'>
-		</td>
-		<td height="15" class="TableRow1" width="8%" align="right">
-			{!r:q2:tc_service_line_no!}
-		</td>
-		<td height="15" class="TableRow1" width="20%">
-			{!r:q2:resource_name!}
-		</td>
-		<td height="15" class="TableRow1" width="20%">
-		<!--#SELECT
-			name="<?r:q2:service_line_id?>_service_id"
-			query="SELECT service_id, service_no_desc FROM tc_services_v WHERE job_id = <?s:job_id.toPStmtInt()?> AND serv_status_type_code != 'closed' ORDER BY service_no" style="width:200"
-			currentValue="<?r:q2:tc_service_id?>"
-			onChange="changed('<?r:q2:service_line_id?>_changed')"
-			class="regular"
-		-->
-		</td>
-		<td height="15" class="TableRow1" width="20%">
-			<!--#SELECT
-				name="<?r:q2:service_line_id?>_item_id"
-				query="SELECT i.item_id, i.name
-							FROM items_v i, job_item_rates ji, items_by_job_types_v ijt
-							WHERE i.item_type_code = 'hours'
-							AND ji.job_id = <?s:job_id.toPStmtInt()?>
-							AND ji.item_id = i.item_id
-							AND ji.job_id = ijt.job_id
-							AND i.item_id = ijt.item_id
-						UNION SELECT i.item_id, i.name
-							FROM items i
-							WHERE i.item_id = <?r:q2:item_id.toPStmtInt()?>
-							ORDER BY name"
-				currentValue="<?r:q2:item_id?>"
-			    onChange="changed('<?r:q2:service_line_id?>_changed')"
-				class="regular"
-			-->
-		</td>
-		<td height="15" class="TableRow1" width="10%">
-			<!--#SELECT
-				name="<?r:q2:service_line_id?>_pay_code"
-				query="SELECT rtrim(payrcord), dscriptn FROM <?s:pay_code_table?> ORDER BY dscriptn"
-				currentValue="<?r:q2:ext_pay_code.trim()?>"
-				onChange="changed('<?r:q2:service_line_id?>_changed')"
-				class="regular"
-			-->
-		</td>
-		<td height="15" class="TableRow1" width="10%">
-	     	<!--#CHECKSECURITY right="rights.time_modify_date.view"-->
-			<input type="text" name="{!r:q2:service_line_id!}_line_date" value="{!r:q2:service_line_date_varchar!}" style="width:80" class="regular"  onChange="changed('{!r:q2:service_line_id!}_changed')">
-			<!--#ELSE-->
-			<input type="text" name="{!r:q2:service_line_id!}_line_date" value="{!r:q2:service_line_date_varchar!}" style="width:80" class="readonly" readonly>
-			<!--#/CHECKSECURITY-->
-		</td>
-		<td height="15" class="TableRow1" width="10%">
-			<input type="text" name="{!r:q2:service_line_id!}_num_hours" value="{!r:q2:payroll_qty!}" style="width:50" align="right"  onChange="changed('{!r:q2:service_line_id!}_changed')">
-		</td>
-		<td height="15" width="0%" >
-			<input type="hidden" name="{!r:q2:service_line_id!}_changed" id="{!r:q2:service_line_id!}_changed" value="{!r:q2:changed!}">
-		</td>
-	</tr>
-<!--#SQLFOOTER-->
-	<tr height="10"><td>&nbsp;</td></tr>
-	<tr><td colspan="8"><table width="100%">
-	<tr>
-		<td>
-			<input type="submit" name="button" value="Update" class="Button">
-		</td>
-		<td align="right">
-			<input type="submit" name="button" value="Delete Selected" class="Button">
-		</td>
-	</tr>
-	</table></td></tr>
-	<tr height="10"><td>&nbsp;</td></tr>
-	<tr>
-		<td colspan="5">
-			<input type="submit" name="button" value="Submit Records" class="Button">
-		</td>
-	</tr>
+    <tr height="22">
+        <td height="22" class="TableTitle" width="2%">
+            <INPUT TYPE="checkbox" name="CheckAllBox"
+                   onclick="checkAllBoxes(this.form.CheckAllBox, this.form.checked_sl)">
+        </td>
+        <td height="22" class="TableTitle" width="8%">
+            Line No
+        </td>
+        <td height="22" class="TableTitle" width="20%">
+            Member
+        </td>
+        <td height="22" class="TableTitle" width="20%">
+            Requisition
+        </td>
+        <td height="22" class="TableTitle" width="20%">
+            Item
+        </td>
+        <td height="22" class="TableTitle" width="10%">
+            Pay Code
+        </td>
+        <td height="22" class="TableTitle" width="10%">
+            Date
+        </td>
+        <td height="22" class="TableTitle" width="10%" align="right">
+            Hours
+        </td>
+    </tr>
+    <!--#/SQLHEADER-->
+    <input type="hidden" name="service_line_id" value='{!r:q2:service_line_id!}'>
+    <tr height="15">
+        <td height="15" class="TableRow1" width="2%">
+            <INPUT TYPE='checkbox' name='checked_sl' value='{!r:q2:service_line_id!}'>
+        </td>
+        <td height="15" class="TableRow1" width="8%" align="right">
+            {!r:q2:tc_service_line_no!}
+        </td>
+        <td height="15" class="TableRow1" width="20%">
+            {!r:q2:resource_name!}
+        </td>
+        <td height="15" class="TableRow1" width="20%">
+            <!--#SELECT
+               name="<?r:q2:service_line_id?>_service_id"
+               query="SELECT service_id, service_no_desc FROM tc_services_v WHERE job_id = <?s:job_id.toPStmtInt()?> AND serv_status_type_code != 'closed' ORDER BY service_no" style="width:200"
+               currentValue="<?r:q2:tc_service_id?>"
+               onChange="changed('<?r:q2:service_line_id?>_changed')"
+               class="regular"
+           -->
+        </td>
+        <td height="15" class="TableRow1" width="20%">
+            <!--#SELECT
+                   name="<?r:q2:service_line_id?>_item_id"
+                   query="SELECT i.item_id, i.name
+                               FROM items_v i, job_item_rates ji, items_by_job_types_v ijt
+                               WHERE i.item_type_code = 'hours'
+                               AND ji.job_id = <?s:job_id.toPStmtInt()?>
+                               AND ji.item_id = i.item_id
+                               AND ji.job_id = ijt.job_id
+                               AND i.item_id = ijt.item_id
+                           UNION SELECT i.item_id, i.name
+                               FROM items i
+                               WHERE i.item_id = <?r:q2:item_id.toPStmtInt()?>
+                               ORDER BY name"
+                   currentValue="<?r:q2:item_id?>"
+                   onChange="changed('<?r:q2:service_line_id?>_changed')"
+                   class="regular"
+                   class="regular"
+               -->
+        </td>
+        <td height="15" class="TableRow1" width="10%">
+            <!--#SELECT
+                   name="<?r:q2:service_line_id?>_pay_code"
+                   query="SELECT rtrim(payrcord), dscriptn FROM <?s:pay_code_table?> ORDER BY dscriptn"
+                   currentValue="<?r:q2:ext_pay_code.trim()?>"
+                   onChange="changed('<?r:q2:service_line_id?>_changed')"
+                   class="regular"
+               -->
+        </td>
+        <td height="15" class="TableRow1" width="10%">
+            <!--#CHECKSECURITY right="rights.time_modify_date.view"-->
+            <input type="text" name="{!r:q2:service_line_id!}_line_date" value="{!r:q2:service_line_date_varchar!}"
+                   style="width:80" class="regular" onChange="changed('{!r:q2:service_line_id!}_changed')">
+            <!--#ELSE-->
+            <input type="text" name="{!r:q2:service_line_id!}_line_date" value="{!r:q2:service_line_date_varchar!}"
+                   style="width:80" class="readonly" readonly>
+            <!--#/CHECKSECURITY-->
+        </td>
+        <td height="15" class="TableRow1" width="10%">
+            <input type="text" name="{!r:q2:service_line_id!}_num_hours" value="{!r:q2:payroll_qty!}" style="width:50"
+                   align="right" onChange="changed('{!r:q2:service_line_id!}_changed')">
+        </td>
+        <td height="15" width="0%">
+            <input type="hidden" name="{!r:q2:service_line_id!}_changed" id="{!r:q2:service_line_id!}_changed"
+                   value="{!r:q2:changed!}">
+        </td>
+    </tr>
+    <!--#SQLFOOTER-->
+    <tr height="10">
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td colspan="8">
+            <table width="100%">
+                <tr>
+                    <td>
+                        <input type="submit" name="button" value="Update" class="Button">
+                    </td>
+                    <td align="right">
+                        <input type="submit" name="button" value="Delete Selected" class="Button">
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr height="10">
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td colspan="5">
+            <input type="submit" name="button" value="Submit Records" class="Button">
+        </td>
+    </tr>
+</table>
 </table>
 </form>
 <!--#/SQLFOOTER-->
 
 <!--#/SQLLOOP-->
 <!--#SQLNODATA-->
-<table><tr><td width="50">&nbsp;</td><td height="100" valign="bottom" class="HeaderLabel">The Job is Closed, you cannot add lines in 'Hours Express' while the Job is Closed.</td></tr></table>
+<table>
+    <tr>
+        <td width="50">&nbsp;</td>
+        <td height="100" valign="bottom" class="HeaderLabel">The Job is Closed, you cannot add lines in 'Hours Express'
+            while the Job is Closed.
+        </td>
+    </tr>
+</table>
 <!--#/SQLNODATA-->
 <!--#/SQLLOOP-->
 
