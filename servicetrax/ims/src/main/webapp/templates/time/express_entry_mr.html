@@ -3,7 +3,7 @@
 <!--#REQUIRED data="<?s:user?>"-->
 <!--#REQUIRED data="<?s:rights.time/tc_edit.view?>"-->
 
-<body class="BodyTag" onload="loadItemOptions(enterHoursForm.resource_id)">
+<body class="BodyTag" onload="initializeTimeFields();loadItemOptions(enterHoursForm.resource_id);">
 
 
 <table cellspacing="0" cellpadding="0" border="0" width="500">
@@ -198,7 +198,7 @@
 
     <style type="text/css">
         .timeTable {
-            margin-left: -20px;
+            margin-left: -5px;
         }
 
         .timeTable td {
@@ -335,7 +335,7 @@
                 <td colspan="3" style="padding-top:10px;">
                     <label>
                         <input type="text" id=num_hours name="num_hours" size="10" value="{!p:num_hours!}"
-                               class="regular" disabled style="padding-left:5px; height:18px;">
+                               class="regular" disabled style="padding-left:5px; height:18px; font-weight:bold;">
                     </label>
                 </td>
             </tr>
@@ -551,6 +551,19 @@
 <IE:DOWNLOAD ID="oDownload" STYLE="behavior:url(#default#download)"/>
 
 <script type="text/javascript">
+
+    function initializeTimeFields() {
+        document.getElementById('lunch_dinner_hours').selectedIndex = 0;
+        document.getElementById('lunch_dinner_minutes').selectedIndex = 0
+        document.getElementById('num_hours').value = '0';
+        calculateHours();
+    }
+
+    function getValue(widgetName) {
+        var selObj = document.getElementById(widgetName);
+        return selObj.options[selObj.selectedIndex].value;
+    }
+
     function executeScript(s)
     {
         window.execScript(s);
@@ -561,30 +574,14 @@
         oDownload.startDownload(url, executeScript);
     }
 
-    function loadItemOptions(optionField)
-    {
-        var url = {!s
-    :
-        showPage.toJavaScriptString()
-        !
-    }
-    + "time/item_options.html";
-    url += "?form_name=enterHoursForm";
-    url += "&select_name=item_id";
-    url += "&tc_job_id=" + {!p
-    :
-    tc_job_id.toJavaScriptString()
-    !
-    }
-    ;
-    url += "&item_id=" + {!p
-    :
-    item_id.toJavaScriptString()
-    !
-    }
-    ;
-    url += "&resource_id=" + optionField.options[optionField.selectedIndex].value;
-    startDownload(url);
-    }
-</script>
+function loadItemOptions(optionField)
+{
+	var url = {!s:showPage.toJavaScriptString()!} + "time/item_options.html";
+	url += "?form_name=enterHoursForm";
+	url += "&select_name=item_id";
+	url += "&tc_job_id=" + {!p:tc_job_id.toJavaScriptString()!};
+	url += "&item_id=" + {!p:item_id.toJavaScriptString()!};
+	url += "&resource_id=" + optionField.options[optionField.selectedIndex].value;
+	startDownload(url);
+}</script>
 <!--#EMBED template="embeds/footer.html" -->

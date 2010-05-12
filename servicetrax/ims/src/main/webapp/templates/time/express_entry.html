@@ -5,7 +5,17 @@
 
 <script type="text/javascript" src="/ims/js/external.js"></script>
 
-<body class="BodyTag" onload="">
+<script type="text/javascript">
+
+    function initializeTimeFields() {
+        document.getElementById('lunch_dinner_hours').selectedIndex = 0;
+        document.getElementById('lunch_dinner_minutes').selectedIndex = 0
+        document.getElementById('num_hours').value = '0';
+        calculateHours();
+    }
+</script>
+
+<body class="BodyTag" onload="initializeTimeFields();">
 
 <table cellspacing="0" cellpadding="0" border="0" width="500">
     <tr height="20">
@@ -159,198 +169,213 @@
     </td>
 </tr>
 <tr>
-    <td style="padding-top:55px; padding-bottom:5px;">
-        <label style="padding-bottom:5px;">
-            Date
-        </label>
+<td style="padding-top:68px; padding-bottom:5px;">
+    <label style="padding-bottom:5px;">
+        Date
+    </label>
 
-        <!--#CHECKSECURITY right="rights.time_modify_date.view"-->
-        <!--#IF defined="<?p:line_date?>"-->
-        <input type="text" name="line_date" value="{!p:line_date!}" size="12" class="regular">
-        <script type="text/javascript">makeButton('selectDate', 'calendar_off', 'calendar_on', 'chooseDate(line_date)')</script>
-        <!--#ELSE-->
-        <!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) AS from_date" name="dateQuery"-->
-        <input type="text" name="line_date" value="{!r:dateQuery:from_date!}" size="12" class="regular">
-        <script type="text/javascript">makeButton('selectDate', 'calendar_off', 'calendar_on', 'chooseDate(line_date)')</script>
-        <!--#/SQLLOOP-->
-        <!--#/IF-->
-        <!--#ELSE-->
-        <!--#IF defined="<?p:line_date?>"-->
-        <input type="text" name="line_date" value="{!p:line_date!}" size="12" class="readonly" readonly>
-        <!--#ELSE-->
-        <!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) AS from_date" name="dateQuery"-->
-        <input type="text" name="line_date" value="{!r:dateQuery:from_date!}" size="12" class="readonly"
-               readonly>
-        <!--#/SQLLOOP-->
-        <!--#/IF-->
-        <!--#/CHECKSECURITY-->
-    </td>
-    <td style="padding-top:55px;">
-        <label style="padding-bottom:5px;"> Work Code </label>
-        <!--#SELECT
-            name="item_id"
-            query="SELECT i.item_id, i.name
-                     FROM items i INNER JOIN
-                          lookups item_type ON i.item_type_id = item_type.lookup_id INNER JOIN
-                          job_item_rates jir ON i.item_id = jir.item_id INNER JOIN
-                          jobs j ON i.job_type_id = j.job_type_id
-                    WHERE jir.job_id = j.job_id
-                      AND item_type.code = 'hours'
-                      AND j.job_id = <?s:job_id.toPStmtInt()?>
-                  ORDER BY i.name"
-            currentValue="<?p:item_id?>"
-            class="regular"
-            firstOption="            "
-            firstOptionValue=""
-        -->
-    </td>
-    <td style="padding-top:10px; padding-left:0; padding-right:15px;">
-        <table border="0" style="margin-left:-25px;">
-            <tr>
-                <td>
-                    Start Time:
-                </td>
-                <td style="padding-left:5px;">
-                    <label>
-                        <select name="start_time_hour" id="start_time_hour" class="regular"
-                                onchange="calculateHours();">
-                            <option value="0">12</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                        </select>
-                    </label>
-                </td>
-                <td>
-                    <label>
-                        <select name="start_time_minutes" id="start_time_minutes" class="regular"
-                                onchange="calculateHours();">
-                            <option value="00">00</option>
-                            <option value="15">15</option>
-                            <option value="30">30</option>
-                            <option value="45">45</option>
-                        </select>
-                    </label>
-                </td>
+    <!--#CHECKSECURITY right="rights.time_modify_date.view"-->
+    <!--#IF defined="<?p:line_date?>"-->
+    <input type="text" name="line_date" value="{!p:line_date!}" size="12" class="regular" style="height:18px;">
+    <script type="text/javascript">makeButton('selectDate', 'calendar_off', 'calendar_on', 'chooseDate(line_date)')</script>
+    <!--#ELSE-->
+    <!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) AS from_date" name="dateQuery"-->
+    <input type="text" name="line_date" value="{!r:dateQuery:from_date!}" size="12" class="regular"
+           style="height:17px;">
+    <script type="text/javascript">makeButton('selectDate', 'calendar_off', 'calendar_on', 'chooseDate(line_date)')</script>
+    <!--#/SQLLOOP-->
+    <!--#/IF-->
+    <!--#ELSE-->
+    <!--#IF defined="<?p:line_date?>"-->
+    <input type="text" name="line_date" value="{!p:line_date!}" size="12" class="readonly" readonly>
+    <!--#ELSE-->
+    <!--#SQLLOOP query="SELECT convert(varchar(12), getDate(), 101) AS from_date" name="dateQuery"-->
+    <input type="text" name="line_date" value="{!r:dateQuery:from_date!}" size="12" class="readonly"
+           readonly>
+    <!--#/SQLLOOP-->
+    <!--#/IF-->
+    <!--#/CHECKSECURITY-->
+</td>
+<td style="padding-top:65px;">
+    <label style="padding-bottom:5px;"> Work Code </label>
+    <!--#SELECT
+        name="item_id"
+        query="SELECT i.item_id, i.name
+                 FROM items i INNER JOIN
+                      lookups item_type ON i.item_type_id = item_type.lookup_id INNER JOIN
+                      job_item_rates jir ON i.item_id = jir.item_id INNER JOIN
+                      jobs j ON i.job_type_id = j.job_type_id
+                WHERE jir.job_id = j.job_id
+                  AND item_type.code = 'hours'
+                  AND j.job_id = <?s:job_id.toPStmtInt()?>
+              ORDER BY i.name"
+        currentValue="<?p:item_id?>"
+        class="regular"
+        firstOption="            "
+        firstOptionValue=""
+    -->
+</td>
 
-                <td>
-                    <label>
-                        <select name="start_time_AMPM" id="start_time_AMPM" class="regular"
-                                onchange="calculateHours();">
-                            <option value="AM">AM</option>
-                            <option value="PM">PM</option>
-                        </select>
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    End Time:
-                </td>
-                <td style="padding-left:5px;">
-                    <label>
-                        <select name="end_time_hour" id="end_time_hour" class="regular"
-                                onchange="calculateHours();">
-                            <option value="0">12</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                        </select>
-                    </label>
-                </td>
-                <td>
-                    <label>
-                        <select name="end_time_minutes" id="end_time_minutes" class="regular"
-                                onchange="calculateHours();">
-                            <option value="00">00</option>
-                            <option value="15">15</option>
-                            <option value="30">30</option>
-                            <option value="45">45</option>
-                        </select>
-                    </label>
-                </td>
+<style type="text/css">
+    .timeTable {
+        margin-left: -5px;
+    }
 
-                <td>
-                    <label>
-                        <select name="end_time_AMPM" id="end_time_AMPM" class="regular"
-                                onchange="calculateHours();">
-                            <option value="AM">AM</option>
-                            <option value="PM">PM</option>
-                        </select>
-                    </label>
-                </td>
-            </tr>
+    .timeTable td {
+        padding-top: 5px;
+        padding-left: 5px;
+    }
 
-            <tr>
-                <td>
-                    Lunch/Dinner
-                </td>
-                <td style="padding-left:5px;">
-                    <label>
-                        <select name="lunch_dinner_hours" id="lunch_dinner_hours" class="regular"
-                                onchange="calculateHours();">
-                            <option value="0">0&nbsp;&nbsp;</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                        </select>
-                    </label>
-                </td>
-                <td colspan="2">
-                    <label>
-                        <select name="lunch_dinner_minutes" id="lunch_dinner_minutes" class="regular"
-                                onchange="calculateHours();">
-                            <option value="00">00</option>
-                            <option value="15">15</option>
-                            <option value="30">30</option>
-                            <option value="45">45</option>
-                        </select>
-                    </label>
-                </td>
-            </tr>
+</style>
 
-            <tr>
-                <td style="padding-top:10px;">
-                    Hrs. Worked
-                </td>
-                <td colspan="3" style="padding-top:10px;">
-                    <label>
-                        <input type="text" id=num_hours name="num_hours" size="10" value="{!p:num_hours!}"
-                               class="regular" disabled style="padding-left:5px;">
-                    </label>
-                </td>
-            </tr>
-        </table>
-    </td>
-    <td>
-        <label style="padding-bottom:5px; padding-top:55px;"> Pay Code </label>
-        <!--#SELECT
-            name="pay_code"
-            query="SELECT RTRIM(payrcord) AS payrcord, dscriptn FROM <?s:pay_code_table?> ORDER BY payrcord"
-            currentValue="<?p:pay_code?>"
-            class="regular"
-            firstOption="            "
-            firstOptionValue=""
-        -->
-    </td>
+
+<td style="padding-top:10px; padding-left:0; padding-right:15px;">
+    <table border="0" class="timeTable">
+        <tr>
+            <td>
+                Start Time:
+            </td>
+            <td style="padding-left:5px;">
+                <label>
+                    <select name="start_time_hour" id="start_time_hour" class="regular"
+                            onchange="calculateHours();">
+                        <option value="0">12</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                    </select>
+                </label>
+            </td>
+            <td>
+                <label>
+                    <select name="start_time_minutes" id="start_time_minutes" class="regular"
+                            onchange="calculateHours();">
+                        <option value="00">00</option>
+                        <option value="15">15</option>
+                        <option value="30">30</option>
+                        <option value="45">45</option>
+                    </select>
+                </label>
+            </td>
+
+            <td>
+                <label>
+                    <select name="start_time_AMPM" id="start_time_AMPM" class="regular"
+                            onchange="calculateHours();">
+                        <option value="AM">AM</option>
+                        <option value="PM">PM</option>
+                    </select>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                End Time:
+            </td>
+            <td style="padding-left:5px;">
+                <label>
+                    <select name="end_time_hour" id="end_time_hour" class="regular"
+                            onchange="calculateHours();">
+                        <option value="0">12</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                    </select>
+                </label>
+            </td>
+            <td>
+                <label>
+                    <select name="end_time_minutes" id="end_time_minutes" class="regular"
+                            onchange="calculateHours();">
+                        <option value="00">00</option>
+                        <option value="15">15</option>
+                        <option value="30">30</option>
+                        <option value="45">45</option>
+                    </select>
+                </label>
+            </td>
+
+            <td>
+                <label>
+                    <select name="end_time_AMPM" id="end_time_AMPM" class="regular"
+                            onchange="calculateHours();">
+                        <option value="AM">AM</option>
+                        <option value="PM">PM</option>
+                    </select>
+                </label>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                Lunch/Dinner
+            </td>
+            <td style="padding-left:5px;">
+                <label>
+                    <select name="lunch_dinner_hours" id="lunch_dinner_hours" class="regular"
+                            onchange="calculateHours();">
+                        <option value="0">0&nbsp;&nbsp;</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                </label>
+            </td>
+            <td colspan="2">
+                <label>
+                    <select name="lunch_dinner_minutes" id="lunch_dinner_minutes" class="regular"
+                            onchange="calculateHours();">
+                        <option value="00">00</option>
+                        <option value="15">15</option>
+                        <option value="30">30</option>
+                        <option value="45">45</option>
+                    </select>
+                </label>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding-top:10px;">
+                Hrs. Worked
+            </td>
+            <td colspan="3" style="padding-top:10px;">
+                <label>
+                    <input type="text" id=num_hours name="num_hours" size="10" value="{!p:num_hours!}"
+                           class="regular" disabled style="padding-left:5px; height:17px; font-weight:bold;">
+                </label>
+            </td>
+        </tr>
+    </table>
+</td>
+<td>
+    <label style="padding-bottom:5px; padding-top:65px;"> Pay Code </label>
+    <!--#SELECT
+        name="pay_code"
+        query="SELECT RTRIM(payrcord) AS payrcord, dscriptn FROM <?s:pay_code_table?> ORDER BY payrcord"
+        currentValue="<?p:pay_code?>"
+        class="regular"
+        firstOption="            "
+        firstOptionValue=""
+    -->
+</td>
 </tr>
 <tr>
-    <td colspan="4">
+    <td colspan="4" style="padding-top:10px;">
         <input type="submit" name="button" value="Add" class="Button" id="add_time_button">
     </td>
 </tr>
