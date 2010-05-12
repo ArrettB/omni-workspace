@@ -1,6 +1,6 @@
 function calculateHoursOnSubmit() {
     var hours = calculateHours();
-    if (hours == undefined || hours < 0) {
+    if (hours == undefined || hours <= 0) {
         alert("Hours worked must be more than 0");
         return false;
     }
