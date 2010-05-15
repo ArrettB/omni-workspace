@@ -110,6 +110,7 @@
     </target>
 
     <target name="rebuildDb" depends="dropDb, createTables, createViews, createProcedures"/>
-    <target name="rebuildDbAndLoadConfigData" depends="dropDb, createTables, loadConfigData, createViews, createProcedures"/>
+    <target name="rebuildDbAndLoadConfigData"
+            depends="dropDb, createTables, loadConfigData, createViews, createProcedures"/>
 
 </project>

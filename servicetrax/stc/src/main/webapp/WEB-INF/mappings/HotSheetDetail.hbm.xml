@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.HotSheetDetail" table="HOT_SHEET_DETAILS" schema="dbo" catalog="">
+
+        <id name="hotSheetDetailId" type="java.lang.Long">
+            <column name="HOTSHEET_DETAIL_ID" precision="18" scale="0"/>
+            <generator class="identity"/>
+        </id>
+
+        <property name="attributeValue" type="integer">
+            <column name="ATTRIBUTE_VALUE" not-null="true"/>
+        </property>
+
+        <property name="hotSheetId" type="long">
+            <column name="HOTSHEET_ID" precision="18" scale="0" not-null="true"/>
+        </property>
+
+        <property name="hotSheetLookupId" type="long">
+            <column name="HOTSHEET_DETAIL_LOOKUP_ID" not-null="true"/>
+        </property>
+
+        <property name="code" type="string">
+            <column name="CODE" not-null="false"/>
+        </property>
+
+        <property name="name" type="string">
+            <column name="NAME" not-null="false"/>
+        </property>
+
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="true"/>
+        </property>
+        <property name="createdBy" type="long">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="true"/>
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23"/>
+        </property>
+        <property name="modifiedBy" type="long">
+            <column name="MODIFIED_BY" precision="18" scale="0"/>
+        </property>
+    </class>
+</hibernate-mapping>

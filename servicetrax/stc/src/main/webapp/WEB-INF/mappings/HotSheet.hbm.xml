@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping>
+    <class name="com.dynamic.servicetrax.orm.HotSheet" table="HOT_SHEET" schema="dbo" catalog="">
+
+        <id name="hotSheetId" type="long">
+            <column name="HOTSHEET_ID" precision="18" scale="0"/>
+            <generator class="identity"/>
+        </id>
+
+        <property name="jobLocationContactId" type="long" not-null="false">
+            <column name="JOB_LOCATION_CONTACT_ID" precision="18" scale="0" not-null="false"/>
+        </property>
+
+        <property name="requestId" type="long" not-null="false">
+            <column name="REQUEST_ID" precision="18" scale="0" not-null="false"/>
+        </property>
+
+        <property name="projectId" type="long" not-null="false">
+            <column name="PROJECT_ID" precision="18" scale="0" not-null="false"/>
+        </property>
+
+        <!--ORIGIN_ADDRESS_ID-->
+
+        <property name="projectName" type="string">
+            <column name="PROJECT_NAME" length="100" not-null="true"/>
+        </property>
+
+        <property name="customerName" type="string">
+            <column name="CUSTOMER_NAME" length="100" not-null="true"/>
+        </property>
+
+        <property name="endUserName" type="string">
+            <column name="END_USER_NAME" length="100" not-null="true"/>
+        </property>
+        
+
+        <property name="streetOne" type="string">
+            <column name="STREET1" length="100" not-null="true"/>
+        </property>
+
+        <property name="streetTwo" type="string">
+            <column name="STREET2" length="100" not-null="true"/>
+        </property>
+
+        <property name="streetThree" type="string">
+            <column name="STREET3" length="100" not-null="true"/>
+        </property>
+
+        <property name="city" type="string">
+            <column name="CITY" length="50" not-null="true"/>
+        </property>
+
+        <property name="state" type="string">
+            <column name="STATE" length="2" not-null="true"/>
+        </property>
+
+        <property name="zip" type="string">
+            <column name="ZIP" length="10" not-null="true"/>
+        </property>
+
+        <property name="country" type="string">
+            <column name="COUNTRY" length="23" not-null="true"/>
+        </property>
+
+        <!--BILLING_ADDRESS_ID-->
+
+        <property name="jobDate" type="timestamp">
+            <column name="JOB_DATE" length="23" not-null="false"/>
+        </property>
+
+        <property name="jobStartTime" type="integer">
+            <column name="JOB_START_TIME" not-null="false"/>
+        </property>
+
+        <property name="jobLength" type="integer">
+            <column name="JOB_LENGTH" not-null="false"/>
+        </property>
+
+        <property name="warehouseStartTime" type="integer">
+            <column name="WHSE_START_TIME" not-null="false"/>
+        </property>
+
+        <property name="specialConditions" type="string">
+            <column name="SPECIAL_CONDITIONS" length="1000" not-null="true"/>
+        </property>
+
+        <property name="dateCreated" type="timestamp">
+            <column name="DATE_CREATED" length="23" not-null="false"/>
+        </property>
+        <property name="createdBy" type="long">
+            <column name="CREATED_BY" precision="18" scale="0" not-null="false"/>
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DATE_MODIFIED" length="23"/>
+        </property>
+        <property name="modifiedBy" type="long">
+            <column name="MODIFIED_BY" precision="18" scale="0"/>
+        </property>
+    </class>
+</hibernate-mapping>

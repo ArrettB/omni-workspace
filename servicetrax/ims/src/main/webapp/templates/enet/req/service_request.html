@@ -4,6 +4,17 @@
 <!--#EXEC handler="ims.handlers.proj.SetProjectDatumHandler" project_id="<?p:project_id?>" request_id="<?p:request_id?>" quote_id="<?p:quote_id?>" -->
 
 <script type="text/javascript">
+
+function showHotSheet()
+{
+  if( isLoaded() )
+  {
+      var requestId = {!s:request_id!};
+      var attribs = {!a:Window2Attribs!} + ',height= 800,width=850';
+      return window.open('/ims/action/launchCharm?address=hotSheet.html?requestId='+requestId, 'customers', attribs);
+  }
+}
+
   YAHOO.namespace("ims.service_request");
 
   function init() {
@@ -1900,7 +1911,16 @@ function validateEmail(str){
 <table width="100%" border="0" cellspacing="10" cellpadding="3" bgcolor="tan">
 
   <tr><td><table border="0" width="100%">
-    <tr>
+
+      <tr>
+          <td>&nbsp;</td>
+          <td align="right" style="padding-bottom:2px;">
+              <input type="button" class="button" value="Hot Sheet" name="hotSheet"
+                     onClick="showHotSheet();">
+          </td>
+      </tr>
+
+      <tr>
       <td align="left">
       </td>
 

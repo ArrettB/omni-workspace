@@ -8,7 +8,7 @@
 <script src="<c:url value="/js/rico.js"/>" type="text/javascript"></script>
 
 <style>
-.fixedTable {
+.hotSheetTable {
    table-layout : fixed;
 }
 
@@ -69,7 +69,7 @@ td.cell {
 
 <a id="bookmark" style="margin-bottom:3px;font-size:12px">Listing cities</a>
 <div id="container" >
-<table id="data_grid_header" class="fixedTable" cellspacing="0" cellpadding="0" style="width:400px">
+<table id="data_grid_header" class="hotSheetTable" cellspacing="0" cellpadding="0" style="width:400px">
   <tr>
 	  <th class="first tableCellHeader" style="width:40px;text-align:center">Id</th>
 	  <th class="tableCellHeader" style="width:280px">City</th>
@@ -80,7 +80,7 @@ td.cell {
 <div id="data_grid_container" style="width:440px">
 	<div id="viewPort" style="float:left">
 <table id="data_grid"
-         class="fixedTable"
+         class="hotSheetTable"
          cellspacing="0"
 	       cellpadding="0"
          style="width:410px; border-left:1px solid #ababab" >

@@ -1264,6 +1264,13 @@ GO
 /****** Object:  View [dbo].[PDA_JOBS_V]    Script Date: 05/03/2010 14:18:08 ******/
 DROP VIEW [dbo].[PDA_JOBS_V]
 GO
+
+DROP TABLE [dbo].[HOTSHEET_DETAILS]
+GO
+
+DROP TABLE [dbo].[HOTSHEETS]
+GO
+
 /****** Object:  Table [dbo].[REQUESTS]    Script Date: 05/03/2010 14:18:04 ******/
 DROP TABLE [dbo].[REQUESTS]
 GO
@@ -1382,8 +1389,8 @@ GO
 DROP TABLE [dbo].[CHECKLIST_DATA]
 GO
 /****** Object:  StoredProcedure [dbo].[getNextVal]    Script Date: 05/03/2010 14:18:10 ******/
--- DROP PROCEDURE [dbo].[getNextVal]
--- GO
+DROP PROCEDURE [dbo].[getNextVal]
+GO
 /****** Object:  View [dbo].[SERVICE_CUSTOM_COLS_V]    Script Date: 05/03/2010 14:18:09 ******/
 DROP VIEW [dbo].[SERVICE_CUSTOM_COLS_V]
 GO
@@ -1672,9 +1679,11 @@ GO
 /****** Object:  Table [dbo].[RESOURCES]    Script Date: 05/03/2010 14:18:04 ******/
 DROP TABLE [dbo].[RESOURCES]
 GO
+
 /****** Object:  Table [dbo].[LOOKUPS]    Script Date: 05/03/2010 14:18:04 ******/
 DROP TABLE [dbo].[LOOKUPS]
 GO
 /****** Object:  Table [dbo].[RESOURCE_TYPES]    Script Date: 05/03/2010 14:18:04 ******/
 DROP TABLE [dbo].[RESOURCE_TYPES]
 GO
+

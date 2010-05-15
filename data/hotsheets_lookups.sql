@@ -92,7 +92,7 @@ INSERT INTO dbo.LOOKUPS ( LOOKUP_TYPE_ID, CODE, NAME, SEQUENCE_NO, ACTIVE_FLAG, 
     ( 83, 'custom_equipment_1', 'Custom Equipment 1', 19, 'Y', 'Y', CURRENT_TIMESTAMP, 2 )
 GO
 INSERT INTO dbo.LOOKUPS ( LOOKUP_TYPE_ID, CODE, NAME, SEQUENCE_NO, ACTIVE_FLAG, UPDATABLE_FLAG, DATE_CREATED,CREATED_BY) VALUES
-    ( 83, 'custom_equipment_1', 'Custom Equipment 1 Qty', 20, 'Y', 'Y', CURRENT_TIMESTAMP, 2 )
+    ( 83, 'custom_equipment_1_qty', 'Custom Equipment 1 Qty', 20, 'Y', 'Y', CURRENT_TIMESTAMP, 2 )
 GO
 INSERT INTO dbo.LOOKUPS ( LOOKUP_TYPE_ID, CODE, NAME, SEQUENCE_NO, ACTIVE_FLAG, UPDATABLE_FLAG, DATE_CREATED,CREATED_BY) VALUES
     ( 83, 'custom_equipment_2', 'Custom Equipment 2', 21, 'Y', 'Y', CURRENT_TIMESTAMP, 2 )
