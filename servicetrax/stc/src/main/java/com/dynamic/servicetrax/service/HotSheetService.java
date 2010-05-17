@@ -1,11 +1,9 @@
 package com.dynamic.servicetrax.service;
 
-import com.dynamic.charm.query.hibernate.HibernateService;
 import com.dynamic.servicetrax.orm.HotSheet;
 import com.dynamic.servicetrax.orm.HotSheetDetail;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -87,30 +85,30 @@ public class HotSheetService {
     }
 
 
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
     private static final String GET_HOTSHEET_LOOKUPS =
             "select lookup_id, code, name from lookups where lookup_type_id  = '83'";
 
+    @SuppressWarnings("unchecked")
     public Map<String, HotSheetDetail> getHotSheetDetails() {
         List<Map> lookups = jdbcTemplate.queryForList(GET_HOTSHEET_LOOKUPS);
         Map<String, HotSheetDetail> details = new HashMap<String, HotSheetDetail>();
-        for(Map aRow : lookups){
+        for (Map aRow : lookups) {
             HotSheetDetail aDetail = new HotSheetDetail();
             BigDecimal id = (BigDecimal) aRow.get("lookup_id");
             aDetail.setHotSheetLookupId(id.longValue());
-            aDetail.setCode((String)aRow.get("code"));
-            aDetail.setName((String)aRow.get("name"));
-            aDetail.setAttributeValue(0);
+            aDetail.setCode((String) aRow.get("code"));
+            aDetail.setName((String) aRow.get("name"));
+            aDetail.setAttributeValue(2);
             details.put(aDetail.getCode(), aDetail);
         }
         return details;
     }
 
-    public void setHibernateLookupsDao(com.dynamic.servicetrax.dao.HibernateLookupsDao hibernateLookupsDao) {
+    @SuppressWarnings("unused")
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
+
 
     private class ProjectInfoMapper implements RowMapper {
 
