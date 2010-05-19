@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,17 +30,20 @@ public class HotSheetService {
                     " FROM projects_v2 p  " +
                     " WHERE p.project_id = ?";
 
-    public HotSheet configureHotSheetProjectInfo(String requestId) {
+    public HotSheet buildHotSheet(String requestId) {
 
         BigDecimal projectId = getProjectId(requestId);
-        List list = jdbcTemplate.query(GET_PROJECT_INFO, new Object[]{projectId}, new ProjectInfoMapper());
-        HotSheet hotSheet = (HotSheet) list.get(0);
+        HotSheet hotSheet = addProjectInfo(projectId);
         Integer hotSheetNumber = getHotSheetNumber(requestId);
         hotSheet.setHotSheetNumber(hotSheetNumber);
-
-        String hotSheetIdentifier = getHotSheetIdentifier(requestId, hotSheetNumber);
-        hotSheet.setHotSheetIdentifier(hotSheetIdentifier);
+        addRequestInfo(hotSheet, requestId, hotSheetNumber);
         return hotSheet;
+    }
+
+
+    private HotSheet addProjectInfo(BigDecimal projectId) {
+        List projectInfo = jdbcTemplate.query(GET_PROJECT_INFO, new Object[]{projectId}, new ProjectInfoMapper());
+        return (HotSheet) projectInfo.get(0);
     }
 
 
@@ -64,16 +68,26 @@ public class HotSheetService {
 
 
     private static final String GET_HOT_SHEET_ID_INFO =
-            "select requests.project_id as projectId, " +
-                    " requests.request_no as requestNo, " +
-                    " requests.version_no as versionNo " +
+            "select requests.PROJECT_ID as projectId," +
+                    " requests.REQUEST_NO as requestNo," +
+                    " requests.VERSION_NO as versionNo," +
+                    " requests.JOB_LOCATION_ID as jobLocationId," +
+                    " requests.JOB_LOCATION_CONTACT_ID as jobLocationContactId," +
+                    " requests.DEALER_PO_NO, " +
+                    " requests.DESCRIPTION," +
+                    " requests.DATE_CREATED," +
+                    " requests.CREATED_BY," +
+                    " requests.DATE_MODIFIED," +
+                    " requests.MODIFIED_BY" +
                     " from requests where requests.request_id = ?";
 
-    private String getHotSheetIdentifier(String requestId, Integer hotSheetNumber) {
+
+    private void addRequestInfo(HotSheet hotSheet, String requestId, Integer hotSheetNumber) {
 
         List list = jdbcTemplate.queryForList(GET_HOT_SHEET_ID_INFO, new Object[]{requestId});
-
         Map row = (Map) list.get(0);
+
+        // Build hotsheet id
         StringBuilder buf = new StringBuilder(requestId);
         buf.append("-");
         buf.append(row.get("requestNo"));
@@ -81,15 +95,88 @@ public class HotSheetService {
         buf.append(row.get("versionNo"));
         buf.append("HS");
         buf.append(hotSheetNumber);
-        return buf.toString();
+        hotSheet.setHotSheetIdentifier(buf.toString());
+
+        // Get the created and modified dates
+        hotSheet.setDateCreated((Date) row.get("DATE_CREATED"));
+        hotSheet.setDateModified((Date) row.get("DATE_MODIFIED"));
+
+        hotSheet.setDealerPONumber((String) row.get("DEALER_PO_NO"));
+        hotSheet.setDescription((String) row.get("DESCRIPTION"));
+
+        List createdBy = jdbcTemplate.queryForList("SELECT FIRST_NAME, LAST_NAME FROM USERS WHERE USER_ID = ? ", new Object[]{row.get("CREATED_BY")});
+        String createdName = getName(createdBy);
+        hotSheet.setCreatedByName(createdName);
+
+        List modifiedBy = jdbcTemplate.queryForList("SELECT FIRST_NAME, LAST_NAME FROM USERS WHERE USER_ID = ? ", new Object[]{row.get("MODIFIED_BY")});
+        String modifiedName = getName(modifiedBy);
+        hotSheet.setModifiedByName(modifiedName);
+
+        initializeJobLocation(hotSheet, (BigDecimal) row.get("jobLocationId"));
+        initializeJobLocationContact(hotSheet, (BigDecimal) row.get("jobLocationContactId"));
+
+        //Default to today
+        hotSheet.setJobDate(new Date());
+    }
+
+    private void initializeJobLocationContact(HotSheet hotSheet, BigDecimal jobLocationContactId) {
+
+        List jobLocationContact =
+                jdbcTemplate.queryForList("SELECT CONTACT_NAME, EMAIL, PHONE_WORK, PHONE_CELL, PHONE_HOME FROM CONTACTS WHERE CONTACT_ID = ? ",
+                                          new Object[]{jobLocationContactId});
+
+        if (jobLocationContact == null || jobLocationContact.size() == 0) {
+            return;
+        }
+
+
+        Map row = (Map) jobLocationContact.get(0);
+        hotSheet.setJobContactName((String) row.get("CONTACT_NAME"));
+        hotSheet.setJobContactEmail((String) row.get("EMAIL"));
+        hotSheet.setJobContactPhone((String) row.get("PHONE_WORK"));
+        hotSheet.setJobLocationContactId(jobLocationContactId.longValue());
+    }
+
+    private void initializeJobLocation(HotSheet hotSheet, BigDecimal jobLocationId) {
+
+        List jobLocation = jdbcTemplate.queryForList("SELECT JOB_LOCATION_NAME, STREET1, STREET2, STREET3, CITY, " +
+                "STATE, ZIP, COUNTRY FROM JOB_LOCATIONS WHERE JOB_LOCATION_ID = ? ", new Object[]{jobLocationId});
+
+        if (jobLocation == null || jobLocation.size() == 0) {
+            return;
+        }
+
+        Map row = (Map) jobLocation.get(0);
+        hotSheet.setJobLocationName((String) row.get("JOB_LOCATION_NAME"));
+        hotSheet.setStreetOne((String) row.get("STREET1"));
+        hotSheet.setStreetTwo((String) row.get("STREET2"));
+        hotSheet.setStreetThree((String) row.get("STREET3"));
+        hotSheet.setCity((String) row.get("CITY"));
+        hotSheet.setState((String) row.get("STATE"));
+        hotSheet.setZip((String) row.get("ZIP"));
+        hotSheet.setCountry((String) row.get("COUNTRY"));
+
+    }
+
+    private String getName(List rows) {
+        if (rows == null || rows.size() == 0) {
+            return null;
+        }
+
+        Map row = (Map) rows.get(0);
+        StringBuilder buffer = new StringBuilder((String) row.get("FIRST_NAME"));
+        buffer.append(" ");
+        buffer.append((String) row.get("LAST_NAME"));
+        return buffer.toString();
     }
 
 
-    private static final String GET_HOTSHEET_LOOKUPS =
-            "select lookup_id, code, name from lookups where lookup_type_id  = '83'";
+    private static final String HOTSHEET_LOOKUP_TYPE_ID = "'83'";
+    public static final String GET_HOTSHEET_LOOKUPS =
+            "select lookup_id, code, name from lookups where lookup_type_id  = " + HOTSHEET_LOOKUP_TYPE_ID;
 
     @SuppressWarnings("unchecked")
-    public Map<String, HotSheetDetail> getHotSheetDetails() {
+    public Map<String, HotSheetDetail> getHotSheetDetails(Long user) {
         List<Map> lookups = jdbcTemplate.queryForList(GET_HOTSHEET_LOOKUPS);
         Map<String, HotSheetDetail> details = new HashMap<String, HotSheetDetail>();
         for (Map aRow : lookups) {
@@ -98,7 +185,13 @@ public class HotSheetService {
             aDetail.setHotSheetLookupId(id.longValue());
             aDetail.setCode((String) aRow.get("code"));
             aDetail.setName((String) aRow.get("name"));
-            aDetail.setAttributeValue(2);
+            aDetail.setAttributeValue(0);
+
+            Date today = new Date();
+            aDetail.setDateCreated(today);
+            aDetail.setCreatedBy(user);
+            aDetail.setDateModified(today);
+            aDetail.setModifiedBy(user);
             details.put(aDetail.getCode(), aDetail);
         }
         return details;

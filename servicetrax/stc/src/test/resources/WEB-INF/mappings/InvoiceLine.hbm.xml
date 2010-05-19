@@ -11,6 +11,9 @@
         <many-to-one name="item" class="com.dynamic.servicetrax.orm.Item" fetch="select">
             <column name="ITEM_ID" precision="18" scale="0" />
         </many-to-one>
+        <many-to-one name="service" class="com.dynamic.servicetrax.orm.Service" fetch="select">
+            <column name="bill_service_id" precision="18" scale="0" />
+        </many-to-one>
         <many-to-one name="lookup" class="com.dynamic.servicetrax.orm.Lookup" fetch="select">
             <column name="INVOICE_LINE_TYPE_ID" precision="18" scale="0" />
         </many-to-one>

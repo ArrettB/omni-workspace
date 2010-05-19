@@ -137,4 +137,18 @@
             CREATED_BY="525"
             customer_type_id="738"
             end_user_parent_id="14782"/>
+
+    <customers
+            CUSTOMER_ID="17753"
+            ORGANIZATION_ID="20"
+            EXT_DEALER_ID="70000          "
+            DEALER_NAME="TCI AZ"
+            EXT_CUSTOMER_ID="70000          "
+            CUSTOMER_NAME="TCI - AZ"
+            ACTIVE_FLAG="Y"
+            DATE_CREATED="2008-10-27 13:04:00"
+            CREATED_BY="2250"
+            DATE_MODIFIED="2009-01-20 17:53:22"
+            MODIFIED_BY="508"
+            customer_type_id="80"/>
 </dataset>

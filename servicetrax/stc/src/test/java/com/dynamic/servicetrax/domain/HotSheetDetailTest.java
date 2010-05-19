@@ -1,14 +1,9 @@
 package com.dynamic.servicetrax.domain;
 
 import com.dynamic.charm.query.hibernate.HibernateService;
-import com.dynamic.charm.service.QueryService;
-import com.dynamic.servicetrax.orm.Contact;
 import com.dynamic.servicetrax.orm.HotSheet;
 import com.dynamic.servicetrax.orm.HotSheetDetail;
-import com.dynamic.servicetrax.orm.Lookup;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 
 import java.util.Date;
@@ -32,12 +27,12 @@ public class HotSheetDetailTest extends AbstractTransactionalSpringContextTests 
 
         HotSheetDetail detail = new HotSheetDetail();
         detail.setDateCreated(new Date());
-        detail.setCreatedBy(1L);
+        detail.setCreatedBy(0L);
         detail.setDateModified(new Date());
-        detail.setModifiedBy(1L);
+        detail.setModifiedBy(0L);
         detail.setAttributeValue(2);
 
-        detail.setHotSheetId(3L);
+        detail.setHotSheet(null);
 
         detail.setHotSheetLookupId(4L);
         detail.setCode("Code");

@@ -1,0 +1,12 @@
+<project name="stc" basedir="." default="copyHibernateMappingsToTest">
+
+
+    <property name="source.dir" value="src/main/webapp/WEB-INF/mappings"/>
+    <property name="target.dir" value="src/test/resources/WEB-INF/mappings"/>
+
+    <target name="copyHibernateMappingsToTest">
+        <copy todir="${target.dir}">
+            <fileset dir="${source.dir}" includes="**/*.hbm.xml"/>
+        </copy>
+    </target>
+</project>

@@ -4,12 +4,12 @@
 
 <html>
 <head>
-    <title>Public Health Solutions</title>
+    <title>Hot Sheet Entry</title>
 
     <style type="text/css">
         .disabledCell {
             background: #d3d3d3;
-            color: black;
+            color: #000000;
             width: 200px;
         }
 
@@ -24,7 +24,7 @@
 
 <body>
 
-<div style="width: 100%; height:1200px; border: 1px solid black; ">
+<div style="width: 100%; height:1020px; border: 2px solid #a9a9a9; ">
 
     <div style="color:white; background:#00008b; height:25px; text-align:center; vertical-align:middle; font-weight:bold; width:100%;">
         <label>HOT SHEET</label>

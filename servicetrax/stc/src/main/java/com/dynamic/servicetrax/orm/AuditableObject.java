@@ -11,7 +11,7 @@ public abstract class AuditableObject {
 
     private Date dateCreated;
 
-    private long createdBy;
+    private Long createdBy;
 
     private Date dateModified;
 
@@ -25,11 +25,11 @@ public abstract class AuditableObject {
         this.dateCreated = dateCreated;
     }
 
-    public long getCreatedBy() {
+    public Long getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(long createdBy) {
+    public void setCreatedBy(Long createdBy) {
         this.createdBy = createdBy;
     }
 

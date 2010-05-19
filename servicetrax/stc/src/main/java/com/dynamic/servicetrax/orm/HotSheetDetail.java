@@ -9,13 +9,33 @@ public class HotSheetDetail extends AuditableObject {
 
     private Long hotSheetDetailId;
 
-    private Long hotSheetId;
-
     private Long hotSheetLookupId;
 
     private Integer attributeValue;
     private String code;
     private String name;
+    private HotSheet hotSheet;
+
+    public HotSheet getHotSheet() {
+        return hotSheet;
+    }
+
+    public void setHotSheet(HotSheet hotSheet) {
+        this.hotSheet = hotSheet;
+    }
+
+    public Long getHotSheetId() {
+        if (hotSheet == null) {
+            return null;
+        }
+        return hotSheet.getHotSheetId();
+    }
+
+    public void setHotSheetId(Long hotSheetId) {
+        if (hotSheet != null) {
+            hotSheet.setHotSheetId(hotSheetId);
+        }
+    }
 
     public String getName() {
         return name;
@@ -39,14 +59,6 @@ public class HotSheetDetail extends AuditableObject {
 
     public void setHotSheetDetailId(Long hotSheetDetailId) {
         this.hotSheetDetailId = hotSheetDetailId;
-    }
-
-    public Long getHotSheetId() {
-        return hotSheetId;
-    }
-
-    public void setHotSheetId(Long hotSheetId) {
-        this.hotSheetId = hotSheetId;
     }
 
     public Long getHotSheetLookupId() {

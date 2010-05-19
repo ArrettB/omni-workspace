@@ -47,6 +47,8 @@
             <operation type="MSSQL_INSERT" src="baseline/user_roles.xml"/>
             <operation type="MSSQL_INSERT" src="baseline/user_job_types.xml"/>
             <operation type="MSSQL_INSERT" src="baseline/sequences.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/projects.xml"/>
+            <operation type="MSSQL_INSERT" src="baseline/requests.xml"/>
         </dbunit>
     </target>
 
@@ -105,8 +107,6 @@
              delimitertype="row">
             <transaction src="procedures.sql"/>
         </sql>
-
-
     </target>
 
     <target name="rebuildDb" depends="dropDb, createTables, createViews, createProcedures"/>

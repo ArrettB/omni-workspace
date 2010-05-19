@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+    <projects
+            PROJECT_ID="123122"
+            PROJECT_NO="119764"
+            CUSTOMER_ID="17753"
+            JOB_NAME="PLANNED PARENTHOOD 6 X-2 UNITS"
+            PROJECT_TYPE_ID="4"
+            PROJECT_STATUS_TYPE_ID="299"
+            END_USER_ID="19472"
+            IS_NEW="Y"
+            DATE_CREATED="2010-04-27 18:27:15"
+            CREATED_BY="2745"/>
+</dataset>

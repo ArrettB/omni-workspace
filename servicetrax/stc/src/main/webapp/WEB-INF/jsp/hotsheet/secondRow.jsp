@@ -31,11 +31,11 @@
         </td>
         <td>&nbsp;</td>
         <td>
-            <form:input path="endUserName" cssClass="regularCell"/>
+            <form:input path="jobLocationName" cssClass="disabledCell"/>
         </td>
         <td>&nbsp;</td>
         <td>
-            <form:input path="endUserName" disabled="true" cssClass="disabledCell"/>
+            <form:input path="endUserName" readonly="true" cssClass="disabledCell"/>
         </td>
     </tr>
 
@@ -45,11 +45,11 @@
         </td>
         <td>&nbsp;</td>
         <td>
-            <form:input path="endUserName" cssClass="regularCell"/>
+            <form:input path="streetOne" cssClass="disabledCell"/>
         </td>
         <td>&nbsp;</td>
         <td>
-            <form:input path="endUserName" disabled="true" cssClass="disabledCell"/>
+            <form:input path="endUserName" readonly="true" cssClass="disabledCell"/>
         </td>
     </tr>
     <tr>
@@ -58,11 +58,11 @@
         </td>
         <td>&nbsp;</td>
         <td>
-            <form:input path="endUserName" cssClass="regularCell"/>
+            <form:input path="streetTwo" cssClass="disabledCell"/>
         </td>
         <td>&nbsp;</td>
         <td>
-            <form:input path="endUserName" disabled="true" cssClass="disabledCell"/>
+            <form:input path="endUserName" readonly="true" cssClass="disabledCell"/>
         </td>
     </tr>
 
@@ -77,16 +77,16 @@
             </label>
         </td>
         <td>
-            <form:input path="endUserName" cssClass="regularCell"/>
-        </td>
-        <td>
             <label>
-                <input type="button" value="New" onclick="alert('Not yet implemented');"
-                       style="background:#d3d3d3"/>
+                <input type="text" readonly="true" class="disabledCell"
+                       value="<c:out value='${hotSheet.city}, ${hotSheet.state} ${hotSheet.zip}'/>">
             </label>
         </td>
         <td>
-            <form:input path="endUserName" disabled="true" cssClass="disabledCell"/>
+            &nbsp;
+        </td>
+        <td>
+            <form:input path="endUserName" readonly="true" cssClass="disabledCell"/>
         </td>
     </tr>
 </table>

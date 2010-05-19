@@ -11,6 +11,9 @@
         <many-to-one name="customer" class="com.dynamic.servicetrax.orm.Customer" fetch="select">
             <column name="CUSTOMER_ID" precision="18" scale="0" not-null="true" />
         </many-to-one>
+        <many-to-one name="endUser" class="com.dynamic.servicetrax.orm.Customer" fetch="select">
+            <column name="END_USER_ID" precision="18" scale="0" />
+        </many-to-one>
         <many-to-one name="userByModifiedBy" class="com.dynamic.servicetrax.orm.User" fetch="select">
             <column name="MODIFIED_BY" precision="18" scale="0" />
         </many-to-one>
@@ -31,6 +34,9 @@
         </property>
         <property name="percentComplete" type="big_decimal">
             <column name="PERCENT_COMPLETE" precision="10" scale="5" />
+        </property>
+        <property name="isNew" type="string">
+            <column name="IS_NEW" length="1" />
         </property>
         <property name="dateCreated" type="timestamp">
             <column name="DATE_CREATED" length="23" not-null="true" />

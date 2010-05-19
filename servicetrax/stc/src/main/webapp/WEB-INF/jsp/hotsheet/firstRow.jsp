@@ -15,14 +15,14 @@
             Project Name:
         </td>
         <td>
-            <form:input path="projectName" disabled="true" cssClass="disabledCell"/>
+            <form:input path="projectName" readonly="true" cssClass="disabledCell"/>
         </td>
 
         <td>
             Hot Sheet #:
         </td>
         <td>
-            <form:input path="hotSheetIdentifier" disabled="true" cssClass="disabledCell"/>
+            <form:input path="hotSheetIdentifier" readonly="true" cssClass="disabledCell"/>
         </td>
     </tr>
 
@@ -32,7 +32,7 @@
         </td>
 
         <td>
-            <form:input path="customerName" disabled="true" cssClass="disabledCell"/>
+            <form:input path="customerName" readonly="true" cssClass="disabledCell"/>
         </td>
 
         <td colspan="4">
@@ -46,14 +46,14 @@
             End User Name:
         </td>
         <td>
-            <form:input path="endUserName" disabled="true" cssClass="disabledCell"/>
+            <form:input path="endUserName" readonly="true" cssClass="disabledCell"/>
         </td>
 
         <td>
             PO#:
         </td>
         <td>
-            <form:input path="hotSheetNumber" cssClass="regularCell"/>
+            <form:input path="dealerPONumber" cssClass="regularCell"/>
         </td>
     </tr>
 </table>

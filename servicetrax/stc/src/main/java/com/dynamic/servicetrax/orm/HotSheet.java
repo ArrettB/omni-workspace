@@ -13,6 +13,8 @@ public class HotSheet extends AuditableObject {
     private Long hotSheetId;
 
     private Integer hotSheetNumber;
+    private String hotSheetIdentifier;
+
     private Long jobLocationContactId;
     private Long requestId;
     private Long projectId;
@@ -32,11 +34,21 @@ public class HotSheet extends AuditableObject {
     private String specialConditions;
 
     private Map<String, HotSheetDetail> details;
-    private String hotSheetIdentifier;
+
+
     private String projectName;
     private String customerName;
     private String endUserName;
-
+    private Long originAddressId;
+    private Long billingAddressId;
+    private String createdByName;
+    private String modifiedByName;
+    private String jobLocationName;
+    private String jobContactName;
+    private String jobContactEmail;
+    private String jobContactPhone;
+    private String dealerPONumber;
+    private String description;
 
     public Long getHotSheetId() {
         return hotSheetId;
@@ -212,5 +224,85 @@ public class HotSheet extends AuditableObject {
 
     public String getEndUserName() {
         return endUserName;
+    }
+
+    public void setOriginAddressId(Long originAddressId) {
+        this.originAddressId = originAddressId;
+    }
+
+    public Long getOriginAddressId() {
+        return originAddressId;
+    }
+
+    public Long getBillingAddressId() {
+        return billingAddressId;
+    }
+
+    public void setBillingAddressId(Long billingAddressId) {
+        this.billingAddressId = billingAddressId;
+    }
+
+    public void setCreatedByName(String createdByName) {
+        this.createdByName = createdByName;
+    }
+
+    public String getCreatedByName() {
+        return createdByName;
+    }
+
+    public void setModifiedByName(String modifiedByName) {
+        this.modifiedByName = modifiedByName;
+    }
+
+    public String getModifiedByName() {
+        return modifiedByName;
+    }
+
+    public void setJobLocationName(String jobLocationName) {
+        this.jobLocationName = jobLocationName;
+    }
+
+    public String getJobLocationName() {
+        return jobLocationName;
+    }
+
+    public void setJobContactName(String jobContactName) {
+        this.jobContactName = jobContactName;
+    }
+
+    public String getJobContactName() {
+        return jobContactName;
+    }
+
+    public void setJobContactEmail(String jobContactEmail) {
+        this.jobContactEmail = jobContactEmail;
+    }
+
+    public String getJobContactEmail() {
+        return jobContactEmail;
+    }
+
+    public void setJobContactPhone(String jobContactPhone) {
+        this.jobContactPhone = jobContactPhone;
+    }
+
+    public String getJobContactPhone() {
+        return jobContactPhone;
+    }
+
+    public void setDealerPONumber(String dealerPONumber) {
+        this.dealerPONumber = dealerPONumber;
+    }
+
+    public String getDealerPONumber() {
+        return dealerPONumber;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

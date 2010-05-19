@@ -237,7 +237,7 @@ Information
 
 <td>
 <span style="position: relative; top: 0.7em;  margin-left: 25px; font-weight:bold; background: #d3d3d3; color:#000000;">
-Special Conditions
+Special Instructions
 </span>
 
     <div style="text-align:left; border: 1.5px solid #000000; padding-bottom:20px; margin-left:15px;">

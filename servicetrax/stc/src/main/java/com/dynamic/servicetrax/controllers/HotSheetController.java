@@ -1,8 +1,10 @@
 package com.dynamic.servicetrax.controllers;
 
+import com.dynamic.servicetrax.interceptors.LoginInterceptor;
 import com.dynamic.servicetrax.orm.HotSheet;
 import com.dynamic.servicetrax.orm.HotSheetDetail;
 import com.dynamic.servicetrax.service.HotSheetService;
+import com.dynamic.servicetrax.support.LoginCrediantials;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
@@ -32,8 +34,12 @@ public class HotSheetController implements Controller, InitializingBean {
             return new ModelAndView("error", "error", message);
         }
 
-        HotSheet hotSheet = hotSheetService.configureHotSheetProjectInfo(requestId);
-        Map<String, HotSheetDetail> details = hotSheetService.getHotSheetDetails();
+        HotSheet hotSheet = hotSheetService.buildHotSheet(requestId);
+
+        LoginCrediantials credentials =
+                (LoginCrediantials) request.getSession().getAttribute(LoginInterceptor.SESSION_ATTR_LOGIN);
+        Map<String, HotSheetDetail> details =
+                hotSheetService.getHotSheetDetails((long) credentials.getUserId());
         hotSheet.setDetails(details);
 
         ModelAndView view = new ModelAndView("hotsheet/hotsheet");
@@ -53,6 +59,7 @@ public class HotSheetController implements Controller, InitializingBean {
     public void afterPropertiesSet() throws Exception {
     }
 
+    @SuppressWarnings("unchecked")
     public void setHotSheetService(HotSheetService hotSheetService) {
         this.hotSheetService = hotSheetService;
     }
