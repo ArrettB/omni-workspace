@@ -5,6 +5,7 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 
 import com.dynamic.charm.common.StringUtils;
+import com.dynamic.servicetrax.util.TimeUtils;
 
 public class TimeRecord
 {
@@ -12,6 +13,14 @@ public class TimeRecord
 	
 	private Date date;
 	private double qty;
+    private int startTimeHour;
+    private int startTimeMinutes;
+    private String startTimeAmPm;
+    private int endTimeHour;
+    private int endTimeMinutes;
+    private String endTimeAmPm;
+    private int breakTimeHours;
+    private int breakTimeMinutes;
 	private String jobId;
 	private String jobString;
 	private String serviceId;
@@ -171,4 +180,80 @@ public class TimeRecord
 	{
 		this.serviceString = serviceString;
 	}
+
+    public int getStartTimeHour() {
+        return startTimeHour;
+    }
+
+    public void setStartTimeHour(int startTimeHour) {
+        this.startTimeHour = startTimeHour;
+    }
+
+    public int getStartTimeMinutes() {
+        return startTimeMinutes;
+    }
+
+    public void setStartTimeMinutes(int startTimeMinutes) {
+        this.startTimeMinutes = startTimeMinutes;
+    }
+
+    public String getStartTimeAmPm() {
+        return startTimeAmPm;
+    }
+
+    public void setStartTimeAmPm(String startTimeAmPm) {
+        this.startTimeAmPm = startTimeAmPm;
+    }
+
+    public int getEndTimeHour() {
+        return endTimeHour;
+    }
+
+    public void setEndTimeHour(int endTimeHour) {
+        this.endTimeHour = endTimeHour;
+    }
+
+    public int getEndTimeMinutes() {
+        return endTimeMinutes;
+    }
+
+    public void setEndTimeMinutes(int endTimeMinutes) {
+        this.endTimeMinutes = endTimeMinutes;
+    }
+
+    public String getEndTimeAmPm() {
+        return endTimeAmPm;
+    }
+
+    public void setEndTimeAmPm(String endTimeAmPm) {
+        this.endTimeAmPm = endTimeAmPm;
+    }
+
+    public int getBreakTimeMinutes() {
+        return breakTimeMinutes;
+    }
+
+    public void setBreakTimeMinutes(int breakTimeMinutes) {
+        this.breakTimeMinutes = breakTimeMinutes;
+    }
+
+    public int getBreakTimeHours() {
+        return breakTimeHours;
+    }
+
+    public void setBreakTimeHours(int breakTimeHours) {
+        this.breakTimeHours = breakTimeHours;
+    }
+   
+    public int getStartTimeAsMilitaryTime() {
+        return TimeUtils.getTimeAsMilitaryTime(getStartTimeHour(), getStartTimeMinutes(), getStartTimeAmPm());
+    }
+
+    public int getEndTimeAsMilitaryTime() {
+        return TimeUtils.getTimeAsMilitaryTime(getEndTimeHour(), getEndTimeMinutes(), getEndTimeAmPm());
+    }
+
+    public int getBreakTimeDuration() {
+        return getBreakTimeHours() * 60 + getBreakTimeMinutes();
+    }
 }

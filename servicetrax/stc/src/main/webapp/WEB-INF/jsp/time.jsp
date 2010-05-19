@@ -46,14 +46,14 @@
 <script type="text/javascript">
 
     function resetTimeFields() {
-        document.getElementById('start_time_hour').selectedIndex = 0;
-        document.getElementById('start_time_minutes').selectedIndex = 0;
-        document.getElementById('start_time_AMPM').selectedIndex = 0;
-        document.getElementById('end_time_hour').selectedIndex = 0;
-        document.getElementById('end_time_minutes').selectedIndex = 0;
-        document.getElementById('end_time_AMPM').selectedIndex = 0;
-        document.getElementById('lunch_dinner_hours').selectedIndex = 0;
-        document.getElementById('lunch_dinner_minutes').selectedIndex = 0;
+        document.getElementById('startTimeHour').selectedIndex = 0;
+        document.getElementById('startTimeMinutes').selectedIndex = 0;
+        document.getElementById('startTimeAmPm').selectedIndex = 0;
+        document.getElementById('endTimeHour').selectedIndex = 0;
+        document.getElementById('endTimeMinutes').selectedIndex = 0;
+        document.getElementById('endTimeAmPm').selectedIndex = 0;
+        document.getElementById('breakTimeHours').selectedIndex = 0;
+        document.getElementById('breakTimeMinutes').selectedIndex = 0;
     }
 
     Event.observe(window, 'load', function() {
@@ -579,8 +579,18 @@ function addRecord()
     record.resourceString = dwr.util.getValue('resource_autocomplete', { escapeHtml:false });
     record.jobString = dwr.util.getValue('job_autocomplete', { escapeHtml:false });
     record.itemString = getSelectText('items');
-    //serviceString is updated on the server
 
+    // time fields
+    record.startTimeHour = dwr.util.getValue('startTimeHour', { escapeHtml:false});
+    record.startTimeMinutes = dwr.util.getValue('startTimeMinutes', { escapeHtml:false});
+    record.startTimeAmPm = dwr.util.getValue('startTimeAmPm', { escapeHtml:false});
+    record.endTimeHour = dwr.util.getValue('endTimeHour', { escapeHtml:false});
+    record.endTimeMinutes = dwr.util.getValue('endTimeMinutes', { escapeHtml:false});
+    record.endTimeAmPm = dwr.util.getValue('endTimeAmPm', { escapeHtml:false});
+    record.breakTimeHours = dwr.util.getValue('breakTimeHours', { escapeHtml: false});
+    record.breakTimeMinutes = dwr.util.getValue('breakTimeMinutes', {escapeHtml: false});
+
+    //serviceString is updated on the server
     timeManager.addRecord(record, tableOperationCallback);
 
 }
@@ -598,6 +608,16 @@ function populateForm(timeRecord)
 
         dwr.util.setValue('paycodes', timeRecord.paycode, { escapeHtml:false });
         dwr.util.setValue('qty', timeRecord.qty, { escapeHtml:false });
+
+        // time fields
+        dwr.util.setValue('startTimeHour', timeRecord.startTimeHour, {escapeHtml:false});
+        dwr.util.setValue('startTimeMinutes', timeRecord.startTimeMinutes, {escapeHtml:false});
+        dwr.util.setValue('startTimeAmPm', timeRecord.startTimeAmPm, {escapeHtml:false});
+        dwr.util.setValue('endTimeHour', timeRecord.endTimeHour, {escapeHtml:false});
+        dwr.util.setValue('endTimeMinutes', timeRecord.endTimeMinutes, {escapeHtml:false});
+        dwr.util.setValue('endTimeAmPm', timeRecord.endTimeAmPm, {escapeHtml:false});
+        dwr.util.setValue('breakTimeHours', timeRecord.breakTimeHours, {escapeHtml:false});
+        dwr.util.setValue('breakTimeMinutes', timeRecord.breakTimeMinutes, {escapeHtml:false});
 
         var now = timeRecord.date;
         if (now)
@@ -874,7 +894,7 @@ function isDateValid()
                         </td>
                         <td style="padding-left:28px; padding-top:10px;">
                             <label>
-                                <select name="start_time_hour" id="start_time_hour" class="regular"
+                                <select name="start_time_hour" id="startTimeHour" class="regular"
                                         onchange="calculateHours();">
                                     <option value="0">12</option>
                                     <option value="1">1</option>
@@ -893,7 +913,7 @@ function isDateValid()
                         </td>
                         <td style="padding-top:10px;">
                             <label>
-                                <select name="start_time_minutes" id="start_time_minutes" class="regular"
+                                <select name="start_time_minutes" id="startTimeMinutes" class="regular"
                                         onchange="calculateHours();">
                                     <option value="00">00</option>
                                     <option value="15">15</option>
@@ -905,7 +925,7 @@ function isDateValid()
 
                         <td style="padding-top:10px;">
                             <label>
-                                <select name="start_time_AMPM" id="start_time_AMPM" class="regular"
+                                <select name="start_time_AMPM" id="startTimeAmPm" class="regular"
                                         onchange="calculateHours();">
                                     <option value="AM">AM</option>
                                     <option value="PM">PM</option>
@@ -919,7 +939,7 @@ function isDateValid()
                         </td>
                         <td style="padding-left:28px;">
                             <label>
-                                <select name="end_time_hour" id="end_time_hour" class="regular"
+                                <select name="end_time_hour" id="endTimeHour" class="regular"
                                         onchange="calculateHours();">
                                     <option value="0">12</option>
                                     <option value="1">1</option>
@@ -938,7 +958,7 @@ function isDateValid()
                         </td>
                         <td>
                             <label>
-                                <select name="end_time_minutes" id="end_time_minutes" class="regular"
+                                <select name="end_time_minutes" id="endTimeMinutes" class="regular"
                                         onchange="calculateHours();">
                                     <option value="00">00</option>
                                     <option value="15">15</option>
@@ -949,7 +969,7 @@ function isDateValid()
                         </td>
                         <td>
                             <label>
-                                <select name="end_time_AMPM" id="end_time_AMPM" class="regular"
+                                <select name="end_time_AMPM" id="endTimeAmPm" class="regular"
                                         onchange="calculateHours();">
                                     <option value="AM">AM</option>
                                     <option value="PM">PM</option>
@@ -962,7 +982,7 @@ function isDateValid()
                         </td>
                         <td style="padding-left:28px;">
                             <label>
-                                <select name="lunch_dinner_hours" id="lunch_dinner_hours" class="regular"
+                                <select name="lunch_dinner_hours" id="breakTimeHours" class="regular"
                                         onchange="calculateHours();">
                                     <option value="0">0&nbsp;&nbsp;</option>
                                     <option value="1">1</option>
@@ -972,7 +992,7 @@ function isDateValid()
                         </td>
                         <td colspan="2">
                             <label>
-                                <select name="lunch_dinner_minutes" id="lunch_dinner_minutes" class="regular"
+                                <select name="lunch_dinner_minutes" id="breakTimeMinutes" class="regular"
                                         onchange="calculateHours();">
                                     <option value="00">00</option>
                                     <option value="15">15</option>

@@ -396,9 +396,12 @@ public class TimeManager extends ServiceTraxDWRObjectSupport
 				", entered_by" +
 				", entry_method" +
 				", billable_flag" +
+                ", start_time" +
+                ", end_time" +
+                ", break_time_minutes" +
 				", date_created" +
 				", created_by" +
-				") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 
 		private TimeRecord[] needsUpdate;
@@ -440,8 +443,11 @@ public class TimeManager extends ServiceTraxDWRObjectSupport
 			ps.setInt(11, userId);
 			ps.setString(12, ENTRY_METHOD_WEB);
 			ps.setString(13, BILLABLE_YES);
-			ps.setDate(14, now);
-			ps.setInt(15, userId);
+            ps.setInt(14, record.getStartTimeAsMilitaryTime());
+            ps.setInt(15, record.getEndTimeAsMilitaryTime());
+            ps.setInt(16, record.getBreakTimeDuration());
+			ps.setDate(17, now);
+			ps.setInt(18, userId);
 		}
 
 		public int getBatchSize()
