@@ -1,6 +1,7 @@
 package com.dynamic.servicetrax.domain;
 
 import com.dynamic.charm.query.hibernate.HibernateService;
+import com.dynamic.servicetrax.orm.Address;
 import com.dynamic.servicetrax.orm.HotSheet;
 import com.dynamic.servicetrax.orm.HotSheetDetail;
 import com.dynamic.servicetrax.service.HotSheetService;
@@ -22,8 +23,8 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
 
     private HibernateService hibernateService;
     private JdbcTemplate jdbcTemplate;
+    private HotSheetService hotSheetService;
 
-    private static final String STREET_ONE = "123 Main Street";
     private static final String PROJECT_NAME = "My Project";
     private static final Integer JOB_LENGTH = 8;
 
@@ -32,8 +33,6 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
         hibernateService = (HibernateService) applicationContext.getBean("hibernateService");
         HotSheet hotsheet = createHotSheet();
 
-        HotSheetService hotSheetService = new HotSheetService();
-        hotSheetService.setJdbcTemplate(jdbcTemplate);
         hibernateService.saveOrUpdate(hotsheet);
 
         Map<String, HotSheetDetail> details = hotSheetService.getHotSheetDetails(1L);
@@ -47,13 +46,20 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
 
         HotSheet persisted = (HotSheet) hibernateService.get(HotSheet.class, hotsheet.getHotSheetId());
         assertEquals(JOB_LENGTH, persisted.getJobLength());
-        assertEquals(STREET_ONE, persisted.getStreetOne());
         assertEquals(PROJECT_NAME, persisted.getProjectName());
 
-        List persistedDetails = hibernateService.findAll(HotSheetDetail.class);
-        assertTrue(persistedDetails != null);
+        int persistedDetailCount =
+                jdbcTemplate.queryForInt("select count(*) from hotsheet_details where hotsheet_id = ?", new Object[]{persisted.getHotSheetId()});
+
         List control = jdbcTemplate.queryForList(HotSheetService.GET_HOTSHEET_LOOKUPS);
-        assertTrue(control != null && control.size() == persistedDetails.size());
+        assertTrue(control != null && control.size() == persistedDetailCount);
+
+        List rows = jdbcTemplate.queryForList(HotSheetService.SELECT_ADDRESS, new Object[]{hotsheet.getJobLocationAddressId()});
+        assertTrue(rows != null && rows.size() == 1);
+        Map address = (Map) rows.get(0);
+        assertEquals(address.get("JOB_LOCATION_NAME"), hotsheet.getJobLocationAddress().getJobLocationName());
+        assertEquals(address.get("CITY"), hotsheet.getJobLocationAddress().getCity());
+        assertEquals(address.get("STREET1"), hotsheet.getJobLocationAddress().getStreetOne());
     }
 
 
@@ -64,28 +70,31 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
         hibernateService.saveOrUpdate(hotsheet);
         HotSheet persisted = (HotSheet) hibernateService.get(HotSheet.class, hotsheet.getHotSheetId());
         assertEquals(JOB_LENGTH, persisted.getJobLength());
-        assertEquals(STREET_ONE, persisted.getStreetOne());
         assertEquals(PROJECT_NAME, persisted.getProjectName());
 
-        persisted.setStreetOne("321 Cherry Blossom Lane");
-        persisted.setCity("Duluth");
         persisted.setJobLength(6);
 
         hibernateService.saveOrUpdate(persisted);
 
         persisted = (HotSheet) hibernateService.get(HotSheet.class, hotsheet.getHotSheetId());
         assertEquals((Integer) 6, persisted.getJobLength());
-        assertEquals("Duluth", persisted.getCity());
-        assertEquals("321 Cherry Blossom Lane", persisted.getStreetOne());
         assertEquals("foobar", persisted.getRequestModifiedName());
         assertNull(persisted.getRequestCreatedName());
         assertNull(persisted.getModifiedBy());
         assertEquals(0, persisted.getCreatedBy().intValue());
-    }
 
+        List rows = jdbcTemplate.queryForList(HotSheetService.SELECT_ADDRESS, new Object[]{hotsheet.getJobLocationAddressId()});
+        assertTrue(rows != null && rows.size() == 1);
+        Map address = (Map) rows.get(0);
+        assertEquals(address.get("STATE"), hotsheet.getJobLocationAddress().getState());
+        assertEquals(address.get("STREET1"), hotsheet.getJobLocationAddress().getStreetOne());
+
+    }
 
     private static final String GET_REQUEST = "select REQUEST_ID, PROJECT_ID, JOB_LOCATION_CONTACT_ID " +
             " from requests where request_id = (select max(request_id) from requests)";
+
+    private static final String GET_JOB_LOCATION_ADDRESS = "select max(JOB_LOCATION_ID) from JOB_LOCATIONS";
 
     private HotSheet createHotSheet() {
 
@@ -100,6 +109,14 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
         hotSheet.setProjectId(convertToLong(row.get("PROJECT_ID")));
         hotSheet.setJobLocationContactId(convertToLong(row.get("JOB_LOCATION_CONTACT_ID")));
 
+        rows = jdbcTemplate.queryForList(HotSheetService.GET_PROJECT_INFO,
+                                         new Object[]{hotSheet.getProjectId()});
+
+        assertTrue(rows != null && rows.size() > 0);
+        row = (Map) rows.get(0);
+        hotSheet.setCustomerId(convertToLong(row.get("customerId")));
+        hotSheet.setEndUserId(convertToLong(row.get("endUserId")));
+
         hotSheet.setOriginAddressId(0L);
         hotSheet.setBillingAddressId(0L);
 
@@ -110,17 +127,15 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
         hotSheet.setHotSheetNumber(2);
         hotSheet.setHotSheetIdentifier("My Hot Sheet");
 
-        hotSheet.setStreetOne(STREET_ONE);
-        hotSheet.setCity("Riverdale");
-        hotSheet.setState("OH");
-        hotSheet.setZip("OH");
-        hotSheet.setCountry("US");
+        BigDecimal id = (BigDecimal) jdbcTemplate.queryForObject(GET_JOB_LOCATION_ADDRESS, BigDecimal.class);
+        hotSheet.setJobLocationAddressId(id.longValue());
+        Address address = hotSheetService.getAddress(id);
+        hotSheet.setJobLocationAddress(address);
 
         hotSheet.setJobDate(today);
         hotSheet.setJobStartTime(900);
         hotSheet.setWarehouseStartTime(800);
         hotSheet.setJobLength(JOB_LENGTH);
-        hotSheet.setJobLocationName("My Location");
 
         hotSheet.setCreatedBy(0L);
         hotSheet.setDateCreated(today);
@@ -147,5 +162,10 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
     @SuppressWarnings("unused")
     public void setHibernateService(HibernateService hibernateService) {
         this.hibernateService = hibernateService;
+    }
+
+    @SuppressWarnings("unused")
+    public void setHotSheetService(HotSheetService hotSheetService) {
+        this.hotSheetService = hotSheetService;
     }
 }

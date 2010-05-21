@@ -75,16 +75,35 @@
     <form:form action="${pageContext.request.contextPath}/hotSheetSave.html" method="post"
                id="hotSheetForm" commandName="hotSheet">
 
+    <form:hidden path="hotSheetId"/>
     <form:hidden path="requestId"/>
     <form:hidden path="projectId"/>
+    <form:hidden path="jobLocationContactId"/>
+    <form:hidden path="customerId"/>
+    <form:hidden path="endUserId"/>
     <form:hidden path="hotSheetNumber"/>
-    <form:hidden path="city"/>
-    <form:hidden path="state"/>
-    <form:hidden path="zip"/>
+
+    <form:hidden path="jobLocationAddressId"/>
+    <form:hidden path="jobLocationAddress.city"/>
+    <form:hidden path="jobLocationAddress.state"/>
+    <form:hidden path="jobLocationAddress.zip"/>
+
+    <%-- originAddressId is the key for the origin address dropdown --%>
+    <form:hidden path="originAddress.city"/>
+    <form:hidden path="originAddress.state"/>
+    <form:hidden path="originAddress.zip"/>
+
+    <form:hidden path="billingAddressId"/>
+    <form:hidden path="billingAddress.city"/>
+    <form:hidden path="billingAddress.state"/>
+    <form:hidden path="billingAddress.zip"/>
+
     <form:hidden path="requestCreatedName"/>
     <form:hidden path="requestCreatedDate"/>
     <form:hidden path="requestModifiedName"/>
     <form:hidden path="requestModifiedDate"/>
+
+    <form:hidden path="createdBy"/>
 
     <jsp:include page="firstRow.jsp" flush="true">
         <jsp:param name="hotSheet" value="${hotSheet}"/>

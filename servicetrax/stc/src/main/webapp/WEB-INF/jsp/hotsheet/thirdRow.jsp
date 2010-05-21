@@ -182,7 +182,7 @@
                     </td>
                     <td>
                         <label>
-                            <select name="warehouse_time_minutes" id="warehouse_time_minutes">
+                            <select name="warehouse_start_time_minutes" id="warehouse_time_minutes">
                                 <option value="00">00</option>
                                 <option value="15">15</option>
                                 <option value="30">30</option>
@@ -193,7 +193,7 @@
 
                     <td>
                         <label>
-                            <select name="warehouse_time_AMPM" id="warehouse_time_AMPM">
+                            <select name="warehouse_start_time_AMPM" id="warehouse_time_AMPM">
                                 <option value="AM">AM</option>
                                 <option value="PM">PM</option>
                             </select>
@@ -205,9 +205,14 @@
                     <td align="right" style="color:red;">
                         Job Length:
                     </td>
-                    <td colspan="3">
+                    <td>
                         <label>
-                            <input type="text" style="width:35px">&nbsp;hrs.
+                            <form:input path="jobLength" cssStyle="width:30px;" maxlength="4"/>
+                        </label>
+                    </td>
+                    <td colspan="2">
+                        <label>
+                            &nbsp;
                         </label>
                     </td>
                 </tr>

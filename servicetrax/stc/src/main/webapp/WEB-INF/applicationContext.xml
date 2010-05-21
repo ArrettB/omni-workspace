@@ -91,7 +91,6 @@
     </bean>
 
 
-
     <!-- The Transaction Manager -->
     <bean id="myTransactionManager"
           class="org.springframework.orm.hibernate3.HibernateTransactionManager">
@@ -255,6 +254,7 @@
 
     <bean id="hotSheetService" class="com.dynamic.servicetrax.service.HotSheetService">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
+        <property name="hibernateService" ref="hibernateService"/>
     </bean>
 
 

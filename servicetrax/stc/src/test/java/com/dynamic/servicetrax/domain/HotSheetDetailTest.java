@@ -3,7 +3,6 @@ package com.dynamic.servicetrax.domain;
 import com.dynamic.charm.query.hibernate.HibernateService;
 import com.dynamic.servicetrax.orm.HotSheet;
 import com.dynamic.servicetrax.orm.HotSheetDetail;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 
 import java.util.Date;
@@ -15,13 +14,9 @@ import java.util.Date;
  */
 public class HotSheetDetailTest extends AbstractTransactionalSpringContextTests {
 
-    private HibernateService hibernateService;
-    private JdbcTemplate jdbcTemplate;
-    //private QueryService queryService;
-
     public void testPersistance() {
 
-        hibernateService = (HibernateService) applicationContext.getBean("hibernateService");
+        HibernateService hibernateService = (HibernateService) applicationContext.getBean("hibernateService");
 
         HotSheet hotsheet = createHotSheet();
 
@@ -43,8 +38,6 @@ public class HotSheetDetailTest extends AbstractTransactionalSpringContextTests 
         }
         catch (Exception e) {
         }
-        System.out.println("o = ");
-
     }
 
     private HotSheet createHotSheet() {
@@ -54,9 +47,5 @@ public class HotSheetDetailTest extends AbstractTransactionalSpringContextTests 
     @Override
     protected String[] getConfigLocations() {
         return new String[]{"applicationContext-test.xml"};
-    }
-
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
     }
 }

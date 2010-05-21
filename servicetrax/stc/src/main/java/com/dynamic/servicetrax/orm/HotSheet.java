@@ -1,6 +1,7 @@
 package com.dynamic.servicetrax.orm;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,13 +20,6 @@ public class HotSheet extends AuditableObject {
     private Long requestId;
     private Long projectId;
 
-    private String streetOne;
-    private String streetTwo;
-    private String streetThree;
-    private String city;
-    private String state;
-    private String zip;
-    private String country;
 
     private Date jobDate;
     private Integer jobStartTime;
@@ -38,11 +32,16 @@ public class HotSheet extends AuditableObject {
     private String projectName;
     private String customerName;
     private String endUserName;
+
+    private Long jobLocationAddressId;
+    private Address jobLocationAddress;
+
     private Long originAddressId;
+    private Address originAddress;
 
     private Long billingAddressId;
+    private Address billingAddress;
 
-    private String jobLocationName;
     private String jobContactName;
     private String jobContactEmail;
     private String jobContactPhone;
@@ -53,6 +52,10 @@ public class HotSheet extends AuditableObject {
     private Date requestCreatedDate;
     private String requestModifiedName;
     private Date requestModifiedDate;
+    private Long customerId;
+    private Long endUserId;
+    private List originAddresses;
+
 
     public Long getHotSheetId() {
         return hotSheetId;
@@ -78,6 +81,14 @@ public class HotSheet extends AuditableObject {
         this.jobLocationContactId = jobLocationContactId;
     }
 
+    public void setJobLocationAddressId(Long jobLocationAddressId) {
+        this.jobLocationAddressId = jobLocationAddressId;
+    }
+
+    public Long getJobLocationAddressId() {
+        return jobLocationAddressId;
+    }
+
     public Long getRequestId() {
         return requestId;
     }
@@ -92,62 +103,6 @@ public class HotSheet extends AuditableObject {
 
     public void setProjectId(Long projectId) {
         this.projectId = projectId;
-    }
-
-    public String getStreetOne() {
-        return streetOne;
-    }
-
-    public void setStreetOne(String streetOne) {
-        this.streetOne = streetOne;
-    }
-
-    public String getStreetTwo() {
-        return streetTwo;
-    }
-
-    public void setStreetTwo(String streetTwo) {
-        this.streetTwo = streetTwo;
-    }
-
-    public String getStreetThree() {
-        return streetThree;
-    }
-
-    public void setStreetThree(String streetThree) {
-        this.streetThree = streetThree;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getZip() {
-        return zip;
-    }
-
-    public void setZip(String zip) {
-        this.zip = zip;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
     }
 
     public Date getJobDate() {
@@ -238,6 +193,14 @@ public class HotSheet extends AuditableObject {
         return originAddressId;
     }
 
+    public Address getOriginAddress() {
+        return originAddress;
+    }
+
+    public void setOriginAddress(Address originAddress) {
+        this.originAddress = originAddress;
+    }
+
     public Long getBillingAddressId() {
         return billingAddressId;
     }
@@ -246,12 +209,12 @@ public class HotSheet extends AuditableObject {
         this.billingAddressId = billingAddressId;
     }
 
-    public void setJobLocationName(String jobLocationName) {
-        this.jobLocationName = jobLocationName;
+    public Address getBillingAddress() {
+        return billingAddress;
     }
 
-    public String getJobLocationName() {
-        return jobLocationName;
+    public void setBillingAddress(Address billingAddress) {
+        this.billingAddress = billingAddress;
     }
 
     public void setJobContactName(String jobContactName) {
@@ -324,5 +287,37 @@ public class HotSheet extends AuditableObject {
 
     public void setRequestModifiedDate(Date requestModifiedDate) {
         this.requestModifiedDate = requestModifiedDate;
+    }
+
+    public void setJobLocationAddress(Address jobLocationAddress) {
+        this.jobLocationAddress = jobLocationAddress;
+    }
+
+    public Address getJobLocationAddress() {
+        return jobLocationAddress;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public void setEndUserId(Long endUserId) {
+        this.endUserId = endUserId;
+    }
+
+    public Long getEndUserId() {
+        return endUserId;
+    }
+
+    public void setOriginAddresses(List originAddresses) {
+        this.originAddresses = originAddresses;
+    }
+
+    public List getOriginAddresses() {
+        return originAddresses;
     }
 }

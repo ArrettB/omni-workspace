@@ -85,50 +85,60 @@
             Billing Address:
         </td>
     </tr>
+
     <tr>
         <td>
-            <form:input path="endUserName" cssClass="regularCell"/>
-        </td>
-        <td>&nbsp;</td>
-        <td>
-            <form:input path="jobLocationName" cssClass="disabledCell"/>
-        </td>
-        <td>&nbsp;</td>
-        <td>
-            <form:input path="endUserName" readonly="true" cssClass="disabledCell"/>
+            <form:select path="originAddressId" cssStyle="min-width:225px; max-width:225px;">
+                <form:options items="${hotSheet.originAddresses}" itemValue="key" itemLabel="value"/>
+            </form:select>
         </td>
     </tr>
 
     <tr>
         <td>
-            <form:input path="endUserName" cssClass="regularCell"/>
+            <form:input path="originAddress.jobLocationName" cssClass="disabledCell"/>
         </td>
         <td>&nbsp;</td>
         <td>
-            <form:input path="streetOne" cssClass="disabledCell"/>
+            <form:input path="jobLocationAddress.jobLocationName" cssClass="disabledCell"/>
         </td>
         <td>&nbsp;</td>
         <td>
-            <form:input path="endUserName" readonly="true" cssClass="disabledCell"/>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <form:input path="endUserName" cssClass="regularCell"/>
-        </td>
-        <td>&nbsp;</td>
-        <td>
-            <form:input path="streetTwo" cssClass="disabledCell"/>
-        </td>
-        <td>&nbsp;</td>
-        <td>
-            <form:input path="endUserName" readonly="true" cssClass="disabledCell"/>
+            <form:input path="originAddress.jobLocationName" readonly="true" cssClass="disabledCell"/>
         </td>
     </tr>
 
     <tr>
         <td>
-            <form:input path="endUserName" cssClass="regularCell"/>
+            <form:input path="originAddress.streetOne" cssClass="disabledCell"/>
+        </td>
+        <td>&nbsp;</td>
+        <td>
+            <form:input path="jobLocationAddress.streetOne" cssClass="disabledCell"/>
+        </td>
+        <td>&nbsp;</td>
+        <td>
+            <form:input path="originAddress.streetOne" readonly="true" cssClass="disabledCell"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <form:input path="originAddress.streetTwo" cssClass="disabledCell"/>
+        </td>
+        <td>&nbsp;</td>
+        <td>
+            <form:input path="jobLocationAddress.streetTwo" cssClass="disabledCell"/>
+        </td>
+        <td>&nbsp;</td>
+        <td>
+            <form:input path="originAddress.streetTwo" readonly="true" cssClass="disabledCell"/>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <input type="text" readonly="true" class="disabledCell"
+                   value="<c:out value='${hotSheet.originAddress.city}, ${hotSheet.originAddress.state} ${hotSheet.originAddress.zip}'/>">
         </td>
         <td>
             <label>
@@ -139,14 +149,15 @@
         <td>
             <label>
                 <input type="text" readonly="true" class="disabledCell"
-                       value="<c:out value='${hotSheet.city}, ${hotSheet.state} ${hotSheet.zip}'/>">
+                       value="<c:out value='${hotSheet.jobLocationAddress.city}, ${hotSheet.jobLocationAddress.state} ${hotSheet.jobLocationAddress.zip}'/>">
             </label>
         </td>
         <td>
             &nbsp;
         </td>
         <td>
-            <form:input path="endUserName" readonly="true" cssClass="disabledCell"/>
+            <input type="text" readonly="true" class="disabledCell"
+                   value="<c:out value='${hotSheet.originAddress.city}, ${hotSheet.originAddress.state} ${hotSheet.originAddress.zip}'/>">
         </td>
     </tr>
 </table>

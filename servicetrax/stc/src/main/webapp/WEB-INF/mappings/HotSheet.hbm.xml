@@ -31,6 +31,15 @@
             <column name="PROJECT_ID" precision="18" scale="0" not-null="false"/>
         </property>
 
+        <property name="endUserId" type="long" not-null="true">
+            <column name="END_USER_ID" precision="18" scale="0" not-null="true"/>
+        </property>
+
+        <property name="customerId" type="long" not-null="true">
+            <column name="CUSTOMER_ID" precision="18" scale="0" not-null="true"/>
+        </property>
+
+
         <map name="details" inverse="true">
             <key column="HOTSHEET_ID"/>
             <map-key column="CODE" type="string"/>
@@ -40,6 +49,10 @@
         <!--ORIGIN_ADDRESS_ID-->
         <property name="originAddressId" type="long" not-null="true">
             <column name="ORIGIN_ADDRESS_ID" precision="18" scale="0" not-null="false"/>
+        </property>
+
+        <property name="jobLocationAddressId" type="long" not-null="true">
+            <column name="JOB_LOCATION_ADDRESS_ID" precision="18" scale="0" not-null="true"/>
         </property>
 
         <!--BILLING_ADDRESS_ID-->
@@ -57,38 +70,6 @@
 
         <property name="endUserName" type="string">
             <column name="END_USER_NAME" length="100" not-null="true"/>
-        </property>
-
-        <property name="jobLocationName" type="string">
-            <column name="JOB_LOCATION_NAME" length="100" not-null="true"/>
-        </property>
-
-        <property name="streetOne" type="string">
-            <column name="STREET1" length="100" not-null="true"/>
-        </property>
-
-        <property name="streetTwo" type="string">
-            <column name="STREET2" length="100" not-null="false"/>
-        </property>
-
-        <property name="streetThree" type="string">
-            <column name="STREET3" length="100" not-null="false"/>
-        </property>
-
-        <property name="city" type="string">
-            <column name="CITY" length="50" not-null="true"/>
-        </property>
-
-        <property name="state" type="string">
-            <column name="STATE" length="2" not-null="true"/>
-        </property>
-
-        <property name="zip" type="string">
-            <column name="ZIP" length="10" not-null="true"/>
-        </property>
-
-        <property name="country" type="string">
-            <column name="COUNTRY" length="23" not-null="false"/>
         </property>
 
         <property name="jobDate" type="timestamp">
