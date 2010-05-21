@@ -5,17 +5,7 @@
 
 <script type="text/javascript" src="/ims/js/external.js"></script>
 
-<script type="text/javascript">
-
-    function initializeTimeFields() {
-        document.getElementById('lunch_dinner_hours').selectedIndex = 0;
-        document.getElementById('lunch_dinner_minutes').selectedIndex = 0
-        document.getElementById('num_hours').value = '0';
-        calculateHours();
-    }
-</script>
-
-<body class="BodyTag" onload="initializeTimeFields();">
+<body class="BodyTag" onload="init(); initializeTimeFields();">
 
 <table cellspacing="0" cellpadding="0" border="0" width="500">
     <tr height="20">
@@ -50,8 +40,7 @@
     </tr>
 </table>
 
-<form action="{!s:action!}expressEntry/time/express_entry.html" METHOD="POST" id="enterHoursForm" name="enterHoursForm"
-      onsubmit="return calculateHoursOnSubmit();">
+<form action="{!s:action!}expressEntry/time/express_entry.html" METHOD="POST" id="enterHoursForm" name="enterHoursForm">
 <input type="hidden" name="redirect" value="{!s:showPage!}/time/express_entry.html">
 <!--#IF defined="<?s:pay_code_warning?>"-->
 <table>
@@ -376,7 +365,7 @@
 </tr>
 <tr>
     <td colspan="4" style="padding-top:10px;">
-        <input type="submit" name="button" value="Add" class="Button" id="add_time_button">
+        <input type="submit" name="button" value="Add" class="Button" id="add_time_button" onclick="return calculateHoursOnSubmit();">
     </td>
 </tr>
 </table>
@@ -417,6 +406,9 @@
 	query="SELECT tc_job_id, tc_service_id, service_line_id, service_line_date_varchar, tc_job_no, tc_service_no, tc_service_line_no, service_description,
 			      resource_name, item_name, ext_pay_code,
   			      expense_rate, expense_qty, expense_total, payroll_qty, item_type_code, bill_hourly_qty, bill_exp_rate, bill_exp_qty, bill_exp_total, item_id,
+  			      start_time_hour, start_time_minutes, start_time_AMPM,
+  			      end_time_hour, end_time_minutes, end_time_AMPM,
+  			      lunch_dinner_hours, lunch_dinner_minutes,
   			      'N' changed
 			FROM time_capture_v
 			WHERE status_id = 0
@@ -516,8 +508,18 @@
             <!--#/CHECKSECURITY-->
         </td>
         <td height="15" class="TableRow1" width="10%">
-            <input type="text" name="{!r:q2:service_line_id!}_num_hours" value="{!r:q2:payroll_qty!}" style="width:50"
-                   align="right" onChange="changed('{!r:q2:service_line_id!}_changed')">
+            <input type="text" name="{!r:q2:service_line_id!}_num_hours_display" value="{!r:q2:payroll_qty!}" style="width:50"
+                   align="right" disabled="true"/>
+            <input type="hidden" name="{!r:q2:service_line_id!}_num_hours" value="{!r:q2:payroll_qty!}"/>
+            <input type="hidden" name="{!r:q2:service_line_id!}_start_time_hour" value="{!r:q2:start_time_hour!}"/>
+            <input type="hidden" name="{!r:q2:service_line_id!}_start_time_minutes" value="{!r:q2:start_time_minutes!}"/>
+            <input type="hidden" name="{!r:q2:service_line_id!}_start_time_AMPM" value="{!r:q2:start_time_AMPM!}"/>
+            <input type="hidden" name="{!r:q2:service_line_id!}_end_time_hour" value="{!r:q2:end_time_hour!}"/>
+            <input type="hidden" name="{!r:q2:service_line_id!}_end_time_minutes" value="{!r:q2:end_time_minutes!}"/>
+            <input type="hidden" name="{!r:q2:service_line_id!}_end_time_AMPM" value="{!r:q2:end_time_AMPM!}"/>
+            <input type="hidden" name="{!r:q2:service_line_id!}_lunch_dinner_hours" value="{!r:q2:lunch_dinner_hours!}"/>
+            <input type="hidden" name="{!r:q2:service_line_id!}_lunch_dinner_minutes" value="{!r:q2:lunch_dinner_minutes!}"/>
+            <input type="button" id="timebutton" onclick="showPopup('{!r:q2:service_line_id!}');" value="Change"/>
         </td>
         <td height="15" width="0%">
             <input type="hidden" name="{!r:q2:service_line_id!}_changed" id="{!r:q2:service_line_id!}_changed"
@@ -567,6 +569,138 @@
 </table>
 <!--#/SQLNODATA-->
 <!--#/SQLLOOP-->
+
+<div id="popupHoursDiv" class="yui-panel">
+<div class="hd">Change time</div>
+  <div class="bd">
+  <form name="popuphours_frm" method="POST">
+  <div id="popupHoursFormDiv"></div>
+    <table class="timeTable" border="0">
+        <tbody><tr>
+            <td>
+                Start Time:
+            </td>
+            <td style="padding-left: 5px;">
+                <label>
+                    <select name="start_time_hour" id="popup_start_time_hour" class="regular" onchange="calculatePopupHours();">
+                        <option selected="selected" value="0">12</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                    </select>
+                </label>
+            </td>
+            <td>
+                <label>
+                    <select name="start_time_minutes" id="popup_start_time_minutes" class="regular" onchange="calculatePopupHours();">
+                        <option selected="selected" value="00">00</option>
+                        <option value="15">15</option>
+                        <option value="30">30</option>
+                        <option value="45">45</option>
+                    </select>
+                </label>
+            </td>
+
+            <td>
+                <label>
+                    <select name="start_time_AMPM" id="popup_start_time_AMPM" class="regular" onchange="calculatePopupHours();">
+                        <option selected="selected" value="AM">AM</option>
+                        <option value="PM">PM</option>
+                    </select>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                End Time:
+            </td>
+            <td style="padding-left: 5px;">
+                <label>
+                    <select name="end_time_hour" id="popup_end_time_hour" class="regular" onchange="calculatePopupHours();">
+                        <option selected="selected" value="0">12</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                    </select>
+                </label>
+            </td>
+            <td>
+                <label>
+                    <select name="end_time_minutes" id="popup_end_time_minutes" class="regular" onchange="calculatePopupHours();">
+                        <option selected="selected" value="00">00</option>
+                        <option value="15">15</option>
+                        <option value="30">30</option>
+                        <option value="45">45</option>
+                    </select>
+                </label>
+            </td>
+
+            <td>
+                <label>
+                    <select name="end_time_AMPM" id="popup_end_time_AMPM" class="regular" onchange="calculatePopupHours();">
+                        <option selected="selected" value="AM">AM</option>
+                        <option value="PM">PM</option>
+                    </select>
+                </label>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                Lunch/Dinner
+            </td>
+            <td style="padding-left: 5px;">
+                <label>
+                    <select name="lunch_dinner_hours" id="popup_lunch_dinner_hours" class="regular" onchange="calculatePopupHours();">
+                        <option selected="selected" value="0">0&nbsp;&nbsp;</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                </label>
+            </td>
+            <td colspan="2">
+                <label>
+                    <select name="lunch_dinner_minutes" id="popup_lunch_dinner_minutes" class="regular" onchange="calculatePopupHours();">
+                        <option selected="selected" value="00">00</option>
+                        <option value="15">15</option>
+                        <option value="30">30</option>
+                        <option value="45">45</option>
+                    </select>
+                </label>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding-top: 10px;">
+                Hrs. Worked
+            </td>
+            <td colspan="3" style="padding-top: 10px;">
+                <label>
+                    <input id="popup_num_hours" name="num_hours" size="10" value="0.00" class="regular" disabled="disabled" style="padding-left: 5px; height: 17px; font-weight: bold;" type="text">
+                </label>
+            </td>
+        </tr>
+    </tbody>
+    </table>
+  </form>
+  </div>
+</div>
 
 </body>
 

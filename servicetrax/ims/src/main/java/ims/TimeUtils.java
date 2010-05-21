@@ -1,4 +1,4 @@
-package com.dynamic.servicetrax.util;
+package ims;
 
 /**
  * Utility class for dealing with military time.
@@ -9,7 +9,7 @@ package com.dynamic.servicetrax.util;
  */
 public class TimeUtils {
     public static int getTimeAsMilitaryTime( int hours, int minutes, String amPm ) {
-        int militaryTime = 0;
+        int militaryTime;
         int twelveHours = 0;
         if( "PM".equalsIgnoreCase(amPm) ) {
             twelveHours = 12;
@@ -23,5 +23,5 @@ public class TimeUtils {
         militaryTime = hours + minutes;
 
         return militaryTime;
-    }  
+    }
 }

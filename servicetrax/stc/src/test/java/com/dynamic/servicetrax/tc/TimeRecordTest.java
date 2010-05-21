@@ -12,7 +12,7 @@ import junit.framework.TestCase;
 public class TimeRecordTest extends TestCase {
     public void testGetMilitaryTime() {
         TimeRecord record = new TimeRecord();
-        record.setStartTimeHour(0);
+        record.setStartTimeHour(12);
         record.setStartTimeMinutes(30);
         record.setStartTimeAmPm("AM");
 
@@ -30,7 +30,7 @@ public class TimeRecordTest extends TestCase {
 
     public void testGetMilitaryTimeNoon() {
         TimeRecord record = new TimeRecord();
-        record.setStartTimeHour(0);
+        record.setStartTimeHour(12);
         record.setStartTimeMinutes(0);
         record.setStartTimeAmPm("PM");
 
@@ -39,7 +39,7 @@ public class TimeRecordTest extends TestCase {
 
     public void testGetMilitaryTimeMidnight() {
         TimeRecord record = new TimeRecord();
-        record.setStartTimeHour(0);
+        record.setStartTimeHour(12);
         record.setStartTimeMinutes(0);
         record.setStartTimeAmPm("AM");
 
