@@ -20,7 +20,7 @@
 </script>
 
 <div id="calendar"
-     style="position:absolute; float:left; width:100px; visibility:hidden; background-color:#ffffff;"></div>
+     style="position:absolute; float:left; width:150px; visibility:hidden; background-color:#ffffff;"></div>
 
 <%--Third Row--%>
 <table style="margin-top:15px;">
@@ -40,14 +40,14 @@
                     <tr>
                         <td>
                             <form:input path="details[service_van_qty].attributeValue"
-                                        cssStyle="width:20px; margin-left:5px; text-align:center;"/>
+                                        maxlength="3" cssClass="details" cssStyle="margin-left:5px;"/>
                         </td>
                         <td>
                             Service Van
                         </td>
                         <td>
                             <form:input path="details[box_van_qty].attributeValue"
-                                        cssStyle="width:20px; text-align:center;"/>
+                                        maxlength="3" cssClass="details"/>
                         </td>
                         <td>
                             Box Van
@@ -56,14 +56,14 @@
                     <tr>
                         <td>
                             <form:input path="details[bobtail_qty].attributeValue"
-                                        cssStyle="width:20px; margin-left:5px; text-align:center;"/>
+                                        maxlength="3" cssClass="details" cssStyle="margin-left:5px;"/>
                         </td>
                         <td>
                             Bob Tail
                         </td>
                         <td>
                             <form:input path="details[tractor_trailer_qty].attributeValue"
-                                        cssStyle="width:20px; text-align:center;"/>
+                                        maxlength="3" cssClass="details"/>
                         </td>
                         <td>
                             Tractor<br/>
@@ -103,14 +103,16 @@
                 <tr>
                     <td align="right" style="color:red;">
                         <a href="#" id="calStartAnchor"
-                           onclick="doCalendar(); return false;">
+                           onclick="doCalendar(); return false;" style="text-decoration:none;">
                             <img src="images/icon-calendar.gif" alt="Calendar"/>
                         </a>
                         Date:
                     </td>
                     <td colspan="3">
                         <label>
-                            <input type="text" style="width:65px" id="jobDate" class="calendar">
+                            <input type="text" style="width:75px; background:#d3d3d3; color:#000000; text-align:center;"
+                                   name="jobDate" id="jobDate" class="calendar" readonly="true"
+                                   value="<fmt:formatDate value="${hotSheet.jobDate}" pattern="MM/dd/yyyy"/>">
                         </label>
                     </td>
                 </tr>
@@ -162,7 +164,7 @@
                     </td>
                     <td>
                         <label>
-                            <select name="start_time_hour" id="warehouse_time_hour">
+                            <select name="warehouse_start_time_hour" id="warehouse_time_hour">
                                 <option value="0">12</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -180,7 +182,7 @@
                     </td>
                     <td>
                         <label>
-                            <select name="start_time_minutes" id="warehouse_time_minutes">
+                            <select name="warehouse_time_minutes" id="warehouse_time_minutes">
                                 <option value="00">00</option>
                                 <option value="15">15</option>
                                 <option value="30">30</option>
@@ -191,7 +193,7 @@
 
                     <td>
                         <label>
-                            <select name="start_time_AMPM" id="warehouse_time_AMPM">
+                            <select name="warehouse_time_AMPM" id="warehouse_time_AMPM">
                                 <option value="AM">AM</option>
                                 <option value="PM">PM</option>
                             </select>

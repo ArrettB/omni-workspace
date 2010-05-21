@@ -5,12 +5,19 @@ import com.dynamic.servicetrax.orm.HotSheet;
 import com.dynamic.servicetrax.orm.HotSheetDetail;
 import com.dynamic.servicetrax.service.HotSheetService;
 import com.dynamic.servicetrax.support.LoginCrediantials;
-import org.springframework.beans.factory.InitializingBean;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.Controller;
+import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.beans.PropertyEditorSupport;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,13 +25,12 @@ import java.util.Map;
  * Date: May 13, 2010
  * Time: 6:36:24 AM
  */
-public class HotSheetController implements Controller, InitializingBean {
+public class HotSheetController extends MultiActionController {
 
     private HotSheetService hotSheetService;
 
-
     @SuppressWarnings("unchecked")
-    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView create(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         Map parameters = request.getParameterMap();
         String requestId = getParameter(parameters, "requestId");
@@ -47,6 +53,40 @@ public class HotSheetController implements Controller, InitializingBean {
         return view;
     }
 
+    @SuppressWarnings("unchecked")
+    public ModelAndView save(HttpServletRequest request, HttpServletResponse response, HotSheet command) throws Exception {
+
+        if (result.hasErrors()) {
+            ModelAndView view = new ModelAndView("hotsheet/hotsheet");
+            view.getModel().put("hotSheet", command);
+            view.getModel().put("errors", result.getAllErrors());
+            return view;
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public ModelAndView copy(HttpServletRequest request, HttpServletResponse response, HotSheet command) throws Exception {
+        System.out.println("");
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public ModelAndView report(HttpServletRequest request, HttpServletResponse response, HotSheet command) throws Exception {
+        System.out.println("");
+        return null;
+    }
+
+
+    private BindingResult result;
+
+    @Override
+    protected void bind(HttpServletRequest request, Object command) throws Exception {
+        ServletRequestDataBinder binder = createBinder(request, command);
+        binder.bind(request);
+        result = binder.getBindingResult();
+    }
+
     private String getParameter(Map parameters, String parameterName) {
         String[] parameter = (String[]) parameters.get(parameterName);
         if (parameter == null || parameter.length == 0) {
@@ -56,11 +96,66 @@ public class HotSheetController implements Controller, InitializingBean {
         return parameter[0];
     }
 
-    public void afterPropertiesSet() throws Exception {
+    @Override
+    protected Object newCommandObject(Class clazz) throws Exception {
+        if (clazz == HotSheet.class) {
+            HotSheet object = (HotSheet) super.newCommandObject(clazz);
+            Map<String, HotSheetDetail> details =
+                    hotSheetService.getHotSheetDetails(null);
+            object.setDetails(details);
+            return object;
+        }
+        return super.newCommandObject(clazz);
     }
 
     @SuppressWarnings("unchecked")
     public void setHotSheetService(HotSheetService hotSheetService) {
         this.hotSheetService = hotSheetService;
+    }
+
+    @Override
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder dataBinder) throws Exception {
+        OmniCustomerDateEditor customDateEditor = new OmniCustomerDateEditor();
+
+        // This is for the create/modify dates
+        customDateEditor.addDateFormat("MM-dd-yyyy hh:mm:ss");
+
+        // This is for the jobDate.
+        customDateEditor.addDateFormat("MM/dd/yyyy");
+        dataBinder.registerCustomEditor(Date.class, customDateEditor);
+        super.initBinder(request, dataBinder);
+    }
+
+
+    /**
+     * Adapted from http://agileice.blogspot.com/2009_09_01_archive.html
+     */
+    private class OmniCustomerDateEditor extends PropertyEditorSupport {
+
+        private final List<String> formats;
+
+        public OmniCustomerDateEditor() {
+            formats = new ArrayList<String>();
+        }
+
+        public void addDateFormat(String aFormat) {
+            formats.add(aFormat);
+        }
+
+        public String getAsText() {
+            return (String) getValue();
+        }
+
+        public void setAsText(String dateString) throws IllegalArgumentException {
+
+            for (String aFormat : formats) {
+                SimpleDateFormat formatter = new SimpleDateFormat(aFormat);
+                try {
+                    setValue(formatter.parse(dateString));
+                }
+                catch (ParseException ignore) {
+                }
+            }
+        }
     }
 }

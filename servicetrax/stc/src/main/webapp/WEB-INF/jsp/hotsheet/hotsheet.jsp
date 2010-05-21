@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <html>
 <head>
@@ -17,12 +18,47 @@
             width: 200px;
         }
 
+        .details {
+            width: 25px;
+            text-align: center;
+        }
     </style>
 
+    <link rel="stylesheet" type="text/css" href="/js/yui/fonts/fonts-min.css"/>
+    <link rel="stylesheet" type="text/css" href="/js/yui/button/assets/button.css"/>
+    <link rel="stylesheet" type="text/css" href="/js/yui/container/assets/container.css"/>
+
+    <script type="text/javascript"
+            src="http://yui.yahooapis.com/2.8.1/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+
+    <script type="text/javascript"
+            src="http://yui.yahooapis.com/2.8.1/build/connection/connection-min.js"></script>
+
+    <script type="text/javascript"
+            src="http://yui.yahooapis.com/2.8.1/build/element/element-min.js"></script>
+
+    <script type="text/javascript"
+            src="http://yui.yahooapis.com/2.8.1/build/button/button-min.js"></script>
+
+    <script type="text/javascript"
+            src="http://yui.yahooapis.com/2.8.1/build/dragdrop/dragdrop-min.js"></script>
+
+    <script type="text/javascript"
+            src="http://yui.yahooapis.com/2.8.1/build/container/container-min.js"></script>
 </head>
 
+<script type="text/javascript">
 
-<body>
+    function submitAction(url) {
+        var hotSheetForm = document.getElementById('hotSheetForm');
+        var path = "${pageContext.request.contextPath}";
+        hotSheetForm.action = path + url;
+        hotSheetForm.submit();
+    }
+</script>
+
+
+<body class="yui-skin-sam">
 
 <div style="width: 100%; height:1020px; border: 2px solid #a9a9a9; ">
 
@@ -30,7 +66,25 @@
         <label>HOT SHEET</label>
     </div>
 
-    <form:form action="${pageContext.request.contextPath}/saveClient.do" method="post" commandName="hotSheet">
+    <c:if test="${errors != null && fn:length(errors) > 0}">
+        <c:forEach items="${errors}" var="anError">
+            ERROR!! <c:out value="${anError.defaultMessage}"/>
+        </c:forEach>
+    </c:if>
+
+    <form:form action="${pageContext.request.contextPath}/hotSheetSave.html" method="post"
+               id="hotSheetForm" commandName="hotSheet">
+
+    <form:hidden path="requestId"/>
+    <form:hidden path="projectId"/>
+    <form:hidden path="hotSheetNumber"/>
+    <form:hidden path="city"/>
+    <form:hidden path="state"/>
+    <form:hidden path="zip"/>
+    <form:hidden path="requestCreatedName"/>
+    <form:hidden path="requestCreatedDate"/>
+    <form:hidden path="requestModifiedName"/>
+    <form:hidden path="requestModifiedDate"/>
 
     <jsp:include page="firstRow.jsp" flush="true">
         <jsp:param name="hotSheet" value="${hotSheet}"/>

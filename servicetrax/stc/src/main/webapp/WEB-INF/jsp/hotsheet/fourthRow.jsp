@@ -241,7 +241,7 @@ Special Instructions
 </span>
 
     <div style="text-align:left; border: 1.5px solid #000000; padding-bottom:20px; margin-left:15px;">
-        <form:textarea path="endUserName" cols="30" rows="13" cssStyle="margin-top:25px; margin-left:15px; margin-right:10px;
+        <form:textarea path="specialInstructions" cols="30" rows="13" cssStyle="margin-top:25px; margin-left:15px; margin-right:10px;
         border:solid; border-width:1px; border-style:inset;"/>
     </div>
 </td>

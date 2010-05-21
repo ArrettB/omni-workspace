@@ -77,6 +77,10 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
         assertEquals((Integer) 6, persisted.getJobLength());
         assertEquals("Duluth", persisted.getCity());
         assertEquals("321 Cherry Blossom Lane", persisted.getStreetOne());
+        assertEquals("foobar", persisted.getRequestModifiedName());
+        assertNull(persisted.getRequestCreatedName());
+        assertNull(persisted.getModifiedBy());
+        assertEquals(0, persisted.getCreatedBy().intValue());
     }
 
 
@@ -120,8 +124,9 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
 
         hotSheet.setCreatedBy(0L);
         hotSheet.setDateCreated(today);
-        hotSheet.setModifiedBy(0L);
-        hotSheet.setDateModified(today);
+
+        hotSheet.setRequestCreatedDate(today);
+        hotSheet.setRequestModifiedName("foobar");
         return hotSheet;
     }
 

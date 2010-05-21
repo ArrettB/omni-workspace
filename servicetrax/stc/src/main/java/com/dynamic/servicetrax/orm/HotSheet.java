@@ -31,24 +31,28 @@ public class HotSheet extends AuditableObject {
     private Integer jobStartTime;
     private Integer jobLength;
     private Integer warehouseStartTime;
-    private String specialConditions;
+    private String specialInstructions;
 
     private Map<String, HotSheetDetail> details;
-
 
     private String projectName;
     private String customerName;
     private String endUserName;
     private Long originAddressId;
+
     private Long billingAddressId;
-    private String createdByName;
-    private String modifiedByName;
+
     private String jobLocationName;
     private String jobContactName;
     private String jobContactEmail;
     private String jobContactPhone;
     private String dealerPONumber;
     private String description;
+
+    private String requestCreatedName;
+    private Date requestCreatedDate;
+    private String requestModifiedName;
+    private Date requestModifiedDate;
 
     public Long getHotSheetId() {
         return hotSheetId;
@@ -178,12 +182,12 @@ public class HotSheet extends AuditableObject {
         this.warehouseStartTime = warehouseStartTime;
     }
 
-    public String getSpecialConditions() {
-        return specialConditions;
+    public String getSpecialInstructions() {
+        return specialInstructions;
     }
 
-    public void setSpecialConditions(String specialConditions) {
-        this.specialConditions = specialConditions;
+    public void setSpecialInstructions(String specialInstructions) {
+        this.specialInstructions = specialInstructions;
     }
 
     public Map<String, HotSheetDetail> getDetails() {
@@ -242,22 +246,6 @@ public class HotSheet extends AuditableObject {
         this.billingAddressId = billingAddressId;
     }
 
-    public void setCreatedByName(String createdByName) {
-        this.createdByName = createdByName;
-    }
-
-    public String getCreatedByName() {
-        return createdByName;
-    }
-
-    public void setModifiedByName(String modifiedByName) {
-        this.modifiedByName = modifiedByName;
-    }
-
-    public String getModifiedByName() {
-        return modifiedByName;
-    }
-
     public void setJobLocationName(String jobLocationName) {
         this.jobLocationName = jobLocationName;
     }
@@ -304,5 +292,37 @@ public class HotSheet extends AuditableObject {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getRequestCreatedName() {
+        return requestCreatedName;
+    }
+
+    public void setRequestCreatedName(String requestCreatedName) {
+        this.requestCreatedName = requestCreatedName;
+    }
+
+    public Date getRequestCreatedDate() {
+        return requestCreatedDate;
+    }
+
+    public void setRequestCreatedDate(Date requestCreatedDate) {
+        this.requestCreatedDate = requestCreatedDate;
+    }
+
+    public String getRequestModifiedName() {
+        return requestModifiedName;
+    }
+
+    public void setRequestModifiedName(String requestModifiedName) {
+        this.requestModifiedName = requestModifiedName;
+    }
+
+    public Date getRequestModifiedDate() {
+        return requestModifiedDate;
+    }
+
+    public void setRequestModifiedDate(Date requestModifiedDate) {
+        this.requestModifiedDate = requestModifiedDate;
     }
 }

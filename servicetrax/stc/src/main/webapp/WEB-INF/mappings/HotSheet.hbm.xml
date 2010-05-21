@@ -107,8 +107,24 @@
             <column name="WHSE_START_TIME" not-null="true"/>
         </property>
 
-        <property name="specialConditions" type="string">
-            <column name="SPECIAL_CONDITIONS" length="1000" not-null="false"/>
+        <property name="specialInstructions" type="string">
+            <column name="SPECIAL_INSTRUCTIONS" length="1000" not-null="false"/>
+        </property>
+
+        <property name="requestCreatedDate" type="timestamp">
+            <column name="REQUEST_CREATED_DATE" length="23" not-null="false"/>
+        </property>
+
+        <property name="requestCreatedName" type="string">
+            <column name="REQUEST_CREATED_NAME" precision="18" scale="0" not-null="false"/>
+        </property>
+
+        <property name="requestModifiedDate" type="timestamp">
+            <column name="REQUEST_MODIFIED_DATE" length="23" not-null="false"/>
+        </property>
+
+        <property name="requestModifiedName" type="string">
+            <column name="REQUEST_MODIFIED_NAME" precision="18" scale="0" not-null="false"/>
         </property>
 
         <property name="dateCreated" type="timestamp">

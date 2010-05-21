@@ -23,7 +23,7 @@ Narrative Work Request
                 <table style="width:100%; padding-top:25px;">
                     <tr>
                         <td>
-                            <form:textarea path="description" cols="90" rows="4" disabled="true"
+                            <form:textarea path="description" cols="90" rows="4" readonly="true"
                                            cssStyle="color:#000000; background:#d3d3d3; margin-left:auto; margin-right:auto;"/>
                         </td>
                     </tr>
@@ -51,13 +51,13 @@ Audit Information
                             Date Created:
                         </td>
                         <td>
-                            <fmt:formatDate value="${hotSheet.dateCreated}" pattern="MM/dd/yyyy hh:mm a"/>
+                            <fmt:formatDate value="${hotSheet.requestCreatedDate}" pattern="MM/dd/yyyy hh:mm a"/>
                         </td>
                         <td>
                             Date Modified:
                         </td>
                         <td>
-                            <fmt:formatDate value="${dateModified}" pattern="MM/dd/yyyy hh:mm a"/>
+                            <fmt:formatDate value="${hotSheet.requestModifiedDate}" pattern="MM/dd/yyyy hh:mm a"/>
                         </td>
                     </tr>
                     <tr>
@@ -65,13 +65,13 @@ Audit Information
                             Created By:
                         </td>
                         <td>
-                            ${hotSheet.createdByName}
+                            ${hotSheet.requestCreatedName}
                         </td>
                         <td>
                             Modified By:
                         </td>
                         <td>
-                            ${hotSheet.modifiedByName}
+                            ${hotSheet.requestModifiedName}
                         </td>
                     </tr>
                 </table>
@@ -82,7 +82,8 @@ Audit Information
                 <tr>
                     <td align="center">
                         <input type="submit" value="COPY" name="button"
-                               style="width:67px; height:33px; background:#d3d3d3;">
+                               style="width:67px; height:33px; background:#d3d3d3;"
+                               onclick="submitAction('/hotSheetCopy.html')">
                     </td>
                     <td align="center">
                         <input type="submit" value="SAVE" name="button"
@@ -96,7 +97,8 @@ Audit Information
                 <tr>
                     <td colspan="3" align="center">
                         <input type="submit" value="Print BL" name="button"
-                               style="width:220px; height:33px; background:#d3d3d3;">
+                               style="width:220px; height:33px; background:#d3d3d3;"
+                               onclick="submitAction('/hotSheetReport.html')">
                     </td>
                 </tr>
             </table>

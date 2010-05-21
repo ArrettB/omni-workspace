@@ -37,6 +37,8 @@ public class HotSheetService {
         Integer hotSheetNumber = getHotSheetNumber(requestId);
         hotSheet.setHotSheetNumber(hotSheetNumber);
         addRequestInfo(hotSheet, requestId, hotSheetNumber);
+        hotSheet.setRequestId(Long.valueOf(requestId));
+        hotSheet.setProjectId(projectId.longValue());
         return hotSheet;
     }
 
@@ -75,6 +77,7 @@ public class HotSheetService {
                     " requests.JOB_LOCATION_CONTACT_ID as jobLocationContactId," +
                     " requests.DEALER_PO_NO, " +
                     " requests.DESCRIPTION," +
+                    " requests.CUSTOMER_CONTACT_ID," +
                     " requests.DATE_CREATED," +
                     " requests.CREATED_BY," +
                     " requests.DATE_MODIFIED," +
@@ -97,23 +100,21 @@ public class HotSheetService {
         buf.append(hotSheetNumber);
         hotSheet.setHotSheetIdentifier(buf.toString());
 
-        // Get the created and modified dates
-        hotSheet.setDateCreated((Date) row.get("DATE_CREATED"));
-        hotSheet.setDateModified((Date) row.get("DATE_MODIFIED"));
-
         hotSheet.setDealerPONumber((String) row.get("DEALER_PO_NO"));
         hotSheet.setDescription((String) row.get("DESCRIPTION"));
 
         List createdBy = jdbcTemplate.queryForList("SELECT FIRST_NAME, LAST_NAME FROM USERS WHERE USER_ID = ? ", new Object[]{row.get("CREATED_BY")});
         String createdName = getName(createdBy);
-        hotSheet.setCreatedByName(createdName);
+        hotSheet.setRequestCreatedName(createdName);
+        hotSheet.setRequestCreatedDate((Date) row.get("DATE_CREATED"));
 
         List modifiedBy = jdbcTemplate.queryForList("SELECT FIRST_NAME, LAST_NAME FROM USERS WHERE USER_ID = ? ", new Object[]{row.get("MODIFIED_BY")});
         String modifiedName = getName(modifiedBy);
-        hotSheet.setModifiedByName(modifiedName);
+        hotSheet.setRequestModifiedName(modifiedName);
+        hotSheet.setRequestModifiedDate((Date) row.get("DATE_MODIFIED"));
 
         initializeJobLocation(hotSheet, (BigDecimal) row.get("jobLocationId"));
-        initializeJobLocationContact(hotSheet, (BigDecimal) row.get("jobLocationContactId"));
+        initializeJobLocationContact(hotSheet, (BigDecimal) row.get("CUSTOMER_CONTACT_ID"));
 
         //Default to today
         hotSheet.setJobDate(new Date());
@@ -207,7 +208,7 @@ public class HotSheetService {
 
         public Object mapRow(ResultSet resultSet, int i) throws SQLException {
             HotSheet hotSheet = new HotSheet();
-            hotSheet.setProjectName(resultSet.getString("customerName"));
+            hotSheet.setProjectName(resultSet.getString("jobName"));
             hotSheet.setCustomerName(resultSet.getString("customerName"));
             hotSheet.setEndUserName(resultSet.getString("endUserName"));
             return hotSheet;

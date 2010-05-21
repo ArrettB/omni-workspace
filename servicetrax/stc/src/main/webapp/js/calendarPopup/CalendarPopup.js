@@ -360,7 +360,7 @@ function CP_getCalendar(){
 		}
 		else{
 			result += '		<A CLASS="'+this.cssPrefix+'cpTodayText" HREF="javascript:'+windowref+this.returnFunction+'(\''+now.getFullYear()+'\',\''+(now.getMonth()+1)+'\',\''+now.getDate()+'\');'+windowref+'CP_hideCalendar(\''+this.index+'\');">'+this.todayText+'</A>\n';
-			result += '&nbsp&nbsp<A HREF="javascript:'+windowref+this.returnEmptyFunction+'();'+windowref+'CP_hideCalendar(\''+this.index+'\');">Clear</A>\n';
+			//result += '&nbsp&nbsp<A HREF="javascript:'+windowref+this.returnEmptyFunction+'();'+windowref+'CP_hideCalendar(\''+this.index+'\');">Clear</A>\n';
 		}
 		result += '		<BR>\n';
 		result += '	</TD></TR></TABLE></CENTER></TD></TR></TABLE>\n';

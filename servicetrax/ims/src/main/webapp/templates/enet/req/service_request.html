@@ -9,9 +9,15 @@ function showHotSheet()
 {
   if( isLoaded() )
   {
-      var requestId = {!s:request_id!};
+      if(eval({!s:request_id!}) == undefined){
+    alert('No request id is available. Create service request first.');
+    return;
+
+}
+
+      var requestId = '{!s:request_id!}';
       var attribs = {!a:Window2Attribs!} + ',height= 800,width=850,scrollbars=yes, resizable=no';
-      return window.open('/ims/action/launchCharm?address=hotSheet.html?requestId='+requestId, 'customers', attribs);
+      return window.open('/ims/action/launchCharm?address=hotSheetCreate.html?requestId='+requestId, 'customers', attribs);
   }
 }
 
