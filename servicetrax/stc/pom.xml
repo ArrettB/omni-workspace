@@ -1,559 +1,559 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.dynamic.servicetrax</groupId>
-	<artifactId>stc</artifactId>
-	<packaging>war</packaging>
-	<name>ServiceTrax Charm Module</name>
-	<version>1.38.2-SNAPSHOT</version>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.dynamic.servicetrax</groupId>
+    <artifactId>stc</artifactId>
+    <packaging>war</packaging>
+    <name>ServiceTrax Charm Module</name>
+    <version>1.38.2-SNAPSHOT</version>
 
-	<parent>
-		<groupId>com.dynamic.servicetrax</groupId>
-		<artifactId>servicetrax-parent</artifactId>
-		<version>1.38.2-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>com.dynamic.servicetrax</groupId>
+        <artifactId>servicetrax-parent</artifactId>
+        <version>1.38.2-SNAPSHOT</version>
+    </parent>
 
-	<developers>
-		<developer>
-			<id>blake.vonhaden</id>
-			<name>Blake VonHaden</name>
-			<email>blake.vonhaden@apexit.com</email>
-			<url>http://www.apexit.com</url>
-			<organization>Apex IT</organization>
-			<roles />
-			<timezone />
-		</developer>
-		<developer>
-			<id>david.zhao</id>
-			<name>David Zhao</name>
-			<email>david.zhao@apexit.com</email>
-			<url>http://www.apexit.com</url>
-			<organization>Apex IT</organization>
-			<roles />
-			<timezone />
-		</developer>
-		<developer>
-			<id>john.freier</id>
-			<name>John Freier</name>
-			<email>lohn.freier@apexit.com</email>
-			<url>http://www.apexit.com</url>
-			<organization>Apex IT</organization>
-			<roles />
-			<timezone />
-		</developer>
-	</developers>
-	<scm>
-		<connection>scm:svn:http://svn.apexit.com/svn/servicetrax/trunk/</connection>
-		<developerConnection>scm:svn:http://svn.apexit.com/svn/servicetrax/trunk/</developerConnection>
-	</scm>
-	<repositories>
+    <developers>
+        <developer>
+            <id>blake.vonhaden</id>
+            <name>Blake VonHaden</name>
+            <email>blake.vonhaden@apexit.com</email>
+            <url>http://www.apexit.com</url>
+            <organization>Apex IT</organization>
+            <roles/>
+            <timezone/>
+        </developer>
+        <developer>
+            <id>david.zhao</id>
+            <name>David Zhao</name>
+            <email>david.zhao@apexit.com</email>
+            <url>http://www.apexit.com</url>
+            <organization>Apex IT</organization>
+            <roles/>
+            <timezone/>
+        </developer>
+        <developer>
+            <id>john.freier</id>
+            <name>John Freier</name>
+            <email>lohn.freier@apexit.com</email>
+            <url>http://www.apexit.com</url>
+            <organization>Apex IT</organization>
+            <roles/>
+            <timezone/>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:svn:http://svn.apexit.com/svn/servicetrax/trunk/</connection>
+        <developerConnection>scm:svn:http://svn.apexit.com/svn/servicetrax/trunk/</developerConnection>
+    </scm>
+    <repositories>
+        <!--
+<repository>
+    <id>dynamic_repo</id>
+    <name>Dynamic Central Repository</name>
+    <url>http://maven.apexit.com/repository/</url>
+</repository>
+        -->
+    </repositories>
+    <distributionManagement>
+        <!--
+<repository>
+    <id>dynamic_repo_file_deploy</id>
+    <name>ApexIT Repository</name>
+    <url>file:////bentley/home/maven/tomcat/webapps/ROOT/repository</url>
+</repository>
+        -->
+    </distributionManagement>
+    <ciManagement>
+        <system>continuum</system>
+        <notifiers>
+            <notifier>
+                <configuration>
+                    <address>david.zhao@apexit.com</address>
+                </configuration>
+            </notifier>
+        </notifiers>
+    </ciManagement>
+    <issueManagement>
+        <system>JIRA</system>
+        <url>http://jira.apexit.com/jira/browse/ANM</url>
+    </issueManagement>
+
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>codehaus-plugins</id>
+            <url>http://dist.codehaus.org/</url>
+            <layout>legacy</layout>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+
+
+    <build>
+        <finalName>stc</finalName>
+        <filters>
+            <filter>src/main/filters/${filter.name}-filter.properties</filter>
+        </filters>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration/>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>src\main\webapp\WEB-INF\lib</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>src\main\webapp\WEB-INF\classes</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>src\main\webapp\WEB-INF\logs</directory>
+                            <includes>
+                                <include>*.log</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>maven-jetty-plugin</artifactId>
+                <configuration>
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                    <webDefaultXml>src/main/resources/webdefault.xml</webDefaultXml>
+                    <contextPath>/stc</contextPath>
+                    <connectors>
+                        <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+                            <port>80</port>
+                            <maxIdleTime>60000</maxIdleTime>
+                        </connector>
+                    </connectors>
+                    <systemProperties>
+                        <systemProperty>
+                            <name>org.apache.commons.logging.Log</name>
+                            <value>org.apache.commons.logging.impl.SimpleLog</value>
+                        </systemProperty>
+                    </systemProperties>
+                </configuration>
+            </plugin>
+
+            <!--
+                   <plugin>
+                   <groupId>org.codehaus.mojo</groupId>
+                   <artifactId>xdoclet-maven-plugin</artifactId>
+                   <executions>
+                   <execution>
+                   <phase>generate-sources</phase>
+                   <goals>
+                   <goal>xdoclet</goal>
+                   </goals>
+                   <configuration>
+                   <tasks>
+                   <webdoclet destDir="${project.build.outputDirectory}/META-INF" verbose="true" force="true">
+                   <fileset dir="${basedir}/src/main/java">
+                   <include name="com/dynamic/servicetrax/tag/*Tag.java" />
+                   </fileset>
+                   <jspTaglib jspversion="2.0" taglibversion="1.1.2" displayname="ServiceTRAX Tag Library" shortname="stc" uri="/tld/stc" acceptAbstractClasses="false" destinationFile="stc.tld" validateXml="false" />
+                   </webdoclet>
+                   </tasks>
+                   </configuration>
+                   </execution>
+                   </executions>
+                   </plugin>
+
+               -->
+
+
+            <plugin>
+                <groupId>xdoclet</groupId>
+                <artifactId>maven2-xdoclet2-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>xdoclet</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>xdoclet</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <!--
-		<repository>
-			<id>dynamic_repo</id>
-			<name>Dynamic Central Repository</name>
-			<url>http://maven.apexit.com/repository/</url>
-		</repository>
+                                   since maven plusgin does not specify dependencies
+                                   on concrete xdoclet-2 plugins, you must specify them
+                                   explicitely. as well as dependencies which may be needed by
+                                   plugin itself
                 -->
-	</repositories>
-	<distributionManagement>
-                <!--
-		<repository>
-			<id>dynamic_repo_file_deploy</id>
-			<name>ApexIT Repository</name>
-			<url>file:////bentley/home/maven/tomcat/webapps/ROOT/repository</url>
-		</repository>
-                -->
-	</distributionManagement>
-	<ciManagement>
-		<system>continuum</system>
-		<notifiers>
-			<notifier>
-				<configuration>
-					<address>david.zhao@apexit.com</address>
-				</configuration>
-			</notifier>
-		</notifiers>
-	</ciManagement>
-	<issueManagement>
-		<system>JIRA</system>
-		<url>http://jira.apexit.com/jira/browse/ANM</url>
-	</issueManagement>
+                <dependencies>
+                    <dependency>
+                        <groupId>xdoclet-plugins</groupId>
+                        <artifactId>xdoclet-plugin-qtags</artifactId>
+                        <version>1.0.4</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.dynamic.charm</groupId>
+                        <artifactId>charm-core</artifactId>
+                        <version>1.6-SNAPSHOT</version>
+                    </dependency>
 
 
-	<pluginRepositories>
-		<pluginRepository>
-			<id>codehaus-plugins</id>
-			<url>http://dist.codehaus.org/</url>
-			<layout>legacy</layout>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</pluginRepository>
-	</pluginRepositories>
+                    <dependency>
+                        <groupId>xdoclet-plugins</groupId>
+                        <artifactId>xdoclet-plugin-web</artifactId>
+                        <version>1.0.4</version>
+                    </dependency>
+                </dependencies>
+
+                <configuration>
+                    <configs>
+                        <!--
+                                                    each config defines single xdoclet2 run
+                                                    for some plugins. more than one run can be specified with
+                                                    different parameters
+                        -->
+                        <config>
+                            <components>
+
+                                <component>
+                                    <classname>org.xdoclet.plugin.web.TaglibPlugin</classname>
+                                    <params>
+                                        <jspversion>2.0</jspversion>
+                                        <taglibversion>1.1</taglibversion>
+                                        <shortname>stc</shortname>
+                                        <uri>/tld/stc</uri>
+                                        <displayname>ServiceTrax Tag Lib</displayname>
+
+                                        <filereplace>stc.tld</filereplace>
+                                    </params>
+                                </component>
+                            </components>
+                            <includes>**/*.java</includes>
+                            <!--
+                                                            common parameters for all used plugins.  individual plugins
+                                                            can override them.
+                            -->
+                            <params>
+                                <destdir>${project.build.directory}/generated-resources/xdoclet</destdir>
+                            </params>
+                        </config>
+                    </configs>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <goals>deploy</goals>
+                </configuration>
+            </plugin>
 
 
-
-	<build>
-		<finalName>stc</finalName>
-		<filters>
-			<filter>src/main/filters/${filter.name}-filter.properties</filter>
-		</filters>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-		<plugins>
-
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-war-plugin</artifactId>
-				<configuration />
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-clean-plugin</artifactId>
-				<configuration>
-					<filesets>
-						<fileset>
-							<directory>src\main\webapp\WEB-INF\lib</directory>
-						</fileset>
-						<fileset>
-							<directory>src\main\webapp\WEB-INF\classes</directory>
-						</fileset>
-						<fileset>
-							<directory>src\main\webapp\WEB-INF\logs</directory>
-							<includes>
-								<include>*.log</include>
-							</includes>
-						</fileset>
-					</filesets>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>maven-jetty-plugin</artifactId>
-				<configuration>
-					<scanIntervalSeconds>10</scanIntervalSeconds>
-					<webDefaultXml>src/main/resources/webdefault.xml</webDefaultXml>
-					<contextPath>/stc</contextPath>
-					<connectors>
-						<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-							<port>80</port>
-							<maxIdleTime>60000</maxIdleTime>
-						</connector>
-					</connectors>
-					<systemProperties>
-						<systemProperty>
-							<name>org.apache.commons.logging.Log</name>
-							<value>org.apache.commons.logging.impl.SimpleLog</value>
-						</systemProperty>
-					</systemProperties>
-				</configuration>
-			</plugin>
-
-			<!--
-				<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>xdoclet-maven-plugin</artifactId>
-				<executions>
-				<execution>
-				<phase>generate-sources</phase>
-				<goals>
-				<goal>xdoclet</goal>
-				</goals>
-				<configuration>
-				<tasks>
-				<webdoclet destDir="${project.build.outputDirectory}/META-INF" verbose="true" force="true">
-				<fileset dir="${basedir}/src/main/java">
-				<include name="com/dynamic/servicetrax/tag/*Tag.java" />
-				</fileset>
-				<jspTaglib jspversion="2.0" taglibversion="1.1.2" displayname="ServiceTRAX Tag Library" shortname="stc" uri="/tld/stc" acceptAbstractClasses="false" destinationFile="stc.tld" validateXml="false" />
-				</webdoclet>
-				</tasks>
-				</configuration>
-				</execution>
-				</executions>
-				</plugin>
-
-			-->
-
-
-			<plugin>
-				<groupId>xdoclet</groupId>
-				<artifactId>maven2-xdoclet2-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>xdoclet</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>xdoclet</goal>
-						</goals>
-					</execution>
-				</executions>
-<!--
-					since maven plusgin does not specify dependencies
-					on concrete xdoclet-2 plugins, you must specify them
-					explicitely. as well as dependencies which may be needed by
-					plugin itself
- -->
-				<dependencies>
-					<dependency>
-						<groupId>xdoclet-plugins</groupId>
-						<artifactId>xdoclet-plugin-qtags</artifactId>
-						<version>1.0.4</version>
-					</dependency>
-					<dependency>
-						<groupId>com.dynamic.charm</groupId>
-						<artifactId>charm-core</artifactId>
-	                                        <version>1.6-SNAPSHOT</version>
-					</dependency>
-
-
-					<dependency>
-						<groupId>xdoclet-plugins</groupId>
-						<artifactId>xdoclet-plugin-web</artifactId>
-						<version>1.0.4</version>
-					</dependency>
-				</dependencies>
-
-				<configuration>
-					<configs>
-<!--
-							each config defines single xdoclet2 run
-							for some plugins. more than one run can be specified with
-							different parameters
--->
-						<config>
-							<components>
-
-								<component>
-									<classname>org.xdoclet.plugin.web.TaglibPlugin</classname>
-									<params>
-										<jspversion>2.0</jspversion>
-										<taglibversion>1.1</taglibversion>
-										<shortname>stc</shortname>
-										<uri>/tld/stc</uri>
-										<displayname>ServiceTrax Tag Lib</displayname>
-
-										<filereplace>stc.tld</filereplace>
-									</params>
-								</component>
-							</components>
-							<includes>**/*.java</includes>
-<!--
-								common parameters for all used plugins.  individual plugins
-								can override them.
--->
-							<params>
-								<destdir>${project.build.directory}/generated-resources/xdoclet</destdir>
-							</params>
-						</config>
-					</configs>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<configuration>
-					<goals>deploy</goals>
-				</configuration>
-			</plugin>
-
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<configuration>
-					<downloadSources>true</downloadSources>
-					<additionalProjectnatures>
-						<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
-					</additionalProjectnatures>
-					<additionalBuildcommands>
-						<buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
-					</additionalBuildcommands>
-				</configuration>
-			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <configuration>
+                    <downloadSources>true</downloadSources>
+                    <additionalProjectnatures>
+                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+                    </additionalProjectnatures>
+                    <additionalBuildcommands>
+                        <buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+                    </additionalBuildcommands>
+                </configuration>
+            </plugin>
 
             <!-- To use the plugin goals in your POM or parent POM -->
-              <plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>tomcat-maven-plugin</artifactId>
                 <version>1.0-beta-1</version>
                 <configuration>
-                  <server>localdev</server>
-                  <path>/stc</path>
+                    <server>localdev</server>
+                    <path>/stc</path>
                 </configuration>
-              </plugin>
-		</plugins>
-	</build>
+            </plugin>
+        </plugins>
+    </build>
 
-	<profiles>
-		<profile>
-			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<tomcatManagerURL>http://localhost/manager</tomcatManagerURL>
-				<managerUsername>bbyadmin</managerUsername>
-				<managerPassword>1234</managerPassword>
-				<filter.name>dev</filter.name>
-			</properties>
-		</profile>
-		<profile>
-			<id>test</id>
-			<properties>
-				<tomcatManagerURL>http://ims.apexit.com/manager</tomcatManagerURL>
-				<managerUsername>bbyadmin</managerUsername>
-				<managerPassword>1234</managerPassword>
-				<filter.name>test</filter.name>
-			</properties>
-		</profile>
-		<profile>
-			<id>qa</id>
-			<properties>
-				<tomcatManagerURL>http://xxx.apexit.com/manager</tomcatManagerURL>
-				<managerUsername>bbyadmin</managerUsername>
-				<managerPassword>1234</managerPassword>
-				<filter.name>qa</filter.name>
-			</properties>
-		</profile>
-		<profile>
-			<id>archive</id>
-			<properties>
-				<tomcatManagerURL>http://ims.apexit.com/manager</tomcatManagerURL>
-				<managerUsername>bbyadmin</managerUsername>
-				<managerPassword>1234</managerPassword>
-				<filter.name>archive</filter.name>
-			</properties>
-		</profile>
-		<profile>
-			<id>hni</id>
-			<properties>
-				<tomcatManagerURL>http://ims.apexit.com/manager</tomcatManagerURL>
-				<managerUsername>bbyadmin</managerUsername>
-				<managerPassword>1234</managerPassword>
-				<filter.name>hni</filter.name>
-			</properties>
-		</profile>
-		<profile>
-			<id>qa2008</id>
-			<properties>
-				<tomcatManagerURL>http://ims.apexit.com/manager</tomcatManagerURL>
-				<managerUsername>bbyadmin</managerUsername>
-				<managerPassword>1234</managerPassword>
-				<filter.name>qa2008</filter.name>
-			</properties>
-		</profile>
-		<profile>
-			<id>prod</id>
-			<properties>
-				<filter.name>prod</filter.name>
-			</properties>
-		</profile>
-	</profiles>
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <tomcatManagerURL>http://localhost/manager</tomcatManagerURL>
+                <managerUsername>bbyadmin</managerUsername>
+                <managerPassword>1234</managerPassword>
+                <filter.name>dev</filter.name>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <tomcatManagerURL>http://ims.apexit.com/manager</tomcatManagerURL>
+                <managerUsername>bbyadmin</managerUsername>
+                <managerPassword>1234</managerPassword>
+                <filter.name>test</filter.name>
+            </properties>
+        </profile>
+        <profile>
+            <id>qa</id>
+            <properties>
+                <tomcatManagerURL>http://xxx.apexit.com/manager</tomcatManagerURL>
+                <managerUsername>bbyadmin</managerUsername>
+                <managerPassword>1234</managerPassword>
+                <filter.name>qa</filter.name>
+            </properties>
+        </profile>
+        <profile>
+            <id>archive</id>
+            <properties>
+                <tomcatManagerURL>http://ims.apexit.com/manager</tomcatManagerURL>
+                <managerUsername>bbyadmin</managerUsername>
+                <managerPassword>1234</managerPassword>
+                <filter.name>archive</filter.name>
+            </properties>
+        </profile>
+        <profile>
+            <id>hni</id>
+            <properties>
+                <tomcatManagerURL>http://ims.apexit.com/manager</tomcatManagerURL>
+                <managerUsername>bbyadmin</managerUsername>
+                <managerPassword>1234</managerPassword>
+                <filter.name>hni</filter.name>
+            </properties>
+        </profile>
+        <profile>
+            <id>qa2008</id>
+            <properties>
+                <tomcatManagerURL>http://ims.apexit.com/manager</tomcatManagerURL>
+                <managerUsername>bbyadmin</managerUsername>
+                <managerPassword>1234</managerPassword>
+                <filter.name>qa2008</filter.name>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <filter.name>prod</filter.name>
+            </properties>
+        </profile>
+    </profiles>
 
-	<dependencies>
-		<!-- ACEGI security -->
-		<dependency>
-			<groupId>org.acegisecurity</groupId>
-			<artifactId>acegi-security</artifactId>
-			<version>1.0.1</version>
-		</dependency>
-		<!-- Avalon framework -->
-		<dependency>
-			<groupId>avalon-framework</groupId>
-			<artifactId>avalon-framework</artifactId>
-			<version>4.1.3</version>
-		</dependency>
-		<!-- Charm -->
-		<dependency>
-			<groupId>com.dynamic.charm</groupId>
-			<artifactId>charm-core</artifactId>
-                        <version>1.6-SNAPSHOT</version>
-		</dependency>
-		<!-- Commons -->
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<version>1.7.0</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>1.3</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-collections</groupId>
-			<artifactId>commons-collections</artifactId>
-			<version>3.2</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-digester</groupId>
-			<artifactId>commons-digester</artifactId>
-			<version>1.8</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.2</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.1</version>
-			<scope>compile</scope>
-		</dependency>
-		<!-- Hibernate -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate</artifactId>
-			<version>3.2.1.ga</version>
-		</dependency>
+    <dependencies>
+        <!-- ACEGI security -->
+        <dependency>
+            <groupId>org.acegisecurity</groupId>
+            <artifactId>acegi-security</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <!-- Avalon framework -->
+        <dependency>
+            <groupId>avalon-framework</groupId>
+            <artifactId>avalon-framework</artifactId>
+            <version>4.1.3</version>
+        </dependency>
+        <!-- Charm -->
+        <dependency>
+            <groupId>com.dynamic.charm</groupId>
+            <artifactId>charm-core</artifactId>
+            <version>1.6-SNAPSHOT</version>
+        </dependency>
+        <!-- Commons -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.7.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-digester</groupId>
+            <artifactId>commons-digester</artifactId>
+            <version>1.8</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- Hibernate -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate</artifactId>
+            <version>3.2.1.ga</version>
+        </dependency>
 
-		<!-- Servlet, JSP, and JSTL -->
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.4</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jsp-api</artifactId>
-			<scope>provided</scope>
-			<version>2.0</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.1.2</version>
-		</dependency>
-		<dependency>
-			<groupId>taglibs</groupId>
-			<artifactId>standard</artifactId>
-			<version>1.1.2</version>
-		</dependency>
+        <!-- Servlet, JSP, and JSTL -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jsp-api</artifactId>
+            <scope>provided</scope>
+            <version>2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+            <version>1.1.2</version>
+        </dependency>
 
-		<!-- JDBC -->
-		<dependency>
-			<groupId>net.sourceforge.jtds</groupId>
-			<artifactId>jtds</artifactId>
-			<version>1.2.2</version>
-		</dependency>
+        <!-- JDBC -->
+        <dependency>
+            <groupId>net.sourceforge.jtds</groupId>
+            <artifactId>jtds</artifactId>
+            <version>1.2.2</version>
+        </dependency>
 
-		<!-- log4j -->
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.14</version>
-		</dependency>
-		<!-- logkit -->
-		<dependency>
-			<groupId>logkit</groupId>
-			<artifactId>logkit</artifactId>
-			<version>1.0.1</version>
-		</dependency>
-		<!-- DWR -->
-		<dependency>
-			<groupId>org.directwebremoting</groupId>
-			<artifactId>dwr</artifactId>
-			<version>2.0.5</version>
-		</dependency>
+        <!-- log4j -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.14</version>
+        </dependency>
+        <!-- logkit -->
+        <dependency>
+            <groupId>logkit</groupId>
+            <artifactId>logkit</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <!-- DWR -->
+        <dependency>
+            <groupId>org.directwebremoting</groupId>
+            <artifactId>dwr</artifactId>
+            <version>2.0.5</version>
+        </dependency>
 
 
-		<!-- SiteMesh -->
-		<dependency>
-			<groupId>opensymphony</groupId>
-			<artifactId>sitemesh</artifactId>
-			<version>2.2.1</version>
-			<scope>runtime</scope>
-		</dependency>
-		
-		<!-- Jakarta ORO Text-processing -->
-		<dependency>
-			<groupId>oro</groupId>
-			<artifactId>oro</artifactId>
-			<version>2.0.8</version>
-		</dependency>		
+        <!-- SiteMesh -->
+        <dependency>
+            <groupId>opensymphony</groupId>
+            <artifactId>sitemesh</artifactId>
+            <version>2.2.1</version>
+            <scope>runtime</scope>
+        </dependency>
 
-		<!-- Spring -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>${spring.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-mock</artifactId>
-			<version>${spring.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
-			<version>${spring.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-dao</artifactId>
-			<version>${spring.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-			<version>${spring.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>${spring.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-remoting</artifactId>
-			<version>${spring.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-support</artifactId>
-			<version>${spring.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>${spring.version}</version>
-			<scope>compile</scope>
-		</dependency>
+        <!-- Jakarta ORO Text-processing -->
+        <dependency>
+            <groupId>oro</groupId>
+            <artifactId>oro</artifactId>
+            <version>2.0.8</version>
+        </dependency>
+
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-mock</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-dao</artifactId>
+            <version>${spring.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-remoting</artifactId>
+            <version>${spring.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-support</artifactId>
+            <version>${spring.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-mock</artifactId>
@@ -569,32 +569,41 @@
 		</dependency>
 		-->
 
-		<dependency>
-			<groupId>net.sf.ehcache</groupId>
-			<artifactId>ehcache</artifactId>
-			<version>1.2.4</version>
-			<scope>runtime</scope>
-		</dependency>
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>1.2.4</version>
+            <scope>runtime</scope>
+        </dependency>
 
-		<!-- Display Tag - Tables -->
-		<dependency>
-			<groupId>displaytag</groupId>
-			<artifactId>displaytag</artifactId>
-			<version>1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>displaytag</groupId>
-			<artifactId>displaytag-export-poi</artifactId>
-			<version>1.1</version>
-		</dependency>
+        <!-- Display Tag - Tables -->
+        <dependency>
+            <groupId>displaytag</groupId>
+            <artifactId>displaytag</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>displaytag</groupId>
+            <artifactId>displaytag-export-poi</artifactId>
+            <version>1.1</version>
+        </dependency>
 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.4</version>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.2.1</version>
+            <classifier>jdk15</classifier>
+            <type>jar</type>
+        </dependency>
 
-	</dependencies>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.4</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
 
 </project>

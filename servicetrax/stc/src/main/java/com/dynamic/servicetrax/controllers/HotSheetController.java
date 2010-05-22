@@ -6,6 +6,7 @@ import com.dynamic.servicetrax.orm.HotSheet;
 import com.dynamic.servicetrax.orm.HotSheetDetail;
 import com.dynamic.servicetrax.service.HotSheetService;
 import com.dynamic.servicetrax.support.LoginCrediantials;
+import net.sf.json.JSONObject;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -17,6 +18,8 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.beans.PropertyEditorSupport;
+import java.io.OutputStreamWriter;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -103,6 +106,24 @@ public class HotSheetController extends MultiActionController {
     public ModelAndView report(HttpServletRequest request, HttpServletResponse response, HotSheet command) throws Exception {
         System.out.println("");
         return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void updateAddress(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        response.setContentType("application/json");
+        try {
+            String id = request.getParameter("jobLocationId");
+            Address address = hotSheetService.getAddress(new BigDecimal(id));
+            OutputStreamWriter os = new OutputStreamWriter(response.getOutputStream());
+            JSONObject jsonArray = JSONObject.fromObject(address);
+            os.write(jsonArray.toString());
+            os.flush();
+            os.close();
+        }
+        catch (Exception e) {
+            logger.error(e);
+        }
     }
 
 

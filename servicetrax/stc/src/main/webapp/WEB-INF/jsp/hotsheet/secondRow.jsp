@@ -5,6 +5,43 @@
 
 
 <script type="text/javascript">
+
+    YAHOO.util.Event.on('originAddressId', 'change', function (event) {
+        var callbacks = {
+
+            success : function (o) {
+                var messages = [];
+                try {
+                    messages = YAHOO.lang.JSON.parse(o.responseText);
+                    document.getElementById("originAddress.jobLocationName").value = messages['jobLocationName'];
+                    document.getElementById("originAddress.streetOne").value = messages['streetOne'];
+                    document.getElementById("originAddress.streetTwo").value = messages['streetTwo'];
+                    var cityStateZip = messages['city'] + ' ' + messages['state'] + ' ' + messages['zip'];
+                    document.getElementById("cityStateZip").value = cityStateZip;
+                }
+                catch (exception) {
+                    alert("JSON Parse failed: " + exception);
+                }
+            },
+
+            failure : function (o) {
+                if (!YAHOO.util.Connect.isCallInProgress(o)) {
+                    alert("Async call failed!");
+                }
+            },
+
+            // 10 second timeout
+            timeout : 10000
+        };
+
+        var id = event.currentTarget.value;
+        var url = '<%=request.getContextPath()%>' + '/updateOriginAddress.html?jobLocationId=' + id;
+        YAHOO.util.Connect.asyncRequest('GET', url, callbacks);
+    });
+</script>
+
+
+<script type="text/javascript">
     YAHOO.namespace("example.container");
 
     YAHOO.util.Event.onDOMReady(function () {
@@ -137,7 +174,7 @@
 
     <tr>
         <td>
-            <input type="text" readonly="true" class="disabledCell"
+            <input type="text" readonly="true" class="disabledCell" id="cityStateZip"
                    value="<c:out value='${hotSheet.originAddress.city}, ${hotSheet.originAddress.state} ${hotSheet.originAddress.zip}'/>">
         </td>
         <td>

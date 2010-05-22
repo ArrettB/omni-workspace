@@ -265,11 +265,12 @@
                 /hotSheetSave.html=save
                 /hotSheetCopy.html=copy
                 /hotSheetReport.html=report
+                /updateOriginAddress.html=updateAddress
             </value>
         </property>
     </bean>
 
-    <bean name="/hotSheetCreate.html, /hotSheetSave.html, /hotSheetCopy.html, /hotSheetReport.html"
+    <bean name="/hotSheetCreate.html, /hotSheetSave.html, /hotSheetCopy.html, /hotSheetReport.html, /updateOriginAddress.html"
           class="com.dynamic.servicetrax.controllers.HotSheetController">
         <property name="hotSheetService" ref="hotSheetService"/>
         <property name="methodNameResolver" ref="propsResolver"/>

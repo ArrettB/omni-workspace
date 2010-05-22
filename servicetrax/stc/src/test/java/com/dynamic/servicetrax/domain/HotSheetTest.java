@@ -5,9 +5,13 @@ import com.dynamic.servicetrax.orm.Address;
 import com.dynamic.servicetrax.orm.HotSheet;
 import com.dynamic.servicetrax.orm.HotSheetDetail;
 import com.dynamic.servicetrax.service.HotSheetService;
+import net.sf.ezmorph.bean.BeanMorpher;
+import net.sf.json.JSONObject;
+import org.springframework.beans.BeansException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 
+import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +31,20 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
 
     private static final String PROJECT_NAME = "My Project";
     private static final Integer JOB_LENGTH = 8;
+
+    public void testJson() {
+        try {
+            hibernateService = (HibernateService) applicationContext.getBean("hibernateService");
+            HotSheet hotsheet = createHotSheet();
+            Long id = hotsheet.getJobLocationAddressId();
+            Address address = hotSheetService.getAddress(new BigDecimal(id));
+            JSONObject jsonArray = JSONObject.fromObject(address);
+            System.out.println("jsonArray = " + jsonArray);
+        }
+        catch (BeansException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void testPersistingDetails() {
 
@@ -88,7 +106,6 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
         Map address = (Map) rows.get(0);
         assertEquals(address.get("STATE"), hotsheet.getJobLocationAddress().getState());
         assertEquals(address.get("STREET1"), hotsheet.getJobLocationAddress().getStreetOne());
-
     }
 
     private static final String GET_REQUEST = "select REQUEST_ID, PROJECT_ID, JOB_LOCATION_CONTACT_ID " +

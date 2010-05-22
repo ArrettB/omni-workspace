@@ -23,7 +23,6 @@
             text-align: center;
         }
     </style>
-
     <link rel="stylesheet" type="text/css" href="/js/yui/fonts/fonts-min.css"/>
     <link rel="stylesheet" type="text/css" href="/js/yui/button/assets/button.css"/>
     <link rel="stylesheet" type="text/css" href="/js/yui/container/assets/container.css"/>
@@ -45,6 +44,11 @@
 
     <script type="text/javascript"
             src="http://yui.yahooapis.com/2.8.1/build/container/container-min.js"></script>
+
+    <script type="text/javascript"
+            src="http://yui.yahooapis.com/2.8.1/build/json/json-min.js"></script>
+
+
 </head>
 
 <script type="text/javascript">
@@ -88,7 +92,7 @@
     <form:hidden path="jobLocationAddress.state"/>
     <form:hidden path="jobLocationAddress.zip"/>
 
-    <%-- originAddressId is the key for the origin address dropdown --%>
+        <%-- originAddressId is the key for the origin address dropdown --%>
     <form:hidden path="originAddress.city"/>
     <form:hidden path="originAddress.state"/>
     <form:hidden path="originAddress.zip"/>
