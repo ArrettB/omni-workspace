@@ -247,7 +247,7 @@
                 <label>
                     <select name="start_time_minutes" id="start_time_minutes" class="regular"
                             onchange="calculateHours();">
-                        <option value="00">00</option>
+                        <option value="0">00</option>
                         <option value="15">15</option>
                         <option value="30">30</option>
                         <option value="45">45</option>
@@ -292,7 +292,7 @@
                 <label>
                     <select name="end_time_minutes" id="end_time_minutes" class="regular"
                             onchange="calculateHours();">
-                        <option value="00">00</option>
+                        <option value="0">00</option>
                         <option value="15">15</option>
                         <option value="30">30</option>
                         <option value="45">45</option>
@@ -329,7 +329,7 @@
                 <label>
                     <select name="lunch_dinner_minutes" id="lunch_dinner_minutes" class="regular"
                             onchange="calculateHours();">
-                        <option value="00">00</option>
+                        <option value="0">00</option>
                         <option value="15">15</option>
                         <option value="30">30</option>
                         <option value="45">45</option>
@@ -452,7 +452,7 @@
     <input type="hidden" name="service_line_id" value='{!r:q2:service_line_id!}'>
     <tr height="15">
         <td height="15" class="TableRow1" width="2%">
-            <INPUT TYPE='checkbox' name='checked_sl' value='{!r:q2:service_line_id!}'>
+            <INPUT TYPE='checkbox' name='checked_sl' id='{!r:q2:service_line_id!}_checked' value='{!r:q2:service_line_id!}'>
         </td>
         <td height="15" class="TableRow1" width="8%" align="right">
             {!r:q2:tc_service_line_no!}
@@ -601,7 +601,7 @@
             <td>
                 <label>
                     <select name="start_time_minutes" id="popup_start_time_minutes" class="regular" onchange="calculatePopupHours();">
-                        <option selected="selected" value="00">00</option>
+                        <option selected="selected" value="0">00</option>
                         <option value="15">15</option>
                         <option value="30">30</option>
                         <option value="45">45</option>
@@ -643,7 +643,7 @@
             <td>
                 <label>
                     <select name="end_time_minutes" id="popup_end_time_minutes" class="regular" onchange="calculatePopupHours();">
-                        <option selected="selected" value="00">00</option>
+                        <option selected="selected" value="0">00</option>
                         <option value="15">15</option>
                         <option value="30">30</option>
                         <option value="45">45</option>
@@ -677,7 +677,7 @@
             <td colspan="2">
                 <label>
                     <select name="lunch_dinner_minutes" id="popup_lunch_dinner_minutes" class="regular" onchange="calculatePopupHours();">
-                        <option selected="selected" value="00">00</option>
+                        <option selected="selected" value="0">00</option>
                         <option value="15">15</option>
                         <option value="30">30</option>
                         <option value="45">45</option>

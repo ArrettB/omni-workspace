@@ -120,10 +120,14 @@ SELECT dbo.SERVICE_LINES.ORGANIZATION_ID,
        dbo.SERVICE_LINES.MODIFIED_BY, 
        USERS_4.FULL_NAME AS modified_by_name,
        dbo.SERVICES.service_no,
-       ( dbo.SERVICE_LINES.START_TIME / 100 ) as start_time_hour,
+       ( CASE WHEN dbo.SERVICE_LINES.START_TIME >= 1200 THEN
+                ((dbo.SERVICE_LINES.START_TIME - 1200 ) / 100 )
+            ELSE (dbo.SERVICE_LINES.START_TIME / 100 ) END )as start_time_hour,
        ( dbo.SERVICE_LINES.START_TIME % 100 ) as start_time_minutes,
        ( CASE WHEN dbo.SERVICE_LINES.START_TIME >= 1200 THEN 'PM' ELSE 'AM' END ) as start_time_AMPM,
-       ( dbo.SERVICE_LINES.END_TIME / 100 ) as end_time_hour,
+       ( CASE WHEN dbo.SERVICE_LINES.END_TIME >= 1200 THEN
+           ((dbo.SERVICE_LINES.END_TIME - 1200 ) / 100 )
+            ELSE (dbo.SERVICE_LINES.END_TIME / 100 ) END ) as end_time_hour,
        ( dbo.SERVICE_LINES.END_TIME % 100 ) as end_time_minutes,
        ( CASE WHEN dbo.SERVICE_LINES.END_TIME >= 1200 THEN 'PM' ELSE 'AM' END ) as end_time_AMPM,
        ( dbo.SERVICE_LINES.BREAK_TIME_MINUTES / 60 ) AS lunch_dinner_hours,

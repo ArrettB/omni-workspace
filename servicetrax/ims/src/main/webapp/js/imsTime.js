@@ -40,6 +40,9 @@ function init() {
 
         changed(popupServiceLineId + '_changed');
 
+        var checkbox = document.getElementById(popupServiceLineId + '_checked');
+        checkbox.checked = true;
+
 	    popupHours.hide();
 
 	    return true;
