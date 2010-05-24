@@ -137,5 +137,3 @@
         </td>
     </tr>
 </table>
-
-<jsp:include page="addressPopup.jsp" flush="true"/>

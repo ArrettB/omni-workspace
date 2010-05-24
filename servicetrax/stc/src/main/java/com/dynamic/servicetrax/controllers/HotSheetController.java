@@ -126,6 +126,11 @@ public class HotSheetController extends MultiActionController {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public void addJobLocation(HttpServletRequest request, HttpServletResponse response, Address address) throws Exception {
+        System.out.println(address);
+    }
+
 
     private BindingResult result;
 

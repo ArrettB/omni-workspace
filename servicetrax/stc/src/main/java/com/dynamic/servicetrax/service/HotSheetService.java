@@ -80,6 +80,9 @@ public class HotSheetService {
             }
             hotSheet.setOriginAddresses(addresses);
         }
+        else{
+            hotSheet.setOriginAddress(new Address());
+        }
     }
 
     private void addBillingAddressInfo(HotSheet hotSheet) {
