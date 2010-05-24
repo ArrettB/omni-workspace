@@ -31,7 +31,11 @@ import dynamic.util.xml.XMLUtils;
  */
 public class ExpressEntryHandler extends BaseHandler {
     private Hashtable statusHash;
-    private static String[] addParameters = {"resource_id", "tc_service_id", "line_date", "item_id", "num_hours", "pay_code", "tc_qty", "tc_rate", "bill_rate"};
+    private static String[] addParameters = {
+            "resource_id", "tc_service_id", "line_date",
+            "item_id", "num_hours", "pay_code",
+            "tc_qty", "tc_rate", "bill_rate"
+    };
 
     public static final String SUBMIT_LINES
             = "UPDATE service_lines SET status_id = ?,"
@@ -128,7 +132,6 @@ public class ExpressEntryHandler extends BaseHandler {
                     performRedirectAfterSubmit(ic);
                 }
                 else {
-                    performRedirect(ic);
                     performRedirect(ic);
                 }
             }
