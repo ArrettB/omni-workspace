@@ -8,6 +8,7 @@
                 <value>charm</value>
                 <value>messages</value>
                 <value>admin</value>
+                <value>errors</value>
             </list>
         </property>
     </bean>
@@ -255,6 +256,7 @@
     <bean id="hotSheetService" class="com.dynamic.servicetrax.service.HotSheetService">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
         <property name="hibernateService" ref="hibernateService"/>
+        <property name="messageSource" ref="messageSource"/>
     </bean>
 
 

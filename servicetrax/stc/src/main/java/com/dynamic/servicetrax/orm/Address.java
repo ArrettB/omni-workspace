@@ -14,7 +14,8 @@ public class Address {
     private String city;
     private String state;
     private String zip;
-    private String country;   
+    private String country;
+    private String jobLocationCustomerId;
 
 
     public String getJobLocationName() {
@@ -79,5 +80,13 @@ public class Address {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getJobLocationCustomerId() {
+        return jobLocationCustomerId;
+    }
+
+    public void setJobLocationCustomerId(String jobLocationCustomerId) {
+        this.jobLocationCustomerId = jobLocationCustomerId;
     }
 }

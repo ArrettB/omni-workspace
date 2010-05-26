@@ -21,14 +21,14 @@ Equipment
             <tr>
                 <td>
                     <form:input path="details[machine_cart_qty].attributeValue"
-                                cssStyle="width:20px; margin-left:5px; text-align:center;"/>
+                                maxlength="3" cssClass="details" cssStyle="margin-left:5px;"/>
                 </td>
                 <td>
                     Machine Carts 3/4
                 </td>
                 <td>
                     <form:input path="details[vacuums_qty].attributeValue"
-                                cssStyle="width:20px; text-align:center;"/>
+                                maxlength="3" cssClass="details"/>
                 </td>
                 <td>
                     Vacuums
@@ -37,14 +37,14 @@ Equipment
             <tr>
                 <td>
                     <form:input path="details[dollies_qty].attributeValue"
-                                cssStyle="width:20px; margin-left:5px; text-align:center;"/>
+                                maxlength="3" cssClass="details" cssStyle="margin-left:5px;"/>
                 </td>
                 <td>
                     Dollies
                 </td>
                 <td>
                     <form:input path="details[safe_kit_qty].attributeValue"
-                                cssStyle="width:20px; text-align:center;"/>
+                                maxlength="3" cssClass="details"/>
                 </td>
                 <td>
                     Safe Kit
@@ -53,14 +53,14 @@ Equipment
             <tr>
                 <td>
                     <form:input path="details[panel_carts_qty].attributeValue"
-                                cssStyle="width:20px; margin-left:5px; text-align:center;"/>
+                                maxlength="3" cssClass="details" cssStyle="margin-left:5px;"/>
                 </td>
                 <td>
                     Panel Carts
                 </td>
                 <td>
                     <form:input path="details[shrink_wrap_qty].attributeValue"
-                                cssStyle="width:20px; text-align:center;"/>
+                                maxlength="3" cssClass="details"/>
                 </td>
                 <td>
                     Shrink Wrap
@@ -69,14 +69,14 @@ Equipment
             <tr>
                 <td>
                     <form:input path="details[tote_stacks_qty].attributeValue"
-                                cssStyle="width:20px; margin-left:5px; text-align:center;"/>
+                                maxlength="3" cssClass="details" cssStyle="margin-left:5px;"/>
                 </td>
                 <td>
                     Tote Stacks
                 </td>
                 <td>
                     <form:input path="details[boards_qty].attributeValue"
-                                cssStyle="width:20px; text-align:center;"/>
+                                maxlength="3" cssClass="details"/>
                 </td>
                 <td>
                     Shrt/Long Boards
@@ -85,14 +85,14 @@ Equipment
             <tr>
                 <td>
                     <form:input path="details[picture_totes_qty].attributeValue"
-                                cssStyle="width:20px; margin-left:5px; text-align:center;"/>
+                                maxlength="3" cssClass="details" cssStyle="margin-left:5px;"/>
                 </td>
                 <td>
                     Picture Totes
                 </td>
                 <td>
                     <form:input path="details[full_masonite_qty].attributeValue"
-                                cssStyle="width:20px; text-align:center;"/>
+                                maxlength="3" cssClass="details"/>
                 </td>
                 <td>
                     Full Masonite
@@ -101,14 +101,14 @@ Equipment
             <tr>
                 <td>
                     <form:input path="details[pr_carton_qty].attributeValue"
-                                cssStyle="width:20px; margin-left:5px; text-align:center;"/>
+                                maxlength="3" cssClass="details" cssStyle="margin-left:5px;"/>
                 </td>
                 <td>
                     PR Carton
                 </td>
                 <td>
                     <form:input path="details[blue_tape_qty].attributeValue"
-                                cssStyle="width:20px; text-align:center;"/>
+                                maxlength="3" cssClass="details"/>
                 </td>
                 <td>
                     Blue Tape
@@ -117,35 +117,33 @@ Equipment
             <tr>
                 <td>
                     <form:input path="details[half_masonite_qty].attributeValue"
-                                cssStyle="width:20px; margin-left:5px; text-align:center;"/>
+                                maxlength="3" cssClass="details" cssStyle="margin-left:5px;"/>
                 </td>
                 <td>
                     1/2 Masonite
                 </td>
                 <td>
                     <form:input path="details[custom_equipment_1_qty].attributeValue"
-                                cssStyle="width:20px; text-align:center;"/>
+                                maxlength="3" cssClass="details"/>
                 </td>
                 <td>
-                    <form:input path="details[custom_equipment_1].name"
-                                cssStyle="width:100px;"/>
+                    <form:input path="details[custom_equipment_1].name" cssClass="details" cssStyle="width:100px;"/>
                 </td>
             </tr>
             <tr>
                 <td>
                     <form:input path="details[corner_boards_qty].attributeValue"
-                                cssStyle="width:20px; margin-left:5px; text-align:center;"/>
+                                maxlength="3" cssClass="details" cssStyle="margin-left:5px;"/>
                 </td>
                 <td>
                     Corner Boards
                 </td>
                 <td>
                     <form:input path="details[custom_equipment_2_qty].attributeValue"
-                                cssStyle="width:20px; text-align:center;"/>
+                                maxlength="3" cssClass="details"/>
                 </td>
                 <td>
-                    <form:input path="details[custom_equipment_2].name"
-                                cssStyle="width:100px;"/>
+                    <form:input path="details[custom_equipment_2].name" cssClass="details" cssStyle="width:100px;"/>
                 </td>
             </tr>
         </table>
@@ -164,7 +162,7 @@ Information
             <tr>
                 <td>
                     <form:input path="details[project_manager_qty].attributeValue"
-                                cssStyle="width:20px; margin-left:5px; text-align:center;"/>
+                                maxlength="3" cssClass="details" cssStyle="margin-left:5px;"/>
                 </td>
                 <td>
                     Proj. Mgr.
@@ -174,7 +172,7 @@ Information
             <tr>
                 <td>
                     <form:input path="details[supervisor_qty].attributeValue"
-                                cssStyle="width:20px; margin-left:5px; text-align:center;"/>
+                                maxlength="3" cssClass="details" cssStyle="margin-left:5px;"/>
                 </td>
                 <td>
                     Supervisor
@@ -183,7 +181,7 @@ Information
             <tr>
                 <td>
                     <form:input path="details[driver_qty].attributeValue"
-                                cssStyle="width:20px; margin-left:5px; text-align:center;"/>
+                                maxlength="3" cssClass="details" cssStyle="margin-left:5px;"/>
                 </td>
                 <td>
                     Driver
@@ -192,7 +190,7 @@ Information
             <tr>
                 <td>
                     <form:input path="details[installer_qty].attributeValue"
-                                cssStyle="width:20px; margin-left:5px; text-align:center;"/>
+                                maxlength="3" cssClass="details" cssStyle="margin-left:5px;"/>
                 </td>
                 <td>
                     Installer
@@ -201,7 +199,7 @@ Information
             <tr>
                 <td>
                     <form:input path="details[mover_qty].attributeValue"
-                                cssStyle="width:20px; margin-left:5px; text-align:center;"/>
+                                maxlength="3" cssClass="details" cssStyle="margin-left:5px;"/>
                 </td>
                 <td>
                     Mover
@@ -210,7 +208,7 @@ Information
             <tr>
                 <td>
                     <form:input path="details[packer_qty].attributeValue"
-                                cssStyle="width:20px; margin-left:5px; text-align:center;"/>
+                                maxlength="3" cssClass="details" cssStyle="margin-left:5px;"/>
                 </td>
                 <td>
                     Packer
@@ -219,7 +217,7 @@ Information
             <tr>
                 <td>
                     <form:input path="details[tech_qty].attributeValue"
-                                cssStyle="width:20px; margin-left:5px; text-align:center;"/>
+                                maxlength="3" cssClass="details" cssStyle="margin-left:5px;"/>
                 </td>
                 <td>
                     Tech
@@ -242,7 +240,7 @@ Special Instructions
 
     <div style="text-align:left; border: 1.5px solid #000000; padding-bottom:20px; margin-left:15px;">
         <form:textarea path="specialInstructions" cols="30" rows="13" cssStyle="margin-top:25px; margin-left:15px; margin-right:10px;
-        border:solid; border-width:1px; border-style:inset;"/>
+        border:solid 1px inset;"/>
     </div>
 </td>
 

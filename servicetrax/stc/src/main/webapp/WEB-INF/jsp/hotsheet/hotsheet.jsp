@@ -71,14 +71,20 @@
         <label>HOT SHEET</label>
     </div>
 
-    <c:if test="${errors != null && fn:length(errors) > 0}">
-        <c:forEach items="${errors}" var="anError">
-            ERROR!! <c:out value="${anError.defaultMessage}"/>
-        </c:forEach>
-    </c:if>
-
     <form:form action="${pageContext.request.contextPath}/hotSheetSave.html" method="post"
                id="hotSheetForm" commandName="hotSheet">
+
+    <form:errors path="*" cssStyle="font-size:18px;"/>
+
+    <c:if test="${errors != null && fn:length(errors) > 0}">
+        <ul style="padding-left:10px;" type="disc">
+            <c:forEach items="${errors}" var="anError">
+                <li style="color:red;">
+                    <c:out value="${anError}"/>
+                </li>
+            </c:forEach>
+        </ul>
+    </c:if>
 
     <form:hidden path="hotSheetId"/>
     <form:hidden path="requestId"/>
@@ -87,6 +93,7 @@
     <form:hidden path="customerId"/>
     <form:hidden path="endUserId"/>
     <form:hidden path="hotSheetNumber"/>
+    <form:hidden path="requestTypeId"/>
 
     <form:hidden path="jobLocationAddressId"/>
     <form:hidden path="jobLocationAddress.city"/>
@@ -108,7 +115,12 @@
     <form:hidden path="requestModifiedName"/>
     <form:hidden path="requestModifiedDate"/>
 
+    <form:hidden path="dateCreated"/>
     <form:hidden path="createdBy"/>
+    <form:hidden path="createdByName"/>
+    <form:hidden path="dateModified"/>
+    <form:hidden path="modifiedBy"/>
+    <form:hidden path="modifiedByName"/>
 
     <jsp:include page="firstRow.jsp" flush="true">
         <jsp:param name="hotSheet" value="${hotSheet}"/>
@@ -130,15 +142,7 @@
         <jsp:param name="hotSheet" value="${hotSheet}"/>
     </jsp:include>
 
-    <c:if test="${errors != null}">
-        <ul style="color:black; list-style-type:disc; text-align:left;">
-            <c:forEach items="${errors}" var="anError">
-                <li>
-                    <form:errors path="${anError.field}" cssClass="errorMessages"/>
-                </li>
-            </c:forEach>
-        </ul>
-    </c:if>
+
 </div>
 </form:form>
 
@@ -155,6 +159,7 @@
 
 <script type="text/javascript">
 
+    //addJobLocation dialog
     YAHOO.namespace("example.container");
     YAHOO.util.Event.onDOMReady(function () {
 
@@ -165,71 +170,101 @@
         var handleCancel = function() {
             this.cancel();
         };
+
         var handleSuccess = function(o) {
-            var response = o.responseText;
-            response = response.split("<!")[0];
-            document.getElementById("resp").innerHTML = response;
+            var messages = YAHOO.lang.JSON.parse(o.responseText);
+
+            var originAddressDropdown = document.getElementById("originAddressDropdown");
+            originAddressDropdown.options.length = 0;
+            for (var i = 0; i < messages.length; i++) {
+                var newOption = document.createElement("OPTION");
+                originAddressDropdown.options.add(newOption);
+                newOption.value = messages[i].key;
+                newOption.text = messages[i].value;
+            }
         };
+
         var handleFailure = function(o) {
-            alert("Submission failed: " + o.status);
+            alert("Add job location failed: " + o.status);
         };
 
         // Remove progressively enhanced content class, just before creating the module
-        YAHOO.util.Dom.removeClass("dialog1", "yui-pe-content");
+        YAHOO.util.Dom.removeClass("addJobLocation", "yui-pe-content");
 
         // Instantiate the Dialog
-        YAHOO.example.container.dialog1 = new YAHOO.widget.Dialog("dialog1",
-                                                                  { width : "30em",
-                                                                      fixedcenter : true,
-                                                                      visible : false,
-                                                                      constraintoviewport : true,
-                                                                      buttons : [
-                                                                          { text:"Submit", handler:handleSubmit, isDefault:true },
-                                                                          { text:"Cancel", handler:handleCancel }
-                                                                      ]
-                                                                  });
+        YAHOO.example.container.addJobLocation = new YAHOO.widget.Dialog("addJobLocation",
+                                                                         { width : "30em",
+                                                                             fixedcenter : true,
+                                                                             visible : false,
+                                                                             constraintoviewport : true,
+                                                                             buttons : [
+                                                                                 { text:"Submit", handler:handleSubmit, isDefault:true },
+                                                                                 { text:"Cancel", handler:handleCancel }
+                                                                             ]
+                                                                         });
 
         // Validate the entries in the form to require that both first and last name are entered
-        YAHOO.example.container.dialog1.validate = function() {
+        YAHOO.example.container.addJobLocation.validate = function() {
 
             var data = this.getData();
-            if (data.jobLocationName == "") {
+
+            if (data == undefined) {
+                return false;
+            }
+
+            if (YAHOO.lang.trim(data.jobLocationName) == "") {
                 alert("A job location name is required.");
                 return false;
             }
-            else {
-                return true;
+
+            if (YAHOO.lang.trim(data.streetOne) == "") {
+                alert("An address is required.");
+                return false;
             }
+
+            if (YAHOO.lang.trim(data.city) == "") {
+                alert("A city is required.");
+                return false;
+            }
+
+            var isZip = /^\d{5}([\-]\d{4})?$/;
+            if (YAHOO.lang.trim(data.zip) == "" || !isZip.test(data.zip)) {
+                alert("A valid zip code is required.");
+                return false;
+            }
+
+            return true;
         };
 
         // Wire up the success and failure handlers
-        YAHOO.example.container.dialog1.callback = {
+        YAHOO.example.container.addJobLocation.callback = {
             success: handleSuccess,
             failure: handleFailure
         };
 
         // Render the Dialog
-        YAHOO.example.container.dialog1.render();
+        YAHOO.example.container.addJobLocation.render();
 
-        YAHOO.util.Event.addListener("show", "click", YAHOO.example.container.dialog1.show, YAHOO.example.container.dialog1, true);
-        YAHOO.util.Event.addListener("hide", "click", YAHOO.example.container.dialog1.hide, YAHOO.example.container.dialog1, true);
-    });
+        YAHOO.util.Event.addListener("show", "click", YAHOO.example.container.addJobLocation.show, YAHOO.example.container.addJobLocation, true);
+    })
+            ;
 
     function initializeDropdown(e) {
         handleChange('US');
     }
+
     YAHOO.util.Event.addListener(window, "load", initializeDropdown);
 
 </script>
 
-
-<div id="dialog1" class="yui-panel">
+<div id="addJobLocation" class="yui-panel">
     <div class="hd">Please enter new origin address information</div>
     <div class="bd">
 
         <form:form name="addJobLocationForm" id="addJobLocationForm" commandName="address"
                    action="${pageContext.request.contextPath}/addJobLocation.html" method="post">
             <table border="0" cellspacing="5" cellpadding="0">
+                <input type="hidden" name="jobLocationCustomerId" value="${hotSheet.customerId}"/>
                 <tr>
                     <td>
                         Location Name:
@@ -253,6 +288,8 @@
                 <tr>
                     <td>
                         Address Two:
+                        <br>
+                        <span style="font-size:10px;">(optional)</span>
                     </td>
                     <td>
                         <label>
@@ -310,5 +347,125 @@
 </div>
 
 
+<script type="text/javascript">
+
+    //confirmSave  and confirmPrint dialog - we need two because we have different actions on our hotSheetController
+    YAHOO.namespace("example.container");
+    YAHOO.util.Event.onDOMReady(function () {
+
+        // Event handlers
+        var handleSaveSubmit = function() {
+            var hotSheetForm = document.getElementById('hotSheetForm');
+            hotSheetForm.submit();
+        };
+
+        var handlePrintSubmit = function() {
+            var hotSheetForm = document.getElementById('hotSheetForm');
+            var path = "${pageContext.request.contextPath}";
+            hotSheetForm.action = path + '/hotSheetReport.html';
+            hotSheetForm.submit();
+        };
+
+
+        var handleCancel = function() {
+            YAHOO.example.container.notifyBilling.show();
+            YAHOO.example.container.confirmSave.hide();
+            YAHOO.example.container.confirmPrint.hide();
+        };
+
+        var handleCancelNotifyBilling = function() {
+            this.cancel();
+        };
+
+        var handleSuccess = function(o) {
+        };
+
+        var handleFailure = function(o) {
+            alert("Submission failed: " + o.status);
+        };
+
+        // Remove progressively enhanced content class, just before creating the module
+        YAHOO.util.Dom.removeClass("confirmSave", "yui-pe-content");
+        YAHOO.util.Dom.removeClass("confirmPrint", "yui-pe-content");
+
+        // Instantiate the save Dialog
+        YAHOO.example.container.confirmSave = new YAHOO.widget.Dialog("confirmSave",
+                                                                      {
+                                                                          width : "20em",
+                                                                          fixedcenter : true,
+                                                                          visible : false,
+                                                                          constraintoviewport : true,
+                                                                          buttons : [
+                                                                              { text:"Yes", handler:handleSaveSubmit, isDefault:true },
+                                                                              { text:"No", handler:handleCancel }
+                                                                          ]
+                                                                      });
+
+        // Wire up the success and failure handlers
+        YAHOO.example.container.confirmSave.callback = {
+            success: handleSuccess,
+            failure: handleFailure
+        };
+
+        // Instantiate the print Dialog
+        YAHOO.example.container.confirmPrint = new YAHOO.widget.Dialog("confirmPrint",
+                                                                       {
+                                                                           width : "20em",
+                                                                           fixedcenter : true,
+                                                                           visible : false,
+                                                                           constraintoviewport : true,
+                                                                           buttons : [
+                                                                               {text:"Yes", handler:handlePrintSubmit, isDefault:true},
+                                                                               {text:"No", handler:handleCancel }
+                                                                           ]
+                                                                       });
+
+        // The notify dialog
+        YAHOO.example.container.notifyBilling = new YAHOO.widget.Dialog("notifyBilling",
+                                                                        {
+                                                                            width : "20em",
+                                                                            fixedcenter : true,
+                                                                            visible : false,
+                                                                            constraintoviewport : true,
+                                                                            buttons : [
+                                                                                {
+                                                                                    text:"OK",
+                                                                                    handler:handleCancelNotifyBilling }
+                                                                            ]
+                                                                        });
+
+        // Render the Dialogs
+        YAHOO.example.container.confirmSave.render();
+        YAHOO.example.container.confirmPrint.render();
+        YAHOO.example.container.notifyBilling.render();
+
+        YAHOO.util.Event.addListener("saveButton", "click", YAHOO.example.container.confirmSave.show, YAHOO.example.container.confirmSave, true);
+        YAHOO.util.Event.addListener("printButton", "click", YAHOO.example.container.confirmPrint.show, YAHOO.example.container.confirmPrint, true);
+    });
+</script>
+
+<div id="confirmSave" class="yui-panel">
+    <div class="hd">HOT SHEET SAVE CONFIRMATION</div>
+    <div class="bd" style="text-align:center; font-size:18px;">
+        <label style="text-align:center;">Is this Billing Information correct?</label>
+    </div>
+</div>
+
+<div id="confirmPrint" class="yui-panel">
+    <div class="hd">HOT SHEET PRINT CONFIRMATION</div>
+    <div class="bd" style="text-align:center; font-size:18px;">
+        <label>Is this Billing Information correct?</label>
+    </div>
+</div>
+
+<div id="notifyBilling" class="yui-panel">
+    <div class="hd">BILLING ADDRESS INCORRECT</div>
+    <div class="bd" style="text-align:center; font-size:18px;">
+        <label>Please notify the Billing Department</label>
+    </div>
+</div>
+
+
 </body>
 </html>
+

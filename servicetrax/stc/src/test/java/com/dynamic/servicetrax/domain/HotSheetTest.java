@@ -5,13 +5,11 @@ import com.dynamic.servicetrax.orm.Address;
 import com.dynamic.servicetrax.orm.HotSheet;
 import com.dynamic.servicetrax.orm.HotSheetDetail;
 import com.dynamic.servicetrax.service.HotSheetService;
-import net.sf.ezmorph.bean.BeanMorpher;
 import net.sf.json.JSONObject;
 import org.springframework.beans.BeansException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 
-import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -159,6 +157,10 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
 
         hotSheet.setRequestCreatedDate(today);
         hotSheet.setRequestModifiedName("foobar");
+
+        long requestTypeId = jdbcTemplate.queryForLong(HotSheetService.GET_REQUEST_TYPE_ID);
+        hotSheet.setRequestTypeId(requestTypeId);
+
         return hotSheet;
     }
 

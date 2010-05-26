@@ -6,17 +6,23 @@ import com.dynamic.servicetrax.orm.HotSheet;
 import com.dynamic.servicetrax.orm.HotSheetDetail;
 import com.dynamic.servicetrax.orm.KeyValueBean;
 import com.dynamic.servicetrax.util.TimeUtils;
+import org.springframework.context.MessageSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.validation.FieldError;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,6 +37,8 @@ public class HotSheetService {
 
     private HibernateService hibernateService;
 
+    private MessageSource messageSource;
+
     public static final String GET_PROJECT_INFO =
             "SELECT TOP 1 p.customer_id customerId," +
                     " p.end_user_id endUserId," +
@@ -41,20 +49,75 @@ public class HotSheetService {
                     " FROM projects_v2 p  " +
                     " WHERE p.project_id = ?";
 
-    public HotSheet buildHotSheet(String requestId) {
+    public HotSheet buildHotSheet(String requestId, Long userId) {
 
         BigDecimal projectId = getProjectId(requestId);
         HotSheet hotSheet = addProjectInfo(projectId);
 
         Integer hotSheetNumber = getHotSheetNumber(requestId);
         hotSheet.setHotSheetNumber(hotSheetNumber);
+
         addRequestInfo(hotSheet, requestId, hotSheetNumber);
         hotSheet.setRequestId(Long.valueOf(requestId));
         hotSheet.setProjectId(projectId.longValue());
 
+        initializeJobTime(hotSheet);
+
+        addRequestTypeId(hotSheet);
+        addUserInfo(hotSheet, userId);
         addOriginAddressInfo(hotSheet);
         addBillingAddressInfo(hotSheet);
         return hotSheet;
+    }
+
+    private void initializeJobTime(HotSheet hotSheet) {
+
+        Calendar now = Calendar.getInstance();
+
+        //Default to today
+        hotSheet.setJobDate(now.getTime());
+        hotSheet.setJobLength(0);
+
+        String AM_PM = "AM";
+        if (now.get(Calendar.AM_PM) == now.get(Calendar.PM)) {
+            AM_PM = "PM";
+        }
+
+        hotSheet.setStartTimeHour(String.valueOf(now.get(Calendar.HOUR)));
+        hotSheet.setStartTimeMinutes(String.valueOf(now.get(Calendar.MINUTE)));
+        hotSheet.setStartTimeAMPM(AM_PM);
+        hotSheet.setWarehouseStartTimeHour(String.valueOf(now.get(Calendar.HOUR)));
+        hotSheet.setWarehouseStartTimeMinutes(String.valueOf(now.get(Calendar.MINUTE)));
+        hotSheet.setWarehouseStartTimeAMPM(AM_PM);
+    }
+
+
+    public static final String GET_REQUEST_TYPE_ID =
+            "select lookup_id from lookups where code = 'hot_sheet'";
+
+    private void addRequestTypeId(HotSheet hotSheet) {
+        long requestTypeId = jdbcTemplate.queryForLong(GET_REQUEST_TYPE_ID);
+        hotSheet.setRequestTypeId(requestTypeId);
+    }
+
+    public static final String GET_USER = "select full_name from users where user_id = ?";
+
+    private void addUserInfo(HotSheet hotSheet, Long userId) {
+
+        hotSheet.setDateCreated(new Date());
+        hotSheet.setCreatedBy(userId);
+        String name = getUserName(userId);
+        hotSheet.setCreatedByName(name);
+    }
+
+    public String getUserName(Long userId) {
+        String name = null;
+        List row = jdbcTemplate.queryForList(GET_USER, new Object[]{userId});
+        if (row != null && row.size() > 0) {
+            Map userInfo = (Map) row.get(0);
+            name = (String) userInfo.get("full_name");
+        }
+        return name;
     }
 
     public static final String GET_CUSTOMER_INFO =
@@ -71,18 +134,23 @@ public class HotSheetService {
             BigDecimal id = (BigDecimal) firstAddress.get("JOB_LOCATION_ID");
             Address originAddress = getAddress(id);
             hotSheet.setOriginAddress(originAddress);
-            List<KeyValueBean> addresses = new ArrayList<KeyValueBean>();
-            for (Map aRow : originAddresses) {
-                BigDecimal key = (BigDecimal) aRow.get("JOB_LOCATION_ID");
-                String value = (String) aRow.get("JOB_LOCATION_NAME");
-                KeyValueBean aBean = new KeyValueBean(key, value);
-                addresses.add(aBean);
-            }
+            List<KeyValueBean> addresses = getOriginAddresses(originAddresses);
             hotSheet.setOriginAddresses(addresses);
         }
-        else{
+        else {
             hotSheet.setOriginAddress(new Address());
         }
+    }
+
+    private List<KeyValueBean> getOriginAddresses(List<Map> originAddresses) {
+        List<KeyValueBean> addresses = new ArrayList<KeyValueBean>();
+        for (Map aRow : originAddresses) {
+            BigDecimal key = (BigDecimal) aRow.get("JOB_LOCATION_ID");
+            String value = (String) aRow.get("JOB_LOCATION_NAME");
+            KeyValueBean aBean = new KeyValueBean(key, value);
+            addresses.add(aBean);
+        }
+        return addresses;
     }
 
     private void addBillingAddressInfo(HotSheet hotSheet) {
@@ -90,7 +158,17 @@ public class HotSheetService {
         //TODO: wire this up to billing when it comes on line
         Long id = hotSheet.getJobLocationAddressId();
         hotSheet.setBillingAddressId(id);
-        Address billingAddress = getAddress(new BigDecimal(id));
+
+        Address billingAddress = new Address();
+        billingAddress.setJobLocationCustomerId(String.valueOf(id));
+        billingAddress.setJobLocationName("Billing Address");
+        billingAddress.setStreetOne("Billing Address Street One");
+        billingAddress.setStreetTwo("Street Two");
+        billingAddress.setCity("City");
+        billingAddress.setState("State");
+        billingAddress.setZip("12121");
+
+        //Address billingAddress = getAddress(new BigDecimal(id));
         hotSheet.setBillingAddress(billingAddress);
     }
 
@@ -168,10 +246,6 @@ public class HotSheetService {
         Address jobLocationAddress = getAddress((BigDecimal) row.get("jobLocationAddressId"));
         hotSheet.setJobLocationAddress(jobLocationAddress);
         initializeJobLocationContact(hotSheet, (BigDecimal) row.get("CUSTOMER_CONTACT_ID"));
-
-        //Default to today
-        hotSheet.setJobDate(new Date());
-        hotSheet.setJobLength(0);
     }
 
     private void initializeJobLocationContact(HotSheet hotSheet, BigDecimal jobLocationContactId) {
@@ -222,10 +296,12 @@ public class HotSheetService {
     }
 
 
-    private static final String HOTSHEET_LOOKUP_TYPE_ID = "'83'";
+    private static final String HOTSHEET_LOOKUP_TYPE_CODE = "'hotsheet_detail_type'";
 
     public static final String GET_HOTSHEET_LOOKUPS =
-            "select lookup_id, code, name from lookups where lookup_type_id  = " + HOTSHEET_LOOKUP_TYPE_ID;
+            "SELECT LOOKUPS.LOOKUP_ID, LOOKUPS.CODE, LOOKUPS.NAME FROM LOOKUPS, LOOKUP_TYPES" +
+                    " WHERE LOOKUP_TYPES.CODE  = " + HOTSHEET_LOOKUP_TYPE_CODE +
+                    " AND LOOKUPS.LOOKUP_TYPE_ID = LOOKUP_TYPES.LOOKUP_TYPE_ID";
 
     @SuppressWarnings("unchecked")
     public Map<String, HotSheetDetail> getHotSheetDetails(Long user) {
@@ -275,19 +351,24 @@ public class HotSheetService {
         this.hibernateService = hibernateService;
     }
 
-    public void initializeStartTimes(HttpServletRequest request, HotSheet hotSheet) {
+    @SuppressWarnings("unused")
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+
+    public void convertStartTimesToMilitary(HttpServletRequest request, HotSheet hotSheet) {
 
         Map map = request.getParameterMap();
         int startTime =
-                TimeUtils.getTimeAsMilitaryTime(Integer.valueOf(getValue(map.get("start_time_hour"))),
-                                                Integer.valueOf(getValue(map.get("start_time_minutes"))),
-                                                getValue(map.get("start_time_AMPM")));
+                TimeUtils.getTimeAsMilitaryTime(Integer.valueOf(getValue(map.get("startTimeHour"))),
+                                                Integer.valueOf(getValue(map.get("startTimeMinutes"))),
+                                                getValue(map.get("startTimeAMPM")));
         hotSheet.setJobStartTime(startTime);
 
         int warehouseStartTime =
-                TimeUtils.getTimeAsMilitaryTime(Integer.valueOf(getValue(map.get("warehouse_start_time_hour"))),
-                                                Integer.valueOf(getValue(map.get("warehouse_start_time_minutes"))),
-                                                getValue(map.get("warehouse_start_time_AMPM")));
+                TimeUtils.getTimeAsMilitaryTime(Integer.valueOf(getValue(map.get("warehouseStartTimeHour"))),
+                                                Integer.valueOf(getValue(map.get("warehouseStartTimeMinutes"))),
+                                                getValue(map.get("warehouseStartTimeAMPM")));
         hotSheet.setWarehouseStartTime(warehouseStartTime);
     }
 
@@ -298,6 +379,77 @@ public class HotSheetService {
         }
         return null;
     }
+
+    @SuppressWarnings("unchecked")
+    public List<KeyValueBean> getUpdatedOriginAddresses(String customerId) {
+
+        if (customerId == null) {
+            return Collections.EMPTY_LIST;
+        }
+
+        List<Map> originAddresses = jdbcTemplate.queryForList(GET_CUSTOMER_INFO, new Object[]{Long.valueOf(customerId)});
+        if (originAddresses != null && originAddresses.size() > 0) {
+            return getOriginAddresses(originAddresses);
+        }
+        return Collections.EMPTY_LIST;
+    }
+
+    public Map<String, HotSheetDetail> getNewHotSheetDetails() {
+        return getHotSheetDetails(null);
+    }
+
+    public Map<String, HotSheetDetail> getExistingHotSheetDetails(String hotSheetId) {
+        HibernateTemplate hibernateTemplate = hibernateService.getHibernateTemplate();
+        String getDetails = "from HotSheetDetail as hsd where hsd.hotSheet.hotSheetId = ?";
+        List<HotSheetDetail> details = hibernateTemplate.find(getDetails, Long.valueOf(hotSheetId));
+        Map<String, HotSheetDetail> detailsMap = new HashMap<String, HotSheetDetail>();
+        for (HotSheetDetail aDetail : details) {
+            detailsMap.put(aDetail.getCode(), aDetail);
+        }
+        return detailsMap;
+    }
+
+
+    public static final String ADD_JOB_LOCATION_ADDRESS = "insert into JOB_LOCATIONS" +
+            " (CUSTOMER_ID, JOB_LOCATION_NAME, STREET1, STREET2, CITY, STATE, ZIP, COUNTRY, LOCATION_TYPE_ID, DATE_CREATED, CREATED_BY)" +
+            " VALUES(?,?,?,?,?,?,?,?," +
+            " select lookup_id FROM lookups l JOIN lookup_types lt ON l.lookup_type_id = lt.lookup_type_id " +
+            " WHERE lt.code='location_type' AND l.code = 'worksite'," +
+            " ?,?)";
+
+    public static final String FOO =
+            "INSERT INTO job_locations (customer_id, job_location_name, location_type_id, street1, street2," +
+                    " city, state, zip, country, date_created, created_by)" +
+                    " SELECT ?, ?, l.lookup_id, ?, ?, ?, ?, ?, ?, ?, ?" +
+                    " FROM lookups l JOIN lookup_types lt ON l.lookup_type_id = lt.lookup_type_id\n" +
+                    " WHERE lt.code='location_type' AND l.code = 'worksite'";
+
+    public void addJobLocationAddress(Address address, long userId) {
+        jdbcTemplate.update(FOO, new Object[]
+                {
+                        address.getJobLocationCustomerId(),
+                        address.getJobLocationName(),
+                        address.getStreetOne(),
+                        address.getStreetTwo(),
+                        address.getCity(),
+                        address.getState(),
+                        address.getZip(),
+                        address.getCountry(),
+                        new Date(),
+                        userId
+                });
+    }
+
+    public List<String> buildErrors(List<FieldError> allErrors) {
+
+        List<String> errorMessages = new ArrayList<String>();
+        for (FieldError anError : allErrors) {
+            String anErrorMessage = messageSource.getMessage(anError, Locale.getDefault());
+            errorMessages.add(anErrorMessage);
+        }
+        return errorMessages;
+    }
+
 
     private class ProjectInfoMapper implements RowMapper {
 

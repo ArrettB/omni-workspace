@@ -19,6 +19,7 @@ public class HotSheet extends AuditableObject {
     private Long jobLocationContactId;
     private Long requestId;
     private Long projectId;
+    private Long requestTypeId;
 
 
     private Date jobDate;
@@ -55,6 +56,15 @@ public class HotSheet extends AuditableObject {
     private Long customerId;
     private Long endUserId;
     private List originAddresses;
+    private String createdByName;
+    private String modifiedByName;
+
+    private String startTimeHour;
+    private String startTimeMinutes;
+    private String startTimeAMPM;
+    private String warehouseStartTimeHour;
+    private String warehouseStartTimeMinutes;
+    private String warehouseStartTimeAMPM;
 
 
     public Long getHotSheetId() {
@@ -319,5 +329,77 @@ public class HotSheet extends AuditableObject {
 
     public List getOriginAddresses() {
         return originAddresses;
+    }
+
+    public void setCreatedByName(String createByName) {
+        this.createdByName = createByName;
+    }
+
+    public String getCreatedByName() {
+        return createdByName;
+    }
+
+    public void setModifiedByName(String modifiedByName) {
+        this.modifiedByName = modifiedByName;
+    }
+
+    public String getModifiedByName() {
+        return modifiedByName;
+    }
+
+    public Long getRequestTypeId() {
+        return requestTypeId;
+    }
+
+    public void setRequestTypeId(Long requestTypeId) {
+        this.requestTypeId = requestTypeId;
+    }
+
+    public String getStartTimeHour() {
+        return startTimeHour;
+    }
+
+    public void setStartTimeHour(String startTimeHour) {
+        this.startTimeHour = startTimeHour;
+    }
+
+    public String getStartTimeMinutes() {
+        return startTimeMinutes;
+    }
+
+    public void setStartTimeMinutes(String startTimeMinutes) {
+        this.startTimeMinutes = startTimeMinutes;
+    }
+
+    public String getStartTimeAMPM() {
+        return startTimeAMPM;
+    }
+
+    public void setStartTimeAMPM(String startTimeAMPM) {
+        this.startTimeAMPM = startTimeAMPM;
+    }
+
+    public String getWarehouseStartTimeHour() {
+        return warehouseStartTimeHour;
+    }
+
+    public void setWarehouseStartTimeHour(String warehouseStartTimeHour) {
+        this.warehouseStartTimeHour = warehouseStartTimeHour;
+    }
+
+    public String getWarehouseStartTimeMinutes() {
+        return warehouseStartTimeMinutes;
+    }
+
+    public void setWarehouseStartTimeMinutes(String warehouseStartTimeMinutes) {
+        this.warehouseStartTimeMinutes = warehouseStartTimeMinutes;
+    }
+
+    public String getWarehouseStartTimeAMPM() {
+        return warehouseStartTimeAMPM;
+    }
+
+    public void setWarehouseStartTimeAMPM(String warehouseStartTimeAMPM) {
+        this.warehouseStartTimeAMPM = warehouseStartTimeAMPM;
     }
 }

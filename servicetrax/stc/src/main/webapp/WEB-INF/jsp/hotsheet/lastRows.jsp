@@ -51,13 +51,13 @@ Audit Information
                             Date Created:
                         </td>
                         <td>
-                            <fmt:formatDate value="${hotSheet.requestCreatedDate}" pattern="MM/dd/yyyy hh:mm a"/>
+                            <fmt:formatDate value="${hotSheet.dateCreated}" pattern="MM/dd/yyyy hh:mm a"/>
                         </td>
                         <td>
                             Date Modified:
                         </td>
                         <td>
-                            <fmt:formatDate value="${hotSheet.requestModifiedDate}" pattern="MM/dd/yyyy hh:mm a"/>
+                            <fmt:formatDate value="${hotSheet.dateModified}" pattern="MM/dd/yyyy hh:mm a"/>
                         </td>
                     </tr>
                     <tr>
@@ -65,13 +65,13 @@ Audit Information
                             Created By:
                         </td>
                         <td>
-                            ${hotSheet.requestCreatedName}
+                            ${hotSheet.createdByName}
                         </td>
                         <td>
                             Modified By:
                         </td>
                         <td>
-                            ${hotSheet.requestModifiedName}
+                            ${hotSheet.modifiedByName}
                         </td>
                     </tr>
                 </table>
@@ -86,19 +86,18 @@ Audit Information
                                onclick="submitAction('/hotSheetCopy.html')">
                     </td>
                     <td align="center">
-                        <input type="submit" value="SAVE" name="button"
+                        <input type="button" value="SAVE" name="button" id="saveButton"
                                style="width:67px; height:33px; background:#d3d3d3;">
                     </td>
                     <td align="center">
-                        <input type="submit" value="Close Window" name="button" onclick="return closeWindow();"
+                        <input type="button" value="Close Window" name="button" onclick="return closeWindow();"
                                style="width:67px; height:33px; background:#d3d3d3; white-space:pre-wrap; word-wrap:break-word;">
                     </td>
                 </tr>
                 <tr>
                     <td colspan="3" align="center">
-                        <input type="submit" value="Print BL" name="button"
-                               style="width:220px; height:33px; background:#d3d3d3;"
-                               onclick="submitAction('/hotSheetReport.html')">
+                        <input type="button" value="Print BL" name="button" id="printButton"
+                               style="width:220px; height:33px; background:#d3d3d3;">
                     </td>
                 </tr>
             </table>

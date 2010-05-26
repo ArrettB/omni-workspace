@@ -122,39 +122,39 @@
                     </td>
                     <td>
                         <label>
-                            <select name="start_time_hour" id="start_time_hour">
-                                <option value="0">12</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                                <option value="7">7</option>
-                                <option value="8">8</option>
-                                <option value="9">9</option>
-                                <option value="10">10</option>
-                                <option value="11">11</option>
-                            </select>
+                            <form:select path="startTimeHour" id="startTimeHour">
+                                <form:option value="12"/>
+                                <form:option value="1"/>
+                                <form:option value="2"/>
+                                <form:option value="3"/>
+                                <form:option value="4"/>
+                                <form:option value="5"/>
+                                <form:option value="6"/>
+                                <form:option value="7"/>
+                                <form:option value="8"/>
+                                <form:option value="9"/>
+                                <form:option value="10"/>
+                                <form:option value="11"/>
+                            </form:select>
                         </label>
                     </td>
                     <td>
                         <label>
-                            <select name="start_time_minutes" id="start_time_minutes">
-                                <option value="00">00</option>
-                                <option value="15">15</option>
-                                <option value="30">30</option>
-                                <option value="45">45</option>
-                            </select>
+                            <form:select path="startTimeMinutes" id="startTimeMinutes">
+                                <form:option value="00"/>
+                                <form:option value="15"/>
+                                <form:option value="30"/>
+                                <form:option value="45"/>
+                            </form:select>
                         </label>
                     </td>
 
                     <td>
                         <label>
-                            <select name="start_time_AMPM" id="start_time_AMPM">
-                                <option value="AM">AM</option>
-                                <option value="PM">PM</option>
-                            </select>
+                            <form:select path="startTimeAMPM" id="startTimeAMPM">
+                                <form:option value="AM"/>
+                                <form:option value="PM"/>
+                            </form:select>
                         </label>
                     </td>
                 </tr>
@@ -164,39 +164,39 @@
                     </td>
                     <td>
                         <label>
-                            <select name="warehouse_start_time_hour" id="warehouse_time_hour">
-                                <option value="0">12</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                                <option value="7">7</option>
-                                <option value="8">8</option>
-                                <option value="9">9</option>
-                                <option value="10">10</option>
-                                <option value="11">11</option>
-                            </select>
+                            <form:select path="warehouseStartTimeHour" id="warehouseStartTimeHour">
+                                <form:option value="12"/>
+                                <form:option value="1"/>
+                                <form:option value="2"/>
+                                <form:option value="3"/>
+                                <form:option value="4"/>
+                                <form:option value="5"/>
+                                <form:option value="6"/>
+                                <form:option value="7"/>
+                                <form:option value="8"/>
+                                <form:option value="9"/>
+                                <form:option value="10"/>
+                                <form:option value="11"/>
+                            </form:select>
                         </label>
                     </td>
                     <td>
                         <label>
-                            <select name="warehouse_start_time_minutes" id="warehouse_time_minutes">
-                                <option value="00">00</option>
-                                <option value="15">15</option>
-                                <option value="30">30</option>
-                                <option value="45">45</option>
-                            </select>
+                            <form:select path="warehouseStartTimeMinutes" id="warehouseStartTimeMinutes">
+                                <form:option value="00"/>
+                                <form:option value="15"/>
+                                <form:option value="30"/>
+                                <form:option value="45"/>
+                            </form:select>
                         </label>
                     </td>
 
                     <td>
                         <label>
-                            <select name="warehouse_start_time_AMPM" id="warehouse_time_AMPM">
-                                <option value="AM">AM</option>
-                                <option value="PM">PM</option>
-                            </select>
+                            <form:select path="warehouseStartTimeAMPM" id="warehouseStartTimeAMPM">
+                                <form:option value="AM"/>
+                                <form:option value="PM"/>
+                            </form:select>
                         </label>
                     </td>
                 </tr>

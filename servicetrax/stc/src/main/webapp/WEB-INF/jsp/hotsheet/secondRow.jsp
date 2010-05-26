@@ -6,8 +6,16 @@
 
 <script type="text/javascript">
 
-    YAHOO.util.Event.on('originAddressId', 'change', function (event) {
+    YAHOO.util.Event.on('originAddressDropdown', 'change', function (event) {
         var callbacks = {
+
+            start : function(o) {
+                document.getElementById('spinner').style.visibility = 'visible';
+            },
+
+            complete : function(o) {
+                document.getElementById('spinner').style.visibility = 'hidden';
+            },
 
             success : function (o) {
                 var messages = [];
@@ -34,7 +42,10 @@
             timeout : 10000
         };
 
-        var id = event.currentTarget.value;
+        YAHOO.util.Connect.startEvent.subscribe(callbacks.start, callbacks);
+        YAHOO.util.Connect.completeEvent.subscribe(callbacks.complete, callbacks);
+
+        var id = this.value;
         var url = '<%=request.getContextPath()%>' + '/updateOriginAddress.html?jobLocationId=' + id;
         YAHOO.util.Connect.asyncRequest('GET', url, callbacks);
     });
@@ -64,10 +75,16 @@
 
     <tr>
         <td>
-            <form:select path="originAddressId" cssStyle="min-width:225px; max-width:225px;">
+            <form:select path="originAddressId" cssStyle="min-width:225px; max-width:225px;" id="originAddressDropdown">
                 <form:options items="${hotSheet.originAddresses}" itemValue="key" itemLabel="value"/>
             </form:select>
         </td>
+        <td>
+            <div id="spinner" style="visibility:hidden; text-align:center;">
+                <img src="images/ajax-loader.gif" alt="Working...">
+            </div>
+        </td>
+        <td colspan="3">&nbsp;</td>
     </tr>
 
     <tr>
@@ -80,7 +97,7 @@
         </td>
         <td>&nbsp;</td>
         <td>
-            <form:input path="originAddress.jobLocationName" readonly="true" cssClass="disabledCell"/>
+            <form:input path="billingAddress.jobLocationName" readonly="true" cssClass="disabledCell"/>
         </td>
     </tr>
 
@@ -94,7 +111,7 @@
         </td>
         <td>&nbsp;</td>
         <td>
-            <form:input path="originAddress.streetOne" readonly="true" cssClass="disabledCell"/>
+            <form:input path="billingAddress.streetOne" readonly="true" cssClass="disabledCell"/>
         </td>
     </tr>
     <tr>
@@ -107,7 +124,7 @@
         </td>
         <td>&nbsp;</td>
         <td>
-            <form:input path="originAddress.streetTwo" readonly="true" cssClass="disabledCell"/>
+            <form:input path="billingAddress.streetTwo" readonly="true" cssClass="disabledCell"/>
         </td>
     </tr>
 
@@ -133,7 +150,7 @@
         </td>
         <td>
             <input type="text" readonly="true" class="disabledCell"
-                   value="<c:out value='${hotSheet.originAddress.city}, ${hotSheet.originAddress.state} ${hotSheet.originAddress.zip}'/>">
+            value="<c:out value='${hotSheet.billingAddress.city}, ${hotSheet.billingAddress.state} ${hotSheet.billingAddress.zip}'/>">
         </td>
     </tr>
 </table>
