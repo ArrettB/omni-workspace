@@ -7,6 +7,7 @@ package com.dynamic.servicetrax.orm;
  */
 public class Address {
 
+    private Long jobLocationId;
     private String jobLocationName;
     private String streetOne;
     private String streetTwo;
@@ -17,6 +18,14 @@ public class Address {
     private String country;
     private String jobLocationCustomerId;
 
+
+    public Long getJobLocationId() {
+        return jobLocationId;
+    }
+
+    public void setJobLocationId(Long jobLocationId) {
+        this.jobLocationId = jobLocationId;
+    }
 
     public String getJobLocationName() {
         return jobLocationName;

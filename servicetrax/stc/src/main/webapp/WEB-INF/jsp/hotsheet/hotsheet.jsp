@@ -179,8 +179,15 @@
             for (var i = 0; i < messages.length; i++) {
                 var newOption = document.createElement("OPTION");
                 originAddressDropdown.options.add(newOption);
-                newOption.value = messages[i].key;
-                newOption.text = messages[i].value;
+                newOption.value = messages[i].jobLocationId;
+                newOption.text = messages[i].jobLocationName;
+                if (i == 0) {
+                    document.getElementById("originAddress.jobLocationName").value = messages[0].jobLocationName;
+                    document.getElementById("originAddress.streetOne").value = messages[0].streetOne;
+                    document.getElementById("originAddress.streetTwo").value = messages[0].streetTwo;
+                    var cityStateZip = messages[0].city + ' ' + messages[0].state + ' ' + messages[0].zip;
+                    document.getElementById("cityStateZip").value = cityStateZip;
+                }
             }
         };
 
@@ -355,11 +362,25 @@
 
         // Event handlers
         var handleSaveSubmit = function() {
+            document.getElementById('saveHotsheet').style.visibility = "hidden";
+            document.getElementById('saveProgress').style.visibility = "visible";
             var hotSheetForm = document.getElementById('hotSheetForm');
             hotSheetForm.submit();
         };
 
+        var handleCopySubmit = function() {
+            document.getElementById('copyHotsheet').style.visibility = "hidden";
+            document.getElementById('copyProgress').style.visibility = "visible";
+            var hotSheetForm = document.getElementById('hotSheetForm');
+            var path = "${pageContext.request.contextPath}";
+            hotSheetForm.action = path + '/hotSheetCopy.html';
+            hotSheetForm.submit();
+        };
+
+
         var handlePrintSubmit = function() {
+            document.getElementById('printHotsheet').style.visibility = "hidden";
+            document.getElementById('printProgress').style.visibility = "visible";
             var hotSheetForm = document.getElementById('hotSheetForm');
             var path = "${pageContext.request.contextPath}";
             hotSheetForm.action = path + '/hotSheetReport.html';
@@ -368,13 +389,9 @@
 
 
         var handleCancel = function() {
-            YAHOO.example.container.notifyBilling.show();
             YAHOO.example.container.confirmSave.hide();
             YAHOO.example.container.confirmPrint.hide();
-        };
-
-        var handleCancelNotifyBilling = function() {
-            this.cancel();
+            YAHOO.example.container.confirmCopy.hide();
         };
 
         var handleSuccess = function(o) {
@@ -387,6 +404,7 @@
         // Remove progressively enhanced content class, just before creating the module
         YAHOO.util.Dom.removeClass("confirmSave", "yui-pe-content");
         YAHOO.util.Dom.removeClass("confirmPrint", "yui-pe-content");
+        YAHOO.util.Dom.removeClass("confirmCopy", "yui-pe-content");
 
         // Instantiate the save Dialog
         YAHOO.example.container.confirmSave = new YAHOO.widget.Dialog("confirmSave",
@@ -396,16 +414,23 @@
                                                                           visible : false,
                                                                           constraintoviewport : true,
                                                                           buttons : [
-                                                                              { text:"Yes", handler:handleSaveSubmit, isDefault:true },
-                                                                              { text:"No", handler:handleCancel }
+                                                                              { text:"Save", handler:handleSaveSubmit, isDefault:true },
+                                                                              { text:"Cancel", handler:handleCancel }
                                                                           ]
                                                                       });
 
-        // Wire up the success and failure handlers
-        YAHOO.example.container.confirmSave.callback = {
-            success: handleSuccess,
-            failure: handleFailure
-        };
+        // Instantiate the copy Dialog
+        YAHOO.example.container.confirmCopy = new YAHOO.widget.Dialog("confirmCopy",
+                                                                      {
+                                                                          width : "20em",
+                                                                          fixedcenter : true,
+                                                                          visible : false,
+                                                                          constraintoviewport : true,
+                                                                          buttons : [
+                                                                              {text:"Copy", handler:handleCopySubmit, isDefault:true},
+                                                                              {text:"Cancel", handler:handleCancel }
+                                                                          ]
+                                                                      });
 
         // Instantiate the print Dialog
         YAHOO.example.container.confirmPrint = new YAHOO.widget.Dialog("confirmPrint",
@@ -415,56 +440,57 @@
                                                                            visible : false,
                                                                            constraintoviewport : true,
                                                                            buttons : [
-                                                                               {text:"Yes", handler:handlePrintSubmit, isDefault:true},
-                                                                               {text:"No", handler:handleCancel }
+                                                                               {text:"Print", handler:handlePrintSubmit, isDefault:true},
+                                                                               {text:"Cancel", handler:handleCancel }
                                                                            ]
                                                                        });
-
-        // The notify dialog
-        YAHOO.example.container.notifyBilling = new YAHOO.widget.Dialog("notifyBilling",
-                                                                        {
-                                                                            width : "20em",
-                                                                            fixedcenter : true,
-                                                                            visible : false,
-                                                                            constraintoviewport : true,
-                                                                            buttons : [
-                                                                                {
-                                                                                    text:"OK",
-                                                                                    handler:handleCancelNotifyBilling }
-                                                                            ]
-                                                                        });
-
         // Render the Dialogs
         YAHOO.example.container.confirmSave.render();
+        YAHOO.example.container.confirmCopy.render();
         YAHOO.example.container.confirmPrint.render();
-        YAHOO.example.container.notifyBilling.render();
 
         YAHOO.util.Event.addListener("saveButton", "click", YAHOO.example.container.confirmSave.show, YAHOO.example.container.confirmSave, true);
+        YAHOO.util.Event.addListener("copyButton", "click", YAHOO.example.container.confirmCopy.show, YAHOO.example.container.confirmCopy, true);
         YAHOO.util.Event.addListener("printButton", "click", YAHOO.example.container.confirmPrint.show, YAHOO.example.container.confirmPrint, true);
     });
 </script>
 
 <div id="confirmSave" class="yui-panel">
     <div class="hd">HOT SHEET SAVE CONFIRMATION</div>
-    <div class="bd" style="text-align:center; font-size:18px;">
-        <label style="text-align:center;">Is this Billing Information correct?</label>
+    <div class="bd" style="text-align:center; font-size:14px;">
+        <label id="saveHotsheet">
+            Save this Hotsheet?
+        </label>
+        <label id="saveProgress" style="visibility:hidden;">
+            <img src="images/saving.gif" alt="">
+        </label>
     </div>
 </div>
+
+<div id="confirmCopy" class="yui-panel">
+    <div class="hd">HOT SHEET COPY CONFIRMATION</div>
+    <div class="bd" style="text-align:center; font-size:14px;">
+        <label id="copyHotsheet">
+            Copy this Hotsheet?
+        </label>
+        <label id="copyProgress" style="visibility:hidden;">
+            <img src="images/saving.gif" alt="">
+        </label>
+    </div>
+</div>
+
 
 <div id="confirmPrint" class="yui-panel">
     <div class="hd">HOT SHEET PRINT CONFIRMATION</div>
-    <div class="bd" style="text-align:center; font-size:18px;">
-        <label>Is this Billing Information correct?</label>
+    <div class="bd" style="text-align:center; font-size:14px;">
+        <label id="printHotsheet">
+            Print this Hotsheet?
+        </label>
+        <label id="printProgress" style="visibility:hidden;">
+            <img src="images/saving.gif" alt="">
+        </label>
     </div>
 </div>
-
-<div id="notifyBilling" class="yui-panel">
-    <div class="hd">BILLING ADDRESS INCORRECT</div>
-    <div class="bd" style="text-align:center; font-size:18px;">
-        <label>Please notify the Billing Department</label>
-    </div>
-</div>
-
 
 </body>
 </html>

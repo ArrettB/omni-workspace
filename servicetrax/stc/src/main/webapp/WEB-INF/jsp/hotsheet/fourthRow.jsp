@@ -127,7 +127,8 @@ Equipment
                                 maxlength="3" cssClass="details"/>
                 </td>
                 <td>
-                    <form:input path="details[custom_equipment_1].name" cssClass="details" cssStyle="width:100px;"/>
+                    <form:input path="details[custom_equipment_1].name" cssClass="details"
+                                cssStyle="width:100px; text-align:left;"/>
                 </td>
             </tr>
             <tr>
@@ -143,7 +144,8 @@ Equipment
                                 maxlength="3" cssClass="details"/>
                 </td>
                 <td>
-                    <form:input path="details[custom_equipment_2].name" cssClass="details" cssStyle="width:100px;"/>
+                    <form:input path="details[custom_equipment_2].name" cssClass="details"
+                                cssStyle="width:100px; text-align:left;"/>
                 </td>
             </tr>
         </table>
@@ -151,7 +153,7 @@ Equipment
 </td>
 <td style="padding-left:8px;">
     <span style="position: relative; top: 0.7em;  margin-left: 25px; font-weight:bold; background: #d3d3d3; color:#000000;">
-Information
+Position
     </span>
 
     <div style="text-align:left; border: 1.5px solid #000000; padding-bottom:25px; margin-left:15px;">

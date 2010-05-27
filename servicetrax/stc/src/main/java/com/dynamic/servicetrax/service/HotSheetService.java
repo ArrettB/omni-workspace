@@ -4,7 +4,6 @@ import com.dynamic.charm.query.hibernate.HibernateService;
 import com.dynamic.servicetrax.orm.Address;
 import com.dynamic.servicetrax.orm.HotSheet;
 import com.dynamic.servicetrax.orm.HotSheetDetail;
-import com.dynamic.servicetrax.orm.KeyValueBean;
 import com.dynamic.servicetrax.util.TimeUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -54,7 +53,7 @@ public class HotSheetService {
         BigDecimal projectId = getProjectId(requestId);
         HotSheet hotSheet = addProjectInfo(projectId);
 
-        Integer hotSheetNumber = getHotSheetNumber(requestId);
+        Integer hotSheetNumber = getNextHotSheetNumberForRequest(requestId);
         hotSheet.setHotSheetNumber(hotSheetNumber);
 
         addRequestInfo(hotSheet, requestId, hotSheetNumber);
@@ -79,15 +78,29 @@ public class HotSheetService {
         hotSheet.setJobLength(0);
 
         String AM_PM = "AM";
-        if (now.get(Calendar.AM_PM) == now.get(Calendar.PM)) {
+        if (now.get(Calendar.HOUR_OF_DAY) > 12) {
             AM_PM = "PM";
         }
 
+        int minute = now.get(Calendar.MINUTE);
+        if (minute >= 45) {
+            minute = 45;
+        }
+        else if (minute >= 30) {
+            minute = 30;
+        }
+        else if (minute >= 15) {
+            minute = 15;
+        }
+        else {
+            minute = 0;
+        }
+
         hotSheet.setStartTimeHour(String.valueOf(now.get(Calendar.HOUR)));
-        hotSheet.setStartTimeMinutes(String.valueOf(now.get(Calendar.MINUTE)));
+        hotSheet.setStartTimeMinutes(String.valueOf(minute));
         hotSheet.setStartTimeAMPM(AM_PM);
         hotSheet.setWarehouseStartTimeHour(String.valueOf(now.get(Calendar.HOUR)));
-        hotSheet.setWarehouseStartTimeMinutes(String.valueOf(now.get(Calendar.MINUTE)));
+        hotSheet.setWarehouseStartTimeMinutes(String.valueOf(minute));
         hotSheet.setWarehouseStartTimeAMPM(AM_PM);
     }
 
@@ -120,13 +133,15 @@ public class HotSheetService {
         return name;
     }
 
-    public static final String GET_CUSTOMER_INFO =
-            "select JOB_LOCATION_ID, JOB_LOCATION_NAME from JOB_LOCATIONS where CUSTOMER_ID = ? order by JOB_LOCATION_NAME";
+    public static final String GET_JOB_LOCATION_INFO = "select JOB_LOCATION_ID, JOB_LOCATION_NAME, JOB_LOCATION_NAME, " +
+            " STREET1, STREET2, STREET3," +
+            " CITY, STATE, ZIP, COUNTRY " +
+            "from JOB_LOCATIONS where CUSTOMER_ID = ? order by JOB_LOCATION_NAME";
 
     @SuppressWarnings("unchecked")
     public void addOriginAddressInfo(HotSheet hotSheet) {
 
-        List<Map> originAddresses = jdbcTemplate.queryForList(GET_CUSTOMER_INFO, new Object[]{hotSheet.getCustomerId()});
+        List<Map> originAddresses = jdbcTemplate.queryForList(GET_JOB_LOCATION_INFO, new Object[]{hotSheet.getCustomerId()});
         hotSheet.setOriginAddresses(originAddresses);
 
         if (originAddresses != null && originAddresses.size() > 0) {
@@ -134,7 +149,7 @@ public class HotSheetService {
             BigDecimal id = (BigDecimal) firstAddress.get("JOB_LOCATION_ID");
             Address originAddress = getAddress(id);
             hotSheet.setOriginAddress(originAddress);
-            List<KeyValueBean> addresses = getOriginAddresses(originAddresses);
+            List<Address> addresses = getOriginAddresses(originAddresses);
             hotSheet.setOriginAddresses(addresses);
         }
         else {
@@ -142,13 +157,21 @@ public class HotSheetService {
         }
     }
 
-    private List<KeyValueBean> getOriginAddresses(List<Map> originAddresses) {
-        List<KeyValueBean> addresses = new ArrayList<KeyValueBean>();
+    private List<Address> getOriginAddresses(List<Map> originAddresses) {
+        List<Address> addresses = new ArrayList<Address>();
         for (Map aRow : originAddresses) {
-            BigDecimal key = (BigDecimal) aRow.get("JOB_LOCATION_ID");
-            String value = (String) aRow.get("JOB_LOCATION_NAME");
-            KeyValueBean aBean = new KeyValueBean(key, value);
-            addresses.add(aBean);
+            Address anAddress = new Address();
+            BigDecimal id = (BigDecimal) aRow.get("JOB_LOCATION_ID");
+            anAddress.setJobLocationId(id.longValue());
+            anAddress.setJobLocationName((String) aRow.get("JOB_LOCATION_NAME"));
+            anAddress.setStreetOne((String) aRow.get("STREET1"));
+            anAddress.setStreetTwo((String) aRow.get("STREET2"));
+            anAddress.setStreetThree((String) aRow.get("STREET3"));
+            anAddress.setCity((String) aRow.get("CITY"));
+            anAddress.setState((String) aRow.get("STATE"));
+            anAddress.setZip((String) aRow.get("ZIP"));
+            anAddress.setCountry((String) aRow.get("COUNTRY"));
+            addresses.add(anAddress);
         }
         return addresses;
     }
@@ -186,7 +209,7 @@ public class HotSheetService {
 
     private static final String GET_HOT_SHEET_NUMBER = "select count(*) as hotSheetNo from hotsheets where request_id = ?";
 
-    private Integer getHotSheetNumber(String requestId) {
+    public Integer getNextHotSheetNumberForRequest(String requestId) {
         Integer hotSheetNumber = jdbcTemplate.queryForInt(GET_HOT_SHEET_NUMBER, new Object[]{requestId});
         if (hotSheetNumber == null) {
             hotSheetNumber = 1;
@@ -195,6 +218,10 @@ public class HotSheetService {
             hotSheetNumber++;
         }
         return hotSheetNumber;
+    }
+
+    public Integer getCurrentHotSheetNumberForRequest(String requestId) {
+        return jdbcTemplate.queryForInt(GET_HOT_SHEET_NUMBER, new Object[]{requestId});
     }
 
     private static final String GET_HOT_SHEET_ID_INFO =
@@ -381,13 +408,13 @@ public class HotSheetService {
     }
 
     @SuppressWarnings("unchecked")
-    public List<KeyValueBean> getUpdatedOriginAddresses(String customerId) {
+    public List<Address> getUpdatedOriginAddresses(String customerId) {
 
         if (customerId == null) {
             return Collections.EMPTY_LIST;
         }
 
-        List<Map> originAddresses = jdbcTemplate.queryForList(GET_CUSTOMER_INFO, new Object[]{Long.valueOf(customerId)});
+        List<Map> originAddresses = jdbcTemplate.queryForList(GET_JOB_LOCATION_INFO, new Object[]{Long.valueOf(customerId)});
         if (originAddresses != null && originAddresses.size() > 0) {
             return getOriginAddresses(originAddresses);
         }

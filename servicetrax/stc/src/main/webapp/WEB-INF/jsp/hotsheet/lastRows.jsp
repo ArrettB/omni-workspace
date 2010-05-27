@@ -81,9 +81,8 @@ Audit Information
             <table style="width:100px; padding-left:40px;" border="0 " cellpadding="2" cellspacing="2">
                 <tr>
                     <td align="center">
-                        <input type="submit" value="COPY" name="button"
-                               style="width:67px; height:33px; background:#d3d3d3;"
-                               onclick="submitAction('/hotSheetCopy.html')">
+                        <input type="button" value="COPY" name="button" id="copyButton"
+                               style="width:67px; height:33px; background:#d3d3d3;">
                     </td>
                     <td align="center">
                         <input type="button" value="SAVE" name="button" id="saveButton"

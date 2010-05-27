@@ -29,12 +29,14 @@
                 }
                 catch (exception) {
                     alert("JSON Parse failed: " + exception);
+                    document.getElementById('spinner').style.visibility = 'hidden';
                 }
             },
 
             failure : function (o) {
                 if (!YAHOO.util.Connect.isCallInProgress(o)) {
                     alert("Async call failed!");
+                    document.getElementById('spinner').style.visibility = 'hidden';
                 }
             },
 
@@ -76,7 +78,7 @@
     <tr>
         <td>
             <form:select path="originAddressId" cssStyle="min-width:225px; max-width:225px;" id="originAddressDropdown">
-                <form:options items="${hotSheet.originAddresses}" itemValue="key" itemLabel="value"/>
+                <form:options items="${hotSheet.originAddresses}" itemValue="jobLocationId" itemLabel="jobLocationName"/>
             </form:select>
         </td>
         <td>

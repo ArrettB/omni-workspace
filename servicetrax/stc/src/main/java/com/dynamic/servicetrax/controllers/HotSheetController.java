@@ -4,7 +4,6 @@ import com.dynamic.servicetrax.interceptors.LoginInterceptor;
 import com.dynamic.servicetrax.orm.Address;
 import com.dynamic.servicetrax.orm.HotSheet;
 import com.dynamic.servicetrax.orm.HotSheetDetail;
-import com.dynamic.servicetrax.orm.KeyValueBean;
 import com.dynamic.servicetrax.service.HotSheetService;
 import com.dynamic.servicetrax.support.LoginCrediantials;
 import net.sf.json.JSONArray;
@@ -39,6 +38,8 @@ import java.util.Map;
 public class HotSheetController extends MultiActionController {
 
     private HotSheetService hotSheetService;
+    private static final String HOT_SHEET = "hotSheet";
+    private static final String HOTSHEET_VIEW = "hotsheet/hotsheet";
 
     public HotSheetController() {
 
@@ -73,21 +74,20 @@ public class HotSheetController extends MultiActionController {
         Map<String, HotSheetDetail> details = hotSheetService.getHotSheetDetails(userId);
         hotSheet.setDetails(details);
 
-        ModelAndView view = new ModelAndView("hotsheet/hotsheet");
-        view.getModel().put("hotSheet", hotSheet);
+        ModelAndView view = new ModelAndView(HOTSHEET_VIEW);
+        view.getModel().put(HOT_SHEET, hotSheet);
         return view;
     }
 
     @SuppressWarnings("unchecked, unused")
     public ModelAndView save(HttpServletRequest request, HttpServletResponse response, HotSheet hotSheet) throws Exception {
 
-
         //In either event, we need these
         hotSheetService.addOriginAddressInfo(hotSheet);
 
         if (result.hasErrors()) {
-            ModelAndView view = new ModelAndView("hotsheet/hotsheet");
-            view.getModel().put("hotSheet", hotSheet);
+            ModelAndView view = new ModelAndView(HOTSHEET_VIEW);
+            view.getModel().put(HOT_SHEET, hotSheet);
             List errors = hotSheetService.buildErrors(result.getAllErrors());
             view.getModel().put("errors", errors);
             return view;
@@ -95,7 +95,10 @@ public class HotSheetController extends MultiActionController {
 
         hotSheetService.convertStartTimesToMilitary(request, hotSheet);
 
-        String modifiedByName = getLoggedInUserName((LoginCrediantials) request.getSession().getAttribute(LoginInterceptor.SESSION_ATTR_LOGIN));
+        LoginCrediantials credentials = (LoginCrediantials) request.getSession().getAttribute(LoginInterceptor.SESSION_ATTR_LOGIN);
+        Long userId = (long) credentials.getUserId();
+        hotSheet.setModifiedBy(userId);
+        String modifiedByName = hotSheetService.getUserName(userId);
         hotSheet.setModifiedByName(modifiedByName);
 
         Date today = new Date();
@@ -105,18 +108,18 @@ public class HotSheetController extends MultiActionController {
         }
         hotSheet.setDateModified(today);
 
+        Long requestId = hotSheet.getRequestId();
+        Integer number = hotSheetService.getCurrentHotSheetNumberForRequest(String.valueOf(requestId));
+        if (!number.equals(hotSheet.getHotSheetNumber())) {
+            Integer nextNumber = hotSheetService.getNextHotSheetNumberForRequest(String.valueOf(requestId));
+            updateHotSheetIdentifier(hotSheet, nextNumber);
+        }
         hotSheetService.saveHotSheet(hotSheet);
 
         //Hot Sheet screen is saved into IMS_NEW.HOTSHEETS table.  Hot Sheet screen remains on browser.
-        ModelAndView view = new ModelAndView("hotsheet/hotsheet");
-        view.getModel().put("hotSheet", hotSheet);
+        ModelAndView view = new ModelAndView(HOTSHEET_VIEW);
+        view.getModel().put(HOT_SHEET, hotSheet);
         return view;
-    }
-
-    private String getLoggedInUserName(LoginCrediantials credentials) {
-
-        Long userId = (long) credentials.getUserId();
-        return hotSheetService.getUserName(userId);
     }
 
     @SuppressWarnings("unchecked, unused")
@@ -126,9 +129,9 @@ public class HotSheetController extends MultiActionController {
 
         // Validation and save logic from primary scenario is executed.
         if (result.hasErrors()) {
-            ModelAndView view = new ModelAndView("hotsheet/hotsheet");
+            ModelAndView view = new ModelAndView(HOTSHEET_VIEW);
             hotSheetService.addOriginAddressInfo(hotSheet);
-            view.getModel().put("hotSheet", hotSheet);
+            view.getModel().put(HOT_SHEET, hotSheet);
             List errors = hotSheetService.buildErrors(result.getAllErrors());
             view.getModel().put("errors", errors);
             return view;
@@ -136,17 +139,25 @@ public class HotSheetController extends MultiActionController {
 
         hotSheetService.convertStartTimesToMilitary(request, hotSheet);
         hotSheet.setDateCreated(new Date());
+
+        Long requestId = hotSheet.getRequestId();
+        Integer number = hotSheetService.getCurrentHotSheetNumberForRequest(String.valueOf(requestId));
+        if (!number.equals(hotSheet.getHotSheetNumber())) {
+            Integer nextNumber = hotSheetService.getNextHotSheetNumberForRequest(String.valueOf(requestId));
+            updateHotSheetIdentifier(hotSheet, nextNumber);
+        }
         hotSheetService.saveHotSheet(hotSheet);
 
         // A new Hot Sheet is then created with a Hot Sheet number greater than the one that was saved.
         // All of the fields from previous hot sheet are copied over.  The Created By and Date Created are set to the current user and today’s date.
-        Integer hotSheetNumber = hotSheet.getHotSheetNumber();
-        hotSheet.setHotSheetNumber(++hotSheetNumber);
-        hotSheet.setHotSheetId(null);
+        Integer nextNumber = hotSheetService.getNextHotSheetNumberForRequest(String.valueOf(requestId));
+        updateHotSheetIdentifier(hotSheet, nextNumber);
 
+        hotSheet.setHotSheetId(null);
         LoginCrediantials credentials = (LoginCrediantials) request.getSession().getAttribute(LoginInterceptor.SESSION_ATTR_LOGIN);
         hotSheet.setCreatedBy((long) credentials.getUserId());
-        String createdByName = getLoggedInUserName(credentials);
+        String createdByName = hotSheetService.getUserName((long) credentials.getUserId());
+
         hotSheet.setCreatedByName(createdByName);
         hotSheet.setDateCreated(new Date());
 
@@ -154,9 +165,17 @@ public class HotSheetController extends MultiActionController {
         hotSheet.setModifiedByName(null);
         hotSheet.setDateModified(null);
 
-        ModelAndView view = new ModelAndView("hotsheet/hotsheet");
-        view.getModel().put("hotSheet", hotSheet);
+        ModelAndView view = new ModelAndView(HOTSHEET_VIEW);
+        view.getModel().put(HOT_SHEET, hotSheet);
         return view;
+    }
+
+    private void updateHotSheetIdentifier(HotSheet hotSheet, Integer hotSheetNumber) {
+        hotSheet.setHotSheetNumber(hotSheetNumber);
+        String hotSheetIdentifier = hotSheet.getHotSheetIdentifier();
+        int index = hotSheetIdentifier.lastIndexOf("HS");
+        String substring = hotSheetIdentifier.substring(0, index + 2);
+        hotSheet.setHotSheetIdentifier(substring + hotSheetNumber);
     }
 
     @SuppressWarnings("unchecked, unused")
@@ -199,7 +218,7 @@ public class HotSheetController extends MultiActionController {
         OutputStreamWriter os = null;
 
         try {
-            List<KeyValueBean> addresses;
+            List<Address> addresses;
             if (address != null) {
                 addresses = hotSheetService.getUpdatedOriginAddresses(address.getJobLocationCustomerId());
             }
