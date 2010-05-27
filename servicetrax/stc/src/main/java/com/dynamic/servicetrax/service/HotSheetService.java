@@ -1,6 +1,8 @@
 package com.dynamic.servicetrax.service;
 
 import com.dynamic.charm.query.hibernate.HibernateService;
+import com.dynamic.charm.query.NamedQuery;
+import com.dynamic.charm.service.QueryService;
 import com.dynamic.servicetrax.orm.Address;
 import com.dynamic.servicetrax.orm.HotSheet;
 import com.dynamic.servicetrax.orm.HotSheetDetail;
@@ -36,6 +38,8 @@ public class HotSheetService {
 
     private HibernateService hibernateService;
 
+    private QueryService queryService;
+
     private MessageSource messageSource;
 
     public static final String GET_PROJECT_INFO =
@@ -66,6 +70,16 @@ public class HotSheetService {
         addUserInfo(hotSheet, userId);
         addOriginAddressInfo(hotSheet);
         addBillingAddressInfo(hotSheet);
+        return hotSheet;
+    }
+
+    public HotSheet getHotSheet(String hotSheetNumber) {
+        HotSheet hotSheet = (HotSheet)queryService.namedQueryForObject( "hibernate.hotSheetByNumber", new String[] { "hotSheetNumber"}, new String[] { hotSheetNumber});
+
+        addOriginAddressInfo(hotSheet);
+        addBillingAddressInfo(hotSheet);
+        Address jobLocationAddress = getAddress(new BigDecimal(hotSheet.getJobLocationAddressId()));
+        hotSheet.setJobLocationAddress(jobLocationAddress);
         return hotSheet;
     }
 
@@ -236,8 +250,9 @@ public class HotSheetService {
                     " requests.DATE_CREATED," +
                     " requests.CREATED_BY," +
                     " requests.DATE_MODIFIED," +
-                    " requests.MODIFIED_BY" +
-                    " from requests where requests.request_id = ?";
+                    " requests.MODIFIED_BY," +
+                    " projects.PROJECT_NO as projectNo" +
+                    " from requests, projects where projects.project_id = requests.project_id AND requests.request_id = ?";
 
     private void addRequestInfo(HotSheet hotSheet, String requestId, Integer hotSheetNumber) {
 
@@ -245,7 +260,8 @@ public class HotSheetService {
         Map row = (Map) list.get(0);
 
         // Build hotsheet id
-        StringBuilder buf = new StringBuilder(requestId);
+        StringBuilder buf = new StringBuilder();
+        buf.append(row.get("projectNo"));
         buf.append("-");
         buf.append(row.get("requestNo"));
         buf.append(".");
@@ -376,6 +392,11 @@ public class HotSheetService {
     @SuppressWarnings("unused")
     public void setHibernateService(HibernateService hibernateService) {
         this.hibernateService = hibernateService;
+    }
+
+    @SuppressWarnings("unused")
+    public void setQueryService(QueryService queryService) {
+        this.queryService = queryService;
     }
 
     @SuppressWarnings("unused")

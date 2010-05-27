@@ -147,6 +147,18 @@
 		<parameter name="number" type="String"/>
 	</namedQuery>
 
+    <namedQuery>
+        <id>hibernate.hotSheetByNumber</id>
+        <service>hibernateService</service>
+        <query> <![CDATA[
+                SELECT h
+                FROM HotSheet h
+                WHERE h.hotSheetIdentifier = :hotSheetNumber
+            ]]>
+        </query>
+        <parameter name="hotSheetNumber" type="String"/>
+    </namedQuery>
+
 	<namedQuery>
 		<id>hibernate.openJobsByEndUser</id>
 		<service>hibernateService</service>

@@ -71,6 +71,12 @@
 		<!--#ELSE-->
 			<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
 		<!--#/CHECKSECURITY -->
+    <!--#ELSEIF evaluate="<?r:pf_list:record_type_code?>" compare="hot_sheet"-->
+        <!--#CHECKSECURITY right="rights.enet/req/sr_edit.view"-->
+            <!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" href="<?s:showPage?>launchCharm?address=hotSheetShow.html?hotSheetNumber=<?r:pf_list:record_no?>" align="center" target="new" filter="a_record_no:record_no like '%<?p:a_record_no?>'"-->
+        <!--#ELSE-->
+            <!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+        <!--#/CHECKSECURITY -->
 	<!--#ELSE-->
 			<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
 	<!--#/IF-->
@@ -144,6 +150,12 @@
 		<!--#ELSE-->
 			<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
 		<!--#/CHECKSECURITY -->
+    <!--#ELSEIF evaluate="<?r:pf_list:record_type_code?>" compare="hot_sheet"-->
+        <!--#CHECKSECURITY right="rights.enet/req/sr_edit.view"-->
+            <!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" href="<?s:showPage?>launchCharm?address=hotSheetShow.html?hotSheetNumber=<?r:pf_list:record_no?>" align="center" target="new" filter="a_record_no:record_no like '%<?p:a_record_no?>'"-->
+        <!--#ELSE-->
+            <!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
+        <!--#/CHECKSECURITY -->
 	<!--#ELSE-->
 			<!--#SMARTCOLUMN name="record_no" sort="record_no" title="Request&nbsp;#" width="10%" align="center" filter="a_record_no:record_no like '%<?p:a_record_no?>'" -->
 	<!--#/IF-->

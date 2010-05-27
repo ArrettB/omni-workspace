@@ -122,6 +122,32 @@ public class HotSheetController extends MultiActionController {
         return view;
     }
 
+
+    @SuppressWarnings("unchecked, unused")
+    public ModelAndView show(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map parameters = request.getParameterMap();
+
+        String hotSheetNumber = getParameter(parameters, "hotSheetNumber");
+        if (hotSheetNumber == null) {
+            String message = "No incoming hotsheet number found";
+            return new ModelAndView("error", "error", message);
+        }
+
+        HotSheet hotSheet = hotSheetService.getHotSheet(hotSheetNumber);
+        if( hotSheet == null ) {
+            String message = "No hotsheet found for number " + hotSheetNumber;
+            return new ModelAndView("error", "error", message);
+        }
+
+        return new ModelAndView(HOTSHEET_VIEW, HOT_SHEET, hotSheet);
+    }
+
+    private String getLoggedInUserName(LoginCrediantials credentials) {
+
+        Long userId = (long) credentials.getUserId();
+        return hotSheetService.getUserName(userId);
+    }
+
     @SuppressWarnings("unchecked, unused")
     public ModelAndView copy(HttpServletRequest request, HttpServletResponse response, HotSheet hotSheet) throws Exception {
 
@@ -149,7 +175,7 @@ public class HotSheetController extends MultiActionController {
         hotSheetService.saveHotSheet(hotSheet);
 
         // A new Hot Sheet is then created with a Hot Sheet number greater than the one that was saved.
-        // All of the fields from previous hot sheet are copied over.  The Created By and Date Created are set to the current user and todayÕs date.
+        // All of the fields from previous hot sheet are copied over.  The Created By and Date Created are set to the current user and todayï¿½s date.
         Integer nextNumber = hotSheetService.getNextHotSheetNumberForRequest(String.valueOf(requestId));
         updateHotSheetIdentifier(hotSheet, nextNumber);
 

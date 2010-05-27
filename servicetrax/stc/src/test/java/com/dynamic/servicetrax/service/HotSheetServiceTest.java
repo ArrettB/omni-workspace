@@ -35,6 +35,23 @@ public class HotSheetServiceTest extends AbstractTransactionalSpringContextTests
         assertEquals(address.getJobLocationName(), location.getJobLocationName());
     }
 
+//    public void testHotSheetQuery() {
+//        Address address = new Address();
+//        address.setJobLocationCustomerId("123");
+//        address.setJobLocationName("JobLocationName");
+//        address.setStreetOne("Street One");
+//        address.setCity("City");
+//        address.setState("MN");
+//        address.setZip("12345");
+//        address.setCountry("US");
+//        hotSheetService.addJobLocationAddress(address, 123L);
+//        long id = jdbcTemplate.queryForLong("select max(JOB_LOCATION_ID) from JOB_LOCATIONS");
+//        JobLocation location = (JobLocation) hibernateService.get(JobLocation.class, id);
+//        assertEquals(Long.valueOf(address.getJobLocationCustomerId()), location.getCustomer().getCustomerId());
+//        assertEquals(address.getCity(), location.getCity());
+//        assertEquals(address.getJobLocationName(), location.getJobLocationName());
+//    }
+
     @Override
     protected String[] getConfigLocations() {
         return new String[]{"applicationContext-test.xml"};
