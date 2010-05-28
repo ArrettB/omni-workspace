@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="billOfLading" language="groovy" pageWidth="595" pageHeight="1200" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="340"/>
+	<property name="ireport.y" value="372"/>
 	<style name="Title" isDefault="false" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -385,7 +385,9 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 					<bottomPen lineWidth="0.75"/>
 					<rightPen lineWidth="0.75"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{JOB_START_TIME}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -397,7 +399,9 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 					<bottomPen lineWidth="0.75"/>
 					<rightPen lineWidth="0.75"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{WHSE_START_TIME}]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -409,7 +413,9 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 					<bottomPen lineWidth="0.75"/>
 					<rightPen lineWidth="0.75"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[Whse Start:]]></text>
 			</staticText>
 			<staticText>
@@ -421,7 +427,9 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 					<bottomPen lineWidth="0.75"/>
 					<rightPen lineWidth="0.75"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[Start Time:]]></text>
 			</staticText>
 			<staticText>
@@ -435,18 +443,6 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[EQUIPMENT]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="330" y="160" width="100" height="20" forecolor="#FFFFFF" backcolor="#CCCCCC"/>
-				<box>
-					<pen lineWidth="0.75" lineColor="#333300"/>
-					<topPen lineWidth="0.75" lineColor="#333300"/>
-					<leftPen lineWidth="0.75" lineColor="#333300"/>
-					<bottomPen lineWidth="0.75" lineColor="#333300"/>
-					<rightPen lineWidth="0.75" lineColor="#333300"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[POSITION]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="165" y="160" width="165" height="20" forecolor="#FFFFFF" backcolor="#CCCCCC"/>
@@ -497,7 +493,7 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<text><![CDATA[Actual]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="165" y="220" width="165" height="20"/>
+				<reportElement x="165" y="260" width="165" height="20"/>
 				<box>
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75"/>
@@ -533,7 +529,7 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="110" y="220" width="55" height="20"/>
+				<reportElement x="110" y="260" width="55" height="20"/>
 				<box>
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75"/>
@@ -545,47 +541,7 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="220" width="110" height="20"/>
-				<box>
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement/>
-				<text><![CDATA[]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="180" width="55" height="20"/>
-				<box leftPadding="4">
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Service Van]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="200" width="55" height="20"/>
-				<box leftPadding="4">
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Bob Tail]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="55" y="180" width="55" height="20"/>
+				<reportElement x="0" y="260" width="110" height="20"/>
 				<box>
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75"/>
@@ -620,8 +576,186 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<textElement/>
 				<text><![CDATA[]]></text>
 			</staticText>
+			<subreport>
+				<reportElement x="330" y="160" width="100" height="203"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="HOTSHEET_ID">
+					<subreportParameterExpression><![CDATA[$P{HOTSHEET_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "billOfLadingPositions.jasper"]]></subreportExpression>
+			</subreport>
 			<staticText>
-				<reportElement x="55" y="200" width="55" height="20"/>
+				<reportElement x="492" y="120" width="63" height="40"/>
+				<box>
+					<pen lineWidth="0.75" lineColor="#000000"/>
+					<topPen lineWidth="0.75" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="492" y="160" width="63" height="40"/>
+				<box>
+					<pen lineWidth="0.75" lineColor="#000000"/>
+					<topPen lineWidth="0.75" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="492" y="240" width="63" height="40"/>
+				<box>
+					<pen lineWidth="0.75" lineColor="#000000"/>
+					<topPen lineWidth="0.75" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="492" y="200" width="63" height="40"/>
+				<box>
+					<pen lineWidth="0.75" lineColor="#000000"/>
+					<topPen lineWidth="0.75" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="492" y="280" width="63" height="40"/>
+				<box>
+					<pen lineWidth="0.75" lineColor="#000000"/>
+					<topPen lineWidth="0.75" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="492" y="320" width="63" height="40"/>
+				<box>
+					<pen lineWidth="0.75" lineColor="#000000"/>
+					<topPen lineWidth="0.75" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="120" width="62" height="40"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.75" lineColor="#000000"/>
+					<topPen lineWidth="0.75" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Whse Start]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="160" width="62" height="40"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.75" lineColor="#000000"/>
+					<topPen lineWidth="0.75" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Depart ECMS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="200" width="62" height="40"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.75" lineColor="#000000"/>
+					<topPen lineWidth="0.75" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Cust. Arrive]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="240" width="62" height="40"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.75" lineColor="#000000"/>
+					<topPen lineWidth="0.75" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Breaks]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="320" width="62" height="40"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.75" lineColor="#000000"/>
+					<topPen lineWidth="0.75" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[End]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="280" width="62" height="40"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.75" lineColor="#000000"/>
+					<topPen lineWidth="0.75" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Depart Cust.]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="0" y="180" width="110" height="80"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="HOTSHEET_ID">
+					<subreportParameterExpression><![CDATA[$P{HOTSHEET_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "billOfLadingTrucks.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="110" y="220" width="55" height="20"/>
 				<box>
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75"/>
@@ -633,144 +767,40 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="330" y="180" width="55" height="20"/>
-				<box leftPadding="4">
+				<reportElement x="165" y="220" width="165" height="20"/>
+				<box>
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
 					<bottomPen lineWidth="0.75"/>
 					<rightPen lineWidth="0.75"/>
 				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
+				<textElement/>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="330" y="200" width="55" height="20"/>
-				<box leftPadding="4">
+				<reportElement x="110" y="240" width="55" height="20"/>
+				<box>
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
 					<bottomPen lineWidth="0.75"/>
 					<rightPen lineWidth="0.75"/>
 				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Proj. Mgr.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="330" y="220" width="55" height="20"/>
-				<box leftPadding="4">
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Sup.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="330" y="240" width="55" height="20"/>
-				<box leftPadding="4">
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Drvr.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="330" y="260" width="55" height="20"/>
-				<box leftPadding="4">
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Install.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="330" y="280" width="55" height="20"/>
-				<box leftPadding="4">
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Mover]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="330" y="300" width="55" height="20"/>
-				<box leftPadding="4">
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Packer]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="330" y="320" width="55" height="20"/>
-				<box leftPadding="4">
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Tech]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="330" y="340" width="55" height="20"/>
-				<box leftPadding="4">
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
+				<textElement/>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="385" y="180" width="45" height="20"/>
-				<box leftPadding="4">
+				<reportElement x="165" y="240" width="165" height="20"/>
+				<box>
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
 					<bottomPen lineWidth="0.75"/>
 					<rightPen lineWidth="0.75"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Qty]]></text>
+				<textElement/>
+				<text><![CDATA[]]></text>
 			</staticText>
 		</band>
 	</detail>
