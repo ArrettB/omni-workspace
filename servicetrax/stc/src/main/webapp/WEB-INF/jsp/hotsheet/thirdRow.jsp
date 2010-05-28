@@ -82,17 +82,17 @@
                 </tr>
                 <tr>
                     <td>
-                        <form:input path="jobContactName" cssClass="disabledCell"/>
+                        <form:input path="jobContactName" readonly="true" cssClass="disabledCell"/>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <form:input path="jobContactPhone" cssClass="disabledCell"/>
+                        <form:input path="jobContactPhone" readonly="true" cssClass="disabledCell"/>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <form:input path="jobContactEmail" cssClass="disabledCell"/>
+                        <form:input path="jobContactEmail" readonly="true" cssClass="disabledCell"/>
                     </td>
                 </tr>
             </table>

@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * User: pgarvie
@@ -50,6 +51,30 @@ public class HotSheetController extends MultiActionController {
 
             public void validate(Object command, Errors errors) {
                 ValidationUtils.rejectIfEmpty(errors, "jobLength", "", "Job length cannot be blank");
+                Integer jobLength = ((HotSheet) command).getJobLength();
+                if (jobLength != null && jobLength < 0) {
+                    errors.rejectValue("jobLength", "jobLength.notNegative");
+                }
+
+                Map<String, HotSheetDetail> details = ((HotSheet) command).getDetails();
+                Set<String> keys = details.keySet();
+                for (String aKey : keys) {
+                    HotSheetDetail aDetail = details.get(aKey);
+                    Integer quantity = aDetail.getAttributeValue();
+                    if (quantity != null && quantity < 0) {
+                        errors.rejectValue("details",
+                                           "quantity.notNegative",
+                                           new Object[]{aDetail.getName()},
+                                           "Quantity cannot be negative.");
+                    }
+                    else if (quantity == null) {
+                        errors.rejectValue("details",
+                                           "quantity.notBlank",
+                                           new Object[]{aDetail.getName()},
+                                           "Quantity cannot be blank.");
+                    }
+
+                }
             }
         }});
     }
@@ -140,12 +165,6 @@ public class HotSheetController extends MultiActionController {
         }
 
         return new ModelAndView(HOTSHEET_VIEW, HOT_SHEET, hotSheet);
-    }
-
-    private String getLoggedInUserName(LoginCrediantials credentials) {
-
-        Long userId = (long) credentials.getUserId();
-        return hotSheetService.getUserName(userId);
     }
 
     @SuppressWarnings("unchecked, unused")

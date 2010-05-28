@@ -1,7 +1,6 @@
 package com.dynamic.servicetrax.service;
 
 import com.dynamic.charm.query.hibernate.HibernateService;
-import com.dynamic.charm.query.NamedQuery;
 import com.dynamic.charm.service.QueryService;
 import com.dynamic.servicetrax.orm.Address;
 import com.dynamic.servicetrax.orm.HotSheet;
@@ -446,6 +445,7 @@ public class HotSheetService {
         return getHotSheetDetails(null);
     }
 
+    @SuppressWarnings("unchecked")
     public Map<String, HotSheetDetail> getExistingHotSheetDetails(String hotSheetId) {
         HibernateTemplate hibernateTemplate = hibernateService.getHibernateTemplate();
         String getDetails = "from HotSheetDetail as hsd where hsd.hotSheet.hotSheetId = ?";
@@ -458,14 +458,7 @@ public class HotSheetService {
     }
 
 
-    public static final String ADD_JOB_LOCATION_ADDRESS = "insert into JOB_LOCATIONS" +
-            " (CUSTOMER_ID, JOB_LOCATION_NAME, STREET1, STREET2, CITY, STATE, ZIP, COUNTRY, LOCATION_TYPE_ID, DATE_CREATED, CREATED_BY)" +
-            " VALUES(?,?,?,?,?,?,?,?," +
-            " select lookup_id FROM lookups l JOIN lookup_types lt ON l.lookup_type_id = lt.lookup_type_id " +
-            " WHERE lt.code='location_type' AND l.code = 'worksite'," +
-            " ?,?)";
-
-    public static final String FOO =
+    public static final String ADD_JOB_LOCATION_ADDRESS =
             "INSERT INTO job_locations (customer_id, job_location_name, location_type_id, street1, street2," +
                     " city, state, zip, country, date_created, created_by)" +
                     " SELECT ?, ?, l.lookup_id, ?, ?, ?, ?, ?, ?, ?, ?" +
@@ -473,7 +466,7 @@ public class HotSheetService {
                     " WHERE lt.code='location_type' AND l.code = 'worksite'";
 
     public void addJobLocationAddress(Address address, long userId) {
-        jdbcTemplate.update(FOO, new Object[]
+        jdbcTemplate.update(ADD_JOB_LOCATION_ADDRESS, new Object[]
                 {
                         address.getJobLocationCustomerId(),
                         address.getJobLocationName(),

@@ -91,11 +91,11 @@
 
     <tr>
         <td>
-            <form:input path="originAddress.jobLocationName" cssClass="disabledCell"/>
+            <form:input path="originAddress.jobLocationName" readonly="true" cssClass="disabledCell"/>
         </td>
         <td>&nbsp;</td>
         <td>
-            <form:input path="jobLocationAddress.jobLocationName" cssClass="disabledCell"/>
+            <form:input path="jobLocationAddress.jobLocationName" readonly="true" cssClass="disabledCell"/>
         </td>
         <td>&nbsp;</td>
         <td>
@@ -105,11 +105,11 @@
 
     <tr>
         <td>
-            <form:input path="originAddress.streetOne" cssClass="disabledCell"/>
+            <form:input path="originAddress.streetOne" readonly="true" cssClass="disabledCell"/>
         </td>
         <td>&nbsp;</td>
         <td>
-            <form:input path="jobLocationAddress.streetOne" cssClass="disabledCell"/>
+            <form:input path="jobLocationAddress.streetOne" readonly="true" cssClass="disabledCell"/>
         </td>
         <td>&nbsp;</td>
         <td>
@@ -118,11 +118,11 @@
     </tr>
     <tr>
         <td>
-            <form:input path="originAddress.streetTwo" cssClass="disabledCell"/>
+            <form:input path="originAddress.streetTwo" readonly="true" cssClass="disabledCell"/>
         </td>
         <td>&nbsp;</td>
         <td>
-            <form:input path="jobLocationAddress.streetTwo" cssClass="disabledCell"/>
+            <form:input path="jobLocationAddress.streetTwo" readonly="true" cssClass="disabledCell"/>
         </td>
         <td>&nbsp;</td>
         <td>

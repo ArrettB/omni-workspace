@@ -77,7 +77,7 @@
     <form:errors path="*" cssStyle="font-size:18px;"/>
 
     <c:if test="${errors != null && fn:length(errors) > 0}">
-        <ul style="padding-left:10px;" type="disc">
+        <ul style="padding-left:30px;" type="disc">
             <c:forEach items="${errors}" var="anError">
                 <li style="color:red;">
                     <c:out value="${anError}"/>
