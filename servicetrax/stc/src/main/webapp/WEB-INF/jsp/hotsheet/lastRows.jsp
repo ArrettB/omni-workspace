@@ -81,22 +81,30 @@ Audit Information
             <table style="width:100px; padding-left:40px;" border="0 " cellpadding="2" cellspacing="2">
                 <tr>
                     <td align="center">
-                        <input type="button" value="COPY" name="button" id="copyButton"
-                               style="width:67px; height:33px; background:#d3d3d3;">
+                        <label>
+                            <input type="button" value="COPY" name="button" id="copyButton"
+                                   style="width:67px; height:33px; background:#d3d3d3;">
+                        </label>
                     </td>
                     <td align="center">
-                        <input type="button" value="SAVE" name="button" id="saveButton"
-                               style="width:67px; height:33px; background:#d3d3d3;">
+                        <label>
+                            <input type="button" value="SAVE" name="button" id="saveButton"
+                                   style="width:67px; height:33px; background:#d3d3d3;">
+                        </label>
                     </td>
                     <td align="center">
-                        <input type="button" value="Close Window" name="button" onclick="return closeWindow();"
-                               style="width:67px; height:33px; background:#d3d3d3; white-space:pre-wrap; word-wrap:break-word;">
+                        <label>
+                            <input type="button" value="Close Window" name="button" onclick="return closeWindow();"
+                                   style="width:67px; height:33px; background:#d3d3d3; white-space:pre-wrap; word-wrap:break-word;">
+                        </label>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="3" align="center">
-                        <input type="button" value="Print BL" name="button" id="printButton"
-                               style="width:220px; height:33px; background:#d3d3d3;">
+                        <label>
+                            <input type="button" value="Print BL" name="button" id="printButton"
+                                   style="width:220px; height:33px; background:#d3d3d3;">
+                        </label>
                     </td>
                 </tr>
             </table>

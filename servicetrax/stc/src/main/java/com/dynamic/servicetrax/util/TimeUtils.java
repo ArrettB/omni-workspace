@@ -23,5 +23,29 @@ public class TimeUtils {
         militaryTime = hours + minutes;
 
         return militaryTime;
-    }  
+    }
+
+    public static String getHour(int militaryTime) {
+
+        if (militaryTime < 100) {
+            return "12";
+        }
+
+        int hour = (militaryTime / 100);
+        return String.valueOf(hour > 12 ? hour - 12 : hour);
+    }
+
+    public static String getMinutes(int militaryTime) {
+
+        if (militaryTime == 0) {
+            return "00";
+        }
+
+        int minutes = militaryTime % 100;
+        return minutes == 0 ? "00" : String.valueOf(minutes);
+    }
+
+    public static String getAMPM(int militaryTime) {
+        return militaryTime - 1200 < 0 ? "AM" : "PM";
+    }
 }

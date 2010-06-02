@@ -63,7 +63,7 @@
 </script>
 
 
-<body class="yui-skin-sam">
+<body class="yui-skin-sam" onload="checkForPrint();">
 
 <div style="width: 100%; height:1020px; border: 2px solid #a9a9a9; ">
 
@@ -87,6 +87,7 @@
     </c:if>
 
     <form:hidden path="hotSheetId"/>
+    <form:hidden path="shouldPrint"/>
     <form:hidden path="requestId"/>
     <form:hidden path="projectId"/>
     <form:hidden path="jobLocationContactId"/>
@@ -394,13 +395,6 @@
             YAHOO.example.container.confirmCopy.hide();
         };
 
-        var handleSuccess = function(o) {
-        };
-
-        var handleFailure = function(o) {
-            alert("Submission failed: " + o.status);
-        };
-
         // Remove progressively enhanced content class, just before creating the module
         YAHOO.util.Dom.removeClass("confirmSave", "yui-pe-content");
         YAHOO.util.Dom.removeClass("confirmPrint", "yui-pe-content");
@@ -492,6 +486,62 @@
     </div>
 </div>
 
+<script type="text/javascript">
+
+    function checkForPrint() {
+
+        var shouldPrint = document.getElementById("shouldPrint").value;
+        if (shouldPrint != undefined && shouldPrint == 'true') {
+            var hotSheetId = document.getElementById("hotSheetId").value;
+            if (hotSheetId == undefined || hotSheetId == '') {
+                alert("Invalid hot sheet id. Printing not available.");
+            }
+            else {
+                makeRequest(hotSheetId);
+            }
+        }
+    }
+
+    var handleSuccess = function(o) {
+        var result = o.responseText;
+        var settings = "toolbar=no,location=no,directories=no,menubar=no,";
+        settings += "scrollbars=yes,width=800, height=1200, left=20, top=20";
+
+        var printThis = window.open("", "", settings);
+        printThis.document.open();
+        printThis.document.write(result);
+        printThis.print();
+        printThis.document.close();
+        printThis.close();
+    };
+
+    var handleFailure = function(o) {
+        alert(o);
+    };
+
+    var callback =
+    {
+        success:handleSuccess,
+        failure:handleFailure
+    };
+
+    function makeRequest(hotSheetId) {
+        var hotSheetForm = document.getElementById('hotSheetForm');
+        var path = "${pageContext.request.contextPath}";
+        hotSheetForm.action = path + '/hotSheetPrint.html';
+        hotSheetForm.submit();
+
+    <%--var path = "${pageContext.request.contextPath}";--%>
+    <%--var theId = "hotSheetId=" + hotSheetId;--%>
+    <%--try {--%>
+    <%--YAHOO.util.Connect.asyncRequest('POST', path + '/hotSheetPrint.html', callback, theId);--%>
+    <%--}--%>
+    <%--catch(e) {--%>
+    <%--alert(e);--%>
+    <%--}--%>
+    }
+
+</script>
 </body>
 </html>
 

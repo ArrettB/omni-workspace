@@ -73,12 +73,31 @@ public class HotSheetService {
     }
 
     public HotSheet getHotSheet(String hotSheetNumber) {
-        HotSheet hotSheet = (HotSheet)queryService.namedQueryForObject( "hibernate.hotSheetByNumber", new String[] { "hotSheetNumber"}, new String[] { hotSheetNumber});
+        HotSheet hotSheet = (HotSheet) queryService.namedQueryForObject("hibernate.hotSheetByNumber", new String[]{"hotSheetNumber"}, new String[]{hotSheetNumber});
 
         addOriginAddressInfo(hotSheet);
         addBillingAddressInfo(hotSheet);
         Address jobLocationAddress = getAddress(new BigDecimal(hotSheet.getJobLocationAddressId()));
         hotSheet.setJobLocationAddress(jobLocationAddress);
+
+        Long createdById = hotSheet.getCreatedBy();
+        String createdByName = getUserName(createdById);
+        hotSheet.setCreatedByName(createdByName);
+
+        Long modifiedById = hotSheet.getModifiedBy();
+        String modifiedByName = getUserName(modifiedById);
+        hotSheet.setModifiedByName(modifiedByName);
+
+        Integer jobStartTime = hotSheet.getJobStartTime();
+        hotSheet.setStartTimeHour(TimeUtils.getHour(jobStartTime));
+        hotSheet.setStartTimeMinutes(TimeUtils.getMinutes(jobStartTime));
+        hotSheet.setStartTimeAMPM(TimeUtils.getAMPM(jobStartTime));
+
+        Integer warehouseStartTime = hotSheet.getWarehouseStartTime();
+        hotSheet.setWarehouseStartTimeHour(TimeUtils.getHour(warehouseStartTime));
+        hotSheet.setWarehouseStartTimeMinutes(TimeUtils.getMinutes(warehouseStartTime));
+        hotSheet.setWarehouseStartTimeAMPM(TimeUtils.getAMPM(warehouseStartTime));
+
         return hotSheet;
     }
 
@@ -158,9 +177,17 @@ public class HotSheetService {
         hotSheet.setOriginAddresses(originAddresses);
 
         if (originAddresses != null && originAddresses.size() > 0) {
-            Map firstAddress = originAddresses.get(0);
-            BigDecimal id = (BigDecimal) firstAddress.get("JOB_LOCATION_ID");
-            Address originAddress = getAddress(id);
+            Address originAddress;
+            BigDecimal id;
+            if (hotSheet.getOriginAddressId() == null) {
+                Map firstAddress = originAddresses.get(0);
+                id = (BigDecimal) firstAddress.get("JOB_LOCATION_ID");
+            }
+            else {
+                id = BigDecimal.valueOf(hotSheet.getOriginAddressId());
+            }
+
+            originAddress = getAddress(id);
             hotSheet.setOriginAddress(originAddress);
             List<Address> addresses = getOriginAddresses(originAddresses);
             hotSheet.setOriginAddresses(addresses);
@@ -220,7 +247,7 @@ public class HotSheetService {
         return (BigDecimal) row.get("project_id");
     }
 
-    private static final String GET_HOT_SHEET_NUMBER = "select count(*) as hotSheetNo from hotsheets where request_id = ?";
+    private static final String GET_HOT_SHEET_NUMBER = "select max(hotsheet_no) as hotSheetNo from hotsheets where request_id = ?";
 
     public Integer getNextHotSheetNumberForRequest(String requestId) {
         Integer hotSheetNumber = jdbcTemplate.queryForInt(GET_HOT_SHEET_NUMBER, new Object[]{requestId});
@@ -231,10 +258,6 @@ public class HotSheetService {
             hotSheetNumber++;
         }
         return hotSheetNumber;
-    }
-
-    public Integer getCurrentHotSheetNumberForRequest(String requestId) {
-        return jdbcTemplate.queryForInt(GET_HOT_SHEET_NUMBER, new Object[]{requestId});
     }
 
     private static final String GET_HOT_SHEET_ID_INFO =

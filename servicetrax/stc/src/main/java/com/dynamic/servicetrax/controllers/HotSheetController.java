@@ -5,6 +5,7 @@ import com.dynamic.servicetrax.orm.Address;
 import com.dynamic.servicetrax.orm.HotSheet;
 import com.dynamic.servicetrax.orm.HotSheetDetail;
 import com.dynamic.servicetrax.service.HotSheetService;
+import com.dynamic.servicetrax.service.JasperReportService;
 import com.dynamic.servicetrax.support.LoginCrediantials;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -16,9 +17,11 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.beans.PropertyEditorSupport;
+import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -39,6 +42,8 @@ import java.util.Set;
 public class HotSheetController extends MultiActionController {
 
     private HotSheetService hotSheetService;
+    private JasperReportService jasperReportService;
+
     private static final String HOT_SHEET = "hotSheet";
     private static final String HOTSHEET_VIEW = "hotsheet/hotsheet";
 
@@ -50,7 +55,9 @@ public class HotSheetController extends MultiActionController {
             }
 
             public void validate(Object command, Errors errors) {
+                ValidationUtils.rejectIfEmpty(errors, "originAddressId", "", "An origin address is required");
                 ValidationUtils.rejectIfEmpty(errors, "jobLength", "", "Job length cannot be blank");
+
                 Integer jobLength = ((HotSheet) command).getJobLength();
                 if (jobLength != null && jobLength < 0) {
                     errors.rejectValue("jobLength", "jobLength.notNegative");
@@ -118,35 +125,13 @@ public class HotSheetController extends MultiActionController {
             return view;
         }
 
-        hotSheetService.convertStartTimesToMilitary(request, hotSheet);
-
-        LoginCrediantials credentials = (LoginCrediantials) request.getSession().getAttribute(LoginInterceptor.SESSION_ATTR_LOGIN);
-        Long userId = (long) credentials.getUserId();
-        hotSheet.setModifiedBy(userId);
-        String modifiedByName = hotSheetService.getUserName(userId);
-        hotSheet.setModifiedByName(modifiedByName);
-
-        Date today = new Date();
-        if (hotSheet.getDateCreated() == null) {
-
-            hotSheet.setDateCreated(today);
-        }
-        hotSheet.setDateModified(today);
-
-        Long requestId = hotSheet.getRequestId();
-        Integer number = hotSheetService.getCurrentHotSheetNumberForRequest(String.valueOf(requestId));
-        if (!number.equals(hotSheet.getHotSheetNumber())) {
-            Integer nextNumber = hotSheetService.getNextHotSheetNumberForRequest(String.valueOf(requestId));
-            updateHotSheetIdentifier(hotSheet, nextNumber);
-        }
-        hotSheetService.saveHotSheet(hotSheet);
+        saveHotsheet(request, hotSheet);
 
         //Hot Sheet screen is saved into IMS_NEW.HOTSHEETS table.  Hot Sheet screen remains on browser.
         ModelAndView view = new ModelAndView(HOTSHEET_VIEW);
         view.getModel().put(HOT_SHEET, hotSheet);
         return view;
     }
-
 
     @SuppressWarnings("unchecked, unused")
     public ModelAndView show(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -159,7 +144,7 @@ public class HotSheetController extends MultiActionController {
         }
 
         HotSheet hotSheet = hotSheetService.getHotSheet(hotSheetNumber);
-        if( hotSheet == null ) {
+        if (hotSheet == null) {
             String message = "No hotsheet found for number " + hotSheetNumber;
             return new ModelAndView("error", "error", message);
         }
@@ -182,20 +167,11 @@ public class HotSheetController extends MultiActionController {
             return view;
         }
 
-        hotSheetService.convertStartTimesToMilitary(request, hotSheet);
-        hotSheet.setDateCreated(new Date());
-
-        Long requestId = hotSheet.getRequestId();
-        Integer number = hotSheetService.getCurrentHotSheetNumberForRequest(String.valueOf(requestId));
-        if (!number.equals(hotSheet.getHotSheetNumber())) {
-            Integer nextNumber = hotSheetService.getNextHotSheetNumberForRequest(String.valueOf(requestId));
-            updateHotSheetIdentifier(hotSheet, nextNumber);
-        }
-        hotSheetService.saveHotSheet(hotSheet);
+        saveHotsheet(request, hotSheet);
 
         // A new Hot Sheet is then created with a Hot Sheet number greater than the one that was saved.
         // All of the fields from previous hot sheet are copied over.  The Created By and Date Created are set to the current user and today�s date.
-        Integer nextNumber = hotSheetService.getNextHotSheetNumberForRequest(String.valueOf(requestId));
+        Integer nextNumber = hotSheetService.getNextHotSheetNumberForRequest(String.valueOf(hotSheet.getRequestId()));
         updateHotSheetIdentifier(hotSheet, nextNumber);
 
         hotSheet.setHotSheetId(null);
@@ -215,18 +191,45 @@ public class HotSheetController extends MultiActionController {
         return view;
     }
 
-    private void updateHotSheetIdentifier(HotSheet hotSheet, Integer hotSheetNumber) {
-        hotSheet.setHotSheetNumber(hotSheetNumber);
-        String hotSheetIdentifier = hotSheet.getHotSheetIdentifier();
-        int index = hotSheetIdentifier.lastIndexOf("HS");
-        String substring = hotSheetIdentifier.substring(0, index + 2);
-        hotSheet.setHotSheetIdentifier(substring + hotSheetNumber);
+    @SuppressWarnings("unchecked, unused")
+    public ModelAndView printSave(HttpServletRequest request, HttpServletResponse response, HotSheet hotSheet) throws Exception {
+
+        hotSheetService.addOriginAddressInfo(hotSheet);
+
+        if (result.hasErrors()) {
+            ModelAndView view = new ModelAndView(HOTSHEET_VIEW);
+            hotSheetService.addOriginAddressInfo(hotSheet);
+            view.getModel().put(HOT_SHEET, hotSheet);
+            List errors = hotSheetService.buildErrors(result.getAllErrors());
+            view.getModel().put("errors", errors);
+            return view;
+        }
+
+        hotSheet.setShouldPrint(true);
+        saveHotsheet(request, hotSheet);
+        Long id = hotSheet.getHotSheetId();
+
+        ModelAndView view = new ModelAndView(HOTSHEET_VIEW);
+        view.getModel().put(HOT_SHEET, hotSheet);
+        return view;
     }
 
-    @SuppressWarnings("unchecked, unused")
-    public ModelAndView report(HttpServletRequest request, HttpServletResponse response, HotSheet command) throws Exception {
-        System.out.println("");
-        return null;
+    public void print(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String hotSheetId = getParameter(request.getParameterMap(), "hotSheetId");
+
+        String path = request.getSession().getServletContext().getRealPath("reports");
+        ByteArrayOutputStream data = jasperReportService.generateReport(path, hotSheetId, request);
+        if (data == null) {
+            String message = "Could not generate a report for hotsheet id " + hotSheetId + ".";
+            logger.error(message);
+            return;
+        }
+
+        response.setHeader("Content-disposition", "attachment; filename=billOfLading.pdf");
+        response.setContentType("application/pdf");
+        ServletOutputStream output = response.getOutputStream();
+        output.write(data.toByteArray());
+        response.flushBuffer();
     }
 
     @SuppressWarnings("unchecked, unused")
@@ -286,6 +289,32 @@ public class HotSheetController extends MultiActionController {
         }
     }
 
+    private void saveHotsheet(HttpServletRequest request, HotSheet hotSheet) {
+
+        hotSheetService.convertStartTimesToMilitary(request, hotSheet);
+        LoginCrediantials credentials = (LoginCrediantials) request.getSession().getAttribute(LoginInterceptor.SESSION_ATTR_LOGIN);
+        Long userId = (long) credentials.getUserId();
+        hotSheet.setModifiedBy(userId);
+        String modifiedByName = hotSheetService.getUserName(userId);
+        hotSheet.setModifiedByName(modifiedByName);
+
+        Date today = new Date();
+        if (hotSheet.getDateCreated() == null) {
+
+            hotSheet.setDateCreated(today);
+        }
+        hotSheet.setDateModified(today);
+        hotSheetService.saveHotSheet(hotSheet);
+    }
+
+    private void updateHotSheetIdentifier(HotSheet hotSheet, Integer hotSheetNumber) {
+        hotSheet.setHotSheetNumber(hotSheetNumber);
+        String hotSheetIdentifier = hotSheet.getHotSheetIdentifier();
+        int index = hotSheetIdentifier.lastIndexOf("HS");
+        String substring = hotSheetIdentifier.substring(0, index + 2);
+        hotSheet.setHotSheetIdentifier(substring + hotSheetNumber);
+    }
+
     private BindingResult result;
 
     @Override
@@ -339,9 +368,14 @@ public class HotSheetController extends MultiActionController {
         return super.newCommandObject(clazz);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unused")
     public void setHotSheetService(HotSheetService hotSheetService) {
         this.hotSheetService = hotSheetService;
+    }
+
+    @SuppressWarnings("unused")
+    public void setJasperReportService(JasperReportService jasperReportService) {
+        this.jasperReportService = jasperReportService;
     }
 
     @Override

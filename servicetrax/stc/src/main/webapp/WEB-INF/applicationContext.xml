@@ -260,6 +260,10 @@
         <property name="messageSource" ref="messageSource"/>
     </bean>
 
+    <bean id="jasperReportService" class="com.dynamic.servicetrax.service.JasperReportService">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+
 
     <bean id="propsResolver" class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
         <property name="mappings">
@@ -268,7 +272,8 @@
                 /hotSheetShow.html=show
                 /hotSheetSave.html=save
                 /hotSheetCopy.html=copy
-                /hotSheetReport.html=report
+                /hotSheetReport.html=printSave
+                /hotSheetPrint.html=print
                 /updateOriginAddress.html=updateAddress
                 /addJobLocation.html=addJobLocation
             </value>
@@ -276,9 +281,10 @@
     </bean>
 
     <bean name="/hotSheetCreate.html, /hotSheetShow.html, /hotSheetSave.html, /hotSheetCopy.html,
-    /hotSheetReport.html, /updateOriginAddress.html, /addJobLocation.html"
+    /hotSheetReport.html, /hotSheetPrint.html, /updateOriginAddress.html, /addJobLocation.html"
           class="com.dynamic.servicetrax.controllers.HotSheetController">
         <property name="hotSheetService" ref="hotSheetService"/>
+        <property name="jasperReportService" ref="jasperReportService"/>
         <property name="methodNameResolver" ref="propsResolver"/>
     </bean>
 

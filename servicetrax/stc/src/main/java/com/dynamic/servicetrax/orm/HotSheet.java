@@ -66,6 +66,8 @@ public class HotSheet extends AuditableObject {
     private String warehouseStartTimeMinutes;
     private String warehouseStartTimeAMPM;
 
+    private boolean shouldPrint;
+
 
     public Long getHotSheetId() {
         return hotSheetId;
@@ -401,5 +403,13 @@ public class HotSheet extends AuditableObject {
 
     public void setWarehouseStartTimeAMPM(String warehouseStartTimeAMPM) {
         this.warehouseStartTimeAMPM = warehouseStartTimeAMPM;
+    }
+
+    public boolean isShouldPrint() {
+        return shouldPrint;
+    }
+
+    public void setShouldPrint(boolean shouldPrint) {
+        this.shouldPrint = shouldPrint;
     }
 }
