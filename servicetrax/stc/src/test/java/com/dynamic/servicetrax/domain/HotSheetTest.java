@@ -133,7 +133,6 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
         hotSheet.setEndUserId(convertToLong(row.get("endUserId")));
 
         hotSheet.setOriginAddressId(0L);
-        hotSheet.setBillingAddressId(0L);
 
         hotSheet.setProjectName(PROJECT_NAME);
         hotSheet.setCustomerName("My Customer");
@@ -160,6 +159,8 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
 
         long requestTypeId = jdbcTemplate.queryForLong(HotSheetService.GET_REQUEST_TYPE_ID);
         hotSheet.setRequestTypeId(requestTypeId);
+
+        hotSheet.setExtCustomerId("ExtCustId");
 
         return hotSheet;
     }

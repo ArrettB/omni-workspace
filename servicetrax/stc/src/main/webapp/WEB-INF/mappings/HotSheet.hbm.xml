@@ -60,8 +60,8 @@
         </property>
 
         <!--BILLING_ADDRESS_ID-->
-        <property name="billingAddressId" type="long" not-null="true">
-            <column name="BILLING_ADDRESS_ID" precision="18" scale="0" not-null="false"/>
+        <property name="extCustomerId" type="string" not-null="true">
+            <column name="EXT_CUSTOMER_ID" length="15" not-null="false"/>
         </property>
 
         <property name="dealerPONumber" type="string">

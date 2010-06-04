@@ -106,7 +106,7 @@
     <form:hidden path="originAddress.state"/>
     <form:hidden path="originAddress.zip"/>
 
-    <form:hidden path="billingAddressId"/>
+    <form:hidden path="extCustomerId"/>
     <form:hidden path="billingAddress.city"/>
     <form:hidden path="billingAddress.state"/>
     <form:hidden path="billingAddress.zip"/>
@@ -366,6 +366,8 @@
             document.getElementById('saveHotsheet').style.visibility = "hidden";
             document.getElementById('saveProgress').style.visibility = "visible";
             var hotSheetForm = document.getElementById('hotSheetForm');
+            var path = "/stc";
+            hotSheetForm.action = path + '/hotSheetSave.html'; 
             hotSheetForm.submit();
         };
 
@@ -502,43 +504,11 @@
         }
     }
 
-    var handleSuccess = function(o) {
-        var result = o.responseText;
-        var settings = "toolbar=no,location=no,directories=no,menubar=no,";
-        settings += "scrollbars=yes,width=800, height=1200, left=20, top=20";
-
-        var printThis = window.open("", "", settings);
-        printThis.document.open();
-        printThis.document.write(result);
-        printThis.print();
-        printThis.document.close();
-        printThis.close();
-    };
-
-    var handleFailure = function(o) {
-        alert(o);
-    };
-
-    var callback =
-    {
-        success:handleSuccess,
-        failure:handleFailure
-    };
-
     function makeRequest(hotSheetId) {
         var hotSheetForm = document.getElementById('hotSheetForm');
         var path = "${pageContext.request.contextPath}";
         hotSheetForm.action = path + '/hotSheetPrint.html';
         hotSheetForm.submit();
-
-    <%--var path = "${pageContext.request.contextPath}";--%>
-    <%--var theId = "hotSheetId=" + hotSheetId;--%>
-    <%--try {--%>
-    <%--YAHOO.util.Connect.asyncRequest('POST', path + '/hotSheetPrint.html', callback, theId);--%>
-    <%--}--%>
-    <%--catch(e) {--%>
-    <%--alert(e);--%>
-    <%--}--%>
     }
 
 </script>

@@ -40,7 +40,6 @@ public class HotSheet extends AuditableObject {
     private Long originAddressId;
     private Address originAddress;
 
-    private Long billingAddressId;
     private Address billingAddress;
 
     private String jobContactName;
@@ -67,6 +66,9 @@ public class HotSheet extends AuditableObject {
     private String warehouseStartTimeAMPM;
 
     private boolean shouldPrint;
+
+    //This is the id for fetching the billing address info from GreatPlains.
+    private String extCustomerId;
 
 
     public Long getHotSheetId() {
@@ -211,14 +213,6 @@ public class HotSheet extends AuditableObject {
 
     public void setOriginAddress(Address originAddress) {
         this.originAddress = originAddress;
-    }
-
-    public Long getBillingAddressId() {
-        return billingAddressId;
-    }
-
-    public void setBillingAddressId(Long billingAddressId) {
-        this.billingAddressId = billingAddressId;
     }
 
     public Address getBillingAddress() {
@@ -411,5 +405,13 @@ public class HotSheet extends AuditableObject {
 
     public void setShouldPrint(boolean shouldPrint) {
         this.shouldPrint = shouldPrint;
+    }
+
+    public void setExtCustomerId(String extCustomerId) {
+        this.extCustomerId = extCustomerId;
+    }
+
+    public String getExtCustomerId() {
+        return extCustomerId;
     }
 }

@@ -105,6 +105,7 @@ public class HotSheetController extends MultiActionController {
 
         Map<String, HotSheetDetail> details = hotSheetService.getHotSheetDetails(userId);
         hotSheet.setDetails(details);
+        hotSheet.setShouldPrint(false);
 
         ModelAndView view = new ModelAndView(HOTSHEET_VIEW);
         view.getModel().put(HOT_SHEET, hotSheet);
@@ -126,6 +127,7 @@ public class HotSheetController extends MultiActionController {
         }
 
         saveHotsheet(request, hotSheet);
+        hotSheet.setShouldPrint(false);
 
         //Hot Sheet screen is saved into IMS_NEW.HOTSHEETS table.  Hot Sheet screen remains on browser.
         ModelAndView view = new ModelAndView(HOTSHEET_VIEW);
@@ -149,6 +151,7 @@ public class HotSheetController extends MultiActionController {
             return new ModelAndView("error", "error", message);
         }
 
+        hotSheet.setShouldPrint(false);
         return new ModelAndView(HOTSHEET_VIEW, HOT_SHEET, hotSheet);
     }
 
@@ -184,6 +187,7 @@ public class HotSheetController extends MultiActionController {
 
         hotSheet.setModifiedBy(null);
         hotSheet.setModifiedByName(null);
+        hotSheet.setShouldPrint(false);
         hotSheet.setDateModified(null);
 
         ModelAndView view = new ModelAndView(HOTSHEET_VIEW);
@@ -216,9 +220,10 @@ public class HotSheetController extends MultiActionController {
 
     public void print(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String hotSheetId = getParameter(request.getParameterMap(), "hotSheetId");
+        String extCustomerId = getParameter(request.getParameterMap(), "extCustomerId");
 
         String path = request.getSession().getServletContext().getRealPath("reports");
-        ByteArrayOutputStream data = jasperReportService.generateReport(path, hotSheetId, request);
+        ByteArrayOutputStream data = jasperReportService.generateReport(path, hotSheetId, extCustomerId);
         if (data == null) {
             String message = "Could not generate a report for hotsheet id " + hotSheetId + ".";
             logger.error(message);

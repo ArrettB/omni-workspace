@@ -7,6 +7,8 @@ import com.dynamic.servicetrax.util.TimeUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 
+import java.util.List;
+
 /**
  * User: pgarvie
  * Date: May 25, 2010
@@ -17,6 +19,23 @@ public class HotSheetServiceTest extends AbstractTransactionalSpringContextTests
     private HibernateService hibernateService;
     private JdbcTemplate jdbcTemplate;
     private HotSheetService hotSheetService;
+
+    public void testBillingAddressStoredProcedure() {
+
+        String customerId = "FakeCustomerId";
+        List addresses = hotSheetService.getBillingAddress(customerId);
+        assertTrue(addresses != null && addresses.size() == 0);
+
+        addresses = hotSheetService.getBillingAddress("       ");
+        assertTrue(addresses != null && addresses.size() == 0);
+
+        addresses = hotSheetService.getBillingAddress(null);
+        assertTrue(addresses != null && addresses.size() == 0);
+
+        addresses = hotSheetService.getBillingAddress("");
+        assertTrue(addresses != null && addresses.size() == 0);
+    }
+
 
     /**
      * Prerequisites: hours are from 12 to 11; minutes are 00, 15, 30 and 45

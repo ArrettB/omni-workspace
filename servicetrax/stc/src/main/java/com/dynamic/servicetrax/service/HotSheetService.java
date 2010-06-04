@@ -47,9 +47,12 @@ public class HotSheetService {
                     " RTRIM(p.dealer_name) dealerName," +
                     " RTRIM(p.customer_name) customerName," +
                     " RTRIM(p.end_user_name) endUserName," +
-                    " p.job_name as jobName " +
-                    " FROM projects_v2 p  " +
-                    " WHERE p.project_id = ?";
+                    " p.job_name as jobName," +
+                    " customers.ext_customer_id as extCustomerId" +
+                    " FROM projects_v2 p, customers" +
+                    " WHERE p.project_id = ?" +
+                    " AND p.customer_id = customers.customer_id";
+    private static final String EMPTY_STRING = "";
 
     public HotSheet buildHotSheet(String requestId, Long userId) {
 
@@ -218,21 +221,12 @@ public class HotSheetService {
 
     private void addBillingAddressInfo(HotSheet hotSheet) {
 
-        //TODO: wire this up to billing when it comes on line
-        Long id = hotSheet.getJobLocationAddressId();
-        hotSheet.setBillingAddressId(id);
-
-        Address billingAddress = new Address();
-        billingAddress.setJobLocationCustomerId(String.valueOf(id));
-        billingAddress.setJobLocationName("Billing Address");
-        billingAddress.setStreetOne("Billing Address Street One");
-        billingAddress.setStreetTwo("Street Two");
-        billingAddress.setCity("City");
-        billingAddress.setState("State");
-        billingAddress.setZip("12121");
-
-        //Address billingAddress = getAddress(new BigDecimal(id));
-        hotSheet.setBillingAddress(billingAddress);
+        List billingAddress = getBillingAddress(String.valueOf(hotSheet.getExtCustomerId()));
+        if (billingAddress == null || billingAddress.size() == 0) {
+            hotSheet.setBillingAddress(getEmptyAddress());
+            return;
+        }
+        hotSheet.setBillingAddress((Address) billingAddress.get(0));
     }
 
     private HotSheet addProjectInfo(BigDecimal projectId) {
@@ -504,6 +498,36 @@ public class HotSheetService {
                 });
     }
 
+    public List getBillingAddress(String extCustomerId) {
+
+        if (extCustomerId == null || extCustomerId.trim().length() == 0) {
+            return Collections.EMPTY_LIST;
+        }
+
+        return jdbcTemplate.query("exec [AMBIM].[dbo].[ott_spGetPrimaryAddress] " + extCustomerId,
+                                  new RowMapper() {
+                                      public Object mapRow(ResultSet resultSet, int i) throws SQLException {
+                                          Address address = new Address();
+                                          address.setJobLocationName(getStringValue(resultSet, "CNTCPRSN"));
+                                          address.setStreetOne(getStringValue(resultSet, "ADDRESS1"));
+                                          address.setStreetTwo(getStringValue(resultSet, "ADDRESS2"));
+                                          address.setCity(getStringValue(resultSet, "CITY"));
+                                          address.setState(getStringValue(resultSet, "STATE"));
+                                          address.setZip(getStringValue(resultSet, "ZIP"));
+                                          address.setCountry(getStringValue(resultSet, "COUNTRY"));
+                                          return address;
+                                      }
+                                  });
+    }
+
+    private String getStringValue(ResultSet resultSet, String columnName) throws SQLException {
+        String theString = resultSet.getString(columnName);
+        if (theString == null || theString.length() == 0) {
+            return EMPTY_STRING;
+        }
+        return theString.trim();
+    }
+
     public List<String> buildErrors(List<FieldError> allErrors) {
 
         List<String> errorMessages = new ArrayList<String>();
@@ -514,6 +538,18 @@ public class HotSheetService {
         return errorMessages;
     }
 
+    private Address getEmptyAddress() {
+        Address emptyAddress = new Address();
+        emptyAddress.setJobLocationCustomerId(String.valueOf("0"));
+        emptyAddress.setJobLocationName(EMPTY_STRING);
+        emptyAddress.setStreetOne(EMPTY_STRING);
+        emptyAddress.setStreetTwo(EMPTY_STRING);
+        emptyAddress.setCity(EMPTY_STRING);
+        emptyAddress.setState(EMPTY_STRING);
+        emptyAddress.setZip(EMPTY_STRING);
+        return emptyAddress;
+    }
+
 
     private class ProjectInfoMapper implements RowMapper {
 
@@ -522,6 +558,7 @@ public class HotSheetService {
             BigDecimal customerId = resultSet.getBigDecimal("customerId");
             if (customerId != null) {
                 hotSheet.setCustomerId(customerId.longValue());
+                hotSheet.setExtCustomerId(resultSet.getString("extCustomerId"));
             }
 
             BigDecimal endUserId = resultSet.getBigDecimal("endUserId");

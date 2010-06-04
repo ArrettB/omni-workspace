@@ -247,20 +247,20 @@
 					</systemProperties>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.cargo</groupId>
-				<artifactId>cargo-maven2-plugin</artifactId>
-				<configuration>
-					<container>
-						<containerId>tomcat5x</containerId>
-						<home>C:\dev\tools\apache-tomcat-5.5.12</home>
-					</container>
-					<!--<properties>-->
-						<!--<dir>${project.build.directory}/tomcat</dir>-->
-						<!--<cargo.servlet.port>8081</cargo.servlet.port>-->
-					<!--</properties>-->
-				</configuration>
-			</plugin>
+			<!--<plugin>-->
+				<!--<groupId>org.codehaus.cargo</groupId>-->
+				<!--<artifactId>cargo-maven2-plugin</artifactId>-->
+				<!--<configuration>-->
+					<!--<container>-->
+						<!--<containerId>tomcat5x</containerId>-->
+						<!--<home>C:\dev\tools\apache-tomcat-5.5.12</home>-->
+					<!--</container>-->
+					<!--&lt;!&ndash;<properties>&ndash;&gt;-->
+						<!--&lt;!&ndash;<dir>${project.build.directory}/tomcat</dir>&ndash;&gt;-->
+						<!--&lt;!&ndash;<cargo.servlet.port>8081</cargo.servlet.port>&ndash;&gt;-->
+					<!--&lt;!&ndash;</properties>&ndash;&gt;-->
+				<!--</configuration>-->
+			<!--</plugin>-->
 		</plugins>
 	</build>
 

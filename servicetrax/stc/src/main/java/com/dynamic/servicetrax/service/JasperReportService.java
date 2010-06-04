@@ -4,13 +4,10 @@ import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.export.JRHtmlExporterParameter;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.j2ee.servlets.ImageServlet;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.sql.Connection;
@@ -29,7 +26,7 @@ public class JasperReportService {
 
     private JdbcTemplate jdbcTemplate;
 
-    public ByteArrayOutputStream generateReport(String realPath, String hotSheetId, HttpServletRequest request) {
+    public ByteArrayOutputStream generateReport(String realPath, String hotSheetId, String extCustomerId) {
 
         Connection conn = null;
 
@@ -38,6 +35,7 @@ public class JasperReportService {
             Map<String, Object> parameters = new HashMap<String, Object>();
 
             parameters.put("ID", String.valueOf(hotSheetId));
+            parameters.put("EXT_CUSTOMER_ID", String.valueOf(extCustomerId));
             parameters.put("SUBREPORT_DIR", realPath + File.separator);
 
             //JRExporter exporter = new JRHtmlExporter();
@@ -49,12 +47,9 @@ public class JasperReportService {
                                                                        parameters,
                                                                        conn);
 
-                request.getSession().setAttribute(ImageServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE, jasperPrint);
-                
                 ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
                 exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, byteArray);
                 exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-                exporter.setParameter(JRHtmlExporterParameter.IMAGES_URI, "servlets/image?image=");
                 exporter.exportReport();
                 return byteArray;
             }
