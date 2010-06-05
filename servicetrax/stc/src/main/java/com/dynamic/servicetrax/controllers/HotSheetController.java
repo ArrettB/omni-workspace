@@ -101,7 +101,8 @@ public class HotSheetController extends MultiActionController {
                 (LoginCrediantials) request.getSession().getAttribute(LoginInterceptor.SESSION_ATTR_LOGIN);
 
         Long userId = (long) credentials.getUserId();
-        HotSheet hotSheet = hotSheetService.buildHotSheet(requestId, userId);
+        Long organizationId = (long) credentials.getOrganizationId();
+        HotSheet hotSheet = hotSheetService.buildHotSheet(requestId, userId, organizationId);
 
         Map<String, HotSheetDetail> details = hotSheetService.getHotSheetDetails(userId);
         hotSheet.setDetails(details);
@@ -145,7 +146,12 @@ public class HotSheetController extends MultiActionController {
             return new ModelAndView("error", "error", message);
         }
 
-        HotSheet hotSheet = hotSheetService.getHotSheet(hotSheetNumber);
+        LoginCrediantials credentials =
+                (LoginCrediantials) request.getSession().getAttribute(LoginInterceptor.SESSION_ATTR_LOGIN);
+
+        Long userId = (long) credentials.getUserId();
+        Long organizationId = (long) credentials.getOrganizationId();
+        HotSheet hotSheet = hotSheetService.getHotSheet(hotSheetNumber, userId, organizationId);
         if (hotSheet == null) {
             String message = "No hotsheet found for number " + hotSheetNumber;
             return new ModelAndView("error", "error", message);
@@ -223,15 +229,26 @@ public class HotSheetController extends MultiActionController {
         String extCustomerId = getParameter(request.getParameterMap(), "extCustomerId");
 
         String path = request.getSession().getServletContext().getRealPath("reports");
-        ByteArrayOutputStream data = jasperReportService.generateReport(path, hotSheetId, extCustomerId);
+        LoginCrediantials credentials =
+                (LoginCrediantials) request.getSession().getAttribute(LoginInterceptor.SESSION_ATTR_LOGIN);
+        Long organizationId = (long) credentials.getOrganizationId();
+        String prefix = hotSheetService.getDbPrefixForOrganization(organizationId);
+        ByteArrayOutputStream data = jasperReportService.generateReport(path, hotSheetId, extCustomerId, prefix);
         if (data == null) {
-            String message = "Could not generate a report for hotsheet id " + hotSheetId + ".";
-            logger.error(message);
-            return;
+            StringBuilder message = new StringBuilder("Could not generate a report for hotsheet id ");
+            message.append(hotSheetId);
+            message.append(". Please check the error log. ");
+            message.append(new Date());
+            logger.error(message.toString());
+            response.setContentType("text/plain");
+            data = new ByteArrayOutputStream();
+            data.write(message.toString().getBytes());
+        }
+        else {
+            response.setHeader("Content-disposition", "attachment; filename=billOfLading.pdf");
+            response.setContentType("application/pdf");
         }
 
-        response.setHeader("Content-disposition", "attachment; filename=billOfLading.pdf");
-        response.setContentType("application/pdf");
         ServletOutputStream output = response.getOutputStream();
         output.write(data.toByteArray());
         response.flushBuffer();

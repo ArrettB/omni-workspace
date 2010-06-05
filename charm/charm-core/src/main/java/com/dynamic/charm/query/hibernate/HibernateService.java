@@ -28,6 +28,7 @@ package com.dynamic.charm.query.hibernate;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate3.HibernateCallback;
@@ -93,4 +94,6 @@ public interface HibernateService extends DataService
     public String getDefaultPackage();
 
     public void setDefaultPackage(String defaultPackage);
+
+    void saveOrUpdateAll(Collection collection);
 }

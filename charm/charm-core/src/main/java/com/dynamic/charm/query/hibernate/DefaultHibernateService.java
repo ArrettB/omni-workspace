@@ -7,7 +7,9 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.hibernate.FlushMode;
 import org.hibernate.SessionFactory;
+import org.hibernate.classic.Session;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.type.NullableType;
 import org.hibernate.type.Type;
@@ -340,7 +342,14 @@ public class DefaultHibernateService extends HibernateDaoSupport implements Hibe
 		this.defaultPackage = defaultPackage;
 	}
 
-	public List findAll(Class entityClass)
+    public void saveOrUpdateAll(Collection collection) {
+        HibernateTemplate template = getHibernateTemplate();
+        Session session = template.getSessionFactory().getCurrentSession();
+        session.setFlushMode(FlushMode.AUTO);
+        getHibernateTemplate().saveOrUpdateAll(collection);
+    }
+
+    public List findAll(Class entityClass)
 	{
 		String query = "from " + entityClass.getName() + " as foo";
 		return getHibernateTemplate().find(query);

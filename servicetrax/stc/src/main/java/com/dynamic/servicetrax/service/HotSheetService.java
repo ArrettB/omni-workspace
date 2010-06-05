@@ -6,7 +6,9 @@ import com.dynamic.servicetrax.orm.Address;
 import com.dynamic.servicetrax.orm.HotSheet;
 import com.dynamic.servicetrax.orm.HotSheetDetail;
 import com.dynamic.servicetrax.util.TimeUtils;
+import org.apache.log4j.Logger;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -41,6 +43,8 @@ public class HotSheetService {
 
     private MessageSource messageSource;
 
+    private static final Logger LOGGER = Logger.getLogger(HotSheetService.class);
+
     public static final String GET_PROJECT_INFO =
             "SELECT TOP 1 p.customer_id customerId," +
                     " p.end_user_id endUserId," +
@@ -54,7 +58,7 @@ public class HotSheetService {
                     " AND p.customer_id = customers.customer_id";
     private static final String EMPTY_STRING = "";
 
-    public HotSheet buildHotSheet(String requestId, Long userId) {
+    public HotSheet buildHotSheet(String requestId, Long userId, Long organizationId) {
 
         BigDecimal projectId = getProjectId(requestId);
         HotSheet hotSheet = addProjectInfo(projectId);
@@ -71,15 +75,17 @@ public class HotSheetService {
         addRequestTypeId(hotSheet);
         addUserInfo(hotSheet, userId);
         addOriginAddressInfo(hotSheet);
-        addBillingAddressInfo(hotSheet);
+        addBillingAddressInfo(hotSheet, organizationId);
         return hotSheet;
     }
 
-    public HotSheet getHotSheet(String hotSheetNumber) {
-        HotSheet hotSheet = (HotSheet) queryService.namedQueryForObject("hibernate.hotSheetByNumber", new String[]{"hotSheetNumber"}, new String[]{hotSheetNumber});
+    public HotSheet getHotSheet(String hotSheetNumber, Long userId, Long organizationId) {
+        HotSheet hotSheet = (HotSheet) queryService.namedQueryForObject("hibernate.hotSheetByNumber",
+                                                                        new String[]{"hotSheetNumber"},
+                                                                        new String[]{hotSheetNumber});
 
         addOriginAddressInfo(hotSheet);
-        addBillingAddressInfo(hotSheet);
+        addBillingAddressInfo(hotSheet, organizationId);
         Address jobLocationAddress = getAddress(new BigDecimal(hotSheet.getJobLocationAddressId()));
         hotSheet.setJobLocationAddress(jobLocationAddress);
 
@@ -100,6 +106,12 @@ public class HotSheetService {
         hotSheet.setWarehouseStartTimeHour(TimeUtils.getHour(warehouseStartTime));
         hotSheet.setWarehouseStartTimeMinutes(TimeUtils.getMinutes(warehouseStartTime));
         hotSheet.setWarehouseStartTimeAMPM(TimeUtils.getAMPM(warehouseStartTime));
+
+        Map<String, HotSheetDetail> details = hotSheet.getDetails();
+        if (details == null || details.size() == 0) {
+            details = getHotSheetDetails(userId);
+            hotSheet.setDetails(details);
+        }
 
         return hotSheet;
     }
@@ -168,10 +180,11 @@ public class HotSheetService {
         return name;
     }
 
-    public static final String GET_JOB_LOCATION_INFO = "select JOB_LOCATION_ID, JOB_LOCATION_NAME, JOB_LOCATION_NAME, " +
-            " STREET1, STREET2, STREET3," +
-            " CITY, STATE, ZIP, COUNTRY " +
-            "from JOB_LOCATIONS where CUSTOMER_ID = ? order by JOB_LOCATION_NAME";
+    public static final String GET_JOB_LOCATION_INFO =
+            "select JOB_LOCATION_ID, JOB_LOCATION_NAME, JOB_LOCATION_NAME, " +
+                    " STREET1, STREET2, STREET3," +
+                    " CITY, STATE, ZIP, COUNTRY" +
+                    " from JOB_LOCATIONS where CUSTOMER_ID = ? order by JOB_LOCATION_NAME";
 
     @SuppressWarnings("unchecked")
     public void addOriginAddressInfo(HotSheet hotSheet) {
@@ -219,9 +232,9 @@ public class HotSheetService {
         return addresses;
     }
 
-    private void addBillingAddressInfo(HotSheet hotSheet) {
+    private void addBillingAddressInfo(HotSheet hotSheet, Long organizationId) {
 
-        List billingAddress = getBillingAddress(String.valueOf(hotSheet.getExtCustomerId()));
+        List billingAddress = getBillingAddress(String.valueOf(hotSheet.getExtCustomerId()), organizationId);
         if (billingAddress == null || billingAddress.size() == 0) {
             hotSheet.setBillingAddress(getEmptyAddress());
             return;
@@ -394,8 +407,9 @@ public class HotSheetService {
                 HotSheetDetail aDetail = details.get(aKey);
                 aDetail.setHotSheet(hotsheet);
                 aDetail.setCreatedBy(hotsheet.getCreatedBy());
-                hibernateService.saveOrUpdate(aDetail);
+                //hibernateService.saveOrUpdate(aDetail);
             }
+            hibernateService.saveOrUpdateAll(details.values());
         }
         return persisted;
     }
@@ -498,26 +512,51 @@ public class HotSheetService {
                 });
     }
 
-    public List getBillingAddress(String extCustomerId) {
+
+    private static final String GET_DB_PREFIX = "SELECT DB_PREFIX FROM ORGANIZATIONS WHERE ORGANIZATION_ID = ?";
+
+    public List getBillingAddress(String extCustomerId, Long organizationId) {
 
         if (extCustomerId == null || extCustomerId.trim().length() == 0) {
             return Collections.EMPTY_LIST;
         }
 
-        return jdbcTemplate.query("exec [AMBIM].[dbo].[ott_spGetPrimaryAddress] " + extCustomerId,
-                                  new RowMapper() {
-                                      public Object mapRow(ResultSet resultSet, int i) throws SQLException {
-                                          Address address = new Address();
-                                          address.setJobLocationName(getStringValue(resultSet, "CNTCPRSN"));
-                                          address.setStreetOne(getStringValue(resultSet, "ADDRESS1"));
-                                          address.setStreetTwo(getStringValue(resultSet, "ADDRESS2"));
-                                          address.setCity(getStringValue(resultSet, "CITY"));
-                                          address.setState(getStringValue(resultSet, "STATE"));
-                                          address.setZip(getStringValue(resultSet, "ZIP"));
-                                          address.setCountry(getStringValue(resultSet, "COUNTRY"));
-                                          return address;
-                                      }
-                                  });
+        String prefix = getDbPrefixForOrganization(organizationId);
+
+        if (prefix == null || prefix.trim().length() == 0) {
+            LOGGER.warn("No database prefix found for id " + organizationId);
+            return Collections.EMPTY_LIST;
+        }
+
+        try {
+            return jdbcTemplate.query("exec " + prefix + "ott_spGetPrimaryAddress " + extCustomerId,
+                                      new RowMapper() {
+                                          public Object mapRow(ResultSet resultSet, int i) throws SQLException {
+                                              Address address = new Address();
+                                              address.setJobLocationName(getStringValue(resultSet, "CNTCPRSN"));
+                                              address.setStreetOne(getStringValue(resultSet, "ADDRESS1"));
+                                              address.setStreetTwo(getStringValue(resultSet, "ADDRESS2"));
+                                              address.setCity(getStringValue(resultSet, "CITY"));
+                                              address.setState(getStringValue(resultSet, "STATE"));
+                                              address.setZip(getStringValue(resultSet, "ZIP"));
+                                              address.setCountry(getStringValue(resultSet, "COUNTRY"));
+                                              return address;
+                                          }
+                                      });
+        }
+        catch (DataAccessException e) {
+            LOGGER.error(e);
+            LOGGER.error("Check to see if stored procedure is present in the " + prefix + " database.");
+            return Collections.EMPTY_LIST;
+        }
+    }
+
+    public String getDbPrefixForOrganization(Long organizationId) {
+        String prefix = (String) jdbcTemplate.queryForObject(GET_DB_PREFIX, new Object[]{organizationId}, String.class);
+        if (prefix == null || prefix.length() == 0) {
+            return EMPTY_STRING;
+        }
+        return prefix.toUpperCase();
     }
 
     private String getStringValue(ResultSet resultSet, String columnName) throws SQLException {

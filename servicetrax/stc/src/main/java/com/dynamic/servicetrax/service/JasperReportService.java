@@ -26,19 +26,18 @@ public class JasperReportService {
 
     private JdbcTemplate jdbcTemplate;
 
-    public ByteArrayOutputStream generateReport(String realPath, String hotSheetId, String extCustomerId) {
+    public ByteArrayOutputStream generateReport(String realPath, String hotSheetId, String extCustomerId, String dbPrefix) {
 
         Connection conn = null;
 
         try {
 
             Map<String, Object> parameters = new HashMap<String, Object>();
-
             parameters.put("ID", String.valueOf(hotSheetId));
             parameters.put("EXT_CUSTOMER_ID", String.valueOf(extCustomerId));
             parameters.put("SUBREPORT_DIR", realPath + File.separator);
+            parameters.put("DB_PREFIX", dbPrefix + "ott_spGetPrimaryAddress");
 
-            //JRExporter exporter = new JRHtmlExporter();
             JRExporter exporter = new JRPdfExporter();
             conn = jdbcTemplate.getDataSource().getConnection();
             File file = new File(realPath + File.separator + "billOfLadin.jasper");

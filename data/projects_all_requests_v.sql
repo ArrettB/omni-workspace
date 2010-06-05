@@ -206,7 +206,7 @@ SELECT p_v.project_id,
        r.request_no,
        q_v.quote_id,
        q_v.quote_no,
-       CONVERT(VARCHAR, p_v.project_no) + '-' + CONVERT(VARCHAR, r.request_no) + '.' + CONVERT(VARCHAR, r.version_no) + 'HS' + CONVERT(VARCHAR, h.hotsheet_no) AS record_no,
+       h.HOTSHEET_IDENTIFIER,
        r.request_id AS record_id,
        r.request_no AS record_seq_no,
        r.version_no,
@@ -292,7 +292,7 @@ SELECT p_v.project_id,
        p_v.is_new
 FROM dbo.projects_v2 p_v LEFT OUTER JOIN
        dbo.hotsheets h ON p_v.project_id = h.project_id LEFT OUTER JOIN
-       dbo.requests r ON p_v.project_id = r.project_id LEFT OUTER JOIN
+       dbo.requests r ON p_v.project_id = r.project_id AND h.dealer_po_number = r.dealer_po_no LEFT OUTER JOIN
        dbo.lookups request_type ON h.request_type_id = request_type.lookup_id LEFT OUTER JOIN
        dbo.lookups request_status_type ON r.request_status_type_id = request_status_type.lookup_id LEFT OUTER JOIN
        dbo.quotes_v q_v ON r.request_id = q_v.request_id  LEFT OUTER JOIN

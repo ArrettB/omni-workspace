@@ -176,17 +176,18 @@
             var messages = YAHOO.lang.JSON.parse(o.responseText);
 
             var originAddressDropdown = document.getElementById("originAddressDropdown");
+            var currentSelection = originAddressDropdown.value;
             originAddressDropdown.options.length = 0;
             for (var i = 0; i < messages.length; i++) {
                 var newOption = document.createElement("OPTION");
                 originAddressDropdown.options.add(newOption);
                 newOption.value = messages[i].jobLocationId;
                 newOption.text = messages[i].jobLocationName;
-                if (i == 0) {
-                    document.getElementById("originAddress.jobLocationName").value = messages[0].jobLocationName;
-                    document.getElementById("originAddress.streetOne").value = messages[0].streetOne;
-                    document.getElementById("originAddress.streetTwo").value = messages[0].streetTwo;
-                    var cityStateZip = messages[0].city + ' ' + messages[0].state + ' ' + messages[0].zip;
+                if (newOption.value == currentSelection) {
+                    document.getElementById("originAddress.jobLocationName").value = messages[i].jobLocationName;
+                    document.getElementById("originAddress.streetOne").value = messages[i].streetOne;
+                    document.getElementById("originAddress.streetTwo").value = messages[i].streetTwo;
+                    var cityStateZip = messages[i].city + ' ' + messages[i].state + ' ' + messages[i].zip;
                     document.getElementById("cityStateZip").value = cityStateZip;
                 }
             }
@@ -367,7 +368,7 @@
             document.getElementById('saveProgress').style.visibility = "visible";
             var hotSheetForm = document.getElementById('hotSheetForm');
             var path = "/stc";
-            hotSheetForm.action = path + '/hotSheetSave.html'; 
+            hotSheetForm.action = path + '/hotSheetSave.html';
             hotSheetForm.submit();
         };
 

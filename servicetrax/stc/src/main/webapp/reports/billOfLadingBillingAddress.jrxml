@@ -4,8 +4,9 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="EXT_CUSTOMER_ID" class="java.lang.String"/>
+	<parameter name="DB_PREFIX" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[exec [AMBIM].[dbo].[ott_spGetPrimaryAddress] $P{EXT_CUSTOMER_ID}]]>
+		<![CDATA[exec $P{DB_PREFIX} $P{EXT_CUSTOMER_ID}]]>
 	</queryString>
 	<field name="CNTCPRSN" class="java.lang.String"/>
 	<field name="ADDRESS1" class="java.lang.String"/>

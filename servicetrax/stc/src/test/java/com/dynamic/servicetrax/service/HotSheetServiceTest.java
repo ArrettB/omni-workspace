@@ -22,17 +22,18 @@ public class HotSheetServiceTest extends AbstractTransactionalSpringContextTests
 
     public void testBillingAddressStoredProcedure() {
 
+        Long organizationId = 2L;
         String customerId = "FakeCustomerId";
-        List addresses = hotSheetService.getBillingAddress(customerId);
+        List addresses = hotSheetService.getBillingAddress(customerId, organizationId);
         assertTrue(addresses != null && addresses.size() == 0);
 
-        addresses = hotSheetService.getBillingAddress("       ");
+        addresses = hotSheetService.getBillingAddress("       ", organizationId);
         assertTrue(addresses != null && addresses.size() == 0);
 
-        addresses = hotSheetService.getBillingAddress(null);
+        addresses = hotSheetService.getBillingAddress(null, organizationId);
         assertTrue(addresses != null && addresses.size() == 0);
 
-        addresses = hotSheetService.getBillingAddress("");
+        addresses = hotSheetService.getBillingAddress("", organizationId);
         assertTrue(addresses != null && addresses.size() == 0);
     }
 
