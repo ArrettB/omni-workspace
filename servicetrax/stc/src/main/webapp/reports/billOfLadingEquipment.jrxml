@@ -2,10 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="billOfLadingEquipment" pageWidth="110" pageHeight="320" columnWidth="110" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
-	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["/Users/pgarvie/projects/omni/servicetrax/stc/src/main/webapp/reports/"]]></defaultValueExpression>
-	</parameter>
+	<property name="ireport.y" value="220"/>
 	<parameter name="ID" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT SUM(CASE WHEN code = 'machine_cart_qty' THEN attribute_value ELSE 0 END) AS 'machine_cart_qty',
@@ -175,13 +172,13 @@ SUM(CASE WHEN code = 'custom_equipment_2_qty' THEN attribute_value ELSE 0 END) A
 			<subreport>
 				<reportElement x="0" y="280" width="90" height="40"/>
 				<subreportParameter name="SUBREPORT_DIR">
-					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+					<subreportParameterExpression><![CDATA[]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="ID">
 					<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "billOfLadingEquipmentCustomNames.jasper"]]></subreportExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[]]></subreportExpression>
 			</subreport>
 			<staticText>
 				<reportElement x="0" y="80" width="90" height="20"/>
