@@ -26,9 +26,6 @@ REVISION HISTORY:
 
 */
 --Drop Stored Procedures
-USE AMBIM
-GO
-
 if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[ott_spGetPrimaryAddress]') 
 and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure [dbo].[ott_spGetPrimaryAddress]

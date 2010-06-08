@@ -24,30 +24,35 @@
         }
     </style>
 
-    <link rel="stylesheet" type="text/css" href="/js/yui/fonts/fonts-min.css"/>
-    <link rel="stylesheet" type="text/css" href="/js/yui/button/assets/button.css"/>
-    <link rel="stylesheet" type="text/css" href="/js/yui/container/assets/container.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/js/yui281/build/fonts/fonts-min.css"/>
+
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/js/yui281/build/button/assets/skins/sam/button.css"/>
+
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/js/yui281/build/container/assets/container.css"/>
 
     <script type="text/javascript"
-            src="http://yui.yahooapis.com/2.8.1/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+            src="${pageContext.request.contextPath}/js/yui281/build/yahoo-dom-event/yahoo-dom-event.js"></script>
 
     <script type="text/javascript"
-            src="http://yui.yahooapis.com/2.8.1/build/connection/connection-min.js"></script>
+            src="${pageContext.request.contextPath}/js/yui281/build/connection/connection-min.js"></script>
 
     <script type="text/javascript"
-            src="http://yui.yahooapis.com/2.8.1/build/element/element-min.js"></script>
+            src="${pageContext.request.contextPath}/js/yui281/build/element/element-min.js"></script>
 
     <script type="text/javascript"
-            src="http://yui.yahooapis.com/2.8.1/build/button/button-min.js"></script>
+            src="${pageContext.request.contextPath}/js/yui281/build/button/button-min.js"></script>
 
     <script type="text/javascript"
-            src="http://yui.yahooapis.com/2.8.1/build/dragdrop/dragdrop-min.js"></script>
+            src="${pageContext.request.contextPath}/js/yui281/build/dragdrop/dragdrop-min.js"></script>
 
     <script type="text/javascript"
-            src="http://yui.yahooapis.com/2.8.1/build/container/container-min.js"></script>
+            src="${pageContext.request.contextPath}/js/yui281/build/container/container-min.js"></script>
 
     <script type="text/javascript"
-            src="http://yui.yahooapis.com/2.8.1/build/json/json-min.js"></script>
+            src="${pageContext.request.contextPath}/js/yui281/build/json/json-min.js"></script>
 
 
 </head>

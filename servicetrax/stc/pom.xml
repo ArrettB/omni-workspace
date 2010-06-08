@@ -366,6 +366,12 @@
                 <filter.name>prod</filter.name>
             </properties>
         </profile>
+        <profile>
+            <id>qa_krc</id>
+            <properties>
+                <filter.name>qa_krc</filter.name>
+            </properties>
+        </profile>
     </profiles>
 
     <dependencies>

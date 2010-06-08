@@ -7,6 +7,11 @@
 	<name>ServiceTrax IMS Module</name>
 	<version>1.38.2-SNAPSHOT</version>
 
+    <properties>
+            <jdk.version>1.5</jdk.version>
+    </properties>
+
+
 	<parent>
 		<groupId>com.dynamic.servicetrax</groupId>
 		<artifactId>servicetrax-parent</artifactId>
@@ -328,6 +333,12 @@
 				<filter.name>prod</filter.name>
 			</properties>
 		</profile>
+        <profile>
+            <id>qa_krc</id>
+            <properties>
+                <filter.name>qa_krc</filter.name>
+            </properties>
+        </profile>
 	</profiles>
 
 	<dependencies>
