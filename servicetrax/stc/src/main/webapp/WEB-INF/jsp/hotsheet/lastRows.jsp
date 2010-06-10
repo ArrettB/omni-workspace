@@ -36,11 +36,11 @@ Narrative Work Request
 <table style="margin-top:15px;">
     <tr>
         <td>
-<span style="position: relative; top: 0.7em;  margin-left: 15px; font-weight:bold; background: #d3d3d3; color:#000000;">
+<span style="position: relative; top: 0.1em;  margin-left: 15px; font-weight:bold; background: #d3d3d3; color:#000000;">
 Audit Information
 </span>
 
-            <div style="text-align:left; border: 1.5px solid #000000; padding-bottom:20px; padding-left:10px; padding-right:10px;">
+            <div style="text-align:left; border: 1.5px solid #000000; margin-top: -9px;padding-bottom:20px; padding-left:10px; padding-right:10px;">
                 <table style="padding-top:25px; width:500px;">
                     <col width="100px"/>
                     <col width="150px"/>
@@ -95,7 +95,7 @@ Audit Information
                     <td align="center">
                         <label>
                             <input type="button" value="Close Window" name="button" onclick="return closeWindow();"
-                                   style="width:67px; height:40px; background:#d3d3d3; white-space:pre-wrap; word-wrap:break-word;">
+                                   style="width:72px; height:40px; background:#d3d3d3; text-align:center; white-space:pre-wrap; word-wrap:break-word;">
                         </label>
                     </td>
                 </tr>

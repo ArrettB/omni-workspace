@@ -245,7 +245,7 @@ SELECT p_v.project_id,
        request_status_type.code AS request_status_type_code,
        request_status_type.name AS request_status_type_name,
        r.is_sent AS request_is_sent,
-       r.dealer_po_no,
+       h.dealer_po_number,
        r.customer_po_no,
        r.dealer_project_no,
        r.design_project_no,
@@ -292,7 +292,7 @@ SELECT p_v.project_id,
        p_v.is_new
 FROM dbo.projects_v2 p_v LEFT OUTER JOIN
        dbo.hotsheets h ON p_v.project_id = h.project_id LEFT OUTER JOIN
-       dbo.requests r ON p_v.project_id = r.project_id AND h.dealer_po_number = r.dealer_po_no LEFT OUTER JOIN
+       dbo.requests r ON p_v.project_id = r.project_id AND h.request_id = r.request_id  LEFT OUTER JOIN
        dbo.lookups request_type ON h.request_type_id = request_type.lookup_id LEFT OUTER JOIN
        dbo.lookups request_status_type ON r.request_status_type_id = request_status_type.lookup_id LEFT OUTER JOIN
        dbo.quotes_v q_v ON r.request_id = q_v.request_id  LEFT OUTER JOIN

@@ -41,6 +41,7 @@
         <td>
             <form:select path="billOfLadingCharge">
                 <form:option value="Y" label="Yes"/>
+                <form:option value="N" label="No"/>
             </form:select>
         </td>
     </tr>
