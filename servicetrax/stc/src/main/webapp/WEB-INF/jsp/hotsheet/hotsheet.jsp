@@ -70,7 +70,7 @@
 
 <body class="yui-skin-sam" onload="checkForPrint();">
 
-<div style="width: 100%; height:1020px; border: 2px solid #a9a9a9; ">
+<div style="width: 100%; height:1100px; border: 2px solid #a9a9a9; ">
 
     <div style="color:white; background:#00008b; height:25px; text-align:center; vertical-align:middle; font-weight:bold; width:100%;">
         <label>HOT SHEET</label>

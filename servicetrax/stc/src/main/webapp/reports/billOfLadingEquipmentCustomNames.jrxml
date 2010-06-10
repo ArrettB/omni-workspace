@@ -4,6 +4,7 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="ID" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT a.name as customNameOne, b.name as customNameTwo
 FROM HOTSHEET_DETAILS as a, HOTSHEET_DETAILS as b

@@ -117,7 +117,7 @@
 				<td><!--#SMARTFIELD title="Description" div="</td><td colspan='5'>" type="textarea" name="description" cols="60" rows="4" --></td>
 		<!--#/IF-->
 	<!--#/SQLLOOP-->
-		<td colspan="4"><table border="0"><tr><td><!--#SMARTFIELD title="Billing Type" div="</td><td>" name="billing_type_id" type="droplist" display="lookup_name" key="lookup_id" table="billing_types_v" --></td>
+		<td colspan="2"><table border="0"><tr><td><!--#SMARTFIELD title="Billing Type" div="</td><td>" name="billing_type_id" type="droplist" display="lookup_name" key="lookup_id" table="billing_types_v" --></td>
 <!--#/IF-->
 
 <!--IF evaluate="<?d:mode?>" compare="Update" -->
@@ -130,6 +130,7 @@
 <!--/IF-->
 	<tr><td><!--#SMARTFIELD title="Assigned To" div="</td><td>" style="width:140" mandatory="true" name="assigned_to_user_id" type="droplist" display="user_name" key="user_id" table="user_org_function_rights_v"
 		filter="(organization_id=<?s:org_id.toPStmtInt()?>) AND (function_code = 'bill_acct') AND (right_type_code = 'insert') AND (has_right = 'Y')"--></td></tr>
+    <tr><td><!--#SMARTFIELD title="Fuel Charge&nbsp;&nbsp;" div="</td><td>" mandatory="true" name="fuel_surcharge" type="droplist" display="name" key="yes_no_type_code" table="YES_NO_TYPE_V" --></td></tr>
 	</tr></table></td>
 	</tr>
 

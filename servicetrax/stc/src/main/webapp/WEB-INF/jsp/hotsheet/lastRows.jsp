@@ -83,19 +83,19 @@ Audit Information
                     <td align="center">
                         <label>
                             <input type="button" value="COPY" name="button" id="copyButton"
-                                   style="width:67px; height:33px; background:#d3d3d3;">
+                                   style="width:67px; height:40px; background:#d3d3d3;">
                         </label>
                     </td>
                     <td align="center">
                         <label>
                             <input type="button" value="SAVE" name="button" id="saveButton"
-                                   style="width:67px; height:33px; background:#d3d3d3;">
+                                   style="width:67px; height:40px; background:#d3d3d3;">
                         </label>
                     </td>
                     <td align="center">
                         <label>
                             <input type="button" value="Close Window" name="button" onclick="return closeWindow();"
-                                   style="width:67px; height:33px; background:#d3d3d3; white-space:pre-wrap; word-wrap:break-word;">
+                                   style="width:67px; height:40px; background:#d3d3d3; white-space:pre-wrap; word-wrap:break-word;">
                         </label>
                     </td>
                 </tr>
@@ -103,7 +103,7 @@ Audit Information
                     <td colspan="3" align="center">
                         <label>
                             <input type="button" value="Print BL" name="button" id="printButton"
-                                   style="width:220px; height:33px; background:#d3d3d3;">
+                                   style="width:220px; height:40px; background:#d3d3d3;">
                         </label>
                     </td>
                 </tr>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="billOfLading" pageWidth="612" pageHeight="1008" columnWidth="552" leftMargin="20" rightMargin="20" topMargin="7" bottomMargin="7">
-	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="208"/>
 	<style name="Title" isDefault="false" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -47,6 +47,7 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 	<field name="CREATED_BY" class="java.math.BigDecimal"/>
 	<field name="DATE_MODIFIED" class="java.sql.Timestamp"/>
 	<field name="MODIFIED_BY" class="java.math.BigDecimal"/>
+	<field name="BL_CHRG" class="java.lang.String"/>
 	<field name="CONTACT_NAME" class="java.lang.String"/>
 	<field name="PHONE_WORK" class="java.lang.String"/>
 	<field name="DESCRIPTION" class="java.lang.String"/>
@@ -123,13 +124,11 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textField>
-					<reportElement style="Detail" x="25" y="40" width="160" height="20"/>
+					<reportElement style="Detail" x="25" y="30" width="160" height="15"/>
 					<box leftPadding="4">
-						<pen lineWidth="0.5"/>
-						<topPen lineWidth="0.25"/>
-						<leftPen lineWidth="0.0"/>
-						<bottomPen lineWidth="0.0"/>
-						<rightPen lineWidth="0.0"/>
+						<topPen lineWidth="0.75" lineStyle="Solid"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="0.75" lineStyle="Solid"/>
 					</box>
 					<textElement verticalAlignment="Middle">
 						<font size="10"/>
@@ -137,20 +136,17 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{DEALER_PO_NUMBER}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="Detail" x="0" y="20" width="185" height="20"/>
-					<box leftPadding="4">
-						<topPen lineWidth="0.75"/>
-						<bottomPen lineWidth="0.75"/>
-					</box>
+					<reportElement style="Detail" x="0" y="15" width="185" height="15"/>
+					<box leftPadding="4"/>
 					<textElement verticalAlignment="Middle">
 						<font size="11" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{CUSTOMER_NAME}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="0" y="0" width="185" height="20" forecolor="#FFFFFF" backcolor="#CCCCCC"/>
+					<reportElement mode="Opaque" x="0" y="0" width="185" height="15" forecolor="#FFFFFF" backcolor="#CCCCCC"/>
 					<box leftPadding="4">
-						<bottomPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.75" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="10"/>
@@ -158,15 +154,29 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 					<text><![CDATA[CUSTOMER]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="40" width="25" height="20"/>
+					<reportElement x="0" y="30" width="25" height="15"/>
 					<box leftPadding="4">
-						<leftPen lineWidth="0.0"/>
+						<topPen lineWidth="0.75" lineStyle="Solid"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="0.75" lineStyle="Solid"/>
 					</box>
 					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
 					<text><![CDATA[PO#]]></text>
 				</staticText>
+				<staticText>
+					<reportElement x="0" y="45" width="110" height="15"/>
+					<box leftPadding="4"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[Bill of Lading Charge?]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="110" y="45" width="75" height="15"/>
+					<box leftPadding="4"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{BL_CHRG}.equals("Y") ? "Yes" : "No"]]></textFieldExpression>
+				</textField>
 			</frame>
 		</band>
 	</title>
@@ -1189,7 +1199,7 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<text><![CDATA[Deliver]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="395" y="415" width="40" height="15" forecolor="#FFFFFF" backcolor="#CCCCCC"/>
+				<reportElement mode="Opaque" x="365" y="415" width="70" height="15" forecolor="#FFFFFF" backcolor="#CCCCCC"/>
 				<box>
 					<pen lineWidth="0.75" lineColor="#000000"/>
 					<topPen lineWidth="0.75" lineColor="#000000"/>
@@ -1203,7 +1213,7 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<text><![CDATA[WH-OUT]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="255" y="415" width="120" height="15" forecolor="#FFFFFF" backcolor="#CCCCCC"/>
+				<reportElement mode="Opaque" x="255" y="415" width="90" height="15" forecolor="#FFFFFF" backcolor="#CCCCCC"/>
 				<box>
 					<pen lineWidth="0.75" lineColor="#000000"/>
 					<topPen lineWidth="0.75" lineColor="#000000"/>
@@ -1231,7 +1241,7 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<text><![CDATA[Return]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="375" y="415" width="20" height="15" forecolor="#FFFFFF" backcolor="#CCCCCC"/>
+				<reportElement mode="Opaque" x="345" y="415" width="20" height="15" forecolor="#FFFFFF" backcolor="#CCCCCC"/>
 				<box>
 					<pen lineWidth="0.75" lineColor="#000000"/>
 					<topPen lineWidth="0.75" lineColor="#000000"/>
@@ -1245,7 +1255,7 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<text><![CDATA[Req]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="255" y="430" width="120" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="255" y="430" width="90" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="0.75" lineColor="#000000"/>
 					<topPen lineWidth="0.75" lineColor="#000000"/>
@@ -1259,7 +1269,7 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="395" y="430" width="40" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="365" y="430" width="70" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="0.75" lineColor="#000000"/>
 					<topPen lineWidth="0.75" lineColor="#000000"/>
@@ -1315,7 +1325,7 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="375" y="430" width="20" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="345" y="430" width="20" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="0.75" lineColor="#000000"/>
 					<topPen lineWidth="0.75" lineColor="#000000"/>
@@ -1343,7 +1353,7 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="375" y="460" width="20" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="345" y="460" width="20" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="0.75" lineColor="#000000"/>
 					<topPen lineWidth="0.75" lineColor="#000000"/>
@@ -1385,7 +1395,7 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="395" y="460" width="40" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="365" y="460" width="70" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="0.75" lineColor="#000000"/>
 					<topPen lineWidth="0.75" lineColor="#000000"/>
@@ -1399,7 +1409,7 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="255" y="460" width="120" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="255" y="460" width="90" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="0.75" lineColor="#000000"/>
 					<topPen lineWidth="0.75" lineColor="#000000"/>
@@ -1427,7 +1437,7 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="375" y="445" width="20" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="345" y="445" width="20" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="0.75" lineColor="#000000"/>
 					<topPen lineWidth="0.75" lineColor="#000000"/>
@@ -1469,7 +1479,7 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="395" y="445" width="40" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="365" y="445" width="70" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="0.75" lineColor="#000000"/>
 					<topPen lineWidth="0.75" lineColor="#000000"/>
@@ -1483,7 +1493,7 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="255" y="445" width="120" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="255" y="445" width="90" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="0.75" lineColor="#000000"/>
 					<topPen lineWidth="0.75" lineColor="#000000"/>
@@ -1511,7 +1521,7 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="375" y="475" width="20" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="345" y="475" width="20" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="0.75" lineColor="#000000"/>
 					<topPen lineWidth="0.75" lineColor="#000000"/>
@@ -1553,7 +1563,7 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="395" y="475" width="40" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="365" y="475" width="70" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="0.75" lineColor="#000000"/>
 					<topPen lineWidth="0.75" lineColor="#000000"/>
@@ -1567,7 +1577,7 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="255" y="475" width="120" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement mode="Opaque" x="255" y="475" width="90" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<pen lineWidth="0.75" lineColor="#000000"/>
 					<topPen lineWidth="0.75" lineColor="#000000"/>
@@ -1618,7 +1628,9 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 			</staticText>
 			<subreport>
 				<reportElement x="255" y="510" width="110" height="320"/>
-				<subreportParameter name="SUBREPORT_DIR"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="ID">
 					<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -1893,11 +1905,11 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 					<subreportParameter name="EXT_CUSTOMER_ID">
 						<subreportParameterExpression><![CDATA[$P{EXT_CUSTOMER_ID}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportParameter name="ID">
-						<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
-					</subreportParameter>
 					<subreportParameter name="DB_PREFIX">
 						<subreportParameterExpression><![CDATA[$P{DB_PREFIX}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="ID">
+						<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "billOfLadingBillingAddress.jasper"]]></subreportExpression>
@@ -2456,6 +2468,53 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+		<band height="845">
+			<staticText>
+				<reportElement x="0" y="32" width="572" height="813"/>
+				<textElement markup="none">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[1.  Payment Terms. The Customer (the Shipper) and the Consignee shall each be responsible for payment to Emerald City (the Carrier) in accordance with the contract or applicable tariff. Payment is due on the date of delivery of the property. If Shipper fails to make payment in full within 10 days after the date of delivery, Shipper shall pay a late charge equal to 5% of the unpaid amount. Payments more than 30 days after delivery date shall incur interest of 2% of the unpaid amount per month, compounded monthly, until the unpaid balance is paid in full. Carrier may begin collection proceedings for the unpaid balance against the Shipper any time after 30 days from the date of delivery.
+
+2.  Time and Equipment Charges. In the event this agreement for moving or storage services is for a specific charge (fixed bid), and the Shipper asks for additional services at the time of the shipment, those services shall be based upon amount of time,materials and equipment at the Carrier's standard rates. An agreement for moving or storage services that is not for a specific amount but based upon the amount of time,materials and equipment shall include travel time at the contract rate from Carrier's facility to and from the place of origination and destination.
+
+3.  Prevailing Wage. The estimated price for the services provided to the Customer is based upon Emerald City's usual and customary wage rates, which may be different from the rates set up by state or federal “prevailing wage” regulations. If it is determined that for any reason the “prevailing wage” regulation s apply to the Emerald City workers, the Customers agrees to reimburse Emerald City for any additional compensation expenses. Emerald City agrees to invoice the Customer promptly, and will not add a profit margin or administrative charge to the additional worker compensation.
+
+4.  Limitations on Carrier Liability. The Carrier shall be liable for physical loss of or damage from external cause while being carried or held in storage-in-transit (subject to paragraph 5) except for conditions or flavor of perishable articles and except documents, blank bill,notes,currency,money postage stamps,letters or valuable papers of any kind ,jewelry, furs, watches, precious stones or metals or other articles of particularly inherent or extraordinary value which are not specifically listed on the bill of lading. Further, there shall be no liability for loss or damage caused by or resulting from:
+a) An act, omission or orders of Customers;
+b) Acts of God;
+c) Defect or inherent vice of the goods, including damage due to atmospheric conditions such a temperature and humidity;
+d) Insects, moth, vermin, other animals and ordinary wear and tear;
+e) loss or damage caused by inclusion in the shipment of explosives or dangerous articles or property,for which the Customer shall indemnify and hold Emerald City harmless;
+f) Delayed delivery for reasons beyond the control of Emerald City. The delivery time and date stated on the above is an estimate. Actual delivery timing will depend upon the readiness of the Customer, packing delays,traffic, weather, and other factors;
+g) Hostile action in time of peace or war, including any terrorist or warlike act, insurrection,rebellion,civil war,usurped power, labor disturbances, riots,civil commotion or any action by any governmental authority in combating or defending against such an occurrence, or any confiscation by order of any governmental authority, or acts against illegal transportation or trade;
+h) Breakage of china, glassware, bric-a-brac or similar articles of a brittle or fragile nature unless packed by Emerald City or unless such breakage results from negligence of Emerald City.
+
+5.  Carriers Maximum Liability for Damage or Loss. Carrier shall repair or replace the Shipper's property due to damage or loss, with the limitation as follows:
+a) If Shipper has elected Basic Value coverage, the Carrier's maximum liability shall be limited to the actual damage or loss not exceeding sixty (60) cents per pound or the weight of any lost or damaged articles.
+b) If Shipper has elected Non-Depreciated Value Coverage, the Carrier's maximum liability shall be the cost of repair or replacement not exceeding the Shipper's declared value.
+c) If the Shipper does not sign the Damage Value Declaration, Shipper's coverage for damage or loss to property shall be valued at Basic Value Coverage and Carrier's liability shall be limited to the actual damage or loss not exceeding sixty (60) cents per pound of the weight of any damaged or lost articles.
+d) The Customer/Shipper agrees the Carrier shall not be liable for any incidental, contingent, special, consequential or commercial damages arising from the services or transportation provided. This limitation shall apply to all claims of loss including but not limited to loss of use, loss of profits, loss, damage or injury to any person or property, fines or other damages beyond repair or replacement of the articles in accordance with the above paragraphs. The Customer/Shipper accepts the risk of loss and agrees to rely only upon its business interruption or other insurance, to the extent available. This limitation shall apply even if the possibility of such damages is or was foreseeable by the parties.
+
+6.  Claims by Shipper. Shipper must deliver a claim for loss or damage in writing with the Carrier within 30 days after delivery of the shipment. Shipper agrees this short period is necessary for the Carrier to investigate the claim properly and to prevent spoilation of evidence and that delay beyond 30 days will harm the Carrier's ability to investigate and defend such claim.
+
+7.  Delays. The Carrier shall not be liable for delay caused by highway obstruction, or lack of capacity of any highway, bridge or ferry, or caused by breakdown or mechanical defects of non carrier vehicles or equipment, or from any cause other than negligence of Carrier, nor shall carrier be bound to transport by any particular schedule, means or vehicle. Carrier shall have the right in case of physical necessity to forward the property by any Carrier or route between the point of shipment and the point of destination.
+
+8.  Undeliverable Articles. If Carrier cannot make delivery at the address of Consignee for any reason other than Carrier's sole fault, then Carrier at its option may store the property in a warehouse at a location convenient to Carrier, The Shipper agrees that the property shall be be stored at the cost of the Shipper and subject to a warehousemen's lien for applicable storage charges.
+
+9.  Failure to Claim or Pay for Shipment. Carrier may sell the Shipper's property at public auction to highest bidder for cash at a public sale to be held at a time and place named by Carrier, if (a) Consignee refuses to accept the shipment at destination, (b) Shipper or Consignee fails to receive or claim it within fifteen days after Carrier mails written notice to Shipper and Consignee at addresses shown on face hereof, or(c) Shipper fails or refuses to pay lawfully applicable charges. Carrier shall give thirty days prior written notice to Shipper and Consignee and shall publish notice at least once a week for two consecutive weeks in a newspaper of general circulation at or near the place of sale, such notice containing a description of the property as described in the bill of lading and the names of the Shipper and Consignee. The proceeds of any sale shall be applied first toward payment of applicable shipping charges and expenses of notice, advertising and sale, and of storing and caring for the property prior to sale , and the balance, if any, shall be paid to the Shipper, Provided, that any perishable articles may be sold at public or private sale without such notices, if in the opinion of Carrier such action is necessary to prevent deterioration.
+
+10.  Legal Action. This agreement shall be interpreted in accordance with Washington law and the venue for any disputes shall be King County Superior Court in Seattle, Washington. If any party engages the services of an attorney to enforce the terms of this Agreement or for any dispute arising out of this Agreement, the non-prevailing party shall pay to the prevailing party the full , actual cost of attorneys fees, court costs and other litigation expenses incurred. For the purposes of an award of attorneys fees, the phrase “prevailing party” shall be defined in RCW 4.84.280, without regard to the money limitations of those sections.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="572" height="32"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EMERALD CITY MOVING & STORAGE LLC
+ADDITIONAL CONTRACT TERMS AND CONDITIONS]]></text>
 			</staticText>
 		</band>
 	</detail>

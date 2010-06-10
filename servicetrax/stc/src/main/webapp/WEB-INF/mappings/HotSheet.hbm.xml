@@ -119,14 +119,21 @@
         <property name="dateCreated" type="timestamp">
             <column name="DATE_CREATED" length="23" not-null="true"/>
         </property>
+
         <property name="createdBy" type="long">
             <column name="CREATED_BY" precision="18" scale="0" not-null="true"/>
         </property>
+
         <property name="dateModified" type="timestamp">
             <column name="DATE_MODIFIED" length="23" not-null="false"/>
         </property>
+
         <property name="modifiedBy" type="long">
             <column name="MODIFIED_BY" precision="18" scale="0" not-null="false"/>
+        </property>
+
+        <property name="billOfLadingCharge" type="string">
+            <column name="BL_CHRG" length="1" not-null="true"/>
         </property>
     </class>
 </hibernate-mapping>
