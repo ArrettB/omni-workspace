@@ -256,7 +256,7 @@ public class HotSheetService {
 
     private static final String GET_HOT_SHEET_NUMBER = "select max(hotsheet_no) as hotSheetNo from hotsheets where request_id = ?";
 
-    public Integer getNextHotSheetNumberForRequest(String requestId) {
+    public synchronized Integer getNextHotSheetNumberForRequest(String requestId) {
         Integer hotSheetNumber = jdbcTemplate.queryForInt(GET_HOT_SHEET_NUMBER, new Object[]{requestId});
         if (hotSheetNumber == null) {
             hotSheetNumber = 1;
@@ -317,7 +317,7 @@ public class HotSheetService {
         hotSheet.setJobLocationAddressId(jobLocationAddressId.longValue());
         Address jobLocationAddress = getAddress((BigDecimal) row.get("jobLocationAddressId"));
         hotSheet.setJobLocationAddress(jobLocationAddress);
-        initializeJobLocationContact(hotSheet, (BigDecimal) row.get("CUSTOMER_CONTACT_ID"));
+        initializeJobLocationContact(hotSheet, (BigDecimal) row.get("jobLocationContactId"));
     }
 
     private void initializeJobLocationContact(HotSheet hotSheet, BigDecimal jobLocationContactId) {
@@ -407,7 +407,6 @@ public class HotSheetService {
                 HotSheetDetail aDetail = details.get(aKey);
                 aDetail.setHotSheet(hotsheet);
                 aDetail.setCreatedBy(hotsheet.getCreatedBy());
-                //hibernateService.saveOrUpdate(aDetail);
             }
             hibernateService.saveOrUpdateAll(details.values());
         }

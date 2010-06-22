@@ -181,6 +181,7 @@ public class HotSheetController extends MultiActionController {
         // A new Hot Sheet is then created with a Hot Sheet number greater than the one that was saved.
         // All of the fields from previous hot sheet are copied over.  The Created By and Date Created are set to the current user and today�s date.
         Integer nextNumber = hotSheetService.getNextHotSheetNumberForRequest(String.valueOf(hotSheet.getRequestId()));
+        logger.info("Next hotsheet number for " + hotSheet.getRequestId() + " should be " + nextNumber);
         updateHotSheetIdentifier(hotSheet, nextNumber);
 
         hotSheet.setHotSheetId(null);
@@ -314,6 +315,10 @@ public class HotSheetController extends MultiActionController {
     private void saveHotsheet(HttpServletRequest request, HotSheet hotSheet) {
 
         hotSheetService.convertStartTimesToMilitary(request, hotSheet);
+        if (hotSheet.getBillOfLadingCharge() != null && hotSheet.getBillOfLadingCharge().trim().length() == 0) {
+            hotSheet.setBillOfLadingCharge(null);
+        }
+
         LoginCrediantials credentials = (LoginCrediantials) request.getSession().getAttribute(LoginInterceptor.SESSION_ATTR_LOGIN);
         Long userId = (long) credentials.getUserId();
         hotSheet.setModifiedBy(userId);

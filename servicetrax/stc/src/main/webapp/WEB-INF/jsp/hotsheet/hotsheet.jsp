@@ -363,7 +363,7 @@
 
 <script type="text/javascript">
 
-    //confirmSave  and confirmPrint dialog - we need two because we have different actions on our hotSheetController
+    //we need three because we have different actions on our hotSheetController
     YAHOO.namespace("example.container");
     YAHOO.util.Event.onDOMReady(function () {
 
@@ -371,6 +371,11 @@
         var handleSaveSubmit = function() {
             document.getElementById('saveHotsheet').style.visibility = "hidden";
             document.getElementById('saveProgress').style.visibility = "visible";
+            var buttons = YAHOO.example.container.confirmSave.getButtons();
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].set('disabled', true);
+            }
+
             var hotSheetForm = document.getElementById('hotSheetForm');
             var path = "/stc";
             hotSheetForm.action = path + '/hotSheetSave.html';

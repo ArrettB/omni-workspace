@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
-<table border="1" cellpadding="1" cellspacing="2" style="width: 800px; margin-top: 15px;">
+<table border="0" cellpadding="1" cellspacing="2" style="width: 800px; margin-top: 15px;">
     <col style="width:20%">
     <col style="width:30%">
     <col style="width:20%">
@@ -35,11 +35,12 @@
             <form:input path="customerName" readonly="true" cssClass="disabledCell"/>
         </td>
 
-        <td style="color:red;">
+        <td>
             Bill of Lading Charge?
         </td>
         <td>
             <form:select path="billOfLadingCharge">
+                <form:option value="" label=""/>
                 <form:option value="Y" label="Yes"/>
                 <form:option value="N" label="No"/>
             </form:select>

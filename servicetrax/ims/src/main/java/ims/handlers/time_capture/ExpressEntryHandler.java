@@ -399,22 +399,28 @@ public class ExpressEntryHandler extends BaseHandler {
         try {
             Document d = ic.getConfigDocument();
             host = XMLUtils.getValue(d, "mail:host").trim();
-            port = Integer.valueOf(XMLUtils.getValue(d, "mail:port").trim()).intValue();
+            port = Integer.valueOf(XMLUtils.getValue(d, "mail:port").trim());
             from = host = XMLUtils.getValue(d, "mail:from").trim();
             String[] ids = ic.getParameterValues("checked_sl");
+
+            if(ids == null || ids.length == 0){
+                Diagnostics.debug("No ids found");
+                return true;
+            }
+
             String submittedStatusId = getStatusID("submitted");
             alertToEmail = (String) ic.getAppGlobalDatum("deadlockAlter");
             stmt = conn.prepareStatement(SUBMIT_LINES);
-            for (int i = 0; i < ids.length; i++) {
+            for (String id : ids) {
                 stmt.setString(1, submittedStatusId);
-                stmt.setString(2, ids[i]);
+                stmt.setString(2, id);
                 stmt.addBatch();
             }
             Diagnostics.debug("update = " + SUBMIT_LINES);
             int[] updatedArray = stmt.executeBatch();
             int updated = 0;
-            for (int i = 0; i < updatedArray.length; i++) {
-                updated += updatedArray[i];
+            for (int anUpdatedArray : updatedArray) {
+                updated += anUpdatedArray;
             }
             Diagnostics.debug("Updating " + updated + " service_lines ");
 
@@ -424,7 +430,6 @@ public class ExpressEntryHandler extends BaseHandler {
                 IMSUtil.sendEmail(host, port, alertToEmail, from, subject, e.getMessage() + " Failed SQL Statement = (" + SUBMIT_LINES + ")");
             }
             Diagnostics.error("Exception in ExpressEntryHandler.submitLines(): ", e);
-            //result = false;
 
         }
         finally {
@@ -634,32 +639,31 @@ public class ExpressEntryHandler extends BaseHandler {
     int getBreakTimeMinutes(String serviceLineId, InvocationContext ic) {
         String lunchDinnerHours = ic.getParameter(serviceLineId + "_" + "lunch_dinner_hours");
         String lunchDinnerMinutes = ic.getParameter(serviceLineId + "_" + "lunch_dinner_minutes");
-
-        int breakTimeMinutes = (Integer.valueOf(lunchDinnerHours) * 60) + Integer.valueOf(lunchDinnerMinutes);
-        return breakTimeMinutes;
+        return (Integer.valueOf(lunchDinnerHours) * 60) + Integer.valueOf(lunchDinnerMinutes);
     }
 
     int getStartTimeInMilitaryTime(InvocationContext ic) {
         String startHours = ic.getParameter("start_time_hour");
         String startMinutes = ic.getParameter("start_time_minutes");
         String startAMPM = ic.getParameter("start_time_AMPM");
+        return TimeUtils.getTimeAsMilitaryTime(getIntegerValue(startHours), getIntegerValue(startMinutes), startAMPM);
+    }
 
-        return TimeUtils.getTimeAsMilitaryTime(Integer.valueOf(startHours), Integer.valueOf(startMinutes), startAMPM);
+    private Integer getIntegerValue(String value) {
+        return value == null ? 0 : Integer.valueOf(value);
     }
 
     int getEndTimeInMilitaryTime(InvocationContext ic) {
         String endHours = ic.getParameter("end_time_hour");
         String endMinutes = ic.getParameter("end_time_minutes");
         String endAMPM = ic.getParameter("end_time_AMPM");
-        return TimeUtils.getTimeAsMilitaryTime(Integer.valueOf(endHours), Integer.valueOf(endMinutes), endAMPM);
+        return TimeUtils.getTimeAsMilitaryTime(getIntegerValue(endHours), getIntegerValue(endMinutes), endAMPM);
     }
 
     int getBreakTimeMinutes(InvocationContext ic) {
         String lunchDinnerHours = ic.getParameter("lunch_dinner_hours");
         String lunchDinnerMinutes = ic.getParameter("lunch_dinner_minutes");
-
-        int breakTimeMinutes = (Integer.valueOf(lunchDinnerHours) * 60) + Integer.valueOf(lunchDinnerMinutes);
-        return breakTimeMinutes;
+        return (getIntegerValue(lunchDinnerHours) * 60) + getIntegerValue(lunchDinnerMinutes);
     }
 
     private String getNumberOfHours(InvocationContext ic) {

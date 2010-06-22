@@ -1214,15 +1214,16 @@ function validateEmail(str){
 	</table>
   </td></tr>
 </table>
+<!--#SMARTFORM name="enet/req/qr_edit"
+               security="rights"
+               table="requests"
+               key="request_id"
+               preHandler="ims.handlers.job_processing.SmartFormPreHandler,ims.handlers.proj.NewPDSPreHandler"
+               postHandler="ims.handlers.proj.NewPDSPostHandler"
+               buttons="" -->
+
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="tan">
-  <!--#SMARTFORM name="enet/req/qr_edit"
-                 security="rights"
-                 table="requests"
-                 key="request_id"
-				 preHandler="ims.handlers.job_processing.SmartFormPreHandler,ims.handlers.proj.NewPDSPreHandler"
-				 postHandler="ims.handlers.proj.NewPDSPostHandler"
-                 buttons="" -->
 
     <!--#SMARTFIELD name="redisplay" type="hidden" value="false" -->
 	<!--#SMARTFIELD name="project_id" type="hidden" value="<?p:project_id?>" -->
@@ -1333,14 +1334,14 @@ function validateEmail(str){
 <!--#/IF-->
       <tr  valign="top">
         <td width="200px"><!--#SMARTFIELD title="<span class='mandatoryLabel'>Project Manager</span>:" div="&nbsp;</td>
-        <td>" name="a_m_contact_id" style="width:230" type="droplist" table="contacts_v" display="contact_name" key="contact_id" filter="organization_id=<?s:org_id.toPStmtInt()?> AND (contact_type_code='a_m' AND cont_status_type_code='active') or contact_id=<?d:a_m_contact_id.toPStmtInt()?>" --></td>
+        <td>" name="a_m_contact_id" id = "a_m_contact_id" style="width:230" type="droplist" table="contacts_v" display="contact_name" key="contact_id" filter="organization_id=<?s:org_id.toPStmtInt()?> AND (contact_type_code='a_m' AND cont_status_type_code='active') or contact_id=<?d:a_m_contact_id.toPStmtInt()?>" --></td>
          <td>&nbsp;</td>
 	  	<td>&nbsp;</td>
       </tr>
 <!--#IF defined="<?s:project_id?>" -->
       <tr  valign="top">
         <td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Project Name</span>:" div="&nbsp;</td>
-        <td>" style="width:230" name="job_name" class="readonly" readonly value="<?s:job_name?>" maxlength="50"-->
+        <td>" style="width:230" name="job_name" id="job_name" class="readonly" readonly value="<?s:job_name?>" maxlength="50"-->
   <!--#SQLLOOP name="project"
                query="SELECT top 1 'x' FROM requests_v
                        WHERE (project_id = <?s:project_id.toPStmtString()?> AND request_type_code = 'service_request' AND is_sent = 'Y')
@@ -1351,14 +1352,14 @@ function validateEmail(str){
                                onClick="newWindow('{!s:showPage!}enet/proj/job_name_edit.html?project_id={!s:project_id!}','job_name_edit',130,300);">
   <!--#/SQLNODATA-->
   <!--#/SQLLOOP-->
-            <input name="project_type_id" type="hidden" value="{!s:project_type_id!}">
+            <input name="project_type_id" id="project_type_id" type="hidden" value="{!s:project_type_id!}">
         </td>
         <td></td>
       </tr>
  <!--#ELSE-->
    <!--#IF evaluate="<?d:mode?>" compare="Insert" -->
       <tr  valign="top">
-        <td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Project Name</span>:" div="&nbsp;</td><td>" style="width:230" name="job_name" maxlength="50"--></td>
+        <td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Project Name</span>:" div="&nbsp;</td><td>" style="width:230" name="job_name" id="job_name" maxlength="50"--></td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
       </tr>
@@ -1653,10 +1654,10 @@ function validateEmail(str){
 
       <tr><td class="formButtonSpacing">&nbsp;</td><td>&nbsp;</td></tr>
 	  <tr><td class="HeaderLabelMandatory">Job Scope</td><td>&nbsp;</td></tr>
-	  <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="&nbsp;&nbsp;&nbsp;Estimated Service Date:" div="&nbsp;</td><td>" style="width:210"  name="est_start_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(est_start_date)')</script>"--></td></tr>
-	  <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="&nbsp;&nbsp;&nbsp;Estimated Completion Date:" div="&nbsp;</td><td>" style="width:210" name="est_end_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(est_end_date)')</script>"--></td></tr>
-      <tr  valign="top"><td class="mandatoryLabel"><!--#SMARTFIELD title="&nbsp;&nbsp;&nbsp;Number of Days to Complete:" div="&nbsp;</td><td>" style="width:230" name="days_to_complete" onKeyUp="fieldValidator(this,'number')" -->
-	  <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="Systems Furniture:" div="&nbsp;</td><td>" style="width:230" name="system_furniture_line_type_id" type="droplist" onChange="onSystemFurnitureChange()"
+	  <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="&nbsp;&nbsp;&nbsp;Estimated Service Date:" div="&nbsp;</td><td>" style="width:210"  name="est_start_date" id="est_start_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(est_start_date)')</script>"--></td></tr>
+	  <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="&nbsp;&nbsp;&nbsp;Estimated Completion Date:" div="&nbsp;</td><td>" style="width:210" name="est_end_date" id= "est_end_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(est_end_date)')</script>"--></td></tr>
+      <tr  valign="top"><td class="mandatoryLabel"><!--#SMARTFIELD title="&nbsp;&nbsp;&nbsp;Number of Days to Complete:" div="&nbsp;</td><td>" style="width:230" name="days_to_complete" id="days_to_complete" onKeyUp="fieldValidator(this,'number')" -->
+	  <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="Systems Furniture:" div="&nbsp;</td><td>" style="width:230" name="system_furniture_line_type_id" id="system_furniture_line_type_id" type="droplist" onChange="onSystemFurnitureChange()"
 	                          query="SELECT lookup_id pri_furn_line_type_id,
                                             l.name
  			                           FROM lookups l INNER JOIN
@@ -1666,7 +1667,7 @@ function validateEmail(str){
                                         AND l.active_flag='Y'
                                    ORDER BY l.name" --></td></tr>
 
-      <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="&nbsp;&nbsp;&nbsp;Shipping Method:" div="&nbsp;</td><td>" style="width:230" name="delivery_type_id" type="droplist"
+      <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="&nbsp;&nbsp;&nbsp;Shipping Method:" div="&nbsp;</td><td>" style="width:230" name="delivery_type_id" id="delivery_type_id" type="droplist"
 	    	  	              query="SELECT l.lookup_id delivery_type_id, l.name
 			  	                       FROM lookups l INNER JOIN lookup_types lt ON l.lookup_type_id = lt.lookup_type_id
 			  	                      WHERE lt.code='delivery_type'
@@ -1690,10 +1691,10 @@ function validateEmail(str){
 	                                    AND l.active_flag='Y'
 	                               ORDER BY l.sequence_no" --></td></tr>
 
-	  <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="Extra Product Disposition:" div="&nbsp;</td><td>" style="width:230" name="prod_disp_id" type="droplist" table="product_disposition_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" value="<?d:defaultProdDispType?>" --></td></tr>
-      <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="Wall Mount:" div="&nbsp;</td><td>" style="width:230" name="wall_mount_type_id" type="droplist" table="wall_mount_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
-      <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="Delivery Conditions:" div="&nbsp;</td><td>" style="width:230" name="elevator_avail_type_id" type="droplist" table="elevator_available_types_v" display="lookup_name" key="lookup_id" --></td></tr>
-      <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="Stair Carry Required:" div="&nbsp;</td><td>" style="width:230" name="is_stair_carry_required" type="boolean" --></td></tr>
+	  <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="Extra Product Disposition:" div="&nbsp;</td><td>" style="width:230" name="prod_disp_id" id="prod_disp_id" type="droplist" table="product_disposition_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" value="<?d:defaultProdDispType?>" --></td></tr>
+      <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="Wall Mount:" div="&nbsp;</td><td>" style="width:230" name="wall_mount_type_id" id="wall_mount_type_id" type="droplist" table="wall_mount_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
+      <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="Delivery Conditions:" div="&nbsp;</td><td>" style="width:230" name="elevator_avail_type_id" id="elevator_avail_type_id"  type="droplist" table="elevator_available_types_v" display="lookup_name" key="lookup_id" --></td></tr>
+      <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="Stair Carry Required:" div="&nbsp;</td><td>" style="width:230" name="is_stair_carry_required" id="is_stair_carry_required" type="boolean" --></td></tr>
    </table>
 
   </td>
@@ -1727,7 +1728,7 @@ function validateEmail(str){
 	  </tr>
 <!--#/IF-->
 
-      <tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Sales Person</span>:" div="&nbsp;</td><td>" style="width:230" name="a_m_sales_contact_id" type="droplist" table="contacts_v" display="contact_name" key="contact_id" filter="organization_id=<?s:org_id.toPStmtInt()?> AND (contact_type_code='service_provider_sales' AND cont_status_type_code='active') or contact_id=<?d:a_m_sales_contact_id.toPStmtInt()?>" --></td><td></td></tr>
+      <tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Sales Person</span>:" div="&nbsp;</td><td>" style="width:230" name="a_m_sales_contact_id" id="a_m_sales_contact_id" type="droplist" table="contacts_v" display="contact_name" key="contact_id" filter="organization_id=<?s:org_id.toPStmtInt()?> AND (contact_type_code='service_provider_sales' AND cont_status_type_code='active') or contact_id=<?d:a_m_sales_contact_id.toPStmtInt()?>" --></td><td></td></tr>
       <tr><td class="formButtonSpacing">&nbsp;</td><td>&nbsp;</td><td></td></tr>
 <!-- End User -->
       <tr><td><span class="mandatoryLabel">End User Name</span>:</td>
@@ -1770,7 +1771,7 @@ function validateEmail(str){
 <!-- Job Location -->
       <tr>
 <!--#IF evaluate="<?s:request_readonly?>" compare="true" -->
-        <td><!--#SMARTFIELD title="<span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;Job Location</span>:" div="&nbsp;</td><td>" style="width:230" name="job_location_id" type="droplist"
+        <td><!--#SMARTFIELD title="<span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;Job Location</span>:" div="&nbsp;</td><td>" style="width:230" name="job_location_id" id="job_location_id" type="droplist"
                             query="SELECT job_location_id, job_location_name
   			                         FROM job_locations
   			                        WHERE job_location_id = <?d:job_location_id.toPStmtInt()?>" --></td>
@@ -1846,9 +1847,9 @@ function validateEmail(str){
 
       <tr><td class="formButtonSpacing">&nbsp;</td><td>&nbsp;</td></tr>
       <tr><td><span class='HeaderLabelMandatory'>Billing Information</span></td><td>&nbsp;</td></tr>
-      <tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;Billing Type</span>:" div="&nbsp;</td><td>" style="width:230" name="quote_type_id" type="droplist" table="billing_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
-      <tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;Sales Tax</span>:" div="&nbsp;</td><td>" style="width:230" name="taxable_flag" type="boolean" --></td></tr>
-      <tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;Customer Costing</span>:" div="&nbsp;</td><td>" style="width:230" name="customer_costing_type_id" type="droplist"
+      <tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;Billing Type</span>:" div="&nbsp;</td><td>" style="width:230" name="quote_type_id" id="quote_type_id" type="droplist" table="billing_types_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
+      <tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;Sales Tax</span>:" div="&nbsp;</td><td>" style="width:230" name="taxable_flag" id="taxable_flag"  type="boolean" --></td></tr>
+      <tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;Customer Costing</span>:" div="&nbsp;</td><td>" style="width:230" name="customer_costing_type_id" id="customer_costing_type_id" type="droplist"
                               query="SELECT lookup_id customer_costing_type_id, l.name
  			                           FROM lookups l INNER JOIN lookup_types lt ON l.lookup_type_id=lt.lookup_type_id
  			                          WHERE lt.code='customer_costing_type'
@@ -1907,7 +1908,7 @@ function validateEmail(str){
 <tr>
 <tr>
   <td>&nbsp;</td>
-  <td colspan="3"><!--#SMARTFIELD name="description" type="textarea" cols="180" rows="9" wrap="virtual" onKeyDown="textCounter(this.form.description,this.form.remLen,1000,'down');" onKeyUp="textCounter(this.form.description,this.form.remLen,1000,'up');"-->
+  <td colspan="3"><!--#SMARTFIELD name="description" id="description" type="textarea" cols="180" rows="9" wrap="virtual" onKeyDown="textCounter(this.form.description,this.form.remLen,1000,'down');" onKeyUp="textCounter(this.form.description,this.form.remLen,1000,'up');"-->
 </td></tr>
 </p>
 <tr><td colspan="4">&nbsp;</td></tr>
@@ -1917,7 +1918,7 @@ function validateEmail(str){
   <td colspan="3"><span class="HeaderLabel">Additional Conditions</span> <input readonly type="text" name="remLen2" size="4" maxlength="4" value="1000" class="HeaderLabel">&nbsp;<span class="regularLabel">characters left.</span></td></tr>
 <tr>
   <td>&nbsp;</td>
-  <td colspan="3"><!--#SMARTFIELD name="other_conditions" type="textarea" cols="180" rows="9" wrap="virtual" onKeyDown="textCounter(this.form.other_conditions,this.form.remLen2,1000,'down');" onKeyUp="textCounter(this.form.other_conditions,this.form.remLen2,1000,'up');"-->
+  <td colspan="3"><!--#SMARTFIELD name="other_conditions" id="other_conditions" type="textarea" cols="180" rows="9" wrap="virtual" onKeyDown="textCounter(this.form.other_conditions,this.form.remLen2,1000,'down');" onKeyUp="textCounter(this.form.other_conditions,this.form.remLen2,1000,'up');"-->
 </td></tr>
 </p>
 <tr><td colspan="4">&nbsp;</td></tr>
