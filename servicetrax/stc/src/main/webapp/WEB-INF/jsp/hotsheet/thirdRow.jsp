@@ -23,201 +23,153 @@
      style="position:absolute; float:left; width:150px; visibility:hidden; background-color:#ffffff;"></div>
 
 <%--Third Row--%>
-<table style="margin-top:15px;">
-    <tr>
-        <td>
-            <span style="position: relative; top: 0.7em;  margin-left: 15px; font-weight:bold; background: #d3d3d3; color:#000000;">
-              Vehicle Type & Qty
-            </span>
+<td>
+<span style="position: relative; top: 0.7em;  margin-left: 15px; font-weight:bold; background: #d3d3d3; color:#000000;">
+    Equipment
+    </span>
 
-            <div style="text-align:left; border: 1.5px solid #000000; padding-bottom:20px;">
-                <table style="width:225px; padding-top:25px;">
-                    <col width="25px"/>
-                    <col/>
-                    <col width="25px"/>
-                    <col/>
+    <div style="width:745px; text-align:left; border: 1.5px solid #000000; margin-left:5px; padding-bottom:20px; padding-left:20px; padding-top:15px;">
+        <table style="padding-top:10px; width:750px; margin-left:-10px;" class="detailsTable">
+            <tr>
+                <td>
+                    <form:input path="details[custom_equipment_A_qty].attributeValue"
+                                maxlength="3" cssClass="details"/>
+                </td>
+                <td>
+                    <form:select path="details[custom_equipment_A].name" items="${EquipmentList}"
+                                 cssClass="detailsDropdown"/>
+                </td>
+                <td>
+                    <form:input path="details[custom_equipment_B_qty].attributeValue"
+                                maxlength="3" cssClass="details"/>
+                </td>
+                <td>
+                    <form:select path="details[custom_equipment_B].name" items="${EquipmentList}"
+                                 cssClass="detailsDropdown"/>
+                </td>
+                <td>
+                    <form:input path="details[custom_equipment_C_qty].attributeValue"
+                                maxlength="3" cssClass="details"/>
+                </td>
+                <td>
+                    <form:select path="details[custom_equipment_C].name" items="${EquipmentList}"
+                                 cssClass="detailsDropdown"/>
+                </td>
+                <td>
+                    <form:input path="details[custom_equipment_1_qty].attributeValue"
+                                maxlength="3" cssClass="details"/>
+                </td>
+                <td>
+                    <form:input path="details[custom_equipment_1].name" cssClass="details"
+                                cssStyle="width:100px; text-align:left;"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <form:input path="details[custom_equipment_D_qty].attributeValue"
+                                maxlength="3" cssClass="details"/>
+                </td>
+                <td>
+                    <form:select path="details[custom_equipment_D].name" items="${EquipmentList}"
+                                 cssClass="detailsDropdown"/>
+                </td>
+                <td>
+                    <form:input path="details[custom_equipment_E_qty].attributeValue"
+                                maxlength="3" cssClass="details"/>
+                </td>
+                <td>
+                    <form:select path="details[custom_equipment_E].name" items="${EquipmentList}"
+                                 cssClass="detailsDropdown"/>
+                </td>
+                <td>
+                    <form:input path="details[custom_equipment_F_qty].attributeValue"
+                                maxlength="3" cssClass="details"/>
+                </td>
+                <td>
+                    <form:select path="details[custom_equipment_F].name" items="${EquipmentList}"
+                                 cssClass="detailsDropdown"/>
+                </td>
 
-                    <tr>
-                        <td>
-                            <form:input path="details[service_van_qty].attributeValue"
-                                        maxlength="3" cssClass="details" cssStyle="margin-left:5px;"/>
-                        </td>
-                        <td>
-                            Service Van
-                        </td>
-                        <td>
-                            <form:input path="details[box_van_qty].attributeValue"
-                                        maxlength="3" cssClass="details"/>
-                        </td>
-                        <td>
-                            Box Van
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <form:input path="details[bobtail_qty].attributeValue"
-                                        maxlength="3" cssClass="details" cssStyle="margin-left:5px;"/>
-                        </td>
-                        <td>
-                            Bob Tail
-                        </td>
-                        <td>
-                            <form:input path="details[tractor_trailer_qty].attributeValue"
-                                        maxlength="3" cssClass="details"/>
-                        </td>
-                        <td>
-                            Tractor<br/>
-                            /Trailer
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </td>
-        <td>
-            <table style="margin-top:-50px; margin-left:40px; margin-right:25px;" cellpadding="0" cellspacing="0">
-                <tr>
-                    <td style="padding-bottom:5px;">
-                        <label style="font-weight:400;">Job Location Contact:</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <form:input path="jobContactName" readonly="true" cssClass="disabledCell"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <form:input path="jobContactPhone" readonly="true" cssClass="disabledCell"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <form:input path="jobContactEmail" readonly="true" cssClass="disabledCell"/>
-                    </td>
-                </tr>
-            </table>
-        </td>
+                <td>
+                    <form:input path="details[custom_equipment_2_qty].attributeValue"
+                                maxlength="3" cssClass="details"/>
+                </td>
+                <td>
+                    <form:input path="details[custom_equipment_2].name" cssClass="details"
+                                cssStyle="width:100px; text-align:left;"/>
+                </td>
+            </tr>
 
-        <td>
-            <table border="0" cellpadding="1" cellspacing="1" style="padding-left:50px;">
-                <tr>
-                    <td align="right" style="color:red;">
-                        <a href="#" id="calStartAnchor"
-                           onclick="doCalendar(); return false;" style="text-decoration:none;">
-                            <img src="images/icon-calendar.gif" alt="Calendar"/>
-                        </a>
-                        Date:
-                    </td>
-                    <td colspan="3">
-                        <label>
-                            <input type="text" style="width:75px; background:#d3d3d3; color:#000000; text-align:center;"
-                                   name="jobDate" id="jobDate" class="calendar" readonly="true"
-                                   value="<fmt:formatDate value="${hotSheet.jobDate}" pattern="MM/dd/yyyy"/>">
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right" style="color:red;">
-                        Start Time:
-                    </td>
-                    <td>
-                        <label>
-                            <form:select path="startTimeHour" id="startTimeHour">
-                                <form:option value="12"/>
-                                <form:option value="1"/>
-                                <form:option value="2"/>
-                                <form:option value="3"/>
-                                <form:option value="4"/>
-                                <form:option value="5"/>
-                                <form:option value="6"/>
-                                <form:option value="7"/>
-                                <form:option value="8"/>
-                                <form:option value="9"/>
-                                <form:option value="10"/>
-                                <form:option value="11"/>
-                            </form:select>
-                        </label>
-                    </td>
-                    <td>
-                        <label>
-                            <form:select path="startTimeMinutes" id="startTimeMinutes">
-                                <form:option value="00"/>
-                                <form:option value="15"/>
-                                <form:option value="30"/>
-                                <form:option value="45"/>
-                            </form:select>
-                        </label>
-                    </td>
+            <tr>
+                <td>
+                    <form:input path="details[custom_equipment_G_qty].attributeValue"
+                                maxlength="3" cssClass="details"/>
+                </td>
+                <td>
+                    <form:select path="details[custom_equipment_G].name" items="${EquipmentList}"
+                                 cssClass="detailsDropdown"/>
+                </td>
+                <td>
+                    <form:input path="details[custom_equipment_H_qty].attributeValue"
+                                maxlength="3" cssClass="details"/>
+                </td>
+                <td>
+                    <form:select path="details[custom_equipment_H].name" items="${EquipmentList}"
+                                 cssClass="detailsDropdown"/>
+                </td>
+                <td>
+                    <form:input path="details[custom_equipment_I_qty].attributeValue"
+                                maxlength="3" cssClass="details"/>
+                </td>
+                <td>
+                    <form:select path="details[custom_equipment_I].name" items="${EquipmentList}"
+                                 cssClass="detailsDropdown"/>
+                </td>
 
-                    <td>
-                        <label>
-                            <form:select path="startTimeAMPM" id="startTimeAMPM">
-                                <form:option value="AM"/>
-                                <form:option value="PM"/>
-                            </form:select>
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right" style="color:red;">
-                        Whse. Start:
-                    </td>
-                    <td>
-                        <label>
-                            <form:select path="warehouseStartTimeHour" id="warehouseStartTimeHour">
-                                <form:option value="12"/>
-                                <form:option value="1"/>
-                                <form:option value="2"/>
-                                <form:option value="3"/>
-                                <form:option value="4"/>
-                                <form:option value="5"/>
-                                <form:option value="6"/>
-                                <form:option value="7"/>
-                                <form:option value="8"/>
-                                <form:option value="9"/>
-                                <form:option value="10"/>
-                                <form:option value="11"/>
-                            </form:select>
-                        </label>
-                    </td>
-                    <td>
-                        <label>
-                            <form:select path="warehouseStartTimeMinutes" id="warehouseStartTimeMinutes">
-                                <form:option value="00"/>
-                                <form:option value="15"/>
-                                <form:option value="30"/>
-                                <form:option value="45"/>
-                            </form:select>
-                        </label>
-                    </td>
+                <td>
+                    <form:input path="details[custom_equipment_3_qty].attributeValue"
+                                maxlength="3" cssClass="details"/>
+                </td>
+                <td>
+                    <form:input path="details[custom_equipment_3].name" cssClass="details"
+                                cssStyle="width:100px; text-align:left;"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <form:input path="details[custom_equipment_J_qty].attributeValue"
+                                maxlength="3" cssClass="details"/>
+                </td>
+                <td>
+                    <form:select path="details[custom_equipment_J].name" items="${EquipmentList}"
+                                 cssClass="detailsDropdown"/>
+                </td>
+                <td>
+                    <form:input path="details[custom_equipment_K_qty].attributeValue"
+                                maxlength="3" cssClass="details"/>
+                </td>
+                <td>
+                    <form:select path="details[custom_equipment_K].name" items="${EquipmentList}"
+                                 cssClass="detailsDropdown"/>
+                </td>
+                <td>
+                    <form:input path="details[custom_equipment_L_qty].attributeValue"
+                                maxlength="3" cssClass="details"/>
+                </td>
+                <td>
+                    <form:select path="details[custom_equipment_L].name" items="${EquipmentList}"
+                                 cssClass="detailsDropdown"/>
+                </td>
 
-                    <td>
-                        <label>
-                            <form:select path="warehouseStartTimeAMPM" id="warehouseStartTimeAMPM">
-                                <form:option value="AM"/>
-                                <form:option value="PM"/>
-                            </form:select>
-                        </label>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td align="right" style="color:red;">
-                        Job Length:
-                    </td>
-                    <td>
-                        <label>
-                            <form:input path="jobLength" cssStyle="width:30px;" maxlength="4"/>
-                        </label>
-                    </td>
-                    <td colspan="2">
-                        <label>
-                            &nbsp;
-                        </label>
-                    </td>
-                </tr>
-            </table>
-        </td>
-
-    </tr>
-</table>
+                <td>
+                    <form:input path="details[custom_equipment_4_qty].attributeValue"
+                                maxlength="3" cssClass="details"/>
+                </td>
+                <td>
+                    <form:input path="details[custom_equipment_4].name" cssClass="details"
+                                cssStyle="width:100px; text-align:left;"/>
+                </td>
+            </tr>
+        </table>
+    </div>
+</td>

@@ -46,6 +46,7 @@ public class HotSheetController extends MultiActionController {
 
     private static final String HOT_SHEET = "hotSheet";
     private static final String HOTSHEET_VIEW = "hotsheet/hotsheet";
+    private static final String EQUIPMENT_LIST = "EquipmentList";
 
     public HotSheetController() {
 
@@ -110,6 +111,7 @@ public class HotSheetController extends MultiActionController {
 
         ModelAndView view = new ModelAndView(HOTSHEET_VIEW);
         view.getModel().put(HOT_SHEET, hotSheet);
+        view.getModel().put(EQUIPMENT_LIST, hotSheetService.getEquipmentList());
         return view;
     }
 
@@ -119,9 +121,10 @@ public class HotSheetController extends MultiActionController {
         //In either event, we need these
         hotSheetService.addOriginAddressInfo(hotSheet);
 
-        if (result.hasErrors()) {
+        if (result != null && result.hasErrors()) {
             ModelAndView view = new ModelAndView(HOTSHEET_VIEW);
             view.getModel().put(HOT_SHEET, hotSheet);
+            view.getModel().put(EQUIPMENT_LIST, hotSheetService.getEquipmentList());
             List errors = hotSheetService.buildErrors(result.getAllErrors());
             view.getModel().put("errors", errors);
             return view;
@@ -133,6 +136,7 @@ public class HotSheetController extends MultiActionController {
         //Hot Sheet screen is saved into IMS_NEW.HOTSHEETS table.  Hot Sheet screen remains on browser.
         ModelAndView view = new ModelAndView(HOTSHEET_VIEW);
         view.getModel().put(HOT_SHEET, hotSheet);
+        view.getModel().put(EQUIPMENT_LIST, hotSheetService.getEquipmentList());
         return view;
     }
 
@@ -158,7 +162,9 @@ public class HotSheetController extends MultiActionController {
         }
 
         hotSheet.setShouldPrint(false);
-        return new ModelAndView(HOTSHEET_VIEW, HOT_SHEET, hotSheet);
+        ModelAndView modelAndView = new ModelAndView(HOTSHEET_VIEW, HOT_SHEET, hotSheet);
+        modelAndView.getModel().put(EQUIPMENT_LIST, hotSheetService.getEquipmentList());
+        return modelAndView;
     }
 
     @SuppressWarnings("unchecked, unused")
@@ -182,7 +188,7 @@ public class HotSheetController extends MultiActionController {
         // All of the fields from previous hot sheet are copied over.  The Created By and Date Created are set to the current user and today�s date.
         Integer nextNumber = hotSheetService.getNextHotSheetNumberForRequest(String.valueOf(hotSheet.getRequestId()));
         logger.info("Next hotsheet number for " + hotSheet.getRequestId() + " should be " + nextNumber);
-        updateHotSheetIdentifier(hotSheet, nextNumber);
+        hotSheetService.updateHotSheetIdentifier(hotSheet, nextNumber);
 
         hotSheet.setHotSheetId(null);
         LoginCrediantials credentials = (LoginCrediantials) request.getSession().getAttribute(LoginInterceptor.SESSION_ATTR_LOGIN);
@@ -199,6 +205,7 @@ public class HotSheetController extends MultiActionController {
 
         ModelAndView view = new ModelAndView(HOTSHEET_VIEW);
         view.getModel().put(HOT_SHEET, hotSheet);
+        view.getModel().put(EQUIPMENT_LIST, hotSheetService.getEquipmentList());
         return view;
     }
 
@@ -222,6 +229,7 @@ public class HotSheetController extends MultiActionController {
 
         ModelAndView view = new ModelAndView(HOTSHEET_VIEW);
         view.getModel().put(HOT_SHEET, hotSheet);
+        view.getModel().put(EQUIPMENT_LIST, hotSheetService.getEquipmentList());
         return view;
     }
 
@@ -332,14 +340,6 @@ public class HotSheetController extends MultiActionController {
         }
         hotSheet.setDateModified(today);
         hotSheetService.saveHotSheet(hotSheet);
-    }
-
-    private void updateHotSheetIdentifier(HotSheet hotSheet, Integer hotSheetNumber) {
-        hotSheet.setHotSheetNumber(hotSheetNumber);
-        String hotSheetIdentifier = hotSheet.getHotSheetIdentifier();
-        int index = hotSheetIdentifier.lastIndexOf("HS");
-        String substring = hotSheetIdentifier.substring(0, index + 2);
-        hotSheet.setHotSheetIdentifier(substring + hotSheetNumber);
     }
 
     private BindingResult result;

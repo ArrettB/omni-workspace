@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -198,6 +199,7 @@ public class HotSheetService {
             if (hotSheet.getOriginAddressId() == null) {
                 Map firstAddress = originAddresses.get(0);
                 id = (BigDecimal) firstAddress.get("JOB_LOCATION_ID");
+                hotSheet.setOriginAddressId(id.longValue());
             }
             else {
                 id = BigDecimal.valueOf(hotSheet.getOriginAddressId());
@@ -397,7 +399,7 @@ public class HotSheetService {
         return details;
     }
 
-    public HotSheet saveHotSheet(HotSheet hotsheet) {
+    public synchronized HotSheet saveHotSheet(HotSheet hotsheet) {
         HotSheet persisted = (HotSheet) hibernateService.saveOrUpdate(hotsheet);
 
         Map<String, HotSheetDetail> details = persisted.getDetails();
@@ -576,6 +578,15 @@ public class HotSheetService {
         return errorMessages;
     }
 
+    public void updateHotSheetIdentifier(HotSheet hotSheet, Integer hotSheetNumber) {
+        hotSheet.setHotSheetNumber(hotSheetNumber);
+        String hotSheetIdentifier = hotSheet.getHotSheetIdentifier();
+        int index = hotSheetIdentifier.lastIndexOf("HS");
+        String substring = hotSheetIdentifier.substring(0, index + 2);
+        hotSheet.setHotSheetIdentifier(substring + hotSheetNumber);
+    }
+
+
     private Address getEmptyAddress() {
         Address emptyAddress = new Address();
         emptyAddress.setJobLocationCustomerId(String.valueOf("0"));
@@ -624,5 +635,46 @@ public class HotSheetService {
             address.setCountry(resultSet.getString("COUNTRY"));
             return address;
         }
+    }
+
+    private static final List<String> EQUIPMENT =
+            Arrays.asList("",
+                          "Autobottoms",
+                          "Big Reds",
+                          "Blue Tape",
+                          "Boards Long",
+                          "Boards Short",
+                          "Carts Library",
+                          "Carts Machine",
+                          "Cleaning Kits",
+                          "Cornerboards",
+                          "Dollies",
+                          "J-Bars",
+                          "Labels Black",
+                          "Labels Blue",
+                          "Labels Brown ",
+                          "Labels Green",
+                          "Labels Pink",
+                          "Labels Purple",
+                          "Labels Orange",
+                          "Labels Red",
+                          "Labels Yellow",
+                          "Masonite Half",
+                          "Masonite Full",
+                          "Mollies/Toggles",
+                          "Pallet Jacks",
+                          "Panel Carts",
+                          "PR Cartons",
+                          "Safe Equipment",
+                          "Safe Jacks",
+                          "Shrinkwrap",
+                          "Tote Stacks",
+                          "Trucks Hand",
+                          "Trucks Reefer",
+                          "Vacuums");
+
+
+    public List getEquipmentList() {
+        return EQUIPMENT;
     }
 }

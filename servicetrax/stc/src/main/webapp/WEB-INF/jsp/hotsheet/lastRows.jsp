@@ -16,14 +16,14 @@
     <tr>
         <td>
 <span style="position: relative; top: 0.7em;  margin-left: 15px; font-weight:bold; background: #d3d3d3; color:#000000;">
-Narrative Work Request
+Scope of Work
 </span>
 
-            <div style="text-align:left; border: 1.5px solid #000000; padding-bottom:20px; padding-left:10px; padding-right:10px;">
-                <table style="width:100%; padding-top:25px;">
+            <div style="text-align:left; border: 1.5px solid #000000; padding: 15px 10px 20px;  ">
+                <table style="width:100%; padding-top:5px;">
                     <tr>
                         <td>
-                            <form:textarea path="description" cols="90" rows="4" readonly="true"
+                            <form:textarea path="description" cols="119" rows="4" readonly="true"
                                            cssStyle="color:#000000; background:#d3d3d3; margin-left:auto; margin-right:auto;"/>
                         </td>
                     </tr>
@@ -40,8 +40,8 @@ Narrative Work Request
 Audit Information
 </span>
 
-            <div style="text-align:left; border: 1.5px solid #000000; margin-top: -9px;padding-bottom:20px; padding-left:10px; padding-right:10px;">
-                <table style="padding-top:25px; width:500px;">
+            <div style="text-align:left; border: 1.5px solid #000000; margin-top: -9px;padding: 15px 10px 20px;">
+                <table style="padding-top:5px; width:500px;">
                     <col width="100px"/>
                     <col width="150px"/>
                     <col width="100px"/>
@@ -78,7 +78,7 @@ Audit Information
             </div>
         </td>
         <td>
-            <table style="width:100px; padding-left:40px;" border="0 " cellpadding="2" cellspacing="2">
+            <table style="width:90px; padding-left:15px;" border="0 " cellpadding="2" cellspacing="2">
                 <tr>
                     <td align="center">
                         <label>
@@ -94,8 +94,10 @@ Audit Information
                     </td>
                     <td align="center">
                         <label>
-                            <input type="button" value="Close Window" name="button" onclick="return closeWindow();"
-                                   style="width:72px; height:40px; background:#d3d3d3; text-align:center; white-space:pre-wrap; word-wrap:break-word;">
+                            <button name="button" onclick="return closeWindow();"
+                                    style="width:72px; height:40px; background:#d3d3d3; text-align:center; display:block; word-wrap:break-word;">
+                                Close<br/>Window
+                            </button>
                         </label>
                     </td>
                 </tr>

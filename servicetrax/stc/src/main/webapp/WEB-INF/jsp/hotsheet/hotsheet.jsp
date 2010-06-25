@@ -22,6 +22,15 @@
             width: 25px;
             text-align: center;
         }
+
+        .detailsDropdown {
+            width: 125px;
+        }
+
+        .detailsTable td {
+            padding-left: 0;
+            padding-right: 0;
+        }
     </style>
 
     <link rel="stylesheet" type="text/css"
