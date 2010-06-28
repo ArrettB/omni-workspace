@@ -63,6 +63,9 @@
     <script type="text/javascript"
             src="${pageContext.request.contextPath}/js/yui281/build/json/json-min.js"></script>
 
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/js/hotsheet.js"></script>
+
 
 </head>
 
@@ -176,104 +179,6 @@
 
 <script type="text/javascript">
 
-    //addJobLocation dialog
-    YAHOO.namespace("example.container");
-    YAHOO.util.Event.onDOMReady(function () {
-
-        // Define various event handlers for Dialog
-        var handleSubmit = function() {
-            this.submit();
-        };
-        var handleCancel = function() {
-            this.cancel();
-        };
-
-        var handleSuccess = function(o) {
-            var messages = YAHOO.lang.JSON.parse(o.responseText);
-
-            var originAddressDropdown = document.getElementById("originAddressDropdown");
-            var currentSelection = originAddressDropdown.value;
-            originAddressDropdown.options.length = 0;
-            for (var i = 0; i < messages.length; i++) {
-                var newOption = document.createElement("OPTION");
-                originAddressDropdown.options.add(newOption);
-                newOption.value = messages[i].jobLocationId;
-                newOption.text = messages[i].jobLocationName;
-                if (newOption.value == currentSelection) {
-                    document.getElementById("originAddress.jobLocationName").value = messages[i].jobLocationName;
-                    document.getElementById("originAddress.streetOne").value = messages[i].streetOne;
-                    document.getElementById("originAddress.streetTwo").value = messages[i].streetTwo;
-                    var cityStateZip = messages[i].city + ' ' + messages[i].state + ' ' + messages[i].zip;
-                    document.getElementById("cityStateZip").value = cityStateZip;
-                }
-            }
-        };
-
-        var handleFailure = function(o) {
-            alert("Add job location failed: " + o.status);
-        };
-
-        // Remove progressively enhanced content class, just before creating the module
-        YAHOO.util.Dom.removeClass("addJobLocation", "yui-pe-content");
-
-        // Instantiate the Dialog
-        YAHOO.example.container.addJobLocation = new YAHOO.widget.Dialog("addJobLocation",
-                                                                         { width : "30em",
-                                                                             fixedcenter : true,
-                                                                             visible : false,
-                                                                             constraintoviewport : true,
-                                                                             buttons : [
-                                                                                 { text:"Submit", handler:handleSubmit, isDefault:true },
-                                                                                 { text:"Cancel", handler:handleCancel }
-                                                                             ]
-                                                                         });
-
-        // Validate the entries in the form to require that both first and last name are entered
-        YAHOO.example.container.addJobLocation.validate = function() {
-
-            var data = this.getData();
-
-            if (data == undefined) {
-                return false;
-            }
-
-            if (YAHOO.lang.trim(data.jobLocationName) == "") {
-                alert("A job location name is required.");
-                return false;
-            }
-
-            if (YAHOO.lang.trim(data.streetOne) == "") {
-                alert("An address is required.");
-                return false;
-            }
-
-            if (YAHOO.lang.trim(data.city) == "") {
-                alert("A city is required.");
-                return false;
-            }
-
-            var isZip = /^\d{5}([\-]\d{4})?$/;
-            if (YAHOO.lang.trim(data.zip) == "" || !isZip.test(data.zip)) {
-                alert("A valid zip code is required.");
-                return false;
-            }
-
-            return true;
-        };
-
-        // Wire up the success and failure handlers
-        YAHOO.example.container.addJobLocation.callback = {
-            success: handleSuccess,
-            failure: handleFailure
-        };
-
-        // Render the Dialog
-        YAHOO.example.container.addJobLocation.render();
-
-        YAHOO.util.Event.addListener("show", "click", YAHOO.example.container.addJobLocation.show, YAHOO.example.container.addJobLocation, true);
-    })
-            ;
-
     function initializeDropdown(e) {
         handleChange('US');
     }
@@ -363,6 +268,40 @@
                                 <option value="US" selected="selected">United States</option>
                                 <option value="CA">Canada</option>
                             </select>
+                        </label>
+                    </td>
+                </tr>
+            </table>
+        </form:form>
+    </div>
+</div>
+
+<div id="addOriginContact" class="yui-panel">
+    <div class="hd">Please enter new contact information</div>
+    <div class="bd">
+
+        <form:form name="addOriginContactForm" id="addOriginContactForm"
+                   action="${pageContext.request.contextPath}/addOriginContact.html" method="post">
+            <table border="0" cellspacing="5" cellpadding="0">
+                <input type="hidden" name="customerId" value="${hotSheet.customerId}"/>
+                <input type="hidden" name="extDealerId" value="${hotSheet.extCustomerId}"/>
+                <tr>
+                    <td>
+                        Name:
+                    </td>
+                    <td>
+                        <label>
+                            <input type="text" name="contactName" id="contactName"/>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Phone:
+                    </td>
+                    <td>
+                        <label>
+                            <input type="text" name="contactPhone" id="contactPhone"/>
                         </label>
                     </td>
                 </tr>

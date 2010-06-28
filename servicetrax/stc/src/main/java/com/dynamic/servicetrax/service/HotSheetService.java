@@ -88,6 +88,7 @@ public class HotSheetService {
                                                                         new String[]{hotSheetNumber});
 
         addOriginAddressInfo(hotSheet);
+        addOriginContactInfo(hotSheet);
         addBillingAddressInfo(hotSheet, organizationId);
         Address jobLocationAddress = getAddress(new BigDecimal(hotSheet.getJobLocationAddressId()));
         hotSheet.setJobLocationAddress(jobLocationAddress);
@@ -256,6 +257,20 @@ public class HotSheetService {
         }
     }
 
+    public static final String SELECT_CONTACT =
+            "SELECT CONTACT_ID, CONTACT_NAME, PHONE_WORK from CONTACTS where CONTACT_ID = ?";
+
+    public Map getContact(BigDecimal originContactId) {
+
+        List contact = jdbcTemplate.queryForList(SELECT_CONTACT,
+                                                 new Object[]{originContactId});
+        if (contact == null) {
+            return null;
+        }
+
+        return (Map) contact.get(0);
+    }
+
 
     private List<Address> getOriginAddresses(List<Map> originAddresses) {
         List<Address> addresses = new ArrayList<Address>();
@@ -393,7 +408,7 @@ public class HotSheetService {
     }
 
     public static final String SELECT_ADDRESS =
-            "SELECT JOB_LOCATION_NAME, STREET1, STREET2, STREET3, CITY, " +
+            "SELECT JOB_LOCATION_ID, JOB_LOCATION_NAME, STREET1, STREET2, STREET3, CITY, " +
                     "STATE, ZIP, COUNTRY FROM JOB_LOCATIONS WHERE JOB_LOCATION_ID = ? ";
 
 
@@ -408,6 +423,7 @@ public class HotSheetService {
 
         return address;
     }
+
 
     private String getName(List rows) {
         if (rows == null || rows.size() == 0) {
@@ -546,7 +562,7 @@ public class HotSheetService {
             "INSERT INTO job_locations (customer_id, job_location_name, location_type_id, street1, street2," +
                     " city, state, zip, country, date_created, created_by)" +
                     " SELECT ?, ?, l.lookup_id, ?, ?, ?, ?, ?, ?, ?, ?" +
-                    " FROM lookups l JOIN lookup_types lt ON l.lookup_type_id = lt.lookup_type_id\n" +
+                    " FROM lookups l JOIN lookup_types lt ON l.lookup_type_id = lt.lookup_type_id" +
                     " WHERE lt.code='location_type' AND l.code = 'worksite'";
 
     public void addJobLocationAddress(Address address, long userId) {
@@ -563,6 +579,47 @@ public class HotSheetService {
                         new Date(),
                         userId
                 });
+    }
+
+
+    public static final String ADD_ORIGIN_CONTACT =
+            "INSERT INTO contacts (contact_name, organization_id, cont_status_type_id," +
+                    " customer_id, phone_work, ext_dealer_id, date_created, created_by)" +
+                    " SELECT ?, ?, l.lookup_id, ?, ?, ?, ?, ?" +
+                    " FROM lookups l INNER JOIN lookup_types lt ON l.lookup_type_id = lt.lookup_type_id" +
+                    " WHERE l.code='active' AND lt.code='contact_status_type'";
+
+    public void addNewOriginContact(Map parameterMap, Long userId, long organizationId) {
+
+        try {
+            String name = getValue(parameterMap.get("contactName"));
+            String customerId = getValue(parameterMap.get("customerId"));
+            String phone = getValue(parameterMap.get("contactPhone"));
+            String extDealerId = getValue(parameterMap.get("extDealerId"));
+
+            jdbcTemplate.update(ADD_ORIGIN_CONTACT, new Object[]
+                    {
+                            name,
+                            organizationId,
+                            customerId,
+                            phone,
+                            extDealerId,
+                            new Date(),
+                            userId
+                    });
+        }
+        catch (DataAccessException e) {
+            LOGGER.error(e);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Map> getOriginContacts(Map map) {
+        String customerId = getValue(map.get("customerId"));
+        if (customerId == null || customerId.trim().length() == 0) {
+            return Collections.EMPTY_LIST;
+        }
+        return jdbcTemplate.queryForList(GET_ORIGIN_CONTACT_INFO, new Object[]{customerId});
     }
 
 
@@ -677,6 +734,7 @@ public class HotSheetService {
 
         public Object mapRow(ResultSet resultSet, int i) throws SQLException {
             Address address = new Address();
+            address.setJobLocationId(resultSet.getLong("JOB_LOCATION_ID"));
             address.setJobLocationName(resultSet.getString("JOB_LOCATION_NAME"));
             address.setStreetOne(resultSet.getString("STREET1"));
             address.setStreetTwo(resultSet.getString("STREET2"));

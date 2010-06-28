@@ -120,6 +120,7 @@ public class HotSheetController extends MultiActionController {
 
         //In either event, we need these
         hotSheetService.addOriginAddressInfo(hotSheet);
+        hotSheetService.addOriginContactInfo(hotSheet);
 
         if (result != null && result.hasErrors()) {
             ModelAndView view = new ModelAndView(HOTSHEET_VIEW);
@@ -171,11 +172,11 @@ public class HotSheetController extends MultiActionController {
     public ModelAndView copy(HttpServletRequest request, HttpServletResponse response, HotSheet hotSheet) throws Exception {
 
         hotSheetService.addOriginAddressInfo(hotSheet);
+        hotSheetService.addOriginContactInfo(hotSheet);
 
         // Validation and save logic from primary scenario is executed.
         if (result.hasErrors()) {
             ModelAndView view = new ModelAndView(HOTSHEET_VIEW);
-            hotSheetService.addOriginAddressInfo(hotSheet);
             view.getModel().put(HOT_SHEET, hotSheet);
             List errors = hotSheetService.buildErrors(result.getAllErrors());
             view.getModel().put("errors", errors);
@@ -213,10 +214,10 @@ public class HotSheetController extends MultiActionController {
     public ModelAndView printSave(HttpServletRequest request, HttpServletResponse response, HotSheet hotSheet) throws Exception {
 
         hotSheetService.addOriginAddressInfo(hotSheet);
+        hotSheetService.addOriginContactInfo(hotSheet);
 
         if (result.hasErrors()) {
             ModelAndView view = new ModelAndView(HOTSHEET_VIEW);
-            hotSheetService.addOriginAddressInfo(hotSheet);
             view.getModel().put(HOT_SHEET, hotSheet);
             List errors = hotSheetService.buildErrors(result.getAllErrors());
             view.getModel().put("errors", errors);
@@ -288,6 +289,31 @@ public class HotSheetController extends MultiActionController {
     }
 
     @SuppressWarnings("unchecked, unused")
+    public void updateContact(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        response.setContentType("application/json");
+        OutputStreamWriter os = null;
+
+        try {
+            String id = request.getParameter("originContactId");
+            Map contact = hotSheetService.getContact(new BigDecimal(id));
+            os = new OutputStreamWriter(response.getOutputStream());
+            JSONObject jsonArray = JSONObject.fromObject(contact);
+            os.write(jsonArray.toString());
+            os.flush();
+        }
+        catch (Exception e) {
+            logger.error(e);
+        }
+        finally {
+            if (os != null) {
+                os.close();
+            }
+        }
+    }
+
+
+    @SuppressWarnings("unchecked, unused")
     public void addJobLocation(HttpServletRequest request, HttpServletResponse response, Address address) throws Exception {
 
         LoginCrediantials credentials = (LoginCrediantials) request.getSession().getAttribute(LoginInterceptor.SESSION_ATTR_LOGIN);
@@ -319,6 +345,38 @@ public class HotSheetController extends MultiActionController {
             }
         }
     }
+
+    @SuppressWarnings("unchecked, unused")
+    public void addOriginContact(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        LoginCrediantials credentials =
+                (LoginCrediantials) request.getSession().getAttribute(LoginInterceptor.SESSION_ATTR_LOGIN);
+
+        hotSheetService.addNewOriginContact(request.getParameterMap(),
+                                            (long) credentials.getUserId(),
+                                            (long) credentials.getOrganizationId());
+
+        response.setContentType("application/json");
+        OutputStreamWriter os = null;
+
+        try {
+            List<Map> contacts = hotSheetService.getOriginContacts(request.getParameterMap());
+
+            os = new OutputStreamWriter(response.getOutputStream());
+            JSONArray jsonArray = JSONArray.fromObject(contacts);
+            os.write(jsonArray.toString());
+            os.flush();
+        }
+        catch (Exception e) {
+            logger.error(e);
+        }
+        finally {
+            if (os != null) {
+                os.close();
+            }
+        }
+    }
+
 
     private void saveHotsheet(HttpServletRequest request, HotSheet hotSheet) {
 

@@ -4,54 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
-<script type="text/javascript">
-
-    YAHOO.util.Event.on('originAddressDropdown', 'change', function (event) {
-        var callbacks = {
-
-            start : function(o) {
-                document.getElementById('spinner').style.visibility = 'visible';
-            },
-
-            complete : function(o) {
-                document.getElementById('spinner').style.visibility = 'hidden';
-            },
-
-            success : function (o) {
-                var messages = [];
-                try {
-                    messages = YAHOO.lang.JSON.parse(o.responseText);
-                    document.getElementById("originAddress.jobLocationName").value = messages['jobLocationName'];
-                    document.getElementById("originAddress.streetOne").value = messages['streetOne'];
-                    var cityStateZip = messages['city'] + ' ' + messages['state'] + ' ' + messages['zip'];
-                    document.getElementById("cityStateZip").value = cityStateZip;
-                }
-                catch (exception) {
-                    alert("JSON Parse failed: " + exception);
-                    document.getElementById('spinner').style.visibility = 'hidden';
-                }
-            },
-
-            failure : function (o) {
-                if (!YAHOO.util.Connect.isCallInProgress(o)) {
-                    alert("Async call failed!");
-                    document.getElementById('spinner').style.visibility = 'hidden';
-                }
-            },
-
-            // 10 second timeout
-            timeout : 10000
-        };
-
-        YAHOO.util.Connect.startEvent.subscribe(callbacks.start, callbacks);
-        YAHOO.util.Connect.completeEvent.subscribe(callbacks.complete, callbacks);
-
-        var id = this.value;
-        var url = '<%=request.getContextPath()%>' + '/updateOriginAddress.html?jobLocationId=' + id;
-        YAHOO.util.Connect.asyncRequest('GET', url, callbacks);
-    });
-</script>
-
 <%--Second Row--%>
 <table border="0" cellpadding="1" cellspacing="2" style="width: 825px; margin-top: 15px;">
 <col style="width:28%">
@@ -103,7 +55,7 @@
         <form:input path="originAddress.jobLocationName" readonly="true" cssClass="disabledCell"/>
     </td>
     <td>
-        <input type="button" value="New" id="show" style=" background:#d3d3d3"/>
+        <input type="button" value="New" id="newOriginAddress" style=" background:#d3d3d3"/>
     </td>
     <td>
         <form:input path="jobLocationAddress.streetOne" readonly="true" cssClass="disabledCell"/>
@@ -154,7 +106,9 @@
         </form:select>
     </td>
 
-    <td>&nbsp;</td>
+    <td>
+        &nbsp;
+    </td>
 
     <td>
         <form:input path="jobContactPhone" readonly="true" cssClass="disabledCell"/>
@@ -291,7 +245,9 @@
     <td>
         <form:input path="originContactPhone" readonly="true" cssClass="disabledCell"/>
     </td>
-    <td>&nbsp;</td>
+    <td>
+        <input type="button" value="New" id="newOriginContact" style=" background:#d3d3d3"/>
+    </td>
     <td>
         <form:input path="jobContactEmail" readonly="true" cssClass="disabledCell"/>
     </td>
