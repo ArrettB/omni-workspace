@@ -24,7 +24,8 @@ Scope of Work
                     <tr>
                         <td>
                             <form:textarea path="description" cols="119" rows="4" readonly="true"
-                                           cssStyle="color:#000000; background:#d3d3d3; margin-left:auto; margin-right:auto;"/>
+                                           cssStyle=" width:735px; color:#000000; background:#d3d3d3;
+                                           margin-left:auto; margin-right:auto;"/>
                         </td>
                     </tr>
                 </table>

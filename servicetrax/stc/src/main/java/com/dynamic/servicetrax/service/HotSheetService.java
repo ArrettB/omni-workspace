@@ -5,6 +5,7 @@ import com.dynamic.charm.service.QueryService;
 import com.dynamic.servicetrax.orm.Address;
 import com.dynamic.servicetrax.orm.HotSheet;
 import com.dynamic.servicetrax.orm.HotSheetDetail;
+import com.dynamic.servicetrax.orm.KeyValueBean;
 import com.dynamic.servicetrax.util.TimeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.MessageSource;
@@ -76,6 +77,7 @@ public class HotSheetService {
         addRequestTypeId(hotSheet);
         addUserInfo(hotSheet, userId);
         addOriginAddressInfo(hotSheet);
+        addOriginContactInfo(hotSheet);
         addBillingAddressInfo(hotSheet, organizationId);
         return hotSheet;
     }
@@ -215,6 +217,46 @@ public class HotSheetService {
         }
     }
 
+    public static final String GET_ORIGIN_CONTACT_INFO =
+            "SELECT CONTACT_ID, CONTACT_NAME, PHONE_WORK from CONTACTS where CUSTOMER_ID = ?";
+
+
+    @SuppressWarnings("unchecked")
+    public void addOriginContactInfo(HotSheet hotSheet) {
+        List<Map> originContacts =
+                jdbcTemplate.queryForList(GET_ORIGIN_CONTACT_INFO, new Object[]{hotSheet.getCustomerId()});
+
+        if (originContacts != null && originContacts.size() > 0) {
+            BigDecimal id;
+            if (hotSheet.getOriginContactId() == null) {
+                Map firstContact = originContacts.get(0);
+                id = (BigDecimal) firstContact.get("CONTACT_ID");
+                hotSheet.setOriginAddressId(id.longValue());
+                String name = (String) firstContact.get("CONTACT_NAME");
+                hotSheet.setOriginContactName(name);
+                String phone = (String) firstContact.get("PHONE_WORK");
+                hotSheet.setOriginContactPhone(phone);
+            }
+        }
+        else {
+            hotSheet.setOriginContactName(EMPTY_STRING);
+            hotSheet.setOriginContactPhone(EMPTY_STRING);
+        }
+
+        if (originContacts != null) {
+            List<KeyValueBean> contacts = new ArrayList<KeyValueBean>(originContacts.size());
+            for (Map aRow : originContacts) {
+                KeyValueBean aBean = new KeyValueBean(aRow.get("CONTACT_ID"), aRow.get("CONTACT_NAME"));
+                contacts.add(aBean);
+            }
+            hotSheet.setOriginContacts(contacts);
+        }
+        else {
+            hotSheet.setOriginContacts(Collections.EMPTY_LIST);
+        }
+    }
+
+
     private List<Address> getOriginAddresses(List<Map> originAddresses) {
         List<Address> addresses = new ArrayList<Address>();
         for (Map aRow : originAddresses) {
@@ -282,8 +324,13 @@ public class HotSheetService {
                     " requests.CREATED_BY," +
                     " requests.DATE_MODIFIED," +
                     " requests.MODIFIED_BY," +
-                    " projects.PROJECT_NO as projectNo" +
-                    " from requests, projects where projects.project_id = requests.project_id AND requests.request_id = ?";
+                    " projects.PROJECT_NO as projectNo," +
+                    " contacts.phone_work as originPhone," +
+                    " contacts.contact_name as originName" +
+                    " from requests, projects, contacts" +
+                    " where projects.project_id = requests.project_id" +
+                    " and contacts.contact_id = requests.customer_contact_id" +
+                    " and requests.request_id = ?";
 
     private void addRequestInfo(HotSheet hotSheet, String requestId, Integer hotSheetNumber) {
 
@@ -320,6 +367,11 @@ public class HotSheetService {
         Address jobLocationAddress = getAddress((BigDecimal) row.get("jobLocationAddressId"));
         hotSheet.setJobLocationAddress(jobLocationAddress);
         initializeJobLocationContact(hotSheet, (BigDecimal) row.get("jobLocationContactId"));
+
+        BigDecimal contactId = (BigDecimal) row.get("CUSTOMER_CONTACT_ID");
+        hotSheet.setOriginContactId(contactId.longValue());
+        hotSheet.setOriginContactName((String) row.get("originName"));
+        hotSheet.setOriginContactPhone((String) row.get("originPhone"));
     }
 
     private void initializeJobLocationContact(HotSheet hotSheet, BigDecimal jobLocationContactId) {

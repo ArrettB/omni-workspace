@@ -30,6 +30,23 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
     private static final String PROJECT_NAME = "My Project";
     private static final Integer JOB_LENGTH = 8;
 
+    public void testOriginAddress() {
+
+        hibernateService = (HibernateService) applicationContext.getBean("hibernateService");
+        HotSheet hotsheet = createHotSheet();
+        hotsheet.setOriginContactId(999L);
+        hotsheet.setOriginContactName("ContactMe");
+        hotsheet.setOriginContactPhone("MyPhone");
+
+        hibernateService.saveOrUpdate(hotsheet);
+        HotSheet persisted = (HotSheet) hibernateService.get(HotSheet.class, hotsheet.getHotSheetId());
+        assertEquals("ContactMe", persisted.getOriginContactName());
+        assertEquals("MyPhone", persisted.getOriginContactPhone());
+        assertEquals(999L, persisted.getOriginContactId().longValue());
+
+    }
+
+
     public void testJson() {
         try {
             hibernateService = (HibernateService) applicationContext.getBean("hibernateService");
@@ -162,6 +179,9 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
 
         hotSheet.setExtCustomerId("ExtCustId");
 
+        hotSheet.setOriginContactId(123321L);
+        hotSheet.setOriginContactName("DefaultName");
+        hotSheet.setOriginContactPhone("DefaultPhone");
         return hotSheet;
     }
 

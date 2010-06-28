@@ -12,8 +12,8 @@ Special Instructions
 </span>
 
             <div style="text-align:left; border: 1.5px solid #000000; padding-bottom:20px; padding-right:25px; padding-left:5px; margin-left:4px;">
-                <form:textarea path="specialInstructions" cols="89" rows="9" cssStyle="margin-top:25px; margin-left:15px; margin-right:10px;
-        border:solid 1px inset;"/>
+                <form:textarea path="specialInstructions" cols="89" rows="9"
+                               cssStyle="width:557px; margin-top:25px; margin-left:15px; margin-right:10px; border:solid 1px inset;"/>
             </div>
         </td>
 

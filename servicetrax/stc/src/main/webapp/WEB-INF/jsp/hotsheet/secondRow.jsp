@@ -148,7 +148,10 @@
 
 <tr>
     <td>
-        <input type="text" readonly="true" class="disabledCell" id="cityStateZip" value="Name">
+        <form:select path="originContactId" cssStyle="min-width:225px; max-width:225px;" id="originContactDropdown">
+            <form:options items="${hotSheet.originContacts}" itemValue="key"
+                          itemLabel="value"/>
+        </form:select>
     </td>
 
     <td>&nbsp;</td>
@@ -159,14 +162,14 @@
 
     <td>&nbsp;</td>
     <td rowspan="4">
-        <table border="0" cellpadding="2" cellspacing="4" width="85%" style="font-size:12px; margin-top:0;">
+        <table border="0" cellpadding="1" cellspacing="1" width="75%" style="font-size:12px; margin-top:0;">
             <tr>
                 <td align="right" style="color:red;">
                     <a href="#" id="calStartAnchor"
                        onclick="doCalendar(); return false;" style="text-decoration:none;">
                         <img src="images/icon-calendar.gif" alt="Calendar"/>
                     </a>
-                    Date:
+                    <label style="vertical-align:5px;">Date:</label>
                 </td>
                 <td colspan="3">
                     <label>
@@ -179,7 +182,7 @@
             </tr>
             <tr>
                 <td align="right" style="color:red;">
-                    Whse. Start:
+                    <label style="white-space:nowrap;">Whse. Start:</label>
                 </td>
                 <td>
                     <label>
@@ -225,7 +228,7 @@
 
             <tr>
                 <td align="right" style="color:red;">
-                    Onsite Start:
+                    <label style="white-space:nowrap;">Onsite Start:</label>
                 </td>
                 <td>
                     <label>
@@ -286,7 +289,7 @@
 </tr>
 <tr>
     <td>
-        <input type="text" readonly="true" class="disabledCell" id="cityStateZip" value="Phone">
+        <form:input path="originContactPhone" readonly="true" cssClass="disabledCell"/>
     </td>
     <td>&nbsp;</td>
     <td>

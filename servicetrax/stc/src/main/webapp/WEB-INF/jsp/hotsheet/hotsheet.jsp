@@ -137,6 +137,8 @@
     <form:hidden path="modifiedBy"/>
     <form:hidden path="modifiedByName"/>
 
+    <form:hidden path="originContactName"/>
+
     <jsp:include page="firstRow.jsp" flush="true">
         <jsp:param name="hotSheet" value="${hotSheet}"/>
     </jsp:include>

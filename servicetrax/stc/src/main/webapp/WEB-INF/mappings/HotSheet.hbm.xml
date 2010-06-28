@@ -135,5 +135,20 @@
         <property name="billOfLadingCharge" type="string">
             <column name="BL_CHRG" length="1" not-null="false"/>
         </property>
+
+        <!--ORIGIN_CONTACT_ID-->
+        <property name="originContactId" type="long" not-null="true">
+            <column name="ORIGIN_CONTACT_ID" precision="18" scale="0" not-null="true"/>
+        </property>
+
+        <property name="originContactName" type="string">
+            <column name="ORIGIN_CONTACT_NAME" precision="18" scale="0" not-null="true"/>
+        </property>
+
+        <property name="originContactPhone" type="string">
+            <column name="ORIGIN_CONTACT_PHONE" precision="18" scale="0" not-null="true"/>
+        </property>
+
+
     </class>
 </hibernate-mapping>
