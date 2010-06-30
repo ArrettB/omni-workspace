@@ -1,53 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="billOfLadingEquipment" pageWidth="110" pageHeight="320" columnWidth="110" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
-	<property name="ireport.zoom" value="2.0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="billOfLadingEquipment" pageWidth="110" pageHeight="300" columnWidth="110" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="163"/>
+	<property name="ireport.y" value="462"/>
 	<parameter name="ID" class="java.lang.String"/>
-	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT SUM(CASE WHEN code = 'machine_cart_qty' THEN attribute_value ELSE 0 END) AS 'machine_cart_qty',
-SUM(CASE WHEN code = 'dollies_qty' THEN attribute_value ELSE 0 END) AS 'dollies_qty',
-SUM(CASE WHEN code = 'panel_carts_qty' THEN attribute_value ELSE 0 END) AS 'panel_carts_qty',
-SUM(CASE WHEN code = 'tote_stacks_qty' THEN attribute_value ELSE 0 END) AS 'tote_stacks_qty',
-SUM(CASE WHEN code = 'picture_totes_qty' THEN attribute_value ELSE 0 END) AS 'picture_totes_qty',
-SUM(CASE WHEN code = 'pr_carton_qty' THEN attribute_value ELSE 0 END) AS 'pr_carton_qty',
-SUM(CASE WHEN code = 'half_masonite_qty' THEN attribute_value ELSE 0 END) AS 'half_masonite_qty',
-SUM(CASE WHEN code = 'corner_boards_qty' THEN attribute_value ELSE 0 END) AS 'corner_boards_qty',
-SUM(CASE WHEN code = 'vacuums_qty' THEN attribute_value ELSE 0 END) AS 'vacuums_qty',
-SUM(CASE WHEN code = 'safe_kit_qty' THEN attribute_value ELSE 0 END) AS 'safe_kit_qty',
-SUM(CASE WHEN code = 'shrink_wrap_qty' THEN attribute_value ELSE 0 END) AS 'shrink_wrap_qty',
-SUM(CASE WHEN code = 'boards_qty' THEN attribute_value ELSE 0 END) AS 'boards_qty',
-SUM(CASE WHEN code = 'full_masonite_qty' THEN attribute_value ELSE 0 END) AS 'full_masonite_qty',
-SUM(CASE WHEN code = 'blue_tape_qty' THEN attribute_value ELSE 0 END) AS 'blue_tape_qty',
+		<![CDATA[SELECT
+SUM(CASE WHEN code = 'custom_equipment_A_qty' THEN attribute_value ELSE 0 END) AS 'custom_equipment_A_qty',
+MAX(CASE WHEN code = 'custom_equipment_A' THEN name END)AS 'custom_equipment_A',
+SUM(CASE WHEN code = 'custom_equipment_B_qty' THEN attribute_value ELSE 0 END) AS 'custom_equipment_B_qty',
+MAX(CASE WHEN code = 'custom_equipment_B' THEN name END)AS 'custom_equipment_B',
+SUM(CASE WHEN code = 'custom_equipment_C_qty' THEN attribute_value ELSE 0 END) AS 'custom_equipment_C_qty',
+MAX(CASE WHEN code = 'custom_equipment_C' THEN name END)AS 'custom_equipment_C',
+SUM(CASE WHEN code = 'custom_equipment_D_qty' THEN attribute_value ELSE 0 END) AS 'custom_equipment_D_qty',
+MAX(CASE WHEN code = 'custom_equipment_D' THEN name END)AS 'custom_equipment_D',
+SUM(CASE WHEN code = 'custom_equipment_E_qty' THEN attribute_value ELSE 0 END) AS 'custom_equipment_E_qty',
+MAX(CASE WHEN code = 'custom_equipment_E' THEN name END)AS 'custom_equipment_E',
+SUM(CASE WHEN code = 'custom_equipment_F_qty' THEN attribute_value ELSE 0 END) AS 'custom_equipment_F_qty',
+MAX(CASE WHEN code = 'custom_equipment_F' THEN name END)AS 'custom_equipment_F',
+SUM(CASE WHEN code = 'custom_equipment_G_qty' THEN attribute_value ELSE 0 END) AS 'custom_equipment_G_qty',
+MAX(CASE WHEN code = 'custom_equipment_G' THEN name END)AS 'custom_equipment_G',
+SUM(CASE WHEN code = 'custom_equipment_H_qty' THEN attribute_value ELSE 0 END) AS 'custom_equipment_H_qty',
+MAX(CASE WHEN code = 'custom_equipment_H' THEN name END)AS 'custom_equipment_H',
+SUM(CASE WHEN code = 'custom_equipment_I_qty' THEN attribute_value ELSE 0 END) AS 'custom_equipment_I_qty',
+MAX(CASE WHEN code = 'custom_equipment_I' THEN name END)AS 'custom_equipment_I',
+SUM(CASE WHEN code = 'custom_equipment_J_qty' THEN attribute_value ELSE 0 END) AS 'custom_equipment_J_qty',
+MAX(CASE WHEN code = 'custom_equipment_J' THEN name END)AS 'custom_equipment_J',
+SUM(CASE WHEN code = 'custom_equipment_K_qty' THEN attribute_value ELSE 0 END) AS 'custom_equipment_K_qty',
+MAX(CASE WHEN code = 'custom_equipment_K' THEN name END)AS 'custom_equipment_K',
+SUM(CASE WHEN code = 'custom_equipment_L_qty' THEN attribute_value ELSE 0 END) AS 'custom_equipment_L_qty',
+MAX(CASE WHEN code = 'custom_equipment_L' THEN name END)AS 'custom_equipment_L',
 SUM(CASE WHEN code = 'custom_equipment_1_qty' THEN attribute_value ELSE 0 END) AS 'custom_equipment_1_qty',
-SUM(CASE WHEN code = 'custom_equipment_2_qty' THEN attribute_value ELSE 0 END) AS 'custom_equipment_2_qty'FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
+MAX(CASE WHEN code = 'custom_equipment_1' THEN name END)AS 'custom_equipment_1',
+SUM(CASE WHEN code = 'custom_equipment_2_qty' THEN attribute_value ELSE 0 END) AS 'custom_equipment_2_qty',
+MAX(CASE WHEN code = 'custom_equipment_2' THEN name END) AS 'custom_equipment_2',
+SUM(CASE WHEN code = 'custom_equipment_3_qty' THEN attribute_value ELSE 0 END) AS 'custom_equipment_3_qty',
+MAX(CASE WHEN code = 'custom_equipment_3' THEN name END) AS 'custom_equipment_3',
+SUM(CASE WHEN code = 'custom_equipment_4_qty' THEN attribute_value ELSE 0 END) AS 'custom_equipment_4_qty',
+MAX(CASE WHEN code = 'custom_equipment_4' THEN name END) AS 'custom_equipment_4'
+FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 	</queryString>
-	<field name="machine_cart_qty" class="java.lang.Integer"/>
-	<field name="dollies_qty" class="java.lang.Integer"/>
-	<field name="panel_carts_qty" class="java.lang.Integer"/>
-	<field name="tote_stacks_qty" class="java.lang.Integer"/>
-	<field name="picture_totes_qty" class="java.lang.Integer"/>
-	<field name="pr_carton_qty" class="java.lang.Integer"/>
-	<field name="half_masonite_qty" class="java.lang.Integer"/>
-	<field name="corner_boards_qty" class="java.lang.Integer"/>
-	<field name="vacuums_qty" class="java.lang.Integer"/>
-	<field name="safe_kit_qty" class="java.lang.Integer"/>
-	<field name="shrink_wrap_qty" class="java.lang.Integer"/>
-	<field name="boards_qty" class="java.lang.Integer"/>
-	<field name="full_masonite_qty" class="java.lang.Integer"/>
-	<field name="blue_tape_qty" class="java.lang.Integer"/>
+	<field name="custom_equipment_A_qty" class="java.lang.Integer"/>
+	<field name="custom_equipment_A" class="java.lang.String"/>
+	<field name="custom_equipment_B_qty" class="java.lang.Integer"/>
+	<field name="custom_equipment_B" class="java.lang.String"/>
+	<field name="custom_equipment_C_qty" class="java.lang.Integer"/>
+	<field name="custom_equipment_C" class="java.lang.String"/>
+	<field name="custom_equipment_D_qty" class="java.lang.Integer"/>
+	<field name="custom_equipment_D" class="java.lang.String"/>
+	<field name="custom_equipment_E_qty" class="java.lang.Integer"/>
+	<field name="custom_equipment_E" class="java.lang.String"/>
+	<field name="custom_equipment_F_qty" class="java.lang.Integer"/>
+	<field name="custom_equipment_F" class="java.lang.String"/>
+	<field name="custom_equipment_G_qty" class="java.lang.Integer"/>
+	<field name="custom_equipment_G" class="java.lang.String"/>
+	<field name="custom_equipment_H_qty" class="java.lang.Integer"/>
+	<field name="custom_equipment_H" class="java.lang.String"/>
+	<field name="custom_equipment_I_qty" class="java.lang.Integer"/>
+	<field name="custom_equipment_I" class="java.lang.String"/>
+	<field name="custom_equipment_J_qty" class="java.lang.Integer"/>
+	<field name="custom_equipment_J" class="java.lang.String"/>
+	<field name="custom_equipment_K_qty" class="java.lang.Integer"/>
+	<field name="custom_equipment_K" class="java.lang.String"/>
+	<field name="custom_equipment_L_qty" class="java.lang.Integer"/>
+	<field name="custom_equipment_L" class="java.lang.String"/>
 	<field name="custom_equipment_1_qty" class="java.lang.Integer"/>
+	<field name="custom_equipment_1" class="java.lang.String"/>
 	<field name="custom_equipment_2_qty" class="java.lang.Integer"/>
+	<field name="custom_equipment_2" class="java.lang.String"/>
+	<field name="custom_equipment_3_qty" class="java.lang.Integer"/>
+	<field name="custom_equipment_3" class="java.lang.String"/>
+	<field name="custom_equipment_4_qty" class="java.lang.Integer"/>
+	<field name="custom_equipment_4" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="320" splitType="Stretch">
+		<band height="300" splitType="Stretch">
 			<textField>
-				<reportElement x="90" y="0" width="20" height="20"/>
+				<reportElement x="90" y="0" width="20" height="15"/>
 				<box>
-					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
 					<bottomPen lineWidth="0.75"/>
@@ -56,13 +88,11 @@ SUM(CASE WHEN code = 'custom_equipment_2_qty' THEN attribute_value ELSE 0 END) A
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{machine_cart_qty}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{custom_equipment_A_qty}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="90" y="20" width="20" height="20"/>
+				<reportElement x="90" y="15" width="20" height="15"/>
 				<box>
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
 					<bottomPen lineWidth="0.75"/>
 					<rightPen lineWidth="0.75"/>
@@ -70,13 +100,11 @@ SUM(CASE WHEN code = 'custom_equipment_2_qty' THEN attribute_value ELSE 0 END) A
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{dollies_qty}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{custom_equipment_B_qty}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="90" y="160" width="20" height="20"/>
+				<reportElement x="90" y="120" width="20" height="15"/>
 				<box>
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
 					<bottomPen lineWidth="0.75"/>
 					<rightPen lineWidth="0.75"/>
@@ -84,13 +112,131 @@ SUM(CASE WHEN code = 'custom_equipment_2_qty' THEN attribute_value ELSE 0 END) A
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{vacuums_qty}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{custom_equipment_I_qty}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="90" y="280" width="20" height="20"/>
+				<reportElement x="90" y="210" width="20" height="15"/>
 				<box>
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{custom_equipment_3_qty}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="225" width="20" height="15"/>
+				<box>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{custom_equipment_4_qty}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="30" width="20" height="15"/>
+				<box>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{custom_equipment_C_qty}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="60" width="20" height="15"/>
+				<box>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{custom_equipment_E_qty}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="75" width="20" height="15"/>
+				<box>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{custom_equipment_F_qty}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="90" width="20" height="15"/>
+				<box>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{custom_equipment_G_qty}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="105" width="20" height="15"/>
+				<box>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{custom_equipment_H_qty}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="135" width="20" height="15"/>
+				<box>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{custom_equipment_J_qty}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="150" width="20" height="15"/>
+				<box>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{custom_equipment_K_qty}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="165" width="20" height="15"/>
+				<box>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{custom_equipment_L_qty}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="180" width="20" height="15"/>
+				<box>
 					<leftPen lineWidth="0.75"/>
 					<bottomPen lineWidth="0.75"/>
 					<rightPen lineWidth="0.75"/>
@@ -101,10 +247,8 @@ SUM(CASE WHEN code = 'custom_equipment_2_qty' THEN attribute_value ELSE 0 END) A
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{custom_equipment_1_qty}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="90" y="300" width="20" height="20"/>
+				<reportElement x="90" y="195" width="20" height="15"/>
 				<box>
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
 					<bottomPen lineWidth="0.75"/>
 					<rightPen lineWidth="0.75"/>
@@ -114,334 +258,271 @@ SUM(CASE WHEN code = 'custom_equipment_2_qty' THEN attribute_value ELSE 0 END) A
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{custom_equipment_2_qty}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="0" y="160" width="90" height="20"/>
-				<box leftPadding="4">
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Vacuums]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="0" width="90" height="20"/>
-				<box leftPadding="4">
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Machine Carts 3/4]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="20" width="90" height="20"/>
-				<box leftPadding="4">
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Dollies]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="60" width="90" height="20"/>
-				<box leftPadding="4">
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Tote Stacks]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="80" width="90" height="20"/>
-				<box leftPadding="4">
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Picture Totes]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="100" width="90" height="20"/>
-				<box leftPadding="4">
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[PR Carton]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="120" width="90" height="20"/>
-				<box leftPadding="4">
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[1/2 Masonite]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="140" width="90" height="20"/>
-				<box leftPadding="4">
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Corner Boards]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="180" width="90" height="20"/>
-				<box leftPadding="4">
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Safe Kit]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="200" width="90" height="20"/>
-				<box leftPadding="4">
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Shrink Wrap]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="220" width="90" height="20"/>
-				<box leftPadding="4">
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Shrt/Long Boards]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="240" width="90" height="20"/>
-				<box leftPadding="4">
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Full Masonite]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="260" width="90" height="20"/>
-				<box leftPadding="4">
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Blue Tape]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="40" width="90" height="20"/>
-				<box leftPadding="4">
-					<pen lineWidth="0.75"/>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Panel Carts]]></text>
-			</staticText>
 			<textField>
-				<reportElement x="90" y="40" width="20" height="20"/>
+				<reportElement x="90" y="45" width="20" height="15"/>
 				<box>
-					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
 					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{panel_carts_qty}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{custom_equipment_D_qty}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="90" y="80" width="20" height="20"/>
-				<box>
+				<reportElement x="0" y="0" width="90" height="15"/>
+				<box leftPadding="4">
 					<topPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{picture_totes_qty}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{custom_equipment_A}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="90" y="100" width="20" height="20"/>
-				<box>
-					<topPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+				<reportElement x="0" y="15" width="90" height="15"/>
+				<box leftPadding="4">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{pr_carton_qty}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{custom_equipment_B}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="90" y="120" width="20" height="20"/>
-				<box>
-					<topPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+				<reportElement x="0" y="30" width="90" height="15"/>
+				<box leftPadding="4">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{half_masonite_qty}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{custom_equipment_C}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="90" y="140" width="20" height="20"/>
-				<box>
-					<topPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+				<reportElement x="0" y="45" width="90" height="15"/>
+				<box leftPadding="4">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{corner_boards_qty}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{custom_equipment_D}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="90" y="180" width="20" height="20"/>
-				<box>
-					<topPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+				<reportElement x="0" y="60" width="90" height="15"/>
+				<box leftPadding="4">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{safe_kit_qty}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{custom_equipment_E}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="90" y="200" width="20" height="20"/>
-				<box>
-					<topPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+				<reportElement x="0" y="75" width="90" height="15"/>
+				<box leftPadding="4">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{shrink_wrap_qty}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{custom_equipment_F}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="90" y="220" width="20" height="20"/>
-				<box>
-					<topPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+				<reportElement x="0" y="90" width="90" height="15"/>
+				<box leftPadding="4">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{boards_qty}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{custom_equipment_G}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="90" y="240" width="20" height="20"/>
-				<box>
-					<topPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+				<reportElement x="0" y="105" width="90" height="15"/>
+				<box leftPadding="4">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{full_masonite_qty}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{custom_equipment_H}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="90" y="260" width="20" height="20"/>
-				<box>
-					<topPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+				<reportElement x="0" y="120" width="90" height="15"/>
+				<box leftPadding="4">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{blue_tape_qty}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{custom_equipment_I}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="90" y="60" width="20" height="20"/>
-				<box>
-					<topPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+				<reportElement x="0" y="135" width="90" height="15"/>
+				<box leftPadding="4">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{tote_stacks_qty}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{custom_equipment_J}]]></textFieldExpression>
 			</textField>
-			<subreport>
-				<reportElement x="0" y="280" width="90" height="40"/>
-				<subreportParameter name="SUBREPORT_DIR">
-					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="ID">
-					<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "billOfLadingEquipmentCustomNames.jasper"]]></subreportExpression>
-			</subreport>
+			<textField>
+				<reportElement x="0" y="150" width="90" height="15"/>
+				<box leftPadding="4">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{custom_equipment_K}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="165" width="90" height="15"/>
+				<box leftPadding="4">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{custom_equipment_L}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="180" width="90" height="15"/>
+				<box leftPadding="4">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{custom_equipment_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="195" width="90" height="15"/>
+				<box leftPadding="4">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{custom_equipment_2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="210" width="90" height="15"/>
+				<box leftPadding="4">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{custom_equipment_3}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="225" width="90" height="15"/>
+				<box leftPadding="4">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{custom_equipment_4}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="240" width="90" height="15"/>
+				<box>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="255" width="90" height="15"/>
+				<box>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="270" width="90" height="15"/>
+				<box>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="285" width="90" height="15"/>
+				<box>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="240" width="20" height="15"/>
+				<box>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="255" width="20" height="15"/>
+				<box>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="270" width="20" height="15"/>
+				<box>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="285" width="20" height="15"/>
+				<box>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
 		</band>
 	</detail>
 </jasperReport>

@@ -27,6 +27,7 @@ function initializeOriginContact() {
             newOption.text = messages[i].CONTACT_NAME;
             if (newOption.value == currentSelection) {
                 document.getElementById("originContactPhone").value = messages[i].PHONE_WORK;
+                document.getElementById("originContactName").value = messages[i].CONTACT_NAME;
             }
         }
         originContactDropdown.value = currentSelection;
@@ -245,6 +246,7 @@ YAHOO.util.Event.on('originContactDropdown', 'change', function (event) {
             try {
                 messages = YAHOO.lang.JSON.parse(o.responseText);
                 document.getElementById("originContactPhone").value = messages['PHONE_WORK'];
+                document.getElementById("originContactName").value = messages['CONTACT_NAME'];
             }
             catch (exception) {
                 alert("JSON Parse failed: " + exception);
