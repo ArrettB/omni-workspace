@@ -467,7 +467,27 @@ public class HotSheetService {
         return details;
     }
 
+    private static final String CHECK_HOTSHEET_NUMBER =
+            "SELECT COUNT(*) FROM HOTSHEETS WHERE HOTSHEET_NO = ? AND REQUEST_ID = ?";
+
     public synchronized HotSheet saveHotSheet(HotSheet hotsheet) {
+
+
+        if (hotsheet.getHotSheetId() == null) {
+            int count = jdbcTemplate.queryForInt(CHECK_HOTSHEET_NUMBER,
+                                                 new Object[]{hotsheet.getHotSheetNumber(),
+                                                         hotsheet.getRequestId()});
+            if (count > 0) {
+                Integer newHotSheetNumber =
+                        getNextHotSheetNumberForRequest(String.valueOf(hotsheet.getRequestId()));
+                hotsheet.setHotSheetNumber(newHotSheetNumber);
+                String existingIdentifier = hotsheet.getHotSheetIdentifier();
+                String truncated = existingIdentifier.substring(0, existingIdentifier.indexOf("HS") + 2);
+                hotsheet.setHotSheetIdentifier(truncated + newHotSheetNumber);
+            }
+        }
+
+
         HotSheet persisted = (HotSheet) hibernateService.saveOrUpdate(hotsheet);
 
         Map<String, HotSheetDetail> details = persisted.getDetails();

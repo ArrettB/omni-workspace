@@ -178,6 +178,7 @@ public class HotSheetController extends MultiActionController {
         if (result.hasErrors()) {
             ModelAndView view = new ModelAndView(HOTSHEET_VIEW);
             view.getModel().put(HOT_SHEET, hotSheet);
+            view.getModel().put(EQUIPMENT_LIST, hotSheetService.getEquipmentList());
             List errors = hotSheetService.buildErrors(result.getAllErrors());
             view.getModel().put("errors", errors);
             return view;
@@ -220,6 +221,7 @@ public class HotSheetController extends MultiActionController {
             ModelAndView view = new ModelAndView(HOTSHEET_VIEW);
             view.getModel().put(HOT_SHEET, hotSheet);
             List errors = hotSheetService.buildErrors(result.getAllErrors());
+            view.getModel().put(EQUIPMENT_LIST, hotSheetService.getEquipmentList());
             view.getModel().put("errors", errors);
             return view;
         }
