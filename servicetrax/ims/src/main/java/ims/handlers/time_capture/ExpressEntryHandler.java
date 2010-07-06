@@ -1,7 +1,6 @@
 package ims.handlers.time_capture;
 
 import ims.helpers.IMSUtil;
-import ims.TimeUtils;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -27,6 +26,7 @@ import dynamic.util.string.StringUtil;
 import dynamic.util.xml.XMLUtils;
 
 /**
+ *
  * @version $Id: ExpressEntryHandler.java, 18, 2/10/2006 4:46:22 PM, Blake Von Haden$
  */
 public class ExpressEntryHandler extends BaseHandler {
@@ -144,11 +144,11 @@ public class ExpressEntryHandler extends BaseHandler {
             result = false;
             ErrorHandler.handleException(ic, e, "Exception in ExpressEntryHandler");
         }
-        finally {
-            if (conn != null) {
+		finally
+		{
+			if (conn != null)
                 conn.release();
             }
-        }
 
         return result;
     }
@@ -170,9 +170,8 @@ public class ExpressEntryHandler extends BaseHandler {
         String tempStatusID = getStatusID("temp");
         boolean billing = false;
         String module = ic.getParameter("module");
-        if (StringUtil.hasAValue(module) && module.equalsIgnoreCase("bill")) {
+		if( StringUtil.hasAValue(module) && module.equalsIgnoreCase("bill") )
             billing = true;
-        }
 
         String itemTypeCode = ic.getParameter("item_type_code");
         boolean isExpense = "expense".equals(itemTypeCode);
@@ -238,8 +237,9 @@ public class ExpressEntryHandler extends BaseHandler {
             fieldCode = "tc_qty";
             errMessage = "TC Qty";
         }
-        else {
-            qty = getNumberOfHours(ic);
+        else
+		{
+			qty = ic.getParameter("num_hours");
             fieldCode = "num_hours";
             errMessage = "amount of hours";
         }
@@ -327,9 +327,6 @@ public class ExpressEntryHandler extends BaseHandler {
                     insert.append(", entered_by");
                     insert.append(", entry_method");
                     insert.append(", billable_flag");
-                    insert.append(", start_time");
-                    insert.append(", end_time");
-                    insert.append(", break_time_minutes");
                     insert.append(", date_created");
                     insert.append(", created_by");
                     insert.append(") VALUES (");
@@ -355,9 +352,6 @@ public class ExpressEntryHandler extends BaseHandler {
                     insert.append(", ").append(userID);
                     insert.append(", ").append(conn.toSQLString("WEB"));
                     insert.append(", ").append(conn.toSQLString("Y"));
-                    insert.append(", ").append(getStartTimeInMilitaryTime(ic));
-                    insert.append(", ").append(getEndTimeInMilitaryTime(ic));
-                    insert.append(", ").append(getBreakTimeMinutes(ic));
                     insert.append(", ").append(conn.toSQLString(now));
                     insert.append(", ").append(userID);
                     insert.append(")");
@@ -368,6 +362,7 @@ public class ExpressEntryHandler extends BaseHandler {
         }
 
         return valid;
+
 
 
     }
@@ -593,9 +588,6 @@ public class ExpressEntryHandler extends BaseHandler {
                     }
 
                     update.append(", tc_rate = ").append(rate);
-                    update.append(", start_time = ").append(getStartTimeInMilitaryTime(serviceLineID, ic));
-                    update.append(", end_time = ").append(getEndTimeInMilitaryTime(serviceLineID, ic));
-                    update.append(", break_time_minutes = ").append(getBreakTimeMinutes(serviceLineID, ic));
                     update.append(", date_modified = ").append(conn.toSQLString(now));
                     update.append(", modified_by = ").append(userID);
                     update.append(" WHERE service_line_id = ").append(serviceLineID);
@@ -621,80 +613,4 @@ public class ExpressEntryHandler extends BaseHandler {
 
     }
 
-    int getStartTimeInMilitaryTime(String serviceLineId, InvocationContext ic) {
-        String startHours = ic.getParameter(serviceLineId + "_" + "start_time_hour");
-        String startMinutes = ic.getParameter(serviceLineId + "_" + "start_time_minutes");
-        String startAMPM = ic.getParameter(serviceLineId + "_" + "start_time_AMPM");
-
-        return TimeUtils.getTimeAsMilitaryTime(Integer.valueOf(startHours), Integer.valueOf(startMinutes), startAMPM);
     }
-
-    int getEndTimeInMilitaryTime(String serviceLineId, InvocationContext ic) {
-        String endHours = ic.getParameter(serviceLineId + "_" + "end_time_hour");
-        String endMinutes = ic.getParameter(serviceLineId + "_" + "end_time_minutes");
-        String endAMPM = ic.getParameter(serviceLineId + "_" + "end_time_AMPM");
-        return TimeUtils.getTimeAsMilitaryTime(Integer.valueOf(endHours), Integer.valueOf(endMinutes), endAMPM);
-    }
-
-    int getBreakTimeMinutes(String serviceLineId, InvocationContext ic) {
-        String lunchDinnerHours = ic.getParameter(serviceLineId + "_" + "lunch_dinner_hours");
-        String lunchDinnerMinutes = ic.getParameter(serviceLineId + "_" + "lunch_dinner_minutes");
-        return (Integer.valueOf(lunchDinnerHours) * 60) + Integer.valueOf(lunchDinnerMinutes);
-    }
-
-    int getStartTimeInMilitaryTime(InvocationContext ic) {
-        String startHours = ic.getParameter("start_time_hour");
-        String startMinutes = ic.getParameter("start_time_minutes");
-        String startAMPM = ic.getParameter("start_time_AMPM");
-        return TimeUtils.getTimeAsMilitaryTime(getIntegerValue(startHours), getIntegerValue(startMinutes), startAMPM);
-    }
-
-    private Integer getIntegerValue(String value) {
-        return value == null ? 0 : Integer.valueOf(value);
-    }
-
-    int getEndTimeInMilitaryTime(InvocationContext ic) {
-        String endHours = ic.getParameter("end_time_hour");
-        String endMinutes = ic.getParameter("end_time_minutes");
-        String endAMPM = ic.getParameter("end_time_AMPM");
-        return TimeUtils.getTimeAsMilitaryTime(getIntegerValue(endHours), getIntegerValue(endMinutes), endAMPM);
-    }
-
-    int getBreakTimeMinutes(InvocationContext ic) {
-        String lunchDinnerHours = ic.getParameter("lunch_dinner_hours");
-        String lunchDinnerMinutes = ic.getParameter("lunch_dinner_minutes");
-        return (getIntegerValue(lunchDinnerHours) * 60) + getIntegerValue(lunchDinnerMinutes);
-    }
-
-    private String getNumberOfHours(InvocationContext ic) {
-
-        try {
-            String lunchDinnerHours = ic.getParameter("lunch_dinner_hours");
-            String lunchDinnerMinutes = ic.getParameter("lunch_dinner_minutes");
-
-            String startHours = ic.getParameter("start_time_hour");
-            String startMinutes = ic.getParameter("start_time_minutes");
-            String startAMPM = ic.getParameter("start_time_AMPM");
-            float start = (Float.valueOf(startHours) * 60) + Float.valueOf(startMinutes);
-            if ("PM".equals(startAMPM)) {
-                start += 720;
-            }
-
-            String endHours = ic.getParameter("end_time_hour");
-            String endMinutes = ic.getParameter("end_time_minutes");
-            String endAMPM = ic.getParameter("end_time_AMPM");
-            float end = (Float.valueOf(endHours) * 60) + Float.valueOf(endMinutes);
-            if ("PM".equals(endAMPM)) {
-                end += 720;
-            }
-
-            float breakTime = (Float.valueOf(lunchDinnerHours) * 60) + Float.valueOf(lunchDinnerMinutes);
-            double netHours = ((end - start) - breakTime) / 60.0;
-            return String.valueOf(netHours);
-        }
-        catch (Exception e) {
-            Diagnostics.error(e.getMessage());
-        }
-        return null;
-    }
-}

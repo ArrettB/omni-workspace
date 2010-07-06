@@ -391,6 +391,6 @@ GO
  */
 
 ALTER TABLE [dbo].[INVOICES]
-   ADD [FUEL_SURCHARGE] [varchar](1) NOT NULL DEFAULT ('N')
+   ADD [FUEL_SURCHARGE] [varchar](1)
 GO
 
