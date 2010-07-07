@@ -48,4 +48,39 @@ public class TimeUtils {
     public static String getAMPM(int militaryTime) {
         return militaryTime - 1200 < 0 ? "AM" : "PM";
     }
+
+    public static String getTimeAsString(int timeValue) {
+        int hours = timeValue / 100;
+
+        int minutes = timeValue - (hours * 100);
+
+        String amPm = " AM";
+        if( timeValue >= 1200) {
+            amPm = " PM";
+        }
+
+        if(timeValue >= 1300) {
+            hours = hours - 12;
+        }
+
+        String minutesString;
+        if(minutes < 10) {
+            minutesString = "0" + minutes;
+        } else {
+            minutesString = String.valueOf(minutes);
+        }
+
+        String hoursString;
+        if(hours == 0) {
+            hours += 12;
+        }
+
+        if(hours < 10) {
+            hoursString = "0" + hours;
+        } else {
+            hoursString = String.valueOf(hours);
+        }
+
+        return hoursString + ":" + minutesString + amPm;
+    }
 }

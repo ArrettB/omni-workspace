@@ -1,4 +1,4 @@
-package ims;
+package com.dynamic.servicetrax.util;
 
 import junit.framework.TestCase;
 
@@ -6,7 +6,7 @@ import junit.framework.TestCase;
  * Created by IntelliJ IDEA.
  * User: dave
  * Date: Jul 7, 2010
- * Time: 9:46:26 AM
+ * Time: 10:54:28 AM
  * To change this template use File | Settings | File Templates.
  */
 public class TimeUtilsTest extends TestCase {
