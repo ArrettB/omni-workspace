@@ -438,10 +438,10 @@
 
 
 <div id="confirmPrint" class="yui-panel">
-    <div class="hd">HOT SHEET PRINT CONFIRMATION</div>
+    <div class="hd">BILL OF LADING PRINT CONFIRMATION</div>
     <div class="bd" style="text-align:center; font-size:14px;">
         <label id="printHotsheet">
-            Print this Hotsheet?
+            Print this Bill of Lading?
         </label>
         <label id="printProgress" style="visibility:hidden;">
             <img src="images/saving.gif" alt="">

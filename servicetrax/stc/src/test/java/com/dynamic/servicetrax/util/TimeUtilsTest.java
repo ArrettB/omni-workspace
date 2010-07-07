@@ -15,5 +15,6 @@ public class TimeUtilsTest extends TestCase {
         assertEquals("10:30 AM", TimeUtils.getTimeAsString(1030));
         assertEquals("12:00 PM", TimeUtils.getTimeAsString(1200));
         assertEquals("12:00 AM", TimeUtils.getTimeAsString(0));
+        assertEquals("08:30 AM", TimeUtils.getTimeAsString(830));
     }
 }

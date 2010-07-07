@@ -8,29 +8,32 @@ YAHOO.util.Event.onDOMReady(function () {
 function initializeOriginContact() {
     // Define various event handlers for new origin address
     var handleContactSubmit = function() {
-        this.submit();
+        var result = this.submit();
+        if (result == true) {
+            YAHOO.example.container.addContact.element.style.zIndex = -1;
+        }
+
     };
     var handleContactCancel = function() {
         this.cancel();
+        YAHOO.example.container.addContact.element.style.zIndex = -1;
     };
 
     var handleContactSuccess = function(o) {
         var messages = YAHOO.lang.JSON.parse(o.responseText);
 
         var originContactDropdown = document.getElementById("originContactDropdown");
-        var currentSelection = originContactDropdown.value;
         originContactDropdown.options.length = 0;
         for (var i = 0; i < messages.length; i++) {
             var newOption = document.createElement("OPTION");
             originContactDropdown.options.add(newOption);
             newOption.value = messages[i].CONTACT_ID;
             newOption.text = messages[i].CONTACT_NAME;
-            if (newOption.value == currentSelection) {
+            if (i == 0) {
                 document.getElementById("originContactPhone").value = messages[i].PHONE_WORK;
                 document.getElementById("originContactName").value = messages[i].CONTACT_NAME;
             }
         }
-        originContactDropdown.value = currentSelection;
     };
 
     var handleContactFailure = function(o) {
@@ -82,7 +85,13 @@ function initializeOriginContact() {
     // Render the Dialog
     YAHOO.example.container.addContact.render();
 
-    YAHOO.util.Event.addListener("newOriginContact", "click", YAHOO.example.container.addContact.show, YAHOO.example.container.addContact, true);
+    function init(e) {
+        YAHOO.example.container.addContact.show();
+        YAHOO.example.container.addContact.element.style.zIndex = 2;
+    }
+
+
+    YAHOO.util.Event.addListener("newOriginContact", "click", init, YAHOO.example.container.addContact, true);
 
 }
 
@@ -90,31 +99,34 @@ function initializeOriginContact() {
 function initializeOriginAddress() {
     // Define various event handlers for new origin address
     var handleLocationSubmit = function() {
-        this.submit();
+        var result = this.submit();
+        if (result) {
+            YAHOO.example.container.addJobLocation.element.style.zIndex = -1;
+        }
     };
     var handleLocationCancel = function() {
         this.cancel();
+        YAHOO.example.container.addJobLocation.element.style.zIndex = -1;
     };
 
     var handleLocationSuccess = function(o) {
         var messages = YAHOO.lang.JSON.parse(o.responseText);
 
         var originAddressDropdown = document.getElementById("originAddressDropdown");
-        var currentSelection = originAddressDropdown.value;
         originAddressDropdown.options.length = 0;
         for (var i = 0; i < messages.length; i++) {
             var newOption = document.createElement("OPTION");
             originAddressDropdown.options.add(newOption);
             newOption.value = messages[i].jobLocationId;
             newOption.text = messages[i].jobLocationName;
-            if (newOption.value == currentSelection) {
+            if (i == 0) {
+                originAddressDropdown.value = messages[i].jobLocationId
                 document.getElementById("originAddress.jobLocationName").value = messages[i].jobLocationName;
                 document.getElementById("originAddress.streetOne").value = messages[i].streetOne;
                 var cityStateZip = messages[i].city + ' ' + messages[i].state + ' ' + messages[i].zip;
                 document.getElementById("cityStateZip").value = cityStateZip;
             }
         }
-        originAddressDropdown.value = currentSelection;
     };
 
     var handleLocationFailure = function(o) {
@@ -178,7 +190,13 @@ function initializeOriginAddress() {
     // Render the Dialog
     YAHOO.example.container.addJobLocation.render();
 
-    YAHOO.util.Event.addListener("newOriginAddress", "click", YAHOO.example.container.addJobLocation.show, YAHOO.example.container.addJobLocation, true);
+    function init(e) {
+        YAHOO.example.container.addJobLocation.show();
+        YAHOO.example.container.addJobLocation.element.style.zIndex = 2;
+    }
+
+
+    YAHOO.util.Event.addListener("newOriginAddress", "click", init, YAHOO.example.container.addJobLocation, true);
 
 }
 

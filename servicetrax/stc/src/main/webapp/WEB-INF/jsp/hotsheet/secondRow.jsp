@@ -283,21 +283,21 @@
                     </td>
                     <td>
                         <form:input path="details[box_van_qty].attributeValue"
-                                    maxlength="3" cssClass="details"/>
+                                    maxlength="3" cssClass="details" cssStyle="margin-left:5px;"/>
                     </td>
                     <td>
                         Box Van
                     </td>
                     <td>
                         <form:input path="details[tractor_qty].attributeValue"
-                                    maxlength="3" cssClass="details"/>
+                                    maxlength="3" cssClass="details" cssStyle="margin-left:5px;"/>
                     </td>
                     <td>
                         Tractor
                     </td>
                     <td>
                         <form:input path="details[trailer_qty].attributeValue"
-                                    maxlength="3" cssClass="details"/>
+                                    maxlength="3" cssClass="details" cssStyle="margin-left:5px;"/>
                     </td>
                     <td>
                         Trailer

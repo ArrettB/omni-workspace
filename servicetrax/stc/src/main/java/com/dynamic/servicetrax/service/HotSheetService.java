@@ -188,7 +188,7 @@ public class HotSheetService {
             "select JOB_LOCATION_ID, JOB_LOCATION_NAME, JOB_LOCATION_NAME, " +
                     " STREET1, STREET2, STREET3," +
                     " CITY, STATE, ZIP, COUNTRY" +
-                    " from JOB_LOCATIONS where CUSTOMER_ID = ? order by JOB_LOCATION_NAME";
+                    " from JOB_LOCATIONS where CUSTOMER_ID = ? order by JOB_LOCATION_ID DESC";
 
     @SuppressWarnings("unchecked")
     public void addOriginAddressInfo(HotSheet hotSheet) {
@@ -219,7 +219,7 @@ public class HotSheetService {
     }
 
     public static final String GET_ORIGIN_CONTACT_INFO =
-            "SELECT CONTACT_ID, CONTACT_NAME, PHONE_WORK from CONTACTS where CUSTOMER_ID = ?";
+            "SELECT CONTACT_ID, CONTACT_NAME, PHONE_WORK FROM CONTACTS WHERE CUSTOMER_ID = ? ORDER BY CONTACT_ID DESC";
 
 
     @SuppressWarnings("unchecked")

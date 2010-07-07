@@ -40,9 +40,8 @@
         </td>
         <td>
             <form:select path="billOfLadingCharge">
-                <form:option value="" label=""/>
-                <form:option value="Y" label="Yes"/>
                 <form:option value="N" label="No"/>
+                <form:option value="Y" label="Yes"/>
             </form:select>
         </td>
     </tr>

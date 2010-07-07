@@ -30,6 +30,18 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
     private static final String PROJECT_NAME = "My Project";
     private static final Integer JOB_LENGTH = 8;
 
+    public void testMod() {
+
+        assertEquals(21, calculateHourFromMilitaryTime(2115));
+        assertEquals(21, calculateHourFromMilitaryTime(2100));
+        assertEquals(21, calculateHourFromMilitaryTime(2145));
+        assertEquals(21, calculateHourFromMilitaryTime(2130));
+    }
+
+    private int calculateHourFromMilitaryTime(int control) {
+        return (control - (control % 100)) / 100;
+    }
+
     public void testOriginAddress() {
 
         hibernateService = (HibernateService) applicationContext.getBean("hibernateService");
