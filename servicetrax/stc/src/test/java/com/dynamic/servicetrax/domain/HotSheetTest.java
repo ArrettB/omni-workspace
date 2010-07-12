@@ -46,7 +46,8 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
 
         hibernateService = (HibernateService) applicationContext.getBean("hibernateService");
         HotSheet hotsheet = createHotSheet();
-        hotsheet.setOriginContactId(999L);
+        Long contactId = jdbcTemplate.queryForLong("select max(contact_id ) from contacts");
+        hotsheet.setOriginContactId(contactId);
         hotsheet.setOriginContactName("ContactMe");
         hotsheet.setOriginContactPhone("MyPhone");
 
@@ -54,7 +55,7 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
         HotSheet persisted = (HotSheet) hibernateService.get(HotSheet.class, hotsheet.getHotSheetId());
         assertEquals("ContactMe", persisted.getOriginContactName());
         assertEquals("MyPhone", persisted.getOriginContactPhone());
-        assertEquals(999L, persisted.getOriginContactId().longValue());
+        assertEquals(contactId, persisted.getOriginContactId());
 
     }
 
@@ -191,9 +192,14 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
 
         hotSheet.setExtCustomerId("ExtCustId");
 
-        hotSheet.setOriginContactId(123321L);
+        Long contactId = jdbcTemplate.queryForLong("select max(contact_id ) from contacts");
+        hotSheet.setOriginContactId(contactId);
         hotSheet.setOriginContactName("DefaultName");
         hotSheet.setOriginContactPhone("DefaultPhone");
+
+        Long addressId = jdbcTemplate.queryForLong("select max(job_location_id) from job_locations");
+        hotSheet.setOriginAddressId(addressId);
+
         return hotSheet;
     }
 

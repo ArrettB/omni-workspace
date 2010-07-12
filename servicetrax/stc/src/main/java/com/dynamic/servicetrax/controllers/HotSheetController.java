@@ -58,6 +58,7 @@ public class HotSheetController extends MultiActionController {
             public void validate(Object command, Errors errors) {
                 ValidationUtils.rejectIfEmpty(errors, "originAddressId", "", "An origin address is required");
                 ValidationUtils.rejectIfEmpty(errors, "jobLength", "", "Job length cannot be blank");
+                ValidationUtils.rejectIfEmpty(errors, "billOfLadingCharge", "", "You must choose a Bill of Lading charge");
 
                 Integer jobLength = ((HotSheet) command).getJobLength();
                 if (jobLength != null && jobLength < 0) {

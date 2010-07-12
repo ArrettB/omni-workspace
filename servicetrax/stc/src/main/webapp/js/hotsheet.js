@@ -46,6 +46,7 @@ function initializeOriginContact() {
     // Instantiate the Dialog
     YAHOO.example.container.addContact = new YAHOO.widget.Dialog("addOriginContact",
                                                                  { width : "30em",
+                                                                     zIndex : -1,
                                                                      fixedcenter : true,
                                                                      visible : false,
                                                                      constraintoviewport : true,
@@ -139,6 +140,7 @@ function initializeOriginAddress() {
     // Instantiate the Dialog
     YAHOO.example.container.addJobLocation = new YAHOO.widget.Dialog("addJobLocation",
                                                                      { width : "30em",
+                                                                         zIndex : -1,
                                                                          fixedcenter : true,
                                                                          visible : false,
                                                                          constraintoviewport : true,
