@@ -104,10 +104,10 @@
 			<timezone />
 		</developer>
 	</developers>
-	<scm>
-		<connection>scm:svn:http://svn.apexit.com/svn/charm/trunk/charm-examples</connection>
-		<developerConnection>scm:svn:http://svn.apexit.com/svn/charm/trunk/charm-examples</developerConnection>
-	</scm>
+	<!--<scm>-->
+		<!--<connection>scm:svn:http://svn.apexit.com/svn/charm/trunk/charm-examples</connection>-->
+		<!--<developerConnection>scm:svn:http://svn.apexit.com/svn/charm/trunk/charm-examples</developerConnection>-->
+	<!--</scm>-->
 	<repositories>
                 <!--
 		<repository>

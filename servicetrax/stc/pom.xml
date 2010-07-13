@@ -5,7 +5,7 @@
     <artifactId>stc</artifactId>
     <packaging>war</packaging>
     <name>ServiceTrax Charm Module</name>
-    <version>1.39</version>
+    <version>1.39-SNAPSHOT</version>
 
     <parent>
         <groupId>com.dynamic.servicetrax</groupId>
@@ -42,10 +42,10 @@
             <timezone />
         </developer>
     </developers>
-    <scm>
-        <connection>scm:svn:http://svn.apexit.com/svn/servicetrax/tags/1.39</connection>
-        <developerConnection>scm:svn:http://svn.apexit.com/svn/servicetrax/tags/1.39</developerConnection>
-    </scm>
+    <!--<scm>-->
+        <!--<connection>scm:svn:http://svn.apexit.com/svn/servicetrax/tags/1.39</connection>-->
+        <!--<developerConnection>scm:svn:http://svn.apexit.com/svn/servicetrax/tags/1.39</developerConnection>-->
+    <!--</scm>-->
     <repositories>
         <!--
 <repository>

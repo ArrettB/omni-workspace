@@ -38,6 +38,7 @@
 			<comments />
 		</license>
 	</licenses>
+    <!--
 	<scm>
 		<connection>
 			scm:svn:http://svn.apexit.com/svn/charm/tags/1.39</connection>
@@ -45,6 +46,7 @@
 			scm:svn:http://svn.apexit.com/svn/charm/tags/1.39</developerConnection>
 		<url>http://svn.apexit.com/svn/charm/tags/1.39</url>
 	</scm>
+	-->
 	<organization>
 		<name>ApexIT, Inc.</name>
 		<url>http://www.apexit.com</url>

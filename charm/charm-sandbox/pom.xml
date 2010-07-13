@@ -12,11 +12,11 @@
 		<version>2.3</version>
 	</parent>
 	
-	<scm>
-		<connection>scm:svn:http://svn.apexit.com/svn/charm/trunk/charm-sandbox</connection>
-		<developerConnection>scm:svn:http://svn.apexit.com/svn/charm/trunk/charm-sandbox</developerConnection>
-		<url>http://svn.apexit.com/svn/charm/trunk/charm-sandbox</url>
-	</scm>
+	<!--<scm>-->
+		<!--<connection>scm:svn:http://svn.apexit.com/svn/charm/trunk/charm-sandbox</connection>-->
+		<!--<developerConnection>scm:svn:http://svn.apexit.com/svn/charm/trunk/charm-sandbox</developerConnection>-->
+		<!--<url>http://svn.apexit.com/svn/charm/trunk/charm-sandbox</url>-->
+	<!--</scm>-->
 	
 	<ciManagement>
 		<system>continuum</system>

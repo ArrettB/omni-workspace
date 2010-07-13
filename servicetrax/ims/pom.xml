@@ -5,7 +5,7 @@
 	<artifactId>ims</artifactId>
 	<packaging>war</packaging>
 	<name>ServiceTrax IMS Module</name>
-	<version>1.39</version>
+	<version>1.39-SNAPSHOT</version>
 
     <properties>
             <jdk.version>1.5</jdk.version>
@@ -47,10 +47,10 @@
 			<timezone />
 		</developer>
 	</developers>
-	<scm>
-		<connection>scm:svn:http://svn.apexit.com/svn/servicetrax/tags/1.39</connection>
-		<developerConnection>scm:svn:http://svn.apexit.com/svn/servicetrax/tags/1.39</developerConnection>
-	</scm>
+	<!--<scm>-->
+		<!--<connection>scm:svn:http://svn.apexit.com/svn/servicetrax/tags/1.39</connection>-->
+		<!--<developerConnection>scm:svn:http://svn.apexit.com/svn/servicetrax/tags/1.39</developerConnection>-->
+	<!--</scm>-->
 	<repositories>
                 <!--
 		<repository>

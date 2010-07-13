@@ -35,11 +35,11 @@
 			<timezone />
 		</developer>
 	</developers>	
-	<scm>
-		<connection>scm:svn:http://svn.apexit.com/svn/charm/tags/1.39</connection>
-		<developerConnection>scm:svn:http://svn.apexit.com/svn/charm/tags/1.39</developerConnection>
-		<url>http://svn.apexit.com/svn/charm/tags/1.39</url>
-	</scm>
+	<!--<scm>-->
+		<!--<connection>scm:svn:http://svn.apexit.com/svn/charm/tags/1.39</connection>-->
+		<!--<developerConnection>scm:svn:http://svn.apexit.com/svn/charm/tags/1.39</developerConnection>-->
+		<!--<url>http://svn.apexit.com/svn/charm/tags/1.39</url>-->
+	<!--</scm>-->
 	
 	<ciManagement>
 		<system>continuum</system>

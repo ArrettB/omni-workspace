@@ -24,11 +24,11 @@
 			</notifier>
 		</notifiers>
 	</ciManagement>
-	<scm>
-		<connection>scm:svn:http://svn.apexit.com/svn/charm/trunk/charm-ajax</connection>
-		<developerConnection>scm:svn:http://svn.apexit.com/svn/charm/trunk/charm-ajax</developerConnection>
-	  <url>http://svn.apexit.com/svn/charm/trunk/charm-ajax</url>
-  </scm>
+	<!--<scm>-->
+		<!--<connection>scm:svn:http://svn.apexit.com/svn/charm/trunk/charm-ajax</connection>-->
+		<!--<developerConnection>scm:svn:http://svn.apexit.com/svn/charm/trunk/charm-ajax</developerConnection>-->
+	  <!--<url>http://svn.apexit.com/svn/charm/trunk/charm-ajax</url>-->
+  <!--</scm>-->
 	<build>
 		<resources>
 			<resource>

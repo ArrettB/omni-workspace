@@ -51,10 +51,10 @@
             <comments />
         </license>
     </licenses>
-    <scm>
-        <connection>scm:svn:http://svn.apexit.com/svn/servicetrax/tags/1.39</connection>
-        <developerConnection>scm:svn:http://svn.apexit.com/svn/servicetrax/tags/1.39</developerConnection>
-    </scm>
+    <!--<scm>-->
+        <!--<connection>scm:svn:http://svn.apexit.com/svn/servicetrax/tags/1.39</connection>-->
+        <!--<developerConnection>scm:svn:http://svn.apexit.com/svn/servicetrax/tags/1.39</developerConnection>-->
+    <!--</scm>-->
     <organization>
         <name>Apex IT</name>
         <url>http://www.apexit.com</url>
