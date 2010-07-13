@@ -5,7 +5,7 @@
 	<artifactId>ims</artifactId>
 	<packaging>war</packaging>
 	<name>ServiceTrax IMS Module</name>
-	<version>1.40</version>
+	<version>1.39-SNAPSHOT</version>
 
     <properties>
             <jdk.version>1.5</jdk.version>
