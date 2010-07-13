@@ -31,8 +31,8 @@
             <svn.url.root>http://svn.kettleriverconsulting.com/svn/omni/trunk</svn.url.root>
     </properties>
     <scm>
-        <connection>scm:svn:http://svn.kettleriverconsulting.com/svn/omni/trunk</connection>
-        <developerConnection>scm:svn:http://svn.kettleriverconsulting.com/svn/omni/trunk</developerConnection>
+        <connection>scm:svn:http://svn.kettleriverconsulting.com/svn/omni/tags/1.40</connection>
+        <developerConnection>scm:svn:http://svn.kettleriverconsulting.com/svn/omni/tags/1.40</developerConnection>
     </scm>
 </project>
 
