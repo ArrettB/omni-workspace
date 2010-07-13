@@ -6,7 +6,7 @@
 	<artifactId>charm-ajax</artifactId>
 	<packaging>jar</packaging>
 	<name>Charm Ajax Components</name>
-	<version>1.7</version>
+	<version>1.8-SNAPSHOT</version>
 
 	<parent>
 		<artifactId>charm-parent</artifactId>
@@ -259,9 +259,4 @@
 			</plugin>
 		</plugins>
 	</reporting>
-
-  <scm>
-    <connection>scm:svn:http://svn.kettleriverconsulting.com/svn/omni/tags/1.7</connection>
-    <developerConnection>scm:svn:http://svn.kettleriverconsulting.com/svn/omni/tags/1.7</developerConnection>
-  </scm>
 </project>
