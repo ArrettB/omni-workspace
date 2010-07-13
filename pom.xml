@@ -30,5 +30,9 @@
             <artifactory.url>http://svn.kettleriverconsulting.com:8081/artifactory/</artifactory.url>
             <svn.url.root>http://svn.kettleriverconsulting.com/svn/omni/trunk</svn.url.root>
     </properties>
+    <scm>
+        <connection>scm:svn:http://svn.kettleriverconsulting.com/svn/omni/trunk</connection>
+        <developerConnection>scm:svn:http://svn.kettleriverconsulting.com/svn/omni/trunk</developerConnection>
+    </scm>
 </project>
 
