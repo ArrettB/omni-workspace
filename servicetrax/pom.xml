@@ -1,12 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.dynamic.servicetrax</groupId>
     <artifactId>servicetrax-parent</artifactId>
     <packaging>pom</packaging>
     <name>ServiceTrax Parent</name>
-    <version>1.38.2-SNAPSHOT</version>
+    <version>1.39</version>
     <description>ServiceTRAX Project</description>
 
     <modules>
@@ -17,7 +16,7 @@
     <parent>
         <groupId>com.omni.servicetrax</groupId>
         <artifactId>omni-parent</artifactId>
-        <version>1.38.2-SNAPSHOT</version>
+        <version>1.39</version>
     </parent>
 
     <properties>
@@ -31,8 +30,8 @@
             <email>blake.vonhaden@apexit.com</email>
             <url>http://www.apexit.com</url>
             <organization>Apex IT</organization>
-            <roles/>
-            <timezone/>
+            <roles />
+            <timezone />
         </developer>
         <developer>
             <id>david.zhao</id>
@@ -40,21 +39,21 @@
             <email>david.zhao@apexit.com</email>
             <url>http://www.apexit.com</url>
             <organization>Apex IT</organization>
-            <roles/>
-            <timezone/>
+            <roles />
+            <timezone />
         </developer>
     </developers>
     <licenses>
         <license>
-            <name/>
-            <url/>
-            <distribution/>
-            <comments/>
+            <name />
+            <url />
+            <distribution />
+            <comments />
         </license>
     </licenses>
     <scm>
-        <connection>scm:svn:http://svn.apexit.com/svn/servicetrax/trunk/</connection>
-        <developerConnection>scm:svn:http://svn.apexit.com/svn/servicetrax/trunk/</developerConnection>
+        <connection>scm:svn:http://svn.apexit.com/svn/servicetrax/tags/1.39</connection>
+        <developerConnection>scm:svn:http://svn.apexit.com/svn/servicetrax/tags/1.39</developerConnection>
     </scm>
     <organization>
         <name>Apex IT</name>

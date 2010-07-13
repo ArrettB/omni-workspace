@@ -10,7 +10,7 @@
     <parent>
         <groupId>com.omni.servicetrax</groupId>
         <artifactId>omni-parent</artifactId>
-        <version>1.38.2-SNAPSHOT</version>
+        <version>1.39</version>
     </parent>
 	<modules>
 		<module>charm-core</module>
@@ -26,24 +26,24 @@
 			<email>blake.vonhaden@apexit.com</email>
 			<url>http://www.apexit.com</url>
 			<organization>Apex IT</organization>
-			<roles/>
-			<timezone/>
+			<roles />
+			<timezone />
 		</developer>
 	</developers>
 	<licenses>
 		<license>
-			<name/>
-			<url/>
-			<distribution/>
-			<comments/>
+			<name />
+			<url />
+			<distribution />
+			<comments />
 		</license>
 	</licenses>
 	<scm>
 		<connection>
-			scm:svn:http://svn.apexit.com/svn/charm/trunk/</connection>
+			scm:svn:http://svn.apexit.com/svn/charm/tags/1.39</connection>
 		<developerConnection>
-			scm:svn:http://svn.apexit.com/svn/charm/trunk/</developerConnection>
-		<url>http://svn.apexit.com/svn/charm/trunk/</url>
+			scm:svn:http://svn.apexit.com/svn/charm/tags/1.39</developerConnection>
+		<url>http://svn.apexit.com/svn/charm/tags/1.39</url>
 	</scm>
 	<organization>
 		<name>ApexIT, Inc.</name>
