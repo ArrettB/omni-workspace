@@ -6,7 +6,7 @@
 	<artifactId>charm-ajax</artifactId>
 	<packaging>jar</packaging>
 	<name>Charm Ajax Components</name>
-	<version>1.6-SNAPSHOT</version>
+	<version>1.7</version>
 
 	<parent>
 		<artifactId>charm-parent</artifactId>
@@ -91,7 +91,7 @@
 					<dependency>
 						<groupId>com.dynamic.charm</groupId>
 						<artifactId>charm-core</artifactId>
-						<version>1.6-SNAPSHOT</version>
+						<version>1.7</version>
 					</dependency>
 				</dependencies>
 				<executions>
@@ -131,7 +131,7 @@
 		<dependency>
 			<groupId>com.dynamic.charm</groupId>
 			<artifactId>charm-core</artifactId>
-			<version>1.6-SNAPSHOT</version>
+			<version>1.7</version>
 		</dependency>
 		
 		<!-- Servlet, JSP, and JSTL -->
@@ -259,4 +259,9 @@
 			</plugin>
 		</plugins>
 	</reporting>
+
+  <scm>
+    <connection>scm:svn:http://svn.kettleriverconsulting.com/svn/omni/tags/1.7</connection>
+    <developerConnection>scm:svn:http://svn.kettleriverconsulting.com/svn/omni/tags/1.7</developerConnection>
+  </scm>
 </project>
