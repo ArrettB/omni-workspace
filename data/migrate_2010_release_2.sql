@@ -1,9 +1,9 @@
-INSERT INTO FUNCTIONS (FUNCTION_GROUP_ID, NAME, CODE, DESCRIPTION,
-IS_NAV_FUNCTION, IS_MENU_FUNCTION, DATE_CREATED, CREATED_BY)
-(SELECT FG.FUNCTION_GROUP_ID, 'COMMISSION ENTRY', 'ENET/REQ/ECMS_COMMISSION',
-'COMMISSION ENTRY', 'N', 'N', CURRENT_TIMESTAMP, 1
-FROM FUNCTION_GROUPS FG WHERE FG.CODE = 'ENET')
-GO
+insert into functions (function_group_id, name, code, description,
+is_nav_function, is_menu_function, date_created, created_by)
+(select fg.function_group_id, 'Commission Entry', 'enet/req/ecms_commission',
+'commission entry', 'n', 'n', current_timestamp, 1
+from function_groups fg where fg.code = 'enet')
+go
 
 SET ANSI_NULLS ON
 GO
