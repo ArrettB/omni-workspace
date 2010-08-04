@@ -54,14 +54,16 @@ public class ItemCostingPostHandler extends BaseHandler
 			String itemId = ic.getParameter("item_id");
 			String uom = ic.getParameter("cost_per_uom");
 			String margin = ic.getParameter("percent_margin");
+            String baseRate = ic.getParameter("base_rate");
 			User user = (User) ic.getSessionDatum("user");
 
 			String query = "INSERT INTO item_costing_history"
-			             + "(item_id, cost_per_uom, percent_margin, created_by, date_created)"
+			             + "(item_id, cost_per_uom, percent_margin, base_rate, created_by, date_created)"
 			             + "VALUES"
 			             + "(" + conn.toSQLString(itemId)
 			             + ", " + conn.toSQLString(uom)
 			             + ", " + conn.toSQLString(margin)
+                         + ", " + conn.toSQLString(baseRate)
 			             + ", " + conn.toSQLString(user.getFirstName() + " " + user.getLastName()) 
 			             + ", CURRENT_TIMESTAMP)";
 			conn.updateEx(query);

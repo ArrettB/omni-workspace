@@ -1154,6 +1154,9 @@ function validateEmail(str){
            postHandler="ims.handlers.proj.NewPDSPostHandler"
                    buttons=""
   -->
+  <!--#SMARTFIELD name="display_markup_widgets" type="hidden" value="<?p:display_markup_widgets?>" -->
+  <!--#SMARTFIELD name="has_existing_invoices" type="hidden" value="<?p:has_existing_invoices?>" -->
+
   <!--#SMARTFIELD name="redisplay" type="hidden" value="false" -->
   <!--#SMARTFIELD name="project_id" type="hidden" value="<?s:project_id?>" -->
   <!--#SMARTFIELD name="request_type_code" type="hidden" value="service_request" --> <!-- used in PDSPreHandler -->
@@ -1220,6 +1223,7 @@ function validateEmail(str){
       <td><a href="" onClick="exitFunction('create_quote_request');return false;">Create&nbsp;Quote&nbsp;Request</a></td>
     <!--#/IF-->
           <!--<td ><a href="" onClick="window.print();return false;">Print&nbsp;Service&nbsp;Request</a></td>-->
+
           <td align="left"><a href="" onClick="exitFunction('print_service_request');return false;">Print&nbsp;Service&nbsp;Request</a></td>
     <!-- iframe: print -->
           <td><iframe name="print_frame" height="0" width="0" marginheight="0" marginwidth="0"></iframe></td></tr>
@@ -1643,6 +1647,91 @@ function validateEmail(str){
                                       AND l.active_flag='Y'
                                  ORDER BY l.sequence_no" --></td></tr>
    </table>
+
+<!--#CHECKSECURITY right="rights.enet/req/ecms_commission.insert" -->
+<!--#IF evaluate="<?p:display_markup_widgets?>" compare="true" -->
+
+<script type="text/javascript">
+    var temp_index = 0;
+</script>
+
+<table width="75%" style="margin-top:10px; margin-left:3px;" border="0">
+    <tr>
+        <td class="HeaderLabelMandatory" style="padding-top:0; padding-bottom:5px;">
+            Setup Commissions
+        </td>
+    </tr>
+    <tr>
+        <td class="mandatoryLabel">
+            <!--#IF evaluate="<?s:request_readonly?>" compare="true" -->
+            <!--#SMARTFIELD title="Fuel:" div="&nbsp;</td><td>" style="width:60"
+            name="fuel_surcharge" id="fuel_surcharge" type="boolean" -->
+            <!--#ELSEIF evaluate="<?p:has_existing_invoices?>" compare="true" -->
+            <!--#SMARTFIELD title="Fuel:" div="&nbsp;</td><td>" style="width:60"
+            name="fuel_surcharge" id="fuel_surcharge" type="boolean" readonly="true"
+            onmousedown = "temp_index=this.selectedIndex;"
+            onkeydown = "temp_index=this.selectedIndex;"
+            onchange = "this.selectedIndex=temp_index"; -->
+            <!--#ELSE-->
+            <!--#SMARTFIELD title="Fuel:" div="&nbsp;</td><td>" style="width:60"
+            name="fuel_surcharge" id="fuel_surcharge" type="boolean" -->
+            <!--#/IF-->            
+        </td>
+        <td class="mandatoryLabel">
+            <!--#IF evaluate="<?s:request_readonly?>" compare="true" -->
+            <!--#SMARTFIELD title="Trucking:" div="&nbsp;</td><td>" style="width:60"
+            name="trucking_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" -->
+            <!--#ELSEIF evaluate="<?p:has_existing_invoices?>" compare="true" -->
+            <!--#SMARTFIELD title="Trucking:" div="&nbsp;</td><td>" style="width:60"
+            name="trucking_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist"
+            readonly="true"
+            onmousedown = "temp_index=this.selectedIndex;"
+            onkeydown = "temp_index=this.selectedIndex;"
+            onchange = "this.selectedIndex=temp_index"; -->
+            <!--#ELSE-->
+            <!--#SMARTFIELD title="Trucking:" div="&nbsp;</td><td>" style="width:60"
+            name="trucking_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" -->
+            <!--#/IF-->
+        </td>
+    </tr>
+    <tr>
+        <td class="mandatoryLabel">
+            <!--#IF evaluate="<?s:request_readonly?>" compare="true" -->
+            <!--#SMARTFIELD title="Labor:" div="&nbsp;</td><td>" style="width:60"
+            name="labor_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" -->
+            <!--#ELSEIF evaluate="<?p:has_existing_invoices?>" compare="true" -->
+            <!--#SMARTFIELD title="Labor:" div="&nbsp;</td><td>" style="width:60"
+            name="labor_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist"
+            readonly="true"
+            onmousedown = "temp_index=this.selectedIndex;"
+            onkeydown = "temp_index=this.selectedIndex;"
+            onchange = "this.selectedIndex=temp_index"; -->
+            <!--#ELSE-->
+            <!--#SMARTFIELD title="Labor:" div="&nbsp;</td><td>" style="width:60"
+            name="labor_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" -->
+            <!--#/IF-->
+        </td>
+        <td class="mandatoryLabel">
+            <!--#IF evaluate="<?s:request_readonly?>" compare="true" -->
+            <!--#SMARTFIELD title="Expense:" div="&nbsp;</td><td>" style="width:60"
+            name="expense_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" -->
+            <!--#ELSEIF evaluate="<?p:has_existing_invoices?>" compare="true" -->
+            <!--#SMARTFIELD title="Expense:" div="&nbsp;</td><td>" style="width:60"
+            name="expense_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist"
+            readonly="true"
+            onmousedown = "temp_index=this.selectedIndex;"
+            onkeydown = "temp_index=this.selectedIndex;"
+            onchange = "this.selectedIndex=temp_index"; -->
+            <!--#ELSE-->
+            <!--#SMARTFIELD title="Expense:" div="&nbsp;</td><td>" style="width:60"
+            name="expense_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" -->
+            <!--#/IF-->
+        </td>
+    </tr>
+</table>
+<!--#/IF-->
+<!--#/CHECKSECURITY-->
+
   </td>
 
   <td><table width="10px" border="0" cellspacing="0" cellpadding="0"><tr><td> &nbsp;</td></tr></table><br/></td>
@@ -1998,3 +2087,4 @@ function validateEmail(str){
 </body>
 
 <!--#EMBED template="enet/embeds/footer.html" -->
+

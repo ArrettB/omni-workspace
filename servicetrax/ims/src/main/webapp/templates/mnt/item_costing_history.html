@@ -9,15 +9,16 @@
 	</span>
 
 	<!--#SMARTTABLE class="SmartTable" name="item_costs" style="width:480"
-		   query="SELECT i.cost_per_uom, i.percent_margin, i.created_by, i.date_created
+		   query="SELECT i.cost_per_uom, i.percent_margin, i.created_by, i.date_created, i.base_rate
 	   			  FROM item_costing_history i
 	   			  WHERE i.item_id = <?p:item_id.toPStmtString()?>
 	   			  ORDER BY i.date_created DESC"
 	   -->
-	   <!--#SMARTCOLUMN name="cost_per_uom" sort="cost_per_uom" title="Cost per UOM" format="money" width="20%" -->
-	   <!--#SMARTCOLUMN name="percent_margin" sort="percent_margin" title="% Margin" width="20%" -->
-	   <!--#SMARTCOLUMN name="created_by" title="Modifier" width="20%" -->
-	   <!--#SMARTCOLUMN name="date_created" title="Date Modified" format="datetime" width="25%" -->
+	   <!--#SMARTCOLUMN name="cost_per_uom" sort="cost_per_uom" title="Cost per UOM" format="money" width="20%" style="text-align:center;" -->
+	   <!--#SMARTCOLUMN name="percent_margin" sort="percent_margin" title="% Margin" width="10%" style="text-align:center;" -->
+       <!--#SMARTCOLUMN name="base_rate" sort="base_rate" title="Base Rate" format="money" width="10%" -->
+	   <!--#SMARTCOLUMN name="created_by" title="Modifier" width="30%" -->
+	   <!--#SMARTCOLUMN name="date_created" title="Date Modified" format="datetime" -->
 	<!--#/SMARTTABLE -->
 
 	<br>

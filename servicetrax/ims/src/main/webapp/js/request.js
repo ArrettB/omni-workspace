@@ -269,6 +269,41 @@ function validateSave()
     return result;
 }
 
+function validateCommissionMarkups()
+{
+    if (result && document.getElementById("fuel_surcharge").value == "")
+    {
+        alert("Fuel surcharge needs to be selected.");
+        document.getElementById("fuel_surcharge").focus();
+        return false;
+    }
+
+    if (result && document.getElementById("labor_markup").value == "")
+    {
+        alert("A labor markup needs to be selected.");
+        document.getElementById("labor_markup").focus();
+        return false;
+    }
+
+    if (result && document.getElementById("trucking_markup").value == "")
+    {
+        alert("A trucking markup needs to be selected.");
+        document.getElementById("trucking_markup").focus();
+        return false;
+    }
+
+    if (result && document.getElementById("expense_markup").value == "")
+    {
+        alert("An expense markup needs to be selected.");
+        document.getElementById("expense_markup").focus();
+        return false;
+    }
+
+
+    return true;
+}
+
+
 function validateSendCommons()
 {
     var result = validateSave();
@@ -317,7 +352,7 @@ function validateSendCommons()
 
     if (result && document.getElementById("days_to_complete").value == "")
     {
-        alert("Number od Days to Complete is required.");
+        alert("Number of Days to Complete is required.");
         document.getElementById("days_to_complete").focus();
         result = false;
     }
@@ -437,6 +472,10 @@ function validateSendQuoteRequest()
 function validateSendServiceRequest()
 {
     var result = validateSendCommons();
+    if (result && document.getElementById("display_markup_widgets").value == "true" &&
+            document.getElementById("has_existing_invoices").value == "false") {
+        result = validateCommissionMarkups();
+    }
 
     // alert("ext_customer_id = " + document.getElementById("ext_customer_id").value);
     if (result && trim(document.getElementById("ext_customer_id").value) == "")
