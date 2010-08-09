@@ -14,9 +14,9 @@ public class Version
 
 	private static final String project = "$Project: ServiceTrax$";
 
-	private static final String revision = "$Revision: 122 $";
+	private static final String revision = "$Revision: 124 $";
 
-	private static final String version = "1.41";
+	private static final String version = "1.42";
 
 	public static String getAuthor()
 	{
