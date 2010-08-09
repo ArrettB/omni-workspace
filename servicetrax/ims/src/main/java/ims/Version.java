@@ -8,15 +8,15 @@ package ims;
 public class Version
 {
 
-	private static final String author = "$Author: bvonhaden $";
+	private static final String author = "$Author: kettleriver $";
 
-	private static final String date = "$Date: 2009-09-11 14:56:21 -0500 (Fri, 11 Sep 2009) $";
+	private static final String date = "$Date: 2010-08-09 10:52:00 -0500 (Mon, 9 Aug 2010) $";
 
 	private static final String project = "$Project: ServiceTrax$";
 
-	private static final String revision = "$Revision: 1685 $";
+	private static final String revision = "$Revision: 122 $";
 
-	private static final String version = "1.38.1";
+	private static final String version = "1.41";
 
 	public static String getAuthor()
 	{
