@@ -1646,7 +1646,9 @@ function validateEmail(str){
                                     WHERE lt.code='plan_locations_type'
                                       AND l.active_flag='Y'
                                  ORDER BY l.sequence_no" --></td></tr>
-   </table>
+       <tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Bill of Lading Charge:</span>:" div="&nbsp;</td><td>" style="width:230"
+         name="bl_chrg" type="boolean" --></td></tr>
+</table>
 
 <!--#CHECKSECURITY right="rights.enet/req/ecms_commission.insert" -->
 <!--#IF evaluate="<?p:display_markup_widgets?>" compare="true" -->

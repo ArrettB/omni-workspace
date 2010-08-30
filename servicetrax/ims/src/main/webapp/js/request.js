@@ -461,6 +461,14 @@ function validateSendCommons()
         document.getElementById("plan_location_type_id").focus();
         result = false;
     }
+
+    if (result && document.getElementById("bl_chrg") != null && document.getElementById("bl_chrg").value == "")
+    {
+        alert("Bill of Lading Charge is required.");
+        document.getElementById("bl_chrg").focus();
+        result = false;
+    }
+
     return result;
 }
 

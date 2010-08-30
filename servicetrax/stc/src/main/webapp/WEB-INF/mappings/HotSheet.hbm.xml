@@ -132,10 +132,6 @@
             <column name="MODIFIED_BY" precision="18" scale="0" not-null="false"/>
         </property>
 
-        <property name="billOfLadingCharge" type="string">
-            <column name="BL_CHRG" length="1" not-null="false"/>
-        </property>
-
         <!--ORIGIN_CONTACT_ID-->
         <property name="originContactId" type="long" not-null="true">
             <column name="ORIGIN_CONTACT_ID" precision="18" scale="0" not-null="true"/>

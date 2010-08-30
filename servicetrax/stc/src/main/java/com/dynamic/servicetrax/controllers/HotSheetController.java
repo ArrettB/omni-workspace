@@ -58,7 +58,6 @@ public class HotSheetController extends MultiActionController {
             public void validate(Object command, Errors errors) {
                 ValidationUtils.rejectIfEmpty(errors, "originAddressId", "", "An origin address is required");
                 ValidationUtils.rejectIfEmpty(errors, "jobLength", "", "Job length cannot be blank");
-                ValidationUtils.rejectIfEmpty(errors, "billOfLadingCharge", "", "You must choose a Bill of Lading charge");
 
                 Integer jobLength = ((HotSheet) command).getJobLength();
                 if (jobLength != null && jobLength < 0) {
@@ -384,10 +383,6 @@ public class HotSheetController extends MultiActionController {
     private void saveHotsheet(HttpServletRequest request, HotSheet hotSheet) {
 
         hotSheetService.convertStartTimesToMilitary(request, hotSheet);
-        if (hotSheet.getBillOfLadingCharge() != null && hotSheet.getBillOfLadingCharge().trim().length() == 0) {
-            hotSheet.setBillOfLadingCharge(null);
-        }
-
         LoginCrediantials credentials = (LoginCrediantials) request.getSession().getAttribute(LoginInterceptor.SESSION_ATTR_LOGIN);
         Long userId = (long) credentials.getUserId();
         hotSheet.setModifiedBy(userId);

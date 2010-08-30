@@ -34,17 +34,6 @@
         <td>
             <form:input path="customerName" readonly="true" cssClass="disabledCell"/>
         </td>
-
-        <td style="color:red;">
-            Bill of Lading Charge?
-        </td>
-        <td>
-            <form:select path="billOfLadingCharge">
-                <form:option value="" label=""/>
-                <form:option value="N" label="No"/>
-                <form:option value="Y" label="Yes"/>
-            </form:select>
-        </td>
     </tr>
 
     <tr>

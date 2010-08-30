@@ -48,7 +48,6 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 	<field name="CREATED_BY" class="java.math.BigDecimal"/>
 	<field name="DATE_MODIFIED" class="java.sql.Timestamp"/>
 	<field name="MODIFIED_BY" class="java.math.BigDecimal"/>
-	<field name="BL_CHRG" class="java.lang.String"/>
 	<field name="CONTACT_NAME" class="java.lang.String"/>
 	<field name="PHONE_WORK" class="java.lang.String"/>
 	<field name="DESCRIPTION" class="java.lang.String"/>

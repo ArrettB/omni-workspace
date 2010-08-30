@@ -71,8 +71,6 @@ public class HotSheet extends AuditableObject {
 
     private boolean shouldPrint;
 
-    private String billOfLadingCharge;
-
     //This is the id for fetching the billing address info from GreatPlains.
     private String extCustomerId;
     private List<KeyValueBean> originContacts;
@@ -420,14 +418,6 @@ public class HotSheet extends AuditableObject {
 
     public String getExtCustomerId() {
         return extCustomerId;
-    }
-
-    public String getBillOfLadingCharge() {
-        return billOfLadingCharge;
-    }
-
-    public void setBillOfLadingCharge(String billOfLadingCharge) {
-        this.billOfLadingCharge = billOfLadingCharge;
     }
 
     public void setOriginContacts(List<KeyValueBean> originContacts) {
