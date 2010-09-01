@@ -278,10 +278,10 @@ function validateCommissionMarkups()
         return false;
     }
 
-    if (result && document.getElementById("labor_markup").value == "")
+    if (result && document.getElementById("bl_chrg") != null && document.getElementById("bl_chrg").value == "")
     {
-        alert("A labor markup needs to be selected.");
-        document.getElementById("labor_markup").focus();
+        alert("Bill of Lading Charge is required.");
+        document.getElementById("bl_chrg").focus();
         return false;
     }
 
@@ -299,6 +299,12 @@ function validateCommissionMarkups()
         return false;
     }
 
+    if (result && document.getElementById("labor_markup").value == "")
+    {
+        alert("A labor markup needs to be selected.");
+        document.getElementById("labor_markup").focus();
+        return false;
+    }
 
     return true;
 }
@@ -459,13 +465,6 @@ function validateSendCommons()
     {
         alert("Plan Location is required.");
         document.getElementById("plan_location_type_id").focus();
-        result = false;
-    }
-
-    if (result && document.getElementById("bl_chrg") != null && document.getElementById("bl_chrg").value == "")
-    {
-        alert("Bill of Lading Charge is required.");
-        document.getElementById("bl_chrg").focus();
         result = false;
     }
 

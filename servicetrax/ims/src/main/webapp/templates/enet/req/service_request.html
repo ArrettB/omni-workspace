@@ -1646,8 +1646,6 @@ function validateEmail(str){
                                     WHERE lt.code='plan_locations_type'
                                       AND l.active_flag='Y'
                                  ORDER BY l.sequence_no" --></td></tr>
-       <tr><td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Bill of Lading Charge:</span>:" div="&nbsp;</td><td>" style="width:230"
-         name="bl_chrg" type="boolean" --></td></tr>
 </table>
 
 <!--#CHECKSECURITY right="rights.enet/req/ecms_commission.insert" -->
@@ -1699,18 +1697,17 @@ function validateEmail(str){
     <tr>
         <td class="mandatoryLabel">
             <!--#IF evaluate="<?s:request_readonly?>" compare="true" -->
-            <!--#SMARTFIELD title="Labor:" div="&nbsp;</td><td>" style="width:60"
-            name="labor_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" -->
+            <!--#SMARTFIELD title="Bill of Lading Charge:" div="&nbsp;</td><td>" style="width:60"
+            name="bl_chrg" id="bl_chrg" type="boolean" -->
             <!--#ELSEIF evaluate="<?p:has_existing_invoices?>" compare="true" -->
-            <!--#SMARTFIELD title="Labor:" div="&nbsp;</td><td>" style="width:60"
-            name="labor_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist"
-            readonly="true"
+            <!--#SMARTFIELD title="Bill of Lading Charge:" div="&nbsp;</td><td>" style="width:60"
+            name="bl_chrg" id="bl_chrg" type="boolean" readonly="true"
             onmousedown = "temp_index=this.selectedIndex;"
             onkeydown = "temp_index=this.selectedIndex;"
             onchange = "this.selectedIndex=temp_index"; -->
             <!--#ELSE-->
-            <!--#SMARTFIELD title="Labor:" div="&nbsp;</td><td>" style="width:60"
-            name="labor_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" -->
+            <!--#SMARTFIELD title="Bill of Lading Charge:" div="&nbsp;</td><td>" style="width:60"
+            name="bl_chrg" id="bl_chrg" type="boolean" -->
             <!--#/IF-->
         </td>
         <td class="mandatoryLabel">
@@ -1727,6 +1724,25 @@ function validateEmail(str){
             <!--#ELSE-->
             <!--#SMARTFIELD title="Expense:" div="&nbsp;</td><td>" style="width:60"
             name="expense_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" -->
+            <!--#/IF-->
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">&nbsp;</td>        
+        <td class="mandatoryLabel">
+            <!--#IF evaluate="<?s:request_readonly?>" compare="true" -->
+            <!--#SMARTFIELD title="Labor:" div="&nbsp;</td><td>" style="width:60"
+            name="labor_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" -->
+            <!--#ELSEIF evaluate="<?p:has_existing_invoices?>" compare="true" -->
+            <!--#SMARTFIELD title="Labor:" div="&nbsp;</td><td>" style="width:60"
+            name="labor_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist"
+            readonly="true"
+            onmousedown = "temp_index=this.selectedIndex;"
+            onkeydown = "temp_index=this.selectedIndex;"
+            onchange = "this.selectedIndex=temp_index"; -->
+            <!--#ELSE-->
+            <!--#SMARTFIELD title="Labor:" div="&nbsp;</td><td>" style="width:60"
+            name="labor_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" -->
             <!--#/IF-->
         </td>
     </tr>
