@@ -10,13 +10,13 @@ public class Version
 
 	private static final String author = "$Author: kettleriver $";
 
-	private static final String date = "$Date: 2010-08-09 10:52:00 -0500 (Mon, 9 Aug 2010) $";
+	private static final String date = "$Date: 2010-09-01 15:15:00 -0500 (Wed, 1 Sep 2010) $";
 
 	private static final String project = "$Project: ServiceTrax$";
 
-	private static final String revision = "$Revision: 124 $";
+	private static final String revision = "$Revision: 134 $";
 
-	private static final String version = "1.42";
+	private static final String version = "1.43";
 
 	public static String getAuthor()
 	{
