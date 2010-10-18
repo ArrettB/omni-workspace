@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="billOfLadingEquipment" pageWidth="110" pageHeight="300" columnWidth="110" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
 	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="462"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="ID" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
@@ -80,10 +80,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="90" y="0" width="20" height="15"/>
 				<box>
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -93,9 +94,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="90" y="15" width="20" height="15"/>
 				<box>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -105,9 +108,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="90" y="120" width="20" height="15"/>
 				<box>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -117,9 +122,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="90" y="210" width="20" height="15"/>
 				<box>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.75" lineColor="#FFFFFF"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -129,9 +136,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="90" y="225" width="20" height="15"/>
 				<box>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.75" lineColor="#FFFFFF"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -141,9 +150,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="90" y="30" width="20" height="15"/>
 				<box>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -153,9 +164,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="90" y="60" width="20" height="15"/>
 				<box>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -165,9 +178,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="90" y="75" width="20" height="15"/>
 				<box>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -177,9 +192,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="90" y="90" width="20" height="15"/>
 				<box>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -189,9 +206,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="90" y="105" width="20" height="15"/>
 				<box>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -201,9 +220,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="90" y="135" width="20" height="15"/>
 				<box>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.75" lineColor="#FFFFFF"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -213,9 +234,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="90" y="150" width="20" height="15"/>
 				<box>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.75" lineColor="#FFFFFF"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -225,9 +248,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="90" y="165" width="20" height="15"/>
 				<box>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.75" lineColor="#FFFFFF"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -237,9 +262,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="90" y="180" width="20" height="15"/>
 				<box>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.75" lineColor="#FFFFFF"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -249,9 +276,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="90" y="195" width="20" height="15"/>
 				<box>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.75" lineColor="#FFFFFF"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -261,9 +290,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="90" y="45" width="20" height="15"/>
 				<box>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -273,9 +304,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="0" y="0" width="90" height="15"/>
 				<box leftPadding="4">
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -285,8 +318,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="0" y="15" width="90" height="15"/>
 				<box leftPadding="4">
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -296,8 +332,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="0" y="30" width="90" height="15"/>
 				<box leftPadding="4">
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -307,8 +346,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="0" y="45" width="90" height="15"/>
 				<box leftPadding="4">
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -318,8 +360,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="0" y="60" width="90" height="15"/>
 				<box leftPadding="4">
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -329,8 +374,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="0" y="75" width="90" height="15"/>
 				<box leftPadding="4">
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -340,8 +388,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="0" y="90" width="90" height="15"/>
 				<box leftPadding="4">
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -351,8 +402,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="0" y="105" width="90" height="15"/>
 				<box leftPadding="4">
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -362,8 +416,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="0" y="120" width="90" height="15"/>
 				<box leftPadding="4">
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -373,8 +430,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="0" y="135" width="90" height="15"/>
 				<box leftPadding="4">
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -384,8 +444,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="0" y="150" width="90" height="15"/>
 				<box leftPadding="4">
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -395,8 +458,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="0" y="165" width="90" height="15"/>
 				<box leftPadding="4">
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -406,8 +472,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="0" y="180" width="90" height="15"/>
 				<box leftPadding="4">
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -417,8 +486,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="0" y="195" width="90" height="15"/>
 				<box leftPadding="4">
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -428,8 +500,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="0" y="210" width="90" height="15"/>
 				<box leftPadding="4">
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -439,8 +514,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<textField>
 				<reportElement x="0" y="225" width="90" height="15"/>
 				<box leftPadding="4">
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -449,36 +527,48 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="240" width="90" height="15"/>
-				<box>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
+				<box leftPadding="4">
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="255" width="90" height="15"/>
-				<box>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
+				<box leftPadding="4">
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="270" width="90" height="15"/>
-				<box>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
+				<box leftPadding="4">
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="285" width="90" height="15"/>
-				<box>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
+				<box leftPadding="4">
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[]]></text>
@@ -486,9 +576,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<staticText>
 				<reportElement x="90" y="240" width="20" height="15"/>
 				<box>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.75" lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[]]></text>
@@ -496,9 +588,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<staticText>
 				<reportElement x="90" y="255" width="20" height="15"/>
 				<box>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.75" lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[]]></text>
@@ -506,9 +600,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<staticText>
 				<reportElement x="90" y="270" width="20" height="15"/>
 				<box>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.75" lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[]]></text>
@@ -516,9 +612,11 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 			<staticText>
 				<reportElement x="90" y="285" width="20" height="15"/>
 				<box>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.75" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.75" lineColor="#FFFFFF"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[]]></text>

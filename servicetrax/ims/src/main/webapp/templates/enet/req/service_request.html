@@ -1680,17 +1680,17 @@ function validateEmail(str){
         <td class="mandatoryLabel">
             <!--#IF evaluate="<?s:request_readonly?>" compare="true" -->
             <!--#SMARTFIELD title="Trucking:" div="&nbsp;</td><td>" style="width:60"
-            name="trucking_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" -->
+            name="trucking_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" mandatory ="true" value="0" -->
             <!--#ELSEIF evaluate="<?p:has_existing_invoices?>" compare="true" -->
             <!--#SMARTFIELD title="Trucking:" div="&nbsp;</td><td>" style="width:60"
-            name="trucking_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist"
+            name="trucking_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" mandatory ="true" value="0"
             readonly="true"
             onmousedown = "temp_index=this.selectedIndex;"
             onkeydown = "temp_index=this.selectedIndex;"
             onchange = "this.selectedIndex=temp_index"; -->
             <!--#ELSE-->
             <!--#SMARTFIELD title="Trucking:" div="&nbsp;</td><td>" style="width:60"
-            name="trucking_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" -->
+            name="trucking_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" mandatory ="true" value="0" -->
             <!--#/IF-->
         </td>
     </tr>
@@ -1713,17 +1713,17 @@ function validateEmail(str){
         <td class="mandatoryLabel">
             <!--#IF evaluate="<?s:request_readonly?>" compare="true" -->
             <!--#SMARTFIELD title="Expense:" div="&nbsp;</td><td>" style="width:60"
-            name="expense_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" -->
+            name="expense_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" mandatory ="true" value="0" -->
             <!--#ELSEIF evaluate="<?p:has_existing_invoices?>" compare="true" -->
             <!--#SMARTFIELD title="Expense:" div="&nbsp;</td><td>" style="width:60"
-            name="expense_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist"
+            name="expense_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" mandatory ="true" value="0"
             readonly="true"
             onmousedown = "temp_index=this.selectedIndex;"
             onkeydown = "temp_index=this.selectedIndex;"
             onchange = "this.selectedIndex=temp_index"; -->
             <!--#ELSE-->
             <!--#SMARTFIELD title="Expense:" div="&nbsp;</td><td>" style="width:60"
-            name="expense_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" -->
+            name="expense_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" mandatory ="true" value="0" -->
             <!--#/IF-->
         </td>
     </tr>
@@ -1732,17 +1732,17 @@ function validateEmail(str){
         <td class="mandatoryLabel">
             <!--#IF evaluate="<?s:request_readonly?>" compare="true" -->
             <!--#SMARTFIELD title="Labor:" div="&nbsp;</td><td>" style="width:60"
-            name="labor_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" -->
+            name="labor_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" mandatory ="true" value="0" -->
             <!--#ELSEIF evaluate="<?p:has_existing_invoices?>" compare="true" -->
             <!--#SMARTFIELD title="Labor:" div="&nbsp;</td><td>" style="width:60"
-            name="labor_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist"
+            name="labor_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" mandatory ="true" value="0"
             readonly="true"
             onmousedown = "temp_index=this.selectedIndex;"
             onkeydown = "temp_index=this.selectedIndex;"
             onchange = "this.selectedIndex=temp_index"; -->
             <!--#ELSE-->
             <!--#SMARTFIELD title="Labor:" div="&nbsp;</td><td>" style="width:60"
-            name="labor_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" -->
+            name="labor_markup" table="percentage" display="value_string" key="value" orderBy="percentage_id" type="droplist" mandatory ="true" value="0" -->
             <!--#/IF-->
         </td>
     </tr>
