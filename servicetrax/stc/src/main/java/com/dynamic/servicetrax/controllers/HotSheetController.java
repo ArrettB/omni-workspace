@@ -314,6 +314,39 @@ public class HotSheetController extends MultiActionController {
         }
     }
 
+    @SuppressWarnings("unchecked, unused")
+    public void editDestinationAddress(HttpServletRequest request, HttpServletResponse response, Address address) throws Exception {
+
+        LoginCrediantials credentials = (LoginCrediantials) request.getSession().getAttribute(LoginInterceptor.SESSION_ATTR_LOGIN);
+        hotSheetService.updateJobLocationAddress(address, (long) credentials.getUserId());
+
+        response.setContentType("application/json");
+        OutputStreamWriter os = null;
+
+        try {
+            List<Address> addresses;
+            if (address != null) {
+                addresses = hotSheetService.getUpdatedOriginAddresses(address.getJobLocationCustomerId());
+            }
+            else {
+                addresses = Collections.EMPTY_LIST;
+            }
+
+            os = new OutputStreamWriter(response.getOutputStream());
+            JSONArray jsonArray = JSONArray.fromObject(addresses);
+            os.write(jsonArray.toString());
+            os.flush();
+        }
+        catch (Exception e) {
+            logger.error(e);
+        }
+        finally {
+            if (os != null) {
+                os.close();
+            }
+        }
+    }
+
 
     @SuppressWarnings("unchecked, unused")
     public void addJobLocation(HttpServletRequest request, HttpServletResponse response, Address address) throws Exception {

@@ -3,13 +3,116 @@ YAHOO.namespace("example.container");
 YAHOO.util.Event.onDOMReady(function () {
     initializeOriginAddress();
     initializeOriginContact();
+    initializeDestinationAddress();
 });
 
+function initializeDestinationAddress() {
+
+    var handleEditDestinationSubmit = function() {
+        var result = this.submit();
+        if (result) {
+            YAHOO.example.container.editDestination.element.style.zIndex = -1;
+        }
+
+    };
+    var handleEditDestinationCancel = function() {
+        this.cancel();
+        YAHOO.example.container.editDestination.element.style.zIndex = -1;
+    };
+
+    var handleEditDestinationSuccess = function(o) {
+        var messages = YAHOO.lang.JSON.parse(o.responseText);
+
+        var originContactDropdown = document.getElementById("originContactDropdown");
+        originContactDropdown.options.length = 0;
+        for (var i = 0; i < messages.length; i++) {
+            var newOption = document.createElement("OPTION");
+            originContactDropdown.options.add(newOption);
+            newOption.value = messages[i].CONTACT_ID;
+            newOption.text = messages[i].CONTACT_NAME;
+            if (i == 0) {
+                document.getElementById("originContactPhone").value = messages[i].PHONE_WORK;
+                document.getElementById("originContactName").value = messages[i].CONTACT_NAME;
+            }
+        }
+    };
+
+    var handleEditDestinationFailure = function(o) {
+        alert("Edit destination failed: " + o.status);
+    };
+
+    // Remove progressively enhanced content class, just before creating the module
+    YAHOO.util.Dom.removeClass("editDestination", "yui-pe-content");
+
+    // Instantiate the Dialog
+    YAHOO.example.container.editDestination = new YAHOO.widget.Dialog("editDestinationAddress",
+                                                                 { width : "30em",
+                                                                     zIndex : -1,
+                                                                     fixedcenter : true,
+                                                                     visible : false,
+                                                                     constraintoviewport : true,
+                                                                     buttons : [
+                                                                         { text:"Submit", handler:handleEditDestinationSubmit, isDefault:true },
+                                                                         { text:"Cancel", handler:handleEditDestinationCancel }
+                                                                     ]
+                                                                 });
+
+    // Validate the entries in the form to require that both first and last name are entered
+    YAHOO.example.container.editDestination.validate = function() {
+
+        var data = this.getData();
+
+        if (data == undefined) {
+            return false;
+        }
+
+        if (YAHOO.lang.trim(data.jobLocationName) == "") {
+            alert("A location name is required.");
+            return false;
+        }
+
+        if (YAHOO.lang.trim(data.streetOne) == "") {
+            alert("An address is required.");
+            return false;
+        }
+
+        if (YAHOO.lang.trim(data.city) == "") {
+            alert("A city is required.");
+            return false;
+        }
+
+        var isZip = /^\d{5}([\-]\d{4})?$/;
+        if (YAHOO.lang.trim(data.zip) == "" || !isZip.test(data.zip)) {
+            alert("A valid zip code is required.");
+            return false;
+        }
+
+        return true;
+    };
+
+    // Wire up the success and failure handlers
+    YAHOO.example.container.editDestination.callback = {
+        success: handleEditDestinationSuccess,
+        failure: handleEditDestinationFailure
+    };
+
+    // Render the Dialog
+    YAHOO.example.container.editDestination.render();
+
+    function init(e) {
+        YAHOO.example.container.editDestination.show();
+        YAHOO.example.container.editDestination.element.style.zIndex = 2;
+    }
+
+    YAHOO.util.Event.addListener("editDestinationButton", "click", init, YAHOO.example.container.editDestination, true);
+
+}
+
 function initializeOriginContact() {
-    // Define various event handlers for new origin address
+
     var handleContactSubmit = function() {
         var result = this.submit();
-        if (result == true) {
+        if (result) {
             YAHOO.example.container.addContact.element.style.zIndex = -1;
         }
 
@@ -91,9 +194,7 @@ function initializeOriginContact() {
         YAHOO.example.container.addContact.element.style.zIndex = 2;
     }
 
-
     YAHOO.util.Event.addListener("newOriginContact", "click", init, YAHOO.example.container.addContact, true);
-
 }
 
 

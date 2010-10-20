@@ -5,11 +5,11 @@
 
 
 <%--Second Row--%>
-<table border="0" cellpadding="1" cellspacing="2" style="width: 825px; margin-top: 15px;">
+<table border="0" cellpadding="1" cellspacing="2" style="width: 790px; margin-top: 15px;">
 <col style="width:28%">
-<col style="width:8%">
-<col style="width:28%">
-<col style="width:1%">
+<col style="width:5%">
+<col style="width:24%">
+<col style="width:5%">
 <col>
 
 <tr>
@@ -42,7 +42,7 @@
         <form:input path="jobLocationAddress.jobLocationName" readonly="true" cssClass="disabledCell"/>
     </td>
     <td>
-        &nbsp;
+        <input type="button" value="Edit" id="editDestinationButton" style=" background:#d3d3d3"/>
     </td>
     <td>
         <form:input path="billingAddress.jobLocationName" readonly="true" cssClass="disabledCell"

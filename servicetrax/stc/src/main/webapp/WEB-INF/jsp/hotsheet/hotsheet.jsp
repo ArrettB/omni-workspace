@@ -187,6 +187,84 @@
 
 </script>
 
+<div id="editDestinationAddress" class="yui-panel">
+    <div class="hd">Please enter new destination address information</div>
+    <div class="bd">
+
+        <form:form name="editDestinationAddressForm" id="editDestinationAddressForm"
+                   action="${pageContext.request.contextPath}/editDestinationAddress.html" method="post">
+            <table border="0" cellspacing="5" cellpadding="0">
+                <input type="hidden" name="jobLocationCustomerId" value="${hotSheet.customerId}"/>
+                <tr>
+                    <td>
+                        Location Name:
+                    </td>
+                    <td>
+                        <label>
+                            <input type="text" name="jobLocationName" id="jobLocationName"/>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Address:
+                    </td>
+                    <td>
+                        <label>
+                            <input type="text" name="streetOne" id="streetOne"/>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        City:
+                    </td>
+                    <td>
+                        <label>
+                            <input type="text" name="city" id="city"/>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        State/Province:
+                    </td>
+                    <td>
+                        <label>
+                            <select name="state" style="width:150px;" id="state"></select>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Zip:
+                    </td>
+                    <td>
+                        <label>
+                            <input type="text" name="zip" id="zip"/>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Country:
+                    </td>
+                    <td>
+                        <label>
+                            <select name="country" id="country" style="width:150px;"
+                                    onchange="handleChange(this.options[this.selectedIndex].value);">
+                                <option value="US" selected="selected">United States</option>
+                                <option value="CA">Canada</option>
+                            </select>
+                        </label>
+                    </td>
+                </tr>
+            </table>
+        </form:form>
+    </div>
+</div>
+
+
 <div id="addJobLocation" class="yui-panel">
     <div class="hd">Please enter new origin address information</div>
     <div class="bd">

@@ -602,6 +602,29 @@ public class HotSheetService {
     }
 
 
+    public static final String UPDATE_JOB_LOCATION_ADDRESS =
+            "UPDATE job_locations set job_location_name = ?," +
+                    " street1 = ?, street2 = ?, city = ?, state = ?, zip = ?," +
+                    " country = ?, date_modified = ?, modified_by = ?" +
+                    " WHERE job_location_id = ?";
+
+    public void updateJobLocationAddress(Address address, long userId) {
+        jdbcTemplate.update(UPDATE_JOB_LOCATION_ADDRESS, new Object[]
+                {
+                        address.getJobLocationName(),
+                        address.getStreetOne(),
+                        address.getStreetTwo(),
+                        address.getCity(),
+                        address.getState(),
+                        address.getZip(),
+                        address.getCountry(),
+                        new Date(),
+                        userId,
+                        address.getJobLocationId()
+                });
+    }
+
+
     public static final String ADD_ORIGIN_CONTACT =
             "INSERT INTO contacts (contact_name, organization_id, cont_status_type_id," +
                     " customer_id, phone_work, ext_dealer_id, date_created, created_by)" +

@@ -278,13 +278,14 @@
                 /addJobLocation.html=addJobLocation
                 /updateOriginContact.html=updateContact
                 /addOriginContact.html=addOriginContact
+                /editDestinationAddress.html=editDestinationAddress
             </value>
         </property>
     </bean>
 
     <bean name="/hotSheetCreate.html, /hotSheetShow.html, /hotSheetSave.html, /hotSheetCopy.html,
     /hotSheetReport.html, /hotSheetPrint.html, /updateOriginAddress.html, /addJobLocation.html,
-    /addOriginContact.html, /updateOriginContact.html"
+    /addOriginContact.html, /updateOriginContact.html, /editDestinationAddress.html"
           class="com.dynamic.servicetrax.controllers.HotSheetController">
         <property name="hotSheetService" ref="hotSheetService"/>
         <property name="jasperReportService" ref="jasperReportService"/>
