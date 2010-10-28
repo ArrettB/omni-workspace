@@ -210,7 +210,7 @@ public class HotSheetService {
 
             originAddress = getAddress(id);
             hotSheet.setOriginAddress(originAddress);
-            List<Address> addresses = getOriginAddresses(originAddresses);
+            List<Address> addresses = convertToAddressList(originAddresses);
             hotSheet.setOriginAddresses(addresses);
         }
         else {
@@ -272,7 +272,7 @@ public class HotSheetService {
     }
 
 
-    private List<Address> getOriginAddresses(List<Map> originAddresses) {
+    private List<Address> convertToAddressList(List<Map> originAddresses) {
         List<Address> addresses = new ArrayList<Address>();
         for (Map aRow : originAddresses) {
             Address anAddress = new Address();
@@ -381,6 +381,10 @@ public class HotSheetService {
         hotSheet.setJobLocationAddressId(jobLocationAddressId.longValue());
         Address jobLocationAddress = getAddress((BigDecimal) row.get("jobLocationAddressId"));
         hotSheet.setJobLocationAddress(jobLocationAddress);
+        List<Map> destinationAddressRows = jdbcTemplate.queryForList(GET_JOB_LOCATION_INFO, new Object[]{hotSheet.getEndUserId()});
+        List<Address> destinationAddresses = convertToAddressList(destinationAddressRows);
+        hotSheet.setDestinationAddresses(destinationAddresses);
+
         initializeJobLocationContact(hotSheet, (BigDecimal) row.get("jobLocationContactId"));
 
         BigDecimal contactId = (BigDecimal) row.get("CUSTOMER_CONTACT_ID");
@@ -556,7 +560,7 @@ public class HotSheetService {
 
         List<Map> originAddresses = jdbcTemplate.queryForList(GET_JOB_LOCATION_INFO, new Object[]{Long.valueOf(customerId)});
         if (originAddresses != null && originAddresses.size() > 0) {
-            return getOriginAddresses(originAddresses);
+            return convertToAddressList(originAddresses);
         }
         return Collections.EMPTY_LIST;
     }

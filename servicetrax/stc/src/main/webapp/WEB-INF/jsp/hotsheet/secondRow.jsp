@@ -5,7 +5,7 @@
 
 
 <%--Second Row--%>
-<table border="0" cellpadding="1" cellspacing="2" style="width: 790px; margin-top: 15px;">
+<table border="1" cellpadding="1" cellspacing="2" style="width: 790px; margin-top: 15px;">
 <col style="width:28%">
 <col style="width:5%">
 <col style="width:24%">
@@ -39,10 +39,16 @@
         </div>
     </td>
     <td>
-        <form:input path="jobLocationAddress.jobLocationName" readonly="true" cssClass="disabledCell"/>
+        <form:select path="jobLocationAddressId" cssStyle="min-width:225px; max-width:225px;"
+                     id="destinationAddressDropdown">
+            <form:options items="${hotSheet.destinationAddresses}" itemValue="jobLocationId"
+                          itemLabel="jobLocationName"/>
+        </form:select>
     </td>
     <td>
-        <input type="button" value="Edit" id="editDestinationButton" style=" background:#d3d3d3"/>
+        <div id="destinationAddressSpinner" style="visibility:hidden; text-align:center;">
+            <img src="images/ajax-loader.gif" alt="Working...">
+        </div>
     </td>
     <td>
         <form:input path="billingAddress.jobLocationName" readonly="true" cssClass="disabledCell"
@@ -58,9 +64,11 @@
         <input type="button" value="New" id="newOriginAddress" style=" background:#d3d3d3"/>
     </td>
     <td>
-        <form:input path="jobLocationAddress.streetOne" readonly="true" cssClass="disabledCell"/>
+        <form:input path="jobLocationAddress.jobLocationName" readonly="true" cssClass="disabledCell"/>
     </td>
-    <td>&nbsp;</td>
+    <td>
+        <input type="button" value="New" id="addDestinationButton" style=" background:#d3d3d3"/>
+    </td>
     <td>
         <form:input path="billingAddress.streetOne" readonly="true" cssClass="disabledCell"
                     cssStyle="width:225px;"/></td>
@@ -70,12 +78,11 @@
     <td>
         <form:input path="originAddress.streetOne" readonly="true" cssClass="disabledCell"/>
     </td>
-    <td>&nbsp;</td>
     <td>
-        <label>
-            <input type="text" readonly="true" class="disabledCell"
-                   value="<c:out value='${hotSheet.jobLocationAddress.city}, ${hotSheet.jobLocationAddress.state} ${hotSheet.jobLocationAddress.zip}'/>">
-        </label>
+        &nbsp;
+    </td>
+    <td>
+        <form:input path="jobLocationAddress.streetOne" readonly="true" cssClass="disabledCell"/>
     </td>
     <td>&nbsp;</td>
     <td>
@@ -90,7 +97,10 @@
     </td>
     <td>&nbsp;</td>
     <td>
-        <form:input path="jobContactName" readonly="true" cssClass="disabledCell"/></td>
+        <label>
+            <input type="text" readonly="true" class="disabledCell" id="destinationCityStateZip"     
+                   value="<c:out value='${hotSheet.jobLocationAddress.city}, ${hotSheet.jobLocationAddress.state} ${hotSheet.jobLocationAddress.zip}'/>">
+        </label>
     <td>&nbsp;</td>
     <td>
         <input type="text" readonly="true" class="disabledCell" style="width:225px;"
@@ -104,17 +114,24 @@
             <form:options items="${hotSheet.originContacts}" itemValue="key"
                           itemLabel="value"/>
         </form:select>
+        <form:input path="originContactPhone" readonly="true" cssClass="disabledCell"/>
+        &nbsp;
+    </td>
+
+    <td>
+        <input type="button" value="New" id="newOriginContact" style=" background:#d3d3d3"/>
+    </td>
+
+    <td>
+        <form:input path="jobContactName" readonly="true" cssClass="disabledCell"/>
+        <form:input path="jobContactPhone" readonly="true" cssClass="disabledCell"/>
+        <form:input path="jobContactEmail" readonly="true" cssClass="disabledCell"/>
     </td>
 
     <td>
         &nbsp;
     </td>
 
-    <td>
-        <form:input path="jobContactPhone" readonly="true" cssClass="disabledCell"/>
-    </td>
-
-    <td>&nbsp;</td>
     <td rowspan="4">
         <table border="0" cellpadding="1" cellspacing="1" width="75%" style="font-size:12px; margin-top:0;">
             <tr>
@@ -240,18 +257,6 @@
             </tr>
         </table>
     </td>
-</tr>
-<tr>
-    <td>
-        <form:input path="originContactPhone" readonly="true" cssClass="disabledCell"/>
-    </td>
-    <td>
-        <input type="button" value="New" id="newOriginContact" style=" background:#d3d3d3"/>
-    </td>
-    <td>
-        <form:input path="jobContactEmail" readonly="true" cssClass="disabledCell"/>
-    </td>
-    <td>&nbsp;</td>
 </tr>
 <tr>
     <td colspan="4">

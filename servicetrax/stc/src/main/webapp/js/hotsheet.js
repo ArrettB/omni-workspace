@@ -8,19 +8,19 @@ YAHOO.util.Event.onDOMReady(function () {
 
 function initializeDestinationAddress() {
 
-    var handleEditDestinationSubmit = function() {
+    var handleAddDestinationSubmit = function() {
         var result = this.submit();
         if (result) {
-            YAHOO.example.container.editDestination.element.style.zIndex = -1;
+            YAHOO.example.container.addDestination.element.style.zIndex = -1;
         }
 
     };
-    var handleEditDestinationCancel = function() {
+    var handleAddDestinationCancel = function() {
         this.cancel();
-        YAHOO.example.container.editDestination.element.style.zIndex = -1;
+        YAHOO.example.container.addDestination.element.style.zIndex = -1;
     };
 
-    var handleEditDestinationSuccess = function(o) {
+    var handleAddDestinationSuccess = function(o) {
         var messages = YAHOO.lang.JSON.parse(o.responseText);
 
         var originContactDropdown = document.getElementById("originContactDropdown");
@@ -37,28 +37,28 @@ function initializeDestinationAddress() {
         }
     };
 
-    var handleEditDestinationFailure = function(o) {
-        alert("Edit destination failed: " + o.status);
+    var handleAddDestinationFailure = function(o) {
+        alert("Add destination failed: " + o.status);
     };
 
     // Remove progressively enhanced content class, just before creating the module
-    YAHOO.util.Dom.removeClass("editDestination", "yui-pe-content");
+    YAHOO.util.Dom.removeClass("addDestination", "yui-pe-content");
 
     // Instantiate the Dialog
-    YAHOO.example.container.editDestination = new YAHOO.widget.Dialog("editDestinationAddress",
-                                                                 { width : "30em",
-                                                                     zIndex : -1,
-                                                                     fixedcenter : true,
-                                                                     visible : false,
-                                                                     constraintoviewport : true,
-                                                                     buttons : [
-                                                                         { text:"Submit", handler:handleEditDestinationSubmit, isDefault:true },
-                                                                         { text:"Cancel", handler:handleEditDestinationCancel }
-                                                                     ]
-                                                                 });
+    YAHOO.example.container.addDestination = new YAHOO.widget.Dialog("addDestinationAddress",
+                                                                      { width : "30em",
+                                                                          zIndex : -1,
+                                                                          fixedcenter : true,
+                                                                          visible : false,
+                                                                          constraintoviewport : true,
+                                                                          buttons : [
+                                                                              { text:"Submit", handler:handleAddDestinationSubmit, isDefault:true },
+                                                                              { text:"Cancel", handler:handleAddDestinationCancel }
+                                                                          ]
+                                                                      });
 
     // Validate the entries in the form to require that both first and last name are entered
-    YAHOO.example.container.editDestination.validate = function() {
+    YAHOO.example.container.addDestination.validate = function() {
 
         var data = this.getData();
 
@@ -91,22 +91,69 @@ function initializeDestinationAddress() {
     };
 
     // Wire up the success and failure handlers
-    YAHOO.example.container.editDestination.callback = {
-        success: handleEditDestinationSuccess,
-        failure: handleEditDestinationFailure
+    YAHOO.example.container.addDestination.callback = {
+        success: handleAddDestinationSuccess,
+        failure: handleAddDestinationFailure
     };
 
     // Render the Dialog
-    YAHOO.example.container.editDestination.render();
+    YAHOO.example.container.addDestination.render();
 
     function init(e) {
-        YAHOO.example.container.editDestination.show();
-        YAHOO.example.container.editDestination.element.style.zIndex = 2;
+        YAHOO.example.container.addDestination.show();
+        YAHOO.example.container.addDestination.element.style.zIndex = 2;
     }
 
-    YAHOO.util.Event.addListener("editDestinationButton", "click", init, YAHOO.example.container.editDestination, true);
+    YAHOO.util.Event.addListener("addDestinationButton", "click", init, YAHOO.example.container.addDestination, true);
 
 }
+
+YAHOO.util.Event.on('destinationAddressDropdown', 'change', function (event) {
+
+    var callbacks = {
+
+        start : function(o) {
+            document.getElementById('destinationAddressSpinner').style.visibility = 'visible';
+        },
+
+        complete : function(o) {
+            document.getElementById('destinationAddressSpinner').style.visibility = 'hidden';
+        },
+
+        success : function (o) {
+            var messages = [];
+            try {
+                messages = YAHOO.lang.JSON.parse(o.responseText);
+                document.getElementById("jobLocationAddress.jobLocationName").value = messages['jobLocationName'];
+                document.getElementById("jobLocationAddress.streetOne").value = messages['streetOne'];
+                var cityStateZip = messages['city'] + ' ' + messages['state'] + ' ' + messages['zip'];
+                document.getElementById("destinationCityStateZip").value = cityStateZip;
+            }
+            catch (exception) {
+                alert("JSON Parse failed: " + exception);
+                document.getElementById('destinationAddressSpinner').style.visibility = 'hidden';
+            }
+        },
+
+        failure : function (o) {
+            if (!YAHOO.util.Connect.isCallInProgress(o)) {
+                alert("Async call failed!");
+                document.getElementById('destinationAddressSpinner').style.visibility = 'hidden';
+            }
+        },
+
+        // 10 second timeout
+        timeout : 10000
+    };
+
+    YAHOO.util.Connect.startEvent.subscribe(callbacks.start, callbacks);
+    YAHOO.util.Connect.completeEvent.subscribe(callbacks.complete, callbacks);
+
+    var id = this.value;
+    var url = '/stc/updateDestinationAddress.html?jobLocationId=' + id;
+    YAHOO.util.Connect.asyncRequest('GET', url, callbacks);
+});
+
 
 function initializeOriginContact() {
 
@@ -300,7 +347,6 @@ function initializeOriginAddress() {
 
 
     YAHOO.util.Event.addListener("newOriginAddress", "click", init, YAHOO.example.container.addJobLocation, true);
-
 }
 
 

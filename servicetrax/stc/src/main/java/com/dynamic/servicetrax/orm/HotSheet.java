@@ -36,9 +36,11 @@ public class HotSheet extends AuditableObject {
 
     private Long jobLocationAddressId;
     private Address jobLocationAddress;
+    private List<Address> destinationAddresses;
 
     private Long originAddressId;
     private Address originAddress;
+    private List originAddresses;
 
     private Address billingAddress;
 
@@ -58,7 +60,6 @@ public class HotSheet extends AuditableObject {
     private Date requestModifiedDate;
     private Long customerId;
     private Long endUserId;
-    private List originAddresses;
     private String createdByName;
     private String modifiedByName;
 
@@ -74,6 +75,7 @@ public class HotSheet extends AuditableObject {
     //This is the id for fetching the billing address info from GreatPlains.
     private String extCustomerId;
     private List<KeyValueBean> originContacts;
+
 
 
     public Long getHotSheetId() {
@@ -451,4 +453,14 @@ public class HotSheet extends AuditableObject {
     public void setOriginContactPhone(String originContactPhone) {
         this.originContactPhone = originContactPhone;
     }
+
+    public List<Address> getDestinationAddresses() {
+        return destinationAddresses;
+    }
+
+    public void setDestinationAddresses(List<Address> destinationAddresses) {
+        this.destinationAddresses = destinationAddresses;
+    }
+
+
 }

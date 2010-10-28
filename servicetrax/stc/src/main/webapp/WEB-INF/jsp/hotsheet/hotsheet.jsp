@@ -187,12 +187,12 @@
 
 </script>
 
-<div id="editDestinationAddress" class="yui-panel">
+<div id="addDestinationAddress" class="yui-panel">
     <div class="hd">Please enter new destination address information</div>
     <div class="bd">
 
-        <form:form name="editDestinationAddressForm" id="editDestinationAddressForm"
-                   action="${pageContext.request.contextPath}/editDestinationAddress.html" method="post">
+        <form:form name="addDestinationAddressForm" id="addDestinationAddressForm"
+                   action="${pageContext.request.contextPath}/addDestinationAddress.html" method="post">
             <table border="0" cellspacing="5" cellpadding="0">
                 <input type="hidden" name="jobLocationCustomerId" value="${hotSheet.customerId}"/>
                 <tr>
