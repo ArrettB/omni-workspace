@@ -120,6 +120,7 @@ public class HotSheetController extends MultiActionController {
 
         //In either event, we need these
         hotSheetService.addOriginAddressInfo(hotSheet);
+        hotSheetService.addDestinationAddressInfo(hotSheet);
         hotSheetService.addOriginContactInfo(hotSheet);
 
         if (result != null && result.hasErrors()) {
@@ -172,6 +173,7 @@ public class HotSheetController extends MultiActionController {
     public ModelAndView copy(HttpServletRequest request, HttpServletResponse response, HotSheet hotSheet) throws Exception {
 
         hotSheetService.addOriginAddressInfo(hotSheet);
+        hotSheetService.addDestinationAddressInfo(hotSheet);
         hotSheetService.addOriginContactInfo(hotSheet);
 
         // Validation and save logic from primary scenario is executed.
@@ -215,6 +217,7 @@ public class HotSheetController extends MultiActionController {
     public ModelAndView printSave(HttpServletRequest request, HttpServletResponse response, HotSheet hotSheet) throws Exception {
 
         hotSheetService.addOriginAddressInfo(hotSheet);
+        hotSheetService.addDestinationAddressInfo(hotSheet);
         hotSheetService.addOriginContactInfo(hotSheet);
 
         if (result.hasErrors()) {
@@ -343,20 +346,14 @@ public class HotSheetController extends MultiActionController {
     public void addDestinationAddress(HttpServletRequest request, HttpServletResponse response, Address address) throws Exception {
 
         LoginCrediantials credentials = (LoginCrediantials) request.getSession().getAttribute(LoginInterceptor.SESSION_ATTR_LOGIN);
-        hotSheetService.updateJobLocationAddress(address, (long) credentials.getUserId());
+        address.setJobLocationCustomerId(address.getEndUserId());
+        hotSheetService.addJobLocationAddress(address, (long) credentials.getUserId());
 
         response.setContentType("application/json");
         OutputStreamWriter os = null;
 
         try {
-            List<Address> addresses;
-            if (address != null) {
-                addresses = hotSheetService.getUpdatedOriginAddresses(address.getJobLocationCustomerId());
-            }
-            else {
-                addresses = Collections.EMPTY_LIST;
-            }
-
+            List<Address> addresses = hotSheetService.getUpdatedAddresses(address.getEndUserId());
             os = new OutputStreamWriter(response.getOutputStream());
             JSONArray jsonArray = JSONArray.fromObject(addresses);
             os.write(jsonArray.toString());
@@ -385,7 +382,7 @@ public class HotSheetController extends MultiActionController {
         try {
             List<Address> addresses;
             if (address != null) {
-                addresses = hotSheetService.getUpdatedOriginAddresses(address.getJobLocationCustomerId());
+                addresses = hotSheetService.getUpdatedAddresses(address.getJobLocationCustomerId());
             }
             else {
                 addresses = Collections.EMPTY_LIST;

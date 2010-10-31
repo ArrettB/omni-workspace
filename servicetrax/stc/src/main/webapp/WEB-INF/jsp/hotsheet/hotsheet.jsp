@@ -64,8 +64,13 @@
             src="${pageContext.request.contextPath}/js/yui281/build/json/json-min.js"></script>
 
     <script type="text/javascript"
-            src="${pageContext.request.contextPath}/js/hotsheet.js"></script>
+            src="${pageContext.request.contextPath}/js/originContact.js"></script>
 
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/js/destinationAddress.js"></script>
+
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/js/originAddress.js"></script>
 
 </head>
 
@@ -113,7 +118,6 @@
     <form:hidden path="hotSheetNumber"/>
     <form:hidden path="requestTypeId"/>
 
-    <form:hidden path="jobLocationAddressId"/>
     <form:hidden path="jobLocationAddress.city"/>
     <form:hidden path="jobLocationAddress.state"/>
     <form:hidden path="jobLocationAddress.zip"/>
@@ -194,7 +198,7 @@
         <form:form name="addDestinationAddressForm" id="addDestinationAddressForm"
                    action="${pageContext.request.contextPath}/addDestinationAddress.html" method="post">
             <table border="0" cellspacing="5" cellpadding="0">
-                <input type="hidden" name="jobLocationCustomerId" value="${hotSheet.customerId}"/>
+                <input type="hidden" name="endUserId" value="${hotSheet.endUserId}"/>
                 <tr>
                     <td>
                         Location Name:

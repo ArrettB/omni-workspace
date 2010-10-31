@@ -17,6 +17,7 @@ public class Address {
     private String zip;
     private String country;
     private String jobLocationCustomerId;
+    private String endUserId;
 
 
     public Long getJobLocationId() {
@@ -97,5 +98,13 @@ public class Address {
 
     public void setJobLocationCustomerId(String jobLocationCustomerId) {
         this.jobLocationCustomerId = jobLocationCustomerId;
+    }
+
+    public String getEndUserId() {
+        return endUserId;
+    }
+
+    public void setEndUserId(String endUserId) {
+        this.endUserId = endUserId;
     }
 }
