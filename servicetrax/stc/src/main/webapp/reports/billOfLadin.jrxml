@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="billOfLading" pageWidth="612" pageHeight="1008" columnWidth="552" leftMargin="20" rightMargin="20" topMargin="7" bottomMargin="7">
-	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="73"/>
-	<property name="ireport.y" value="464"/>
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="com.dynamic.servicetrax.util.TimeUtils"/>
 	<style name="Title" isDefault="false" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="18"/>
@@ -48,6 +48,13 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 	<field name="CREATED_BY" class="java.math.BigDecimal"/>
 	<field name="DATE_MODIFIED" class="java.sql.Timestamp"/>
 	<field name="MODIFIED_BY" class="java.math.BigDecimal"/>
+	<field name="BL_CHRG" class="java.lang.String"/>
+	<field name="ORIGIN_CONTACT_ID" class="java.math.BigDecimal"/>
+	<field name="ORIGIN_CONTACT_NAME" class="java.lang.String"/>
+	<field name="ORIGIN_CONTACT_PHONE" class="java.lang.String"/>
+	<field name="A_M_SALES_CONTACT_ID" class="java.math.BigDecimal"/>
+	<field name="SALES_CONTACT_NAME" class="java.lang.String"/>
+	<field name="SALES_CONTACT_PHONE" class="java.lang.String"/>
 	<field name="CONTACT_NAME" class="java.lang.String"/>
 	<field name="PHONE_WORK" class="java.lang.String"/>
 	<field name="DESCRIPTION" class="java.lang.String"/>
@@ -118,33 +125,40 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 			<frame>
 				<reportElement x="0" y="60" width="185" height="60"/>
 				<textField>
-					<reportElement style="Detail" x="25" y="30" width="160" height="15"/>
+					<reportElement style="Detail" x="25" y="15" width="160" height="15"/>
 					<textElement verticalAlignment="Middle">
-						<font size="10"/>
+						<font size="11" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{DEALER_PO_NUMBER}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="Detail" x="0" y="15" width="185" height="15"/>
+					<reportElement style="Detail" x="0" y="0" width="185" height="15"/>
 					<textElement verticalAlignment="Middle">
 						<font size="11" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{CUSTOMER_NAME}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="0" y="0" width="185" height="15" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<text><![CDATA[CUSTOMER]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="0" y="30" width="25" height="15"/>
+					<reportElement x="0" y="15" width="25" height="15"/>
 					<textElement verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font fontName="Arial" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[PO#]]></text>
 				</staticText>
+				<staticText>
+					<reportElement x="0" y="30" width="185" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[SALES PERSON:]]></text>
+				</staticText>
+				<textField>
+					<reportElement style="Detail" x="0" y="45" width="185" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{SALES_CONTACT_NAME}]]></textFieldExpression>
+				</textField>
 			</frame>
 		</band>
 	</title>
@@ -1217,11 +1231,11 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 					<subreportParameter name="EXT_CUSTOMER_ID">
 						<subreportParameterExpression><![CDATA[$P{EXT_CUSTOMER_ID}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportParameter name="DB_PREFIX">
-						<subreportParameterExpression><![CDATA[$P{DB_PREFIX}]]></subreportParameterExpression>
-					</subreportParameter>
 					<subreportParameter name="ID">
 						<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="DB_PREFIX">
+						<subreportParameterExpression><![CDATA[$P{DB_PREFIX}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "billOfLadingBillingAddress.jasper"]]></subreportExpression>
@@ -1271,11 +1285,11 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<subreportParameter name="EXT_CUSTOMER_ID">
 					<subreportParameterExpression><![CDATA[$P{EXT_CUSTOMER_ID}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="DB_PREFIX">
-					<subreportParameterExpression><![CDATA[$P{DB_PREFIX}]]></subreportParameterExpression>
-				</subreportParameter>
 				<subreportParameter name="ID">
 					<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DB_PREFIX">
+					<subreportParameterExpression><![CDATA[$P{DB_PREFIX}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "billOfLadingPositions.jasper"]]></subreportExpression>
@@ -2032,11 +2046,11 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<subreportParameter name="EXT_CUSTOMER_ID">
 					<subreportParameterExpression><![CDATA[$P{EXT_CUSTOMER_ID}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="DB_PREFIX">
-					<subreportParameterExpression><![CDATA[$P{DB_PREFIX}]]></subreportParameterExpression>
-				</subreportParameter>
 				<subreportParameter name="ID">
 					<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DB_PREFIX">
+					<subreportParameterExpression><![CDATA[$P{DB_PREFIX}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "billOfLadingTrucks.jasper"]]></subreportExpression>
@@ -2049,11 +2063,11 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<subreportParameter name="EXT_CUSTOMER_ID">
 					<subreportParameterExpression><![CDATA[$P{EXT_CUSTOMER_ID}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="DB_PREFIX">
-					<subreportParameterExpression><![CDATA[$P{DB_PREFIX}]]></subreportParameterExpression>
-				</subreportParameter>
 				<subreportParameter name="ID">
 					<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DB_PREFIX">
+					<subreportParameterExpression><![CDATA[$P{DB_PREFIX}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "billOfLadingEquipment.jasper"]]></subreportExpression>
