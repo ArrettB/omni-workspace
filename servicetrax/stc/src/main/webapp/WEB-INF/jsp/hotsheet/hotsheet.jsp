@@ -146,6 +146,9 @@
 
     <form:hidden path="originContactName"/>
 
+    <form:hidden path="salesContactPhone"/>
+    <form:hidden path="salesContactId"/>
+
     <jsp:include page="firstRow.jsp" flush="true">
         <jsp:param name="hotSheet" value="${hotSheet}"/>
     </jsp:include>

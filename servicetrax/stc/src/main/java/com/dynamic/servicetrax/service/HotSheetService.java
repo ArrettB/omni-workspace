@@ -362,19 +362,23 @@ public class HotSheetService {
                     " requests.VERSION_NO as versionNo," +
                     " requests.JOB_LOCATION_ID as jobLocationAddressId," +
                     " requests.JOB_LOCATION_CONTACT_ID as jobLocationContactId," +
-                    " requests.DEALER_PO_NO, " +
+                    " requests.DEALER_PO_NO," +
                     " requests.DESCRIPTION," +
                     " requests.CUSTOMER_CONTACT_ID," +
                     " requests.DATE_CREATED," +
                     " requests.CREATED_BY," +
                     " requests.DATE_MODIFIED," +
                     " requests.MODIFIED_BY," +
+                    " requests.A_M_SALES_CONTACT_ID," +
                     " projects.PROJECT_NO as projectNo," +
-                    " contacts.phone_work as originPhone," +
-                    " contacts.contact_name as originName" +
-                    " from requests, projects, contacts" +
+                    " originContact.phone_work as originPhone," +
+                    " originContact.contact_name as originName," +
+                    " salesContact.contact_name as salesName," +
+                    " salesContact.phone_work as salesPhone" +
+                    " from requests, projects, contacts originContact, contacts salesContact" +
                     " where projects.project_id = requests.project_id" +
-                    " and contacts.contact_id = requests.customer_contact_id" +
+                    " and originContact.contact_id = requests.customer_contact_id" +
+                    " and salesContact.contact_id = requests.a_m_sales_contact_id" +
                     " and requests.request_id = ?";
 
     @SuppressWarnings("unchecked")
@@ -422,6 +426,11 @@ public class HotSheetService {
         hotSheet.setOriginContactId(contactId.longValue());
         hotSheet.setOriginContactName((String) row.get("originName"));
         hotSheet.setOriginContactPhone((String) row.get("originPhone"));
+
+        BigDecimal amSalesContactId = (BigDecimal) row.get("A_M_SALES_CONTACT_ID");
+        hotSheet.setSalesContactId(amSalesContactId.longValue());
+        hotSheet.setSalesContactName((String) row.get("salesName"));
+        hotSheet.setSalesContactPhone((String) row.get("salesPhone"));
     }
 
     private void initializeJobLocationContact(HotSheet hotSheet, BigDecimal jobLocationContactId) {

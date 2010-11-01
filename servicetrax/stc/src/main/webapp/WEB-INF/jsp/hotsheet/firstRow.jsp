@@ -5,9 +5,9 @@
 
 
 <table border="0" cellpadding="1" cellspacing="2" style="width: 800px; margin-top: 15px;">
-    <col style="width:20%">
-    <col style="width:30%">
-    <col style="width:20%">
+    <col style="width:15%">
+    <col style="width:35%">
+    <col style="width:15%">
     <col>
 
     <tr>
@@ -34,6 +34,12 @@
         <td>
             <form:input path="customerName" readonly="true" cssClass="disabledCell"/>
         </td>
+        <td>
+            PO#:
+        </td>
+        <td>
+            <form:input path="dealerPONumber" cssClass="regularCell"/>
+        </td>
     </tr>
 
     <tr>
@@ -45,10 +51,10 @@
         </td>
 
         <td>
-            PO#:
+            Sales Contact:
         </td>
         <td>
-            <form:input path="dealerPONumber" cssClass="regularCell"/>
+            <form:input path="salesContactName" cssClass="disabledCell"/>
         </td>
     </tr>
 </table>

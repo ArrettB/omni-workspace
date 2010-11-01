@@ -42,6 +42,23 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
         return (control - (control % 100)) / 100;
     }
 
+    public void testSalesContact(){
+
+        hibernateService = (HibernateService) applicationContext.getBean("hibernateService");
+        HotSheet hotSheet = createHotSheet();
+
+        Long salesContactId = jdbcTemplate.queryForLong("select max(contact_id ) from contacts");
+        hotSheet.setSalesContactId(salesContactId);
+        hotSheet.setSalesContactName("Sales Name");
+        hotSheet.setSalesContactPhone("Sales Phone");
+
+        hibernateService.saveOrUpdate(hotSheet);
+        HotSheet persisted = (HotSheet) hibernateService.get(HotSheet.class, hotSheet.getHotSheetId());
+        assertEquals("Sales Name", persisted.getSalesContactName());
+        assertEquals("Sales Phone", persisted.getSalesContactPhone());
+        assertEquals(salesContactId, persisted.getSalesContactId());
+    }
+
     public void testOriginAddress() {
 
         hibernateService = (HibernateService) applicationContext.getBean("hibernateService");
