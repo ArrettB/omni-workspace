@@ -347,6 +347,12 @@ public class HotSheetController extends MultiActionController {
 
         LoginCrediantials credentials = (LoginCrediantials) request.getSession().getAttribute(LoginInterceptor.SESSION_ATTR_LOGIN);
         address.setJobLocationCustomerId(address.getEndUserId());
+
+        // Workaround for the way IE7 handles javascript. The name attributes of the state dropdowns can't be the same because
+        // IE7 treats the name attribute the same as the id attribute in the document.getElementById() in stateProvince.js
+        // handleChange(country) method
+        String destinationState = request.getParameter("destinationState");
+        address.setState(destinationState);
         hotSheetService.addJobLocationAddress(address, (long) credentials.getUserId());
 
         response.setContentType("application/json");

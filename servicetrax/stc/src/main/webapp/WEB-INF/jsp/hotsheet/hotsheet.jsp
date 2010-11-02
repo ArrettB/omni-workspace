@@ -238,7 +238,7 @@
                     </td>
                     <td>
                         <label>
-                            <select name="state" style="width:150px;" id="destinationState"></select>
+                            <select name="destinationState" style="width:150px;" id="destinationState"></select>
                         </label>
                     </td>
                 </tr>
