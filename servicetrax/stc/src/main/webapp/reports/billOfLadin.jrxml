@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="billOfLading" pageWidth="612" pageHeight="1008" columnWidth="552" leftMargin="20" rightMargin="20" topMargin="7" bottomMargin="7">
-	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="com.dynamic.servicetrax.util.TimeUtils"/>
@@ -48,7 +48,6 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 	<field name="CREATED_BY" class="java.math.BigDecimal"/>
 	<field name="DATE_MODIFIED" class="java.sql.Timestamp"/>
 	<field name="MODIFIED_BY" class="java.math.BigDecimal"/>
-	<field name="BL_CHRG" class="java.lang.String"/>
 	<field name="ORIGIN_CONTACT_ID" class="java.math.BigDecimal"/>
 	<field name="ORIGIN_CONTACT_NAME" class="java.lang.String"/>
 	<field name="ORIGIN_CONTACT_PHONE" class="java.lang.String"/>
@@ -1231,11 +1230,11 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 					<subreportParameter name="EXT_CUSTOMER_ID">
 						<subreportParameterExpression><![CDATA[$P{EXT_CUSTOMER_ID}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportParameter name="ID">
-						<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
-					</subreportParameter>
 					<subreportParameter name="DB_PREFIX">
 						<subreportParameterExpression><![CDATA[$P{DB_PREFIX}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="ID">
+						<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "billOfLadingBillingAddress.jasper"]]></subreportExpression>
@@ -1285,11 +1284,11 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<subreportParameter name="EXT_CUSTOMER_ID">
 					<subreportParameterExpression><![CDATA[$P{EXT_CUSTOMER_ID}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="ID">
-					<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
-				</subreportParameter>
 				<subreportParameter name="DB_PREFIX">
 					<subreportParameterExpression><![CDATA[$P{DB_PREFIX}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ID">
+					<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "billOfLadingPositions.jasper"]]></subreportExpression>
@@ -2046,11 +2045,11 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<subreportParameter name="EXT_CUSTOMER_ID">
 					<subreportParameterExpression><![CDATA[$P{EXT_CUSTOMER_ID}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="ID">
-					<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
-				</subreportParameter>
 				<subreportParameter name="DB_PREFIX">
 					<subreportParameterExpression><![CDATA[$P{DB_PREFIX}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ID">
+					<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "billOfLadingTrucks.jasper"]]></subreportExpression>
@@ -2063,11 +2062,11 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 				<subreportParameter name="EXT_CUSTOMER_ID">
 					<subreportParameterExpression><![CDATA[$P{EXT_CUSTOMER_ID}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="ID">
-					<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
-				</subreportParameter>
 				<subreportParameter name="DB_PREFIX">
 					<subreportParameterExpression><![CDATA[$P{DB_PREFIX}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ID">
+					<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "billOfLadingEquipment.jasper"]]></subreportExpression>
