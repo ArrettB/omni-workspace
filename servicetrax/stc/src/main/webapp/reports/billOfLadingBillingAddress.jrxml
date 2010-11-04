@@ -23,25 +23,33 @@
 			<textField>
 				<reportElement x="0" y="0" width="180" height="15"/>
 				<box leftPadding="4"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CNTCPRSN}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="15" width="180" height="15"/>
 				<box leftPadding="4"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ADDRESS1}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="30" width="180" height="15"/>
 				<box leftPadding="4"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ADDRESS2}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="45" width="180" height="15"/>
 				<box leftPadding="4"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{CITY} == null ? "" : $F{CITY}.trim()) + " " +
 ($F{STATE} == null ? "" : $F{STATE}.trim()) + " " +
 ($F{ZIP} == null ? "" : $F{ZIP}.trim())]]></textFieldExpression>

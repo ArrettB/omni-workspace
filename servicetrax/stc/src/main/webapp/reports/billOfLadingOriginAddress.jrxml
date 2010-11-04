@@ -39,19 +39,25 @@ WHERE
 			<textField>
 				<reportElement x="0" y="0" width="180" height="15"/>
 				<box leftPadding="4"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{JOB_LOCATION_NAME}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="15" width="180" height="15"/>
 				<box leftPadding="4"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{STREET1} == null ? "" : $F{STREET1}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="45" width="180" height="15"/>
 				<box leftPadding="4"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{CITY} == null ? "" : $F{CITY}) + " " +
 ($F{STATE} == null ? "" : $F{STATE}) + " " +
 ($F{ZIP} == null ? "" : $F{ZIP})]]></textFieldExpression>
@@ -59,19 +65,25 @@ WHERE
 			<textField>
 				<reportElement x="0" y="60" width="180" height="15"/>
 				<box leftPadding="4"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ORIGIN_CONTACT_NAME} == null ? "" : $F{ORIGIN_CONTACT_NAME}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="75" width="180" height="15"/>
 				<box leftPadding="4"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ORIGIN_CONTACT_PHONE} == null ? "" : $F{ORIGIN_CONTACT_PHONE}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="30" width="180" height="15"/>
 				<box leftPadding="4"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{STREET2} == null ? "" : $F{STREET2}]]></textFieldExpression>
 			</textField>
 		</band>
