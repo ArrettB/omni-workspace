@@ -5,6 +5,7 @@ import com.dynamic.servicetrax.orm.Address;
 import com.dynamic.servicetrax.orm.HotSheet;
 import com.dynamic.servicetrax.orm.HotSheetDetail;
 import com.dynamic.servicetrax.service.HotSheetService;
+import com.dynamic.servicetrax.service.HotSheetServiceUtils;
 import net.sf.json.JSONObject;
 import org.springframework.beans.BeansException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,6 +30,13 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
 
     private static final String PROJECT_NAME = "My Project";
     private static final Integer JOB_LENGTH = 8;
+
+
+    @Override
+    protected void onSetUp() throws Exception {
+        super.onSetUp();
+        HotSheetServiceUtils.getInstance().setJdbcTemplate(jdbcTemplate);
+    }
 
     public void testMod() {
 
@@ -82,7 +90,7 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
             hibernateService = (HibernateService) applicationContext.getBean("hibernateService");
             HotSheet hotsheet = createHotSheet();
             Long id = hotsheet.getJobLocationAddressId();
-            Address address = hotSheetService.getAddress(new BigDecimal(id));
+            Address address = HotSheetServiceUtils.getInstance().getAddress(new BigDecimal(id));
             JSONObject jsonArray = JSONObject.fromObject(address);
             System.out.println("jsonArray = " + jsonArray);
         }
@@ -117,7 +125,7 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
         List control = jdbcTemplate.queryForList(HotSheetService.GET_HOTSHEET_LOOKUPS);
         assertTrue(control != null && control.size() == persistedDetailCount);
 
-        List rows = jdbcTemplate.queryForList(HotSheetService.SELECT_ADDRESS, new Object[]{hotsheet.getJobLocationAddressId()});
+        List rows = jdbcTemplate.queryForList(HotSheetServiceUtils.SELECT_ADDRESS, new Object[]{hotsheet.getJobLocationAddressId()});
         assertTrue(rows != null && rows.size() == 1);
         Map address = (Map) rows.get(0);
         assertEquals(address.get("JOB_LOCATION_NAME"), hotsheet.getJobLocationAddress().getJobLocationName());
@@ -146,7 +154,7 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
         assertNull(persisted.getModifiedBy());
         assertEquals(0, persisted.getCreatedBy().intValue());
 
-        List rows = jdbcTemplate.queryForList(HotSheetService.SELECT_ADDRESS, new Object[]{hotsheet.getJobLocationAddressId()});
+        List rows = jdbcTemplate.queryForList(HotSheetServiceUtils.SELECT_ADDRESS, new Object[]{hotsheet.getJobLocationAddressId()});
         assertTrue(rows != null && rows.size() == 1);
         Map address = (Map) rows.get(0);
         assertEquals(address.get("STATE"), hotsheet.getJobLocationAddress().getState());
@@ -190,7 +198,7 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
 
         BigDecimal id = (BigDecimal) jdbcTemplate.queryForObject(GET_JOB_LOCATION_ADDRESS, BigDecimal.class);
         hotSheet.setJobLocationAddressId(id.longValue());
-        Address address = hotSheetService.getAddress(id);
+        Address address = HotSheetServiceUtils.getInstance().getAddress(id);
         hotSheet.setJobLocationAddress(address);
 
         hotSheet.setJobDate(today);

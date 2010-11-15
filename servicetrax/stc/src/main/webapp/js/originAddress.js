@@ -8,12 +8,12 @@ function initializeOriginAddress() {
     var handleLocationSubmit = function() {
         var result = this.submit();
         if (result) {
-            YAHOO.example.container.addJobLocation.element.style.zIndex = -1;
+            YAHOO.example.container.addOriginAddress.element.style.zIndex = -1;
         }
     };
     var handleLocationCancel = function() {
         this.cancel();
-        YAHOO.example.container.addJobLocation.element.style.zIndex = -1;
+        YAHOO.example.container.addOriginAddress.element.style.zIndex = -1;
     };
 
     var handleLocationSuccess = function(o) {
@@ -27,7 +27,7 @@ function initializeOriginAddress() {
             newOption.value = messages[i].jobLocationId;
             newOption.text = messages[i].jobLocationName;
             if (i == 0) {
-                originAddressDropdown.value = messages[i].jobLocationId
+                originAddressDropdown.value = messages[i].jobLocationId;
                 document.getElementById("originAddress.jobLocationName").value = messages[i].jobLocationName;
                 document.getElementById("originAddress.streetOne").value = messages[i].streetOne;
                 var cityStateZip = messages[i].city + ' ' + messages[i].state + ' ' + messages[i].zip;
@@ -41,10 +41,10 @@ function initializeOriginAddress() {
     };
 
     // Remove progressively enhanced content class, just before creating the module
-    YAHOO.util.Dom.removeClass("addJobLocation", "yui-pe-content");
+    YAHOO.util.Dom.removeClass("addOriginAddress", "yui-pe-content");
 
     // Instantiate the Dialog
-    YAHOO.example.container.addJobLocation = new YAHOO.widget.Dialog("addJobLocation",
+    YAHOO.example.container.addOriginAddress = new YAHOO.widget.Dialog("addOriginAddress",
                                                                      { width : "30em",
                                                                          zIndex : -1,
                                                                          fixedcenter : true,
@@ -57,7 +57,7 @@ function initializeOriginAddress() {
                                                                      });
 
     // Validate the entries in the form to require that both first and last name are entered
-    YAHOO.example.container.addJobLocation.validate = function() {
+    YAHOO.example.container.addOriginAddress.validate = function() {
 
         var data = this.getData();
 
@@ -90,21 +90,21 @@ function initializeOriginAddress() {
     };
 
     // Wire up the success and failure handlers
-    YAHOO.example.container.addJobLocation.callback = {
+    YAHOO.example.container.addOriginAddress.callback = {
         success: handleLocationSuccess,
         failure: handleLocationFailure
     };
 
     // Render the Dialog
-    YAHOO.example.container.addJobLocation.render();
+    YAHOO.example.container.addOriginAddress.render();
 
     function init(e) {
-        YAHOO.example.container.addJobLocation.show();
-        YAHOO.example.container.addJobLocation.element.style.zIndex = 2;
+        YAHOO.example.container.addOriginAddress.show();
+        YAHOO.example.container.addOriginAddress.element.style.zIndex = 2;
     }
 
 
-    YAHOO.util.Event.addListener("newOriginAddress", "click", init, YAHOO.example.container.addJobLocation, true);
+    YAHOO.util.Event.addListener("newOriginAddress", "click", init, YAHOO.example.container.addOriginAddress, true);
 }
 
 

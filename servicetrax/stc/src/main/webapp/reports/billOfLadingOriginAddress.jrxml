@@ -66,7 +66,7 @@ WHERE
 				<reportElement x="0" y="60" width="180" height="15"/>
 				<box leftPadding="4"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="11"/>
+					<font fontName="Arial" size="11" isBold="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ORIGIN_CONTACT_NAME} == null ? "" : $F{ORIGIN_CONTACT_NAME}]]></textFieldExpression>
 			</textField>

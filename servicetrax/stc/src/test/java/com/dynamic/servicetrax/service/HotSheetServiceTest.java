@@ -19,6 +19,7 @@ public class HotSheetServiceTest extends AbstractTransactionalSpringContextTests
     private HibernateService hibernateService;
     private JdbcTemplate jdbcTemplate;
     private HotSheetService hotSheetService;
+    private HotSheetAjaxService hotSheetAjaxService;
 
     public void testBillingAddressStoredProcedure() {
 
@@ -109,7 +110,7 @@ public class HotSheetServiceTest extends AbstractTransactionalSpringContextTests
         address.setState("MN");
         address.setZip("12345");
         address.setCountry("US");
-        hotSheetService.addJobLocationAddress(address, 123L);
+        hotSheetAjaxService.addAddress(address, 123L);
         long id = jdbcTemplate.queryForLong("select max(JOB_LOCATION_ID) from JOB_LOCATIONS");
         JobLocation location = (JobLocation) hibernateService.get(JobLocation.class, id);
         assertEquals(Long.valueOf(address.getJobLocationCustomerId()), location.getCustomer().getCustomerId());
@@ -152,5 +153,10 @@ public class HotSheetServiceTest extends AbstractTransactionalSpringContextTests
     @SuppressWarnings("unused")
     public void setHotSheetService(HotSheetService hotSheetService) {
         this.hotSheetService = hotSheetService;
+    }
+
+    @SuppressWarnings("unused")
+    public void setHotSheetAjaxService(HotSheetAjaxService hotSheetAjaxService) {
+        this.hotSheetAjaxService = hotSheetAjaxService;
     }
 }

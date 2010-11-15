@@ -9,6 +9,7 @@ import java.util.Map;
  * Date: May 13, 2010
  * Time: 3:34:08 PM
  */
+
 public class HotSheet extends AuditableObject {
 
     private Long hotSheetId;
@@ -20,7 +21,6 @@ public class HotSheet extends AuditableObject {
     private Long requestId;
     private Long projectId;
     private Long requestTypeId;
-
 
     private Date jobDate;
     private Integer jobStartTime;
@@ -34,7 +34,6 @@ public class HotSheet extends AuditableObject {
     private String customerName;
     private String endUserName;
 
-    private Long jobLocationAddressId;
     private Address jobLocationAddress;
     private List<Address> destinationAddresses;
 
@@ -47,14 +46,18 @@ public class HotSheet extends AuditableObject {
     private Long originContactId;
     private String originContactName;
     private String originContactPhone;
+    private String originContactEmail;
 
     private Long salesContactId;
     private String salesContactName;
     private String salesContactPhone;
 
+    //This is the destination address
+    private Long jobLocationAddressId;
     private String jobContactName;
-    private String jobContactEmail;
     private String jobContactPhone;
+    private String jobContactEmail;
+
     private String dealerPONumber;
     private String description;
 
@@ -79,6 +82,7 @@ public class HotSheet extends AuditableObject {
     //This is the id for fetching the billing address info from GreatPlains.
     private String extCustomerId;
     private List<KeyValueBean> originContacts;
+    private List<KeyValueBean> destinationAddressContacts;
 
 
     public Long getHotSheetId() {
@@ -457,6 +461,14 @@ public class HotSheet extends AuditableObject {
         this.originContactPhone = originContactPhone;
     }
 
+    public String getOriginContactEmail() {
+        return originContactEmail;
+    }
+
+    public void setOriginContactEmail(String originContactEmail) {
+        this.originContactEmail = originContactEmail;
+    }
+
     public List<Address> getDestinationAddresses() {
         return destinationAddresses;
     }
@@ -487,5 +499,13 @@ public class HotSheet extends AuditableObject {
 
     public void setSalesContactPhone(String salseContactPhone) {
         this.salesContactPhone = salseContactPhone;
+    }
+
+    public void setDestinationAddressContacts(List<KeyValueBean> destinationAddressContacts) {
+        this.destinationAddressContacts = destinationAddressContacts;
+    }
+
+    public List<KeyValueBean> getDestinationAddressContacts() {
+        return destinationAddressContacts;
     }
 }

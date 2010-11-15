@@ -20,7 +20,6 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -91,7 +90,7 @@ public class HotSheetService {
         addOriginContactInfo(hotSheet);
         addDestinationAddressInfo(hotSheet);
         addBillingAddressInfo(hotSheet, organizationId);
-        Address jobLocationAddress = getAddress(new BigDecimal(hotSheet.getJobLocationAddressId()));
+        Address jobLocationAddress = HotSheetServiceUtils.getInstance().getAddress(new BigDecimal(hotSheet.getJobLocationAddressId()));
         hotSheet.setJobLocationAddress(jobLocationAddress);
 
         initializeJobLocationContact(hotSheet, BigDecimal.valueOf(hotSheet.getJobLocationContactId()));
@@ -210,9 +209,9 @@ public class HotSheetService {
                 id = BigDecimal.valueOf(hotSheet.getOriginAddressId());
             }
 
-            originAddress = getAddress(id);
+            originAddress = HotSheetServiceUtils.getInstance().getAddress(id);
             hotSheet.setOriginAddress(originAddress);
-            List<Address> addresses = convertToAddressList(originAddresses);
+            List<Address> addresses = HotSheetServiceUtils.getInstance().convertToAddressList(originAddresses);
             hotSheet.setOriginAddresses(addresses);
         }
         else {
@@ -237,9 +236,9 @@ public class HotSheetService {
                 id = BigDecimal.valueOf(hotSheet.getJobLocationAddressId());
             }
 
-            destinationAddress = getAddress(id);
+            destinationAddress = HotSheetServiceUtils.getInstance().getAddress(id);
             hotSheet.setJobLocationAddress(destinationAddress);
-            List<Address> addresses = convertToAddressList(destinationAddresses);
+            List<Address> addresses = HotSheetServiceUtils.getInstance().convertToAddressList(destinationAddresses);
             hotSheet.setDestinationAddresses(addresses);
         }
         else {
@@ -249,7 +248,7 @@ public class HotSheetService {
 
 
     public static final String GET_ORIGIN_CONTACT_INFO =
-            "SELECT CONTACT_ID, CONTACT_NAME, PHONE_WORK FROM CONTACTS WHERE CUSTOMER_ID = ? ORDER BY CONTACT_ID DESC";
+            "SELECT CONTACT_ID, CONTACT_NAME, PHONE_WORK, EMAIL FROM CONTACTS WHERE CUSTOMER_ID = ? ORDER BY CONTACT_ID DESC";
 
 
     @SuppressWarnings("unchecked")
@@ -267,6 +266,8 @@ public class HotSheetService {
                 hotSheet.setOriginContactName(name);
                 String phone = (String) firstContact.get("PHONE_WORK");
                 hotSheet.setOriginContactPhone(phone);
+                String email = (String) firstContact.get("EMAIL");
+                hotSheet.setOriginContactEmail(email);
             }
         }
         else {
@@ -287,39 +288,10 @@ public class HotSheetService {
         }
     }
 
-    public static final String SELECT_CONTACT =
-            "SELECT CONTACT_ID, CONTACT_NAME, PHONE_WORK from CONTACTS where CONTACT_ID = ?";
-
-    public Map getContact(BigDecimal originContactId) {
-
-        List contact = jdbcTemplate.queryForList(SELECT_CONTACT,
-                                                 new Object[]{originContactId});
-        if (contact == null) {
-            return null;
-        }
-
-        return (Map) contact.get(0);
+    public void addDestinationContactInfo(HotSheet hotSheet) {
+        initializeJobLocationContact(hotSheet, new BigDecimal(hotSheet.getJobLocationContactId()));
     }
 
-
-    private List<Address> convertToAddressList(List<Map> originAddresses) {
-        List<Address> addresses = new ArrayList<Address>();
-        for (Map aRow : originAddresses) {
-            Address anAddress = new Address();
-            BigDecimal id = (BigDecimal) aRow.get("JOB_LOCATION_ID");
-            anAddress.setJobLocationId(id.longValue());
-            anAddress.setJobLocationName((String) aRow.get("JOB_LOCATION_NAME"));
-            anAddress.setStreetOne((String) aRow.get("STREET1"));
-            anAddress.setStreetTwo((String) aRow.get("STREET2"));
-            anAddress.setStreetThree((String) aRow.get("STREET3"));
-            anAddress.setCity((String) aRow.get("CITY"));
-            anAddress.setState((String) aRow.get("STATE"));
-            anAddress.setZip((String) aRow.get("ZIP"));
-            anAddress.setCountry((String) aRow.get("COUNTRY"));
-            addresses.add(anAddress);
-        }
-        return addresses;
-    }
 
     private void addBillingAddressInfo(HotSheet hotSheet, Long organizationId) {
 
@@ -414,10 +386,10 @@ public class HotSheetService {
         //We persist the id; we use the address in the view
         BigDecimal jobLocationAddressId = (BigDecimal) row.get("jobLocationAddressId");
         hotSheet.setJobLocationAddressId(jobLocationAddressId.longValue());
-        Address jobLocationAddress = getAddress((BigDecimal) row.get("jobLocationAddressId"));
+        Address jobLocationAddress = HotSheetServiceUtils.getInstance().getAddress((BigDecimal) row.get("jobLocationAddressId"));
         hotSheet.setJobLocationAddress(jobLocationAddress);
         List<Map> destinationAddressRows = jdbcTemplate.queryForList(GET_JOB_LOCATION_ADDRESSES, new Object[]{hotSheet.getEndUserId()});
-        List<Address> destinationAddresses = convertToAddressList(destinationAddressRows);
+        List<Address> destinationAddresses = HotSheetServiceUtils.getInstance().convertToAddressList(destinationAddressRows);
         hotSheet.setDestinationAddresses(destinationAddresses);
 
         initializeJobLocationContact(hotSheet, (BigDecimal) row.get("jobLocationContactId"));
@@ -433,41 +405,65 @@ public class HotSheetService {
         hotSheet.setSalesContactPhone((String) row.get("salesPhone"));
     }
 
+    public static final String GET_DESTINATION_CONTACT_INFO =
+            "SELECT C.CONTACT_ID, CONTACT_NAME, PHONE_WORK, EMAIL" +
+                    " FROM CONTACTS C" +
+                    " INNER JOIN JOB_LOCATION_CONTACTS JLC ON C.CONTACT_ID=JLC.CONTACT_ID" +
+                    " INNER JOIN LOOKUPS L ON C.CONT_STATUS_TYPE_ID = L.LOOKUP_ID" +
+                    " WHERE L.CODE='ACTIVE'" +
+                    " AND C.CONTACT_NAME IS NOT NULL" +
+                    " AND C.CONTACT_NAME NOT LIKE '%N/A%'" +
+                    " AND C.CONTACT_NAME <> 'NA'" +
+                    " AND JLC.JOB_LOCATION_ID = ?" +
+                    " ORDER BY C.CONTACT_ID DESC";
+
+    @SuppressWarnings("unchecked")
     private void initializeJobLocationContact(HotSheet hotSheet, BigDecimal jobLocationContactId) {
 
-        List jobLocationContact =
-                jdbcTemplate.queryForList("SELECT CONTACT_NAME, EMAIL, PHONE_WORK, PHONE_CELL, PHONE_HOME FROM CONTACTS WHERE CONTACT_ID = ? ",
-                                          new Object[]{jobLocationContactId});
+        List<Map> destinationContacts =
+                jdbcTemplate.queryForList(GET_DESTINATION_CONTACT_INFO, new Object[]{hotSheet.getJobLocationAddressId()});
 
-        if (jobLocationContact == null || jobLocationContact.size() == 0) {
-            return;
+        List<KeyValueBean> contacts;
+
+        if (destinationContacts != null && destinationContacts.size() > 0) {
+            for (Map aRow : destinationContacts) {
+                BigDecimal id = (BigDecimal) aRow.get("CONTACT_ID");
+                if (jobLocationContactId.equals(id)) {
+                    id = (BigDecimal) aRow.get("CONTACT_ID");
+                    hotSheet.setJobLocationContactId(id.longValue());
+                    String name = (String) aRow.get("CONTACT_NAME");
+                    hotSheet.setJobContactName(name);
+                    String phone = (String) aRow.get("PHONE_WORK");
+                    hotSheet.setJobContactPhone(phone);
+                    String email = (String) aRow.get("EMAIL");
+                    hotSheet.setJobContactEmail(email);
+                }
+            }
+
+            contacts = new ArrayList<KeyValueBean>(destinationContacts.size());
+            for (Map aRow : destinationContacts) {
+                KeyValueBean aBean = new KeyValueBean(aRow.get("CONTACT_ID"), aRow.get("CONTACT_NAME"));
+                contacts.add(aBean);
+            }
         }
+        else {
 
+            // Use the one from the request
+            List jobLocationContact =
+                    jdbcTemplate.queryForList("SELECT CONTACT_ID, CONTACT_NAME, EMAIL, PHONE_WORK, PHONE_CELL, PHONE_HOME FROM CONTACTS WHERE CONTACT_ID = ? ",
+                                              new Object[]{jobLocationContactId});
+            Map aRow = (Map) jobLocationContact.get(0);
+            hotSheet.setJobContactName((String) aRow.get("CONTACT_NAME"));
+            hotSheet.setJobContactEmail((String) aRow.get("EMAIL"));
+            hotSheet.setJobContactPhone((String) aRow.get("PHONE_WORK"));
+            hotSheet.setJobLocationContactId(jobLocationContactId.longValue());
 
-        Map row = (Map) jobLocationContact.get(0);
-        hotSheet.setJobContactName((String) row.get("CONTACT_NAME"));
-        hotSheet.setJobContactEmail((String) row.get("EMAIL"));
-        hotSheet.setJobContactPhone((String) row.get("PHONE_WORK"));
-        hotSheet.setJobLocationContactId(jobLocationContactId.longValue());
-    }
-
-    public static final String SELECT_ADDRESS =
-            "SELECT JOB_LOCATION_ID, JOB_LOCATION_NAME, STREET1, STREET2, STREET3, CITY, " +
-                    "STATE, ZIP, COUNTRY FROM JOB_LOCATIONS WHERE JOB_LOCATION_ID = ? ";
-
-
-    public Address getAddress(BigDecimal jobLocationId) {
-
-        Address address = (Address) jdbcTemplate.queryForObject(SELECT_ADDRESS,
-                                                                new Object[]{jobLocationId},
-                                                                new AddressMapper());
-        if (address == null) {
-            return null;
+            contacts = new ArrayList<KeyValueBean>(1);
+            KeyValueBean aBean = new KeyValueBean(aRow.get("CONTACT_ID"), aRow.get("CONTACT_NAME"));
+            contacts.add(aBean);
         }
-
-        return address;
+        hotSheet.setDestinationAddressContacts(contacts);
     }
-
 
     private String getName(List rows) {
         if (rows == null || rows.size() == 0) {
@@ -571,38 +567,16 @@ public class HotSheetService {
 
         Map map = request.getParameterMap();
         int startTime =
-                TimeUtils.getTimeAsMilitaryTime(Integer.valueOf(getValue(map.get("startTimeHour"))),
-                                                Integer.valueOf(getValue(map.get("startTimeMinutes"))),
-                                                getValue(map.get("startTimeAMPM")));
+                TimeUtils.getTimeAsMilitaryTime(Integer.valueOf(HotSheetServiceUtils.getInstance().getValue(map.get("startTimeHour"))),
+                                                Integer.valueOf(HotSheetServiceUtils.getInstance().getValue(map.get("startTimeMinutes"))),
+                                                HotSheetServiceUtils.getInstance().getValue(map.get("startTimeAMPM")));
         hotSheet.setJobStartTime(startTime);
 
         int warehouseStartTime =
-                TimeUtils.getTimeAsMilitaryTime(Integer.valueOf(getValue(map.get("warehouseStartTimeHour"))),
-                                                Integer.valueOf(getValue(map.get("warehouseStartTimeMinutes"))),
-                                                getValue(map.get("warehouseStartTimeAMPM")));
+                TimeUtils.getTimeAsMilitaryTime(Integer.valueOf(HotSheetServiceUtils.getInstance().getValue(map.get("warehouseStartTimeHour"))),
+                                                Integer.valueOf(HotSheetServiceUtils.getInstance().getValue(map.get("warehouseStartTimeMinutes"))),
+                                                HotSheetServiceUtils.getInstance().getValue(map.get("warehouseStartTimeAMPM")));
         hotSheet.setWarehouseStartTime(warehouseStartTime);
-    }
-
-    private String getValue(Object param) {
-        String[] s = (String[]) param;
-        if (s != null && s.length > 0) {
-            return s[0];
-        }
-        return null;
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<Address> getUpdatedAddresses(String customerId) {
-
-        if (customerId == null) {
-            return Collections.EMPTY_LIST;
-        }
-
-        List<Map> addresses = jdbcTemplate.queryForList(GET_JOB_LOCATION_ADDRESSES, new Object[]{Long.valueOf(customerId)});
-        if (addresses != null && addresses.size() > 0) {
-            return convertToAddressList(addresses);
-        }
-        return Collections.EMPTY_LIST;
     }
 
     public Map<String, HotSheetDetail> getNewHotSheetDetails() {
@@ -619,71 +593,6 @@ public class HotSheetService {
             detailsMap.put(aDetail.getCode(), aDetail);
         }
         return detailsMap;
-    }
-
-
-    public static final String ADD_JOB_LOCATION_ADDRESS =
-            "INSERT INTO job_locations (customer_id, job_location_name, location_type_id, street1, street2," +
-                    " city, state, zip, country, date_created, created_by)" +
-                    " SELECT ?, ?, l.lookup_id, ?, ?, ?, ?, ?, ?, ?, ?" +
-                    " FROM lookups l JOIN lookup_types lt ON l.lookup_type_id = lt.lookup_type_id" +
-                    " WHERE lt.code='location_type' AND l.code = 'worksite'";
-
-    public void addJobLocationAddress(Address address, long userId) {
-        jdbcTemplate.update(ADD_JOB_LOCATION_ADDRESS, new Object[]
-                {
-                        address.getJobLocationCustomerId(),
-                        address.getJobLocationName(),
-                        address.getStreetOne(),
-                        address.getStreetTwo(),
-                        address.getCity(),
-                        address.getState(),
-                        address.getZip(),
-                        address.getCountry(),
-                        new Date(),
-                        userId
-                });
-    }
-
-
-    public static final String ADD_ORIGIN_CONTACT =
-            "INSERT INTO contacts (contact_name, organization_id, cont_status_type_id," +
-                    " customer_id, phone_work, ext_dealer_id, date_created, created_by)" +
-                    " SELECT ?, ?, l.lookup_id, ?, ?, ?, ?, ?" +
-                    " FROM lookups l INNER JOIN lookup_types lt ON l.lookup_type_id = lt.lookup_type_id" +
-                    " WHERE l.code='active' AND lt.code='contact_status_type'";
-
-    public void addNewOriginContact(Map parameterMap, Long userId, long organizationId) {
-
-        try {
-            String name = getValue(parameterMap.get("contactName"));
-            String customerId = getValue(parameterMap.get("customerId"));
-            String phone = getValue(parameterMap.get("contactPhone"));
-            String extDealerId = getValue(parameterMap.get("extDealerId"));
-
-            jdbcTemplate.update(ADD_ORIGIN_CONTACT, new Object[]
-                    {
-                            name,
-                            organizationId,
-                            customerId,
-                            phone,
-                            extDealerId,
-                            new Date(),
-                            userId
-                    });
-        }
-        catch (DataAccessException e) {
-            LOGGER.error(e);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<Map> getOriginContacts(Map map) {
-        String customerId = getValue(map.get("customerId"));
-        if (customerId == null || customerId.trim().length() == 0) {
-            return Collections.EMPTY_LIST;
-        }
-        return jdbcTemplate.queryForList(GET_ORIGIN_CONTACT_INFO, new Object[]{customerId});
     }
 
 
@@ -793,61 +702,7 @@ public class HotSheetService {
         }
     }
 
-    private class AddressMapper implements RowMapper {
-
-        public Object mapRow(ResultSet resultSet, int i) throws SQLException {
-            Address address = new Address();
-            address.setJobLocationId(resultSet.getLong("JOB_LOCATION_ID"));
-            address.setJobLocationName(resultSet.getString("JOB_LOCATION_NAME"));
-            address.setStreetOne(resultSet.getString("STREET1"));
-            address.setStreetTwo(resultSet.getString("STREET2"));
-            address.setStreetThree(resultSet.getString("STREET3"));
-            address.setCity(resultSet.getString("CITY"));
-            address.setState(resultSet.getString("STATE"));
-            address.setZip(resultSet.getString("ZIP"));
-            address.setCountry(resultSet.getString("COUNTRY"));
-            return address;
-        }
-    }
-
-    private static final List<String> EQUIPMENT =
-            Arrays.asList("",
-                          "Autobottoms",
-                          "Big Reds",
-                          "Blue Tape",
-                          "Boards Long",
-                          "Boards Short",
-                          "Carts Library",
-                          "Carts Machine",
-                          "Cleaning Kits",
-                          "Cornerboards",
-                          "Dollies",
-                          "J-Bars",
-                          "Labels Black",
-                          "Labels Blue",
-                          "Labels Brown ",
-                          "Labels Green",
-                          "Labels Pink",
-                          "Labels Purple",
-                          "Labels Orange",
-                          "Labels Red",
-                          "Labels Yellow",
-                          "Masonite Half",
-                          "Masonite Full",
-                          "Mollies/Toggles",
-                          "Pallet Jacks",
-                          "Panel Carts",
-                          "PR Cartons",
-                          "Safe Equipment",
-                          "Safe Jacks",
-                          "Shrinkwrap",
-                          "Tote Stacks",
-                          "Trucks Hand",
-                          "Trucks Reefer",
-                          "Vacuums");
-
-
     public List getEquipmentList() {
-        return EQUIPMENT;
+        return HotSheetServiceUtils.EQUIPMENT;
     }
 }

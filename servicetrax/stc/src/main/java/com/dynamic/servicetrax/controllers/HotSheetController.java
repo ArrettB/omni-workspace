@@ -7,8 +7,6 @@ import com.dynamic.servicetrax.orm.HotSheetDetail;
 import com.dynamic.servicetrax.service.HotSheetService;
 import com.dynamic.servicetrax.service.JasperReportService;
 import com.dynamic.servicetrax.support.LoginCrediantials;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -22,12 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.beans.PropertyEditorSupport;
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStreamWriter;
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -122,6 +117,7 @@ public class HotSheetController extends MultiActionController {
         hotSheetService.addOriginAddressInfo(hotSheet);
         hotSheetService.addDestinationAddressInfo(hotSheet);
         hotSheetService.addOriginContactInfo(hotSheet);
+        hotSheetService.addDestinationContactInfo(hotSheet);
 
         if (result != null && result.hasErrors()) {
             ModelAndView view = new ModelAndView(HOTSHEET_VIEW);
@@ -175,6 +171,7 @@ public class HotSheetController extends MultiActionController {
         hotSheetService.addOriginAddressInfo(hotSheet);
         hotSheetService.addDestinationAddressInfo(hotSheet);
         hotSheetService.addOriginContactInfo(hotSheet);
+        hotSheetService.addDestinationContactInfo(hotSheet);
 
         // Validation and save logic from primary scenario is executed.
         if (result.hasErrors()) {
@@ -219,6 +216,7 @@ public class HotSheetController extends MultiActionController {
         hotSheetService.addOriginAddressInfo(hotSheet);
         hotSheetService.addDestinationAddressInfo(hotSheet);
         hotSheetService.addOriginContactInfo(hotSheet);
+        hotSheetService.addDestinationContactInfo(hotSheet);
 
         if (result.hasErrors()) {
             ModelAndView view = new ModelAndView(HOTSHEET_VIEW);
@@ -268,178 +266,6 @@ public class HotSheetController extends MultiActionController {
         output.write(data.toByteArray());
         response.flushBuffer();
     }
-
-    @SuppressWarnings("unchecked, unused")
-    public void updateAddress(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-        response.setContentType("application/json");
-        OutputStreamWriter os = null;
-
-        try {
-            String id = request.getParameter("jobLocationId");
-            Address address = hotSheetService.getAddress(new BigDecimal(id));
-            os = new OutputStreamWriter(response.getOutputStream());
-            JSONObject jsonArray = JSONObject.fromObject(address);
-            os.write(jsonArray.toString());
-            os.flush();
-        }
-        catch (Exception e) {
-            logger.error(e);
-        }
-        finally {
-            if (os != null) {
-                os.close();
-            }
-        }
-    }
-
-    @SuppressWarnings("unchecked, unused")
-    public void updateContact(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-        response.setContentType("application/json");
-        OutputStreamWriter os = null;
-
-        try {
-            String id = request.getParameter("originContactId");
-            Map contact = hotSheetService.getContact(new BigDecimal(id));
-            os = new OutputStreamWriter(response.getOutputStream());
-            JSONObject jsonArray = JSONObject.fromObject(contact);
-            os.write(jsonArray.toString());
-            os.flush();
-        }
-        catch (Exception e) {
-            logger.error(e);
-        }
-        finally {
-            if (os != null) {
-                os.close();
-            }
-        }
-    }
-
-    @SuppressWarnings("unchecked, unused")
-    public void updateDestinationAddress(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-        response.setContentType("application/json");
-        OutputStreamWriter os = null;
-
-        try {
-            String id = request.getParameter("jobLocationId");
-            Address address = hotSheetService.getAddress(new BigDecimal(id));
-            os = new OutputStreamWriter(response.getOutputStream());
-            JSONObject jsonArray = JSONObject.fromObject(address);
-            os.write(jsonArray.toString());
-            os.flush();
-        }
-        catch (Exception e) {
-            logger.error(e);
-        }
-        finally {
-            if (os != null) {
-                os.close();
-            }
-        }
-    }
-
-
-    @SuppressWarnings("unchecked, unused")
-    public void addDestinationAddress(HttpServletRequest request, HttpServletResponse response, Address address) throws Exception {
-
-        LoginCrediantials credentials = (LoginCrediantials) request.getSession().getAttribute(LoginInterceptor.SESSION_ATTR_LOGIN);
-        address.setJobLocationCustomerId(address.getEndUserId());
-
-        // Workaround for the way IE7 handles javascript. The name attributes of the state dropdowns can't be the same because
-        // IE7 treats the name attribute the same as the id attribute in the document.getElementById() in stateProvince.js
-        // handleChange(country) method
-        String destinationState = request.getParameter("destinationState");
-        address.setState(destinationState);
-        hotSheetService.addJobLocationAddress(address, (long) credentials.getUserId());
-
-        response.setContentType("application/json");
-        OutputStreamWriter os = null;
-
-        try {
-            List<Address> addresses = hotSheetService.getUpdatedAddresses(address.getEndUserId());
-            os = new OutputStreamWriter(response.getOutputStream());
-            JSONArray jsonArray = JSONArray.fromObject(addresses);
-            os.write(jsonArray.toString());
-            os.flush();
-        }
-        catch (Exception e) {
-            logger.error(e);
-        }
-        finally {
-            if (os != null) {
-                os.close();
-            }
-        }
-    }
-
-
-    @SuppressWarnings("unchecked, unused")
-    public void addJobLocation(HttpServletRequest request, HttpServletResponse response, Address address) throws Exception {
-
-        LoginCrediantials credentials = (LoginCrediantials) request.getSession().getAttribute(LoginInterceptor.SESSION_ATTR_LOGIN);
-        hotSheetService.addJobLocationAddress(address, (long) credentials.getUserId());
-
-        response.setContentType("application/json");
-        OutputStreamWriter os = null;
-
-        try {
-            List<Address> addresses;
-            if (address != null) {
-                addresses = hotSheetService.getUpdatedAddresses(address.getJobLocationCustomerId());
-            }
-            else {
-                addresses = Collections.EMPTY_LIST;
-            }
-
-            os = new OutputStreamWriter(response.getOutputStream());
-            JSONArray jsonArray = JSONArray.fromObject(addresses);
-            os.write(jsonArray.toString());
-            os.flush();
-        }
-        catch (Exception e) {
-            logger.error(e);
-        }
-        finally {
-            if (os != null) {
-                os.close();
-            }
-        }
-    }
-
-    @SuppressWarnings("unchecked, unused")
-    public void addOriginContact(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-        LoginCrediantials credentials =
-                (LoginCrediantials) request.getSession().getAttribute(LoginInterceptor.SESSION_ATTR_LOGIN);
-
-        hotSheetService.addNewOriginContact(request.getParameterMap(),
-                                            (long) credentials.getUserId(),
-                                            (long) credentials.getOrganizationId());
-
-        response.setContentType("application/json");
-        OutputStreamWriter os = null;
-
-        try {
-            List<Map> contacts = hotSheetService.getOriginContacts(request.getParameterMap());
-
-            os = new OutputStreamWriter(response.getOutputStream());
-            JSONArray jsonArray = JSONArray.fromObject(contacts);
-            os.write(jsonArray.toString());
-            os.flush();
-        }
-        catch (Exception e) {
-            logger.error(e);
-        }
-        finally {
-            if (os != null) {
-                os.close();
-            }
-        }
-    }
-
 
     private void saveHotsheet(HttpServletRequest request, HotSheet hotSheet) {
 

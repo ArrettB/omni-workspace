@@ -72,6 +72,9 @@
     <script type="text/javascript"
             src="${pageContext.request.contextPath}/js/originAddress.js"></script>
 
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/js/destinationContact.js"></script>
+
 </head>
 
 <script type="text/javascript">
@@ -112,7 +115,6 @@
     <form:hidden path="shouldPrint"/>
     <form:hidden path="requestId"/>
     <form:hidden path="projectId"/>
-    <form:hidden path="jobLocationContactId"/>
     <form:hidden path="customerId"/>
     <form:hidden path="endUserId"/>
     <form:hidden path="hotSheetNumber"/>
@@ -145,6 +147,7 @@
     <form:hidden path="modifiedByName"/>
 
     <form:hidden path="originContactName"/>
+    <form:hidden path="jobContactName"/>
 
     <form:hidden path="salesContactPhone"/>
     <form:hidden path="salesContactId"/>
@@ -272,12 +275,12 @@
 </div>
 
 
-<div id="addJobLocation" class="yui-panel">
+<div id="addOriginAddress" class="yui-panel">
     <div class="hd">Please enter new origin address information</div>
     <div class="bd">
 
-        <form:form name="addJobLocationForm" id="addJobLocationForm" commandName="address"
-                   action="${pageContext.request.contextPath}/addJobLocation.html" method="post">
+        <form:form name="addOriginAddressForm" id="addOriginAddressForm" commandName="address"
+                   action="${pageContext.request.contextPath}/addOriginAddress.html" method="post">
             <table border="0" cellspacing="5" cellpadding="0">
                 <input type="hidden" name="jobLocationCustomerId" value="${hotSheet.customerId}"/>
                 <tr>
@@ -369,6 +372,40 @@
                    action="${pageContext.request.contextPath}/addOriginContact.html" method="post">
             <table border="0" cellspacing="5" cellpadding="0">
                 <input type="hidden" name="customerId" value="${hotSheet.customerId}"/>
+                <input type="hidden" name="extDealerId" value="${hotSheet.extCustomerId}"/>
+                <tr>
+                    <td>
+                        Name:
+                    </td>
+                    <td>
+                        <label>
+                            <input type="text" name="contactName" id="contactName"/>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Phone:
+                    </td>
+                    <td>
+                        <label>
+                            <input type="text" name="contactPhone" id="contactPhone"/>
+                        </label>
+                    </td>
+                </tr>
+            </table>
+        </form:form>
+    </div>
+</div>
+
+<div id="addDestinationContact" class="yui-panel">
+    <div class="hd">Please enter new destination contact information</div>
+    <div class="bd">
+
+        <form:form name="addDestinationContactForm" id="addDestinationContactForm"
+                   action="${pageContext.request.contextPath}/addDestinationContact.html" method="post">
+            <table border="0" cellspacing="5" cellpadding="0">
+                <input type="hidden" name="jobLocationAddressId" value="${hotSheet.jobLocationAddressId}"/>
                 <input type="hidden" name="extDealerId" value="${hotSheet.extCustomerId}"/>
                 <tr>
                     <td>
