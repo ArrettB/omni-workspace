@@ -180,6 +180,6 @@ YAHOO.util.Event.on('destinationAddressDropdown', 'change', function (event) {
 
     var id = this.value;
     var url = '/stc/updateDestinationAddress.html?jobLocationId=' + id;
-    YAHOO.util.Connect.asyncRequest('GET', url, callbacks);
+    YAHOO.util.Connect.asyncRequest('POST', url, callbacks);
 });
 

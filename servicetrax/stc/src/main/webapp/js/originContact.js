@@ -134,7 +134,7 @@ YAHOO.util.Event.on('originContactDropdown', 'change', function (event) {
 
     var id = this.value;
     var url = '/stc/updateOriginContact.html?originContactId=' + id;
-    YAHOO.util.Connect.asyncRequest('GET', url, callbacks);
+    YAHOO.util.Connect.asyncRequest('POST', url, callbacks);
 });
 
 
