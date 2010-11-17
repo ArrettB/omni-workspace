@@ -124,10 +124,39 @@ YAHOO.util.Event.on('destinationAddressDropdown', 'change', function (event) {
             var messages = [];
             try {
                 messages = YAHOO.lang.JSON.parse(o.responseText);
-                document.getElementById("jobLocationAddress.jobLocationName").value = messages['jobLocationName'];
-                document.getElementById("jobLocationAddress.streetOne").value = messages['streetOne'];
+                var addressIndex = messages.length - 1;
+                document.getElementById("jobLocationAddress.jobLocationName").value =
+                        messages[addressIndex]['jobLocationName'];
+
+                document.getElementById("jobLocationAddress.streetOne").value =
+                        messages[addressIndex]['streetOne'];
+
                 document.getElementById("destinationCityStateZip").value =
-                        messages['city'] + ' ' + messages['state'] + ' ' + messages['zip'];
+                        messages[addressIndex]['city'] + ' ' +
+                                messages[addressIndex]['state'] + ' ' +
+                                messages[addressIndex]['zip'];
+
+                //Change the jobLocationId
+                document.getElementById("newJobLocationAddressId").value =
+                        messages[addressIndex]['jobLocationId'];
+
+                var destinationContactDropdown = document.getElementById("destinationContactDropdown");
+                destinationContactDropdown.options.length = 0;
+
+                //Clear these out
+                document.getElementById("jobContactPhone").value = '';
+                document.getElementById("jobContactName").value = '';
+
+                for (var i = 0; i < messages.length - 1; i++) {
+                    var newOption = document.createElement("OPTION");
+                    destinationContactDropdown.options.add(newOption);
+                    newOption.value = messages[i].CONTACT_ID;
+                    newOption.text = messages[i].CONTACT_NAME;
+                    if (i == 0) {
+                        document.getElementById("jobContactPhone").value = messages[i].PHONE_WORK;
+                        document.getElementById("jobContactName").value = messages[i].CONTACT_NAME;
+                    }
+                }                
             }
             catch (exception) {
                 alert("JSON Parse failed: " + exception);

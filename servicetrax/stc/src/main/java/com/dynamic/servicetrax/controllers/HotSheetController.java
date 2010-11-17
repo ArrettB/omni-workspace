@@ -52,10 +52,13 @@ public class HotSheetController extends MultiActionController {
 
             public void validate(Object command, Errors errors) {
                 ValidationUtils.rejectIfEmpty(errors, "originAddressId", "", "An origin address is required");
-                ValidationUtils.rejectIfEmpty(errors, "jobLength", "", "Job length cannot be blank");
+                ValidationUtils.rejectIfEmpty(errors, "jobLocationContactId", "", "A Destination Contact is required.");
 
                 Integer jobLength = ((HotSheet) command).getJobLength();
-                if (jobLength != null && jobLength < 0) {
+                if (jobLength == null) {
+                    errors.rejectValue("jobLength", "jobLength.required");
+                }
+                else if (jobLength < 0) {
                     errors.rejectValue("jobLength", "jobLength.notNegative");
                 }
 

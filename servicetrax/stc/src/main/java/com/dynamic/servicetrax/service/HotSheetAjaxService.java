@@ -107,7 +107,7 @@ public class HotSheetAjaxService {
         final String phone = HotSheetServiceUtils.getInstance().getValue(parameterMap.get("contactPhone"));
         final String extDealerId = HotSheetServiceUtils.getInstance().getValue(parameterMap.get("extDealerId"));
         final String contactTypeId = "138";//HotSheetServiceUtils.getInstance().getValue(parameterMap.get("contactTypeId"));
-        final String jobLocationAddressId = HotSheetServiceUtils.getInstance().getValue(parameterMap.get("jobLocationAddressId"));
+        final String jobLocationAddressId = HotSheetServiceUtils.getInstance().getValue(parameterMap.get("newJobLocationAddressId"));
 
         transactionTemplate.execute(new TransactionCallbackWithoutResult() {
             public void doInTransactionWithoutResult(TransactionStatus status) {

@@ -5,7 +5,7 @@
 
 
 <%--Second Row--%>
-<table border="1" cellpadding="1" cellspacing="2" style="width: 790px; margin-top: 15px;">
+<table border="0" cellpadding="1" cellspacing="2" style="width: 790px; margin-top: 15px;">
 <col style="width:28%">
 <col style="width:5%">
 <col style="width:24%">

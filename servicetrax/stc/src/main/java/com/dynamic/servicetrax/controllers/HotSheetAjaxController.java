@@ -184,9 +184,12 @@ public class HotSheetAjaxController extends MultiActionController {
         try {
             String id = request.getParameter("jobLocationId");
             Address address = HotSheetServiceUtils.getInstance().getAddress(new BigDecimal(id));
+
+            List<Map> contacts = hotSheetAjaxService.getDestinationContacts(id);
             os = new OutputStreamWriter(response.getOutputStream());
-            JSONObject jsonArray = JSONObject.fromObject(address);
-            os.write(jsonArray.toString());
+            JSONArray jsonContacts = JSONArray.fromObject(contacts);
+            jsonContacts.add(address);
+            os.write(jsonContacts.toString());
             os.flush();
         }
         catch (Exception e) {
@@ -213,7 +216,7 @@ public class HotSheetAjaxController extends MultiActionController {
         OutputStreamWriter os = null;
 
         try {
-            String jobLocationAddressId = HotSheetServiceUtils.getInstance().getValue(request.getParameterMap().get("jobLocationAddressId"));
+            String jobLocationAddressId = HotSheetServiceUtils.getInstance().getValue(request.getParameterMap().get("newJobLocationAddressId"));
             List<Map> contacts = hotSheetAjaxService.getDestinationContacts(jobLocationAddressId);
             os = new OutputStreamWriter(response.getOutputStream());
             JSONArray jsonArray = JSONArray.fromObject(contacts);

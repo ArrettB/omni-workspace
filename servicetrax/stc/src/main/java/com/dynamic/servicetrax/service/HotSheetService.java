@@ -89,6 +89,7 @@ public class HotSheetService {
         addOriginAddressInfo(hotSheet);
         addOriginContactInfo(hotSheet);
         addDestinationAddressInfo(hotSheet);
+        addDestinationContactInfo(hotSheet);
         addBillingAddressInfo(hotSheet, organizationId);
         Address jobLocationAddress = HotSheetServiceUtils.getInstance().getAddress(new BigDecimal(hotSheet.getJobLocationAddressId()));
         hotSheet.setJobLocationAddress(jobLocationAddress);
@@ -288,8 +289,14 @@ public class HotSheetService {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void addDestinationContactInfo(HotSheet hotSheet) {
-        initializeJobLocationContact(hotSheet, new BigDecimal(hotSheet.getJobLocationContactId()));
+        if (hotSheet.getJobLocationContactId() == null) {
+            hotSheet.setDestinationAddressContacts(Collections.EMPTY_LIST);
+        }
+        else {
+            initializeJobLocationContact(hotSheet, new BigDecimal(hotSheet.getJobLocationContactId()));
+        }
     }
 
 
@@ -420,10 +427,13 @@ public class HotSheetService {
     @SuppressWarnings("unchecked")
     private void initializeJobLocationContact(HotSheet hotSheet, BigDecimal jobLocationContactId) {
 
+        if (jobLocationContactId == null) {
+            hotSheet.setDestinationAddressContacts(Collections.EMPTY_LIST);
+            return;
+        }
+
         List<Map> destinationContacts =
                 jdbcTemplate.queryForList(GET_DESTINATION_CONTACT_INFO, new Object[]{hotSheet.getJobLocationAddressId()});
-
-        List<KeyValueBean> contacts;
 
         if (destinationContacts != null && destinationContacts.size() > 0) {
             for (Map aRow : destinationContacts) {
@@ -440,29 +450,17 @@ public class HotSheetService {
                 }
             }
 
-            contacts = new ArrayList<KeyValueBean>(destinationContacts.size());
+            List<KeyValueBean> contacts = new ArrayList<KeyValueBean>(destinationContacts.size());
             for (Map aRow : destinationContacts) {
                 KeyValueBean aBean = new KeyValueBean(aRow.get("CONTACT_ID"), aRow.get("CONTACT_NAME"));
                 contacts.add(aBean);
             }
+            hotSheet.setDestinationAddressContacts(contacts);
         }
         else {
 
-            // Use the one from the request
-            List jobLocationContact =
-                    jdbcTemplate.queryForList("SELECT CONTACT_ID, CONTACT_NAME, EMAIL, PHONE_WORK, PHONE_CELL, PHONE_HOME FROM CONTACTS WHERE CONTACT_ID = ? ",
-                                              new Object[]{jobLocationContactId});
-            Map aRow = (Map) jobLocationContact.get(0);
-            hotSheet.setJobContactName((String) aRow.get("CONTACT_NAME"));
-            hotSheet.setJobContactEmail((String) aRow.get("EMAIL"));
-            hotSheet.setJobContactPhone((String) aRow.get("PHONE_WORK"));
-            hotSheet.setJobLocationContactId(jobLocationContactId.longValue());
-
-            contacts = new ArrayList<KeyValueBean>(1);
-            KeyValueBean aBean = new KeyValueBean(aRow.get("CONTACT_ID"), aRow.get("CONTACT_NAME"));
-            contacts.add(aBean);
+            hotSheet.setDestinationAddressContacts(Collections.EMPTY_LIST);
         }
-        hotSheet.setDestinationAddressContacts(contacts);
     }
 
     private String getName(List rows) {

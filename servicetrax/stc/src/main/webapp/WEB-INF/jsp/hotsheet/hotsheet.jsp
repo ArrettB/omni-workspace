@@ -405,7 +405,7 @@
         <form:form name="addDestinationContactForm" id="addDestinationContactForm"
                    action="${pageContext.request.contextPath}/addDestinationContact.html" method="post">
             <table border="0" cellspacing="5" cellpadding="0">
-                <input type="hidden" name="jobLocationAddressId" value="${hotSheet.jobLocationAddressId}"/>
+                <input type="hidden" id="newJobLocationAddressId" name="newJobLocationAddressId" value="${hotSheet.jobLocationAddressId}"/>
                 <input type="hidden" name="extDealerId" value="${hotSheet.extCustomerId}"/>
                 <tr>
                     <td>

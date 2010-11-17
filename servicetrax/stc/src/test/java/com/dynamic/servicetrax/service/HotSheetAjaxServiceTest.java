@@ -1,11 +1,9 @@
 package com.dynamic.servicetrax.service;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.AbstractTransactionalSpringContextTests;
+import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,13 +11,27 @@ import java.util.Map;
  * Date: Nov 14, 2010
  * Time: 12:55:52 PM
  */
-public class HotSheetAjaxControllerTest extends AbstractTransactionalSpringContextTests {
+public class HotSheetAjaxServiceTest extends AbstractDependencyInjectionSpringContextTests {
 
     private HotSheetAjaxService hotSheetAjaxService;
     private JdbcTemplate jdbcTemplate;
 
+    private static final String DELETE = "delete from contacts where contact_name = 'TestMe'";
+
+    @Override
+    protected void onSetUp() throws Exception {
+        super.onSetUp();
+        jdbcTemplate.execute(DELETE);
+    }
+
+    @Override
+    protected void onTearDown() throws Exception {
+        super.onTearDown();
+        jdbcTemplate.execute(DELETE);
+    }
+
     @SuppressWarnings("unchecked")
-    public void testAddNewDestinationContact() {
+    public void testAddNewDestinationContactRollback() {
 
         Long userId = (long) 1;
         Long organizationId = (long) 2;
@@ -28,16 +40,12 @@ public class HotSheetAjaxControllerTest extends AbstractTransactionalSpringConte
         params.put("contactName", new String[]{"TestMe"});
         params.put("contactPhone", new String[]{"800.325.3535"});
         params.put("extDealerId", new String[]{"10828"});
+
+        //There is no jobLocationAddressId 
         hotSheetAjaxService.addNewDestinationContact(params, userId, organizationId);
-        String getIdentity = "SELECT @@IDENTITY current_id";
+        String getIdentity = "SELECT @@IDENTITY contact_id";
         Integer id = jdbcTemplate.queryForInt(getIdentity);
-        List<Map> rows = jdbcTemplate.queryForList("SELECT * FROM CONTACTS WHERE CONTACT_ID = ?", new Object[]{id});
-        assertTrue(rows != null && rows.size() == 1);
-        Map aRow = rows.get(0);
-        assertEquals("TestMe", aRow.get("CONTACT_NAME"));
-        assertEquals(new BigDecimal(organizationId), aRow.get("ORGANIZATION_ID"));
-        assertEquals("10828", aRow.get("EXT_DEALER_ID"));
-        assertEquals("800.325.3535", aRow.get("PHONE_WORK"));
+        assertEquals(0, id.intValue());
     }
 
 
