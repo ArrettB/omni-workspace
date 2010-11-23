@@ -29,12 +29,17 @@ function initializeDestinationAddress() {
             newOption.text = messages[i].jobLocationName;
             if (i == 0) {
                 destinationAddressDropdown.value = messages[i].jobLocationId;
+                document.getElementById("newJobLocationAddressId").value = messages[i].jobLocationId;
                 document.getElementById("jobLocationAddress.jobLocationName").value = messages[i].jobLocationName;
                 document.getElementById("jobLocationAddress.streetOne").value = messages[i].streetOne;
                 document.getElementById("destinationCityStateZip").value =
                         messages[i].city + ' ' + messages[i].state + ' ' + messages[i].zip;
             }
         }
+
+        var destinationContactDropdown = document.getElementById("destinationContactDropdown");
+        destinationContactDropdown.options.length = 0;
+        document.getElementById("jobContactPhone").value = '';
     };
 
     var handleAddDestinationFailure = function(o) {
@@ -156,7 +161,7 @@ YAHOO.util.Event.on('destinationAddressDropdown', 'change', function (event) {
                         document.getElementById("jobContactPhone").value = messages[i].PHONE_WORK;
                         document.getElementById("jobContactName").value = messages[i].CONTACT_NAME;
                     }
-                }                
+                }
             }
             catch (exception) {
                 alert("JSON Parse failed: " + exception);
