@@ -427,12 +427,16 @@ public class PoolingHandler extends BaseHandler
 			{
 				Diagnostics.debug("allocating service_lines...");
 				StringBuffer allocateQuery = new StringBuffer();
+
+                // added status_id = 4 to resolve problem where pooled hour allocations were "disappearing"
+                // because they were getting assigned to posted service lines - DRA 11/30/2010
 				allocateQuery.append("SELECT service_line_id, tc_qty, allocated_qty");
 				allocateQuery.append(" FROM service_lines ");
 				allocateQuery.append(" WHERE tc_service_id = ?");
 				allocateQuery.append("   AND item_id = ?");
 				allocateQuery.append("   AND isnull(bill_rate, 0) = ?");
 				allocateQuery.append("   AND fully_allocated_flag = 'N'");
+                allocateQuery.append("   AND status_id = 4");
 				allocateQuery.append(" ORDER BY service_line_date");
 
 				PreparedStatement allocateQueryPStmt = conn.prepareStatement(allocateQuery.toString());

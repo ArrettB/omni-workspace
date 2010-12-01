@@ -526,6 +526,23 @@ public class IMSUtil
 		return pstmt;
 	}
 
+    /**
+     * Format email subject line per CR #11
+     */
+    public static String formatEmailSubject(String customer_name, String job_name) {
+        String subject = "";
+        if(customer_name == null && job_name == null) {
+            subject = "ServiceTRAX Alert";
+        } else if(customer_name == null && job_name != null) {
+            subject = "ServiceTRAX Alert for job " + job_name;
+        } else if(customer_name != null && job_name == null) {
+            subject = "ServiceTRAX Alert for customer " + customer_name;
+        } else {
+            subject = "ServiceTRAX Alert for " + customer_name + ", " + job_name;
+        }
+        return subject;
+    }
+
 	/**
 	 * Tests to see if a string is composed of all digits, appearing to be an integer
 	 * 

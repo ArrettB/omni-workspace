@@ -547,15 +547,26 @@ public class PDSEmailHandler extends BaseHandler
 						email_message = performSubstitutions(template.getMessage(), myMap);
 
 						// perform any last second email_message changes
-						if (template == EmailTemplate.CUSTOMER_SURVEY)
+                        String subject = "ServiceTRAX Alert";
+                        if ("quote_request".equalsIgnoreCase(record_type) ||
+                                "service_request".equalsIgnoreCase(record_type) ||
+                                "quote".equalsIgnoreCase(record_type))
+                        {
+                            String end_user_name = rs.getString("end_user_name");
+                            String job_name = rs.getString("job_name");
+                            subject = IMSUtil.formatEmailSubject(end_user_name, job_name);
+                        }
+
+						if (template == EmailTemplate.CUSTOMER_SURVEY) {
 							email_message += getURLString(rs.getString("survey_location"));
-						else if (template == EmailTemplate.SCHEDULER_NEW_VERSION)
+                        } else if (template == EmailTemplate.SCHEDULER_NEW_VERSION) {
 							email_message += sch_message.toString();
+                        }
 
 						is_vendor = false;
 						if (template == EmailTemplate.VENDOR_NOTIFY || template == EmailTemplate.VENDOR_NEW_VERSION)
 							is_vendor = true;
-						queueEmail(ic, conn, recordId, from, contact_id, contact_email, "ServiceTRAX Alert", email_message,
+						queueEmail(ic, conn, recordId, from, contact_id, contact_email, subject, email_message,
 								is_vendor);
 
 						if (is_vendor)

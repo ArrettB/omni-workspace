@@ -1,5 +1,6 @@
 package ims.handlers.job_processing;
 
+import ims.helpers.IMSUtil;
 import ims.helpers.MapUtil;
 
 import java.util.Date;
@@ -181,7 +182,7 @@ public class ReqHandler extends BaseHandler
 
 						Diagnostics.debug2("to:" + emailList + " from:" + from + " message:" + message);
 
-						String subject = "ServiceTRAX Alert";
+                        String subject = IMSUtil.formatEmailSubject(customer_name, job_name);
 						String to_email = emailList.toString();
 						String testEmail = (String)ic.getAppGlobalDatum("testEmail");
 						if (StringUtil.hasAValue(testEmail ))
