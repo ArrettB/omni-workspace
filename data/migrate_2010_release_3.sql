@@ -1,19 +1,19 @@
 
 /*
  * Alter the hotsheets table - drop the BL_CHRG column
- */
 
 ALTER TABLE [dbo].[HOTSHEETS]
    DROP COLUMN [BL_CHRG]
 GO
+ */
 
 
 /*
  * Alter the requests table - add the BL_CHRG
- */
 ALTER TABLE [dbo].[REQUESTS]
    ADD [BL_CHRG] [VARCHAR](1) NULL
 GO
+ */
 
 
 ALTER VIEW [dbo].[versions_copy_v]
