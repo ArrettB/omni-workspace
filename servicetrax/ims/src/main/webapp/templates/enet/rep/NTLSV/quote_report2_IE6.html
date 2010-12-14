@@ -1,0 +1,330 @@
+<html>
+
+	<head>
+		<style>
+			body
+			{
+				font-family: 'Trade Gothic LT Com Cn';
+				font-size: 10px;
+			}
+			li
+			{
+				margin-top: 10px;
+			}
+			table
+			{
+				border-collapse: collapse;
+			}
+			td
+			{
+				font-family: 'Trade Gothic LT Com Cn';
+				font-size: 10px;
+			}
+			.body_1
+			{
+				margin-left: 50px;
+				font-size: 10px;
+				font-weight: bold;
+				font-family:'Trade Gothic LT Com Cn';
+			}
+			.header_1
+			{
+				font-size: 14px;
+				font-weight: bold;
+			}
+			.header_2
+			{
+				font-weight: bold;
+				border-bottom: 5px solid #808080;
+			}
+			.header_3
+			{
+				font-weight: bold;
+				border-bottom: 1px solid #808080;
+			}
+			.page_break
+			{
+				page-break-after: always;
+			}
+			.table_data
+			{
+				text-align: right;
+			}
+			.table_header
+			{
+				background-color: #C6D6FD;
+				font-weight: bold;
+				font-size: 10px;
+			}
+			#title_page_customer
+			{
+				color: #FFFFFF;
+				font-size: 20px;
+				font-weight: bold;
+				position: absolute;
+				text-align: center;
+				top: 450px;
+				left: 190px;
+			}
+			#title_page_prepared
+			{
+				color: red;
+				font-size: 12px;
+				position: absolute;
+				text-align: center;
+				top: 630px;
+				left: 130px;
+			}
+			#wrapper
+			{
+				width: 600px;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div style="height: 40px;"></div>
+		<center>
+			<img src="/ims/images/target_operations.jpg" alt="Cover Page v2" style="width:460px" />
+			<div style="height: 65px;"></div>
+			<div style="height: 200px; width: 510; border:1px solid #00000;	text-align: left; padding-top: 20px; padding-left: 10px; font-size: 20px; font-weight: bold;font-face:'Trade Gothic LT Com Cn';">
+				Quote for:&nbsp;{!d:company_name!}<br />
+				<br />
+				Project:&nbsp;{!d:project_name!}<br />
+				<br />
+				Date:&nbsp;{!d:date_created!}<br />
+			</div>
+			<div style="height: 180px"></div>
+			<img src="/ims/images/target_logo.jpg" style="width: 350px;" />
+		</center>
+
+
+		<div class="page_break"></div>
+
+
+
+		<div class="body_1">
+			Target Operations: One resource for complete local or national facilities management services.<br />
+			<br />
+			Target Operations provides a wide range of professional facility management services through Regional Operating Companies around the United States. From expert delivery to asset management, you can rely on our combined expertise and experience for a complete range of facilities management services – all from one convenient resource. <br />
+			<br />
+			New Product Installation and Services:<br />
+			Leading office furniture manufacturers rely on Target Operations for local service and support across the country. You can too, from project management to delivery and complete installation. <br />
+			<br />
+			Asset Management Services:<br />
+			Using state-of-the-art asset tracking and management software, you can count on Target Operations to keep an eye on assets anywhere in use, or in storage.<br />
+			<br />
+			Move, Add and Change Services:<br />
+			Consider Target Operations your first-call resource for daily maintenance and service work, installation, delivery – and quick moves or special set ups.<br />
+			<br />
+			Nationally, regionally or locally, look to Target Operations as your single resource for proven facilities services and support. Your goal is our goal: On target, on time and on budget.<br />
+		</div>
+		<div class="page_break"></div>
+
+
+
+		<div style="text-align: center;">
+			<img src="/ims/images/target_small.jpg" />
+		</div>
+
+		<div class="body_1">
+			Quote Number: {!d:quote_num!}<br />
+			<br />
+			{!d:date_quoted!}<br />
+			<br />
+			{!d:contact_name!}<br />
+			{!d:company_name!}<br />
+			<br />
+			Dear {!d:contact_first_name!},<br />
+			Thank you for the opportunity to assist you with your project for {!d:end_name!} at {!d:end_address!} {!d:end_city!} {!d:end_state!}.
+			{!d:code!} is part of Omni Workspace Company which provides a full range of facilities management and service solutions throughout the United States. We'’ve worked with hundreds of companies large and small. I'’ve drawn from our combined expertise and experience in developing a thorough proposal based on your requirements.<br />
+			<br />
+			<br />
+		</div>
+		<div class="header_1">Customers Description of Work:</div><br />
+		<div class="body_1">
+			{!d:description_text!}<br />
+			<br />
+			<br />
+		</div>
+
+		<div class="header_1">Omni’s Description of Work:</div><br />
+		<br />
+
+		<div class="body_1">
+			Omni Workspace draws from a wide range of facilities management expertise and support experience. Based on the attached terms and conditions and the information you provided on {!d:date_created!}, we'’ve outlined our general understanding of your objectives and requirements:<br />
+			<br />
+			Perform services at {!d:end_address!} {!d:end_city!} {!d:end_state!} based on information provided in this quote.
+		</div><br />
+		<br />
+		<div class="header_1">Pricing for Described Work:</div><br />
+		<br />
+		<div class="body_1">
+
+		<!--#IF defined="<?d:t1_typical?>"-->
+		<table width="90%" border="1">
+			<tr class="table_header">
+				<td class="table_header" style="text-align: center;">Specified Systems Furniture</td>
+				<td class="table_header" style="text-align: right;">Typical count</td>
+				<td class="table_header" style="text-align: right;">Per typical	pricing</td>
+				<td class="table_header" style="text-align: right;">Extended price</td>
+			</tr>
+			<tr>
+				<td class="table_data">{!d:t1_typical!}&nbsp;</td>
+				<td class="table_data">{!d:t1_count!}&nbsp;</td>
+				<td class="table_data">{!d:price_1!}&nbsp;</td>
+				<td class="table_data">{!d:extended_1!}&nbsp;</td>
+			</tr>
+			<!--#IF defined="<?d:t2_typical?>"-->
+			<tr>
+				<td class="table_data">{!d:t2_typical!}&nbsp;</td>
+				<td class="table_data">{!d:t2_count!}&nbsp;</td>
+				<td class="table_data">{!d:price_2!}</td>
+				<td class="table_data">{!d:extended_2!}&nbsp;</td>
+			</tr>
+			<!--#/IF-->
+			<!--#IF defined="<?d:t3_typical?>"-->
+			<tr>
+				<td class="table_data">{!d:t3_typical!}&nbsp;</td>
+				<td class="table_data">{!d:t3_count!}&nbsp;</td>
+				<td class="table_data">{!d:price_3!}&nbsp;</td>
+				<td class="table_data">{!d:extended_3!}&nbsp;</td>
+			</tr>
+			<!--#/IF-->
+			<!--#IF defined="<?d:t4_typical?>"-->
+			<tr>
+				<td class="table_data">{!d:t4_typical!}&nbsp;</td>
+				<td class="table_data">{!d:t4_count!}&nbsp;</td>
+				<td class="table_data">{!d:price_4!}&nbsp;</td>
+				<td class="table_data">{!d:extended_4!}&nbsp;</td>
+			</tr>
+			<!--#/IF-->
+			<!--#IF defined="<?d:t5_typical?>"-->
+			<tr>
+				<td class="table_data">{!d:t5_typical!}&nbsp;</td>
+				<td class="table_data">{!d:t5_count!}&nbsp;</td>
+				<td class="table_data">{!d:price_5!}&nbsp;</td>
+				<td class="table_data">{!d:extended_5!}&nbsp;</td>
+			</tr>
+			<!--#/IF-->
+			<!--#IF defined="<?d:t6_typical?>"-->
+			<tr>
+				<td class="table_data">{!d:t6_typical!}&nbsp;</td>
+				<td class="table_data">{!d:t6_count!}&nbsp;</td>
+				<td class="table_data">{!d:price_6!}&nbsp;</td>
+				<td class="table_data">{!d:extended_6!}&nbsp;</td>
+			</tr>
+			<!--#/IF-->
+		</table>
+		<!--#/IF-->
+
+		<br />
+		<br />
+
+
+		<table width="90%">
+			<tr>
+				<td width="45%" valign="top">
+
+					<!--#IF defined="<?d:specifyOtherServices?>"-->
+					<table width="100%" border="1">
+						<tr>
+							<td class="table_header">Specified Other Services</td>
+							<td class="table_header">Bill</td>
+						</tr>
+						<!--#SIMPLELOOP vector="<?d:specifyOtherServices?>" loopIndex="x" -->
+						<tr>
+							<td>{!d:specifyOtherServices[x].getDescription()!}&nbsp;</td>
+							<td>{!d:specifyOtherServices[x].getValue()!}&nbsp;</td>
+						</tr>
+						<!--#/SIMPLELOOP -->
+					</table>
+					<!--#/IF-->
+
+
+				</td>
+				<td width="5%">&nbsp;</td>
+				<td width="45%" valign="top">
+
+					<!--#IF defined="<?d:otherFurniture?>"-->
+					<table width="100%" border="1">
+						<tr>
+							<td class="table_header">Specified Other Furniture</td>
+							<td class="table_header">Qty</td>
+						</tr>
+						<!--#SIMPLELOOP vector="<?d:otherFurniture?>" loopIndex="x" -->
+						<tr>
+							<td>{!d:otherFurniture[x].getDescription()!}&nbsp;</td>
+							<td>{!d:otherFurniture[x].getValue()!}&nbsp;</td>
+						</tr>
+						<!--#/SIMPLELOOP -->
+					</table>
+					<!--#/IF-->
+
+				</td>
+			</tr>
+			<tr>
+				<td width="100%" valign="top" colspan="3">
+
+					<!--#IF defined="<?d:otherFurnitureAH?>"-->
+					<table width="100%" border="1">
+						<tr>
+							<td class="table_header">General Other Items</td>
+							<td class="table_header">Bill</td>
+						</tr>
+						<!--#SIMPLELOOP vector="<?d:otherFurnitureAH?>" loopIndex="x" -->
+						<tr>
+							<td>{!d:otherFurnitureAH[x].getDescription()!}&nbsp;</td>
+							<td>{!d:otherFurnitureAH[x].getValue()!}&nbsp;</td>
+						</tr>
+						<!--#/SIMPLELOOP  -->
+					</table>
+					<!--#/IF-->
+
+
+				</td>
+			</tr>
+		</table>
+
+		<br />
+
+		<table width="90%">
+			<tr>
+				<td align="right">
+					<table border="1">
+						<tr>
+							<td class="table_header" width="100px">Total</td>
+							<td>{!d:total!}</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+
+		</div>
+		<br />
+		
+		<div class="body_1">PM Comments:</div><br />
+		<div class="body_1">
+			{!d:estimator_comments!}
+		</div>
+		<br />
+		
+
+		<div class="body_1">Standard Terms and Conditions and Insurance Coverage:</div><br />
+		<div class="body_1">
+			Target Operations and affiliated companies abide by standard industry practices as reflected in the following terms and conditions.<br />
+			<br />
+			<ul>
+			<!--#SIMPLELOOP vector="<?d:standard_conditions?>" loopIndex="x" -->
+				<li>{!d:standard_conditions[x].toString()!}</li>
+			<!--#/SIMPLELOOP -->
+			</ul>
+		</div>
+		<div class="body_1">For additional information about TCI and affiliated companies visit targetcommercialinteriors.com</div>
+		<!-- Report Build For IE7  -->
+
+	</body>
+
+</html>

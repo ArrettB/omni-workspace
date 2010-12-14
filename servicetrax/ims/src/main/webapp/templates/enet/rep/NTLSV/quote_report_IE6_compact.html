@@ -1,0 +1,296 @@
+<html>
+
+	<head>
+		<style>
+			body
+			{
+				font-family: arial;
+				font-size: 10px;
+			}
+			li
+			{
+				margin-top: 10px;
+			}
+			table
+			{
+				border-collapse: collapse;
+			}
+			td
+			{
+				font-family: arial;
+				font-size: 10px;
+			}
+			.body_1
+			{
+				margin-left: 50px;
+			}
+			.header_1
+			{
+				font-weight: bold;
+			}
+			.header_2
+			{
+				font-weight: bold;
+				border-bottom: 5px solid #808080;
+			}
+			.header_3
+			{
+				font-weight: bold;
+				border-bottom: 1px solid #808080;
+			}
+			.table_data
+			{
+				text-align: right;
+			}
+			.table_header
+			{
+				background-color: #C6D6FD;
+				font-weight: bold;
+				font-size: 10px;
+			}
+			#title_page_customer
+			{
+				font-size: 16px;
+				font-weight: bold;
+				position: absolute;
+				text-align: center;
+				top: 40px;
+				width: 600px;
+				left: 160px;
+			}
+			#title_page_prepared
+			{
+				color: red;
+				font-size: 12px;
+				position: absolute;
+				text-align: right;
+				top: 200px;
+				width: 600px;
+			}
+			#wrapper
+			{
+				width: 600px;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div id="wrapper">
+
+		<div id="title_page_customer">
+			{!d:company_name!}<br />
+			{!d:project_name!}
+			<br />
+			<br />
+			Proposal for<br />
+			Furniture Installation Services
+		</div>
+		<div id="title_page_prepared">
+			PREPARED FOR REVIEW BY: <br/> {!d:username!}
+		</div>
+		<img width="240" height="100" src="/ims/images/login/NTLSV_logo.jpg" alt="National Workplace Services logo">
+
+
+
+
+		<div class="body_1">
+			Project:&nbsp;{!d:project_name!}<br />
+			Quote Number: {!d:quote_num!}<br />
+			<br />
+			{!d:date_quoted!}<br />
+			<br />
+			{!d:contact_name!}<br />
+			{!d:company_name!}<br />
+			<br />
+			Dear {!d:contact_first_name!},<br />
+			Thank you for the opportunity to assist you with your project for {!d:end_name!} at {!d:end_address!} {!d:end_city!} {!d:end_state!}.
+			National Workplace Services (NWS) provides a full range of facilities management and service solutions throughout the United States. We've worked with hundreds of companies large and small. I've drawn from our combined expertise and experience in developing a thorough proposal based on your requirements.<br />
+			<br />
+			<br />
+		</div>
+		<div class="header_1">Customers Description of Work:</div><br />
+		<div class="body_1">
+			{!d:description_text!}<br />
+			<br />
+			<br />
+		</div>
+
+		<div class="header_1">NWS's Description of Work:</div><br />
+		<br />
+
+		<div class="body_1">
+			National Workplace Services draws from a wide range of facilities management expertise and support experience. Based on the attached terms and conditions and the information you provided on {!d:date_created!}, we've outlined our general understanding of your objectives and requirements:<br />
+			<br />
+			Perform services at {!d:end_address!} {!d:end_city!} {!d:end_state!} based on information provided in this quote.
+		</div><br />
+		<br />
+		<div class="header_1">Pricing for Described Work, excluding taxes. Applicable taxes will be added to the final invoice(s):</div><br />
+		<br />
+		<div class="body_1">
+
+		<!--#IF defined="<?d:t1_typical?>"-->
+		<table width="90%" border="1">
+			<tr class="table_header">
+				<td class="table_header" style="text-align: center;">Specified Systems Furniture</td>
+				<td class="table_header" style="text-align: right;">Typical count</td>
+				<td class="table_header" style="text-align: right;">Per typical	pricing</td>
+				<td class="table_header" style="text-align: right;">Extended price</td>
+			</tr>
+			<tr>
+				<td class="table_data">{!d:t1_typical!}&nbsp;</td>
+				<td class="table_data">{!d:t1_count!}&nbsp;</td>
+				<td class="table_data">{!d:price_1!}&nbsp;</td>
+				<td class="table_data">{!d:extended_1!}&nbsp;</td>
+			</tr>
+			<!--#IF defined="<?d:t2_typical?>"-->
+			<tr>
+				<td class="table_data">{!d:t2_typical!}&nbsp;</td>
+				<td class="table_data">{!d:t2_count!}&nbsp;</td>
+				<td class="table_data">{!d:price_2!}</td>
+				<td class="table_data">{!d:extended_2!}&nbsp;</td>
+			</tr>
+			<!--#/IF-->
+			<!--#IF defined="<?d:t3_typical?>"-->
+			<tr>
+				<td class="table_data">{!d:t3_typical!}&nbsp;</td>
+				<td class="table_data">{!d:t3_count!}&nbsp;</td>
+				<td class="table_data">{!d:price_3!}&nbsp;</td>
+				<td class="table_data">{!d:extended_3!}&nbsp;</td>
+			</tr>
+			<!--#/IF-->
+			<!--#IF defined="<?d:t4_typical?>"-->
+			<tr>
+				<td class="table_data">{!d:t4_typical!}&nbsp;</td>
+				<td class="table_data">{!d:t4_count!}&nbsp;</td>
+				<td class="table_data">{!d:price_4!}&nbsp;</td>
+				<td class="table_data">{!d:extended_4!}&nbsp;</td>
+			</tr>
+			<!--#/IF-->
+			<!--#IF defined="<?d:t5_typical?>"-->
+			<tr>
+				<td class="table_data">{!d:t5_typical!}&nbsp;</td>
+				<td class="table_data">{!d:t5_count!}&nbsp;</td>
+				<td class="table_data">{!d:price_5!}&nbsp;</td>
+				<td class="table_data">{!d:extended_5!}&nbsp;</td>
+			</tr>
+			<!--#/IF-->
+			<!--#IF defined="<?d:t6_typical?>"-->
+			<tr>
+				<td class="table_data">{!d:t6_typical!}&nbsp;</td>
+				<td class="table_data">{!d:t6_count!}&nbsp;</td>
+				<td class="table_data">{!d:price_6!}&nbsp;</td>
+				<td class="table_data">{!d:extended_6!}&nbsp;</td>
+			</tr>
+			<!--#/IF-->
+		</table>
+		<!--#/IF-->
+
+		<br />
+		<br />
+
+
+		<table width="90%">
+			<tr>
+				<td width="45%" valign="top">
+
+					<!--#IF defined="<?d:specifyOtherServices?>"-->
+					<table width="100%" border="1">
+						<tr>
+							<td class="table_header">Specified Other Services</td>
+							<td class="table_header">Bill</td>
+						</tr>
+						<!--#SIMPLELOOP vector="<?d:specifyOtherServices?>" loopIndex="x" -->
+						<tr>
+							<td>{!d:specifyOtherServices[x].getDescription()!}&nbsp;</td>
+							<td>{!d:specifyOtherServices[x].getValue()!}&nbsp;</td>
+						</tr>
+						<!--#/SIMPLELOOP -->
+					</table>
+					<!--#/IF-->
+
+
+				</td>
+				<td width="5%">&nbsp;</td>
+				<td width="45%" valign="top">
+
+					<!--#IF defined="<?d:otherFurniture?>"-->
+					<table width="100%" border="1">
+						<tr>
+							<td class="table_header">Specified Other Furniture</td>
+							<td class="table_header">Qty</td>
+						</tr>
+						<!--#SIMPLELOOP vector="<?d:otherFurniture?>" loopIndex="x" -->
+						<tr>
+							<td>{!d:otherFurniture[x].getDescription()!}&nbsp;</td>
+							<td>{!d:otherFurniture[x].getValue()!}&nbsp;</td>
+						</tr>
+						<!--#/SIMPLELOOP -->
+					</table>
+					<!--#/IF-->
+
+				</td>
+			</tr>
+			<tr>
+				<td width="100%" valign="top" colspan="3">
+
+					<!--#IF defined="<?d:otherFurnitureAH?>"-->
+					<table width="100%" border="1">
+						<tr>
+							<td class="table_header">General Other Items</td>
+							<td class="table_header">Bill</td>
+						</tr>
+						<!--#SIMPLELOOP vector="<?d:otherFurnitureAH?>" loopIndex="x" -->
+						<tr>
+							<td>{!d:otherFurnitureAH[x].getDescription()!}&nbsp;</td>
+							<td>{!d:otherFurnitureAH[x].getValue()!}&nbsp;</td>
+						</tr>
+						<!--#/SIMPLELOOP  -->
+					</table>
+					<!--#/IF-->
+
+				</td>
+			</tr>
+		</table>
+
+		<br />
+
+		<table width="90%">
+			<tr>
+				<td align="right">
+					<table border="1">
+						<tr>
+							<td class="table_header" width="100px">Total</td>
+							<td>{!d:total!}</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+
+		</div>
+		<br />
+		
+		<div class="header_1">PM Comments:</div><br />
+		<div class="body_1">
+			{!d:estimator_comments!}
+		</div>
+		<br />
+
+
+		<div class="header_1">Standard Terms and Conditions:</div><br />
+		<div class="body_1">
+			National Workplace Services abides by standard industry practices as reflected in the following terms and conditions:<br />
+			<br />
+			<ul>
+			<!--#SIMPLELOOP vector="<?d:standard_conditions?>" loopIndex="x" -->
+				<li>{!d:standard_conditions[x].toString()!}</li>
+			<!--#/SIMPLELOOP -->
+			</ul>
+		</div>
+
+		<!-- Report Build For IE6  -->
+
+	</body>
+
+</html>

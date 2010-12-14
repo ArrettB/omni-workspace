@@ -405,7 +405,7 @@
 	<invocationContext class="dynamic.intraframe.engine.BaseInvocationContext">
 	</invocationContext>
 
-	<mail host="mail.apexit.com" port="25" from="servicetrax@omniworkspace.com"/>
+	<mail host="10.0.0.9" port="25" from="servicetrax@omniworkspace.com"/>
 
 	<providers default="security">
 		<provider name="ValidAdminUser" id="dynamic.intraframe.handlers.AdminHandler" type="handler"/>

@@ -61,6 +61,7 @@ public class QuoteReport extends BaseHandler
 	{
 		ConnectionWrapper conn = null;
 		boolean result = true;
+        String codeName = null;
 		try
 		{
 			Diagnostics.trace("QuoteReport.handleEnvironment()");
@@ -189,8 +190,8 @@ public class QuoteReport extends BaseHandler
 					// omni affiliate name
 					String code = trim(rs.getString("code"));
 					if (StringUtil.hasAValue(code)) {
-						String code_name = trim(rs.getString("code_name"));
-						if (!code_name.equals("NTLSV"))
+						codeName = trim(rs.getString("code_name"));
+						if (!codeName.equals("NTLSV"))
 						{
 							int firstSpace = code.indexOf(" ");
 							if (firstSpace > 0 && firstSpace < code.length()) {
@@ -237,12 +238,23 @@ public class QuoteReport extends BaseHandler
 			}
 
 			String header = ic.getHttpServletRequest().getHeader("user-agent");
-			String templatePath = "enet/rep/quote_report" + filter + "_IE7" + compactStr + ".html";
+            String templatePath = null;
+            if(codeName.equals("AIA") || codeName.equals("NTLSV")) {
+                templatePath = "enet/rep/" + codeName + "/quote_report" + filter + "_IE7" + compactStr + ".html";
 
-			if(header.indexOf("MSIE 6.0;")>0)
-			{
-				templatePath = "enet/rep/quote_report" + filter + "_IE6" + compactStr + ".html";
-			}
+                if(header.indexOf("MSIE 6.0;")>0)
+                {
+                    templatePath = "enet/rep/" + codeName + "/quote_report" + filter + "_IE6" + compactStr + ".html";
+                }
+            } else {
+                templatePath = "enet/rep/quote_report" + filter + "_IE7" + compactStr + ".html";
+
+                if(header.indexOf("MSIE 6.0;")>0)
+                {
+                    templatePath = "enet/rep/quote_report" + filter + "_IE6" + compactStr + ".html";
+                }
+            }
+
 
 			try
 			{
