@@ -436,8 +436,7 @@ public class PoolingHandler extends BaseHandler
 				allocateQuery.append("   AND item_id = ?");
 				allocateQuery.append("   AND isnull(bill_rate, 0) = ?");
 				allocateQuery.append("   AND fully_allocated_flag = 'N'");
-                // temporarily commented out until 2011
-                //allocateQuery.append("   AND status_id = 4");
+                allocateQuery.append("   AND status_id = 4");
 				allocateQuery.append(" ORDER BY service_line_date");
 
 				PreparedStatement allocateQueryPStmt = conn.prepareStatement(allocateQuery.toString());
