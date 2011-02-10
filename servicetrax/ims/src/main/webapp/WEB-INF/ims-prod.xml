@@ -406,7 +406,7 @@
 	<invocationContext class="dynamic.intraframe.engine.BaseInvocationContext">
 	</invocationContext>
 
-	<mail host="localhost" port="25" from="servicetrax@omniworkspace.com"/>
+	<mail host="172.17.25.103" port="25" from="servicetrax@omniworkspace.com"/>
 
 	<providers default="security">
 		<provider name="ValidAdminUser" id="dynamic.intraframe.handlers.AdminHandler" type="handler"/>
