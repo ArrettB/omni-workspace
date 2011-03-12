@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="billOfLadingTrucks" pageWidth="110" pageHeight="85" columnWidth="110" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="billOfLadingTrucks" pageWidth="110" pageHeight="75" columnWidth="110" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
 	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -21,9 +21,9 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="85" splitType="Stretch">
+		<band height="75" splitType="Stretch">
 			<textField>
-				<reportElement x="55" y="47" width="55" height="15"/>
+				<reportElement x="55" y="45" width="55" height="15"/>
 				<box>
 					<pen lineWidth="0.0" lineColor="#FFFFFF"/>
 					<topPen lineWidth="0.0" lineColor="#FFFFFF"/>
@@ -37,7 +37,7 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{tractor_qty}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="55" y="16" width="55" height="15"/>
+				<reportElement x="55" y="15" width="55" height="15"/>
 				<box>
 					<pen lineWidth="0.0" lineColor="#FFFFFF"/>
 					<topPen lineWidth="0.0" lineColor="#FFFFFF"/>
@@ -51,7 +51,7 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{bobtail_qty}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="55" y="31" width="55" height="15"/>
+				<reportElement x="55" y="30" width="55" height="15"/>
 				<box>
 					<pen lineWidth="0.0" lineColor="#FFFFFF"/>
 					<topPen lineWidth="0.0" lineColor="#FFFFFF"/>
@@ -90,10 +90,10 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[]]></text>
+				<text><![CDATA[Service Van]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="16" width="55" height="15"/>
+				<reportElement x="0" y="15" width="55" height="15"/>
 				<box leftPadding="3">
 					<pen lineWidth="0.0" lineColor="#FFFFFF"/>
 					<topPen lineWidth="0.0" lineColor="#FFFFFF"/>
@@ -104,10 +104,10 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[]]></text>
+				<text><![CDATA[Bob Tail]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="31" width="55" height="15"/>
+				<reportElement x="0" y="30" width="55" height="15"/>
 				<box leftPadding="3">
 					<pen lineWidth="0.0" lineColor="#FFFFFF"/>
 					<topPen lineWidth="0.0" lineColor="#FFFFFF"/>
@@ -118,10 +118,10 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[]]></text>
+				<text><![CDATA[Box Van]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="47" width="55" height="15"/>
+				<reportElement x="0" y="45" width="55" height="15"/>
 				<box leftPadding="3">
 					<pen lineWidth="0.0" lineColor="#FFFFFF"/>
 					<topPen lineWidth="0.0" lineColor="#FFFFFF"/>
@@ -132,10 +132,10 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[]]></text>
+				<text><![CDATA[Tractor]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="63" width="55" height="15"/>
+				<reportElement x="0" y="60" width="55" height="15"/>
 				<box leftPadding="3">
 					<pen lineWidth="0.0" lineColor="#FFFFFF"/>
 					<topPen lineWidth="0.0" lineColor="#FFFFFF"/>
@@ -146,10 +146,10 @@ FROM HOTSHEET_DETAILS WHERE HOTSHEET_ID = $P{ID}]]>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[]]></text>
+				<text><![CDATA[Trailer]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="55" y="63" width="55" height="15"/>
+				<reportElement x="55" y="60" width="55" height="15"/>
 				<box>
 					<pen lineWidth="0.0" lineColor="#FFFFFF"/>
 					<topPen lineWidth="0.0" lineColor="#FFFFFF"/>
