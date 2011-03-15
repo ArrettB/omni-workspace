@@ -135,14 +135,14 @@ AND HOTSHEETS.JOB_LOCATION_CONTACT_ID = CONTACTS.CONTACT_ID]]>
 			<textField isBlankWhenNull="true">
 				<reportElement x="189" y="75" width="185" height="15"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="false"/>
+					<font fontName="Arial" size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CONTACT_NAME}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="189" y="91" width="185" height="15"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="false"/>
+					<font fontName="Arial" size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{PHONE_WORK}]]></textFieldExpression>
 			</textField>

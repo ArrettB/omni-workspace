@@ -33,10 +33,10 @@ WHERE
 	<detail>
 		<band height="60" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="45" width="180" height="15"/>
+				<reportElement x="0" y="44" width="180" height="15"/>
 				<box leftPadding="3"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="11"/>
+					<font fontName="Arial" size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{CITY} == null ? "" : $F{CITY}) + " " +
 ($F{STATE} == null ? "" : $F{STATE}) + " " +
@@ -46,23 +46,23 @@ WHERE
 				<reportElement x="0" y="0" width="180" height="15"/>
 				<box leftPadding="4"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="11"/>
+					<font fontName="Arial" size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{JOB_LOCATION_NAME}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="15" width="180" height="15"/>
+				<reportElement x="0" y="14" width="180" height="15"/>
 				<box leftPadding="4"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="11"/>
+					<font fontName="Arial" size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{STREET1} == null ? "" : $F{STREET1}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="30" width="180" height="15"/>
+				<reportElement x="0" y="29" width="180" height="15"/>
 				<box leftPadding="4"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="11"/>
+					<font fontName="Arial" size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{STREET2} == null ? "" : $F{STREET2}]]></textFieldExpression>
 			</textField>
