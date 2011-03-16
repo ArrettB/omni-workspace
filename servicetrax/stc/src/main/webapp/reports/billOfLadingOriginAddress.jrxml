@@ -82,7 +82,7 @@ WHERE
 				<reportElement x="0" y="29" width="180" height="15"/>
 				<box leftPadding="4"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="11"/>
+					<font fontName="Arial" size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{STREET2} == null ? "" : $F{STREET2}]]></textFieldExpression>
 			</textField>
