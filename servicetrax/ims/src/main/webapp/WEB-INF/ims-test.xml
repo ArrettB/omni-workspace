@@ -426,7 +426,7 @@
 
 	<resourceManager class="dynamic.util.resources.BaseResourceManager">
 		<resourceProducer name="SQLServerProducer" class="dynamic.dbtk.connection.JDBCResourceProducer" driver="net.sourceforge.jtds.jdbc.Driver" prefix="jdbc:jtds:sqlserver:" dateFormat="''MM/dd/yyyy HH:mm:ss''" now="getDate()" primaryKey="SELECT @@identity">
-			<resource name="SQLServer" id="//rolla.kettleriverconsulting.com:1433/omni_paul;appName=ServiceTrax" username="pgarvie" password="6622jake" type="SharedPool" default="true"/>
+			<resource name="SQLServer" id="//ROLLA:1433/omni_ims;appName=ServiceTrax" username="ims" password="ims" type="SharedPool" default="true"/>
 			<resource name="sqlserver_aia" id="//lexus:1437/AIA" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
 			<resource name="sqlserver_az" id="//lexus:1437/az" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
 			<resource name="sqlserver_gp" id="//lexus:1437/AMBIM" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
