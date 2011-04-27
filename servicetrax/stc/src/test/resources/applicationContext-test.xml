@@ -109,4 +109,9 @@
     <bean id="jasperReportService" class="com.dynamic.servicetrax.service.JasperReportService">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
+
+    <bean id="recaptchaService" class="com.dynamic.servicetrax.service.RecaptchaService">
+        <property name="publicKey" value="publicKey"/>
+        <property name="privateKey" value="privateKey"/>
+    </bean>
 </beans>

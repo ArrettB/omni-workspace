@@ -3,8 +3,8 @@
 <!DOCTYPE applicationContext SYSTEM "iFrame2.dtd"
 [
 <!ENTITY appName "ims">
-<!ENTITY projectDir "/Users/dave/kettle_river_consulting/customers/omni workspace/workspace/servicetrax/ims/">
-<!ENTITY htmlDir "/Users/dave/kettle_river_consulting/customers/omni workspace/workspace/servicetrax/ims/src/main/webapp/">
+<!ENTITY projectDir "/Users/pgarvie/projects/omni/servicetrax/ims/">
+<!ENTITY htmlDir "/Users/pgarvie/projects/omni/servicetrax/ims/src/main/webapp/">
 <!ENTITY sep "/">
 ]
 >
@@ -18,13 +18,13 @@
 	<appGlobals>
 		<appGlobalDatum name="additionalReports">http://www.omniworkspace.com/servicetrax</appGlobalDatum>
 		<appGlobalDatum name="charmContext">stc</appGlobalDatum>
-		<appGlobalDatum name="deadlockAlter">bvonhaden@apexit.com,ChrismanJ@omniworkspace.com</appGlobalDatum>
+		<appGlobalDatum name="deadlockAlter">david.zhao@apexit.com,ChrismanJ@omniworkspace.com</appGlobalDatum>
 		<appGlobalDatum name="documentDir">&projectDir;documents&sep;</appGlobalDatum>
 		<appGlobalDatum name="headerTitle">ServiceTRAX - Powered by Omni Workspace Company</appGlobalDatum>
 		<appGlobalDatum name="ignoreContactName"> N/A</appGlobalDatum>
-		<appGlobalDatum name="loginFontSize">3</appGlobalDatum>
+		<appGlobalDatum name="loginFontSize">5</appGlobalDatum>
 		<appGlobalDatum name="loginTo">serviceTrax</appGlobalDatum>
-		<appGlobalDatum name="loginSupport">ServiceTRAX Support 1-877-257-6111</appGlobalDatum>
+		<appGlobalDatum name="loginSupport"></appGlobalDatum>
 		<appGlobalDatum name="loginName">User</appGlobalDatum>
 		<appGlobalDatum name="maxFileSize">10000000</appGlobalDatum>
 		<appGlobalDatum name="num_service_req_lock_days">3</appGlobalDatum>
@@ -32,9 +32,9 @@
 		<appGlobalDatum name="pocketMOTD">Please let us know how we can make PockeTRAX better 612-627-1710!</appGlobalDatum>
 		<appGlobalDatum name="requestDocumentDir">&projectDir;request_documents&sep;</appGlobalDatum>
 		<appGlobalDatum name="runEconnect">true</appGlobalDatum>
-		<appGlobalDatum name="sendErrorsTo">bvonhaden@apexit.com</appGlobalDatum>
+		<appGlobalDatum name="sendErrorsTo">scanderson@ambis.com,david.zhao@apexit.com</appGlobalDatum>
 		<appGlobalDatum name="tempDir">&projectDir;downloadTemp&sep;</appGlobalDatum>
-		<appGlobalDatum name="testEmail">bvonhaden@apexit.com</appGlobalDatum>
+		<appGlobalDatum name="testEmail"></appGlobalDatum>
 
 		<appGlobalDatum name="WindowAttribs">
 			'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=400,height=304'
@@ -95,20 +95,19 @@
  			 WHERE lookup_name LIKE &lt;?p:case_furn_line_type_id_text.concat('%').toPStmtString()?&gt;
  		      ORDER BY lookup_name
  		</appGlobalDatum>
- 		<codetable2 table="INVOICE_BATCH_STATUSES" code="CODE" id="STATUS_ID"/>
  		<metadata table="request_documents" columns="name" />
 	</appGlobals>
 
 	<applicationContextListener class="ims.listeners.IMSApplicationContextListener"/>
 
 	<daemons>
-		<!-- daemon name="EmailDaemon" class="ims.daemons.EmailDaemon"/-->
-		<daemon name="StatusDaemon" class="ims.daemons.StatusDaemon"/>
-		<!-- daemon name="IMCommandRunner" class="ims.daemons.IMCommandRunner"/-->
+		<!--<daemon name="EmailDaemon" class="ims.daemons.EmailDaemon"/>-->
+		<!--<daemon name="StatusDaemon" class="ims.daemons.StatusDaemon"/>-->
+	<!--	<daemon name="IMCommandRunner" class="ims.daemons.IMCommandRunner"/>	-->
 	</daemons>
 
-	<diagnostics level="15" port="19000-19099" template="iframe/diagnostics">
-		<diagnosticsStream class="java.lang.System" property="out" level="15"/>
+	<diagnostics level="1" port="19000-19099" template="iframe/diagnostics">
+		<diagnosticsStream class="java.lang.System" property="out" level="1"/>
 		<diagnosticsFile path="&projectDir;logs&sep;ims.log"/>
 		<diagnosticsApplet codebase="/ims/jar"/>
 	</diagnostics>
@@ -406,7 +405,7 @@
 	<invocationContext class="dynamic.intraframe.engine.BaseInvocationContext">
 	</invocationContext>
 
-	<mail host="mail.apexit.com" port="25" from="servicetrax@omniworkspace.com"/>
+	<mail host="localhost" port="25" from="servicetrax@omniworkspace.com"/>
 
 	<providers default="security">
 		<provider name="ValidAdminUser" id="dynamic.intraframe.handlers.AdminHandler" type="handler"/>
@@ -425,19 +424,19 @@
 
 	<resourceManager class="dynamic.util.resources.BaseResourceManager">
 		<resourceProducer name="SQLServerProducer" class="dynamic.dbtk.connection.JDBCResourceProducer" driver="net.sourceforge.jtds.jdbc.Driver" prefix="jdbc:jtds:sqlserver:" dateFormat="''MM/dd/yyyy HH:mm:ss''" now="getDate()" primaryKey="SELECT @@identity">
-			<resource name="sqlserver" id="//10.211.55.6:1433/omni_dave;appName=ServiceTrax" username="ims" password="ims" type="SharedPool" default="true"/>
-			<resource name="Test" id="//10.211.55.6:1433/omni_dave;appName=ServiceTrax" username="ims" password="ims" type="SingleUse" default="false"/>
-			<resource name="Test2" id="//10.211.55.6:1433/omni_dave;appName=ServiceTrax" username="ims_gp" password="ims_gp" type="SingleUse" default="false"/>
+			<resource name="sqlserver" id="//rolla.kettleriverconsulting.com:1433/omni_ims;appName=ServiceTrax" username="ims" password="ims" type="SharedPool" default="true"/>
+			<resource name="Test" id="//rolla.kettleriverconsulting.com:1433/omni_paul;appName=ServiceTrax" username="pgarvie" password="6622jake" type="SingleUse" default="false"/>
+			<resource name="Test2" id="//rolla.kettleriverconsulting.com:1433/omni_paul;appName=ServiceTrax" username="pgarvie" password="6622jake" type="SingleUse" default="false"/>
 			<resource name="sqlserver_aia" id="//10.211.55.6:1433/AIA" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
-			<resource name="sqlserver_alabm" id="//10.211.55.6:1433/alabm" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
-			<resource name="sqlserver_gp" id="//10.211.55.6:1433/AMBIM" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver_az" id="//10.211.55.6:1433/az" username="AZ" password="az" type="SharedPool" default="false"/>
+			<resource name="sqlserver_gp" id="//rolla.kettleriverconsulting.com:1433/AMBIM" username="ims" password="ims" type="SharedPool" default="false"/>
 			<resource name="sqlserver_mad" id="//10.211.55.6:1433/ammad" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
 			<resource name="sqlserver_ciinc" id="//10.211.55.6:1433/CIINC" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
 			<resource name="sqlserver_cimn" id="//10.211.55.6:1433/CIMN" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
 			<resource name="sqlserver_cillc" id="//10.211.55.6:1433/CILIC" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
 			<resource name="sqlserver_ics" id="//10.211.55.6:1433/ICS" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
 			<resource name="sqlserver_ntlsv" id="//10.211.55.6:1433/NTLSV" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
-			<resource name="sqlserver_ecms" id="//10.211.55.6:1433/ecms" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver_ecms" id="//rolla.kettleriverconsulting.com:1433/ECMS" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
 			<resource name="sqlserver_phx" id="//10.211.55.6:1433/phx" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
 		</resourceProducer>
 	</resourceManager>

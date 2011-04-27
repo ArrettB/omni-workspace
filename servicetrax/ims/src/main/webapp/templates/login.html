@@ -1,67 +1,124 @@
 <!--#EMBED template="embeds/header.html" -->
 
-<body class="BodyTag" bgcolor="#ded4c6" topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0" marginwidth="0" marginheight="0">
+<body class="BodyTag" bgcolor="#ded4c6" topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0" marginwidth="0"
+      marginheight="0">
 <table border="0" cellpadding="0" cellspacing="0" width="102%" height="100%">
-	<tr>
-		<td bgcolor="#ded4c6">&nbsp;</td>
-		<td background="/ims/images/login/top_backgrnd.jpg" align="center"><img src="/ims/images/login/logo_top.jpg" width="260" height="85" border="0" alt=""></td>
-		<td bgcolor="#ded4c6">&nbsp;</td>
-	</tr>
-	<tr height="100%">
-		<td bgcolor="#ded4c6">
-			<img src="/ims/images/spacer.gif" width="51" height="437" alt=""></td>
-		<td width="711" height="437" bgcolor="White">
-		<!-- Start Content -->
-		<form name="loginform" action="{!s:action!}login/enet/main.html" method="post">
-		<input type="hidden" name="action" value="login">
-		<input type="hidden" name="loginTemplate" value="login.html">
-		<input type="hidden" name="locationTemplate" value="select_location.html">
-			<table border="0" cellspacing="0" cellpadding="6">
-				<tr>
-					<td colspan="2">
+    <tr>
+        <td bgcolor="#ded4c6">&nbsp;</td>
+        <td background="/ims/images/login/top_backgrnd.jpg" align="center"><img src="/ims/images/login/logo_top.jpg"
+                                                                                width="260" height="85" border="0"
+                                                                                alt=""></td>
+        <td bgcolor="#ded4c6">&nbsp;</td>
+    </tr>
+    <tr height="100%">
+        <td bgcolor="#ded4c6">
+            <img src="/ims/images/spacer.gif" width="51" height="437" alt=""></td>
+        <td width="711" height="437" bgcolor="White">
+            <!-- Start Content -->
+            <form name="loginform" action="{!s:action!}login/enet/main.html" method="post">
+                <input type="hidden" name="action" value="login">
+                <input type="hidden" name="loginTemplate" value="login.html">
+                <input type="hidden" name="locationTemplate" value="select_location.html">
+                <table border="0" cellspacing="0" cellpadding="6">
+                    <tr>
+                        <td colspan="2">
 
-					<font color="#3366cc" size="{!a:loginFontSize!}"><b>Login to {!a:loginTo!}</b></font>
-					<br><br><br>
-					Please enter your {!a:loginTo!} username and password
-					<br>
-					{!a:loginSupport!}<br><br>
-					</td>
-				</tr>
-				<tr>
-					<td class="Label">{!a:loginName!} Name:</td>
-					<td><input name="username" type="text" value="{!d:user_name!}" style="width:115"></td>
-				</tr>
-				<tr>
-					<td class="Label">Password:</td>
-					<td><input name="password" type="password" value="{!d:pass_word!}" style="width:115"></td>
-				</tr>
-				<tr>
-					<td>&nbsp;</td>
-					<td>
-					<input type="submit" value="Login" class="Button">
-					<input type="reset" value="Cancel" class="Button">
-					</td>
-				</tr>
-				<!--#IF defined="<?d:message?>" -->
-				<tr>
-					<td colspan="2" align="center" valign="middle"><span class="errorText">{!d:message!}</span></td>
-				</tr>
-				<!--#/IF-->
-			</table>
-		</form>
+                            <font color="#3366cc" size="{!a:loginFontSize!}"><b>Login to {!a:loginTo!}</b></font>
+                            <br><br><br>
+                            Please enter your {!a:loginTo!} username and password
+                            <br>
+                            {!a:loginSupport!}<br><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="Label">{!a:loginName!} Name:</td>
+                        <td><input name="username" type="text" value="{!d:user_name!}" style="width:115"></td>
+                    </tr>
+                    <tr>
+                        <td class="Label">Password:</td>
+                        <td><input name="password" type="password" value="{!d:pass_word!}" style="width:115"></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <input type="submit" value="Login" class="Button">
+                            <input type="reset" value="Cancel" class="Button">
+                        </td>
+                    </tr>
+                    <tr>
+                    <tr>
+                        <td colspan="2" class="Label" style="padding-left:5px; padding-top:20px;">
+                            <a href="#" onclick="return openForgetPasswordDialog();">Forget password?</a>
+                        </td>
+                    </tr>
 
-		<br><br>
-		<div align="center"><img src="/ims/images/login/omni.jpg" width="150" height="129" border="0" alt="Omni Manufacturing"></div>
+                    <tr>
+                        <td colspan="2" class="Label" style="padding-left:5px; padding-top:10px;">
+                            <a href="#" onclick="return openNewAccountRequestDialog();">Request New Account</a>
+                        </td>
+                    </tr>
 
-		<!-- End Content -->
-		</td>
-		<td bgcolor="#ded4c6">
-			<img src="/ims/images/spacer.gif" width="53" height="437" alt=""></td>
-	</tr>
-	<tr>
-		<td colspan="3" bgcolor="#ded4c6">
-			<img src="/ims/images/spacer.gif" width="1" height="35" alt=""></td>
-	</tr>
+                    <tr>
+                        <td colspan="2" class="Label" style="padding-left:5px; padding-top:10px; padding-bottom:10px;">
+                            <a href="mailto:servicetrax@omniworkspace.com?subject=Suggestion Box">Suggestion Box</a>
+                        </td>
+                    </tr>
+
+
+                    <!--#IF defined="<?d:message?>" -->
+                    <tr>
+                        <td colspan="2" align="center" valign="middle"><span class="errorText">{!d:message!}</span></td>
+                    </tr>
+                    <!--#/IF-->
+
+                    <tr>
+                        <td colspan="2" align="center" valign="middle">
+                            <span id="loginAdminMessage">&nbsp;</span>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+            <br><br>
+
+            <div align="center">
+                <img src="/ims/images/login/omni.jpg" width="150" height="129" border="0" alt="Omni Manufacturing">
+            </div>
+
+            <!-- End Content -->
+        </td>
+        <td bgcolor="#ded4c6">
+            <img src="/ims/images/spacer.gif" width="53" height="437" alt=""></td>
+    </tr>
+    <tr>
+        <td colspan="3" bgcolor="#ded4c6">
+            <img src="/ims/images/spacer.gif" width="1" height="35" alt=""></td>
+    </tr>
 </table>
+
+<script type="text/javascript">
+    function openForgetPasswordDialog() {
+        var width = 600;
+        var height = 450;
+        var left = parseInt((screen.availWidth / 2) - (width / 2));
+        var top = parseInt((screen.availHeight / 2) - (height / 2));
+        var windowFeatures = "width=" + width + ",height=" + height + ",status,resizable,left=" + left + ",top=" + top + "screenX=" + left + ",screenY=" + top;
+        //        return window.open('diagnostics.html', 'forgotPassword', windowFeatures);
+        //var attribs = 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no, height= 800,width=850,scrollbars=yes, resizable=no';
+        return window.open('/stc/sendPassword.html', 'sendPassword', windowFeatures);
+    }
+
+    function openNewAccountRequestDialog() {
+        var width = 600;
+        var height = 800;
+        var left = parseInt((screen.availWidth / 2) - (width / 2));
+        var top = parseInt((screen.availHeight / 2) - (height / 2));
+        var windowFeatures = "width=" + width + ",height=" + height + ",status,resizable,left=" + left + ",top=" + top + "screenX=" + left + ",screenY=" + top;
+        //        return window.open('diagnostics.html', 'forgotPassword', windowFeatures);
+        //var attribs = 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no, height= 800,width=850,scrollbars=yes, resizable=no';
+        return window.open('/stc/openNewAccountRequest.html', 'newAccount', windowFeatures);
+    }
+
+</script>
 </body>
 <!--#EMBED template="embeds/footer.html" -->

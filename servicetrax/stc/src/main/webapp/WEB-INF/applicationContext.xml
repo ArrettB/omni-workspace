@@ -239,6 +239,19 @@
         <property name="queryService" ref="queryService"/>
     </bean>
 
+    <!--We won't be logged in for this controller, so bypass the loginInterceptor-->
+    <bean id="publicMapper" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+                <prop key="/sendPassword.html">loginAdminController</prop>
+                <prop key="/handleSendPassword.html">loginAdminController</prop>
+                <prop key="/openNewAccountRequest.html">loginAdminController</prop>
+                <prop key="/requestNewAccount.html">loginAdminController</prop>
+            </props>
+        </property>
+        <property name="order" value="1"/>
+    </bean>
+
     <bean id="handlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
         <property name="interceptors">
             <list>
@@ -246,6 +259,7 @@
                 <ref bean="openSessionInViewInterceptor"/>
             </list>
         </property>
+        <property name="order" value="2"/>
     </bean>
 
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
@@ -300,6 +314,18 @@
         </property>
     </bean>
 
+    <bean id="loginAdminPropsResolver"
+          class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+        <property name="mappings">
+            <value>
+                /sendPassword.html=sendPassword
+                /handleSendPassword.html=handleSendPassword
+                /openNewAccountRequest.html=openNewAccountRequest
+            </value>
+        </property>
+    </bean>
+
+
     <bean name="/hotSheetCreate.html, /hotSheetShow.html,
     /hotSheetSave.html, /hotSheetCopy.html,
     /hotSheetReport.html, /hotSheetPrint.html"
@@ -318,5 +344,33 @@
         <property name="methodNameResolver" ref="propsResolver"/>
     </bean>
 
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${mail.host}"/>
+        <property name="username" value="${mail.username}"/>
+        <property name="password" value="${mail.password}"/>
+    </bean>
 
+    <bean id="emailService" class="com.dynamic.servicetrax.service.EmailService">
+        <property name="mailSender" ref="mailSender"/>
+        <property name="fromEmail" value="servicetrax@omniworkspace.com"/>
+        <property name="subject" value="ServiceTrax"/>
+        <property name="message" value="Your password is "/>
+    </bean>
+
+    <bean id="recaptchaService" class="com.dynamic.servicetrax.service.RecaptchaService">
+        <property name="publicKey" value="6LcxwsMSAAAAACHcriEYU45lk6MvI56mZY1skrJY"/>
+        <property name="privateKey" value="6LcxwsMSAAAAACuo71cCeON3hT5uuxSUotNIH9B9"/>
+    </bean>
+
+
+    <bean id="loginAdminController"
+          name="/sendPassword.html, /handleSendPassword.html,
+    /openNewAccountRequest.html, /requestNewAccount.html"
+          class="com.dynamic.servicetrax.controllers.LoginAdminController">
+        <property name="methodNameResolver" ref="loginAdminPropsResolver"/>
+        <property name="emailService" ref="emailService"/>
+        <property name="recaptchaService" ref="recaptchaService"/>
+        <property name="messageSource" ref="messageSource"/>
+        <property name="loginDao" ref="loginDao"/>
+    </bean>
 </beans>
