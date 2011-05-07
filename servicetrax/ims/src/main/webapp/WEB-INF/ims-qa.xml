@@ -35,6 +35,9 @@
 		<appGlobalDatum name="sendErrorsTo">scanderson@ambis.com,david.zhao@apexit.com</appGlobalDatum>
 		<appGlobalDatum name="tempDir">&projectDir;downloadTemp&sep;</appGlobalDatum>
 		<appGlobalDatum name="testEmail"></appGlobalDatum>
+        <appGlobalDatum name="newLoginSupportNumber">Please contact us at 1-877-410-3656 or</appGlobalDatum>
+        <appGlobalDatum name="newLoginSupportEmailLink">mailto:support@omniworkspace.com?subject=ServiceTRAX Inquiry</appGlobalDatum>
+        <appGlobalDatum name="newLoginSupportEmail">support@omniworkspace.com</appGlobalDatum>
 
 		<appGlobalDatum name="WindowAttribs">
 			'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=400,height=304'

@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 /**
  * User: pgarvie
@@ -17,14 +18,14 @@ public class EmailService {
     private JavaMailSender mailSender;
     private String fromEmail;
     private String subject;
-    private String message;
 
     public Boolean send(String to, String text) {
 
         try {
+            LOGGER.info("Properties: " + ((JavaMailSenderImpl) mailSender).getSession().getProperties());
             SimpleMailMessage theMessage = new SimpleMailMessage();
             theMessage.setTo(to);
-            theMessage.setText(message + text);
+            theMessage.setText(text);
             theMessage.setFrom(fromEmail);
             theMessage.setSubject(subject);
             mailSender.send(theMessage);
@@ -44,11 +45,11 @@ public class EmailService {
         this.fromEmail = fromEmail;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public String getFromEmail() {
+        return fromEmail;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 }

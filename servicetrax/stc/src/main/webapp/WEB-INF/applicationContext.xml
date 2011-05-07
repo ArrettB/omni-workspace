@@ -321,6 +321,7 @@
                 /sendPassword.html=sendPassword
                 /handleSendPassword.html=handleSendPassword
                 /openNewAccountRequest.html=openNewAccountRequest
+                /requestNewAccount.html=requestNewAccount
             </value>
         </property>
     </bean>
@@ -346,15 +347,17 @@
 
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="${mail.host}"/>
-        <property name="username" value="${mail.username}"/>
-        <property name="password" value="${mail.password}"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">false</prop>
+            </props>
+        </property>
     </bean>
 
     <bean id="emailService" class="com.dynamic.servicetrax.service.EmailService">
         <property name="mailSender" ref="mailSender"/>
-        <property name="fromEmail" value="servicetrax@omniworkspace.com"/>
-        <property name="subject" value="ServiceTrax"/>
-        <property name="message" value="Your password is "/>
+        <property name="fromEmail" value="${mail.from}"/>
+        <property name="subject" value="ServiceTRAX Inquiry"/>
     </bean>
 
     <bean id="recaptchaService" class="com.dynamic.servicetrax.service.RecaptchaService">

@@ -42,7 +42,7 @@
     </tr>
     <tr>
         <td class="label" style="padding-left:10px; padding-bottom:10px;" colspan="2">
-            <span style="font-size:10px; font-weight:bold; white-space:nowrap;">
+            <span style="font-size:9px; white-space:nowrap;">
                 Enter your serviceTrax username and click Email Password:
             </span>
         </td>
@@ -71,7 +71,9 @@
             <label style="padding-left:10px;">
                 <input type="button" id="sendPasswordButton" value="Email Password" class="passwordButton"
                        onclick="sendPassword();"/>
-                <input type="reset" value="Cancel" class="passwordButton" onclick="closeWindow();">
+            </label>
+            <label style="padding-right:10px;">
+                <input type="button" id="clearPasswordButton" value="Cancel" class="passwordButton" onclick="closeWindow();"/>
             </label>
         </td>
     </tr>
@@ -129,8 +131,25 @@
         return true;
     }
 
+    YAHOO.util.Event.addListener("sendPasswordButton", "mousedown", function() {
+        document.getElementById("sendPasswordButton").style.background = '#336666';
+    });
+
+    YAHOO.util.Event.addListener("sendPasswordButton", "mouseup", function() {
+        document.getElementById("sendPasswordButton").style.background = '#669999';
+    });
+
+    YAHOO.util.Event.addListener("clearPasswordButton", "mousedown", function() {
+        document.getElementById("clearPasswordButton").style.background = '#336666';
+    });
+
+    YAHOO.util.Event.addListener("clearPasswordButton", "mouseup", function() {
+        document.getElementById("clearPasswordButton").style.background = '#669999';
+    });
+
     function closeWindow() {
         window.close();
+        return true;
     }
 </script>
 

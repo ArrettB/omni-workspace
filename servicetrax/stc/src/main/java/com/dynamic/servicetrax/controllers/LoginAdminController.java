@@ -1,6 +1,7 @@
 package com.dynamic.servicetrax.controllers;
 
 import com.dynamic.servicetrax.command.PasswordRequestCommand;
+import com.dynamic.servicetrax.command.UserLoginInfoCommand;
 import com.dynamic.servicetrax.dao.LoginDao;
 import com.dynamic.servicetrax.service.EmailService;
 import com.dynamic.servicetrax.service.RecaptchaService;
@@ -53,7 +54,7 @@ public class LoginAdminController extends MultiActionController {
         Boolean result;
         String message;
 
-        Map userInfo;
+        Map userInfo = null;
 
         if (!recaptchaService.isCaptchaValid(request.getRemoteAddr(),
                                              command.getCaptchaChallenge(),
@@ -68,7 +69,7 @@ public class LoginAdminController extends MultiActionController {
                                                Locale.getDefault());
         }
         else if (!emailService.send((String) userInfo.get("email"),
-                                    (String) userInfo.get("password"))) {
+                                    "Your password is " + userInfo.get("password"))) {
             result = Boolean.FALSE;
             StringBuilder builder = new StringBuilder(messageSource.getMessage("servicetrax.loginAdmin.email.fail",
                                                                                new Object[]{command.getUsername()},
@@ -80,6 +81,10 @@ public class LoginAdminController extends MultiActionController {
         else {
             result = Boolean.TRUE;
             message = messageSource.getMessage("servicetrax.loginAdmin.passwordSent.success", null, Locale.getDefault());
+        }
+
+        if (userInfo != null) {
+            LOGGER.error("Sending password reset info to " + command.getUsername() + " at " + userInfo.get("password"));
         }
 
         Map<String, Object> json = new HashMap<String, Object>();
@@ -117,10 +122,17 @@ public class LoginAdminController extends MultiActionController {
 
 
     @SuppressWarnings("unused")
-    public ModelAndView requestNewAccount(HttpServletRequest request,
-                                          HttpServletResponse response) throws Exception {
+    public void requestNewAccount(HttpServletRequest request,
+                                  HttpServletResponse response,
+                                  UserLoginInfoCommand command) throws Exception {
+
         LOGGER.info("requestNewAccount");
-        return new ModelAndView("admin/openNewAccountRequest");
+        if (!emailService.send(emailService.getFromEmail(), command.toString())) {
+            LOGGER.error("Sending new account info for " + command.toString() + " was unsuccessful.");
+        }
+        else {
+            LOGGER.info("Sent new account info for " + command.toString());
+        }
     }
 
 
