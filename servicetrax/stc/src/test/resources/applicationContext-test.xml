@@ -114,4 +114,24 @@
         <property name="publicKey" value="publicKey"/>
         <property name="privateKey" value="privateKey"/>
     </bean>
+
+    <bean id="passwordChangePropsResolver"
+          class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+        <property name="mappings">
+            <value>
+                /changePassword.html=changePassword
+                /handleChangePassword.html=handleChangePassword
+            </value>
+        </property>
+    </bean>
+
+
+    <bean id="passwordChangeController"
+          name="/changePassword.html, /handleChangePassword.html"
+          class="com.dynamic.servicetrax.controllers.PasswordChangeController">
+        <property name="methodNameResolver" ref="passwordChangePropsResolver"/>
+        <property name="messageSource" ref="messageSource"/>
+        <property name="hibernateService" ref="hibernateService"/>
+    </bean>
+
 </beans>

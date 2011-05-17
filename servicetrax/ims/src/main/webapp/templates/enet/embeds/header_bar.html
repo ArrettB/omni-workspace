@@ -3,31 +3,56 @@
 <!--#REQUIRED data="<?s:user?>"-->
 <html>
 <head>
-	<title>ServiceTRAX - Powered by Omni Remanufacturing</title>
-	<link rel="stylesheet" type="text/css" href="/ims/styles/en.css">
+    <title>ServiceTRAX - Powered by Omni Remanufacturing</title>
+    <link rel="stylesheet" type="text/css" href="/ims/styles/en.css">
 </head>
 
 <body>
 <!--#SQLLOOP name="theDate" query="SELECT DISTINCT CONVERT(varchar,getDate(),101) now FROM users" -->
-<table height="20" width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="Black" >
-<tr>
-	<td class="TitleBar" width="30%" nowrap="nowrap">
-			<font color="white">&nbsp;Welcome&nbsp;{!s:user_name.toHTML()!}&nbsp;-&nbsp;{!s:org_name.toHTML()!}&nbsp;&nbsp;</font>
-			<a class="TitleBar" href="{!s:action!}logout/login.html" target="_top"><font color="white">Logout</font></a>
-	</td>
-	<td class="TitleBar">&nbsp;</td>
-	<td class="TitleBar">
-		<a class="TitleBar" href="{!s:showPage!}select_location.html?org_id={!s:org_id!}" target="_top">Change&nbsp;Location</a>
-	</td>
-	<td align="right" class="TitleBar">
-		<a class="TitleBar" href="{!s:action!}setProjectDatum?request_id=&amp;project_id=&amp;templateName=enet/main.html&amp;clear_session=true" target="_top"><font color="white">Navigator</font></a>
-	</td>
-	<td align="right" class="TitleBar">
-		<font color="white">{!r:theDate:now!}&nbsp;</font>
-	</td>
-</tr>
+<table height="20" width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="Black">
+    <tr>
+        <td class="TitleBar" width="30%" nowrap="nowrap">
+            <font color="white">&nbsp;Welcome&nbsp;{!s:user_name.toHTML()!}&nbsp;-&nbsp;{!s:org_name.toHTML()!}&nbsp;&nbsp;</font>
+            <a class="TitleBar" href="{!s:action!}logout/login.html" target="_top">
+                <font color="white">
+                    Logout
+                </font>
+            </a>
+            <a class="TitleBar" href="javascript:void(0);" target="_top"
+               onclick="return openChangePasswordDialog();"
+               style="color:#ffffff; padding-left:25px; padding-right:15px;">
+                Change Password
+            </a>
+        </td>
+
+        <td class="TitleBar">&nbsp;</td>
+        <td class="TitleBar">
+            <a class="TitleBar" href="{!s:showPage!}select_location.html?org_id={!s:org_id!}" target="_top">Change&nbsp;Location</a>
+        </td>
+        <td align="right" class="TitleBar">
+            <a class="TitleBar"
+               href="{!s:action!}setProjectDatum?request_id=&amp;project_id=&amp;templateName=enet/main.html&amp;clear_session=true"
+               target="_top"><font color="white">Navigator</font></a>
+        </td>
+        <td align="right" class="TitleBar">
+            <font color="white">{!r:theDate:now!}&nbsp;</font>
+        </td>
+    </tr>
 </table>
 <!--#/SQLLOOP-->
 </body>
+<script>
+    function openChangePasswordDialog() {
+        var width = 600;
+        var height = 450;
+        var left = parseInt((screen.availWidth / 2) - (width / 2));
+        var top = parseInt((screen.availHeight / 2) - (height / 2));
+        var windowFeatures = "width=" + width + ",height=" + height + ",status,resizable,left=" + left + ",top=" + top + "screenX=" + left + ",screenY=" + top;
+
+        var requestId = '{!s:request_id!}';
+        return window.open('/ims/action/launchCharm?address=changePassword.html?requestId=' + requestId, 'changePassword', windowFeatures);
+    }
+</script>
+
 </html>
 <!-- END header_bar.html -->

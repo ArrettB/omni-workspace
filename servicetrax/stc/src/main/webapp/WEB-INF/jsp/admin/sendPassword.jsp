@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Hello World</title>
+    <title>Send Password Request</title>
     <script type="text/javascript"
             src="${pageContext.request.contextPath}/js/yui281/build/yahoo-dom-event/yahoo-dom-event.js"></script>
 

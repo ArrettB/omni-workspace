@@ -1,100 +1,199 @@
 <!--#EMBED template="embeds/header.html" -->
 
+<style>
+    li {
+        margin-top: 1em;
+    }
+
+    ul {
+        font-size: 10px;
+        font-weight: bold;
+        padding-left: 15px;
+        padding-top: 15px;
+    }
+
+    label {
+        padding-top: 15px;
+        white-space: nowrap;
+    }
+
+    .infoBox {
+        padding-left: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        font-family: sans-serif;
+        font-size: 12px;
+    }
+
+    .infoBoxDiv {
+        border: #000000;
+        border-style: solid;
+        border-width: 1px;
+        border-collapse: separate;
+        border-spacing: 10px 50px;
+    }
+
+    .infoBoxInternalDiv {
+        padding-top: 8px;
+        padding-left: 5px;
+        padding-right: 5px;
+        text-align: center;
+    }
+
+</style>
 <body class="BodyTag" bgcolor="#ded4c6" topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0" marginwidth="0"
       marginheight="0">
 <table border="0" cellpadding="0" cellspacing="0" width="102%" height="100%">
     <tr>
         <td bgcolor="#ded4c6">&nbsp;</td>
-        <td background="/ims/images/login/top_backgrnd.jpg" align="center"><img src="/ims/images/login/logo_top.jpg"
-                                                                                width="260" height="85" border="0"
-                                                                                alt=""></td>
+        <td background="/ims/images/login/top_backgrnd.jpg" align="center">
+            <img src="/ims/images/login/logo_top.jpg" width="260" height="85" border="0" alt=""></td>
         <td bgcolor="#ded4c6">&nbsp;</td>
     </tr>
     <tr height="100%">
         <td bgcolor="#ded4c6">
-            <img src="/ims/images/spacer.gif" width="51" height="437" alt=""></td>
-        <td width="711" height="437" bgcolor="White">
-            <!-- Start Content -->
-            <form name="loginform" action="{!s:action!}login/enet/main.html" method="post">
-                <input type="hidden" name="action" value="login">
-                <input type="hidden" name="loginTemplate" value="login.html">
-                <input type="hidden" name="locationTemplate" value="select_location.html">
-                <table border="0" cellspacing="0" cellpadding="6">
-                    <tr>
-                        <td colspan="2">
-                            &nbsp;
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="Label">{!a:loginName!} Name:</td>
-                        <td><input name="username" type="text" value="{!d:user_name!}" style="width:115"></td>
-                    </tr>
-                    <tr>
-                        <td class="Label">Password:</td>
-                        <td><input name="password" type="password" value="{!d:pass_word!}" style="width:115"></td>
-                    </tr>
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td>
-                            <input type="submit" value="Login" class="Button">
-                            <input type="reset" value="Cancel" class="Button">
-                        </td>
-                    </tr>
-                    <tr>
-                    <tr>
-                        <td colspan="2" class="Label" style="padding-left:5px; padding-top:20px;">
-                            <a href="#" onclick="return openForgetPasswordDialog();">Forget password?</a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td colspan="2" class="Label" style="padding-left:5px; padding-top:10px;">
-                            <a href="#" onclick="return openNewAccountRequestDialog();">Request New Account</a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td colspan="2" class="Label" style="padding-left:5px; padding-top:10px; padding-bottom:10px;">
-                            <a href="mailto:support@omniworkspace.com?subject=Suggestion Box">Suggestion Box</a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td colspan="2" class="Label" style="padding-left:5px; padding-top:10px; padding-bottom:10px;">
-                            Need assistance with ServiceTRAX?
+            <img src="/ims/images/spacer.gif" width="51" height="437" alt="">
+        </td>
+        <td width="65%" height="437" bgcolor="White">
+            <table border="0">
+                <tr>
+                    <td style="padding-bottom:10px;">
+                        <div align="center" style="font-size:16px; font-family: sans-serif;">
+                            The <span style="color:#3961c1;">ServiceTRAX Furniture<br/>Management System </span>
+                            is the premier
                             <br/>
-                            {!a:newLoginSupportNumber!}
-                            <a href="{!a:newLoginSupportEmailLink!}">
-                                {!a:newLoginSupportEmail!}
-                            </a>
-                        </td>
-                    </tr>
+                            choice for all of your office interior projects:
+                        </div>
+                        <ul>
+                            <li>
+                                - Virtual Project Folders keep team documents and
+                                work orders in one convenient location.
+                            </li>
+                            <li>
+                                - Multi-vendor enabled to encompass all resources of
+                                a project.
+                            </li>
+                            <li>
+                                - Simple work creation with automated workflows.
+                            </li>
+                            <li>
+                                - View invoices as soon as they are created to maintain project budgets.
+                            </li>
+                        </ul>
 
 
-                    <!--#IF defined="<?d:message?>" -->
-                    <tr>
-                        <td colspan="2" align="center" valign="middle"><span class="errorText">{!d:message!}</span></td>
-                    </tr>
-                    <!--#/IF-->
+                    </td>
+                    <td style="width:50%; padding-right:50px; padding-left:15px;">
+                        <img src="/ims/images/login/modern_office.jpg" alt="Test"
+                             style="width:350; height:300px; padding-top:10px;">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:40%; padding-right:25px;">
+                        <img src="/ims/images/login/plans.jpg" alt="Test"
+                             style="width:350px; height:250px; padding-top:20px;">
+                    </td>
+                    <td style="padding-left:15px">
+                        <!-- Start Content -->
+                        <form name="loginform" action="{!s:action!}login/enet/main.html" method="post">
+                            <input type="hidden" name="action" value="login">
+                            <input type="hidden" name="loginTemplate" value="login.html">
+                            <input type="hidden" name="locationTemplate" value="select_location.html">
+                            <table border="0" cellspacing="0" style="margin-top:-20px;">
+                                <tr>
+                                    <td class="Label" style="padding-top:50px;">
+                                        {!a:loginName!} Name:
+                                    </td>
+                                    <td style="padding-top:50px; padding-left:10px;">
+                                        <input name="username" type="text" value="{!d:user_name!}" style="width:115">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="Label" style="padding-top:10px;">
+                                        Password:
+                                    </td>
+                                    <td style="padding-top:10px; padding-left:10px;">
+                                        <input name="password" type="password" value="{!d:pass_word!}"
+                                               style="width:115px;">
 
-                    <tr>
-                        <td colspan="2" align="center" valign="middle">
-                            <span id="loginAdminMessage">&nbsp;</span>
-                        </td>
-                    </tr>
-                </table>
-            </form>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td style="padding-top:15px; padding-left:10px; padding-bottom:15px;">
+                                        <input type="submit" value="Login" class="Button">
+                                        <input type="reset" value="Cancel" class="Button">
+                                    </td>
+                                </tr>
+                                <tr>
+                                <tr>
+                                    <td class="Label" style="padding-left:5px; padding-top:0;">
+                                        <a href="#" onclick="return openForgetPasswordDialog();">
+                                            Forget password?
+                                        </a>
+                                        <br>
+                                        <label>
+                                            <a href="#" onclick="return openNewAccountRequestDialog();">
+                                                Request New Account
+                                            </a>
+                                        </label>
+                                        <br>
+                                        <label>
+                                            <a href="mailto:support@omniworkspace.com?subject=Suggestion Box">
+                                                Suggestion Box
+                                            </a>
+                                        </label>
+                                    </td>
+                                    <td class="infoBox">
+                                        <div class="infoBoxDiv" style="padding-top:10px;">
+                                            <div class="infoBoxInternalDiv" style="font-weight:bold;">
+                                                Need assistance with ServiceTRAX?
+                                            </div>
+                                            <div class="infoBoxInternalDiv">
+                                                {!a:newLoginSupportNumber!}
+                                            </div>
+                                            <div class="infoBoxInternalDiv" style="padding-bottom:15px">
+                                                <div style="padding-bottom:3px;">or</div>
+                                                <a href="{!a:newLoginSupportEmailLink!}">
+                                                    {!a:newLoginSupportEmail!}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
 
-            <br><br>
 
-            <div align="center">
-                <img src="/ims/images/login/omni.jpg" width="150" height="129" border="0" alt="Omni Manufacturing">
-            </div>
+                                <!--#IF defined="<?d:message?>" -->
+                                <tr>
+                                    <td colspan="2" align="center" valign="middle"><span
+                                            class="errorText">{!d:message!}</span>
+                                    </td>
+                                </tr>
+                                <!--#/IF-->
 
+                                <tr>
+                                    <td colspan="2" align="center" valign="middle">
+                                        <span id="loginAdminMessage">&nbsp;</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div align="center">
+                            <img src="/ims/images/login/omni.jpg" width="150" height="129" border="0"
+                                 alt="Omni Manufacturing">
+                        </div>
+                    </td>
+                </tr>
+            </table>
             <!-- End Content -->
         </td>
         <td bgcolor="#ded4c6">
-            <img src="/ims/images/spacer.gif" width="53" height="437" alt=""></td>
+            <img src="/ims/images/spacer.gif" width="53" height="337" alt="">
+        </td>
     </tr>
     <tr>
         <td colspan="3" bgcolor="#ded4c6">
@@ -109,8 +208,6 @@
         var left = parseInt((screen.availWidth / 2) - (width / 2));
         var top = parseInt((screen.availHeight / 2) - (height / 2));
         var windowFeatures = "width=" + width + ",height=" + height + ",status,resizable,left=" + left + ",top=" + top + "screenX=" + left + ",screenY=" + top;
-        //        return window.open('diagnostics.html', 'forgotPassword', windowFeatures);
-        //var attribs = 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no, height= 800,width=850,scrollbars=yes, resizable=no';
         return window.open('/stc/sendPassword.html', 'sendPassword', windowFeatures);
     }
 
@@ -120,8 +217,6 @@
         var left = parseInt((screen.availWidth / 2) - (width / 2));
         var top = parseInt((screen.availHeight / 2) - (height / 2));
         var windowFeatures = "width=" + width + ",height=" + height + ",status,resizable,left=" + left + ",top=" + top + "screenX=" + left + ",screenY=" + top;
-        //        return window.open('diagnostics.html', 'forgotPassword', windowFeatures);
-        //var attribs = 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no, height= 800,width=850,scrollbars=yes, resizable=no';
         return window.open('/stc/openNewAccountRequest.html', 'newAccount', windowFeatures);
     }
 

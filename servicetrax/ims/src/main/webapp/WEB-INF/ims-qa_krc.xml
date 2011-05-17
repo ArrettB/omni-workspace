@@ -34,7 +34,7 @@
 		<appGlobalDatum name="sendErrorsTo">bvonhaden@apexit.com</appGlobalDatum>
 		<appGlobalDatum name="tempDir">&projectDir;downloadTemp&sep;</appGlobalDatum>
 		<appGlobalDatum name="testEmail">bvonhaden@apexit.com</appGlobalDatum>
-        <appGlobalDatum name="newLoginSupportNumber">Please contact us at 1-877-410-3656 or</appGlobalDatum>
+        <appGlobalDatum name="newLoginSupportNumber">Please contact us at 1-877-410-3656</appGlobalDatum>
         <appGlobalDatum name="newLoginSupportEmailLink">mailto:support@omniworkspace.com?subject=ServiceTRAX Inquiry</appGlobalDatum>
         <appGlobalDatum name="newLoginSupportEmail">support@omniworkspace.com</appGlobalDatum>
 
