@@ -16,17 +16,15 @@ public class EmailService {
     public static final Logger LOGGER = Logger.getLogger(EmailService.class);
 
     private JavaMailSender mailSender;
-    private String fromEmail;
-    private String subject;
 
-    public Boolean send(String to, String text) {
+    public Boolean send(String to, String from, String text, String subject) {
 
         try {
             LOGGER.info("Properties: " + ((JavaMailSenderImpl) mailSender).getSession().getProperties());
             SimpleMailMessage theMessage = new SimpleMailMessage();
             theMessage.setTo(to);
             theMessage.setText(text);
-            theMessage.setFrom(fromEmail);
+            theMessage.setFrom(from);
             theMessage.setSubject(subject);
             mailSender.send(theMessage);
             return Boolean.TRUE;
@@ -39,17 +37,5 @@ public class EmailService {
 
     public void setMailSender(JavaMailSender mailSender) {
         this.mailSender = mailSender;
-    }
-
-    public void setFromEmail(String fromEmail) {
-        this.fromEmail = fromEmail;
-    }
-
-    public String getFromEmail() {
-        return fromEmail;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
     }
 }

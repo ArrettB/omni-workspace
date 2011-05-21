@@ -32,6 +32,9 @@ public class LoginAdminController extends MultiActionController {
     private RecaptchaService recaptchaService;
     private MessageSource messageSource;
     private LoginDao loginDao;
+    private String passwordReminderSubject;
+    private String newAccountSubject;
+    private String adminEmailAddress;
 
     @SuppressWarnings("unchecked, unused")
     public ModelAndView sendPassword(HttpServletRequest request,
@@ -47,32 +50,34 @@ public class LoginAdminController extends MultiActionController {
     @SuppressWarnings("unused")
     public void handleSendPassword(HttpServletRequest request,
                                    HttpServletResponse response,
-                                   PasswordRequestCommand command) throws Exception {
+                                   PasswordRequestCommand sendPasswordInfo) throws Exception {
 
         LOGGER.info("handleSendPassword");
 
         Boolean result;
         String message;
 
-        Map userInfo = null;
+        Map userInfo;
 
-        if (!recaptchaService.isCaptchaValid(request.getRemoteAddr(),
-                                             command.getCaptchaChallenge(),
-                                             command.getCaptchaResponse())) {
-            result = Boolean.FALSE;
-            message = messageSource.getMessage("servicetrax.loginAdmin.captcha.incorrect", null, Locale.getDefault());
-        }
-        else if ((userInfo = getUser(command.getUsername())) == null) {
+//        if (!recaptchaService.isCaptchaValid(request.getRemoteAddr(),
+//                                             sendPasswordInfo.getCaptchaChallenge(),
+//                                             sendPasswordInfo.getCaptchaResponse())) {
+//            result = Boolean.FALSE;
+//            message = messageSource.getMessage("servicetrax.loginAdmin.captcha.incorrect", null, Locale.getDefault());
+//        }
+        if ((userInfo = getUser(sendPasswordInfo.getUsername())) == null) {
             result = Boolean.FALSE;
             message = messageSource.getMessage("servicetrax.loginAdmin.noPasswordFound",
-                                               new Object[]{command.getUsername()},
+                                               new Object[]{sendPasswordInfo.getUsername()},
                                                Locale.getDefault());
         }
         else if (!emailService.send((String) userInfo.get("email"),
-                                    "Your password is " + userInfo.get("password"))) {
+                                    adminEmailAddress,
+                                    "Your password is " + userInfo.get("password"),
+                                    passwordReminderSubject)) {
             result = Boolean.FALSE;
             StringBuilder builder = new StringBuilder(messageSource.getMessage("servicetrax.loginAdmin.email.fail",
-                                                                               new Object[]{command.getUsername()},
+                                                                               new Object[]{sendPasswordInfo.getUsername()},
                                                                                Locale.getDefault()));
             builder.append(" ");
             builder.append(messageSource.getMessage("servicetrax.loginAdmin.passwordSent.contact", null, Locale.getDefault()));
@@ -84,7 +89,7 @@ public class LoginAdminController extends MultiActionController {
         }
 
         if (userInfo != null) {
-            LOGGER.error("Sending password reset info to " + command.getUsername() + " at " + userInfo.get("password"));
+            LOGGER.error("Sending password reset info to " + sendPasswordInfo.getUsername() + " at " + userInfo.get("password"));
         }
 
         Map<String, Object> json = new HashMap<String, Object>();
@@ -124,14 +129,30 @@ public class LoginAdminController extends MultiActionController {
     @SuppressWarnings("unused")
     public void requestNewAccount(HttpServletRequest request,
                                   HttpServletResponse response,
-                                  UserLoginInfoCommand command) throws Exception {
+                                  UserLoginInfoCommand newAccountInfo) throws Exception {
 
         LOGGER.info("requestNewAccount");
-        if (!emailService.send(emailService.getFromEmail(), command.toString())) {
-            LOGGER.error("Sending new account info for " + command.toString() + " was unsuccessful.");
+
+        //Send to admin
+        if (!emailService.send(adminEmailAddress,
+                               adminEmailAddress,
+                               newAccountInfo.toString(),
+                               newAccountSubject)) {
+            LOGGER.error("Sending new account info for " + newAccountInfo.toString() + " was unsuccessful.");
         }
         else {
-            LOGGER.info("Sent new account info for " + command.toString());
+            LOGGER.info("Sent new account info for " + newAccountInfo.toString());
+        }
+
+        //Send confirm to person making the request
+        if (!emailService.send(newAccountInfo.getEmail(),
+                               adminEmailAddress,
+                               newAccountInfo.toString(),
+                               newAccountSubject)) {
+            LOGGER.error("Sending new account info for " + newAccountInfo.toString() + " was unsuccessful.");
+        }
+        else {
+            LOGGER.info("Sent new account info for " + newAccountInfo.toString());
         }
     }
 
@@ -150,5 +171,17 @@ public class LoginAdminController extends MultiActionController {
 
     public void setLoginDao(LoginDao loginDao) {
         this.loginDao = loginDao;
+    }
+
+    public void setPasswordReminderSubject(String passwordReminderSubject) {
+        this.passwordReminderSubject = passwordReminderSubject;
+    }
+
+    public void setNewAccountSubject(String newAccountSubject) {
+        this.newAccountSubject = newAccountSubject;
+    }
+
+    public void setAdminEmailAddress(String adminEmailAddress) {
+        this.adminEmailAddress = adminEmailAddress;
     }
 }

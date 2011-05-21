@@ -356,8 +356,6 @@
 
     <bean id="emailService" class="com.dynamic.servicetrax.service.EmailService">
         <property name="mailSender" ref="mailSender"/>
-        <property name="fromEmail" value="${mail.from}"/>
-        <property name="subject" value="ServiceTRAX Inquiry"/>
     </bean>
 
     <bean id="recaptchaService" class="com.dynamic.servicetrax.service.RecaptchaService">
@@ -375,6 +373,9 @@
         <property name="recaptchaService" ref="recaptchaService"/>
         <property name="messageSource" ref="messageSource"/>
         <property name="loginDao" ref="loginDao"/>
+        <property name="passwordReminderSubject" value="${password.reminder.subject}"/>
+        <property name="newAccountSubject" value="${new.account.subject}"/>
+        <property name="adminEmailAddress" value="${admin.email}"/>
     </bean>
 
     <bean id="passwordChangePropsResolver"

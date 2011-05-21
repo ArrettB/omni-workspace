@@ -25,11 +25,11 @@
         }
     </style>
 
-    <script type="text/javascript">
-        var RecaptchaOptions = {
-            theme : 'clean'
-        };
-    </script>
+    <%--<script type="text/javascript">--%>
+        <%--var RecaptchaOptions = {--%>
+            <%--theme : 'clean'--%>
+        <%--};--%>
+    <%--</script>--%>
 
 </head>
 
@@ -61,11 +61,11 @@
     <tr>
         <td colspan="2">&nbsp;</td>
     </tr>
-    <tr>
-        <td colspan="2">
-            ${captcha}
-        </td>
-    </tr>
+    <%--<tr>--%>
+        <%--<td colspan="2">--%>
+            <%--${captcha}--%>
+        <%--</td>--%>
+    <%--</tr>--%>
     <tr>
         <td colspan="2">
             <label style="padding-left:10px;">
@@ -124,10 +124,11 @@
             return false;
         }
 
-        var captchaChallenge = document.getElementById("recaptcha_challenge_field").value;
-        var captchaResponse = document.getElementById("recaptcha_response_field").value;
-        var captcha = '&captchaChallenge=' + captchaChallenge + '&captchaResponse=' + captchaResponse;
-        YAHOO.util.Connect.asyncRequest('POST', url + username + captcha, callback);
+//        var captchaChallenge = document.getElementById("recaptcha_challenge_field").value;
+//        var captchaResponse = document.getElementById("recaptcha_response_field").value;
+//        var captcha = '&captchaChallenge=' + captchaChallenge + '&captchaResponse=' + captchaResponse;
+//        YAHOO.util.Connect.asyncRequest('POST', url + username + captcha, callback);
+        YAHOO.util.Connect.asyncRequest('POST', url + username, callback);
         return true;
     }
 
