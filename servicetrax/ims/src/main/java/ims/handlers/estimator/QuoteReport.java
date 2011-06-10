@@ -239,7 +239,7 @@ public class QuoteReport extends BaseHandler
 
 			String header = ic.getHttpServletRequest().getHeader("user-agent");
             String templatePath = null;
-            if(codeName.equals("AIA") || codeName.equals("NTLSV")) {
+            if(codeName.equals("AIA") || codeName.equals("NTLSV") || "ECMS".equals(codeName)) {
                 templatePath = "enet/rep/" + codeName + "/quote_report" + filter + "_IE7" + compactStr + ".html";
 
                 if(header.indexOf("MSIE 6.0;")>0)
