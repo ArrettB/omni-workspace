@@ -354,10 +354,11 @@ public class HotSheetService {
                     " originContact.contact_name as originName," +
                     " salesContact.contact_name as salesName," +
                     " salesContact.phone_work as salesPhone" +
-                    " from requests, projects, contacts originContact, contacts salesContact" +
+                    " from requests" +
+                    " left outer join contacts salesContact on  salesContact.contact_id = requests.a_m_sales_contact_id" +
+                    " left outer join contacts originContact on originContact.contact_id = requests.customer_contact_id," +
+                    " projects" +
                     " where projects.project_id = requests.project_id" +
-                    " and originContact.contact_id = requests.customer_contact_id" +
-                    " and salesContact.contact_id = requests.a_m_sales_contact_id" +
                     " and requests.request_id = ?";
 
     @SuppressWarnings("unchecked")
@@ -407,7 +408,7 @@ public class HotSheetService {
         hotSheet.setOriginContactPhone((String) row.get("originPhone"));
 
         BigDecimal amSalesContactId = (BigDecimal) row.get("A_M_SALES_CONTACT_ID");
-        hotSheet.setSalesContactId(amSalesContactId.longValue());
+        hotSheet.setSalesContactId(amSalesContactId != null ? amSalesContactId.longValue() : null);
         hotSheet.setSalesContactName((String) row.get("salesName"));
         hotSheet.setSalesContactPhone((String) row.get("salesPhone"));
     }

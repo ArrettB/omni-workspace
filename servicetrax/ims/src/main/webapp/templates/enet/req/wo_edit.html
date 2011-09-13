@@ -6,6 +6,23 @@
 
 <script type="text/javascript">
 <!--
+
+function showHotSheet()
+{
+  if( isLoaded() )
+  {
+      if(eval({!s:request_id!}) == undefined){
+    alert('No request id is available. Create service request first.');
+    return;
+
+}
+
+      var requestId = '{!s:request_id!}';
+      var attribs = {!a:Window2Attribs!} + ',height= 800,width=850,scrollbars=yes, resizable=no';
+      return window.open('/ims/action/launchCharm?address=hotSheetCreate.html?requestId='+requestId, 'customers', attribs);
+  }
+}
+
 	function resizeDescription()
 	{
 		var desc = document.wo_edit.description;
@@ -1493,12 +1510,14 @@
 			<td align="right">
 				<input type="button" class="button" value="Cancel" name="Cancel" onClick="exitFunction('Cancel');">
 				<input type="button" class="button" value="Next" name ="Next" onClick="if( isLoaded() ) nextWindow()">
+                <input type="button" class="button" value="Hot Sheet" name="hotSheet" onClick="showHotSheet();">
 			</td>
 			<!--#/IF-->
 		<!--#ELSE-->
 			<td align="right">
 				<input type="button" class="button" value="Cancel" name="Cancel" onClick="exitFunction('Cancel');">
 				<input type="button" class="button" value="Next" name ="Next" onClick="if( isLoaded() ) nextWindow()">
+                <input type="button" class="button" value="Hot Sheet" name="hotSheet" onClick="showHotSheet();">
 			</td>
 		<!--#/IF-->
 		</tr>
