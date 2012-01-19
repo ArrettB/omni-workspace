@@ -162,7 +162,7 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
     }
 
     private static final String GET_REQUEST = "select REQUEST_ID, PROJECT_ID, JOB_LOCATION_CONTACT_ID " +
-            " from requests where request_id = (select max(request_id) from requests)";
+            " from requests where request_id = (select max(request_id) from requests where JOB_LOCATION_CONTACT_ID is not null)";
 
     private static final String GET_JOB_LOCATION_ADDRESS = "select max(JOB_LOCATION_ID) from JOB_LOCATIONS";
 
@@ -229,7 +229,7 @@ public class HotSheetTest extends AbstractTransactionalSpringContextTests {
     }
 
     private Long convertToLong(Object value) {
-        return ((BigDecimal) value).longValue();
+        return value == null ? 0L : ((BigDecimal) value).longValue();
     }
 
     @Override
