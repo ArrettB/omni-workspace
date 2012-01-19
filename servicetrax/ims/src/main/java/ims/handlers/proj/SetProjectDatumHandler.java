@@ -74,9 +74,9 @@ public class SetProjectDatumHandler extends BaseHandler {
         boolean result = true;
 
         ConnectionWrapper conn = null;
-        String query = null;
+        String query;
         QueryResults rs = null;
-        QueryResults rs2 = null;
+        QueryResults rs2;
 
         try {
             conn = (ConnectionWrapper) ic.getResource();
@@ -125,8 +125,9 @@ public class SetProjectDatumHandler extends BaseHandler {
 
             String effectiveCustomerID = customerID;
 
-			if (effectiveCustomerID == null || effectiveCustomerID.length() == 0)
+            if (effectiveCustomerID == null || effectiveCustomerID.length() == 0) {
                 effectiveCustomerID = (String) ic.getSessionDatum("customer_id");
+            }
 
             if (effectiveCustomerID != null && effectiveCustomerID.length() > 0) {
                 try {
@@ -136,10 +137,10 @@ public class SetProjectDatumHandler extends BaseHandler {
 
                         String customerType = rs.getString("customer_type");
                         ic.setTransientDatum("ext_customer_id", rs.getString("ext_customer_id"));
-						if ("dealer".equalsIgnoreCase(customerType))
-						{
-							if (StringUtil.hasAValue(endUserId))
+                        if ("dealer".equalsIgnoreCase(customerType)) {
+                            if (StringUtil.hasAValue(endUserId)) {
                                 effectiveCustomerID = endUserId;
+                            }
                             ic.setTransientDatum("effective_ext_dealer_id", rs.getString("ext_customer_id"));
                         }
                         else {
@@ -148,37 +149,41 @@ public class SetProjectDatumHandler extends BaseHandler {
                     }
                     else {
                         Diagnostics.error("Error: failed to find customer from customers table where customer_id = '" + customerID
-                                + "'");
+                                                  + "'");
                         result = false;
                     }
                 }
-				finally
-				{
-					if (rs != null)
+                finally {
+                    if (rs != null) {
                         rs.close();
                     }
                 }
-			else
-			{
+            }
+            else {
                 effectiveCustomerID = NOID;
             }
             ic.setTransientDatum("effective_customer_id", effectiveCustomerID);
 
             // grab from session if not set
-			if (!StringUtil.hasAValue(projectID))
+            if (!StringUtil.hasAValue(projectID)) {
                 projectID = (String) ic.getSessionDatum("project_id");
-			if (!StringUtil.hasAValue(requestID))
+            }
+            if (!StringUtil.hasAValue(requestID)) {
                 requestID = (String) ic.getSessionDatum("request_id");
-			if (!StringUtil.hasAValue(quoteID))
+            }
+            if (!StringUtil.hasAValue(quoteID)) {
                 quoteID = (String) ic.getSessionDatum("quote_id");
+            }
 
             String clear_session = ic.getParameter("clear_session");
             String clear_request_id = ic.getParameter("clear_request_id");
-			if (clear_request_id != null && clear_request_id.equalsIgnoreCase("true"))
+            if (clear_request_id != null && clear_request_id.equalsIgnoreCase("true")) {
                 requestID = null;
+            }
             String clear_quote_id = ic.getParameter("clear_quote_id");
-			if (clear_quote_id != null && clear_quote_id.equalsIgnoreCase("true"))
+            if (clear_quote_id != null && clear_quote_id.equalsIgnoreCase("true")) {
                 quoteID = null;
+            }
             String quoting = ic.getParameter("quoting");
 
             if (StringUtil.hasAValue(clear_session) && clear_session.equalsIgnoreCase("true")) {
@@ -225,10 +230,12 @@ public class SetProjectDatumHandler extends BaseHandler {
                 String gp_org = null;
 
                 // special case when inserting a workorder and there is no project id
-				if ((StringUtil.hasAValue(quoting) && quoting.equalsIgnoreCase("true")))
+                if ((StringUtil.hasAValue(quoting) && quoting.equalsIgnoreCase("true"))) {
                     ic.setSessionDatum("quoting", "true");
-				else
+                }
+                else {
                     ic.removeSessionDatum("quoting");
+                }
 
                 ConnectionWrapper gp_conn = null;
                 try {
@@ -252,7 +259,7 @@ public class SetProjectDatumHandler extends BaseHandler {
                         }
                         else {
                             Diagnostics.error("Error: failed to find customer from customers table where customer_id = '"
-                                    + customerID + "'");
+                                                      + customerID + "'");
                             result = false;
                         }
                         rs.close();
@@ -266,7 +273,7 @@ public class SetProjectDatumHandler extends BaseHandler {
                         }
                         else {
                             Diagnostics.error("Error: failed to find dealer in Great Plains from users ext_dealer_id of '"
-                                    + dealerID + "'");
+                                                      + dealerID + "'");
                             result = false;
                         }
                         rs.close();
@@ -283,7 +290,7 @@ public class SetProjectDatumHandler extends BaseHandler {
                         }
                         else {
                             Diagnostics.error("Error: failed to find dealer in Great Plains from users ext_dealer_id of '"
-                                    + tempDealerID + "'");
+                                                      + tempDealerID + "'");
                             result = false;
                         }
                         rs.close();
@@ -293,15 +300,15 @@ public class SetProjectDatumHandler extends BaseHandler {
                 catch (Exception e) {
                     Diagnostics.error("org_id='" + gp_org + "', gp_conn='" + gp_conn + "'");
                     Diagnostics.error("Exception: failed to determine dealer_name from Great Plains where ext_dealer_id = '"
-                            + dealerID + "'\nOR " + "failed to determine customer_name from CUSTOMERS table where customer_id = '"
-                            + customerID + "'\n" + e.toString());
+                                              + dealerID + "'\nOR " + "failed to determine customer_name from CUSTOMERS table where customer_id = '"
+                                              + customerID + "'\n" + e.toString());
                     result = false;
                 }
-				finally
-				{
-					if (gp_conn != null)
+                finally {
+                    if (gp_conn != null) {
                         gp_conn.release();
                     }
+                }
 
                 // need each of these to repeat when refreshing the screen in insert mode
                 ic.setSessionDatum("project_type_id", project_type_id);
@@ -345,7 +352,7 @@ public class SetProjectDatumHandler extends BaseHandler {
                     ic.removeSessionDatum("project_id");
                     ic.removeParameter("project_id");
                     Diagnostics.error("Error: Failed to find project_id in view projects_v, so removed session data for missing project_id = '"
-                            + projectID + "'");
+                                              + projectID + "'");
                 }
                 else {
                     Diagnostics.debug("Setting project_id to " + projectID);
@@ -368,12 +375,12 @@ public class SetProjectDatumHandler extends BaseHandler {
                     ic.setTransientDatum("ext_end_user_id", rs.getString("ext_end_user_id"));
 
                     // HANDLE CASE OF VIEWING REQUEST OR QUOTE
-                    String record_id = null;
-                    String record_status_type_code = null;
-                    String record_type_code = null;
-                    String record_is_sent = null;
-                    String is_quoted = null;
-                    String quote_request_id = null;
+                    String record_id;
+                    String record_status_type_code;
+                    String record_type_code;
+                    String record_is_sent;
+                    String is_quoted;
+                    String quote_request_id;
                     String record_readonly = "false";
                     String show_next = "false";
                     int num_workorder_lock_days = Integer.parseInt((String) ic.getAppGlobalDatum("num_workorder_lock_days"));
@@ -433,8 +440,9 @@ public class SetProjectDatumHandler extends BaseHandler {
                             Date cur_date = rs2.getDate("cur_date");
                             Date sr_lock_date = rs2.getDate("sr_lock_date");
                             // handle readonly state of form and whether we are quoting a mac
-							if (record_status_type_code.equalsIgnoreCase("closed"))
+                            if (record_status_type_code.equalsIgnoreCase("closed")) {
                                 record_readonly = "true";
+                            }
 
                             if (("quote_request".equalsIgnoreCase(record_type_code) || "service_request".equalsIgnoreCase(record_type_code)) && "sent".equalsIgnoreCase(record_status_type_code)) {
                                 record_is_sent = "Y";
@@ -478,8 +486,8 @@ public class SetProjectDatumHandler extends BaseHandler {
 
 
                             Diagnostics.debug2("Setting request_id to '" + record_id + "', request_status_type_code='"
-                                    + record_status_type_code + "', request_type_code='" + record_type_code
-                                    + "', request_is_sent='" + record_is_sent + "', request_readonly='" + record_readonly + "'");
+                                                       + record_status_type_code + "', request_type_code='" + record_type_code
+                                                       + "', request_is_sent='" + record_is_sent + "', request_readonly='" + record_readonly + "'");
 
                             ic.setSessionDatum("request_id", record_id);
                             ic.setSessionDatum("request_type_id", rs2.getString("request_type_id"));
@@ -491,7 +499,15 @@ public class SetProjectDatumHandler extends BaseHandler {
                             ic.setSessionDatum("request_readonly", record_readonly);
                             ic.setSessionDatum("show_next", show_next);
 
-                            ic.setTransientDatum("job_location_id", rs2.getString("job_location_id"));
+                            // This is to pass through a value previously selected in a dropdown, but not yet saved,
+                            // as on the wo_edit.html page
+                            if (StringUtil.hasAValue(ic.getParameter("job_location_id"))) {
+                                ic.setTransientDatum("job_location_id", ic.getParameter("job_location_id"));
+                            }
+                            else {
+                                ic.setTransientDatum("job_location_id", rs2.getString("job_location_id"));
+                            }
+
                             ic.setTransientDatum("job_location_contact_id", rs2.getString("job_location_contact_id"));
 
                             ic.setTransientDatum("contact_name1", rs2.getString("contact_name1"));
@@ -526,11 +542,13 @@ public class SetProjectDatumHandler extends BaseHandler {
                         ic.removeSessionDatum("request_readonly");
                         ic.removeSessionDatum("show_next");
                         ic.removeSessionDatum("can_send_sr");
-						if (StringUtil.hasAValue(quoting) && quoting.equalsIgnoreCase("true"))
+                        if (StringUtil.hasAValue(quoting) && quoting.equalsIgnoreCase("true")) {
                             ic.setSessionDatum("quoting", quoting);
-						else
+                        }
+                        else {
                             ic.removeSessionDatum("quoting");
                         }
+                    }
 
                     // HANDLE QUOTE_ID
 
@@ -555,14 +573,16 @@ public class SetProjectDatumHandler extends BaseHandler {
                             record_status_type_code = rs2.getString("record_status_type_code");
                             record_is_sent = rs2.getString("record_is_sent");
                             record_type_code = rs2.getString("record_type_code");
-							if (record_status_type_code.equalsIgnoreCase("closed") || record_is_sent.equalsIgnoreCase("Y"))
+                            if (record_status_type_code.equalsIgnoreCase("closed") || record_is_sent.equalsIgnoreCase("Y")) {
                                 record_readonly = "true";
-							else
+                            }
+                            else {
                                 record_readonly = "false";
+                            }
 
                             Diagnostics.debug("Setting quote_id to '" + record_id + "', quote_status_type_code='"
-                                    + record_status_type_code + "', quote_type_code='" + record_type_code + "', quote_is_sent='"
-                                    + record_is_sent + "', quote_readonly='" + record_readonly + "'");
+                                                      + record_status_type_code + "', quote_type_code='" + record_type_code + "', quote_is_sent='"
+                                                      + record_is_sent + "', quote_readonly='" + record_readonly + "'");
                             ic.setSessionDatum("quote_id", record_id);
                             ic.setSessionDatum("quote_status_type_code", record_status_type_code);
                             ic.setSessionDatum("quote_type_code", record_type_code);
@@ -597,11 +617,13 @@ public class SetProjectDatumHandler extends BaseHandler {
 
         // set template if available
         String template_name = ic.getParameter("templateName");
-		if (StringUtil.hasAValue(template_name))
+        if (StringUtil.hasAValue(template_name)) {
             ic.setHTMLTemplateName(template_name);
+        }
 
         return result;
     }
+
 
     private static final String CHECK_FOR_INVOICES =
             "SELECT COUNT(*) as NUMBER_OF_INVOICES FROM INVOICES, JOBS WHERE INVOICES.JOB_ID = JOBS.JOB_ID AND JOBS.PROJECT_ID = ?";
@@ -675,8 +697,11 @@ public class SetProjectDatumHandler extends BaseHandler {
         catch (Exception e) {
             ErrorHandler.handleException(ic, e, "Problem in SetProjectDatumHandler.setLookupValues");
             result = false;
-		} finally {
-			if (rs != null) rs.close();
+        }
+        finally {
+            if (rs != null) {
+                rs.close();
+            }
         }
 
         return result;
