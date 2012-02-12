@@ -7,6 +7,13 @@
 <script type="text/javascript">
 <!--
 
+function createNewWorkorder(){
+    document.wo_edit.request_no.value = "";
+    document.wo_edit.button.value = "Copy";
+    document.wo_edit.req_button.value = "Copy";
+    document.wo_edit.submit();
+}
+
 function showHotSheet()
 {
   if( isLoaded() )
@@ -164,7 +171,7 @@ function showHotSheet()
 			if( {!s:user.contactID.isNull('-1').toJavaScriptString()!} == document.wo_edit.approver_contact_id.options[document.wo_edit.approver_contact_id.selectedIndex].value )
 				show_approval_window = true;
 		}
-		newWindow('{!s:showPage!}enet/req/confirm.html?show_approval_window='+show_approval_window+'&request_type_code='+document.wo_edit.request_type_code.value,'confirm_workorder',250,450);
+		newWindow('{!s:showPage!}enet/req/confirm.html?show_approval_window='+show_approval_window+'&request_type_code='+document.wo_edit.request_type_code.value,'confirm_workorder',280,450);
 	}
 
 	function performOnChange(field)
@@ -378,9 +385,16 @@ function showHotSheet()
 <!--#/IF-->
 
 	<tr><td><table width="100%" cellspacing="0" cellpadding="0">
-		<tr>
-			<td width="33%" align="left">&nbsp;</td>
-			<td width="33%" align="center">&nbsp;
+        <tr>
+            <td width="33%" align="left">
+                <!--#IF evaluate="<?d:mode?>" compare="Update" -->
+                <a href="" style="font-size: 13px; padding-left: 5px;"
+                   onClick="createNewWorkorder();return false;">Create&nbsp;New&nbsp;Work&nbsp;Order</a>
+                <!--#ELSE-->
+                &nbsp;
+                <!--#/IF-->
+            </td>
+            <td width="33%" align="center">&nbsp;
 		<!--#IF evaluate="<?d:mode?>" compare="Update" -->
 				<input type="button" name="print_button" value="Print&nbsp;Workorder" class="button2" onClick="resizeDescription();window.print();">
 		<!--#/IF-->

@@ -5,7 +5,7 @@
 
 
 <%--Second Row--%>
-<table border="0" cellpadding="1" cellspacing="2" style="width: 790px; margin-top: 15px;">
+<table border="1" cellpadding="1" cellspacing="2" style="width: 790px; margin-top: 15px;">
 <col style="width:28%">
 <col style="width:5%">
 <col style="width:24%">
@@ -114,7 +114,7 @@
             <form:options items="${hotSheet.originContacts}" itemValue="key"
                           itemLabel="value"/>
         </form:select>
-        <form:input path="originContactPhone" readonly="true" cssClass="disabledCell"/>
+        <%--<form:input path="originContactPhone" readonly="true" cssClass="disabledCell"/>--%>
     </td>
 
     <td>
@@ -128,7 +128,7 @@
                           itemValue="key"
                           itemLabel="value"/>
         </form:select>
-        <form:input path="jobContactPhone" readonly="true" cssClass="disabledCell"/>
+        <%--<form:input path="jobContactPhone" readonly="true" cssClass="disabledCell"/>--%>
     </td>
 
     <td>
@@ -260,6 +260,22 @@
             </tr>
         </table>
     </td>
+</tr>
+<tr>
+    <td>
+        <form:input path="originContactPhone" readonly="true" cssClass="disabledCell"/>
+    </td>
+    <td>
+        &nbsp;
+    </td>
+    <td>
+        <form:input path="jobContactPhone" readonly="true" cssClass="disabledCell"/>
+    </td>
+
+    <td>
+        &nbsp;
+    </td>
+
 </tr>
 <tr>
     <td colspan="4">
