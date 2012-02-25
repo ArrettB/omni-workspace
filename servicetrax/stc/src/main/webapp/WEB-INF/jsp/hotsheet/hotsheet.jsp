@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
+
 <html>
 <head>
     <title>Hot Sheet Entry</title>
@@ -390,6 +391,41 @@
                     <td>
                         <label>
                             <input type="text" name="contactPhone" id="contactPhone"/>
+                        </label>
+                    </td>
+                </tr>
+            </table>
+        </form:form>
+    </div>
+</div>
+
+<div id="editOriginContact" class="yui-panel">
+    <div class="hd">Edit the origin contact information</div>
+    <div class="bd">
+
+        <form:form name="editOriginContactForm" id="editOriginContactForm"
+                   action="${pageContext.request.contextPath}/editOriginContact.html" method="post">
+            <table border="0" cellspacing="5" cellpadding="0">
+                <input type="hidden" name="customerId" value="${hotSheet.customerId}"/>
+                <input type="hidden" name="extDealerId" value="${hotSheet.extCustomerId}"/>
+                <input type="hidden" name="editOriginContactId" id="editOriginContactId" value=""/>
+                <tr>
+                    <td>
+                        Name:
+                    </td>
+                    <td>
+                        <label>
+                            <input type="text" name="contactName" id="editContactName"/>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Phone:
+                    </td>
+                    <td>
+                        <label>
+                            <input type="text" name="contactPhone" id="editContactPhone"/>
                         </label>
                     </td>
                 </tr>

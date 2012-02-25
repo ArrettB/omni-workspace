@@ -247,10 +247,17 @@ public class HotSheetService {
         }
     }
 
-
     public static final String GET_ORIGIN_CONTACT_INFO =
-            "SELECT CONTACT_ID, CONTACT_NAME, PHONE_WORK, EMAIL FROM CONTACTS WHERE CUSTOMER_ID = ? ORDER BY CONTACT_ID DESC";
-
+            "SELECT CONTACT_ID, CONTACT_NAME, PHONE_WORK, EMAIL" +
+                    " FROM CONTACTS" +
+                    " INNER JOIN LOOKUPS ONE ON CONT_STATUS_TYPE_ID = ONE.LOOKUP_ID" +
+                    " INNER JOIN LOOKUPS TWO ON CONTACT_TYPE_ID=TWO.LOOKUP_ID" +
+                    " WHERE ONE.CODE = 'ACTIVE'" +
+                    " AND TWO.CODE = 'CUSTOMER'" +
+                    " AND CONTACT_NAME NOT LIKE '%N/A%'" +
+                    " AND CONTACT_NAME <> 'NA'" +
+                    " AND CUSTOMER_ID = ?" +
+                    " ORDER BY CONTACT_ID DESC";
 
     @SuppressWarnings("unchecked")
     public void addOriginContactInfo(HotSheet hotSheet) {

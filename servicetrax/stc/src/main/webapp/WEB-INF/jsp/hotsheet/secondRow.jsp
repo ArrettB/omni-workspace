@@ -118,7 +118,8 @@
     </td>
 
     <td>
-        <input type="button" value="New" id="newOriginContact" style=" background:#d3d3d3"/>
+        <%--<input type="button" value="New" id="newOriginContact" style=" background:#d3d3d3"/>--%>
+        &nbsp;
     </td>
 
     <td>
@@ -132,7 +133,8 @@
     </td>
 
     <td>
-        <input type="button" value="New" id="newDestinationContact" style=" background:#d3d3d3"/>
+        <%--<input type="button" value="New" id="newDestinationContact" style=" background:#d3d3d3"/>--%>
+        &nbsp;
     </td>
 
     <td rowspan="4">
@@ -277,6 +279,26 @@
     </td>
 
 </tr>
+<tr>
+    <td>
+        <input type="button" value="New" id="newOriginContact" style=" background:#d3d3d3"/>
+        <input type="button" value="Edit" id="editOriginContactButton" style=" background:#d3d3d3"/>
+        <input type="button" value="Delete" id="newOriginDelete" style=" background:#d3d3d3"/>
+    </td>
+    <td>
+        &nbsp;
+    </td>
+    <td>
+        <input type="button" value="New" id="newDestinationContact" style=" background:#d3d3d3"/>
+        <input type="button" value="Edit" id="newDestinationEdit" style=" background:#d3d3d3"/>
+        <input type="button" value="Delete" id="newDestinationDelete" style=" background:#d3d3d3"/>
+    </td>
+    <td>
+        &nbsp;
+    </td>
+</tr>
+
+
 <tr>
     <td colspan="4">
     <span style="position: relative; top: 0.7em;  margin-left: 15px; font-weight:bold; background: #d3d3d3; color:#000000;">

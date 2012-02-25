@@ -305,6 +305,7 @@
                 /addOriginAddress.html=addOriginAddress
                 /updateOriginAddress.html=updateOriginAddress
                 /addOriginContact.html=addOriginContact
+                /editOriginContact.html=editOriginContact
                 /updateOriginContact.html=updateOriginContact
                 /addDestinationAddress.html=addDestinationAddress
                 /updateDestinationAddress.html=updateDestinationAddress
@@ -337,7 +338,7 @@
     </bean>
 
     <bean name="/addOriginAddress.html, /updateOriginAddress.html,
-    /addOriginContact.html, /updateOriginContact.html,
+    /addOriginContact.html, /editOriginContact.html, /updateOriginContact.html,
     /addDestinationAddress.html, /updateDestinationAddress.html,
     /addDestinationContact.html, /updateDestinationContact.html"
           class="com.dynamic.servicetrax.controllers.HotSheetAjaxController">

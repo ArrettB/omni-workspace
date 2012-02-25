@@ -1,5 +1,6 @@
 package com.dynamic.servicetrax.controllers;
 
+import com.dynamic.servicetrax.command.OriginContactCommand;
 import com.dynamic.servicetrax.interceptors.LoginInterceptor;
 import com.dynamic.servicetrax.orm.Address;
 import com.dynamic.servicetrax.service.HotSheetServiceUtils;
@@ -12,7 +13,9 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
@@ -87,36 +90,57 @@ public class HotSheetAjaxController extends MultiActionController {
     }
 
     @SuppressWarnings("unchecked, unused")
-    public void addOriginContact(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void addOriginContact(HttpServletRequest request, HttpServletResponse response, OriginContactCommand originContact) throws Exception {
 
         LoginCrediantials credentials =
                 (LoginCrediantials) request.getSession().getAttribute(LoginInterceptor.SESSION_ATTR_LOGIN);
 
-        hotSheetAjaxService.addNewOriginContact(request.getParameterMap(),
+        hotSheetAjaxService.addNewOriginContact(originContact,
                                                 (long) credentials.getUserId(),
                                                 (long) credentials.getOrganizationId());
 
+        List<Map> contacts = hotSheetAjaxService.getOriginContacts(originContact.getCustomerId());
         response.setContentType("application/json");
-        OutputStreamWriter os = null;
+        writeOriginContacts(contacts, new OutputStreamWriter(response.getOutputStream()));
+    }
+
+    @SuppressWarnings("unchecked, unused")
+    public void editOriginContact(HttpServletRequest request, HttpServletResponse response, OriginContactCommand originContact) throws Exception {
+
+        LoginCrediantials credentials =
+                (LoginCrediantials) request.getSession().getAttribute(LoginInterceptor.SESSION_ATTR_LOGIN);
+
+        hotSheetAjaxService.updateOriginContact(originContact);
+
+        List<Map> contacts = hotSheetAjaxService.getOriginContacts(originContact.getCustomerId());
+        response.setContentType("application/json");
+        writeOriginContacts(contacts, new OutputStreamWriter(response.getOutputStream()));
+    }
+
+    @SuppressWarnings("unchecked, unused")
+    public void deactivateOriginContact(HttpServletRequest request, HttpServletResponse response, OriginContactCommand originContact) throws Exception {
+    }
+
+
+    private void writeOriginContacts(List<Map> contacts, Writer theWriter) throws IOException {
+
+        if (theWriter == null) {
+            LOGGER.warn("Writer was null!!");
+            return;
+        }
 
         try {
-            List<Map> contacts = hotSheetAjaxService.getOriginContacts(request.getParameterMap());
-
-            os = new OutputStreamWriter(response.getOutputStream());
             JSONArray jsonArray = JSONArray.fromObject(contacts);
-            os.write(jsonArray.toString());
-            os.flush();
+            theWriter.write(jsonArray.toString());
+            theWriter.flush();
         }
         catch (Exception e) {
             LOGGER.error(e);
         }
         finally {
-            if (os != null) {
-                os.close();
-            }
+            theWriter.close();
         }
     }
-
 
     @SuppressWarnings("unchecked, unused")
     public void updateOriginContact(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -257,7 +281,6 @@ public class HotSheetAjaxController extends MultiActionController {
             }
         }
     }
-
 
     public void setHotSheetAjaxService(HotSheetAjaxService hotSheetAjaxService) {
         this.hotSheetAjaxService = hotSheetAjaxService;

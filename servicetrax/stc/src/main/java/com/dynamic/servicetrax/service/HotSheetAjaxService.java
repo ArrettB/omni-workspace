@@ -1,5 +1,6 @@
 package com.dynamic.servicetrax.service;
 
+import com.dynamic.servicetrax.command.OriginContactCommand;
 import com.dynamic.servicetrax.orm.Address;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
@@ -35,50 +36,67 @@ public class HotSheetAjaxService {
 
     public void addAddress(Address address, long userId) {
         jdbcTemplate.update(ADD_JOB_LOCATION_ADDRESS, new Object[]
-                {
-                        address.getJobLocationCustomerId(),
-                        address.getJobLocationName(),
-                        address.getStreetOne(),
-                        address.getStreetTwo(),
-                        address.getCity(),
-                        address.getState(),
-                        address.getZip(),
-                        address.getCountry(),
-                        new Date(),
-                        userId
-                });
+                            {
+                                    address.getJobLocationCustomerId(),
+                                    address.getJobLocationName(),
+                                    address.getStreetOne(),
+                                    address.getStreetTwo(),
+                                    address.getCity(),
+                                    address.getState(),
+                                    address.getZip(),
+                                    address.getCountry(),
+                                    new Date(),
+                                    userId
+                            });
     }
 
     public static final String ADD_ORIGIN_CONTACT =
-            "INSERT INTO contacts (contact_name, organization_id, cont_status_type_id," +
-                    " customer_id, phone_work, ext_dealer_id, date_created, created_by)" +
-                    " SELECT ?, ?, l.lookup_id, ?, ?, ?, ?, ?" +
-                    " FROM lookups l INNER JOIN lookup_types lt ON l.lookup_type_id = lt.lookup_type_id" +
-                    " WHERE l.code='active' AND lt.code='contact_status_type'";
+            "INSERT INTO CONTACTS (CONTACT_NAME, ORGANIZATION_ID, CONT_STATUS_TYPE_ID, CONTACT_TYPE_ID," +
+                    " CUSTOMER_ID, PHONE_WORK, EXT_DEALER_ID, DATE_CREATED, CREATED_BY)" +
+                    " SELECT ?, ?, ONE.LOOKUP_ID, TWO.LOOKUP_ID, ?, ?, ?, ?, ?" +
+                    " FROM LOOKUPS ONE, LOOKUP_TYPES TYPESONE, LOOKUPS TWO, LOOKUP_TYPES TYPESTWO" +
+                    " WHERE ONE.LOOKUP_TYPE_ID = TYPESONE.LOOKUP_TYPE_ID" +
+                    " AND TWO.LOOKUP_TYPE_ID = TYPESTWO.LOOKUP_TYPE_ID" +
+                    " AND ONE.CODE='ACTIVE' AND TYPESONE.CODE='CONTACT_STATUS_TYPE'" +
+                    " AND TWO.CODE='CUSTOMER' AND TYPESTWO.CODE='CONTACT_TYPE'";
 
-    public void addNewOriginContact(Map parameterMap, Long userId, long organizationId) {
+    public void addNewOriginContact(OriginContactCommand command, Long userId, long organizationId) {
 
         try {
-            String name = HotSheetServiceUtils.getInstance().getValue(parameterMap.get("contactName"));
-            String customerId = HotSheetServiceUtils.getInstance().getValue(parameterMap.get("customerId"));
-            String phone = HotSheetServiceUtils.getInstance().getValue(parameterMap.get("contactPhone"));
-            String extDealerId = HotSheetServiceUtils.getInstance().getValue(parameterMap.get("extDealerId"));
-
+            String name = command.getContactName();
+            String customerId = command.getCustomerId();
+            String phone = command.getContactPhone();
+            String extDealerId = command.getExtDealerId();
             jdbcTemplate.update(ADD_ORIGIN_CONTACT, new Object[]
-                    {
-                            name,
-                            organizationId,
-                            customerId,
-                            phone,
-                            extDealerId,
-                            new Date(),
-                            userId
-                    });
+                                {
+                                        name,
+                                        organizationId,
+                                        customerId,
+                                        phone,
+                                        extDealerId,
+                                        new Date(),
+                                        userId
+                                });
         }
         catch (DataAccessException e) {
             LOGGER.error(e);
         }
     }
+
+    private static final String UPDATE_ORIGIN_CONTACT =
+            "update contacts" +
+                    " SET contact_name = ?," +
+                    " phone_work = ?" +
+                    " WHERE contact_id = ?";
+
+
+    public void updateOriginContact(OriginContactCommand originContact) {
+        jdbcTemplate.update(UPDATE_ORIGIN_CONTACT,
+                            new Object[]{originContact.getContactName(),
+                                    originContact.getContactPhone(),
+                                    originContact.getEditOriginContactId()});
+    }
+
 
     private static final String ADD_DESTINATION_CONTACT =
             "INSERT INTO contacts (contact_name," +
@@ -106,6 +124,10 @@ public class HotSheetAjaxService {
         final String name = HotSheetServiceUtils.getInstance().getValue(parameterMap.get("contactName"));
         final String phone = HotSheetServiceUtils.getInstance().getValue(parameterMap.get("contactPhone"));
         final String extDealerId = HotSheetServiceUtils.getInstance().getValue(parameterMap.get("extDealerId"));
+
+        // 138 is the lookup_id for the job_location code in the lookup table. It's what's used in the popup dialog on
+        // the Service Request Detail page when you click the 'New' button for a job location contact - note the option
+        // value for the Contact Group dropdown.
         final String contactTypeId = "138";//HotSheetServiceUtils.getInstance().getValue(parameterMap.get("contactTypeId"));
         final String jobLocationAddressId = HotSheetServiceUtils.getInstance().getValue(parameterMap.get("newJobLocationAddressId"));
 
@@ -171,8 +193,7 @@ public class HotSheetAjaxService {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Map> getOriginContacts(Map map) {
-        String customerId = HotSheetServiceUtils.getInstance().getValue(map.get("customerId"));
+    public List<Map> getOriginContacts(String customerId) {
         if (customerId == null || customerId.trim().length() == 0) {
             return Collections.EMPTY_LIST;
         }
@@ -195,4 +216,5 @@ public class HotSheetAjaxService {
         }
         return jdbcTemplate.queryForList(HotSheetService.GET_DESTINATION_CONTACT_INFO, new Object[]{jobLocationAddressId});
     }
+
 }

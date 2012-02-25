@@ -3,9 +3,37 @@ YAHOO.util.Event.onDOMReady(function () {
     initializeOriginContact();
 });
 
+function validateContactFields() {
+    return function() {
+
+        var data = this.getData();
+
+        if (data == undefined) {
+            return false;
+        }
+
+        if (YAHOO.lang.trim(data.contactName) == "") {
+            alert("A name is required.");
+            return false;
+        }
+
+        if (YAHOO.lang.trim(data.contactPhone) == "") {
+            alert("A phone is required.");
+            return false;
+        }
+        return true;
+    };
+}
 function initializeOriginContact() {
 
     var handleContactSubmit = function() {
+        var contactDropDown = document.getElementById('originContactDropdown');
+        var contactId = contactDropDown.options[contactDropDown.selectedIndex];
+        var contactIdHidden = document.getElementById('editOriginContactId');
+        if (contactIdHidden != undefined) {
+            contactIdHidden.value = contactId.value;
+        }
+
         var result = this.submit();
         if (result) {
             YAHOO.example.container.addContact.element.style.zIndex = -1;
@@ -19,7 +47,6 @@ function initializeOriginContact() {
 
     var handleContactSuccess = function(o) {
         var messages = YAHOO.lang.JSON.parse(o.responseText);
-
         var originContactDropdown = document.getElementById("originContactDropdown");
         originContactDropdown.options.length = 0;
         for (var i = 0; i < messages.length; i++) {
@@ -40,6 +67,7 @@ function initializeOriginContact() {
 
     // Remove progressively enhanced content class, just before creating the module
     YAHOO.util.Dom.removeClass("addContact", "yui-pe-content");
+    YAHOO.util.Dom.removeClass("editContact", "yui-pe-content");
 
     // Instantiate the Dialog
     YAHOO.example.container.addContact = new YAHOO.widget.Dialog("addOriginContact",
@@ -54,26 +82,22 @@ function initializeOriginContact() {
                                                                      ]
                                                                  });
 
+    YAHOO.example.container.editContact = new YAHOO.widget.Dialog("editOriginContact",
+                                                                  { width : "30em",
+                                                                      zIndex : -1,
+                                                                      fixedcenter : true,
+                                                                      visible : false,
+                                                                      constraintoviewport : true,
+                                                                      buttons : [
+                                                                          { text:"Submit", handler:handleContactSubmit, isDefault:true },
+                                                                          { text:"Cancel", handler:handleContactCancel }
+                                                                      ]
+                                                                  });
+
+
     // Validate the entries in the form to require that both first and last name are entered
-    YAHOO.example.container.addContact.validate = function() {
-
-        var data = this.getData();
-
-        if (data == undefined) {
-            return false;
-        }
-
-        if (YAHOO.lang.trim(data.contactName) == "") {
-            alert("A name is required.");
-            return false;
-        }
-
-        if (YAHOO.lang.trim(data.contactPhone) == "") {
-            alert("A phone is required.");
-            return false;
-        }
-        return true;
-    };
+    YAHOO.example.container.addContact.validate = validateContactFields();
+    YAHOO.example.container.editContact.validate = validateContactFields();
 
     // Wire up the success and failure handlers
     YAHOO.example.container.addContact.callback = {
@@ -81,15 +105,33 @@ function initializeOriginContact() {
         failure: handleContactFailure
     };
 
+    YAHOO.example.container.editContact.callback = {
+        success: handleContactSuccess,
+        failure: handleContactFailure
+    };
+
     // Render the Dialog
     YAHOO.example.container.addContact.render();
+    YAHOO.example.container.editContact.render();
 
     function init(e) {
+        document.getElementById('contactName').value = "";
+        document.getElementById('contactPhone').value = "";
         YAHOO.example.container.addContact.show();
         YAHOO.example.container.addContact.element.style.zIndex = 2;
     }
 
+    function initEdit(e) {
+        YAHOO.example.container.editContact.show();
+        YAHOO.example.container.editContact.element.style.zIndex = 2;
+        var contactDropDown = document.getElementById('originContactDropdown');
+        document.getElementById('editContactName').value = contactDropDown.options[contactDropDown.selectedIndex].text;
+        document.getElementById('editContactPhone').value = document.getElementById('originContactPhone').value;
+    }
+
+
     YAHOO.util.Event.addListener("newOriginContact", "click", init, YAHOO.example.container.addContact, true);
+    YAHOO.util.Event.addListener("editOriginContactButton", "click", initEdit, YAHOO.example.container.editContact, true);
 }
 
 
