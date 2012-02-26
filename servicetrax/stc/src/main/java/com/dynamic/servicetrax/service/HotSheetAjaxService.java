@@ -94,7 +94,7 @@ public class HotSheetAjaxService {
         jdbcTemplate.update(UPDATE_ORIGIN_CONTACT,
                             new Object[]{originContact.getContactName(),
                                     originContact.getContactPhone(),
-                                    originContact.getOriginContactId()});
+                                    originContact.getContactId()});
     }
 
     private static final String DEACTIVATE_ORIGIN_CONTACT =
@@ -105,10 +105,10 @@ public class HotSheetAjaxService {
                     " and l.lookup_type_id = lt.lookup_type_id)" +
                     " where contact_id = ?";
 
-    public void deactivateOriginContact(OriginContactCommand originContact) {
-        String editOriginContactId = originContact.getOriginContactId();
+    public void deactivateOriginContact(OriginContactCommand theContact) {
+        String contactId = theContact.getContactId();
         jdbcTemplate.update(DEACTIVATE_ORIGIN_CONTACT,
-                            new Object[]{Integer.valueOf(editOriginContactId)});
+                            new Object[]{Integer.valueOf(contactId)});
     }
 
     private static final String ADD_DESTINATION_CONTACT =

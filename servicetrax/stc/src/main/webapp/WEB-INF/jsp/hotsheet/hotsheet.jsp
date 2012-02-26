@@ -399,16 +399,16 @@
     </div>
 </div>
 
-<div id="editOriginContact" class="yui-panel">
+<div id="editContact" class="yui-panel">
     <div class="hd">Edit the origin contact information</div>
     <div class="bd">
 
-        <form:form name="editOriginContactForm" id="editOriginContactForm"
-                   action="${pageContext.request.contextPath}/editOriginContact.html" method="post">
+        <form:form name="editContactForm" id="editContactForm"
+                   action="${pageContext.request.contextPath}/editContact.html" method="post">
             <table border="0" cellspacing="5" cellpadding="0">
                 <input type="hidden" name="customerId" value="${hotSheet.customerId}"/>
                 <input type="hidden" name="extDealerId" value="${hotSheet.extCustomerId}"/>
-                <input type="hidden" name="originContactId" id="editOriginContactId" value=""/>
+                <input type="hidden" name="contactId" id="editContactId" value=""/>
                 <tr>
                     <td>
                         Name:
@@ -434,15 +434,15 @@
     </div>
 </div>
 
-<div id="deactivateOriginContact" class="yui-panel">
-    <div class="hd">Remove the origin contact information?</div>
+<div id="deactivateContact" class="yui-panel">
+    <div class="hd">Remove the contact information?</div>
     <div class="bd">
 
-        <form:form name="deactivateOriginContactForm" id="deactivateOriginContactForm"
-                   action="${pageContext.request.contextPath}/deactivateOriginContact.html" method="post">
+        <form:form name="deactivateContactForm" id="deactivateContactForm"
+                   action="${pageContext.request.contextPath}/deactivateContact.html" method="post">
             <input type="hidden" name="customerId" value="${hotSheet.customerId}"/>
             <input type="hidden" name="extDealerId" value="${hotSheet.extCustomerId}"/>
-            <input type="hidden" name="originContactId" id="deactivateOriginContactId" value=""/>
+            <input type="hidden" name="contactId" id="deactivateContactId" value=""/>
 
             <div>
                 <span>Do you want to remove this contact information?</span>

@@ -35,7 +35,7 @@ function setHiddenContactId(widgetId) {
 function initializeOriginContact() {
 
     var handleContactSubmit = function() {
-        setHiddenContactId('editOriginContactId');
+        setHiddenContactId('editContactId');
         var result = this.submit();
         if (result) {
             YAHOO.example.container.addContact.element.style.zIndex = -1;
@@ -43,7 +43,7 @@ function initializeOriginContact() {
     };
 
     var handleDeactivateSubmit = function() {
-        setHiddenContactId('deactivateOriginContactId');
+        setHiddenContactId('deactivateContactId');
         var result = this.submit();
         if (result) {
             YAHOO.example.container.deactivateContact.element.style.zIndex = -1;
@@ -93,7 +93,7 @@ function initializeOriginContact() {
                                                                      ]
                                                                  });
 
-    YAHOO.example.container.editContact = new YAHOO.widget.Dialog("editOriginContact",
+    YAHOO.example.container.editContact = new YAHOO.widget.Dialog("editContact",
                                                                   { width : "30em",
                                                                       zIndex : -1,
                                                                       fixedcenter : true,
@@ -104,7 +104,7 @@ function initializeOriginContact() {
                                                                           { text:"Cancel", handler:handleContactCancel }
                                                                       ]
                                                                   });
-    YAHOO.example.container.deactivateContact = new YAHOO.widget.Dialog("deactivateOriginContact",
+    YAHOO.example.container.deactivateContact = new YAHOO.widget.Dialog("deactivateContact",
                                                                         { width : "25em",
                                                                             zIndex : -1,
                                                                             fixedcenter : true,
@@ -164,8 +164,8 @@ function initializeOriginContact() {
     }
 
     YAHOO.util.Event.addListener("newOriginContact", "click", init, YAHOO.example.container.addContact, true);
-    YAHOO.util.Event.addListener("editOriginContactButton", "click", initEdit, YAHOO.example.container.editContact, true);
-    YAHOO.util.Event.addListener("deactivateOriginContactButton", "click", initDeactivate, YAHOO.example.container.deactivateContact, true);
+    YAHOO.util.Event.addListener("editContactButton", "click", initEdit, YAHOO.example.container.editContact, true);
+    YAHOO.util.Event.addListener("deactivateContactButton", "click", initDeactivate, YAHOO.example.container.deactivateContact, true);
 }
 
 

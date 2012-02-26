@@ -282,8 +282,8 @@
 <tr>
     <td>
         <input type="button" value="New" id="newOriginContact" style=" background:#d3d3d3"/>
-        <input type="button" value="Edit" id="editOriginContactButton" style=" background:#d3d3d3"/>
-        <input type="button" value="Delete" id="deactivateOriginContactButton" style=" background:#d3d3d3"/>
+        <input type="button" value="Edit" id="editContactButton" style=" background:#d3d3d3"/>
+        <input type="button" value="Delete" id="deactivateContactButton" style=" background:#d3d3d3"/>
     </td>
     <td>
         &nbsp;

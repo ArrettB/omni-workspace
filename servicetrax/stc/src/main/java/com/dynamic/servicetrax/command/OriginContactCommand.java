@@ -6,7 +6,7 @@ public class OriginContactCommand {
     private String contactName;
     private String contactPhone;
     private String extDealerId;
-    private String originContactId;
+    private String contactId;
     private String jobLocationAddressId;
 
     public String getCustomerId() {
@@ -43,12 +43,12 @@ public class OriginContactCommand {
         this.extDealerId = extDealerId;
     }
 
-    public String getOriginContactId() {
-        return originContactId;
+    public String getContactId() {
+        return contactId;
     }
 
-    public void setOriginContactId(String originContactId) {
-        this.originContactId = originContactId;
+    public void setContactId(String contactId) {
+        this.contactId = contactId;
     }
 
     public String getJobLocationAddressId() {

@@ -105,7 +105,7 @@ public class HotSheetAjaxController extends MultiActionController {
     }
 
     @SuppressWarnings("unchecked, unused")
-    public void editOriginContact(HttpServletRequest request, HttpServletResponse response, OriginContactCommand originContact) throws Exception {
+    public void editContact(HttpServletRequest request, HttpServletResponse response, OriginContactCommand originContact) throws Exception {
         hotSheetAjaxService.updateOriginContact(originContact);
         List<Map> contacts = hotSheetAjaxService.getOriginContacts(originContact.getCustomerId());
         response.setContentType("application/json");
@@ -113,7 +113,7 @@ public class HotSheetAjaxController extends MultiActionController {
     }
 
     @SuppressWarnings("unchecked, unused")
-    public void deactivateOriginContact(HttpServletRequest request, HttpServletResponse response, OriginContactCommand originContact) throws Exception {
+    public void deactivateContact(HttpServletRequest request, HttpServletResponse response, OriginContactCommand originContact) throws Exception {
         hotSheetAjaxService.deactivateOriginContact(originContact);
         List<Map> contacts = hotSheetAjaxService.getOriginContacts(originContact.getCustomerId());
         response.setContentType("application/json");
