@@ -94,9 +94,22 @@ public class HotSheetAjaxService {
         jdbcTemplate.update(UPDATE_ORIGIN_CONTACT,
                             new Object[]{originContact.getContactName(),
                                     originContact.getContactPhone(),
-                                    originContact.getEditOriginContactId()});
+                                    originContact.getOriginContactId()});
     }
 
+    private static final String DEACTIVATE_ORIGIN_CONTACT =
+            "update contacts set cont_status_type_id = " +
+                    " (select l.lookup_id" +
+                    " from lookups l, lookup_types lt " +
+                    " where l.code='inactive' and lt.code='contact_status_type'" +
+                    " and l.lookup_type_id = lt.lookup_type_id)" +
+                    " where contact_id = ?";
+
+    public void deactivateOriginContact(OriginContactCommand originContact) {
+        String editOriginContactId = originContact.getOriginContactId();
+        jdbcTemplate.update(DEACTIVATE_ORIGIN_CONTACT,
+                            new Object[]{Integer.valueOf(editOriginContactId)});
+    }
 
     private static final String ADD_DESTINATION_CONTACT =
             "INSERT INTO contacts (contact_name," +

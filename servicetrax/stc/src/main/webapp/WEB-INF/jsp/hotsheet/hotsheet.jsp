@@ -408,7 +408,7 @@
             <table border="0" cellspacing="5" cellpadding="0">
                 <input type="hidden" name="customerId" value="${hotSheet.customerId}"/>
                 <input type="hidden" name="extDealerId" value="${hotSheet.extCustomerId}"/>
-                <input type="hidden" name="editOriginContactId" id="editOriginContactId" value=""/>
+                <input type="hidden" name="originContactId" id="editOriginContactId" value=""/>
                 <tr>
                     <td>
                         Name:
@@ -434,6 +434,24 @@
     </div>
 </div>
 
+<div id="deactivateOriginContact" class="yui-panel">
+    <div class="hd">Remove the origin contact information?</div>
+    <div class="bd">
+
+        <form:form name="deactivateOriginContactForm" id="deactivateOriginContactForm"
+                   action="${pageContext.request.contextPath}/deactivateOriginContact.html" method="post">
+            <input type="hidden" name="customerId" value="${hotSheet.customerId}"/>
+            <input type="hidden" name="extDealerId" value="${hotSheet.extCustomerId}"/>
+            <input type="hidden" name="originContactId" id="deactivateOriginContactId" value=""/>
+
+            <div>
+                <span>Do you want to remove this contact information?</span>
+            </div>
+        </form:form>
+    </div>
+</div>
+
+
 <div id="addDestinationContact" class="yui-panel">
     <div class="hd">Please enter new destination contact information</div>
     <div class="bd">
@@ -441,7 +459,8 @@
         <form:form name="addDestinationContactForm" id="addDestinationContactForm"
                    action="${pageContext.request.contextPath}/addDestinationContact.html" method="post">
             <table border="0" cellspacing="5" cellpadding="0">
-                <input type="hidden" id="newJobLocationAddressId" name="newJobLocationAddressId" value="${hotSheet.jobLocationAddressId}"/>
+                <input type="hidden" id="newJobLocationAddressId" name="newJobLocationAddressId"
+                       value="${hotSheet.jobLocationAddressId}"/>
                 <input type="hidden" name="extDealerId" value="${hotSheet.extCustomerId}"/>
                 <tr>
                     <td>

@@ -24,22 +24,33 @@ function validateContactFields() {
         return true;
     };
 }
+function setHiddenContactId(widgetId) {
+    var contactDropDown = document.getElementById('originContactDropdown');
+    var contactId = contactDropDown.options[contactDropDown.selectedIndex];
+    var contactIdHidden = document.getElementById(widgetId);
+    if (contactIdHidden != undefined) {
+        contactIdHidden.value = contactId.value;
+    }
+}
 function initializeOriginContact() {
 
     var handleContactSubmit = function() {
-        var contactDropDown = document.getElementById('originContactDropdown');
-        var contactId = contactDropDown.options[contactDropDown.selectedIndex];
-        var contactIdHidden = document.getElementById('editOriginContactId');
-        if (contactIdHidden != undefined) {
-            contactIdHidden.value = contactId.value;
-        }
-
+        setHiddenContactId('editOriginContactId');
         var result = this.submit();
         if (result) {
             YAHOO.example.container.addContact.element.style.zIndex = -1;
         }
-
     };
+
+    var handleDeactivateSubmit = function() {
+        setHiddenContactId('deactivateOriginContactId');
+        var result = this.submit();
+        if (result) {
+            YAHOO.example.container.deactivateContact.element.style.zIndex = -1;
+        }
+    };
+
+
     var handleContactCancel = function() {
         this.cancel();
         YAHOO.example.container.addContact.element.style.zIndex = -1;
@@ -93,6 +104,17 @@ function initializeOriginContact() {
                                                                           { text:"Cancel", handler:handleContactCancel }
                                                                       ]
                                                                   });
+    YAHOO.example.container.deactivateContact = new YAHOO.widget.Dialog("deactivateOriginContact",
+                                                                        { width : "25em",
+                                                                            zIndex : -1,
+                                                                            fixedcenter : true,
+                                                                            visible : false,
+                                                                            constraintoviewport : true,
+                                                                            buttons : [
+                                                                                { text:"&nbsp;&nbsp;&nbsp;Yes&nbsp;&nbsp;&nbsp;", handler:handleDeactivateSubmit, isDefault:true },
+                                                                                { text:"&nbsp;&nbsp;&nbsp;No&nbsp;&nbsp;&nbsp;", handler:handleContactCancel }
+                                                                            ]
+                                                                        });
 
 
     // Validate the entries in the form to require that both first and last name are entered
@@ -110,9 +132,16 @@ function initializeOriginContact() {
         failure: handleContactFailure
     };
 
+    YAHOO.example.container.deactivateContact.callback = {
+        success: handleContactSuccess,
+        failure: handleContactFailure
+    };
+
+
     // Render the Dialog
     YAHOO.example.container.addContact.render();
     YAHOO.example.container.editContact.render();
+    YAHOO.example.container.deactivateContact.render();
 
     function init(e) {
         document.getElementById('contactName').value = "";
@@ -129,9 +158,14 @@ function initializeOriginContact() {
         document.getElementById('editContactPhone').value = document.getElementById('originContactPhone').value;
     }
 
+    function initDeactivate(e) {
+        YAHOO.example.container.deactivateContact.show();
+        YAHOO.example.container.deactivateContact.element.style.zIndex = 2;
+    }
 
     YAHOO.util.Event.addListener("newOriginContact", "click", init, YAHOO.example.container.addContact, true);
     YAHOO.util.Event.addListener("editOriginContactButton", "click", initEdit, YAHOO.example.container.editContact, true);
+    YAHOO.util.Event.addListener("deactivateOriginContactButton", "click", initDeactivate, YAHOO.example.container.deactivateContact, true);
 }
 
 
