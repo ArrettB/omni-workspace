@@ -6,12 +6,23 @@ YAHOO.util.Event.onDOMReady(function () {
 function initializeDestinationContact() {
 
     var handleContactSubmit = function() {
+        setHiddenContactId('editDestinationContactId');
         var result = this.submit();
         if (result) {
             YAHOO.example.container.addDestinationContact.element.style.zIndex = -1;
         }
 
     };
+
+    var handleDeactivateSubmit = function() {
+        setHiddenContactId('deactivateDestinationContactId');
+        var result = this.submit();
+        if (result) {
+            YAHOO.example.container.deactivateContact.element.style.zIndex = -1;
+        }
+    };
+
+
     var handleContactCancel = function() {
         this.cancel();
         YAHOO.example.container.addDestinationContact.element.style.zIndex = -1;
@@ -54,6 +65,32 @@ function initializeDestinationContact() {
                                                                                 ]
                                                                             });
 
+    YAHOO.example.container.editDestinationContact = new YAHOO.widget.Dialog("editDestinationContact",
+                                                                             { width : "30em",
+                                                                                 zIndex : -1,
+                                                                                 fixedcenter : true,
+                                                                                 visible : false,
+                                                                                 constraintoviewport : true,
+                                                                                 buttons : [
+                                                                                     { text:"Submit", handler:handleContactSubmit, isDefault:true },
+                                                                                     { text:"Cancel", handler:handleContactCancel }
+                                                                                 ]
+                                                                             });
+
+
+    YAHOO.example.container.deactivateDestinationContact = new YAHOO.widget.Dialog("deactivateDestinationContact",
+                                                                                   { width : "25em",
+                                                                                       zIndex : -1,
+                                                                                       fixedcenter : true,
+                                                                                       visible : false,
+                                                                                       constraintoviewport : true,
+                                                                                       buttons : [
+                                                                                           { text:"&nbsp;&nbsp;&nbsp;Yes&nbsp;&nbsp;&nbsp;", handler:handleDeactivateSubmit, isDefault:true },
+                                                                                           { text:"&nbsp;&nbsp;&nbsp;No&nbsp;&nbsp;&nbsp;", handler:handleContactCancel }
+                                                                                       ]
+                                                                                   });
+
+
     // Validate the entries in the form to require that both first and last name are entered
     YAHOO.example.container.addDestinationContact.validate = function() {
 
@@ -81,15 +118,55 @@ function initializeDestinationContact() {
         failure: handleContactFailure
     };
 
+    YAHOO.example.container.editDestinationContact.callback = {
+        success: handleContactSuccess,
+        failure: handleContactFailure
+    };
+
+
+    YAHOO.example.container.deactivateDestinationContact.callback = {
+        success: handleContactSuccess,
+        failure: handleContactFailure
+    };
+
+
     // Render the Dialog
     YAHOO.example.container.addDestinationContact.render();
+    YAHOO.example.container.editDestinationContact.render();
+    YAHOO.example.container.deactivateDestinationContact.render();
 
     function init(e) {
         YAHOO.example.container.addDestinationContact.show();
         YAHOO.example.container.addDestinationContact.element.style.zIndex = 2;
     }
 
+    function initEdit(e) {
+        YAHOO.example.container.editDestinationContact.show();
+        YAHOO.example.container.editDestinationContact.element.style.zIndex = 2;
+        var destinationDropdown = document.getElementById('destinationContactDropdown');
+        document.getElementById('editDestinationContactName').value = destinationDropdown.options[destinationDropdown.selectedIndex].text;
+        document.getElementById('editDestinationContactPhone').value = document.getElementById('jobContactPhone').value;
+    }
+
+
+    function initDeactivate(e) {
+        YAHOO.example.container.deactivateDestinationContact.show();
+        YAHOO.example.container.deactivateDestinationContact.element.style.zIndex = 2;
+    }
+
+    function setHiddenContactId(widgetId) {
+        var contactDropDown = document.getElementById('destinationContactDropdown');
+        var contactId = contactDropDown.options[contactDropDown.selectedIndex];
+        var contactIdHidden = document.getElementById(widgetId);
+        if (contactIdHidden != undefined) {
+            contactIdHidden.value = contactId.value;
+        }
+    }
+
+
     YAHOO.util.Event.addListener("newDestinationContact", "click", init, YAHOO.example.container.addDestinationContact, true);
+    YAHOO.util.Event.addListener("deactivateDestinationContactButton", "click", initDeactivate, YAHOO.example.container.deactivateDestinationContact, true);
+    YAHOO.util.Event.addListener("editDestinationContactButton", "click", initEdit, YAHOO.example.container.editDestinationContact, true);
 }
 
 
@@ -98,11 +175,11 @@ YAHOO.util.Event.on('destinationContactDropdown', 'change', function (event) {
     var callbacks = {
 
         start : function(o) {
-            document.getElementById('spinner').style.visibility = 'visible';
+            document.getElementById('destinationAddressSpinner').style.visibility = 'visible';
         },
 
         complete : function(o) {
-            document.getElementById('spinner').style.visibility = 'hidden';
+            document.getElementById('destinationAddressSpinner').style.visibility = 'hidden';
         },
 
         success : function (o) {
@@ -114,14 +191,14 @@ YAHOO.util.Event.on('destinationContactDropdown', 'change', function (event) {
             }
             catch (exception) {
                 alert("JSON Parse failed: " + exception);
-                document.getElementById('spinner').style.visibility = 'hidden';
+                document.getElementById('destinationAddressSpinner').style.visibility = 'hidden';
             }
         },
 
         failure : function (o) {
             if (!YAHOO.util.Connect.isCallInProgress(o)) {
                 alert("Async call failed!");
-                document.getElementById('spinner').style.visibility = 'hidden';
+                document.getElementById('destinationAddressSpinner').style.visibility = 'hidden';
             }
         },
 

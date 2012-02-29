@@ -290,8 +290,8 @@
     </td>
     <td>
         <input type="button" value="New" id="newDestinationContact" style=" background:#d3d3d3"/>
-        <input type="button" value="Edit" id="newDestinationEdit" style=" background:#d3d3d3"/>
-        <input type="button" value="Delete" id="newDestinationDelete" style=" background:#d3d3d3"/>
+        <input type="button" value="Edit" id="editDestinationContactButton" style=" background:#d3d3d3"/>
+        <input type="button" value="Delete" id="deactivateDestinationContactButton" style=" background:#d3d3d3"/>
     </td>
     <td>
         &nbsp;

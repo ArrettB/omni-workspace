@@ -1,6 +1,6 @@
 package com.dynamic.servicetrax.service;
 
-import com.dynamic.servicetrax.command.OriginContactCommand;
+import com.dynamic.servicetrax.command.ContactCommand;
 import com.dynamic.servicetrax.orm.Address;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
@@ -60,7 +60,7 @@ public class HotSheetAjaxService {
                     " AND ONE.CODE='ACTIVE' AND TYPESONE.CODE='CONTACT_STATUS_TYPE'" +
                     " AND TWO.CODE='CUSTOMER' AND TYPESTWO.CODE='CONTACT_TYPE'";
 
-    public void addNewOriginContact(OriginContactCommand command, Long userId, long organizationId) {
+    public void addNewOriginContact(ContactCommand command, Long userId, long organizationId) {
 
         try {
             String name = command.getContactName();
@@ -90,7 +90,7 @@ public class HotSheetAjaxService {
                     " WHERE contact_id = ?";
 
 
-    public void updateOriginContact(OriginContactCommand originContact) {
+    public void editContact(ContactCommand originContact) {
         jdbcTemplate.update(UPDATE_ORIGIN_CONTACT,
                             new Object[]{originContact.getContactName(),
                                     originContact.getContactPhone(),
@@ -105,7 +105,7 @@ public class HotSheetAjaxService {
                     " and l.lookup_type_id = lt.lookup_type_id)" +
                     " where contact_id = ?";
 
-    public void deactivateOriginContact(OriginContactCommand theContact) {
+    public void deactivateOriginContact(ContactCommand theContact) {
         String contactId = theContact.getContactId();
         jdbcTemplate.update(DEACTIVATE_ORIGIN_CONTACT,
                             new Object[]{Integer.valueOf(contactId)});

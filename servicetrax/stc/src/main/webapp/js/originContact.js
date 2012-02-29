@@ -35,7 +35,7 @@ function setHiddenContactId(widgetId) {
 function initializeOriginContact() {
 
     var handleContactSubmit = function() {
-        setHiddenContactId('editContactId');
+        setHiddenContactId('editOriginContactId');
         var result = this.submit();
         if (result) {
             YAHOO.example.container.addContact.element.style.zIndex = -1;
@@ -104,6 +104,7 @@ function initializeOriginContact() {
                                                                           { text:"Cancel", handler:handleContactCancel }
                                                                       ]
                                                                   });
+
     YAHOO.example.container.deactivateContact = new YAHOO.widget.Dialog("deactivateContact",
                                                                         { width : "25em",
                                                                             zIndex : -1,

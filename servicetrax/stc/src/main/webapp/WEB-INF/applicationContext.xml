@@ -311,6 +311,8 @@
                 /addDestinationAddress.html=addDestinationAddress
                 /updateDestinationAddress.html=updateDestinationAddress
                 /addDestinationContact.html=addDestinationContact
+                /editDestinationContact.html=editDestinationContact
+                /deactivateDestinationContact.html=deactivateDestinationContact
                 /updateDestinationContact.html=updateDestinationContact
             </value>
         </property>
@@ -339,9 +341,10 @@
     </bean>
 
     <bean name="/addOriginAddress.html, /updateOriginAddress.html,
+    /addDestinationAddress.html, /updateDestinationAddress.html,
     /addOriginContact.html, /editContact.html, /deactivateContact.html,
-    /updateOriginContact.html, /addDestinationAddress.html, /updateDestinationAddress.html,
-    /addDestinationContact.html, /updateDestinationContact.html"
+    /addDestinationContact.html, /editDestinationContact.html, /deactivateDestinationContact.html,
+    /updateDestinationContact.html, /updateOriginContact.html"
           class="com.dynamic.servicetrax.controllers.HotSheetAjaxController">
         <property name="hotSheetAjaxService" ref="hotSheetAjaxService"/>
         <property name="methodNameResolver" ref="propsResolver"/>

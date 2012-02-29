@@ -408,7 +408,7 @@
             <table border="0" cellspacing="5" cellpadding="0">
                 <input type="hidden" name="customerId" value="${hotSheet.customerId}"/>
                 <input type="hidden" name="extDealerId" value="${hotSheet.extCustomerId}"/>
-                <input type="hidden" name="contactId" id="editContactId" value=""/>
+                <input type="hidden" name="contactId" id="editOriginContactId" value=""/>
                 <tr>
                     <td>
                         Name:
@@ -435,7 +435,7 @@
 </div>
 
 <div id="deactivateContact" class="yui-panel">
-    <div class="hd">Remove the contact information?</div>
+    <div class="hd">Remove the origin contact information?</div>
     <div class="bd">
 
         <form:form name="deactivateContactForm" id="deactivateContactForm"
@@ -445,7 +445,7 @@
             <input type="hidden" name="contactId" id="deactivateContactId" value=""/>
 
             <div>
-                <span>Do you want to remove this contact information?</span>
+                <span>Do you want to remove this origin contact information?</span>
             </div>
         </form:form>
     </div>
@@ -455,7 +455,6 @@
 <div id="addDestinationContact" class="yui-panel">
     <div class="hd">Please enter new destination contact information</div>
     <div class="bd">
-
         <form:form name="addDestinationContactForm" id="addDestinationContactForm"
                    action="${pageContext.request.contextPath}/addDestinationContact.html" method="post">
             <table border="0" cellspacing="5" cellpadding="0">
@@ -483,6 +482,61 @@
                     </td>
                 </tr>
             </table>
+        </form:form>
+    </div>
+</div>
+
+<div id="editDestinationContact" class="yui-panel">
+    <div class="hd">Edit the destination contact information</div>
+    <div class="bd">
+        <form:form name="editDestinationContactForm" id="editDestinationContactForm"
+                   action="${pageContext.request.contextPath}/editDestinationContact.html" method="post">
+            <table border="0" cellspacing="5" cellpadding="0">
+                <input type="hidden" name="customerId" value="${hotSheet.customerId}"/>
+                <input type="hidden" name="extDealerId" value="${hotSheet.extCustomerId}"/>
+                <input type="hidden" name="jobLocationAddressId" id="editJobLocationAddressId"
+                       value="${hotSheet.jobLocationAddressId}"/>
+                <input type="hidden" name="contactId" id="editDestinationContactId" value=""/>
+                <tr>
+                    <td>
+                        Name:
+                    </td>
+                    <td>
+                        <label>
+                            <input type="text" name="contactName" id="editDestinationContactName"/>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Phone:
+                    </td>
+                    <td>
+                        <label>
+                            <input type="text" name="contactPhone" id="editDestinationContactPhone"/>
+                        </label>
+                    </td>
+                </tr>
+            </table>
+        </form:form>
+    </div>
+</div>
+
+
+<div id="deactivateDestinationContact" class="yui-panel">
+    <div class="hd">Remove the destination contact information?</div>
+    <div class="bd">
+
+        <form:form name="deactivateDestinationContactForm" id="deactivateDestinationContactForm"
+                   action="${pageContext.request.contextPath}/deactivateDestinationContact.html" method="post">
+            <input type="hidden" name="customerId" value="${hotSheet.customerId}"/>
+            <input type="hidden" name="jobLocationAddressId" id="newJobLocationAddressId"
+                   value="${hotSheet.jobLocationAddressId}"/>
+            <input type="hidden" name="contactId" id="deactivateDestinationContactId" value=""/>
+
+            <div>
+                <span>Do you want to remove this destination contact information?</span>
+            </div>
         </form:form>
     </div>
 </div>

@@ -2,7 +2,7 @@ package com.dynamic.servicetrax.command;
 
 
 @SuppressWarnings({"UnusedDeclaration"})
-public class OriginContactCommand {
+public class ContactCommand {
     private String contactName;
     private String contactPhone;
     private String extDealerId;
