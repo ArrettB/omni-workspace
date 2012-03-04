@@ -11,8 +11,24 @@ function initializeDestinationContact() {
         if (result) {
             YAHOO.example.container.addDestinationContact.element.style.zIndex = -1;
         }
-
     };
+
+    var handleEditSubmit = function() {
+        setHiddenContactId('editDestinationContactId');
+        //Is there actually an entry?
+        var theDropdown = document.getElementById('destinationContactDropdown');
+        var contactId = theDropdown.options[theDropdown.selectedIndex];
+        if (contactId == undefined) {
+            alert("No origin contact selected to edit.");
+            return false;
+        }
+
+        var result = this.submit();
+        if (result) {
+            YAHOO.example.container.addDestinationContact.element.style.zIndex = -1;
+        }
+    };
+
 
     var handleDeactivateSubmit = function() {
         setHiddenContactId('deactivateDestinationContactId');
@@ -43,6 +59,11 @@ function initializeDestinationContact() {
                 document.getElementById("jobContactName").value = messages[i].CONTACT_NAME;
             }
         }
+
+        if (messages.length == 0) {
+            document.getElementById("jobContactPhone").value = '';
+            document.getElementById("jobContactName").value = '';
+        }
     };
 
     var handleContactFailure = function(o) {
@@ -72,7 +93,7 @@ function initializeDestinationContact() {
                                                                                  visible : false,
                                                                                  constraintoviewport : true,
                                                                                  buttons : [
-                                                                                     { text:"Submit", handler:handleContactSubmit, isDefault:true },
+                                                                                     { text:"Submit", handler:handleEditSubmit, isDefault:true },
                                                                                      { text:"Cancel", handler:handleContactCancel }
                                                                                  ]
                                                                              });
@@ -158,11 +179,10 @@ function initializeDestinationContact() {
         var contactDropDown = document.getElementById('destinationContactDropdown');
         var contactId = contactDropDown.options[contactDropDown.selectedIndex];
         var contactIdHidden = document.getElementById(widgetId);
-        if (contactIdHidden != undefined) {
+        if (contactIdHidden != undefined && contactId != undefined) {
             contactIdHidden.value = contactId.value;
         }
     }
-
 
     YAHOO.util.Event.addListener("newDestinationContact", "click", init, YAHOO.example.container.addDestinationContact, true);
     YAHOO.util.Event.addListener("deactivateDestinationContactButton", "click", initDeactivate, YAHOO.example.container.deactivateDestinationContact, true);

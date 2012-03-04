@@ -28,7 +28,7 @@ function setHiddenContactId(widgetId) {
     var contactDropDown = document.getElementById('originContactDropdown');
     var contactId = contactDropDown.options[contactDropDown.selectedIndex];
     var contactIdHidden = document.getElementById(widgetId);
-    if (contactIdHidden != undefined) {
+    if (contactIdHidden != undefined && contactId != undefined) {
         contactIdHidden.value = contactId.value;
     }
 }
@@ -36,6 +36,23 @@ function initializeOriginContact() {
 
     var handleContactSubmit = function() {
         setHiddenContactId('editOriginContactId');
+        var result = this.submit();
+        if (result) {
+            YAHOO.example.container.addContact.element.style.zIndex = -1;
+        }
+    };
+
+    var handleEditSubmit = function() {
+        setHiddenContactId('editOriginContactId');
+
+        //Is there actually an entry?
+        var theDropdown = document.getElementById('destinationContactDropdown');
+        var contactId = theDropdown.options[theDropdown.selectedIndex];
+        if (contactId == undefined) {
+            alert("No origin contact selected to edit.");
+            return false;
+        }
+
         var result = this.submit();
         if (result) {
             YAHOO.example.container.addContact.element.style.zIndex = -1;
@@ -70,6 +87,11 @@ function initializeOriginContact() {
                 document.getElementById("originContactName").value = messages[i].CONTACT_NAME;
             }
         }
+
+        if (messages.length == 0) {
+            document.getElementById("originContactPhone").value = '';
+            document.getElementById("originContactName").value = '';
+        }
     };
 
     var handleContactFailure = function(o) {
@@ -100,7 +122,7 @@ function initializeOriginContact() {
                                                                       visible : false,
                                                                       constraintoviewport : true,
                                                                       buttons : [
-                                                                          { text:"Submit", handler:handleContactSubmit, isDefault:true },
+                                                                          { text:"Submit", handler:handleEditSubmit, isDefault:true },
                                                                           { text:"Cancel", handler:handleContactCancel }
                                                                       ]
                                                                   });
