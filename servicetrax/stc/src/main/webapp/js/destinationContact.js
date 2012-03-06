@@ -19,7 +19,7 @@ function initializeDestinationContact() {
         var theDropdown = document.getElementById('destinationContactDropdown');
         var contactId = theDropdown.options[theDropdown.selectedIndex];
         if (contactId == undefined) {
-            alert("No origin contact selected to edit.");
+            alert("No destination contact selected to edit.");
             return false;
         }
 
@@ -177,6 +177,12 @@ function initializeDestinationContact() {
 
     function setHiddenContactId(widgetId) {
         var contactDropDown = document.getElementById('destinationContactDropdown');
+
+        //The dropdown is empty
+        if (contactDropDown.selectedIndex == -1) {
+            return;
+        }
+
         var contactId = contactDropDown.options[contactDropDown.selectedIndex];
         var contactIdHidden = document.getElementById(widgetId);
         if (contactIdHidden != undefined && contactId != undefined) {
