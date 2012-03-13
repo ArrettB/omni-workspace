@@ -3,8 +3,8 @@ package com.dynamic.servicetrax.controllers;
 import com.dynamic.servicetrax.command.ContactCommand;
 import com.dynamic.servicetrax.interceptors.LoginInterceptor;
 import com.dynamic.servicetrax.orm.Address;
-import com.dynamic.servicetrax.service.HotSheetServiceUtils;
 import com.dynamic.servicetrax.service.HotSheetAjaxService;
+import com.dynamic.servicetrax.service.HotSheetServiceUtils;
 import com.dynamic.servicetrax.support.LoginCrediantials;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -101,7 +101,7 @@ public class HotSheetAjaxController extends MultiActionController {
 
         List<Map> contacts = hotSheetAjaxService.getOriginContacts(contact.getCustomerId());
         response.setContentType("application/json");
-        writeOriginContacts(contacts, new OutputStreamWriter(response.getOutputStream()));
+        writeOriginContacts(contacts, contact, new OutputStreamWriter(response.getOutputStream()));
     }
 
     @SuppressWarnings("unchecked, unused")
@@ -109,15 +109,21 @@ public class HotSheetAjaxController extends MultiActionController {
         hotSheetAjaxService.editContact(contact);
         List<Map> contacts = hotSheetAjaxService.getOriginContacts(contact.getCustomerId());
         response.setContentType("application/json");
-        writeOriginContacts(contacts, new OutputStreamWriter(response.getOutputStream()));
+        writeOriginContacts(contacts, contact, new OutputStreamWriter(response.getOutputStream()));
     }
 
     @SuppressWarnings("unchecked, unused")
     public void deactivateContact(HttpServletRequest request, HttpServletResponse response, ContactCommand contact) throws Exception {
+        if (hotSheetAjaxService.isPrimaryOriginContact(contact)) {
+            response.setContentType("application/json");
+            sendIsPrimaryMessage(new OutputStreamWriter(response.getOutputStream()));
+            return;
+        }
+
         hotSheetAjaxService.deactivateOriginContact(contact);
         List<Map> contacts = hotSheetAjaxService.getOriginContacts(contact.getCustomerId());
         response.setContentType("application/json");
-        writeOriginContacts(contacts, new OutputStreamWriter(response.getOutputStream()));
+        writeOriginContacts(contacts, contact, new OutputStreamWriter(response.getOutputStream()));
     }
 
     @SuppressWarnings("unchecked, unused")
@@ -182,22 +188,28 @@ public class HotSheetAjaxController extends MultiActionController {
         hotSheetAjaxService.editContact(contact);
         List<Map> contacts = hotSheetAjaxService.getDestinationContacts(contact.getJobLocationAddressId());
         response.setContentType("application/json");
-        writeOriginContacts(contacts, new OutputStreamWriter(response.getOutputStream()));
+        writeOriginContacts(contacts, contact, new OutputStreamWriter(response.getOutputStream()));
     }
 
 
     @SuppressWarnings("unchecked, unused")
     public void deactivateDestinationContact(HttpServletRequest request, HttpServletResponse response, ContactCommand contact) throws Exception {
+
+        if (hotSheetAjaxService.isPrimaryDestinationContact(contact)) {
+            response.setContentType("application/json");
+            sendIsPrimaryMessage(new OutputStreamWriter(response.getOutputStream()));
+            return;
+        }
+
         hotSheetAjaxService.deactivateOriginContact(contact);
         List<Map> contacts = hotSheetAjaxService.getDestinationContacts(contact.getJobLocationAddressId());
         response.setContentType("application/json");
-        writeOriginContacts(contacts, new OutputStreamWriter(response.getOutputStream()));
+        writeOriginContacts(contacts, contact, new OutputStreamWriter(response.getOutputStream()));
     }
 
 
     @SuppressWarnings("unchecked, unused")
     public void updateDestinationAddress(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
         response.setContentType("application/json");
         OutputStreamWriter os = null;
 
@@ -282,7 +294,8 @@ public class HotSheetAjaxController extends MultiActionController {
         this.hotSheetAjaxService = hotSheetAjaxService;
     }
 
-    private void writeOriginContacts(List<Map> contacts, Writer theWriter) throws IOException {
+    @SuppressWarnings({"unchecked"})
+    private void writeOriginContacts(List<Map> contacts, ContactCommand contact, Writer theWriter) throws IOException {
 
         if (theWriter == null) {
             LOGGER.warn("Writer was null!!");
@@ -290,6 +303,18 @@ public class HotSheetAjaxController extends MultiActionController {
         }
 
         try {
+
+            for(Map aContact : contacts){
+                BigDecimal persisted = (BigDecimal) aContact.get("CONTACT_ID");
+                String currentId = contact.getContactId();
+                if(persisted.toPlainString().equals(currentId)){
+                    aContact.put("CURRENT", Boolean.TRUE);
+                }
+                else{
+                    aContact.put("CURRENT", Boolean.FALSE);
+                }
+            }
+
             JSONArray jsonArray = JSONArray.fromObject(contacts);
             theWriter.write(jsonArray.toString());
             theWriter.flush();
@@ -299,6 +324,23 @@ public class HotSheetAjaxController extends MultiActionController {
         }
         finally {
             theWriter.close();
+        }
+    }
+
+    private void sendIsPrimaryMessage(Writer theWriter) throws IOException {
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("isPrimary", "true");
+            theWriter.write(jsonObject.toString());
+            theWriter.flush();
+        }
+        catch (Exception e) {
+            LOGGER.error(e);
+        }
+        finally {
+            if (theWriter != null) {
+                theWriter.close();
+            }
         }
     }
 }

@@ -81,6 +81,12 @@ function initializeOriginContact() {
 
     var handleContactSuccess = function(o) {
         var messages = YAHOO.lang.JSON.parse(o.responseText);
+
+        if (isPrimary(messages)) {
+            alert("Origin contact has been saved to an existing hotsheet. Cannot delete.");
+            return false;
+        }
+
         var originContactDropdown = document.getElementById("originContactDropdown");
         originContactDropdown.options.length = 0;
         for (var i = 0; i < messages.length; i++) {
@@ -88,7 +94,11 @@ function initializeOriginContact() {
             originContactDropdown.options.add(newOption);
             newOption.value = messages[i].CONTACT_ID;
             newOption.text = messages[i].CONTACT_NAME;
-            if (i == 0) {
+            if (messages[i].CURRENT) {
+                newOption.selected = true;
+                document.getElementById("originContactPhone").value = messages[i].PHONE_WORK;
+            }
+            else if (i == 0) {
                 document.getElementById("originContactPhone").value = messages[i].PHONE_WORK;
                 document.getElementById("originContactName").value = messages[i].CONTACT_NAME;
             }
@@ -104,11 +114,11 @@ function initializeOriginContact() {
         alert("Add origin contact failed: " + o.status);
     };
 
-    // Remove progressively enhanced content class, just before creating the module
+// Remove progressively enhanced content class, just before creating the module
     YAHOO.util.Dom.removeClass("addContact", "yui-pe-content");
     YAHOO.util.Dom.removeClass("editContact", "yui-pe-content");
 
-    // Instantiate the Dialog
+// Instantiate the Dialog
     YAHOO.example.container.addContact = new YAHOO.widget.Dialog("addOriginContact",
                                                                  { width : "30em",
                                                                      zIndex : -1,
@@ -146,11 +156,11 @@ function initializeOriginContact() {
                                                                         });
 
 
-    // Validate the entries in the form to require that both first and last name are entered
+// Validate the entries in the form to require that both first and last name are entered
     YAHOO.example.container.addContact.validate = validateContactFields();
     YAHOO.example.container.editContact.validate = validateContactFields();
 
-    // Wire up the success and failure handlers
+// Wire up the success and failure handlers
     YAHOO.example.container.addContact.callback = {
         success: handleContactSuccess,
         failure: handleContactFailure
@@ -167,7 +177,7 @@ function initializeOriginContact() {
     };
 
 
-    // Render the Dialog
+// Render the Dialog
     YAHOO.example.container.addContact.render();
     YAHOO.example.container.editContact.render();
     YAHOO.example.container.deactivateContact.render();
@@ -190,6 +200,10 @@ function initializeOriginContact() {
     function initDeactivate(e) {
         YAHOO.example.container.deactivateContact.show();
         YAHOO.example.container.deactivateContact.element.style.zIndex = 2;
+    }
+
+    function isPrimary(messages) {
+        return messages.length == undefined && messages.isPrimary == 'true';
     }
 
     YAHOO.util.Event.addListener("newOriginContact", "click", init, YAHOO.example.container.addContact, true);

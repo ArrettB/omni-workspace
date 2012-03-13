@@ -47,6 +47,11 @@ function initializeDestinationContact() {
     var handleContactSuccess = function(o) {
         var messages = YAHOO.lang.JSON.parse(o.responseText);
 
+        if (isPrimary(messages)) {
+            alert("Destination contact has been saved to an existing hotsheet. Cannot delete.");
+            return false;
+        }
+
         var destinationContactDropdown = document.getElementById("destinationContactDropdown");
         destinationContactDropdown.options.length = 0;
         for (var i = 0; i < messages.length; i++) {
@@ -173,6 +178,10 @@ function initializeDestinationContact() {
     function initDeactivate(e) {
         YAHOO.example.container.deactivateDestinationContact.show();
         YAHOO.example.container.deactivateDestinationContact.element.style.zIndex = 2;
+    }
+
+    function isPrimary(messages) {
+        return messages.length == undefined && messages.isPrimary == 'true';
     }
 
     function setHiddenContactId(widgetId) {

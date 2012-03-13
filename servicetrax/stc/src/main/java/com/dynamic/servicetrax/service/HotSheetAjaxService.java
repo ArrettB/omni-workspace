@@ -89,12 +89,18 @@ public class HotSheetAjaxService {
                     " phone_work = ?" +
                     " WHERE contact_id = ?";
 
+    private static final String UPDATE_HOTSHEET_ORIGIN_CONTACT =
+            "update hotsheets" +
+                    " set origin_contact_name = ?," +
+                    " origin_contact_phone = ?" +
+                    " where origin_contact_id = ?";
 
     public void editContact(ContactCommand originContact) {
-        jdbcTemplate.update(UPDATE_ORIGIN_CONTACT,
-                            new Object[]{originContact.getContactName(),
-                                    originContact.getContactPhone(),
-                                    originContact.getContactId()});
+        Object[] args = {originContact.getContactName(),
+                originContact.getContactPhone(),
+                originContact.getContactId()};
+        jdbcTemplate.update(UPDATE_ORIGIN_CONTACT, args);
+        jdbcTemplate.update(UPDATE_HOTSHEET_ORIGIN_CONTACT, args);
     }
 
     private static final String DEACTIVATE_ORIGIN_CONTACT =
@@ -230,4 +236,21 @@ public class HotSheetAjaxService {
         return jdbcTemplate.queryForList(HotSheetService.GET_DESTINATION_CONTACT_INFO, new Object[]{jobLocationAddressId});
     }
 
+    private static final String IS_PRIMARY_ORIGIN_CONTACT = "select count(*) from hotsheets where origin_contact_id = ?";
+
+    public boolean isPrimaryOriginContact(ContactCommand contact) {
+        int result = jdbcTemplate.queryForInt(IS_PRIMARY_ORIGIN_CONTACT, new Object[]{contact.getContactId()});
+        return result > 0;
+    }
+
+    private static final String IS_PRIMARY_DESTINATION_CONTACT =
+            "select count(*) from contacts, job_location_contacts, hotsheets" +
+                    " where contacts.contact_id = job_location_contacts.contact_id" +
+                    " and hotsheets.job_location_contact_id = contacts.contact_id" +
+                    " and contacts.contact_id = ?";
+
+    public boolean isPrimaryDestinationContact(ContactCommand contact) {
+        int result = jdbcTemplate.queryForInt(IS_PRIMARY_DESTINATION_CONTACT, new Object[]{contact.getContactId()});
+        return result > 0;
+    }
 }
