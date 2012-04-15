@@ -110,6 +110,7 @@ function initializeDestinationAddress() {
     }
 
     YAHOO.util.Event.addListener("addDestinationButton", "click", init, YAHOO.example.container.addDestination, true);
+    YAHOO.util.Event.addListener("mapPopupButton", "click", showMap);
 
 }
 
@@ -140,6 +141,11 @@ YAHOO.util.Event.on('destinationAddressDropdown', 'change', function (event) {
                         messages[addressIndex]['city'] + ' ' +
                                 messages[addressIndex]['state'] + ' ' +
                                 messages[addressIndex]['zip'];
+
+                document.getElementById("jobLocationCity").value = messages[addressIndex]['city'];
+                document.getElementById("jobLocationState").value = messages[addressIndex]['state'];
+                document.getElementById("jobLocationZip").value = messages[addressIndex]['zip'];
+
 
                 //Change the jobLocationId
                 document.getElementById("newJobLocationAddressId").value =
@@ -187,4 +193,32 @@ YAHOO.util.Event.on('destinationAddressDropdown', 'change', function (event) {
     var url = '/stc/updateDestinationAddress.html?jobLocationId=' + id;
     YAHOO.util.Connect.asyncRequest('POST', url, callbacks);
 });
+
+function showMap() {
+
+    //var url = "http://www.mapquest.com/maps/map.adp?formtype=address&addtohistory=&address=";
+
+    var url = "http://maps.google.com/maps?q=";
+    var address = document.getElementById("jobLocationAddress.streetOne").value;
+    var city = document.getElementById("jobLocationCity").value;
+    var state = document.getElementById("jobLocationState").value;
+    var zip = document.getElementById("jobLocationZip").value;
+
+//    url += encodeURIComponent(address);
+//    url += "&city=" + encodeURIComponent(city);
+//    url += "&state=" + state;
+//    if (zip != null && zip != "") {
+//        url += "&zipcode=" + encodeURIComponent(zip);
+//    }
+//    url += "&country=US&geodiff=1";
+    url += "+" + encodeURIComponent(address);
+    url += "+" + encodeURIComponent(city);
+    url += "+" + state;
+    if (zip != null && zip != "") {
+        url += "+" + encodeURIComponent(zip);
+    }
+
+    window.open(url);
+}
+
 

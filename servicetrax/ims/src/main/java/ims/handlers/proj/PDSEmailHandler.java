@@ -99,6 +99,7 @@ public class PDSEmailHandler extends BaseHandler
 				+ "Customer: ${customer_name}" + NEWLINE
 				+ "End User: ${end_user_name}" + NEWLINE
 				+ "Job Name: ${job_name}" + NEWLINE
+                + "Quote Amount: $${quote_total}" + NEWLINE
 				+ "Description: ${description}" + NEWLINE),
 		QR_SR_SENT(
 				"To: ${contact_name} on ${todays_date}" + NEWLINE
@@ -253,7 +254,7 @@ public class PDSEmailHandler extends BaseHandler
 	public static final String WHERE = " WHERE record_id = ? AND record_type_code = ?";
 	
 	public static final String QUOTE_SELECT_FROM
-		= ", end_user_name, description, a_m_sales_contact_id, customer_contact2_id, customer_contact3_id, customer_contact4_id "
+		= ", end_user_name, description, a_m_sales_contact_id, customer_contact2_id, customer_contact3_id, customer_contact4_id, quote_total "
 		+ " FROM extranet_email_quote_v ";
 	
 	public static final String SELECT_QR_SR
