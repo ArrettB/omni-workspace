@@ -70,7 +70,8 @@ function exportInvoices(form)
                        j.END_user_name,
                        jt.name job_type_name,
                        i.po_no,
-                       i.date_created invoice_date_created
+                       i.date_created invoice_date_created,
+                       ISNULL(customer_cost_type.customer_cost_type_name, 'None') customer_costing
                   FROM invoices i LEFT JOIN
                        (SELECT i2.invoice_id,
                                CASE (SELECT COUNT(*) FROM invoice_tracking WHERE invoice_id = i2.invoice_id) WHEN 0 THEN CONVERT(VARCHAR, i2.invoice_id) ELSE CONVERT(VARCHAR, i2.invoice_id) + '*' END invoice_id_trk
@@ -86,7 +87,7 @@ function exportInvoices(form)
                                lookups customer_type ON c.customer_type_id = customer_type.lookup_id LEFT JOIN
                                projects p ON p.project_id = j.project_id LEFT JOIN
                                customers eu ON	eu.customer_id = p.END_user_id) j ON i.job_id = j.job_id LEFT JOIN
-                       (SELECT il.invoice_id,
+                          (SELECT il.invoice_id,
                                SUM(il.unit_price * il.qty) custom_total
                           FROM invoice_lines il JOIN
                                lookups l ON il.invoice_line_type_id = l.lookup_id JOIN
@@ -107,6 +108,17 @@ function exportInvoices(form)
                        users u ON u.user_id = i.assigned_to_user_id LEFT JOIN
                        invoice_batch_statuses ib ON i.batch_status_id = ib.status_id LEFT JOIN
                        lookups jt ON jt.lookup_id = j.job_type_id
+                       LEFT JOIN (
+                        SELECT
+                            jobs.job_id   job_id,
+                            MIN(lookups.name) customer_cost_type_name
+                            FROM lookups, requests, jobs, projects
+                        WHERE
+                            lookups.lookup_id = requests.customer_costing_type_id
+                        AND projects.project_id = jobs.project_id
+                        AND projects.project_id = requests.project_id
+                        GROUP BY jobs.job_id
+                        ) customer_cost_type ON customer_cost_type.job_id = i.job_id
                  WHERE i.organization_id = <?s:org_id.toPStmtString()?>
                    AND i.status_id = <?r:status_inv:status_id.toPStmtString()?>
                    AND (j.billing_user_id = <?s:user_id.toPStmtString()?> OR 'true' = <?s:rights.view_all_jobs.view.toPStmtString()?>)
@@ -116,6 +128,7 @@ function exportInvoices(form)
 			<!--#SMARTCOLUMN name="invoice_id_trk" sort="i.invoice_id" title="Invoice#" width="5%" href="<?s:action?>setupSession/bill/inv/job_inv_main.html?invoice_id=<?r:invoice_lines:invoice_id?>&status_id=<?r:invoice_lines:invoice_status_id?>&readonly=false&job_id=<?r:invoice_lines:job_id?>&prev_template=bill/inv/main_inv_list_acct.html"-->
 			<!--#SMARTCOLUMN name="job_no" sort="job_no" title="Job#" width="3%"-->
 			<!--#SMARTCOLUMN name="po_no" sort="po_no" title="PO#" width="5%"-->
+            <!--#SMARTCOLUMN name="customer_costing" sort="customer_costing" title="Customer Costing" width="5%" style="text-align:center;"-->
 			<!--SMARTCOLUMN name="end_user_name" sort="end_user_name" title="End User" width="10%"-->
 			<!--#SMARTCOLUMN name="customer_name" sort="customer_name" title="Customer" width="5%" value="<input readonly='true' class='smartTableDisplay' size='15' value='<?r:invoice_lines:customer_name.replaceString('\'','&#39;')?>'>" -->
 			<!--#SMARTCOLUMN name="end_user_name" sort="end_user_name" title="End User" width="5%" value="<input readonly='true' class='smartTableDisplay' size='15' value='<?r:invoice_lines:end_user_name.replaceString('\'','&#39;')?>'>" -->
