@@ -17,7 +17,8 @@
                              county,
                              ISNULL(state, 'MN') state,
                              zip,
-                             ISNULL(country, 'US') country
+                             ISNULL(country, 'US') country,
+                             job_location_calendar_id
                         FROM job_locations
                        WHERE job_location_id = <?p:parameter.toPStmtString()?>"-->
 
@@ -44,6 +45,13 @@
 				  		   FROM countries
 		               ORDER BY name"  -->
 	  </td></tr>
+      <tr><td><label for="job_location_calendar_id">Calendar:</label></td><td>
+           <!--#SELECT name="job_location_calendar_id" id="job_location_calendar_id" firstOption="None" firstOptionValue=""
+                       currentValue="<?r:job_loc:job_location_calendar_id?>"
+     				  query="SELECT calendar_id, code + ' ' + description as calendar_name
+     				  		   FROM job_location_calendars
+     		               ORDER BY calendar_name"  -->
+      </td></tr>
 	  <tr><td><label for="active_flag">Active:</label></td><td><input type="checkbox" name="active_flag" checked/></td></tr>
     </table>
 
@@ -73,6 +81,13 @@
 				  		   FROM countries
 		               ORDER BY name"  -->
 	  </td></tr>
+      <tr><td><label for="job_location_calendar_id">Calendar:</label></td><td>
+         <!--#SELECT name="job_location_calendar_id" id="job_location_calendar_id" firstOption="None" firstOptionValue=""
+                     currentValue=""
+                  query="SELECT calendar_id, code + ' ' + description as calendar_name
+                           FROM job_location_calendars
+                       ORDER BY calendar_name"  -->
+      </td></tr>
     </table>
 
   <!--#/SQLNODATA-->

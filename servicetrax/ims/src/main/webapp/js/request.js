@@ -152,15 +152,21 @@ function showHideNewJobLocationContactButton()
 
 function showHideViewJobLocationContactButton()
 {
-    id = document.getElementById("job_location_contact_id").value;
+    var jobLocationContactIdField = document.getElementById("job_location_contact_id");
+    if(jobLocationContactIdField != undefined ) {
 
-    if (id == null || id == "")
-    {
+        id = jobLocationContactIdField.value;
+
+        if (id == null || id == "")
+        {
+            document.getElementById("viewJobLocContactButtonDiv").style.display = "none";
+        }
+        else
+        {
+            document.getElementById("viewJobLocContactButtonDiv").style.display = "block";
+        }
+    } else {
         document.getElementById("viewJobLocContactButtonDiv").style.display = "none";
-    }
-    else
-    {
-        document.getElementById("viewJobLocContactButtonDiv").style.display = "block";
     }
 }
 
@@ -308,7 +314,6 @@ function validateCommissionMarkups()
 
     return true;
 }
-
 
 function validateSendCommons()
 {

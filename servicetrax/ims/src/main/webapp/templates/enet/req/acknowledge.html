@@ -77,6 +77,9 @@
 		<tr><td colspan="3">&nbsp;</td></tr>
 		<tr><td colspan="3" class="HeaderLabel">The Service Request has been sent.</td></tr>
 		<tr><td colspan="3">&nbsp;</td></tr>
+        <!--#IF evaluate="<?p:calendar_failed?>" compare="true"-->
+          <tr><td colspan="3" class="errorText">Unable to send calendar appointment.</td></tr>
+        <!--#/IF-->
 	<!--#IF evaluate="<?p:email_failed?>" compare="true"-->
 		<tr><td colspan="3" class="errorText">Did not send email to (email server might be down):</td></tr>
 	<!--#ELSE-->

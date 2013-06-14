@@ -1,16 +1,5 @@
 package ims.handlers.proj;
 
-import ims.helpers.IMSUtil;
-import ims.helpers.MapUtil;
-
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
-
 import dynamic.dbtk.connection.ConnectionWrapper;
 import dynamic.dbtk.connection.QueryResults;
 import dynamic.intraframe.engine.InvocationContext;
@@ -20,6 +9,12 @@ import dynamic.intraframe.handlers.SmartFormHandler;
 import dynamic.intraframe.templates.components.SmartFormComponent;
 import dynamic.util.diagnostics.Diagnostics;
 import dynamic.util.string.StringUtil;
+import ims.helpers.IMSUtil;
+import ims.helpers.MapUtil;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * @version $Id: PDSPostHandler.java 1491 2009-01-28 19:07:05Z bvonhaden $
@@ -46,7 +41,7 @@ public class PDSPostHandler extends BaseHandler
 		String mode = ic.getParameter(SmartFormComponent.MODE);
 		String request_type_code = ic.getParameter("request_type_code");
 		String request_status_type_code = ic.getParameter("request_status_type_code");
-Diagnostics.debug("in PDSPostHandler, request_status_type_code='"+request_status_type_code+"'");
+        Diagnostics.debug("in PDSPostHandler, request_status_type_code='"+request_status_type_code+"'");
 		String quoting = (String)ic.getSessionDatum("quoting");
 		boolean is_quote_request = false;
 		if( StringUtil.hasAValue(quoting) && quoting.equalsIgnoreCase("true") )
@@ -74,6 +69,13 @@ Diagnostics.debug("in PDSPostHandler, request_status_type_code='"+request_status
 				result = sendServiceRequest(ic, conn);
 				if( !result )
 					Diagnostics.error("PDSPostHandler.handleEnvironment() sendServiceRequest method failed");
+
+                boolean email_result = ic.dispatchHandler("ims.handlers.proj.PDSEmailHandler");
+                if( !email_result )
+                {
+                    Diagnostics.error("PDSPostHandler.handleEnvironment() emailing failed.");
+                    ic.setTransientDatum("calendar_failed","true");
+                }
 
 				ic.setTransientDatum("dont_show_msg","true");
 			}
@@ -125,11 +127,11 @@ Diagnostics.debug("in PDSPostHandler, request_status_type_code='"+request_status
 				ic.setTransientDatum("record_id",ic.getParameter("request_id"));
 				ic.setTransientDatum("record_type_code",request_type_code);
 				ic.setTransientDatum("record_status_type_code",request_status_type_code);
-				boolean email_result = ic.dispatchHandler("ims.handlers.proj.PDSEmailHandler");
+				boolean email_result = ic.dispatchHandler("ims.handlers.proj.PDSCalendarHandler");
 				if( !email_result )
 				{
-					Diagnostics.error("PDSPostHandler.handleEnvironment() emailing failed.");
-					ic.setTransientDatum("email_failed","true");
+					Diagnostics.error("PDSPostHandler.handleEnvironment() calendar failed.");
+					ic.setTransientDatum("calendar_failed","true");
 				}
 
 			}

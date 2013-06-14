@@ -1,15 +1,15 @@
 package ims.handlers.proj;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import dynamic.dbtk.connection.ConnectionWrapper;
 import dynamic.intraframe.engine.InvocationContext;
 import dynamic.intraframe.handlers.BaseHandler;
 import dynamic.intraframe.handlers.ErrorHandler;
 import dynamic.util.diagnostics.Diagnostics;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * @author dzhao
@@ -27,9 +27,10 @@ public class NewJobLocationHandler extends BaseHandler {
 	 	+ "                           state,"
 	 	+ "                           zip,"
 	 	+ "                           country,"
+        + "                           job_location_calendar_id,"
 	 	+ "                           date_created,"	 	                              
 	 	+ "                           created_by) "
-	 	+ " SELECT ?, ?, l.lookup_id, ?, ?, ?, ?, ?, ?, ?, getdate(), ? "
+	 	+ " SELECT ?, ?, l.lookup_id, ?, ?, ?, ?, ?, ?, ?, ?, getdate(), ? "
 	 	+ "   FROM lookups l JOIN lookup_types lt ON l.lookup_type_id = lt.lookup_type_id "
 	 	+ "  WHERE lt.code='location_type' AND l.code = 'worksite'";
 	
@@ -44,8 +45,9 @@ public class NewJobLocationHandler extends BaseHandler {
 	 	+ "       zip = ?,"
 	 	+ "       country = ?,"
 	 	+ "       active_flag = ?,"
-	 	+ "       date_modified = getdate(),"	 	                              
-	 	+ "       modified_by = ? "
+	 	+ "       date_modified = getdate(),"
+	 	+ "       modified_by = ?, "
+        + "       job_location_calendar_id = ?"
 	 	+ " WHERE job_location_id = ?";
 	
 	
@@ -74,15 +76,19 @@ public class NewJobLocationHandler extends BaseHandler {
 			String state = ic.getParameter("state");
 			String zip = ic.getParameter("zip");
 			String country = ic.getParameter("country");
+            String jobLocationCalendarId = ic.getParameter("job_location_calendar_id");
+            if(jobLocationCalendarId != null && jobLocationCalendarId.length() == 0) {
+                jobLocationCalendarId = null;
+            }
 			String active = ic.getParameter("active_flag") == null ? "N" : "Y";
 			String jobLocationId = ic.getParameter("current_id");
 			String button = ic.getParameter("button");
 			
 			if ("new".equalsIgnoreCase(button)) {
-				save(conn, endUserId, jobLocationName, street1, street2, city, county, state, zip, country, userId);
+				save(conn, endUserId, jobLocationName, street1, street2, city, county, state, zip, country, jobLocationCalendarId, userId);
 				ic.setSessionDatum("current_job_location_id", getIdentity(conn));
 			} else if ("view".equalsIgnoreCase(button)) {			
-				update(conn, jobLocationName, street1, street2, city, county, state, zip, country, active, userId, jobLocationId);
+				update(conn, jobLocationName, street1, street2, city, county, state, zip, country, active, userId, jobLocationCalendarId, jobLocationId);
 			}
 		} catch (Exception e) {
 			result = false;
@@ -94,7 +100,7 @@ public class NewJobLocationHandler extends BaseHandler {
 		return result;
 	}
 	
-	private void save(ConnectionWrapper conn, String endUserId, String jobLocationName, String street1, String street2, String city, String county, String state, String zip, String country, String userId) throws SQLException {
+	private void save(ConnectionWrapper conn, String endUserId, String jobLocationName, String street1, String street2, String city, String county, String state, String zip, String country, String jobLocationCalendarId, String userId) throws SQLException {
 		PreparedStatement stmt = null;
 		try {
 			stmt = conn.prepareStatement(INSERT);
@@ -108,15 +114,16 @@ public class NewJobLocationHandler extends BaseHandler {
 			stmt.setString(7, state);
 			stmt.setString(8, zip);
 			stmt.setString(9, country);
-			stmt.setString(10, userId);
-	
+            stmt.setString(10, jobLocationCalendarId);
+			stmt.setString(11, userId);
+
 			stmt.executeUpdate();
 		} finally {
 			if (stmt != null) stmt.close();
 		}
 	}
 	
-	private void update(ConnectionWrapper conn, String jobLocationName, String street1, String street2, String city, String county, String state, String zip, String country, String active, String userId, String jobLocationId) throws SQLException {
+	private void update(ConnectionWrapper conn, String jobLocationName, String street1, String street2, String city, String county, String state, String zip, String country, String active, String userId, String jobLocationCalendarId, String jobLocationId) throws SQLException {
 		PreparedStatement stmt = null;
 		try {
 			stmt = conn.prepareStatement(UPDATE);
@@ -131,7 +138,8 @@ public class NewJobLocationHandler extends BaseHandler {
 			stmt.setString(8, country);
 			stmt.setString(9, active);
 			stmt.setString(10, userId);
-			stmt.setString(11, jobLocationId);
+            stmt.setString(11, jobLocationCalendarId);
+			stmt.setString(12, jobLocationId);
 	
 			stmt.executeUpdate();
 		} finally {

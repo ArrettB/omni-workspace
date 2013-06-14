@@ -35,6 +35,7 @@
 		<appGlobalDatum name="sendErrorsTo">bvonhaden@apexit.com</appGlobalDatum>
 		<appGlobalDatum name="tempDir">&projectDir;downloadTemp&sep;</appGlobalDatum>
 		<appGlobalDatum name="testEmail">bvonhaden@apexit.com</appGlobalDatum>
+        <appGlobalDatum name="exchangeCalendarUrl">https://mail.omniworkspace.com/ews/exchange.asmx</appGlobalDatum>
 
 
 		<appGlobalDatum name="WindowAttribs">

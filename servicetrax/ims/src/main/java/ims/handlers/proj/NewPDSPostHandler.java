@@ -22,17 +22,6 @@
  */
 package ims.handlers.proj;
 
-import ims.helpers.IMSUtil;
-import ims.helpers.MapUtil;
-
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
-
 import dynamic.dbtk.connection.ConnectionWrapper;
 import dynamic.dbtk.connection.QueryResults;
 import dynamic.intraframe.engine.InvocationContext;
@@ -42,6 +31,12 @@ import dynamic.intraframe.handlers.SmartFormHandler;
 import dynamic.intraframe.templates.components.SmartFormComponent;
 import dynamic.util.diagnostics.Diagnostics;
 import dynamic.util.string.StringUtil;
+import ims.helpers.IMSUtil;
+import ims.helpers.MapUtil;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * @version $Id: NewPDSPostHandler.java, 1098, 3/6/2008 9:28:04 AM, David Zhao $
@@ -188,6 +183,14 @@ public class NewPDSPostHandler extends BaseHandler {
 					ic.setTransientDatum("email_failed","true");
 				}
 
+                if(button.equalsIgnoreCase("Send")) {
+                    boolean calendar_result = ic.dispatchHandler("ims.handlers.proj.PDSCalendarHandler");
+                    if( !calendar_result )
+                    {
+                        Diagnostics.error("NewPDSPostHandler.handleEnvironment() calendar update failed.");
+                        ic.setParameter("calendar_failed","true");
+                    }
+                }
 			}
 
 			//if created a new project or request, or sending, then show

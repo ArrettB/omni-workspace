@@ -5,19 +5,6 @@
 
 package ims.components;
 
-import ims.helpers.IMSUtil;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Vector;
-
 import dynamic.dbtk.FieldValidator;
 import dynamic.dbtk.MetaData;
 import dynamic.dbtk.connection.ConnectionWrapper;
@@ -30,6 +17,18 @@ import dynamic.intraframe.templates.components.SmartFormComponent;
 import dynamic.util.date.StdDate;
 import dynamic.util.diagnostics.Diagnostics;
 import dynamic.util.string.StringUtil;
+import ims.helpers.IMSUtil;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Vector;
 
 // Referenced classes of package dynamic.intraframe.templates.components:
 //            SmartFormComponent, SQLLoopComponent
@@ -102,7 +101,7 @@ public class SmartFieldComponent extends TemplateComponent
 
 		if (mandatoryString != null)
 		{
-			result.append("<input name=\"" + name + "_mandatory\" type=\"hidden\" value=\"" + mandatoryString + "\">");
+			result.append("<input name=\"" + name + "_mandatory\" type=\"hidden\" value=\"" + mandatoryString + "\"/>");
 		}
 
 		boolean isError = false;
@@ -198,7 +197,7 @@ public class SmartFieldComponent extends TemplateComponent
 				result.append(createText(ic, connTemp, name, typename, length, canSave, isReadOnly, isMandatory, isError));
 			}
 			if (resourceName != null)
-				result.append("<input name=\"" + name + "_resource\" type=\"hidden\" value=\"" + resourceName + "\">");
+				result.append("<input name=\"" + name + "_resource\" id=\"" + name + "_resource\" type=\"hidden\" value=\"" + resourceName + "\"/>");
 		}
 		finally
 		{
@@ -207,11 +206,11 @@ public class SmartFieldComponent extends TemplateComponent
 		}
 		if (isCalculated)
 		{
-			result.append("<input name=\"" + name + "_calculated\" type=\"hidden\" value=\"" + isCalculated + "\">");
+			result.append("<input name=\"" + name + "_calculated\" id=\"" + name + "_calculated\" type=\"hidden\" value=\"" + isCalculated + "\"/>");
 		}
 		if (!validate_field)
 		{
-			result.append("<input name=\"" + name + "_validate\" type=\"hidden\" value=\"" + validate_field + "\">");
+			result.append("<input name=\"" + name + "_validate\" id=\"" + name + "_validate\" type=\"hidden\" value=\"" + validate_field + "\"/>");
 		}
 		if (errorText)
 		{
@@ -537,7 +536,7 @@ public class SmartFieldComponent extends TemplateComponent
 		StringBuffer result = new StringBuffer();
 		StringBuffer select = new StringBuffer();
 		StringBuffer options = new StringBuffer();
-		select.append("<select name=\"" + name + "\"");
+		select.append("<select name=\"" + name + "\" id=\"" + name + "\"");
 		select.append(getExtendedAttributesString(ic));
 		String value = getValue(ic, typename);
 		select.append(getCSS(ic, name, value, canSave, isReadOnly, isMandatory, isError));
@@ -546,7 +545,7 @@ public class SmartFieldComponent extends TemplateComponent
 		int selectedIndex = -1;
 		if (!isMandatory || value == null || value.length() <= 0)
 		{
-			options.append("<option value=\"\">");
+			options.append("<option value=\"\"></option>");
 			i++;
 		}
 		String display = getString(ic, "display");
@@ -591,7 +590,7 @@ public class SmartFieldComponent extends TemplateComponent
 				options.append(" selected");
 				selectedIndex = i;
 			}
-			options.append(">" + element_display);
+			options.append(">" + element_display + "</option>");
 			i++;
 		}
 
@@ -683,7 +682,7 @@ public class SmartFieldComponent extends TemplateComponent
 			psRS.close();
 			pstmt.close();
 		}
-		result.append("<input name=\"" + name + "_text\"");
+		result.append("<input name=\"" + name + "_text\" id=\"" + name + "_text\"");
 		result.append(" type=\"text\"");
 		result.append(getExtendedAttributesString(ic));
 		result.append(getCSS(ic, name + "_text", primaryKeyId, canSave, isReadOnly, isMandatory, isError));
@@ -698,13 +697,13 @@ public class SmartFieldComponent extends TemplateComponent
 		if (x != -1)
 			parentName = parentName.substring(x + 1);
 		result.append(" onChange=\"document." + parentName + "." + name + ".value=''\" ");
-		result.append(">");
+		result.append("/>");
 		if (filter != null)
-			result.append("<input name=\"" + name + "_filter\" type=\"hidden\" value=\"" + StringUtil.toHTML(filter) + "\">");
-		result.append("<input name=\"" + name + "\" type=\"hidden\" value=\"" + (primaryKeyId != null ? primaryKeyId : "") + "\">");
+			result.append("<input name=\"" + name + "_filter\" id=\"" + name + "_filter\" type=\"hidden\" value=\"" + StringUtil.toHTML(filter) + "\"/>");
+		result.append("<input name=\"" + name + "\" id=\"" + name + "\" type=\"hidden\" value=\"" + (primaryKeyId != null ? primaryKeyId : "") + "\"/>");
 		TemplateAttribute t_query = getAttribute(ic, "query");
 		if (t_query != null)
-			result.append("<input name=\"" + name + "_query\" type=\"hidden\" value=\"" + StringUtil.toHTML(t_query.toString()) + "\">");
+			result.append("<input name=\"" + name + "_query\" id=\"" + name + "_query\" type=\"hidden\" value=\"" + StringUtil.toHTML(t_query.toString()) + "\"/>");
 		String img = getString(ic, "img");
 		if (canSave && img != null)
 			result.append(img);
@@ -715,13 +714,13 @@ public class SmartFieldComponent extends TemplateComponent
 	{
 		StringBuffer result = new StringBuffer();
 		String value = getDate(ic, typename);
-		result.append("<input name=\"" + name + "\"");
+		result.append("<input name=\"" + name + "\" id=\"" + name + "\"");
 		result.append(" type=\"text\"");
 		result.append(getExtendedAttributesString(ic));
 		result.append(getCSS(ic, name, value, canSave, isReadOnly, isMandatory, isError));
 		result.append(getEvents(ic));
 		result.append(" maxlength=\"10\"");
-		result.append(" value=\"" + value + "\">");
+		result.append(" value=\"" + value + "\"/>");
 		String img = getString(ic, "img");
 		if (canSave && img != null)
 			result.append(img);
@@ -732,13 +731,13 @@ public class SmartFieldComponent extends TemplateComponent
 	{
 		StringBuffer result = new StringBuffer();
 		String value = getTime(ic, typename);
-		result.append("<input name=\"" + name + "\"");
+		result.append("<input name=\"" + name + "\" id=\"" + name + "\"");
 		result.append(" type=\"text\"");
 		result.append(getExtendedAttributesString(ic));
 		result.append(getCSS(ic, name, value, canSave, isReadOnly, isMandatory, isError));
 		result.append(getEvents(ic));
 		result.append(" maxlength=\"8\"");
-		result.append(" value=\"" + value + "\">");
+		result.append(" value=\"" + value + "\"/>");
 		String img = getString(ic, "img");
 		if (canSave && img != null)
 			result.append(img);
@@ -750,13 +749,13 @@ public class SmartFieldComponent extends TemplateComponent
 	{
 		StringBuffer result = new StringBuffer();
 		String value = getDateTime(ic, typename);
-		result.append("<input name=\"" + name + "\"");
+		result.append("<input name=\"" + name + "\" id=\"" + name + "\"");
 		result.append(" type=\"text\"");
 		result.append(getExtendedAttributesString(ic));
 		result.append(getCSS(ic, name, value, canSave, isReadOnly, isMandatory, isError));
 		result.append(getEvents(ic));
 		result.append(" maxlength=\"19\"");
-		result.append(" value=\"" + value + "\">");
+		result.append(" value=\"" + value + "\"/>");
 		String img = getString(ic, "img");
 		if (canSave && img != null)
 			result.append(img);
@@ -768,7 +767,7 @@ public class SmartFieldComponent extends TemplateComponent
 	{
 		StringBuffer result = new StringBuffer();
 		String value = getValue(ic, typename);
-		result.append("<textarea name=\"" + name + "\"");
+		result.append("<textarea name=\"" + name + "\" id=\"" + name + "\"");
 		result.append(getExtendedAttributesString(ic));
 		result.append(getCSS(ic, name, value, canSave, isReadOnly, isMandatory, isError));
 		result.append(length);
@@ -782,21 +781,21 @@ public class SmartFieldComponent extends TemplateComponent
 	{
 		StringBuffer result = new StringBuffer();
 		String value = getValue(ic, typename);
-		result.append("<select name=\"" + name + "\"");
+		result.append("<select name=\"" + name + "\" id=\"" + name + "\"");
 		result.append(getExtendedAttributesString(ic));
 		result.append(getCSS(ic, name, value, canSave, isReadOnly, isMandatory, isError));
 		result.append(getEvents(ic));
 		result.append(">");
 		if (!isMandatory)
-			result.append("<option value=\"\">");
+			result.append("<option value=\"\"></option>");
 		result.append("<option value=\"Y\"");
 		if (value.equalsIgnoreCase("Y"))
 			result.append(" selected");
-		result.append(">Yes");
+		result.append(">Yes</option>");
 		result.append("<option value=\"N\"");
 		if (value.equalsIgnoreCase("N"))
 			result.append(" selected");
-		result.append(">No");
+		result.append(">No</option>");
 		result.append("</select>");
 		return result.toString();
 	}
@@ -805,11 +804,11 @@ public class SmartFieldComponent extends TemplateComponent
 	{
 		StringBuffer result = new StringBuffer();
 		String value = getValue(ic, typename);
-		result.append("<input name=\"" + name + "\" type=\"hidden\"");
+		result.append("<input name=\"" + name + "\" id=\"" + name + "\" type=\"hidden\"");
 		result.append(getExtendedAttributesString(ic));
 		result.append(" value=\"" + value + "\"");
-		result.append(">");
-		result.append("<input name=\"" + name + "_db\" type=\"hidden\" value=\"true\">");
+		result.append("/>");
+		result.append("<input name=\"" + name + "_db\" id=\"" + name + "_db\" type=\"hidden\" value=\"true\"/>");
 		return result.toString();
 	}
 
@@ -818,15 +817,15 @@ public class SmartFieldComponent extends TemplateComponent
 	{
 		StringBuffer result = new StringBuffer();
 		String value = getValue(ic, typename);
-		result.append("<input name=\"" + name + "\"");
+		result.append("<input name=\"" + name + "\" id=\"" + name + "\"");
 		result.append(" type=\"text\"");
 		result.append(getExtendedAttributesString(ic));
 		result.append(getCSS(ic, name, value, canSave, isReadOnly, isMandatory, isError));
 		result.append(length);
 		result.append(" value=\"" + value + "\"");
 		result.append(getEvents(ic));
-		result.append(">");
-		result.append("<input name=\"" + name + "_phone\" type=\"hidden\" value=\"true\">");
+		result.append("/>");
+		result.append("<input name=\"" + name + "_phone\" id=\"" + name + "_phone\" type=\"hidden\" value=\"true\"/>");
 		return result.toString();
 	}
 
@@ -835,15 +834,15 @@ public class SmartFieldComponent extends TemplateComponent
 	{
 		StringBuffer result = new StringBuffer();
 		String value = getMoney(ic, typename);
-		result.append("<input name=\"" + name + "\"");
+		result.append("<input name=\"" + name + "\" id=\"" + name + "\"");
 		result.append(" type=\"text\"");
 		result.append(getExtendedAttributesString(ic));
 		result.append(getCSS(ic, name, value, canSave, isReadOnly, isMandatory, isError));
 		result.append(length);
 		result.append(" value=\"" + value + "\"");
 		result.append(getEvents(ic));
-		result.append(">");
-		result.append("<input name=\"" + name + "_money\" type=\"hidden\" value=\"true\">");
+		result.append("/>");
+		result.append("<input name=\"" + name + "_money\" id=\"" + name + "_money\" type=\"hidden\" value=\"true\"/>");
 		return result.toString();
 	}
 
@@ -852,15 +851,15 @@ public class SmartFieldComponent extends TemplateComponent
 	{
 		StringBuffer result = new StringBuffer();
 		String value = getPercent(ic, typename);
-		result.append("<input name=\"" + name + "\"");
+		result.append("<input name=\"" + name + "\" id=\"" + name + "\"");
 		result.append(" type=\"text\"");
 		result.append(getExtendedAttributesString(ic));
 		result.append(getCSS(ic, name, value, canSave, isReadOnly, isMandatory, isError));
 		result.append(length);
 		result.append(" value=\"" + value + "\"");
 		result.append(getEvents(ic));
-		result.append(">");
-		result.append("<input name=\"" + name + "_percent\" type=\"hidden\" value=\"" + getString(ic, "numDecimals") + "\">");
+		result.append("/>");
+		result.append("<input name=\"" + name + "_percent\" id=\"" + name + "_percent\" type=\"hidden\" value=\"" + getString(ic, "numDecimals") + "\"/>");
 		return result.toString();
 	}
 
@@ -869,20 +868,20 @@ public class SmartFieldComponent extends TemplateComponent
 	{
 		StringBuffer result = new StringBuffer();
 		String value = getValue(ic, typename);
-		result.append("<input name=\"" + name + "\"");
+		result.append("<input name=\"" + name + "\" id=\"" + name + "\"");
 		result.append(" type=\"" + getString(ic, "type") + "\"");
 		result.append(getExtendedAttributesString(ic));
 		result.append(getCSS(ic, name, value, canSave, isReadOnly, isMandatory, isError));
 		result.append(length);
 		result.append(" value=\"" + value + "\"");
 		result.append(getEvents(ic));
-		result.append(">");
+		result.append("/>");
 		String format = getString(ic, "format");
 		if (format != null)
-			result.append("<input name=\"" + name + "_format\" type=\"hidden\" value=\"" + StringUtil.toHTML(format) + "\">");
+			result.append("<input name=\"" + name + "_format\" id=\"" + name + "_format\" type=\"hidden\" value=\"" + StringUtil.toHTML(format) + "\"/>");
 		TemplateAttribute query = getAttribute(ic, "query");
 		if (query != null)
-			result.append("<input name=\"" + name + "_query\" type=\"hidden\" value=\"" + StringUtil.toHTML(query.toString()) + "\">");
+			result.append("<input name=\"" + name + "_query\" id=\"" + name + "_query\" type=\"hidden\" value=\"" + StringUtil.toHTML(query.toString()) + "\"/>");
 		return result.toString();
 	}
 

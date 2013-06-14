@@ -1,16 +1,16 @@
 package ims.handlers.proj;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import dynamic.dbtk.connection.ConnectionWrapper;
 import dynamic.intraframe.engine.InvocationContext;
 import dynamic.intraframe.handlers.BaseHandler;
 import dynamic.intraframe.handlers.ErrorHandler;
 import dynamic.util.diagnostics.Diagnostics;
 import dynamic.util.string.StringUtil;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * @author dzhao
@@ -117,7 +117,7 @@ public class NewContactHandler extends BaseHandler {
 			String organizationId = (String) ic.getSessionDatum("org_id");
 			String extDealerId = (String) ic.getSessionDatum("ext_dealer_id");
 			String customerId = (String) ic.getParameter("customer_id");
-			String jobLocationId = (String) ic.getParameter("job_location_id");
+			String jobLocationId = (String) ic.getParameter("contact_job_location_id");
 			String paramType = ic.getParameter("param_type");
 			
 			String contactId = ic.getParameter("current_id");

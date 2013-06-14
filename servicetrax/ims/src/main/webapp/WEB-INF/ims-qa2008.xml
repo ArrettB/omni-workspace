@@ -41,6 +41,7 @@
 		<appGlobalDatum name="sendErrorsTo">scanderson@ambis.com,david.zhao@apexit.com</appGlobalDatum>
 		<appGlobalDatum name="tempDir">&projectDir;downloadTemp&sep;</appGlobalDatum>
 		<appGlobalDatum name="testEmail"></appGlobalDatum>
+        <appGlobalDatum name="exchangeCalendarUrl">https://mpls2.omniworkspace.com/ews/exchange.asmx</appGlobalDatum>
 
 		<appGlobalDatum name="WindowAttribs">
 			'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=400,height=304'

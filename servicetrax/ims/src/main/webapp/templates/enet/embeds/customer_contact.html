@@ -27,7 +27,7 @@
 							FROM lookups l INNER JOIN lookup_types lt ON l.lookup_type_id=lt.lookup_type_id
 						   WHERE lt.code='contact_type'
 							 AND l.active_flag='Y'
-							 AND l.code IN ('sales','project_mgr','support','designer')
+							 AND l.code IN ('sales','project_mgr','support','designer','calendar')
 						ORDER BY l.lookup_id" -->
     <!--#ELSE-->
 	   <!--#SELECT name="contact_type_id"
@@ -96,7 +96,7 @@
 							FROM lookups l INNER JOIN lookup_types lt ON l.lookup_type_id=lt.lookup_type_id
 						   WHERE lt.code='contact_type'
 							 AND l.active_flag='Y'
-							 AND l.code IN ('sales','project_mgr','support','designer')
+							 AND l.code IN ('sales','project_mgr','support','designer', 'calendar')
 						ORDER BY l.lookup_id" -->
     <!--#ELSE-->
 	   <!--#SELECT name="contact_type_id"

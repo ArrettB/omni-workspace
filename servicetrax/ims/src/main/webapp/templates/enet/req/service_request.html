@@ -47,7 +47,7 @@ function showHotSheet()
       var response = o.responseText;
       response = response.split("<!")[0];
       var type = document.getElementById("contact_param3").value;
-      var jl_id = document.getElementById("job_location_id").value;
+      var jl_id = document.getElementById("contact_job_location_id").value;
       var currentId = document.getElementById("contact_param4").value;
       var button = document.getElementById("contact_param6").value;
 
@@ -778,7 +778,7 @@ $(document).ready(function()
 
   $("#newJobLocContactButton").click(function() {
 
-    document.contact_frm.job_location_id.value = document.getElementById("job_location_id").value;
+    document.contact_frm.contact_job_location_id.value = document.getElementById("job_location_id").value;
     document.contact_frm.param_type.value = "job_location";
         document.contact_frm.current_id.value = "";
         document.contact_frm.button.value = "new";
@@ -792,7 +792,7 @@ $(document).ready(function()
 
     var id = document.getElementById("job_location_contact_id").value;
 
-    document.contact_frm.job_location_id.value = document.getElementById("job_location_id").value;
+    document.contact_frm.contact_job_location_id.value = document.getElementById("job_location_id").value;
     document.contact_frm.param_type.value = "job_location";
         document.contact_frm.current_id.value = id;
         document.contact_frm.button.value = "view";
@@ -1148,12 +1148,13 @@ function validateEmail(str){
   </td></tr>
 </table>
 
+<!--#SMARTFORM name="enet/req/sr_edit" security="rights" table="requests" key="request_id"
+         preHandler="ims.handlers.job_processing.SmartFormPreHandler,ims.handlers.proj.NewPDSPreHandler"
+         postHandler="ims.handlers.proj.NewPDSPostHandler"
+                 buttons=""
+-->
 <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="tan">
-  <!--#SMARTFORM name="enet/req/sr_edit" security="rights" table="requests" key="request_id"
-           preHandler="ims.handlers.job_processing.SmartFormPreHandler,ims.handlers.proj.NewPDSPreHandler"
-           postHandler="ims.handlers.proj.NewPDSPostHandler"
-                   buttons=""
-  -->
+
   <!--#SMARTFIELD name="display_markup_widgets" type="hidden" value="<?p:display_markup_widgets?>" -->
   <!--#SMARTFIELD name="has_existing_invoices" type="hidden" value="<?p:has_existing_invoices?>" -->
 
@@ -1264,7 +1265,7 @@ function validateEmail(str){
 <!--#IF defined="<?s:project_id?>" -->
       <tr  valign="top">
         <td><!--#SMARTFIELD title="<span class='mandatoryLabel'>Project Name</span>:" div="&nbsp;</td>
-                            <td>" style="width:230" name="job_name" class="readonly" readonly value="<?s:job_name?>" maxlength="50"-->
+                            <td>" style="width:230" name="job_name" id="job_name" class="readonly" readonly value="<?s:job_name?>" maxlength="50"-->
   <!--#SQLLOOP name="project"
                query="SELECT top 1 'x' FROM requests_v
                        WHERE (project_id = <?s:project_id.toPStmtString()?> AND request_type_code = 'service_request' AND is_sent = 'Y')
@@ -1274,7 +1275,7 @@ function validateEmail(str){
         <td colspan="2"><input name="job_name_update" type="button" value="Update" class="button2" onClick="newWindow('{!s:showPage!}enet/proj/job_name_edit.html?project_id={!s:project_id!}','job_name_edit',130,300);">
   <!--#/SQLNODATA-->
   <!--#/SQLLOOP-->
-          <input name="project_type_id" type="hidden" value="{!s:project_type_id!}">
+          <input id="project_type_id" name="project_type_id" type="hidden" value="{!s:project_type_id!}">
         </td>
         <td></td>
       </tr>
@@ -1598,9 +1599,9 @@ function validateEmail(str){
     <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="&nbsp;&nbsp;&nbsp;Schedule Type:" div="&nbsp;</td><td>" style="width:230" name="schedule_type_id" type="droplist" table="schedule_types_enet_v" display="lookup_name" key="lookup_id" orderBy="sequence_no" --></td></tr>
 
 
-    <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="&nbsp;&nbsp;&nbsp;Requested Service Date:" div="&nbsp;</td><td>" style="width:210"  name="est_start_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(est_start_date)')</script>"--></td></tr>
+    <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="&nbsp;&nbsp;&nbsp;Requested Service Date:" div="&nbsp;</td><td>" style="width:210"  name="est_start_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(document.sr_edit.est_start_date)')</script>"--></td></tr>
     <tr><td class="regularLabel"><!--#SMARTFIELD title="&nbsp;&nbsp;&nbsp;Requested Start Time:" div="&nbsp;</td><td>" style="width:210" name="est_start_time" type="time" --></td></tr>
-    <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="&nbsp;&nbsp;&nbsp;Requested Completion Date:" div="&nbsp;</td><td>" style="width:210" name="est_end_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(est_end_date)')</script>"--></td></tr>
+    <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="&nbsp;&nbsp;&nbsp;Requested Completion Date:" div="&nbsp;</td><td>" style="width:210" name="est_end_date" type="date" img="<script>makeButton('selectDate','calendar_off','calendar_on','chooseDate(document.forms[0].est_end_date)')</script>"--></td></tr>
     <tr  valign="top"><td class="mandatoryLabel"><!--#SMARTFIELD title="&nbsp;&nbsp;&nbsp;Number of Days to Complete:" div="&nbsp;</td><td>" style="width:230" name="days_to_complete" onKeyUp="fieldValidator(this,'number')" -->
     <tr><td class="mandatoryLabel"><!--#SMARTFIELD title="Systems Furniture:" div="&nbsp;</td><td>" style="width:230" name="system_furniture_line_type_id" type="droplist" onChange="onSystemFurnitureChange()"
                             query="SELECT lookup_id pri_furn_line_type_id,
@@ -1823,16 +1824,16 @@ function validateEmail(str){
                           ORDER BY c.customer_name" -->
       </div></td>
      <!--#CHECKSECURITY right="rights.enet/req/end_user_edit.insert" -->
-        <td><div id="newEndUserButtonDiv" style="display:none;"><input type="button" class="button2" value="New" id="newEndUserButton"></div></td>
+        <td><div id="newEndUserButtonDiv" style="display:none;"><input type="button" class="button2" value="New" id="newEndUserButton"/></div></td>
      <!--#ELSE-->
         <td>&nbsp;</td>
-        <input type="hidden" id="newEndUserButton" >
+        <input type="hidden" id="newEndUserButton"/>
      <!--#/CHECKSECURITY-->
      <!--#CHECKSECURITY right="rights.enet/req/end_user_edit.update" -->
-        <td><div id="viewEndUserButtonDiv" style="display:none;"><input type="button" class="button2" value="View" id="viewEndUserButton" onClick="view_end_user();"></div></td>
+        <td><div id="viewEndUserButtonDiv" style="display:none;"><input type="button" class="button2" value="View" id="viewEndUserButton" onClick="view_end_user();"/></div></td>
      <!--#ELSE-->
         <td>&nbsp;</td>
-        <input type="hidden" id="viewEndUserButtonDiv" >
+        <input type="hidden" id="viewEndUserButtonDiv"/>
      <!--#/CHECKSECURITY-->
 <!--#/IF-->
       </tr>
@@ -1840,13 +1841,13 @@ function validateEmail(str){
 <!-- Job Location -->
       <tr>
 <!--#IF evaluate="<?s:request_readonly?>" compare="true" -->
-        <td><!--#SMARTFIELD title="<span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;Job Location</span>:" div="&nbsp;</td><td>" style="width:230" name="job_location_id" type="droplist"
+        <td><!--#SMARTFIELD title="<span class='mandatoryLabel'>&nbsp;&nbsp;&nbsp;Job Location</span>:" div="&nbsp;</td><td>" style="width:230" name="job_location_id" id="job_location_id" type="droplist"
                                query="SELECT job_location_id, job_location_name
                                     FROM job_locations
                                    WHERE job_location_id = <?d:job_location_id.toPStmtInt()?>" --></td>
         <td>&nbsp;</td><td>&nbsp;</td>
-        <input type="hidden" id="newJobLocationButtonDiv">
-        <input type="hidden" id="viewJobLocationButtonDiv">
+        <input type="hidden" id="newJobLocationButtonDiv"/>
+        <input type="hidden" id="viewJobLocationButtonDiv"/>
 <!--#ELSE-->
         <td><span class="mandatoryLabel">&nbsp;&nbsp;&nbsp;Job Location</span>:</td>
         <td><div id="jobLocationsDiv">
@@ -1859,8 +1860,8 @@ function validateEmail(str){
                 WHERE customer_id = <?s:end_user_id.toPStmtInt()?>
                ORDER BY job_location_name"  -->
       </div></td>
-      <td><div id="newJobLocationButtonDiv" style="display:none;"><input type="button" class="button2" value="New" id="newJobLocationButton"></div></td>
-      <td><div id="viewJobLocationButtonDiv" style="display:none;"><input type="button" class="button2" value="View" id="viewJobLocationButton"></div></td>
+      <td><div id="newJobLocationButtonDiv" style="display:none;"><input type="button" class="button2" value="New" id="newJobLocationButton"/></div></td>
+      <td><div id="viewJobLocationButtonDiv" style="display:none;"><input type="button" class="button2" value="View" id="viewJobLocationButton"/></div></td>
 <!--#/IF-->
     </tr>
 <!-- Address -->
@@ -2055,8 +2056,8 @@ function validateEmail(str){
 
   <!--#SMARTFIELD name="form_loaded" type="hidden" value="true" -->
 
-   <!--#/SMARTFORM-->
 </table>
+<!--#/SMARTFORM-->
 
 <!-- Contact Dialog Begin -->
 <div id="contactDialogDiv" class="yui-panel"><div class="hd">Please enter contact information</div>
@@ -2064,7 +2065,7 @@ function validateEmail(str){
   <form name="contact_frm" method="POST" action="{!s:action!}newContact/enet/embeds/contact_response.html">
   <div id="contactFormDiv"></div>
   <input name="customer_id" id="contact_param1" type="hidden" />
-  <input name="job_location_id" id="contact_param2" type="hidden" />
+  <input name="contact_job_location_id" id="contact_param2" type="hidden" />
   <input name="param_type" id="contact_param3" type="hidden" />
   <input name="current_id" id="contact_param4" type="hidden" />
   <input name="index" id="contact_param5" type="hidden" />

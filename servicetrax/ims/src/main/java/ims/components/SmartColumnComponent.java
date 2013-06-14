@@ -5,12 +5,12 @@
 
 package ims.components;
 
-import java.util.Vector;
-
 import dynamic.dbtk.parser.Sql;
 import dynamic.intraframe.engine.InvocationContext;
 import dynamic.intraframe.templates.TemplateComponent;
 import dynamic.util.string.StringUtil;
+
+import java.util.Vector;
 
 // Referenced classes of package dynamic.intraframe.templates.components:
 //            SmartTableComponent, SQLLoopComponent, SmartFieldComponent
@@ -144,32 +144,19 @@ public class SmartColumnComponent extends dynamic.intraframe.templates.component
         td.append(getExtendedAttributesString(ic));
         td.append(events);
         td.append(">\n");
-        if(ic.isInternetExplorer())
-        {
-            result.append(href);
-            result.append(td);
-        } else
-        {
-            result.append(td);
-            result.append("&nbsp;");
-            result.append(href);
-        }
+        result.append(td);
+        result.append("&nbsp;");
+        result.append(href);
         if(text == null || text.length() == 0 || text.equals(" "))
             text = "&nbsp;";
         result.append(text);
         if(img != null)
             result.append("&nbsp;" + img);
-        if(ic.isInternetExplorer())
-        {
-            result.append("</td>");
-            if(href.length() > 0)
-                result.append("</a>");
-        } else
-        {
-            if(href.length() > 0)
-                result.append("</a>");
-            result.append("</td>");
-        }
+
+        if(href.length() > 0)
+            result.append("</a>");
+        result.append("</td>");
+
         result.append("\n");
         if(filter != null && filter.length() > 0)
         {

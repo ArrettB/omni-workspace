@@ -6,6 +6,10 @@
     <display-name>IMS</display-name>
     <description>IMS</description>
     <context-param>
+        <param-name>webAppRootKey</param-name>
+        <param-value>serviceTraxIms.root</param-value>
+    </context-param>
+    <context-param>
         <param-name>webmaster</param-name>
         <param-value>jchrisman@ambis.com</param-value>
         <description>The email address of the administrator to whom questions and comments about this application should

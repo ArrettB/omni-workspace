@@ -4,6 +4,10 @@
 <web-app>
 	<display-name>IMS</display-name>
 	<description>IMS</description>
+    <context-param>
+        <param-name>webAppRootKey</param-name>
+        <param-value>serviceTraxIms.root</param-value>
+    </context-param>
 	<context-param>
 		<param-name>webmaster</param-name>
 		<param-value>chrismanj@omniworkspace.com</param-value>
