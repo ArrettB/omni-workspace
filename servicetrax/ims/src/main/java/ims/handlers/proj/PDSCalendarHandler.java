@@ -163,7 +163,7 @@ public class PDSCalendarHandler extends BaseHandler
         myMap.put("end_user_name",endUserName);
         myMap.put("job_location_name", jobLocationName);
 
-        Diagnostics.status("Sending calendar request for project # " + recordNumber + " to calendar for " + calendarEmailAddress);
+        Diagnostics.status("Sending calendar request for project # " + recordNumber + " to calendar for " + calendarEmailAddress + " start date is " + est_start_date + ", start time is " + est_start_time);
 
         try {
             String exchangeUrl = ic.getAppGlobalDatum("exchangeCalendarUrl").toString();
@@ -237,10 +237,8 @@ public class PDSCalendarHandler extends BaseHandler
             appointment.setBody(MessageBody.getMessageBodyFromText(summary));
 
             // format date in the XML format
-            SimpleDateFormat startDateFormatter = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
             Calendar startCalendar  = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
-            String startDateString = parameters.get("est_start_time");
-            Date startDate = startDateFormatter.parse(startDateString);
+            Date startDate = parseStartDate(parameters.get("est_start_date"), parameters.get("est_start_time"));
             startCalendar.setTimeInMillis(startDate.getTime());
 
             int year = startCalendar.get(Calendar.YEAR);
@@ -258,6 +256,29 @@ public class PDSCalendarHandler extends BaseHandler
             appointment.setEnd(new Date(year - 1900, month, day, hour, minute, second));
 
             appointment.save();
+        }
+
+        public Date parseStartDate(String est_start_date, String est_start_time) throws Exception {
+            Date startDate;
+            if(est_start_date.contains(":")) {
+                SimpleDateFormat startDateFormatter = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+                startDate = startDateFormatter.parse(est_start_date);
+                return startDate;
+            } else if( est_start_time != null && est_start_time.length() > 0) {
+                String date = est_start_date + " " + est_start_time;
+
+                SimpleDateFormat startDateFormatter = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+                startDate = startDateFormatter.parse(date);
+                return startDate;
+            } else if( est_start_date != null && est_start_date.length() > 0) {
+                String date = est_start_date + " 09:00 AM";
+
+                SimpleDateFormat startDateFormatter = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+                startDate = startDateFormatter.parse(date);
+                return startDate;
+            } else {
+                throw new Exception("Attempting to set an appointment with no date or time - this just won't work");
+            }
         }
     }
 
