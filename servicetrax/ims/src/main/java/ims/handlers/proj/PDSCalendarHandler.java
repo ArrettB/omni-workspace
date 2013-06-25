@@ -260,20 +260,13 @@ public class PDSCalendarHandler extends BaseHandler
 
         public Date parseStartDate(String est_start_date, String est_start_time) throws Exception {
             Date startDate;
-            if(est_start_date.contains(":")) {
-                SimpleDateFormat startDateFormatter = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
-                startDate = startDateFormatter.parse(est_start_date);
+            SimpleDateFormat startDateFormatter = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+            if( est_start_time != null && est_start_time.length() > 0 && est_start_time.contains("/")) {
+                startDate = startDateFormatter.parse(est_start_time);
                 return startDate;
-            } else if( est_start_time != null && est_start_time.length() > 0) {
-                String date = est_start_date + " " + est_start_time;
-
-                SimpleDateFormat startDateFormatter = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
-                startDate = startDateFormatter.parse(date);
-                return startDate;
-            } else if( est_start_date != null && est_start_date.length() > 0) {
+            } else if(est_start_date != null && est_start_date.length() > 0 ) {
                 String date = est_start_date + " 09:00 AM";
 
-                SimpleDateFormat startDateFormatter = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
                 startDate = startDateFormatter.parse(date);
                 return startDate;
             } else {
