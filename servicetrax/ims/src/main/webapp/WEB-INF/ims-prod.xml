@@ -39,6 +39,8 @@
         <appGlobalDatum name="newLoginSupportEmailLink">mailto:support@omniworkspace.com?subject=ServiceTRAX Inquiry</appGlobalDatum>
         <appGlobalDatum name="newLoginSupportEmail">support@omniworkspace.com</appGlobalDatum>
         <appGlobalDatum name="exchangeCalendarUrl">https://mpls2.omniworkspace.com/ews/exchange.asmx</appGlobalDatum>
+        <appGlobalDatum name="workOrderCatcherEmail">workordercatcheruhg@ambis.com</appGlobalDatum>
+        <appGlobalDatum name="moveManagerEmail">movemanageruhg@ambis.com</appGlobalDatum>
 
 		<appGlobalDatum name="WindowAttribs">
 			'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=400,height=304'

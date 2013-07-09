@@ -110,25 +110,27 @@ public class PDSCalendarHandler extends BaseHandler
 		String est_start_date = ic.getParameter("est_start_date");
         String est_start_time = ic.getParameter("est_start_time");
         String est_end_date = ic.getParameter("est_end_date");
+        String description = "";
 		if (est_start_date != null && est_start_date.length() == 0) est_start_date = null;
         if (est_end_date != null && est_end_date.length() == 0) est_end_date = null;
         if (est_start_time == null || est_start_time.length() == 0) est_start_time = "9:00 AM";
 		// IMPORTANT DATA ABOVE
 
-        if(est_start_date == null || est_end_date == null) {
+        if(est_start_date == null ) {
             return true;
         }
 
         StringBuffer sch_message = null; // used for scheduler emails
 		String query = null;
         // get info we can't from the parameters
-        query = "SELECT record_no, customer_name, end_user_name, job_name FROM projects_all_requests_v j WHERE request_id = ?";
+        query = "SELECT record_no, customer_name, end_user_name, job_name, description FROM projects_all_requests_v WHERE request_id = ?";
     	QueryResults rs = conn.select(query,request_id);
         if(rs.next()) {
             recordNumber = rs.getString("record_no");
             customerName = rs.getString("customer_name");
             endUserName = rs.getString("end_user_name");
             jobName = rs.getString("job_name");
+            description = rs.getString("description");
         }
         IMSUtil.closeQueryResultSet(rs);
 
@@ -153,6 +155,10 @@ public class PDSCalendarHandler extends BaseHandler
         }
 		IMSUtil.closeQueryResultSet(rs);
 
+
+        String workOrderCatcherEmail = ic.getAppGlobalDatum("workOrderCatcherEmail").toString();
+        String moveManagerEmail = ic.getAppGlobalDatum("moveManagerEmail").toString();
+
         HashMap <String,String> myMap = new HashMap<String,String>();
         myMap.put("est_start_date", est_start_date);
         myMap.put("est_start_time", est_start_time);
@@ -162,6 +168,9 @@ public class PDSCalendarHandler extends BaseHandler
         myMap.put("customer_name",customerName);
         myMap.put("end_user_name",endUserName);
         myMap.put("job_location_name", jobLocationName);
+        myMap.put("description", description);
+        myMap.put("workorderCatcher", workOrderCatcherEmail);
+        myMap.put("moveManager", moveManagerEmail);
 
         Diagnostics.status("Sending calendar request for project # " + recordNumber + " to calendar for " + calendarEmailAddress + " start date is " + est_start_date + ", start time is " + est_start_time);
 
@@ -171,6 +180,12 @@ public class PDSCalendarHandler extends BaseHandler
 
             ExchangeClient client = new ExchangeClient(exchangeUrl, calendarEmailAddress, calendarPassword);
             client.sendAppointmentForRequest(myMap);
+
+//            String moveManagerEmail = ic.getAppGlobalDatum("moveManagerEmail").toString();
+//            String moveManagePassword = ic.getAppGlobalDatum("moveManagerPassword").toString();
+//            ExchangeClient clientForMoveManager = new ExchangeClient(exchangeUrl, moveManagerEmail, moveManagePassword);
+//            clientForMoveManager.sendAppointmentForRequest(myMap);
+
         } catch( Exception e ) {
             Diagnostics.error("Unable to send calendar request : " + e.getMessage());
 
@@ -231,10 +246,15 @@ public class PDSCalendarHandler extends BaseHandler
                     ", job name " + parameters.get("job_name") +
                     " for customer " + parameters.get("customer_name") +
                     " , end user " + parameters.get("end_user_name") +
-                    " located at " + parameters.get("job_location_name");
+                    " located at " + parameters.get("job_location_name") + "<br/>" +
+                    "Description: <br/>" +
+                    parameters.get("description");
 
             appointment.setSubject("Project # " + parameters.get("project_no"));
             appointment.setBody(MessageBody.getMessageBodyFromText(summary));
+            appointment.getBody().setBodyType(BodyType.HTML);
+            appointment.getRequiredAttendees().add(parameters.get("workorderCatcher"));
+            appointment.getRequiredAttendees().add(parameters.get("moveManager"));
 
             // format date in the XML format
             Calendar startCalendar  = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
@@ -250,6 +270,9 @@ public class PDSCalendarHandler extends BaseHandler
 
             Diagnostics.debug2("Project # " + parameters.get("project_no") + ", start time: " + (month + 1) + "/" + day + "/" + year + " " + hour + ":" + minute + ":" + second);
             appointment.setStart(new Date(year - 1900, month, day, hour, minute, second));
+            StringList categories = new StringList();
+            categories.add( "Red Category");
+            appointment.setCategories(categories);
 
             hour += 1;
             Diagnostics.debug2("Project # " + parameters.get("project_no") + ", end time: " + (month+1) + "/" + day + "/" + year + " " + hour + ":" + minute + ":" + second);
