@@ -36,8 +36,7 @@
 		<appGlobalDatum name="tempDir">&projectDir;downloadTemp&sep;</appGlobalDatum>
 		<appGlobalDatum name="testEmail">bvonhaden@apexit.com</appGlobalDatum>
         <appGlobalDatum name="exchangeCalendarUrl">https://mail.omniworkspace.com/ews/exchange.asmx</appGlobalDatum>
-        <appGlobalDatum name="workOrderCatcherEmail">workordercatcheruhg@ambis.com</appGlobalDatum>
-        <appGlobalDatum name="moveManagerEmail">movemanageruhg@ambis.com</appGlobalDatum>
+        <appGlobalDatum name="additionalEmails">workordercatcheruhg@ambis.com,movemanageruhg@ambis.com</appGlobalDatum>
 
 
 		<appGlobalDatum name="WindowAttribs">

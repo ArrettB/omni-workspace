@@ -45,38 +45,6 @@ import java.util.*;
  */
 public class PDSCalendarHandler extends BaseHandler
 {
-	private final static String NEWLINE = "\r\n";
-
-	public enum CalendarTemplate {
-		APPOINTMENT(
-				"BEGIN:VCALENDAR" + NEWLINE
-				+ "VERSION: 2.0" + NEWLINE
-				+ "PRODID: -//ServiceTRAX//CalDAV Client//EN" + NEWLINE
-                + "METHOD: REQUEST" + NEWLINE
-                + "BEGIN: VEVENT" + NEWLINE
-				+ "DTSTART:   ${est_start_date}" + NEWLINE
-				+ "DTEND: ${est_end_date}" + NEWLINE
-                + "ORGANIZER: mailto:${calendar_email_address}" + NEWLINE
-				+ "SUMMARY: Project #: ${project_no}, job name ${job_name} for customer ${customer_name}, end user ${end_user_name} located at ${job_location_name}" + NEWLINE
-				+ "END: VEVENT" + NEWLINE
-                + "END: VCALENDAR" + NEWLINE);
-		
-		private final String msg;
-		
-        CalendarTemplate(String msg)
-		{
-			this.msg = msg;
-		}
-		
-		public String getMessage()
-		{
-			return msg;
-		}
-	
-	}
-
-	private static Map<String, String> calendarTemplates;
-
 	public void setUpHandler() throws Exception	{
 		Diagnostics.debug2("PDSCalendarHandler.setUpHandler()");
 	}
@@ -88,7 +56,6 @@ public class PDSCalendarHandler extends BaseHandler
 		
 		ConnectionWrapper conn = null;
 		boolean result = true;
-		List<String> vendorContactList = new ArrayList<String>();	
 		conn = (ConnectionWrapper) ic.getTransientDatum(SmartFormHandler.CONNECTION);
 
 		if (conn == null) {
@@ -111,6 +78,7 @@ public class PDSCalendarHandler extends BaseHandler
         String est_start_time = ic.getParameter("est_start_time");
         String est_end_date = ic.getParameter("est_end_date");
         String description = "";
+        String subject = "";
 		if (est_start_date != null && est_start_date.length() == 0) est_start_date = null;
         if (est_end_date != null && est_end_date.length() == 0) est_end_date = null;
         if (est_start_time == null || est_start_time.length() == 0) est_start_time = "9:00 AM";
@@ -123,7 +91,11 @@ public class PDSCalendarHandler extends BaseHandler
         StringBuffer sch_message = null; // used for scheduler emails
 		String query = null;
         // get info we can't from the parameters
-        query = "SELECT record_no, customer_name, end_user_name, job_name, description FROM projects_all_requests_v WHERE request_id = ?";
+        query = "SELECT p_v.record_no, p_v.customer_name, p_v.end_user_name, p_v.job_name, p_v.description, r.cust_col_5 " +
+                "FROM projects_all_requests_v p_v inner join dbo.requests r " +
+                "ON " +
+                "    p_v.request_id = r.request_id " +
+                "WHERE p_v.request_id = ?;";
     	QueryResults rs = conn.select(query,request_id);
         if(rs.next()) {
             recordNumber = rs.getString("record_no");
@@ -131,6 +103,10 @@ public class PDSCalendarHandler extends BaseHandler
             endUserName = rs.getString("end_user_name");
             jobName = rs.getString("job_name");
             description = rs.getString("description");
+            subject = rs.getString("cust_col_5");
+            if(subject == null || subject.length() == 0) {
+                subject = "UHG Job";
+            }
         }
         IMSUtil.closeQueryResultSet(rs);
 
@@ -156,8 +132,7 @@ public class PDSCalendarHandler extends BaseHandler
 		IMSUtil.closeQueryResultSet(rs);
 
 
-        String workOrderCatcherEmail = ic.getAppGlobalDatum("workOrderCatcherEmail").toString();
-        String moveManagerEmail = ic.getAppGlobalDatum("moveManagerEmail").toString();
+        String additionalCalendarEmails = ic.getAppGlobalDatum("additionalEmails").toString();
 
         HashMap <String,String> myMap = new HashMap<String,String>();
         myMap.put("est_start_date", est_start_date);
@@ -169,10 +144,10 @@ public class PDSCalendarHandler extends BaseHandler
         myMap.put("end_user_name",endUserName);
         myMap.put("job_location_name", jobLocationName);
         myMap.put("description", description);
-        myMap.put("workorderCatcher", workOrderCatcherEmail);
-        myMap.put("moveManager", moveManagerEmail);
+        myMap.put("additionalEmails", additionalCalendarEmails);
+        myMap.put("subject", subject);
 
-        Diagnostics.status("Sending calendar request for project # " + recordNumber + " to calendar for " + calendarEmailAddress + " start date is " + est_start_date + ", start time is " + est_start_time);
+        Diagnostics.status("Sending calendar request for project # " + recordNumber + " to calendar for " + calendarEmailAddress + " start date is " + est_start_date );
 
         try {
             String exchangeUrl = ic.getAppGlobalDatum("exchangeCalendarUrl").toString();
@@ -203,21 +178,22 @@ public class PDSCalendarHandler extends BaseHandler
 
     public static void main(String[] args) {
         HashMap <String,String> myMap = new HashMap<String,String>();
-        myMap.put("est_start_date", "06/13/2013 12:00:00");
-        myMap.put("est_end_date", "06/13/2013 17:00:00");
+        myMap.put("est_start_date", "12/28/2013");
+        myMap.put("est_end_date", "12/28/2013");
 //        myMap.put("est_start_time", "10:00:00");
         myMap.put("project_no", "1192305-6.1");
         myMap.put("job_name", "NATIONAL RELOCATION");
         myMap.put("customer_name","TARGET COMMERCIAL INTERIORS");
         myMap.put("end_user_name","UNITED HEALTH GROUP FMC");
         myMap.put("job_location_name", "MN010 - GOLDEN VALLEY");
+        myMap.put("subject", "Calendar test");
 
         try {
             // internal
-            String exchangeCalendarUrl = "https://mpls2.omniworkspace.com/ews/exchange.asmx";
+            //String exchangeCalendarUrl = "https://mpls2.omniworkspace.com/ews/exchange.asmx";
             // external
-            //String exchangeCalendarUrl = "https://mail.omniworkspace.com/ews/exchange.asmx";
-            ExchangeClient exchange = new ExchangeClient(exchangeCalendarUrl, "goldenvalleyuhg@ambis.com", "teamuhg");
+            String exchangeCalendarUrl = "https://mail.omniworkspace.com/ews/exchange.asmx";
+            ExchangeClient exchange = new ExchangeClient(exchangeCalendarUrl, "goldenvalleyuhg@omniworkspace.com", "teamuhg");
 
             exchange.sendAppointmentForRequest(myMap);
         } catch( Exception err ) {
@@ -250,15 +226,24 @@ public class PDSCalendarHandler extends BaseHandler
                     "Description: <br/>" +
                     parameters.get("description");
 
-            appointment.setSubject("Project # " + parameters.get("project_no"));
+            appointment.setSubject(parameters.get("subject"));
             appointment.setBody(MessageBody.getMessageBodyFromText(summary));
             appointment.getBody().setBodyType(BodyType.HTML);
-            appointment.getRequiredAttendees().add(parameters.get("workorderCatcher"));
-            appointment.getRequiredAttendees().add(parameters.get("moveManager"));
+            String additionalEmails = parameters.get("additionalEmails");
+            if(additionalEmails != null && additionalEmails.length() > 0) {
+                String[] emails = additionalEmails.split(",");
+
+                for( int i = 0; i < emails.length; i++) {
+                    Diagnostics.debug2("Adding required attendee : " + emails[i]);
+
+                    appointment.getRequiredAttendees().add(emails[i]);
+                }
+            }
 
             // format date in the XML format
             Calendar startCalendar  = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
-            Date startDate = parseStartDate(parameters.get("est_start_date"), parameters.get("est_start_time"));
+            //Date startDate = parseStartDate(parameters.get("est_start_date"), parameters.get("est_start_time"));
+            Date startDate = parseStartDate(parameters.get("est_start_date"), null); // null forces a time at 7:00 a.m.
             startCalendar.setTimeInMillis(startDate.getTime());
 
             int year = startCalendar.get(Calendar.YEAR);
@@ -268,13 +253,15 @@ public class PDSCalendarHandler extends BaseHandler
             int minute = startCalendar.get(Calendar.MINUTE);
             int second = startCalendar.get(Calendar.SECOND);
 
+            //TimeZone.getTimeZone("America/Chicago");
+
             Diagnostics.debug2("Project # " + parameters.get("project_no") + ", start time: " + (month + 1) + "/" + day + "/" + year + " " + hour + ":" + minute + ":" + second);
             appointment.setStart(new Date(year - 1900, month, day, hour, minute, second));
             StringList categories = new StringList();
             categories.add( "Red Category");
             appointment.setCategories(categories);
-
             hour += 1;
+
             Diagnostics.debug2("Project # " + parameters.get("project_no") + ", end time: " + (month+1) + "/" + day + "/" + year + " " + hour + ":" + minute + ":" + second);
             appointment.setEnd(new Date(year - 1900, month, day, hour, minute, second));
 
@@ -288,7 +275,7 @@ public class PDSCalendarHandler extends BaseHandler
                 startDate = startDateFormatter.parse(est_start_time);
                 return startDate;
             } else if(est_start_date != null && est_start_date.length() > 0 ) {
-                String date = est_start_date + " 09:00 AM";
+                String date = est_start_date + " 07:00 AM";
 
                 startDate = startDateFormatter.parse(date);
                 return startDate;
