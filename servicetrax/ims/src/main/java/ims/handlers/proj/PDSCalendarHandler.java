@@ -91,7 +91,7 @@ public class PDSCalendarHandler extends BaseHandler
         StringBuffer sch_message = null; // used for scheduler emails
 		String query = null;
         // get info we can't from the parameters
-        query = "SELECT p_v.record_no, p_v.customer_name, p_v.end_user_name, p_v.job_name, p_v.description, r.cust_col_5 " +
+        query = "SELECT p_v.record_no, p_v.customer_name, p_v.end_user_name, p_v.job_name, p_v.description, r.cust_col_6 " +
                 "FROM projects_all_requests_v p_v inner join dbo.requests r " +
                 "ON " +
                 "    p_v.request_id = r.request_id " +
