@@ -24,16 +24,6 @@
 
 package ims.handlers.proj;
 
-import ims.helpers.IMSUtil;
-import ims.helpers.MapUtil;
-
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import dynamic.dbtk.connection.ConnectionWrapper;
 import dynamic.dbtk.connection.QueryResults;
 import dynamic.intraframe.engine.InvocationContext;
@@ -43,6 +33,15 @@ import dynamic.intraframe.templates.components.SmartFormComponent;
 import dynamic.util.date.StdDate;
 import dynamic.util.diagnostics.Diagnostics;
 import dynamic.util.string.StringUtil;
+import ims.helpers.IMSUtil;
+import ims.helpers.MapUtil;
+
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @version $Id: PDSPreHandler.java 1496 2009-02-07 00:59:49Z bvonhaden $
@@ -890,7 +889,7 @@ public class PDSPreHandler extends BaseHandler
 		Diagnostics.trace("PDSPreHandler.checkRequiredTempFields()");
 		boolean bRet = true;
 		String val = null;
-		String customer_id = ic.getParameter("customer_id");
+		String customer_id = ic.getParameter("end_user_id");   // was ic.getParameter("customer_id")
 		if (hash_key.equals(REQUEST_TYPE_WO) || hash_key.equals(REQUEST_TYPE_WOQ))
 		{
 			List<String> requiredTempFields = addCustomFieldValidation(conn, customer_id);
