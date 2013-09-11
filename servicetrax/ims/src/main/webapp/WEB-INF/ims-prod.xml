@@ -16,7 +16,7 @@
 	<admin username="admin" password="zpzpzp333" action="admin" template="iframe/adminInfo.html"/>
 
 	<appGlobals>
-		<appGlobalDatum name="additionalReports">http://www.omniworkspace.com/servicetrax</appGlobalDatum>
+		<appGlobalDatum name="additionalReports">http://reports.omniworkspace.com/servicetrax/default.html</appGlobalDatum>
 		<appGlobalDatum name="charmContext">stc</appGlobalDatum>
 		<appGlobalDatum name="deadlockAlter">bvonhaden@apexit.com,ChrismanJ@omniworkspace.com</appGlobalDatum>
 		<appGlobalDatum name="documentDir">&projectDir;documents&sep;</appGlobalDatum>
