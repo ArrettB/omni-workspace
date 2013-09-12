@@ -127,13 +127,21 @@ public class PDSPostHandler extends BaseHandler
 				ic.setTransientDatum("record_id",ic.getParameter("request_id"));
 				ic.setTransientDatum("record_type_code",request_type_code);
 				ic.setTransientDatum("record_status_type_code",request_status_type_code);
-				boolean email_result = ic.dispatchHandler("ims.handlers.proj.PDSCalendarHandler");
-				if( !email_result )
-				{
-					Diagnostics.error("PDSPostHandler.handleEnvironment() calendar failed.");
-					ic.setTransientDatum("calendar_failed","true");
-				}
+                boolean email_result = ic.dispatchHandler("ims.handlers.proj.PDSEmailHandler");
+                if( !email_result )
+                {
+                    Diagnostics.error("NewPDSPostHandler.handleEnvironment() emailing failed.");
+                    ic.setTransientDatum("email_failed","true");
+                }
 
+                if(button.equalsIgnoreCase("Send") ) {
+                    boolean calendar_result = ic.dispatchHandler("ims.handlers.proj.PDSCalendarHandler");
+                    if( !calendar_result )
+                    {
+                        Diagnostics.error("NewPDSPostHandler.handleEnvironment() calendar update failed.");
+                        ic.setParameter("calendar_failed","true");
+                    }
+                }
 			}
 
 			//if created a new project or request, or sending, then show
@@ -829,7 +837,6 @@ public class PDSPostHandler extends BaseHandler
 	 *
 	 * @param ic
 	 * @param conn
-	 * @param isRequest
 	 * @return
 	 */
 	private boolean handleCustomColsRecord(InvocationContext ic, ConnectionWrapper conn) throws Exception
