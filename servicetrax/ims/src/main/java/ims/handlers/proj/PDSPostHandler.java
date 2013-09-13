@@ -134,7 +134,7 @@ public class PDSPostHandler extends BaseHandler
                     ic.setTransientDatum("email_failed","true");
                 }
 
-                if(button.equalsIgnoreCase("Send") ) {
+                if(button.equalsIgnoreCase("Approve") ) {
                     boolean calendar_result = ic.dispatchHandler("ims.handlers.proj.PDSCalendarHandler");
                     if( !calendar_result )
                     {
