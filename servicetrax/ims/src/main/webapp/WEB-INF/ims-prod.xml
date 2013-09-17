@@ -18,7 +18,7 @@
 	<appGlobals>
 		<appGlobalDatum name="additionalReports">http://reports.omniworkspace.com/servicetrax/default.html</appGlobalDatum>
 		<appGlobalDatum name="charmContext">stc</appGlobalDatum>
-		<appGlobalDatum name="deadlockAlter">bvonhaden@apexit.com,ChrismanJ@omniworkspace.com</appGlobalDatum>
+		<appGlobalDatum name="deadlockAlter">ChrismanJ@omniworkspace.com</appGlobalDatum>
 		<appGlobalDatum name="documentDir">&projectDir;documents&sep;</appGlobalDatum>
 		<appGlobalDatum name="headerTitle">ServiceTRAX - Powered by Omni Workspace Company</appGlobalDatum>
 		<appGlobalDatum name="ignoreContactName"> N/A</appGlobalDatum>
@@ -36,8 +36,8 @@
 		<appGlobalDatum name="tempDir">&projectDir;downloadTemp&sep;</appGlobalDatum>
 		<appGlobalDatum name="testEmail"></appGlobalDatum>
         <appGlobalDatum name="newLoginSupportNumber">Please contact us at 1-866-791-6664</appGlobalDatum>
-        <appGlobalDatum name="newLoginSupportEmailLink">mailto:support@omniworkspace.com?subject=ServiceTRAX Inquiry</appGlobalDatum>
-        <appGlobalDatum name="newLoginSupportEmail">support@omniworkspace.com</appGlobalDatum>
+        <appGlobalDatum name="newLoginSupportEmailLink">mailto:servicetrax-support@omniworkspace.com?subject=ServiceTRAX Inquiry</appGlobalDatum>
+        <appGlobalDatum name="newLoginSupportEmail">servicetrax-support@omniworkspace.com</appGlobalDatum>
         <appGlobalDatum name="exchangeCalendarUrl">https://mpls2.omniworkspace.com/ews/exchange.asmx</appGlobalDatum>
         <appGlobalDatum name="additionalEmails">workordercatcheruhg@ambis.com,movemanageruhg@ambis.com</appGlobalDatum>
 
