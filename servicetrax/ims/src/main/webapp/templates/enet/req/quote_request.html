@@ -1712,7 +1712,7 @@ function validateEmail(str){
 <!--#IF defined="<?s:project_id?>" -->
         <td class="readonly">{!s:project_type_name!}</td>
 <!--#ELSE-->
-	    <td><!--#SELECT name="project_type_id" class="regular" style="width:230"
+	    <td><!--#SELECT name="project_type_id" id="project_type_id" class="regular" style="width:230"
 						query="SELECT pt.lookup_id, pt.lookup_name
                                  FROM job_types_v pt, user_job_types u
                                 WHERE u.lookup_id = pt.lookup_id
