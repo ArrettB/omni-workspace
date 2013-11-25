@@ -77,6 +77,13 @@
 //-->
 </script>
 
+        <style>
+            td{
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        </style>
+
 <!--#SMARTFORM
  name="time/tc_edit"
  security="rights"
@@ -126,19 +133,19 @@
 
  <!--#IF defined="<?d:sl_job?>" -->
   <!--#IF defined="<?d:sl_job_r?>" -->
-  <td><table><tr><td><!--#SMARTFIELD title="Open Jobs <?d:sl_job_msg?>" div="</td></tr><tr><td>" class="<?d:sl_job?>" name="tc_job_id" type="chooser"  style="width:150" query="SELECT job_id, job_no_name FROM jobs_v WHERE (organization_id = <?s:org_id.toPStmtInt()?> AND job_status_type_code != 'closed') or job_id = <?d:tc_job_id.toPStmtInt()?> ORDER BY job_no" readonly class="readonly" --></td></tr></table></td>
+  <td><table><tr><td><!--#SMARTFIELD title="Open Jobs <?d:sl_job_msg?>" div="</td></tr><tr><td>" class="<?d:sl_job?>" name="tc_job_id" type="chooser"  style="width:350px;" query="SELECT job_id, job_no_name FROM jobs_v WHERE (organization_id = <?s:org_id.toPStmtInt()?> AND job_status_type_code != 'closed') or job_id = <?d:tc_job_id.toPStmtInt()?> ORDER BY job_no" readonly class="readonly" --></td></tr></table></td>
   <!--#ELSEIF defined="<?s:rights.view_all_jobs.view?>"-->
-  <td><table><tr><td><!--#SMARTFIELD title="Open Jobs <?d:sl_job_msg?>" div="</td></tr><tr><td>" class="<?d:sl_job?>" name="tc_job_id" type="droplist" style="width:150" onChange="jobChanged()" query="SELECT job_id, job_no_name FROM jobs_v WHERE (organization_id = <?s:org_id.toPStmtInt()?> AND job_status_type_code != 'closed') ORDER BY job_no" value="<?d:job_id?>" --></td></tr></table></td>
+  <td><table><tr><td><!--#SMARTFIELD title="Open Jobs <?d:sl_job_msg?>" div="</td></tr><tr><td>" class="<?d:sl_job?>" name="tc_job_id" type="droplist" style="width:350px;" onChange="jobChanged()" query="SELECT job_id, job_no_name FROM jobs_v WHERE (organization_id = <?s:org_id.toPStmtInt()?> AND job_status_type_code != 'closed') ORDER BY job_no" value="<?d:job_id?>" --></td></tr></table></td>
   <!--#ELSE-->
-  <td><table><tr><td><!--#SMARTFIELD title="Open Jobs <?d:sl_job_msg?>" div="</td></tr><tr><td>" class="<?d:sl_job?>" name="tc_job_id" type="droplist" style="width:150" onChange="jobChanged()" query="SELECT job_id, job_no_name FROM jobs_v WHERE (organization_id = <?s:org_id.toPStmtInt()?> AND job_status_type_code != 'closed' AND foreman_user_id = <?s:user_id.toPStmtInt()?>) OR job_id = <?d:tc_job_id.toPStmtInt()?> ORDER BY job_no" value="<?d:job_id?>" --></td></tr></table></td>
+  <td><table><tr><td><!--#SMARTFIELD title="Open Jobs <?d:sl_job_msg?>" div="</td></tr><tr><td>" class="<?d:sl_job?>" name="tc_job_id" type="droplist" style="width:350px;" onChange="jobChanged()" query="SELECT job_id, job_no_name FROM jobs_v WHERE (organization_id = <?s:org_id.toPStmtInt()?> AND job_status_type_code != 'closed' AND foreman_user_id = <?s:user_id.toPStmtInt()?>) OR job_id = <?d:tc_job_id.toPStmtInt()?> ORDER BY job_no" value="<?d:job_id?>" --></td></tr></table></td>
   <!--#/IF-->
  <!--#/IF-->
 
  <!--#IF defined="<?d:sl_service?>" -->
   <!--#IF defined="<?d:sl_service_r?>" -->
-  <td><table><tr><td><!--#SMARTFIELD title="Open Reqs <?d:sl_service_msg?>" div="</td></tr><tr><td>" class="<?d:sl_service?>" name="tc_service_id" id="tc_service_id" type="chooser" query="SELECT service_id, service_no_desc FROM tc_services_v WHERE (job_id = <?d:tc_job_id.toPStmtInt()?> AND serv_status_type_code != 'closed') OR service_id = <?d:tc_service_id.toPStmtInt()?> ORDER BY service_no" style="width:250" readonly class="readonly" --></td></tr></table></td>
+  <td><table><tr><td><!--#SMARTFIELD title="Open Reqs <?d:sl_service_msg?>" div="</td></tr><tr><td>" class="<?d:sl_service?>" name="tc_service_id" id="tc_service_id" type="chooser" query="SELECT service_id, service_no_desc FROM tc_services_v WHERE (job_id = <?d:tc_job_id.toPStmtInt()?> AND serv_status_type_code != 'closed') OR service_id = <?d:tc_service_id.toPStmtInt()?> ORDER BY service_no" style="width:450px; height:18px; white-space:nowrap;" readonly class="readonly" --></td></tr></table></td>
   <!--#ELSE-->
-  <td><table><tr><td><!--#SMARTFIELD title="Open Reqs <?d:sl_service_msg?>" div="</td></tr><tr><td>" class="<?d:sl_service?>" name="tc_service_id" id="tc_service_id" type="droplist" query="SELECT service_id, service_no_desc FROM tc_services_v WHERE (job_id = <?d:tc_job_id.toPStmtInt()?> AND serv_status_type_code != 'closed') OR service_id = <?d:tc_service_id.toPStmtInt()?> ORDER BY service_no" style="width:250" value="<?d:tc_service_id?>" --></td></tr></table></td>
+  <td><table><tr><td><!--#SMARTFIELD title="Open Reqs <?d:sl_service_msg?>" div="</td></tr><tr><td>" class="<?d:sl_service?>" name="tc_service_id" id="tc_service_id" type="droplist" query="SELECT service_id, service_no_desc FROM tc_services_v WHERE (job_id = <?d:tc_job_id.toPStmtInt()?> AND serv_status_type_code != 'closed') OR service_id = <?d:tc_service_id.toPStmtInt()?> ORDER BY service_no" style="width:450px; height:18px; white-space:nowrap;" value="<?d:tc_service_id?>" --></td></tr></table></td>
   <!--#/IF-->
  <!--#/IF-->
 

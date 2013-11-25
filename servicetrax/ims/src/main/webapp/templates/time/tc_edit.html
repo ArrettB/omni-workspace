@@ -274,7 +274,7 @@ s:job_id = {!s:job_id!}<br>
 						<!--#SMARTCOLUMN name="service_description" sort="service_description" title="Req Desc" width="20%" value="<input readonly='true' class='smartTableDisplay' size='55' value='<?r:service_lines:service_description.replaceString('\'','&#39;')?>'>" -->
 						<!--#SMARTCOLUMN name="item_name" sort="item_name" title="Work Code" width="10%" -->
 	<!--#IF evaluate="<?d:rowid?>" greaterthan="0" -->
-	    <input type="hidden" id="{!r:service_lines:service_line_id!}" value="{!r:service_lines:bill_hourly_qty!}">
+	    <td style="display: none;"><input type="hidden" id="{!r:service_lines:service_line_id!}" value="{!r:service_lines:bill_hourly_qty!}"></td>
 	<!--#/IF-->
 					<!--#IF evaluate="<?p:item_type_code?>" compare="hours" -->
 						<!--#SMARTCOLUMN name="bill_hourly_qty" sort="bill_hourly_qty" title="Bill Hours" width="5%" align="right" total="true" format="###,###,###,##0.00"-->
@@ -312,7 +312,7 @@ s:job_id = {!s:job_id!}<br>
 						<!--#SMARTCOLUMN name="service_description" sort="service_description" title="Req Desc" width="20%" value="<input readonly='true' class='smartTableDisplay' size='55' value='<?r:service_lines:service_description.replaceString('\'','&#39;')?>'>" -->
 						<!--#SMARTCOLUMN name="item_name" sort="item_name" title="Work Code" width="10%" -->
 	<!--#IF evaluate="<?d:rowid?>" greaterthan="0" -->
-	    <input type="hidden" id="{!r:service_lines:service_line_id!}" value="{!r:service_lines:payroll_qty!}">
+	    <td style="display: none;"><input type="hidden" id="{!r:service_lines:service_line_id!}" value="{!r:service_lines:payroll_qty!}" style="margin-top: -100px;"></td>
 	<!--#/IF-->
 					<!--#IF evaluate="<?p:module?>" compare="payroll" -->
 						<!--#SMARTCOLUMN name="payroll_qty" sort="payroll_qty" title="Payroll Hours" width="6%" align="right" total="true" format="###,###,###,##0.00"-->
