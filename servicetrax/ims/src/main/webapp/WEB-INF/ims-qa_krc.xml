@@ -112,9 +112,14 @@
 	</daemons>
 
 	<diagnostics level="15" port="19000-19099" template="iframe/diagnostics">
+        <!--
 		<diagnosticsStream class="java.lang.System" property="out" level="15"/>
 		<diagnosticsFile path="&projectDir;logs&sep;ims.log"/>
+		-->
+        <diagnosticsLog4j path="&projectDir;logs&sep;" level="15"/>
+        <!--
 		<diagnosticsApplet codebase="/ims/jar"/>
+		-->
 	</diagnostics>
 
 	<dispatcher class="dynamic.intraframe.handlers.Dispatcher">

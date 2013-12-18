@@ -81,6 +81,11 @@
 	level CDATA #IMPLIED
 	property CDATA #REQUIRED
 >
+<!ELEMENT diagnosticsLog4j EMPTY>
+<!ATTLIST diagnosticsLog4j
+    path CDATA #REQUIRED
+    level CDATA #IMPLIED
+>
 <!ELEMENT dispatcher (action+)>
 <!ATTLIST dispatcher
 	class CDATA #REQUIRED

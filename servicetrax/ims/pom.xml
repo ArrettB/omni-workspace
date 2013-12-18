@@ -339,7 +339,7 @@
 		<dependency>
 			<groupId>com.dynamic</groupId>
 			<artifactId>iFrame2-ims</artifactId>
-			<version>1.4</version>
+			<version>1.5</version>
 		</dependency>
 
 		<!-- Servlet, JSP, and JSTL -->
