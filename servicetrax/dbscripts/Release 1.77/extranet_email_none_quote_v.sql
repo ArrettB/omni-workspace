@@ -1,3 +1,5 @@
+DROP VIEW extranet_email_none_quote_v;
+
 CREATE VIEW extranet_email_none_quote_v (todays_date, customer_name, job_name, project_no, record_no, record_id, record_type_code, record_type_name, record_status_type_code, a_m_contact_id, a_m_sales_contact_id, customer_contact_id, customer_contact2_id, customer_contact3_id, customer_contact4_id, d_sales_rep_contact_id, d_sales_sup_contact_id, d_proj_mgr_contact_id, d_designer_contact_id, a_m_install_sup_contact_id, description, furniture1_contact_id, furniture2_contact_id, approver_contact_id, alt_customer_contact_id, a_d_designer_contact_id, gen_contractor_contact_id, electrician_contact_id, data_phone_contact_id, carpet_layer_contact_id, bldg_mgr_contact_id, security_contact_id, mover_contact_id, phone_contact_id, other_contact_id, est_start_date, est_end_date, customer_po_no, refusal_email_info, survey_location, scheduler_contact_id, customer_contact_name, approver_contact_name, phone_contact_name, is_new) AS 
 SELECT CONVERT(VARCHAR(20), GETDATE(), 113) AS todays_date, 
        cust.customer_name,
