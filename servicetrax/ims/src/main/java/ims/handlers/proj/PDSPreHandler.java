@@ -231,9 +231,6 @@ public class PDSPreHandler extends BaseHandler
 				"customer_contact_id",
 				"job_location_id",
 				"furniture1_contact_id",
-				"activity_type_id1",
-				"qty1",
-				"activity_cat_type_id1",
 				"priority_type_id",
 				"approver_contact_id"
 			};
@@ -264,9 +261,6 @@ public class PDSPreHandler extends BaseHandler
 				"job_location_id",
 				"furniture1_contact_id",
 				"a_m_contact_id",
-				"activity_type_id1",
-				"qty1",
-				"activity_cat_type_id1",
 				"priority_type_id",
 				"quote_type_id",
 				"delivery_type_id",
