@@ -1,12 +1,13 @@
 USE [IMS_NEW]
 GO
 
-/****** Object:  View [dbo].[extranet_email_quote_v]    Script Date: 01/03/2014 13:55:19 ******/
+/****** Object:  View [dbo].[extranet_email_quote_v]    Script Date: 01/03/2014 14:12:57 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 /* $Id: extranet_email_quote_v.sql*/
 
@@ -50,6 +51,7 @@ ALTER VIEW [dbo].[extranet_email_quote_v]
         r.other_contact_id,
         r.est_start_date,
         r.est_end_date,
+        r.customer_po_no,       
         q.description,
         cust.refusal_email_info,
         cust.survey_location,
@@ -70,6 +72,7 @@ ALTER VIEW [dbo].[extranet_email_quote_v]
         dbo.contacts approver_contact ON r.approver_contact_id = approver_contact.contact_id  LEFT OUTER JOIN
         dbo.contacts customer_contact ON r.customer_contact_id = customer_contact.contact_id LEFT OUTER JOIN
         dbo.contacts phone_contact ON r.phone_contact_id = phone_contact.contact_id
+
 
 
 GO

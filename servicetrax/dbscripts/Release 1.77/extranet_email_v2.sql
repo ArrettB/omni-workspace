@@ -1,12 +1,13 @@
 USE [IMS_NEW]
 GO
 
-/****** Object:  View [dbo].[extranet_email_v2]    Script Date: 01/03/2014 13:51:02 ******/
+/****** Object:  View [dbo].[extranet_email_v2]    Script Date: 01/03/2014 14:13:12 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 /* $Id: extranet_email_v2.sql 1655 2009-08-05 21:24:48Z bvonhaden $ */
 
@@ -35,6 +36,7 @@ SELECT CONVERT(VARCHAR(20), GETDATE(), 113) AS todays_date,
        r.description,
        r.est_start_date,
        r.est_end_date,
+       r.customer_po_no,       
        o.scheduler_contact_id, 
        p.is_new
   FROM dbo.requests r INNER JOIN
@@ -46,6 +48,7 @@ SELECT CONVERT(VARCHAR(20), GETDATE(), 113) AS todays_date,
        dbo.organizations o ON cust.organization_id = o.organization_id LEFT OUTER JOIN
        dbo.customers eu ON p.end_user_id = eu.customer_id
  WHERE request_type.code IN ('quote_request','service_request')
+
 
 GO
 
