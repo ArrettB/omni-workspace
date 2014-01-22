@@ -1,0 +1,1019 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printServiceRequest" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="265"/>
+	<property name="ireport.y" value="33"/>
+	<property name="net.sf.jasperreports.export.pdf.force.linebreak.policy" value="true"/>
+	<style name="table" isDefault="false">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" isDefault="false" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" isDefault="false" mode="Opaque" backcolor="#FFBFBF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" isDefault="false" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1" isDefault="false">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" isDefault="false" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" isDefault="false" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" isDefault="false" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/pgarvie/projects/omni/servicetrax/stc/src/main/webapp/reports/serviceRequest/"]]></defaultValueExpression>
+	</parameter>
+	<field name="quoteNumber" class="java.lang.String"/>
+	<field name="job_name" class="java.lang.String"/>
+	<field name="customer_name" class="java.lang.String"/>
+	<field name="end_user_name" class="java.lang.String"/>
+	<field name="project_type_name" class="java.lang.String"/>
+	<field name="address" class="java.lang.String"/>
+	<field name="job_location_name" class="java.lang.String"/>
+	<field name="jobLocationContact" class="java.lang.String"/>
+	<field name="amSalesContact" class="java.lang.String"/>
+	<field name="amContact" class="java.lang.String"/>
+	<field name="customerContact" class="java.lang.String"/>
+	<field name="scheduleType" class="java.lang.String"/>
+	<field name="scheduleWithClient" class="java.lang.String"/>
+	<field name="startDate" class="java.lang.String"/>
+	<field name="startTime" class="java.lang.String"/>
+	<field name="endDate" class="java.lang.String"/>
+	<field name="days_to_complete" class="java.math.BigDecimal"/>
+	<field name="dealer_po_no" class="java.lang.String"/>
+	<field name="dealer_po_line_no" class="java.math.BigDecimal"/>
+	<field name="taxableFlag" class="java.lang.String"/>
+	<field name="productDisposition" class="java.lang.String"/>
+	<field name="wallMount" class="java.lang.String"/>
+	<field name="deliveryConditions" class="java.lang.String"/>
+	<field name="planLocationType" class="java.lang.String"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="dateCreated" class="java.lang.String"/>
+	<field name="createdBy" class="java.lang.String"/>
+	<field name="dateModified" class="java.lang.String"/>
+	<field name="modifiedBy" class="java.lang.String"/>
+	<field name="otherConditions" class="java.lang.String"/>
+	<field name="stairCarry" class="java.lang.String"/>
+	<field name="systemFurniture" class="java.lang.String"/>
+	<field name="shippingMethod" class="java.lang.String"/>
+	<field name="otherFurniture" class="java.lang.String"/>
+	<field name="otherShippingMethod" class="java.lang.String"/>
+	<field name="billingType" class="java.lang.String"/>
+	<field name="orderType" class="java.lang.String"/>
+	<field name="customerCosting" class="java.lang.String"/>
+	<field name="attachments" class="java.lang.String"/>
+	<field name="attachmentFileName" class="java.lang.String"/>
+	<field name="attachmentCreatedBy" class="java.lang.String"/>
+	<field name="attachmentDate" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="20" forecolor="#FFFFFF" backcolor="#669999"/>
+				<box>
+					<pen lineWidth="1.75" lineColor="#999999"/>
+					<topPen lineWidth="1.75" lineStyle="Solid" lineColor="#999999"/>
+					<leftPen lineWidth="1.75" lineColor="#999999"/>
+					<bottomPen lineWidth="1.75" lineStyle="Solid" lineColor="#999999"/>
+					<rightPen lineWidth="1.75" lineStyle="Solid" lineColor="#999999"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Verdana" size="14" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1255"/>
+				</textElement>
+				<text><![CDATA[Service Request]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="650" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="555" height="115"/>
+				<rectangle>
+					<reportElement x="0" y="14" width="555" height="95"/>
+				</rectangle>
+				<staticText>
+					<reportElement mode="Opaque" x="25" y="6" width="48" height="16"/>
+					<box leftPadding="3"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Verdana" size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Header]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="27" width="81" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Quote #:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="42" width="81" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Project Name:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="57" width="81" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Customer Name:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="72" width="81" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[End User Name:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="297" y="27" width="78" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Type of Service:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="297" y="43" width="78" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Job Location:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="297" y="59" width="78" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Address:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="81" y="27" width="210" height="16"/>
+					<box leftPadding="3">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{quoteNumber}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="81" y="43" width="210" height="16"/>
+					<box leftPadding="3">
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{job_name}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="81" y="57" width="210" height="16"/>
+					<box leftPadding="3">
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{customer_name}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="81" y="72" width="210" height="16"/>
+					<box leftPadding="3">
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{end_user_name}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="375" y="27" width="175" height="16"/>
+					<box leftPadding="3">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{project_type_name}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="375" y="43" width="175" height="16"/>
+					<box leftPadding="3">
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{job_location_name}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="375" y="59" width="175" height="45"/>
+					<box leftPadding="3">
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{address}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement x="0" y="115" width="555" height="91"/>
+				<rectangle>
+					<reportElement x="0" y="9" width="555" height="76"/>
+				</rectangle>
+				<staticText>
+					<reportElement mode="Opaque" x="25" y="0" width="57" height="16"/>
+					<box leftPadding="3"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Verdana" size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Contacts]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="19" width="101" height="16" isRemoveLineWhenBlank="true"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Project Mgr:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="34" width="101" height="16" isRemoveLineWhenBlank="true"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Sales Person:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="49" width="101" height="16" isRemoveLineWhenBlank="true"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Job Location Contact:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="64" width="101" height="16" isRemoveLineWhenBlank="true"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Customer Contact 1:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="101" y="19" width="300" height="16"/>
+					<box leftPadding="3">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{amContact}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="101" y="34" width="300" height="16"/>
+					<box leftPadding="3">
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{amSalesContact}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="101" y="49" width="300" height="16"/>
+					<box leftPadding="3">
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{jobLocationContact}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="101" y="64" width="300" height="16"/>
+					<box leftPadding="3">
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{customerContact}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement x="0" y="206" width="555" height="107"/>
+				<rectangle>
+					<reportElement x="0" y="10" width="555" height="96"/>
+				</rectangle>
+				<staticText>
+					<reportElement mode="Opaque" x="25" y="2" width="65" height="16"/>
+					<box leftPadding="3"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Verdana" size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Job Scope]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="23" width="98" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Schedule w/ Client:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="38" width="98" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Schedule Type:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="53" width="98" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Requested Service Date:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="68" width="98" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Requested Start Time:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="84" width="98" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Requested Complete Date:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="182" y="23" width="98" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[# Days to Complete:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="182" y="38" width="98" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[System Furniture:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="182" y="53" width="98" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Shipping Method:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="182" y="68" width="98" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Other Furniture:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="182" y="84" width="98" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Other Shipping Method:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="367" y="23" width="98" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Product Disposition:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="367" y="38" width="98" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Wall Mount:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="367" y="53" width="98" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Delivery Conditions:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="367" y="68" width="98" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Stair Carry Required: ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="367" y="84" width="98" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Plan Location: ]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="98" y="23" width="80" height="16"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{scheduleWithClient}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="98" y="38" width="80" height="16"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{scheduleType}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="98" y="53" width="80" height="16"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{startDate}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="98" y="68" width="80" height="16"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{startTime}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="98" y="84" width="80" height="16"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{endDate}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="280" y="23" width="80" height="16"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{days_to_complete}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="280" y="38" width="80" height="16"/>
+					<box leftPadding="3">
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{systemFurniture}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="280" y="53" width="80" height="16"/>
+					<box leftPadding="3">
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{shippingMethod}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="280" y="68" width="80" height="16"/>
+					<box leftPadding="3">
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{otherFurniture}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="280" y="84" width="80" height="16"/>
+					<box leftPadding="3">
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{otherShippingMethod}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="465" y="23" width="86" height="16"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{productDisposition}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="465" y="38" width="86" height="16"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{wallMount}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="465" y="53" width="86" height="16"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{deliveryConditions}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="465" y="68" width="86" height="16"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{stairCarry}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="465" y="84" width="86" height="16"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{planLocationType}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement x="0" y="313" width="555" height="54"/>
+				<rectangle>
+					<reportElement x="0" y="11" width="555" height="43"/>
+				</rectangle>
+				<staticText>
+					<reportElement mode="Opaque" x="25" y="2" width="100" height="16"/>
+					<box leftPadding="3"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Verdana" size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Billing Information]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="18" width="51" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[PO #:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="34" width="51" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[PO Line #:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="192" y="18" width="51" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Billing Type:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="192" y="34" width="51" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Sales Tax:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="356" y="18" width="76" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Order Type:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="356" y="34" width="76" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Customer Costing:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="51" y="18" width="80" height="16"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{dealer_po_no}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="243" y="18" width="80" height="16"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{billingType}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="432" y="18" width="80" height="16"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{orderType}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="243" y="34" width="80" height="16"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{taxableFlag}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="51" y="34" width="80" height="16"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{dealer_po_line_no}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="432" y="34" width="80" height="16"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{customerCosting}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement x="0" y="367" width="555" height="107"/>
+				<rectangle>
+					<reportElement x="0" y="12" width="555" height="95"/>
+				</rectangle>
+				<staticText>
+					<reportElement mode="Opaque" x="25" y="4" width="125" height="16"/>
+					<box leftPadding="3"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Verdana" size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Narrative Work Request]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="0" y="20" width="552" height="87"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{description}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement x="0" y="474" width="555" height="51"/>
+				<rectangle>
+					<reportElement x="0" y="10" width="554" height="36"/>
+				</rectangle>
+				<staticText>
+					<reportElement mode="Opaque" x="25" y="1" width="115" height="16"/>
+					<box leftPadding="3"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Verdana" size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Additional Conditions]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="0" y="17" width="554" height="29"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{otherConditions}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement x="0" y="525" width="555" height="57"/>
+				<rectangle>
+					<reportElement x="0" y="7" width="555" height="45"/>
+				</rectangle>
+				<staticText>
+					<reportElement mode="Opaque" x="23" y="0" width="68" height="16"/>
+					<box leftPadding="3"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Verdana" size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Attachments]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="1" y="16" width="394" height="36"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{attachmentFileName}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="395" y="16" width="80" height="36"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{attachmentCreatedBy}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="475" y="16" width="80" height="36"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{attachmentDate}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement x="0" y="582" width="555" height="68"/>
+				<rectangle>
+					<reportElement x="0" y="10" width="555" height="53"/>
+				</rectangle>
+				<staticText>
+					<reportElement mode="Opaque" x="25" y="2" width="95" height="16"/>
+					<box leftPadding="3"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Verdana" size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Audit Information]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="20" width="55" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Date Created:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="36" width="55" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Created By:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="246" y="20" width="55" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Date Modified:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="246" y="36" width="55" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<text><![CDATA[Modified By:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="55" y="20" width="138" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{dateCreated}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="55" y="36" width="138" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{createdBy}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="301" y="20" width="138" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{dateModified}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="301" y="36" width="138" height="16"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="Verdana" size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{modifiedBy}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+</jasperReport>

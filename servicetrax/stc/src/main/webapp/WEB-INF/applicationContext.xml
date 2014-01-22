@@ -283,9 +283,12 @@
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
 
+    <bean id="jasperReportDao" class="com.dynamic.servicetrax.dao.JasperReportDao">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
 
     <bean id="jasperReportService" class="com.dynamic.servicetrax.service.JasperReportService">
-        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+        <property name="jasperReportDao" ref="jasperReportDao"/>
     </bean>
 
     <bean id="addressUtils" class="com.dynamic.servicetrax.service.HotSheetServiceUtils">
@@ -314,6 +317,7 @@
                 /editDestinationContact.html=editDestinationContact
                 /deactivateDestinationContact.html=deactivateDestinationContact
                 /updateDestinationContact.html=updateDestinationContact
+                /printServiceRequest.html=printServiceRequest
             </value>
         </property>
     </bean>
@@ -330,6 +334,10 @@
         </property>
     </bean>
 
+    <bean name="/printServiceRequest.html" class="com.dynamic.servicetrax.controllers.ReportController">
+        <property name="jasperReportService" ref="jasperReportService"/>
+        <property name="methodNameResolver" ref="propsResolver"/>
+    </bean>
 
     <bean name="/hotSheetCreate.html, /hotSheetShow.html,
     /hotSheetSave.html, /hotSheetCopy.html,

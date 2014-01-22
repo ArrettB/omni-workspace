@@ -55,6 +55,16 @@
     <url>http://maven.apexit.com/repository/</url>
 </repository>
         -->
+        <repository>
+          <id>jboss-public-repository-group</id>
+          <name>JBoss Public Repository Group</name>
+          <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>svn.kettleriverconsulting.com</id>
+            <name>svn.kettleriverconsulting.com-releases</name>
+            <url>http://svn.kettleriverconsulting.com:8081/artifactory/jboss</url>
+        </repository>
     </repositories>
     <distributionManagement>
         <!--

@@ -79,14 +79,14 @@
     </bean>
 
     <bean id="hibernateLookupsDao" class="com.dynamic.servicetrax.dao.HibernateLookupsDao">
-        <property name="namedQueryLoader" ref="namedQueryLoader"/>
-        <property name="dataServices">
-            <map>
-                <entry key="hibernateService" value-ref="hibernateService"/>
-                <entry key="JDBCService" value-ref="JDBCService"/>
-            </map>
-        </property>
-    </bean>
+            <property name="namedQueryLoader" ref="namedQueryLoader"/>
+            <property name="dataServices">
+                <map>
+                    <entry key="hibernateService" value-ref="hibernateService"/>
+                    <entry key="JDBCService" value-ref="JDBCService"/>
+                </map>
+            </property>
+        </bean>
 
 
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
@@ -106,8 +106,12 @@
         <property name="transactionManager" ref="transactionManager"/>
     </bean>
 
-    <bean id="jasperReportService" class="com.dynamic.servicetrax.service.JasperReportService">
+    <bean id="jasperReportDao" class="com.dynamic.servicetrax.dao.JasperReportDao">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+
+    <bean id="jasperReportService" class="com.dynamic.servicetrax.service.JasperReportService">
+        <property name="jasperReportDao" ref="jasperReportDao"/>
     </bean>
 
     <bean id="recaptchaService" class="com.dynamic.servicetrax.service.RecaptchaService">
