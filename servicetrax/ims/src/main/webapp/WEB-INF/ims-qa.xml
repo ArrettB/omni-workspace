@@ -433,18 +433,18 @@
 
 	<resourceManager class="dynamic.util.resources.BaseResourceManager">
 		<resourceProducer name="SQLServerProducer" class="dynamic.dbtk.connection.JDBCResourceProducer" driver="net.sourceforge.jtds.jdbc.Driver" prefix="jdbc:jtds:sqlserver:" dateFormat="''MM/dd/yyyy HH:mm:ss''" now="getDate()" primaryKey="SELECT @@identity">
-			<resource name="sqlserver" id="//172.17.17.92:1433/ims_new" username="ims_new4" password="ims_new4" type="SharedPool" default="true"/>
-			<resource name="sqlserver_aia" id="//172.17.17.92:1433/aia" username="aia" password="aia" type="SharedPool" default="false"/>
-			<resource name="sqlserver_az" id="//172.17.17.92:1433/az" username="az" password="az" type="SharedPool" default="false"/>
-			<resource name="sqlserver_gp" id="//172.17.17.92:1433/ambim" username="gp" password="gp" type="SharedPool" default="false"/>
-			<resource name="sqlserver_mad" id="//172.17.17.92:1433/ammad" username="mad" password="mad" type="SharedPool" default="false"/>
-			<resource name="sqlserver_ciinc" id="//172.17.17.92:1433/ciinc" username="ciinc" password="ciinc" type="SharedPool" default="false"/>
-			<resource name="sqlserver_cillc" id="//172.17.17.92:1433/cillc" username="cillc" password="cillc" type="SharedPool" default="false"/>
-			<resource name="sqlserver_cimn" id="//172.17.17.92:1433/cimn" username="cimn" password="cimn" type="SharedPool" default="false"/>
-			<resource name="sqlserver_ecms" id="//172.17.17.92:1433/ecms" username="ecms" password="ecms" type="SharedPool" default="false"/>
-			<resource name="sqlserver_ics" id="//172.17.17.92:1433/ics" username="ics" password="ics" type="SharedPool" default="false"/>
-			<resource name="sqlserver_ntlsv" id="//172.17.17.92:1433/ntlsv" username="ntlsv" password="ntlsv" type="SharedPool" default="false"/>
-			<resource name="sqlserver_phx" id="//172.17.17.92:1433/phx" username="phx" password="phx" type="SharedPool" default="false"/>
+			<resource name="sqlserver" id="//172.17.16.112:1433/ims_new" username="ims_new4" password="ims_new4" type="SharedPool" default="true"/>
+			<resource name="sqlserver_aia" id="//172.17.16.112:1433/aia" username="aia" password="aia" type="SharedPool" default="false"/>
+			<resource name="sqlserver_az" id="//172.17.16.112:1433/az" username="az" password="az" type="SharedPool" default="false"/>
+			<resource name="sqlserver_gp" id="//172.17.16.112:1433/ambim" username="gp" password="gp" type="SharedPool" default="false"/>
+			<resource name="sqlserver_mad" id="//172.17.16.112:1433/ammad" username="mad" password="mad" type="SharedPool" default="false"/>
+			<resource name="sqlserver_ciinc" id="//172.17.16.112:1433/ciinc" username="ciinc" password="ciinc" type="SharedPool" default="false"/>
+			<resource name="sqlserver_cillc" id="//172.17.16.112:1433/cillc" username="cillc" password="cillc" type="SharedPool" default="false"/>
+			<resource name="sqlserver_cimn" id="//172.17.16.112:1433/cimn" username="cimn" password="cimn" type="SharedPool" default="false"/>
+			<resource name="sqlserver_ecms" id="//172.17.16.112:1433/ecms" username="ecms" password="ecms" type="SharedPool" default="false"/>
+			<resource name="sqlserver_ics" id="//172.17.16.112:1433/ics" username="ics" password="ics" type="SharedPool" default="false"/>
+			<resource name="sqlserver_ntlsv" id="//172.17.16.112:1433/ntlsv" username="ntlsv" password="ntlsv" type="SharedPool" default="false"/>
+			<resource name="sqlserver_phx" id="//172.17.16.112:1433/phx" username="phx" password="phx" type="SharedPool" default="false"/>
 		</resourceProducer>
 	</resourceManager>
 

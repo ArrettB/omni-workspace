@@ -150,4 +150,6 @@ QA
 ----------
 web=172.17.17.245  SRV-OMNI-WEB02
 db=172.17.17.92  SRV-DMZ-SQL7
+This is the new ip for the qa db - pfg/08/21/14
+db=172.17.16.112
 
