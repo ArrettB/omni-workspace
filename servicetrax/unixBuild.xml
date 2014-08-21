@@ -12,8 +12,12 @@
     <path id="svnant.class.path">
         <pathelement location="antLib/svnant.jar"/>
         <pathelement location="antLib/svnClientAdapter.jar"/>
-        <pathelement location="antLib/svnjavahl.jar"/>
-        <pathelement location="antLib/svnkit.jar"/>
+        <pathelement location="antLib/svnkit-1.8.6.jar"/>
+        <pathelement location="antLib/svnkit-cli-1.8.6.jar"/>
+        <pathelement location="antLib/svnkit-javahl16-1.8.6.jar"/>
+        <pathelement location="antLib/antlr-runtime-3.4.jar"/>
+        <pathelement location="antLib/sqljet-1.1.10.jar"/>
+        <pathelement location="antLib/sequence-library-1.0.3.jar"/>
     </path>
 
 
