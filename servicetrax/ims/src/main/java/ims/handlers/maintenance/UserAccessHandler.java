@@ -1,9 +1,5 @@
 package ims.handlers.maintenance;
 
-import ims.dataobjects.User;
-
-import java.sql.SQLException;
-
 import dynamic.dbtk.connection.ConnectionWrapper;
 import dynamic.dbtk.connection.QueryResults;
 import dynamic.intraframe.engine.InvocationContext;
@@ -11,6 +7,9 @@ import dynamic.intraframe.handlers.BaseHandler;
 import dynamic.intraframe.handlers.ErrorHandler;
 import dynamic.util.diagnostics.Diagnostics;
 import dynamic.util.string.StringUtil;
+import ims.dataobjects.User;
+
+import java.sql.SQLException;
 
 /**
  * @version $Header: C:\work\ims\src\ims\handlers\maintenance\UserAccessHandler.java, 29, 4/6/2006 4:10:03 PM, Blake Von Haden$
@@ -104,6 +103,7 @@ public class UserAccessHandler extends BaseHandler {
             QueryResults rs = null;
             try {
                 conn = (ConnectionWrapper) ic.getResource();
+                // TODO - change to only query on user and get password
                 String query = "SELECT u.active_flag, u.user_id, u.full_name from users_vq u"
                         + " WHERE u.login = ?"
                         + " AND u.password = ?";
@@ -113,6 +113,10 @@ public class UserAccessHandler extends BaseHandler {
                     String activeFlag = rs.getString("active_flag");
                     String userID = rs.getString("user_id");
                     String fullName = rs.getString("full_name");
+                    //String hashedPassword = rs.getString("password");
+
+                    // TODO - find the salt for the userID
+
                     rs.close();
                     rs = null;
                     //set user id and name as session datum for future

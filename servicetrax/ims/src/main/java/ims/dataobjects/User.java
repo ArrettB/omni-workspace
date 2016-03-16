@@ -1,12 +1,5 @@
 package ims.dataobjects;
 
-import java.io.Serializable;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 import dynamic.dbtk.connection.ConnectionWrapper;
 import dynamic.dbtk.connection.QueryResults;
 import dynamic.dbtk.meta.AbstractDatabaseObject;
@@ -15,12 +8,29 @@ import dynamic.intraframe.handlers.ErrorHandler;
 import dynamic.util.diagnostics.Diagnostics;
 import dynamic.util.string.StringUtil;
 
+import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 /**
  * 
  * @version $Header: User.java, 30, 9/19/2006 11:22:16 AM, Greg Case$
  */
 public class User extends AbstractDatabaseObject implements Serializable
 {
+
+	// TODO - create the array of password salts and the hashing method
+	//String[] passwordSalts = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+
+    // TODO - get the salt based on the userID
+//	public String getSalt( ) {
+//		int modUserId = userID % 10;
+//
+//		return passwordSalts[modUserId];
+//	}
 
 	/**
 	 * 

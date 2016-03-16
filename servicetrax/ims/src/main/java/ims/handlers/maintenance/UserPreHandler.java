@@ -33,6 +33,7 @@ public class UserPreHandler extends BaseHandler
 		boolean result = true;
 		Diagnostics.debug2("UserPreHandler.handleEnvironment()");
 
+		// TODO this is where we need to hash the password.
 		//make sure that we are actually supposed to be saving.
 		String button = ic.getParameter(SmartFormComponent.BUTTON);
 		if (button != null && button.equals(SmartFormComponent.Save))
