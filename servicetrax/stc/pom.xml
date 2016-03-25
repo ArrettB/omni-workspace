@@ -122,8 +122,8 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
 
@@ -285,19 +285,19 @@
             </plugin>
 
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-eclipse-plugin</artifactId>
-                <configuration>
-                    <downloadSources>true</downloadSources>
-                    <additionalProjectnatures>
-                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
-                    </additionalProjectnatures>
-                    <additionalBuildcommands>
-                        <buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
-                    </additionalBuildcommands>
-                </configuration>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-eclipse-plugin</artifactId>-->
+                <!--<configuration>-->
+                    <!--<downloadSources>true</downloadSources>-->
+                    <!--<additionalProjectnatures>-->
+                        <!--<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>-->
+                    <!--</additionalProjectnatures>-->
+                    <!--<additionalBuildcommands>-->
+                        <!--<buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>-->
+                    <!--</additionalBuildcommands>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
 
             <!-- To use the plugin goals in your POM or parent POM -->
             <plugin>
@@ -413,7 +413,7 @@
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.3</version>
+            <version>1.4</version>
         </dependency>
         <dependency>
             <groupId>commons-collections</groupId>
@@ -653,6 +653,16 @@
             <groupId>net.tanesha.recaptcha4j</groupId>
             <artifactId>recaptcha4j</artifactId>
             <version>0.0.7</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dynamic.servicetrax</groupId>
+            <artifactId>ims</artifactId>
+            <version>1.39</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dynamic.servicetrax</groupId>
+            <artifactId>ims</artifactId>
+            <version>1.39</version>
         </dependency>
 
     </dependencies>

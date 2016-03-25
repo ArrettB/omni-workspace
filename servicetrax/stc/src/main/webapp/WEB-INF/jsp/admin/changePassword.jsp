@@ -90,8 +90,8 @@
             </td>
             <td class="control">
                 <label style="padding-left:10px;">
-                    <input name="existingPassword" id="existingPassword" class="required"
-                           title="Your existing password is required"/>
+                    <input type="password" name="existingPassword" id="existingPassword"
+                           class="required" title="Your existing password is required"/>
                 </label>
             </td>
         </tr>
@@ -102,7 +102,7 @@
             </td>
             <td class="control">
                 <label style="padding-left:10px;">
-                    <input name="newPassword" id="newPassword" class="required" minlength="6"
+                    <input type="password" name="newPassword" id="newPassword" class="required" minlength="6"
                            title="A new password is required and must be at least 6 characters"/>
                 </label>
             </td>
@@ -114,7 +114,7 @@
             </td>
             <td class="control">
                 <label style="padding-left:10px;">
-                    <input name="confirmPassword" id="confirmPassword" class="required" minlength="6"
+                    <input type="password" name="confirmPassword" id="confirmPassword" class="required" minlength="6"
                            title="A confirm password is required and must be at least 6 characters"/>
                 </label>
             </td>

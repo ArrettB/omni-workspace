@@ -9,6 +9,7 @@ import dynamic.util.diagnostics.Diagnostics;
 import dynamic.util.string.StringUtil;
 import ims.dataobjects.User;
 
+import ims.handlers.security.EncryptionHelper;
 import java.sql.SQLException;
 
 /**
@@ -108,15 +109,12 @@ public class UserAccessHandler extends BaseHandler {
                         + " WHERE u.login = ?"
                         + " AND u.password = ?";
 
-                rs = conn.select(query, new String[]{userName, password});
+                String hashedPassword = EncryptionHelper.getInstance().hash(userName, password);
+                rs = conn.select(query, new String[]{userName, hashedPassword});
                 if (rs.next()) {
                     String activeFlag = rs.getString("active_flag");
                     String userID = rs.getString("user_id");
                     String fullName = rs.getString("full_name");
-                    //String hashedPassword = rs.getString("password");
-
-                    // TODO - find the salt for the userID
-
                     rs.close();
                     rs = null;
                     //set user id and name as session datum for future

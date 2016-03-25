@@ -8,7 +8,7 @@
 	<version>1.39-SNAPSHOT</version>
 
     <properties>
-            <jdk.version>1.5</jdk.version>
+            <jdk.version>1.7</jdk.version>
     </properties>
 
 
@@ -100,15 +100,15 @@
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 			
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
-					<source>1.5</source>
+					<source>1.7</source>
 				</configuration>
 			</plugin>
 

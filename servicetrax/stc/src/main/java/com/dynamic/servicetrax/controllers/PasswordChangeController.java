@@ -4,8 +4,10 @@ import com.dynamic.charm.query.hibernate.HibernateService;
 import com.dynamic.servicetrax.command.PasswordChangeCommand;
 import com.dynamic.servicetrax.interceptors.LoginInterceptor;
 import com.dynamic.servicetrax.orm.User;
+import com.dynamic.servicetrax.service.EncryptionHelper;
 import com.dynamic.servicetrax.support.LoginCrediantials;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.ui.ModelMap;
@@ -78,7 +80,8 @@ public class PasswordChangeController extends MultiActionController {
                                                Locale.getDefault());
         }
         else {
-            user.setPassword(command.getNewPassword());
+            String newPassword = command.getNewPassword();
+            user.setPassword(EncryptionHelper.getInstance().hash(user.getLogin(), newPassword));
             hibernateService.saveOrUpdate(user);
             result = Boolean.TRUE;
             message = messageSource.getMessage("servicetrax.passwordChange.success", null, Locale.getDefault());
@@ -120,7 +123,14 @@ public class PasswordChangeController extends MultiActionController {
     }
 
     private boolean existingPasswordMatches(PasswordChangeCommand command, User user) {
-        return user.getPassword() != null && command.getExistingPassword() != null && user.getPassword().equals(command.getExistingPassword());
+        String stored = user.getPassword();
+        String entered = command.getExistingPassword();
+        if(StringUtils.isEmpty(entered) || StringUtils.isEmpty(stored)){
+            return false;
+        }
+
+        String enteredHash = EncryptionHelper.getInstance().hash(user.getLogin(), entered);
+        return stored.equals(enteredHash);
     }
 
     private boolean newPasswordsMatch(PasswordChangeCommand command) {
