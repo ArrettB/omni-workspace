@@ -1,5 +1,6 @@
 package ims.handlers.maintenance;
 
+import com.dynamic.servicetrax.service.EncryptionHelper;
 import dynamic.dbtk.connection.ConnectionWrapper;
 import dynamic.dbtk.connection.QueryResults;
 import dynamic.intraframe.engine.InvocationContext;
@@ -9,7 +10,6 @@ import dynamic.util.diagnostics.Diagnostics;
 import dynamic.util.string.StringUtil;
 import ims.dataobjects.User;
 
-import ims.handlers.security.EncryptionHelper;
 import java.sql.SQLException;
 
 /**

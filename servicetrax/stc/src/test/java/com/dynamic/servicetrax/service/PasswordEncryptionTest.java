@@ -1,6 +1,5 @@
-package ims.handlers.maintenance;
+package com.dynamic.servicetrax.service;
 
-import ims.handlers.security.EncryptionHelper;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Connection;

@@ -442,6 +442,13 @@
         	<version>1.2</version>
         </dependency>
 
+		<dependency>
+			<groupId>com.dynamic.servicetrax.service</groupId>
+			<artifactId>encryptionHelper</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+
 		<!-- testing -->
 		<dependency>
 			<groupId>junit</groupId>

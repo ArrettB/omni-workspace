@@ -309,6 +309,28 @@
                     <path>/stc</path>
                 </configuration>
             </plugin>
+            <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-install-plugin</artifactId>
+               <version>2.4</version>
+               <configuration>
+                  <groupId>com.dynamic.servicetrax.service</groupId>
+                  <artifactId>encryptionHelper</artifactId>
+                  <version>1.0</version>
+                  <packaging>jar</packaging>
+                  <file>${basedir}/dependencies/encryptionHelper-1.0.jar</file>
+                  <generatePom>true</generatePom>
+               </configuration>
+               <executions>
+                  <execution>
+                     <id>install-jar-lib</id>
+                     <goals>
+                        <goal>install-file</goal>
+                     </goals>
+                     <phase>validate</phase>
+                  </execution>
+               </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -654,17 +676,6 @@
             <artifactId>recaptcha4j</artifactId>
             <version>0.0.7</version>
         </dependency>
-        <dependency>
-            <groupId>com.dynamic.servicetrax</groupId>
-            <artifactId>ims</artifactId>
-            <version>1.39</version>
-        </dependency>
-        <dependency>
-            <groupId>com.dynamic.servicetrax</groupId>
-            <artifactId>ims</artifactId>
-            <version>1.39</version>
-        </dependency>
-
     </dependencies>
 
 </project>
