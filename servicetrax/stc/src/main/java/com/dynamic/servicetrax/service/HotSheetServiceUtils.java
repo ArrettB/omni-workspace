@@ -94,6 +94,8 @@ public class HotSheetServiceUtils {
 
 
     //TODO: move these into a db table - pfg 11.14.10
+    public static final String EQUIPMENT_VACUUMS = "Vacuums";
+    public static final String EQUIPMENT_CLEANING_KITS = "Cleaning Kits";
     public static final List<String> EQUIPMENT =
             Arrays.asList("",
                           "Autobottoms",
@@ -103,7 +105,7 @@ public class HotSheetServiceUtils {
                           "Boards Short",
                           "Carts Library",
                           "Carts Machine",
-                          "Cleaning Kits",
+                          EQUIPMENT_CLEANING_KITS,
                           "Cornerboards",
                           "Dollies",
                           "J-Bars",
@@ -128,7 +130,7 @@ public class HotSheetServiceUtils {
                           "Tote Stacks",
                           "Trucks Hand",
                           "Trucks Reefer",
-                          "Vacuums");
+                          EQUIPMENT_VACUUMS);
 
 
     private HotSheetServiceUtils() {

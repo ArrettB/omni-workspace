@@ -59,6 +59,11 @@ public class HotSheetService {
                     " AND p.customer_id = customers.customer_id";
     private static final String EMPTY_STRING = "";
 
+    private static final String DEFAULT_INSTRUCTIONS = "1. READ ATTACHMENTS/LOAD GEAR AND PRODUCT.\n" +
+            "2. CALL ON-SITE CONTACT TO ESTABLISH ARRIVAL TIME.\n" +
+            "3. COMPLETE SCOPE/NOTE AND COMMUNICATE VARIANCES.\n" +
+            "4. CALL REQUESTOR BEFORE LEAVING/UPDATE ECMS PM.";
+
     public HotSheet buildHotSheet(String requestId, Long userId, Long organizationId) {
 
         BigDecimal projectId = getProjectId(requestId);
@@ -70,6 +75,8 @@ public class HotSheetService {
         addRequestInfo(hotSheet, requestId, hotSheetNumber);
         hotSheet.setRequestId(Long.valueOf(requestId));
         hotSheet.setProjectId(projectId.longValue());
+
+        hotSheet.setSpecialInstructions(DEFAULT_INSTRUCTIONS);
 
         initializeJobTime(hotSheet);
 
@@ -493,6 +500,7 @@ public class HotSheetService {
 
     @SuppressWarnings("unchecked")
     public Map<String, HotSheetDetail> getHotSheetDetails(Long user) {
+        boolean vacuumSet = false, cleaningKitSet = false;
         List<Map> lookups = jdbcTemplate.queryForList(GET_HOTSHEET_LOOKUPS);
         Map<String, HotSheetDetail> details = new HashMap<String, HotSheetDetail>();
         for (Map aRow : lookups) {
@@ -501,7 +509,21 @@ public class HotSheetService {
             aDetail.setHotSheetLookupId(id.longValue());
             aDetail.setCode((String) aRow.get("code"));
             aDetail.setName((String) aRow.get("name"));
-            aDetail.setAttributeValue(0);
+
+            if("custom_equipment_A".equals(aDetail.getCode())) {
+                aDetail.setName(HotSheetServiceUtils.EQUIPMENT_VACUUMS);
+                aDetail.setAttributeValue(1);
+            } else if("custom_equipment_A_qty".equals(aDetail.getCode())) {
+                aDetail.setAttributeValue(1);
+            } else if("custom_equipment_B".equals(aDetail.getCode())) {
+                aDetail.setName(HotSheetServiceUtils.EQUIPMENT_CLEANING_KITS);
+                aDetail.setAttributeValue(1);
+            } else if("custom_equipment_B_qty".equals(aDetail.getCode())) {
+                aDetail.setAttributeValue(1);
+            } else {
+                aDetail.setAttributeValue(0);
+            }
+
 
             Date today = new Date();
             aDetail.setDateCreated(today);

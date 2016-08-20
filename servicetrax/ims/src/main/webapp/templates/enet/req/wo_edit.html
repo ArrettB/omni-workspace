@@ -1523,14 +1523,18 @@ function showHotSheet()
 			<td align="right">
 				<input type="button" class="button" value="Cancel" name="Cancel" onClick="exitFunction('Cancel');">
 				<input type="button" class="button" value="Next" name ="Next" onClick="if( isLoaded() ) nextWindow()">
-                <input type="button" class="button" value="Hot Sheet" name="hotSheet" onClick="showHotSheet();">
+				<!--#IF evaluate="<?s:show_hotsheet?>" compare="true" -->
+                	<input type="button" class="button" value="Hot Sheet" name="hotSheet" onClick="showHotSheet();">
+				<!--#/IF-->
 			</td>
 			<!--#/IF-->
 		<!--#ELSE-->
 			<td align="right">
 				<input type="button" class="button" value="Cancel" name="Cancel" onClick="exitFunction('Cancel');">
 				<input type="button" class="button" value="Next" name ="Next" onClick="if( isLoaded() ) nextWindow()">
-                <input type="button" class="button" value="Hot Sheet" name="hotSheet" onClick="showHotSheet();">
+				<!--#IF evaluate="<?s:show_hotsheet?>" compare="true" -->
+	                <input type="button" class="button" value="Hot Sheet" name="hotSheet" onClick="showHotSheet();">
+				<!--#/IF-->
 			</td>
 		<!--#/IF-->
 		</tr>

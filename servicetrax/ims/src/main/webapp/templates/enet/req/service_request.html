@@ -2046,8 +2046,10 @@ function validateEmail(str){
       <tr>
           <td>&nbsp;</td>
           <td align="right" style="padding-bottom:2px;">
+            <!--#IF evaluate="<?s:show_hotsheet?>" compare="true" -->
               <input type="button" class="button" value="Hot Sheet" name="hotSheet"
                      onClick="showHotSheet();">
+            <!--#/IF-->
           </td>
       </tr>
 

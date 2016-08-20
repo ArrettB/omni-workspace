@@ -31,18 +31,18 @@
 	<!--#IF evaluate="<?r:inv_lines:service_taxable_flag?>" compare="Y"-->
 		<!--#IF evaluate="<?r:inv_lines:item_type_code?>" compare="hours"-->
 			<!--#IF evaluate="<?r:inv_lines:taxable_flag?>" compare="Y"-->
-	<!--#SMARTCOLUMN title="Tax" value="<INPUT TYPE='checkbox' name='taxableCheckBox' value='<?r:inv_lines:service_line_id?>' onClick='setTaxTotal()' checked>" align="center" width="2%" -->
+	<!--#SMARTCOLUMN title="Tax<br/><INPUT TYPE='checkbox' name='CheckAllTaxBox' onClick='checkAllBoxes(this.form.CheckAllTaxBox,this.form.taxableCheckBox)'>" value="<INPUT TYPE='checkbox' name='taxableCheckBox' value='<?r:inv_lines:service_line_id?>' onClick='setTaxTotal()' checked>" align="center" width="3%" -->
 			<!--#ELSE-->
-	<!--#SMARTCOLUMN title="Tax" value="<INPUT TYPE='checkbox' name='taxableCheckBox' value='<?r:inv_lines:service_line_id?>' onClick='setTaxTotal()'>" align="center" width="2%"-->
+	<!--#SMARTCOLUMN title="Tax<br/><INPUT TYPE='checkbox' name='CheckAllTaxBox' onClick='checkAllBoxes(this.form.CheckAllTaxBox,this.form.taxableCheckBox)'>" value="<INPUT TYPE='checkbox' name='taxableCheckBox' value='<?r:inv_lines:service_line_id?>' onClick='setTaxTotal()'>" align="center" width="3%"-->
 			<!--#/IF-->
 		<!--#ELSE-->
-	<!--#SMARTCOLUMN title="Tax" value="" align="center" width="2%" -->
+	<!--#SMARTCOLUMN title="Tax<br/><INPUT TYPE='checkbox' name='CheckAllTaxBox' onClick='checkAllBoxes(this.form.CheckAllTaxBox,this.form.taxableCheckBox)'>" value="" align="center" width="3%" -->
 		<!--#/IF-->
 	<!--#ELSE-->
-	<!--#SMARTCOLUMN title="Tax" value="" align="center" width="2%" -->
+	<!--#SMARTCOLUMN title="Tax<br/><INPUT TYPE='checkbox' name='CheckAllTaxBox' onClick='checkAllBoxes(this.form.CheckAllTaxBox,this.form.taxableCheckBox)'>" value="" align="center" width="3%" -->
 	<!--#/IF-->
 <!--#ELSE-->
-	<!--#SMARTCOLUMN title="Tax" value="" align="center" width="2%" -->
+	<!--#SMARTCOLUMN title="Tax<br/><INPUT TYPE='checkbox' name='CheckAllTaxBox' onClick='checkAllBoxes(this.form.CheckAllTaxBox,this.form.taxableCheckBox)'>" value="" align="center" width="3%" -->
 <!--#/IF-->
 <!--#IF evaluate="<?d:rowid?>" greaterthan="0" -->
     <input type="hidden" id="{!r:inv_lines:service_line_id!}" value="{!r:inv_lines:bill_total!}">

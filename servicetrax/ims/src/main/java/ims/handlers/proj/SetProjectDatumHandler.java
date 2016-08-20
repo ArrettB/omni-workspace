@@ -21,13 +21,6 @@
  */
 package ims.handlers.proj;
 
-import ims.Constants;
-import ims.dataobjects.User;
-import ims.helpers.IMSUtil;
-
-import java.sql.SQLException;
-import java.util.Date;
-
 import dynamic.dbtk.connection.ConnectionWrapper;
 import dynamic.dbtk.connection.QueryResults;
 import dynamic.intraframe.engine.InvocationContext;
@@ -35,6 +28,12 @@ import dynamic.intraframe.handlers.BaseHandler;
 import dynamic.intraframe.handlers.ErrorHandler;
 import dynamic.util.diagnostics.Diagnostics;
 import dynamic.util.string.StringUtil;
+import ims.Constants;
+import ims.dataobjects.User;
+import ims.helpers.IMSUtil;
+
+import java.sql.SQLException;
+import java.util.Date;
 
 /**
  *
@@ -60,6 +59,12 @@ public class SetProjectDatumHandler extends BaseHandler {
             + "       customers c_p ON c.end_user_Parent_id = c_p.customer_id "
             + " WHERE c.customer_id = ?";
 
+    public static final String GET_HOTSHEET_INVOICE_COUNT =
+            "select count(*)\n" +
+                    "  from invoices i \n" +
+                    "       inner join services s on s.job_id = i.job_id\n" +
+                    "       inner join requests r on r.request_id = s.request_id\n" +
+                    "where r.request_id = ?";
 
     private static final String NOID = "-1";
 
@@ -77,6 +82,7 @@ public class SetProjectDatumHandler extends BaseHandler {
         String query;
         QueryResults rs = null;
         QueryResults rs2;
+        QueryResults rs3;
 
         try {
             conn = (ConnectionWrapper) ic.getResource();
@@ -524,6 +530,22 @@ public class SetProjectDatumHandler extends BaseHandler {
                             ic.setTransientDatum("contact_email4", rs2.getString("contact_email4"));
 
                             ic.setTransientDatum("po_count", "" + rs2.getInt("po_count"));
+
+                            rs3 = conn.select(GET_HOTSHEET_INVOICE_COUNT, new Long[]{Long.parseLong(requestID)});
+
+                            if (rs3.next()) {// found request
+                                Integer invoiceCount = rs3.getInt(1);
+
+                                if(invoiceCount > 0) {
+                                    ic.setSessionDatum("show_hotsheet", "false");
+                                } else {
+                                    ic.setSessionDatum("show_hotsheet", "true");
+                                }
+                            } else {
+                                ic.setSessionDatum("show_hotsheet", "true");
+                            }
+                            IMSUtil.closeQueryResultSet(rs3);
+
                         }
                         else {
                             Diagnostics.error("Failed to locate request_id '" + record_id + "' to set session data.");
@@ -541,6 +563,7 @@ public class SetProjectDatumHandler extends BaseHandler {
                         ic.removeSessionDatum("request_is_sent");
                         ic.removeSessionDatum("request_readonly");
                         ic.removeSessionDatum("show_next");
+                        ic.removeSessionDatum("show_hotsheet");
                         ic.removeSessionDatum("can_send_sr");
                         if (StringUtil.hasAValue(quoting) && quoting.equalsIgnoreCase("true")) {
                             ic.setSessionDatum("quoting", quoting);
