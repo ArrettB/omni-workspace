@@ -5,6 +5,7 @@ import com.dynamic.servicetrax.controllers.PasswordChangeController;
 import com.dynamic.servicetrax.dao.HibernateLookupsDao;
 import com.dynamic.servicetrax.orm.Lookup;
 import com.dynamic.servicetrax.orm.User;
+import com.dynamic.servicetrax.service.EncryptionHelper;
 import net.sf.json.JSONObject;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -33,13 +34,13 @@ public class PasswordChangeControllerTest extends AbstractTransactionalDataSourc
         String newPassword = "newPassword";
 
         User user = createTestUser();
-        user.setPassword(existingPassword);
+        user.setPassword(EncryptionHelper.getInstance().hash(user.getLogin(), existingPassword));
         hibernateService.save(user);
 
         PasswordChangeCommand command = new PasswordChangeCommand();
         MockHttpServletResponse response = new MockHttpServletResponse();
         MockHttpServletRequest request = new MockHttpServletRequest();
-        command.setExistingPassword(user.getPassword());
+        command.setExistingPassword(existingPassword);
         command.setNewPassword(newPassword);
         command.setConfirmPassword(newPassword);
         command.setUserId(String.valueOf(user.getUserId()));
@@ -52,7 +53,7 @@ public class PasswordChangeControllerTest extends AbstractTransactionalDataSourc
         assertEquals(controlMessage, jsonObject.get(PasswordChangeController.MESSAGE));
 
         User saved = (User) hibernateService.get(User.class, user.getUserId());
-        assertEquals(newPassword, saved.getPassword());
+        assertEquals(EncryptionHelper.getInstance().hash(user.getLogin(), newPassword), saved.getPassword());
     }
 
     public void testHandleChangePassword() throws Exception {
