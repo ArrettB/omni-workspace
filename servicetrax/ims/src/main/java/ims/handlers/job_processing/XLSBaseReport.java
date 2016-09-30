@@ -21,6 +21,9 @@
  */
 package ims.handlers.job_processing;
 
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.CellReference;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,17 +31,6 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
-
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFDataFormat;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFFooter;
-import org.apache.poi.hssf.usermodel.HSSFHeader;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.CellReference;
 
 /**
  * Create an Excel based report with specific formatting for ServiceTrax.
@@ -60,7 +52,7 @@ public class XLSBaseReport
 	short currentRowIndex = -1;
 	HSSFRow currentRow = null;
 	Hashtable<String,Integer> breaks = new Hashtable<String,Integer>();
-	private short currentColumnIndex = -1;
+	private int currentColumnIndex = -1;
 	private HSSFCell currentColumn;
 	private int maxColumnIndex;
 	private HSSFCellStyle currencySubtotalStyle;
@@ -453,7 +445,7 @@ public class XLSBaseReport
 	 * 
 	 * @return
 	 */
-	private short incrementColumn()
+	private int incrementColumn()
 	{
 		++currentColumnIndex;
 

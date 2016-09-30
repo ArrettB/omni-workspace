@@ -1,30 +1,24 @@
 package ims.handlers.estimator;
 
-import java.io.File;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import jp.ne.so_net.ga2.no_ji.jcom.JComException;
-import jp.ne.so_net.ga2.no_ji.jcom.ReleaseManager;
-import jp.ne.so_net.ga2.no_ji.jcom.excel8.ExcelApplication;
-import jp.ne.so_net.ga2.no_ji.jcom.excel8.ExcelRange;
-import jp.ne.so_net.ga2.no_ji.jcom.excel8.ExcelWorkbook;
-import jp.ne.so_net.ga2.no_ji.jcom.excel8.ExcelWorkbooks;
-import jp.ne.so_net.ga2.no_ji.jcom.excel8.ExcelWorksheet;
-import jp.ne.so_net.ga2.no_ji.jcom.excel8.ExcelWorksheets;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
 import dynamic.dbtk.connection.ConnectionWrapper;
 import dynamic.dbtk.connection.QueryResults;
 import dynamic.util.diagnostics.Diagnostics;
 import dynamic.util.string.StringUtil;
 import dynamic.util.xml.XMLUtils;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellReference;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -57,24 +51,17 @@ public class QuoteExcelHandler {
 	public void getValuesSetDatabase(File xml_file, String quoteId, ConnectionWrapper conn) throws Exception {
 
 		PreparedStatement stmt = null;
-		ReleaseManager rm = null;
-		ExcelApplication excel = null;
 		StringBuffer query = new StringBuffer();
 		query .append("UPDATE quotes SET date_modified = getdate(), modified_by = ?"); 
 		List<String>paramList = new ArrayList<String>();
 		paramList.add(userId);
+		Workbook workbook = null;
 		
 
 		try{
-			rm = new ReleaseManager();
 			Diagnostics.debug("PATH:" + excel_file.getPath());
 
-			// open excel object
-			excel = new ExcelApplication(rm);
-			excel.Visible(false);
-			ExcelWorkbooks xlBooks = excel.Workbooks();
-			ExcelWorkbook xlBook = xlBooks.Open(excel_file.getPath());
-			ExcelWorksheets xlSheets = xlBook.Worksheets();
+			workbook = WorkbookFactory.create(excel_file);
 
 			// open xml file for mapping parameters
 			Document xml = XMLUtils.parse(xml_file);
@@ -87,11 +74,11 @@ public class QuoteExcelHandler {
 
 				Node sheet = sheets.item(sheet_count);
 				String sheet_number = XMLUtils.getValue(sheet, ":number");
+				int sheetIndex = Integer.parseInt(sheet_number) - 1;
 
 				// set the excel work sheet to the sheet number from the node
-				ExcelWorksheet xlSheet = xlSheets.Item(Integer.parseInt(sheet_number));
-				ExcelRange xlRange = xlSheet.Cells();
-				
+				Sheet poisheet = workbook.getSheetAt(sheetIndex);
+
 				NodeList tables = XMLUtils.getElementsByTagName(sheet, "table");
 				
 				for (int i = 0; i < tables.getLength(); i++)
@@ -108,7 +95,7 @@ public class QuoteExcelHandler {
 						{
 							Node task = items.item(item_count);
 							String field = XMLUtils.getValue(task, "field");
-							String value = getExcelCellValue(field, xlRange, task);
+							String value = getExcelCellValue(field, poisheet, task);
 
 							query.append(",").append(field).append(" = ?");
 							paramList.add(value);
@@ -117,7 +104,7 @@ public class QuoteExcelHandler {
 					}
 					else
 					{
-						updateQuoteDetail(quoteId, table, xlRange, conn);
+						updateQuoteDetail(quoteId, table, poisheet, conn);
 					}
 					
 				}
@@ -133,75 +120,62 @@ public class QuoteExcelHandler {
 			
 			conn.update(query, paramList.toArray());
 
-			xlBook.Close(false,null,false);
-	       
-
-		} catch (JComException e) {
-
-			Diagnostics.error("There was an error in getting data from the excel file into the database", e);
-			e.printStackTrace();
-
+			workbook.close();
         } catch (Exception e) {
-
 			Diagnostics.error("There was an error in getting data from the excel file into the database", e);
-			e.printStackTrace();
-
 		} finally {
-			if (excel != null) {
-				excel.Quit();
-				excel = null;
+			if (workbook != null) {
+				workbook.close();
+				workbook = null;
 			}
 			if (stmt != null) stmt.close();
-			if (rm != null) {
-				rm.release();
-				rm = null;
-			}
 		}
 	}
 
-	/**
-	 * Get the matching value from the Excel cell as defined in the given task.
-	 * 
-	 * @param field
-	 * @param xlRange
-	 * @param task
-	 * @return
-	 * @throws Exception
-	 */
-	String getExcelCellValue(String field, ExcelRange xlRange, Node task) throws Exception
-	{
-		String column = XMLUtils.getValue(task, "column");
-		String row = XMLUtils.getValue(task, "row");
+	String getExcelCellValue(String field, Sheet xlSheet, Node task) throws Exception {
+		String columnString = XMLUtils.getValue(task, "column");
+		String rowString = XMLUtils.getValue(task, "row");
 
-		// adjust the width so values show up correctly and not '#####'
-		try {
-			xlRange.Item(Integer.parseInt(row), Integer.parseInt(column)).Columns().AutoFit();
-		} catch (Exception e) {
-			Diagnostics.error("Problem setting width for field " + field + ", column " + column + ", row " + row, e);
+		int column = Integer.parseInt(columnString) - 1;
+		int row = Integer.parseInt(rowString) - 1;
+		CellReference cellRef = new CellReference(row, column);
+
+		Diagnostics.debug("Field " + field  + " is cell at " + row + ", column " + column + " is " + cellRef.formatAsString());
+
+		// get the text that appears in the cell by getting the cell value and applying any data formats (Date, 0.00, 1.23e9, $1.23, etc)
+		Row xlRow = xlSheet.getRow(row);
+		Cell xlCell = xlRow.getCell(column);
+		String text = new DataFormatter().formatCellValue(xlCell);
+		Diagnostics.debug("Cell value " + text);
+
+		switch (xlCell.getCellType()) {
+			case Cell.CELL_TYPE_BLANK:
+				return "";
+			case Cell.CELL_TYPE_BOOLEAN:
+				return new Boolean(xlCell.getBooleanCellValue()).toString();
+			case Cell.CELL_TYPE_NUMERIC:
+			case Cell.CELL_TYPE_FORMULA:
+				if (DateUtil.isCellDateFormatted(xlCell)) {
+					SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+					Date cellValue = xlCell.getDateCellValue();
+					return formatter.format(cellValue);
+				} else {
+					return new Double(xlCell.getNumericCellValue()).toString();
+				}
+			default:
+				return text;
 		}
-
-		String value = xlRange.Item(Integer.parseInt(row), Integer.parseInt(column)).Text();
-		value = value.trim();
-		
-		if ("[QUOTE_TOTAL]".equalsIgnoreCase(field)) {
-			value = StringUtil.replaceString(value, "-", "");
-			value = StringUtil.replaceString(value, " ", "");
-			value = StringUtil.replaceString(value, "$", "");
-			value = StringUtil.replaceString(value, ",", "");
-		}
-
-		return value;
 	}
-	
+
 	/**
 	 * Put the quote detail data into the quote detail table.
-	 *  
+	 *
 	 * @param quoteId
 	 * @param table
 	 * @param conn
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	private void updateQuoteDetail(String quoteId, Node table, ExcelRange xlRange, ConnectionWrapper conn) throws Exception
+	private void updateQuoteDetail(String quoteId, Node table, Sheet sheet, ConnectionWrapper conn) throws Exception
 	{
 		String tableName = XMLUtils.getValue(table, ":name");
 
@@ -213,18 +187,18 @@ public class QuoteExcelHandler {
 			StringBuffer insertSQL = new StringBuffer("INSERT INTO ").append(tableName).append(" (");
 			StringBuffer insertParams = new StringBuffer();
 			StringBuffer updateSQL = new StringBuffer("UPDATE ").append(tableName).append(" SET ");
-			
+
 			NodeList items = XMLUtils.getElementsByTagName(set, "item");
 			List<String> parameters = new ArrayList<String>();
-			
+
 			boolean first = true;
 			boolean hasRequiredValue = true;
 			for (int itemIndex = 0; itemIndex < items.getLength(); itemIndex++)
 			{
 				Node item = items.item(itemIndex);
 				String field = XMLUtils.getValue(item, "field");
-				String value = getExcelCellValue(field, xlRange, item);
-				
+				String value = getExcelCellValue(field, sheet, item);
+
 				boolean required = StringUtil.toBoolean(XMLUtils.getValue(item, ":required"));
 				String maxLengthStr = XMLUtils.getValue(item, ":maxlength");
 				if (StringUtil.hasAValue(maxLengthStr))
@@ -232,10 +206,10 @@ public class QuoteExcelHandler {
 					int maxLength = Integer.parseInt(maxLengthStr);
 					value = StringUtil.truncate(value, maxLength);
 				}
-				
+
 				if (required && !StringUtil.hasAValue(value))
 					hasRequiredValue = false;
-				
+
 				parameters.add(value);
 
 				if (!first)
@@ -246,10 +220,10 @@ public class QuoteExcelHandler {
 				}
 				// insert column
 				insertSQL.append(field);
-				
+
 				// insert ?
 				insertParams.append("?");
-				
+
 				// update columnName = value
 				updateSQL.append(field).append(" = ?");
 
@@ -291,31 +265,22 @@ public class QuoteExcelHandler {
 
 		Diagnostics.debug2("EXCEL:START BUILDING FILE - 1");
 
-		ReleaseManager rm = null;
-		ExcelApplication excel = null;
-
-		Diagnostics.debug2("EXCEL:DECLARE RM - 2");
+		Workbook workbook = null;
 
 		try{
 			//open excel object
-			rm = new ReleaseManager();
-			excel = new ExcelApplication(rm);
-			Diagnostics.debug2("EXCEL:CREATE EXCEL OBJECT - 3");
-			excel.Visible(false);
-			Diagnostics.debug2("EXCEL:SET VISIBLE TO FALSE - 4");
-			ExcelWorkbooks xlBooks = excel.Workbooks();
-			Diagnostics.debug2("EXCEL:OPEN WORKBOOK - 5");
-			ExcelWorkbook xlBook = xlBooks.Open(template.getPath());
-			Diagnostics.debug2("EXCEL:OPEN EXCEL FILE IN EXCEL - 5");
-			ExcelWorksheets xlSheets = xlBook.Worksheets();
-			Diagnostics.debug2("EXCEL:OPEN WORKSHEET - 6");
+			workbook = WorkbookFactory.create(new File(template.getPath()));
 
+			Diagnostics.debug2("EXCEL:OPEN EXCEL FILE - 2");
 
+			for(int i = 0; i < workbook.getNumberOfSheets(); i++) {
+				Diagnostics.debug2("EXCEL:Sheet at index " + i + " is " + workbook.getSheetAt(i).getSheetName());
+			}
 
 			// open xml file for mapping parameters
 			Document xml = XMLUtils.parse(xml_file);
 			NodeList querys = xml.getElementsByTagName("query");
-			Diagnostics.debug2("EXCEL:OPENED XML FILE - 7");
+			Diagnostics.debug2("EXCEL:OPENED XML FILE - 3");
 
 			if( querys.getLength() == 1 )
 			{
@@ -324,58 +289,101 @@ public class QuoteExcelHandler {
 				String query = XMLUtils.getValue(query_node, "").trim();
 
 				QueryResults rs = null;
-				
+
 				try
 				{
 					rs = conn.select(query, requestId);
-					Diagnostics.debug2("EXCEL:EXCUTE DATABASE READ " + query + " - 8");
-	
+					Diagnostics.debug2("EXCEL:EXECUTE DATABASE READ " + query + " - 8");
+
 					while (rs.next())
 					{
-	
+
 						NodeList sheets = xml.getElementsByTagName("sheet");
 						int sheet_total = sheets.getLength();
 						Diagnostics.debug2("EXCEL:SHEET TOTAL: " + sheet_total);
-	
+
 						// first loop through each one of the sheet nodes
 						for(int sheet_count = 0; sheet_count < sheet_total; sheet_count++)
 						{
-	
+
 							Node sheet = sheets.item(sheet_count);
 							String sheet_number = XMLUtils.getValue(sheet, ":number");
-	
-							// set the excel work sheet to the sheet number from the node
-							ExcelWorksheet xlSheet = xlSheets.Item(Integer.parseInt(sheet_number));
-							ExcelRange xlRange = xlSheet.Cells();
-	
+
+							int sheetIndex = Integer.parseInt(sheet_number) - 1;
+							Sheet poisheet = workbook.getSheetAt(sheetIndex);
+							CreationHelper createHelper = workbook.getCreationHelper();
+							Diagnostics.debug2("Sheet for sheet index " + sheetIndex + " is " + poisheet.getSheetName());
+
 							// grab all the items within the sheet node
 							NodeList items = XMLUtils.getElementsByTagName(sheet, "item");
 							int item_total = items.getLength();
-	
+
 							Diagnostics.debug2("EXCEL:ITEM TOTAL: " + item_total);
-	
+
 							// loop through the items
 							for(int item_count = 0; item_count < item_total; item_count++)
 							{
-	
+
 								Node task = items.item(item_count);
-	
+
 								String column = XMLUtils.getValue(task, "column");
 								String row = XMLUtils.getValue(task, "row");
 								String field = XMLUtils.getValue(task, "field").trim();
-	
+
 								String value = rs.getString(field);
-	
-								xlRange.Item(Integer.parseInt(row), Integer.parseInt(column)).Value(value);
-	
+
+								Diagnostics.error("Field: " + field + ", row : " + row + ", cell : " + column + " set value to " + value);
+
+								if(value != null) {
+									int rowIndex = Integer.parseInt(row) - 1;
+									int cellIndex = Integer.parseInt(column) - 1;
+									Row xlRow = poisheet.getRow(rowIndex);
+									Cell xlCell = xlRow.getCell(cellIndex);
+
+									switch (xlCell.getCellType()) {
+										case Cell.CELL_TYPE_BLANK:
+											xlCell.setCellValue(createHelper.createRichTextString(value));
+											break;
+										case Cell.CELL_TYPE_BOOLEAN: {
+											boolean b = Boolean.valueOf(value);
+											xlCell.setCellValue(b);
+											break;
+										}
+										case Cell.CELL_TYPE_STRING: {
+											xlCell.setCellValue(createHelper.createRichTextString(value));
+											break;
+										}
+										case Cell.CELL_TYPE_NUMERIC: {
+											xlCell.setCellValue(value);
+											if (DateUtil.isCellDateFormatted(xlCell)) {
+												Diagnostics.error("Field: " + field + ", row : " + row + ", cell : " + column + " The cell is a date formatted cell!");
+											} else {
+												Double d = Double.parseDouble(value);
+												xlCell.setCellValue(d);
+											}
+											break;
+										}
+										case Cell.CELL_TYPE_FORMULA:
+											break;
+										default:
+											break;
+									}
+								}
 							}
-	
-							ExcelWorksheet xlS = xlSheets.Item(2);
-							ExcelRange xlR = xlS.Cells();
-							xlR.Item(137, 14).Value(this.projectDir);
-	
+
+							// 0 offset so need to use 1 to get sheet number 2
+							Sheet xlSheet = workbook.getSheetAt(1);
+							Diagnostics.debug2("Sheet for sheet number 2 is " + xlSheet.getSheetName());
+
+							// was 137
+							Row xlRow = xlSheet.getRow(136);
+							// was 14
+							Cell xlCell = xlRow.getCell(13);
+							if(xlCell == null) {
+								xlCell = xlRow.createCell(13);
+							}
+							xlCell.setCellValue(this.projectDir);
 						}
-	
 					}
 				}
 				finally
@@ -385,46 +393,36 @@ public class QuoteExcelHandler {
 				}
 
 				Diagnostics.debug2("EXCEL:SAVE EXCEL FILE " + excel_file.getPath() + " - 9");
-				xlBook.SaveAs(excel_file.getPath());
+				FileOutputStream fos = new FileOutputStream(excel_file.getPath());
 
-				xlBook.Close(false,null,false);
+				workbook.write(fos);
+
+				fos.flush();
+				fos.close();
+
 				Diagnostics.debug2("EXCEL:CLOSE EXCEL - 10");
-		        
-
-			}else{
-
+			} else {
 				Diagnostics.error("The set xml file for the excel spreed sheet must have one query!");
-
 			}
-
-
-
-		}catch(SQLException e)
+		} catch( SQLException e )
 		{
 
-			Diagnostics.debug2("There was an error in trying to put data into the excel file." + e);
-			e.printStackTrace();
+			Diagnostics.error("There was an error in trying to put data into the excel file.", e);
 
-		}catch (Exception e)
+		} catch( Exception e )
 		{
 
-			Diagnostics.debug2("There was an error in trying to put data into the excel file." + e);
-			e.printStackTrace();
-
+			Diagnostics.error("There was an error in trying to put data into the excel file.", e);
 		}
 		finally
 		{
-			if (excel != null) {
-				excel.Quit();
-				excel = null;
-			}
-			if (rm != null) {
-				rm.release();
-				rm = null;
+			if (workbook != null) {
+				workbook.close();
+				workbook = null;
 			}
 		}
-
 	}
+
 
 	public void setDataToQuote(ConnectionWrapper conn){
 		String query = "sp_estimator 7, " + requestId + ", NULL, " + version + ", " + subversion + ", NULL, NULL";
@@ -434,7 +432,7 @@ public class QuoteExcelHandler {
 		}
 		catch(SQLException e)
 		{
-			Diagnostics.debug2("There was an error trying to set an transfer excel to quote.");
+			Diagnostics.error("There was an error trying to set an transfer excel to quote.", e);
 		}
 	}
 

@@ -26,8 +26,8 @@
             <!--
 			<param-value>C:\work\serviceTrax\ims\src\main\webapp\WEB-INF\ims.xml</param-value>
 			-->
-            <!--<param-value>/Users/dave/kettle_river_consulting/customers/omni_workspace/workspace/servicetrax/ims/src/main/webapp/WEB-INF/ims.xml</param-value>-->
-            <param-value>/Users/pgarvie/projects/omni/servicetrax/ims/src/main/webapp/WEB-INF//ims.xml</param-value>
+           <param-value>/Users/dave/kettle_river_consulting/customers/omni_workspace/workspace/servicetrax/ims/src/main/webapp/WEB-INF/ims.xml</param-value>
+			<!-- <param-value>/Users/pgarvie/projects/omni/servicetrax/ims/src/main/webapp/WEB-INF//ims.xml</param-value> -->
 
 
 		</init-param>
