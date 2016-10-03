@@ -3,8 +3,8 @@
 <!DOCTYPE applicationContext SYSTEM "iFrame2.dtd"
 [
 <!ENTITY appName "ims">
-<!ENTITY projectDir "C:\Program Files\Apache Software Foundation\Tomcat 5.5\webapps\ims\">
-<!ENTITY htmlDir "C:\Program Files\Apache Software Foundation\Tomcat 5.5\webapps\ims\">
+<!ENTITY projectDir "C:\Program Files\Apache Software Foundation\Tomcat 9.0\webapps\ims\">
+<!ENTITY htmlDir "C:\Program Files\Apache Software Foundation\Tomcat 9.0\webapps\ims\">
 <!ENTITY sep "\">
 ]
 >
