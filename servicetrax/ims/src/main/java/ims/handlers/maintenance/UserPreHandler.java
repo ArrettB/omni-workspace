@@ -1,5 +1,6 @@
 package ims.handlers.maintenance;
 
+import com.dynamic.servicetrax.service.EncryptionHelper;
 import dynamic.intraframe.engine.InvocationContext;
 import dynamic.intraframe.handlers.BaseHandler;
 import dynamic.intraframe.templates.components.SmartFormComponent;
@@ -41,7 +42,8 @@ public class UserPreHandler extends BaseHandler
 			String password1 = ic.getParameter("password1");
 			if (password1 != null && !password1.equals("IGNORE"))
 			{
-				ic.setParameter("password", password1);
+				String encryptedPassword = EncryptionHelper.getInstance().hash(ic.getParameter("login"), password1);
+				ic.setParameter("password", encryptedPassword);
 			}
 		}
 
