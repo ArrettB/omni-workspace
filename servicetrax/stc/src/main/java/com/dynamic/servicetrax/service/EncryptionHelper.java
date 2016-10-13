@@ -39,8 +39,8 @@ public class EncryptionHelper {
     public static void main(String[] args) {
         EncryptionHelper instance = EncryptionHelper.getInstance();
 
-        String password = instance.hash("arrettb", "omni1234");
+        String password = instance.hash("kstimak", "kstimak1");
 
-        System.out.println("arrettb/" + password);
+        System.out.println("kstimak/" + password);
     }
 }
