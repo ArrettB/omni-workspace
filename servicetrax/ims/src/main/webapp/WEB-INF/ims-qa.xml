@@ -4,7 +4,7 @@
 [
 <!ENTITY appName "ims">
 <!ENTITY projectDir "\E:\ims\">
-<!ENTITY htmlDir "E:\Program Files\Apache Software Foundation\Tomcat 9.0\webapps\ims\">
+<!ENTITY htmlDir "E:\Program Files\Apache Software Foundation\Tomcat 5.5\webapps\ims\">
 <!ENTITY sep "\">
 ]
 >
