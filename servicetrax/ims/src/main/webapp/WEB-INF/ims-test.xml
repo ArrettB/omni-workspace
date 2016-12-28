@@ -3,8 +3,8 @@
 <!DOCTYPE applicationContext SYSTEM "iFrame2.dtd"
 [
 <!ENTITY appName "ims">
-<!ENTITY projectDir "C:\Program Files\Apache Software Foundation\Tomcat 9.0\webapps\ims\">
-<!ENTITY htmlDir "C:\Program Files\Apache Software Foundation\Tomcat 9.0\webapps\ims\">
+<!ENTITY projectDir "C:\Program Files\Apache Software Foundation\Tomcat 5.5\webapps\ims\">
+<!ENTITY htmlDir "C:\Program Files\Apache Software Foundation\Tomcat 5.5\webapps\ims\">
 <!ENTITY sep "\">
 ]
 >
@@ -388,8 +388,8 @@
 		<parameter name="estimatorDir">&projectDir;estimator&sep;</parameter>
 		<parameter name="estimatorExcelGet">&projectDir;WEB-INF&sep;estimator&sep;excel_get_values.xml</parameter>
 		<parameter name="estimatorExcelSet">&projectDir;WEB-INF&sep;estimator&sep;excel_set_values.xml</parameter>
-		<parameter name="estimatorTemplate">&projectDir;WEB-INF&sep;estimator&sep;template.xlsm</parameter>
-		<parameter name="estimatorTemplate2">&projectDir;WEB-INF&sep;estimator&sep;template2.xlsm</parameter>
+		<parameter name="estimatorTemplate">&projectDir;WEB-INF&sep;estimator&sep;template.xls</parameter>
+		<parameter name="estimatorTemplate2">&projectDir;WEB-INF&sep;estimator&sep;template2.xls</parameter>
 		<parameter name="estimatorTemplate2OrgId">20</parameter>
 	</estimator>
 

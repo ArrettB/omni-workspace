@@ -393,8 +393,8 @@
 		<parameter name="estimatorDir">&projectDir;estimator&sep;</parameter>
 		<parameter name="estimatorExcelGet">&htmlDir;WEB-INF&sep;estimator&sep;excel_get_values.xml</parameter>
 		<parameter name="estimatorExcelSet">&htmlDir;WEB-INF&sep;estimator&sep;excel_set_values.xml</parameter>
-		<parameter name="estimatorTemplate">&htmlDir;WEB-INF&sep;estimator&sep;template.xlsm</parameter>
-		<parameter name="estimatorTemplate2">&htmlDir;WEB-INF&sep;estimator&sep;template2.xlsm</parameter>
+		<parameter name="estimatorTemplate">&htmlDir;WEB-INF&sep;estimator&sep;template.xls</parameter>
+		<parameter name="estimatorTemplate2">&htmlDir;WEB-INF&sep;estimator&sep;template2.xls</parameter>
 		<parameter name="estimatorTemplate2OrgId">20</parameter>
 	</estimator>
 
@@ -445,6 +445,7 @@
 			<resource name="sqlserver_ics" id="//1300DB:1433/ics" username="ics" password="ics" type="SharedPool" default="false"/>
 			<resource name="sqlserver_ntlsv" id="//1300DB:1433/ntlsv" username="ntlsv" password="ntlsv" type="SharedPool" default="false"/>
 			<resource name="sqlserver_phx" id="//1300DB:1433/phx" username="phx" password="phx" type="SharedPool" default="false"/>
+
 		</resourceProducer>
 	</resourceManager>
 

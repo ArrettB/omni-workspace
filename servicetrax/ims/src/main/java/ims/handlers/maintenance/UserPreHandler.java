@@ -1,5 +1,6 @@
 package ims.handlers.maintenance;
 
+
 import com.dynamic.servicetrax.service.EncryptionHelper;
 import dynamic.intraframe.engine.InvocationContext;
 import dynamic.intraframe.handlers.BaseHandler;
@@ -44,6 +45,7 @@ public class UserPreHandler extends BaseHandler
 			{
 				String encryptedPassword = EncryptionHelper.getInstance().hash(ic.getParameter("login"), password1);
 				ic.setParameter("password", encryptedPassword);
+
 			}
 		}
 

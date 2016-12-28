@@ -104,7 +104,7 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
-
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
     			<artifactId>maven-war-plugin</artifactId>
@@ -375,15 +375,9 @@
 
 		<!-- poi -->
 		<dependency>
-			<groupId>org.apache.poi</groupId>
+			<groupId>poi</groupId>
 			<artifactId>poi</artifactId>
-			<version>3.14</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
-			<version>3.14</version>
+			<version>2.5.1-final-20040804</version>
 		</dependency>
 
 		<!-- File Upload -->
@@ -457,13 +451,11 @@
 			<version>4.4</version>
 			<scope>test</scope>
 		</dependency>
-		<!--
 		  <dependency>
 		   <groupId>jcom</groupId>
 		   <artifactId>jcom</artifactId>
 		   <version>2.2.4</version>
 		  </dependency>
-		-->
         <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-all</artifactId>
