@@ -1,6 +1,9 @@
 package com.dynamic.servicetrax.service;
 
+import au.com.bytecode.opencsv.CSVReader;
 import org.apache.commons.codec.digest.DigestUtils;
+
+import java.io.FileReader;
 
 /**
  * User: pgarvie
@@ -39,8 +42,39 @@ public class EncryptionHelper {
     public static void main(String[] args) {
         EncryptionHelper instance = EncryptionHelper.getInstance();
 
-        String password = instance.hash("arrettb", "omni1234");
+        if(args.length == 1) {
+            String fileName = args[0];
 
-        System.out.println("arrettb/" + password);
+            CSVReader csvReader = null;
+            try {
+                csvReader = new CSVReader(new FileReader(fileName));
+                String[] row = null;
+                boolean header = true;
+                while((row = csvReader.readNext()) != null) {
+                    if(header) {
+                        header = false;
+                    } else {
+                        String hash = instance.hash(row[2], row[1]);
+
+                        System.out.println("UPDATE users SET PASSWORD = '" + hash + "' WHERE USER_ID = " + row[0] + ";");
+                    }
+                }
+            } catch( Throwable t) {
+                t.printStackTrace();
+            } finally {
+                if(csvReader != null) {
+                    try {
+                        csvReader.close();
+                    } catch( Throwable whocares) {}
+                }
+            }
+        } else if( args.length == 2 ) {
+            String username = args[0];
+            String password = args[1];
+
+            String hash = instance.hash(username, password);
+
+            System.out.println( username + "/" + hash);
+        }
     }
 }
