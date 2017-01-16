@@ -3,8 +3,8 @@
 <!DOCTYPE applicationContext SYSTEM "iFrame2.dtd"
 [
 <!ENTITY appName "ims">
-<!ENTITY projectDir "/Users/pgarvie/projects/omni/servicetrax/ims/">
-<!ENTITY htmlDir "/Users/pgarvie/projects/omni/servicetrax/ims/src/main/webapp/">
+<!ENTITY projectDir "/Users/dave/kettle_river_consulting/customers/omni_workspace/stupididea_workspace/servicetrax/ims/">
+<!ENTITY htmlDir "/Users/dave/kettle_river_consulting/customers/omni_workspace/stupididea_workspace/servicetrax/ims/src/main/webapp/">
 <!ENTITY sep "/">
 ]
 >
@@ -427,7 +427,7 @@
 
 	<resourceManager class="dynamic.util.resources.BaseResourceManager">
 		<resourceProducer name="SQLServerProducer" class="dynamic.dbtk.connection.JDBCResourceProducer" driver="net.sourceforge.jtds.jdbc.Driver" prefix="jdbc:jtds:sqlserver:" dateFormat="''MM/dd/yyyy HH:mm:ss''" now="getDate()" primaryKey="SELECT @@identity">
-			<resource name="sqlserver" id="//rolla.kettleriverconsulting.com:1433/omni_ims;appName=ServiceTrax" username="ims" password="ims" type="SharedPool" default="true"/>
+			<resource name="sqlserver" id="//rolla.kettleriverconsulting.com:1433/IMS_NEW;appName=ServiceTrax" username="ims" password="ims" type="SharedPool" default="true"/>
 			<resource name="Test" id="//rolla.kettleriverconsulting.com:1433/omni_paul;appName=ServiceTrax" username="pgarvie" password="6622jake" type="SingleUse" default="false"/>
 			<resource name="Test2" id="//rolla.kettleriverconsulting.com:1433/omni_paul;appName=ServiceTrax" username="pgarvie" password="6622jake" type="SingleUse" default="false"/>
 			<resource name="sqlserver_aia" id="//10.211.55.6:1433/AIA" username="ims_gp" password="ims_gp" type="SharedPool" default="false"/>
