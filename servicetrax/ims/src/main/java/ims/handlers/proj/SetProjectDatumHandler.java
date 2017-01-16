@@ -531,6 +531,8 @@ public class SetProjectDatumHandler extends BaseHandler {
 
                             ic.setTransientDatum("po_count", "" + rs2.getInt("po_count"));
 
+                            ic.setSessionDatum("show_hotsheet", "true");
+                            /*
                             rs3 = conn.select(GET_HOTSHEET_INVOICE_COUNT, new Long[]{Long.parseLong(requestID)});
 
                             if (rs3.next()) {// found request
@@ -545,6 +547,7 @@ public class SetProjectDatumHandler extends BaseHandler {
                                 ic.setSessionDatum("show_hotsheet", "true");
                             }
                             IMSUtil.closeQueryResultSet(rs3);
+                            */
 
                         }
                         else {
